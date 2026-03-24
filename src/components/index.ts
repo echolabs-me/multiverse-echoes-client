@@ -11,6 +11,7 @@ export { OraclePanel } from './OraclePanel.tsx';
 export { Sidebar } from './Sidebar.tsx';
 export { SkipLink } from './SkipLink.tsx';
 export { Spinner } from './Spinner.tsx';
+export { StoryExportModal } from './StoryExportModal.tsx';
 export { Tabs } from './Tabs.tsx';
 export { ToastContainer, useToastStore } from './Toast.tsx';
 export { Tooltip } from './Tooltip.tsx';

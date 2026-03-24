@@ -125,6 +125,7 @@
     "settings": "Echo Settings",
     "soloMode": "Solo mode (no cross-user interactions)",
     "talkToEcho": "Talk to Echo",
+    "exportStory": "Export Story",
     "sentiment": "Sentiment",
     "strength": "Strength"
   },
@@ -229,6 +230,25 @@
     "relationships": "Relationships",
     "noEchoes": "No Echoes yet",
     "noEchoesDesc": "Create your first Echo to begin."
+  },
+  "export": {
+    "title": "Export Echo Story",
+    "subtitle": "Export {{name}}'s story as a file",
+    "disclaimer": "This export contains AI-generated content. The narrative was autonomously created by the simulation engine and does not represent real events or real people.",
+    "selectFormat": "Choose format",
+    "formatText": "Plain Text",
+    "formatTextDesc": "Human-readable narrative format",
+    "formatJson": "JSON",
+    "formatJsonDesc": "Structured data for developers",
+    "formatPdf": "PDF (Coming Soon)",
+    "formatPdfDesc": "Formatted document with styling",
+    "request": "Export",
+    "errorRequesting": "Could not start export. Please try again.",
+    "statusPending": "Export queued...",
+    "statusProcessing": "Generating export...",
+    "statusReady": "Export ready!",
+    "statusFailed": "Export failed. Please try again.",
+    "download": "Download"
   },
   "conversation": {
     "echo": "Echo",

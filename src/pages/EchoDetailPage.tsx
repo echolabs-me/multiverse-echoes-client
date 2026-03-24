@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
   BookOpen,
+  Download,
   Zap,
   Users,
   Brain,
@@ -25,6 +26,7 @@ import {
   EmptyState,
   Modal,
   Input,
+  StoryExportModal,
 } from '../components/index.ts';
 import { useToastStore } from '../components/Toast.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
@@ -67,6 +69,7 @@ export function EchoDetailPage() {
   const [newPersona, setNewPersona] = useState('');
   const [influenceType, setInfluenceType] = useState('nudge');
   const [influenceDetails, setInfluenceDetails] = useState('');
+  const [exportModal, setExportModal] = useState(false);
   const [soloMode, setSoloMode] = useState(false);
 
   const loadData = useCallback(async () => {
@@ -329,6 +332,12 @@ export function EchoDetailPage() {
               }}
             >
               <Pencil size={16} /> {t('echoDetail.editPersona')}
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => setExportModal(true)}
+            >
+              <Download size={16} /> {t('echoDetail.exportStory')}
             </Button>
           </div>
 
@@ -602,6 +611,13 @@ export function EchoDetailPage() {
           </Button>
         </div>
       </Modal>
+
+      {/* Story Export Modal */}
+      <StoryExportModal
+        open={exportModal}
+        onClose={() => setExportModal(false)}
+        echoName={activeEcho.name}
+      />
     </div>
   );
 }

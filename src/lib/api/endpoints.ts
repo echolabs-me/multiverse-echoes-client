@@ -34,6 +34,8 @@ import type {
   ConversationMessage,
   CreateConversationResponse,
   SendConversationMessageRequest,
+  DataExport,
+  RequestExportBody,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -226,13 +228,14 @@ export const account = {
       body: JSON.stringify(data),
     }),
 
-  requestExport: () =>
-    request<{ export_id: string; status: string }>('/account/export', {
+  requestExport: (data?: RequestExportBody) =>
+    request<DataExport>('/account/me/export', {
       method: 'POST',
+      body: data ? JSON.stringify(data) : undefined,
     }),
 
   getExportStatus: (exportId: string) =>
-    request<{ export_id: string; status: string; download_url?: string }>(`/account/export/${exportId}`),
+    request<DataExport>(`/account/me/export/${exportId}`),
 
   deleteAccount: () =>
     request<MessageResponse>('/account/me', { method: 'DELETE' }),

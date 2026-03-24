@@ -257,6 +257,23 @@ export interface CreateApiKeyResponse {
   name: string;
 }
 
+// --- Data Export ---
+
+export type ExportFormat = 'text' | 'json' | 'pdf';
+export type ExportStatus = 'Pending' | 'Processing' | 'Ready' | 'Failed';
+
+export interface DataExport {
+  export_id: string;
+  status: ExportStatus;
+  format: ExportFormat;
+  download_url?: string;
+  created_at: string;
+}
+
+export interface RequestExportBody {
+  format: ExportFormat;
+}
+
 // --- Conversation ---
 
 export interface Conversation {
