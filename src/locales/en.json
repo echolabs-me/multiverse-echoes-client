@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Multiverse Echoes",
+    "tagline": "Autonomous Life Simulation Platform"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search"
+  },
+  "placeholder": {
+    "hello": "Hello Multiverse",
+    "description": "Your Echoes await."
+  }
+}
