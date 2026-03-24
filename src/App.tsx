@@ -15,6 +15,8 @@ import { PersonalFeedPage } from './pages/PersonalFeedPage.tsx';
 import { SocialFeedPage } from './pages/SocialFeedPage.tsx';
 import { CommunityPage } from './pages/CommunityPage.tsx';
 import { NotificationsPage } from './pages/NotificationsPage.tsx';
+import { SettingsPage } from './pages/SettingsPage.tsx';
+import { DeleteAccountPage } from './pages/DeleteAccountPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -54,6 +56,8 @@ export function App() {
           <Route path="/feeds/social" element={<SocialFeedPage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
         </Routes>
       </main>
     </BrowserRouter>
