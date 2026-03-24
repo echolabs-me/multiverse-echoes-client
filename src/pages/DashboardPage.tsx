@@ -140,8 +140,8 @@ export function DashboardPage() {
       <TopBar
         notificationCount={unreadCount}
         onSearchClick={() => {}}
-        onNotificationClick={() => {}}
-        onProfileClick={() => {}}
+        onNotificationClick={() => navigate('/notifications')}
+        onProfileClick={() => navigate('/settings')}
       />
 
       <div className="flex flex-1 overflow-hidden">

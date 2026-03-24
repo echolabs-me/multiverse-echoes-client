@@ -14,6 +14,7 @@ import { ShardBrowserPage } from './pages/ShardBrowserPage.tsx';
 import { PersonalFeedPage } from './pages/PersonalFeedPage.tsx';
 import { SocialFeedPage } from './pages/SocialFeedPage.tsx';
 import { CommunityPage } from './pages/CommunityPage.tsx';
+import { NotificationsPage } from './pages/NotificationsPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -52,6 +53,7 @@ export function App() {
           <Route path="/feeds/personal" element={<PersonalFeedPage />} />
           <Route path="/feeds/social" element={<SocialFeedPage />} />
           <Route path="/community" element={<CommunityPage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
         </Routes>
       </main>
     </BrowserRouter>
