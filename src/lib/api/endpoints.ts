@@ -26,6 +26,8 @@ import type {
   ApiKey,
   CreateApiKeyRequest,
   CreateApiKeyResponse,
+  OracleAskRequest,
+  OracleResponse,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -258,6 +260,16 @@ export const apiKeys = {
 
   revoke: (keyId: string) =>
     request<MessageResponse>(`/keys/${keyId}`, { method: 'DELETE' }),
+};
+
+// --- Oracle ---
+
+export const oracle = {
+  ask: (data: OracleAskRequest) =>
+    request<OracleResponse>('/oracle/ask', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 };
 
 // --- Reports ---

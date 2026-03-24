@@ -257,6 +257,29 @@ export interface CreateApiKeyResponse {
   name: string;
 }
 
+// --- Oracle ---
+
+export interface OracleAskRequest {
+  question: string;
+  context?: OracleContext;
+}
+
+export interface OracleContext {
+  echo_id?: string;
+  shard_id?: string;
+  screen?: string;
+}
+
+export interface OracleResponse {
+  answer: string;
+  deep_links?: OracleDeepLink[];
+}
+
+export interface OracleDeepLink {
+  label: string;
+  path: string;
+}
+
 // --- WebSocket Events ---
 
 export interface WorldEvent {

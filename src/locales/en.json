@@ -229,6 +229,18 @@
     "noEchoes": "No Echoes yet",
     "noEchoesDesc": "Create your first Echo to begin."
   },
+  "oracle": {
+    "title": "Oracle Assistant",
+    "toggle": "Toggle Oracle assistant",
+    "welcomeMessage": "Ask me anything about Multiverse Echoes. I can help you navigate, explain features, or answer questions about your Echoes and Shards.",
+    "inputPlaceholder": "Ask the Oracle...",
+    "send": "Send message",
+    "thinking": "Oracle is thinking...",
+    "clearHistory": "Clear conversation",
+    "rateLimit": "{{limit}} questions per minute",
+    "error": "The Oracle couldn't respond. Please try again.",
+    "conversation": "Oracle conversation"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "feeds": "Feeds",

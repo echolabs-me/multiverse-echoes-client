@@ -7,6 +7,7 @@ export { Dropdown } from './Dropdown.tsx';
 export { EmptyState } from './EmptyState.tsx';
 export { Input } from './Input.tsx';
 export { Modal } from './Modal.tsx';
+export { OraclePanel } from './OraclePanel.tsx';
 export { Sidebar } from './Sidebar.tsx';
 export { SkipLink } from './SkipLink.tsx';
 export { Spinner } from './Spinner.tsx';

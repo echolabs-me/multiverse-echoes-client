@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { SkipLink, ToastContainer } from './components/index.ts';
+import { OraclePanel, SkipLink, ToastContainer } from './components/index.ts';
 import { LanguageSelectionPage } from './pages/LanguageSelectionPage.tsx';
 import { RegisterPage } from './pages/RegisterPage.tsx';
 import { VerifyPendingPage } from './pages/VerifyPendingPage.tsx';
@@ -27,6 +27,7 @@ export function App() {
     <BrowserRouter>
       <SkipLink />
       <ToastContainer />
+      <OraclePanel />
       <main id="main-content">
         <Routes>
           <Route
