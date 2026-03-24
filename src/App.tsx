@@ -6,6 +6,7 @@ import { VerifyPendingPage } from './pages/VerifyPendingPage.tsx';
 import { VerifiedPage } from './pages/VerifiedPage.tsx';
 import { OnboardingWelcomePage } from './pages/OnboardingWelcomePage.tsx';
 import { OnboardingProfilePage } from './pages/OnboardingProfilePage.tsx';
+import { EchoCreationPage } from './pages/EchoCreationPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -36,7 +37,7 @@ export function App() {
           <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
           {/* Placeholder routes — built in subsequent steps */}
           <Route path="/login" element={<PlaceholderPage title="Login" />} />
-          <Route path="/onboarding/create-echo" element={<PlaceholderPage title="Create Echo" />} />
+          <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
           <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" />} />
         </Routes>
       </main>
