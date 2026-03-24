@@ -257,6 +257,37 @@ export interface CreateApiKeyResponse {
   name: string;
 }
 
+// --- Conversation ---
+
+export interface Conversation {
+  conversation_id: string;
+  echo_id: string;
+  user_id: string;
+  status: 'Active' | 'Closed';
+  message_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ConversationMessage {
+  message_id: string;
+  conversation_id: string;
+  role: 'user' | 'echo';
+  content: string;
+  created_at: string;
+}
+
+export interface CreateConversationResponse {
+  conversation_id: string;
+  echo_id: string;
+  status: string;
+  created_at: string;
+}
+
+export interface SendConversationMessageRequest {
+  content: string;
+}
+
 // --- Search ---
 
 export interface SearchResult {

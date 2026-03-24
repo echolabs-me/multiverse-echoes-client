@@ -124,6 +124,7 @@
     "editPersona": "Edit Persona",
     "settings": "Echo Settings",
     "soloMode": "Solo mode (no cross-user interactions)",
+    "talkToEcho": "Talk to Echo",
     "sentiment": "Sentiment",
     "strength": "Strength"
   },
@@ -228,6 +229,25 @@
     "relationships": "Relationships",
     "noEchoes": "No Echoes yet",
     "noEchoesDesc": "Create your first Echo to begin."
+  },
+  "conversation": {
+    "echo": "Echo",
+    "mood": "Feeling {{mood}}",
+    "inputPlaceholder": "Say something to your Echo...",
+    "send": "Send message",
+    "save": "Save conversation",
+    "saved": "Saved",
+    "messages": "Conversation messages",
+    "startPrompt": "Start a conversation with your Echo. They'll respond in character.",
+    "messageCount": "{{count}} / {{max}} messages",
+    "atLimit": "Message limit reached for this conversation",
+    "messageLimitReached": "You've reached the message limit for this conversation.",
+    "tierGateTitle": "Upgrade to Talk",
+    "tierGateDesc": "Direct Echo conversations are available on Core tier and above. Upgrade to have personal conversations with your Echoes.",
+    "upgrade": "View Plans",
+    "errorStarting": "Could not start conversation. Please try again.",
+    "errorSending": "Message could not be sent. Please try again.",
+    "errorSaving": "Could not save conversation. Please try again."
   },
   "search": {
     "placeholder": "Search Echoes, diary entries, events, shards...",

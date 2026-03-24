@@ -8,6 +8,7 @@ import {
   Users,
   Brain,
   Sparkles,
+  MessageCircle,
   Moon,
   Sun,
   Pencil,
@@ -283,6 +284,12 @@ export function EchoDetailPage() {
 
           {/* Quick Actions */}
           <div className="my-6 flex flex-wrap gap-2">
+            <Button
+              variant="primary"
+              onClick={() => navigate(`/echoes/${activeEcho.echo_id}/talk`)}
+            >
+              <MessageCircle size={16} /> {t('echoDetail.talkToEcho')}
+            </Button>
             <Button
               variant="secondary"
               onClick={() => {

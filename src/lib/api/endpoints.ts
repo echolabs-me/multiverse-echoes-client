@@ -30,6 +30,10 @@ import type {
   OracleResponse,
   SearchResult,
   SearchParams,
+  Conversation,
+  ConversationMessage,
+  CreateConversationResponse,
+  SendConversationMessageRequest,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -262,6 +266,32 @@ export const apiKeys = {
 
   revoke: (keyId: string) =>
     request<MessageResponse>(`/keys/${keyId}`, { method: 'DELETE' }),
+};
+
+// --- Conversations ---
+
+export const conversations = {
+  create: (echoId: string) =>
+    request<CreateConversationResponse>(`/echoes/${echoId}/conversations`, {
+      method: 'POST',
+    }),
+
+  list: (echoId: string) =>
+    request<Conversation[]>(`/echoes/${echoId}/conversations`),
+
+  messages: (conversationId: string) =>
+    request<ConversationMessage[]>(`/conversations/${conversationId}/messages`),
+
+  sendMessage: (conversationId: string, data: SendConversationMessageRequest) =>
+    request<ConversationMessage>(`/conversations/${conversationId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  saveAsDiary: (conversationId: string) =>
+    request<MessageResponse>(`/conversations/${conversationId}/save`, {
+      method: 'POST',
+    }),
 };
 
 // --- Search ---
