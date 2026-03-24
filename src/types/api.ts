@@ -257,6 +257,65 @@ export interface CreateApiKeyResponse {
   name: string;
 }
 
+// --- Admin ---
+
+export interface SystemHealth {
+  tick_number: number;
+  tick_duration_ms: number;
+  ram_usage_mb: number;
+  vram_usage_mb: number;
+  active_echoes: number;
+  hibernated_echoes: number;
+  total_users: number;
+  total_shards: number;
+}
+
+export interface AdminAlert {
+  alert_id: string;
+  severity: 'info' | 'warning' | 'critical';
+  message: string;
+  created_at: string;
+}
+
+export interface AdminReport {
+  report_id: string;
+  reporter_user_id: string;
+  target_type: string;
+  target_id: string;
+  reason: string;
+  details: string;
+  priority: string;
+  status: string;
+  sla_deadline: string;
+  created_at: string;
+}
+
+export interface AdminUser {
+  user_id: string;
+  email: string;
+  display_name: string;
+  account_type: AccountType;
+  subscription_tier: SubscriptionTier;
+  account_status: AccountStatus;
+  echo_count: number;
+  created_at: string;
+  last_login_at: string;
+}
+
+export interface AdminShard {
+  shard_id: string;
+  name: string;
+  shard_type: string;
+  status: string;
+  echo_count: number;
+  max_capacity: number;
+}
+
+export interface ResolveReportRequest {
+  action: 'Quarantine' | 'Warn' | 'Suspend' | 'Dismiss' | 'Restore';
+  notes: string;
+}
+
 // --- Data Export ---
 
 export type ExportFormat = 'text' | 'json' | 'pdf';

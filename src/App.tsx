@@ -19,6 +19,7 @@ import { SettingsPage } from './pages/SettingsPage.tsx';
 import { DeleteAccountPage } from './pages/DeleteAccountPage.tsx';
 import { SearchPage } from './pages/SearchPage.tsx';
 import { EchoConversationPage } from './pages/EchoConversationPage.tsx';
+import { AdminDashboardPage } from './pages/AdminDashboardPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -62,6 +63,7 @@ export function App() {
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/admin" element={<AdminDashboardPage />} />
           <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
         </Routes>
       </main>

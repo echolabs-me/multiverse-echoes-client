@@ -36,6 +36,12 @@ import type {
   SendConversationMessageRequest,
   DataExport,
   RequestExportBody,
+  SystemHealth,
+  AdminAlert,
+  AdminReport,
+  AdminUser,
+  AdminShard,
+  ResolveReportRequest,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -334,6 +340,45 @@ export const oracle = {
       method: 'POST',
       body: JSON.stringify(data),
     }),
+};
+
+// --- Admin ---
+
+export const admin = {
+  systemHealth: () => request<SystemHealth>('/system/status'),
+
+  alerts: () => request<AdminAlert[]>('/admin/alerts'),
+
+  reports: () => request<AdminReport[]>('/admin/reports'),
+
+  resolveReport: (reportId: string, data: ResolveReportRequest) =>
+    request<MessageResponse>(`/admin/reports/${reportId}/resolve`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  users: (params?: { q?: string }) => {
+    const query = new URLSearchParams();
+    if (params?.q) query.set('q', params.q);
+    const qs = query.toString();
+    return request<AdminUser[]>(`/admin/users${qs ? `?${qs}` : ''}`);
+  },
+
+  getUser: (userId: string) => request<AdminUser>(`/admin/users/${userId}`),
+
+  suspendUser: (userId: string) =>
+    request<MessageResponse>(`/admin/users/${userId}/suspend`, { method: 'POST' }),
+
+  unsuspendUser: (userId: string) =>
+    request<MessageResponse>(`/admin/users/${userId}/unsuspend`, { method: 'POST' }),
+
+  shards: () => request<AdminShard[]>('/admin/shards'),
+
+  pauseTicks: () => request<MessageResponse>('/system/pause', { method: 'POST' }),
+
+  resumeTicks: () => request<MessageResponse>('/system/resume', { method: 'POST' }),
+
+  triggerBackup: () => request<MessageResponse>('/system/backup', { method: 'POST' }),
 };
 
 // --- Reports ---
