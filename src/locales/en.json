@@ -231,6 +231,14 @@
     "noEchoes": "No Echoes yet",
     "noEchoesDesc": "Create your first Echo to begin."
   },
+  "share": {
+    "title": "Share",
+    "copyLink": "Copy link",
+    "shareToSocial": "Share to social media",
+    "downloadImage": "Download as image",
+    "previewDisclaimer": "AI-generated content — does not represent real events or people.",
+    "imageDisclaimer": "AI-generated content — Multiverse Echoes"
+  },
   "export": {
     "title": "Export Echo Story",
     "subtitle": "Export {{name}}'s story as a file",
