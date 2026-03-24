@@ -149,6 +149,114 @@ export interface Notification {
   created_at: string;
 }
 
+// --- Relationship ---
+
+export interface EchoRelationship {
+  relationship_id: string;
+  source_echo_id: string;
+  target_echo_id: string;
+  target_echo_name: string;
+  relationship_type: string;
+  sentiment: number;
+  status: string;
+  last_interaction_tick: number;
+  created_at: string;
+}
+
+// --- Influence ---
+
+export interface InfluenceBalance {
+  echo_id: string;
+  daily_limit: number;
+  used_today: number;
+  remaining: number;
+}
+
+export interface UseInfluenceRequest {
+  influence_type: string;
+  details?: string;
+}
+
+// --- Memory ---
+
+export interface EchoMemory {
+  memory_id: string;
+  echo_id: string;
+  content: string;
+  memory_type: string;
+  strength: number;
+  created_at: string;
+}
+
+// --- Channel ---
+
+export interface Channel {
+  channel_id: string;
+  name: string;
+  channel_type: string;
+  shard_id: string | null;
+  description: string;
+  created_at: string;
+}
+
+export interface ChannelMessage {
+  message_id: string;
+  channel_id: string;
+  user_id: string;
+  display_name: string;
+  body: string;
+  edited: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SendMessageRequest {
+  body: string;
+}
+
+export interface EditMessageRequest {
+  body: string;
+}
+
+// --- Account Settings ---
+
+export interface ChangePasswordRequest {
+  current_password: string;
+  new_password: string;
+}
+
+export interface NotificationPreferences {
+  echo_life_event: string;
+  echo_diary: string;
+  community_message: string;
+  follow: string;
+  system: string;
+  travel: string;
+  influence: string;
+  daily_digest: string;
+  sound_enabled: boolean;
+  sound_volume: number;
+}
+
+// --- API Keys ---
+
+export interface ApiKey {
+  key_id: string;
+  name: string;
+  last_four: string;
+  created_at: string;
+}
+
+export interface CreateApiKeyRequest {
+  name: string;
+}
+
+export interface CreateApiKeyResponse {
+  key_id: string;
+  api_key: string;
+  name: string;
+}
+
 // --- WebSocket Events ---
 
 export interface WorldEvent {

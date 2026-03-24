@@ -8,6 +8,7 @@ import { OnboardingWelcomePage } from './pages/OnboardingWelcomePage.tsx';
 import { OnboardingProfilePage } from './pages/OnboardingProfilePage.tsx';
 import { EchoCreationPage } from './pages/EchoCreationPage.tsx';
 import { DashboardPage } from './pages/DashboardPage.tsx';
+import { EchoDetailPage } from './pages/EchoDetailPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -40,6 +41,7 @@ export function App() {
           <Route path="/login" element={<PlaceholderPage title="Login" />} />
           <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
         </Routes>
       </main>
     </BrowserRouter>

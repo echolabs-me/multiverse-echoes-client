@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Plus, Compass, BookOpen, Zap, Users } from 'lucide-react';
+import { Plus, Compass, BookOpen, Zap, Users, ExternalLink } from 'lucide-react';
 import { TopBar, Sidebar, Card, Badge, EmptyState, Button, Spinner } from '../components/index.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
@@ -54,7 +54,16 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
           <span className="text-3xl font-bold text-accent">{echo.name[0]}</span>
         </div>
         <div>
-          <h2 className="text-xl font-bold text-text-primary">{echo.name}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-bold text-text-primary">{echo.name}</h2>
+            <Link
+              to={`/echoes/${echo.echo_id}`}
+              className="flex items-center gap-1 text-xs text-accent hover:text-accent/80"
+            >
+              <ExternalLink size={12} />
+              View detail
+            </Link>
+          </div>
           <div className="flex items-center gap-2 text-sm text-text-secondary">
             <Badge variant={echo.status === 'Active' ? 'success' : 'default'}>
               {echo.status}
