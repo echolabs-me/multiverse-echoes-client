@@ -257,6 +257,27 @@ export interface CreateApiKeyResponse {
   name: string;
 }
 
+// --- Search ---
+
+export interface SearchResult {
+  id: string;
+  result_type: 'Echo' | 'DiaryEntry' | 'LifeEvent' | 'Shard' | 'Message';
+  title: string;
+  snippet: string;
+  echo_id?: string;
+  shard_id?: string;
+  created_at: string;
+}
+
+export interface SearchParams {
+  q: string;
+  echo_id?: string;
+  shard_id?: string;
+  content_type?: string;
+  date_from?: string;
+  date_to?: string;
+}
+
 // --- Oracle ---
 
 export interface OracleAskRequest {

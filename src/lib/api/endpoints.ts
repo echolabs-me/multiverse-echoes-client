@@ -28,6 +28,8 @@ import type {
   CreateApiKeyResponse,
   OracleAskRequest,
   OracleResponse,
+  SearchResult,
+  SearchParams,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -260,6 +262,35 @@ export const apiKeys = {
 
   revoke: (keyId: string) =>
     request<MessageResponse>(`/keys/${keyId}`, { method: 'DELETE' }),
+};
+
+// --- Search ---
+
+function buildSearchQuery(params: SearchParams): string {
+  const query = new URLSearchParams();
+  query.set('q', params.q);
+  if (params.echo_id) query.set('echo_id', params.echo_id);
+  if (params.shard_id) query.set('shard_id', params.shard_id);
+  if (params.date_from) query.set('date_from', params.date_from);
+  if (params.date_to) query.set('date_to', params.date_to);
+  return query.toString();
+}
+
+export const search = {
+  echoes: (params: SearchParams) =>
+    request<SearchResult[]>(`/search/echoes?${buildSearchQuery(params)}`),
+
+  diary: (params: SearchParams) =>
+    request<SearchResult[]>(`/search/diary?${buildSearchQuery(params)}`),
+
+  events: (params: SearchParams) =>
+    request<SearchResult[]>(`/search/events?${buildSearchQuery(params)}`),
+
+  shards: (params: SearchParams) =>
+    request<SearchResult[]>(`/search/shards?${buildSearchQuery(params)}`),
+
+  messages: (params: SearchParams) =>
+    request<SearchResult[]>(`/search/messages?${buildSearchQuery(params)}`),
 };
 
 // --- Oracle ---

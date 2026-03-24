@@ -229,6 +229,26 @@
     "noEchoes": "No Echoes yet",
     "noEchoesDesc": "Create your first Echo to begin."
   },
+  "search": {
+    "placeholder": "Search Echoes, diary entries, events, shards...",
+    "shortcut": "Ctrl+K",
+    "allTypes": "All",
+    "typeEcho": "Echoes",
+    "typeDiary": "Diary Entries",
+    "typeEvent": "Life Events",
+    "typeShard": "Shards",
+    "typeMessage": "Messages",
+    "filterByType": "Filter by content type",
+    "dateFrom": "From date",
+    "dateTo": "To date",
+    "resultCount_one": "{{count}} result",
+    "resultCount_other": "{{count}} results",
+    "resultCount": "{{count}} results",
+    "recentSearches": "Recent searches",
+    "clearRecent": "Clear recent",
+    "scopeEcho": "Searching within this Echo",
+    "scopeShard": "Searching within this Shard"
+  },
   "oracle": {
     "title": "Oracle Assistant",
     "toggle": "Toggle Oracle assistant",
