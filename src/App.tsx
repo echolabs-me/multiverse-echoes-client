@@ -1,35 +1,43 @@
-import { useTranslation } from 'react-i18next';
-import { Moon, Sparkles, Sun } from 'lucide-react';
-import { useThemeStore } from './stores/useThemeStore.ts';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { SkipLink, ToastContainer } from './components/index.ts';
+import { LanguageSelectionPage } from './pages/LanguageSelectionPage.tsx';
+
+function hasSelectedLocale(): boolean {
+  return localStorage.getItem('locale_selected') === 'true';
+}
 
 export function App() {
-  const { t } = useTranslation();
-  const { theme, toggleTheme } = useThemeStore();
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-canvas text-text-primary">
-      <Sparkles
-        className="mb-6 text-accent"
-        size={48}
-        strokeWidth={1.5}
-        aria-hidden="true"
-      />
-      <h1 className="mb-2 text-4xl font-bold">{t('placeholder.hello')}</h1>
-      <p className="mb-8 text-lg text-text-secondary">
-        {t('placeholder.description')}
-      </p>
-      <button
-        onClick={toggleTheme}
-        className="flex items-center gap-2 rounded-md bg-surface px-5 py-2.5 text-sm text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary"
-        aria-label={
-          theme === 'dark'
-            ? t('common.switchToLight', 'Switch to light mode')
-            : t('common.switchToDark', 'Switch to dark mode')
-        }
-      >
-        {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-        {theme === 'dark' ? 'Light' : 'Dark'}
-      </button>
-    </main>
+    <BrowserRouter>
+      <SkipLink />
+      <ToastContainer />
+      <main id="main-content">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              hasSelectedLocale() ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Navigate to="/language" replace />
+              )
+            }
+          />
+          <Route path="/language" element={<LanguageSelectionPage />} />
+          {/* Placeholder routes — built in subsequent steps */}
+          <Route path="/login" element={<PlaceholderPage title="Login" />} />
+          <Route path="/register" element={<PlaceholderPage title="Register" />} />
+          <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
+  );
+}
+
+function PlaceholderPage({ title }: { title: string }) {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-canvas text-text-primary">
+      <h1 className="text-2xl font-semibold">{title}</h1>
+    </div>
   );
 }
