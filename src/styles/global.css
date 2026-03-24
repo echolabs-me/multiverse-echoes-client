@@ -34,12 +34,64 @@
   src: url('../assets/fonts/Inter-Bold.woff2') format('woff2');
 }
 
+/* Cyrillic subsets — ACC-001 §7.5 */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-Regular-Cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-Medium-Cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-SemiBold-Cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-Bold-Cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
 @font-face {
   font-family: 'JetBrains Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: url('../assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/JetBrainsMono-Regular-Cyrillic.woff2')
+    format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
 }
 
 /* Base styles */

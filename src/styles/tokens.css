@@ -27,6 +27,18 @@
   --text-3xl: 2.5rem;
   --text-4xl: 3.5rem;
 
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
   /* Border radius — CDS-001 §6 */
   --radius-sm: 4px;
   --radius-md: 8px;
