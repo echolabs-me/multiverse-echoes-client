@@ -4,6 +4,8 @@ import { LanguageSelectionPage } from './pages/LanguageSelectionPage.tsx';
 import { RegisterPage } from './pages/RegisterPage.tsx';
 import { VerifyPendingPage } from './pages/VerifyPendingPage.tsx';
 import { VerifiedPage } from './pages/VerifiedPage.tsx';
+import { OnboardingWelcomePage } from './pages/OnboardingWelcomePage.tsx';
+import { OnboardingProfilePage } from './pages/OnboardingProfilePage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -30,9 +32,11 @@ export function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/verify-pending" element={<VerifyPendingPage />} />
           <Route path="/verified" element={<VerifiedPage />} />
+          <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
+          <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
           {/* Placeholder routes — built in subsequent steps */}
           <Route path="/login" element={<PlaceholderPage title="Login" />} />
-          <Route path="/onboarding/*" element={<PlaceholderPage title="Onboarding" />} />
+          <Route path="/onboarding/create-echo" element={<PlaceholderPage title="Create Echo" />} />
           <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" />} />
         </Routes>
       </main>
