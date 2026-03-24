@@ -11,6 +11,8 @@ import { DashboardPage } from './pages/DashboardPage.tsx';
 import { EchoDetailPage } from './pages/EchoDetailPage.tsx';
 import { ShardViewPage } from './pages/ShardViewPage.tsx';
 import { ShardBrowserPage } from './pages/ShardBrowserPage.tsx';
+import { PersonalFeedPage } from './pages/PersonalFeedPage.tsx';
+import { SocialFeedPage } from './pages/SocialFeedPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -46,6 +48,8 @@ export function App() {
           <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
           <Route path="/shards/browse" element={<ShardBrowserPage />} />
           <Route path="/shards/:shardId" element={<ShardViewPage />} />
+          <Route path="/feeds/personal" element={<PersonalFeedPage />} />
+          <Route path="/feeds/social" element={<SocialFeedPage />} />
         </Routes>
       </main>
     </BrowserRouter>
