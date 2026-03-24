@@ -122,6 +122,8 @@ export const shards = {
   },
 
   get: (shardId: string) => request<Shard>(`/shards/${shardId}`),
+
+  echoes: (shardId: string) => request<EchoResponse[]>(`/shards/${shardId}/echoes`),
 };
 
 // --- Feeds ---

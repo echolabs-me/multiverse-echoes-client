@@ -173,7 +173,7 @@ export function DashboardPage() {
               {t('dashboard.createNewEcho')}
             </button>
             <button
-              onClick={() => {}}
+              onClick={() => navigate('/shards/browse')}
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-surface-raised hover:text-text-primary"
             >
               <Compass size={16} />

@@ -9,6 +9,8 @@ import { OnboardingProfilePage } from './pages/OnboardingProfilePage.tsx';
 import { EchoCreationPage } from './pages/EchoCreationPage.tsx';
 import { DashboardPage } from './pages/DashboardPage.tsx';
 import { EchoDetailPage } from './pages/EchoDetailPage.tsx';
+import { ShardViewPage } from './pages/ShardViewPage.tsx';
+import { ShardBrowserPage } from './pages/ShardBrowserPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -42,6 +44,8 @@ export function App() {
           <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
+          <Route path="/shards/browse" element={<ShardBrowserPage />} />
+          <Route path="/shards/:shardId" element={<ShardViewPage />} />
         </Routes>
       </main>
     </BrowserRouter>
