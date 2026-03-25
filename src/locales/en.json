@@ -199,6 +199,7 @@
     "darkMode": "Dark",
     "lightMode": "Light",
     "language": "Language",
+    "customThemes": "Custom Themes",
     "soundEnabled": "Sound effects",
     "soundVolume": "Volume",
     "createApiKey": "Create API Key",

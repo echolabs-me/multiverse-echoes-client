@@ -501,7 +501,7 @@ function SoundSettings() {
 // --- Appearance Section ---
 function AppearanceSection() {
   const { t } = useTranslation();
-  const { theme, toggleTheme } = useThemeStore();
+  const { base, setBase, overrides, activeOverrideId, applyOverride } = useThemeStore();
 
   return (
     <div className="flex flex-col gap-4">
@@ -509,18 +509,45 @@ function AppearanceSection() {
         <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.theme')}</h3>
         <div className="flex gap-2">
           <Button
-            variant={theme === 'dark' ? 'primary' : 'secondary'}
-            onClick={() => theme !== 'dark' && toggleTheme()}
+            variant={base === 'dark' && !activeOverrideId ? 'primary' : 'secondary'}
+            onClick={() => {
+              applyOverride(null);
+              setBase('dark');
+            }}
           >
             {t('settings.darkMode')}
           </Button>
           <Button
-            variant={theme === 'light' ? 'primary' : 'secondary'}
-            onClick={() => theme !== 'light' && toggleTheme()}
+            variant={base === 'light' && !activeOverrideId ? 'primary' : 'secondary'}
+            onClick={() => {
+              applyOverride(null);
+              setBase('light');
+            }}
           >
             {t('settings.lightMode')}
           </Button>
         </div>
+
+        {overrides.length > 0 && (
+          <div className="mt-4">
+            <h4 className="mb-2 text-xs font-medium text-text-secondary">
+              {t('settings.customThemes')}
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {overrides.map((o) => (
+                <Button
+                  key={o.id}
+                  variant={activeOverrideId === o.id ? 'primary' : 'secondary'}
+                  onClick={() =>
+                    applyOverride(activeOverrideId === o.id ? null : o.id)
+                  }
+                >
+                  {o.name}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
       </Card>
 
       <Card>

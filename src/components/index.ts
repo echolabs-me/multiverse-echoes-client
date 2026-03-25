@@ -5,6 +5,7 @@ export { Button } from './Button.tsx';
 export { Card } from './Card.tsx';
 export { Dropdown } from './Dropdown.tsx';
 export { EmptyState } from './EmptyState.tsx';
+export { ExtensionSlot } from './ExtensionSlot.tsx';
 export { Input } from './Input.tsx';
 export { Modal } from './Modal.tsx';
 export { OraclePanel } from './OraclePanel.tsx';
