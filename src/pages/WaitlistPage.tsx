@@ -28,6 +28,7 @@ export function WaitlistPage() {
     position: number;
     referralCode: string;
     entryId: string;
+    referralCount: number;
   } | null>(null);
 
   // Social proof: total waitlist count
@@ -41,8 +42,28 @@ export function WaitlistPage() {
   // Referral code from URL
   const refCode = searchParams.get('ref') ?? undefined;
 
+  // Fetch count + restore saved entry on mount.
   useEffect(() => {
     void waitlist.count().then((r) => setTotalCount(r.count)).catch(() => {});
+
+    // Returning visitor — check saved entry_id.
+    const savedEntryId = localStorage.getItem('waitlist_entry_id');
+    if (savedEntryId) {
+      void waitlist
+        .position(savedEntryId)
+        .then((r) => {
+          setSignupResult({
+            position: r.position,
+            referralCode: r.referral_code,
+            entryId: r.entry_id,
+            referralCount: r.referral_count,
+          });
+        })
+        .catch(() => {
+          // Entry not found — clear stale data.
+          localStorage.removeItem('waitlist_entry_id');
+        });
+    }
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -62,10 +83,12 @@ export function WaitlistPage() {
         referral_code: refCode,
         source,
       });
+      localStorage.setItem('waitlist_entry_id', result.entry_id);
       setSignupResult({
         position: result.position,
         referralCode: result.referral_code,
         entryId: result.entry_id,
+        referralCount: 0,
       });
       // Refresh count
       void waitlist.count().then((r) => setTotalCount(r.count)).catch(() => {});
@@ -89,6 +112,18 @@ export function WaitlistPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
+  }
+
+  function handleShare() {
+    if (!signupResult) return;
+    const link = `https://echolabs.me/waitlist?ref=${signupResult.referralCode}`;
+    if (navigator.share) {
+      void navigator.share({
+        title: t('waitlist.shareTitle'),
+        text: t('waitlist.shareText'),
+        url: link,
+      });
+    }
   }
 
   return (
@@ -166,7 +201,19 @@ export function WaitlistPage() {
                 <Button variant="secondary" onClick={handleCopyReferral}>
                   {copied ? t('common.copied') : t('common.copy')}
                 </Button>
+                {typeof navigator !== 'undefined' && 'share' in navigator && (
+                  <Button variant="secondary" onClick={handleShare}>
+                    <Share2 size={14} />
+                  </Button>
+                )}
               </div>
+              {signupResult.referralCount > 0 && (
+                <p className="text-sm text-accent">
+                  {t('waitlist.referralCountLabel', {
+                    count: signupResult.referralCount,
+                  })}
+                </p>
+              )}
               <p className="text-xs text-text-muted">
                 {t('waitlist.referralHint')}
               </p>

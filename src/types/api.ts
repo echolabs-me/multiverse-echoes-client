@@ -426,6 +426,7 @@ export interface WaitlistPositionResponse {
   entry_id: string;
   position: number;
   status: string;
+  referral_code: string;
   referral_count: number;
 }
 
