@@ -5,6 +5,7 @@ import { Plus, Compass, BookOpen, Zap, Users, ExternalLink } from 'lucide-react'
 import { TopBar, Sidebar, Card, Badge, EmptyState, Button, Spinner } from '../components/index.ts';
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
+import { TickPulse } from '../components/TickPulse.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import type { EchoResponse } from '../types/api.ts';
@@ -51,8 +52,10 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
     <div className="flex flex-col gap-6">
       {/* Echo header */}
       <div className="flex items-center gap-4">
-        {/* 3D mood-reactive portrait */}
-        <EchoPortrait3D name={echo.name} mood={echo.current_mood} size="md" />
+        {/* 3D mood-reactive portrait with tick pulse */}
+        <TickPulse>
+          <EchoPortrait3D name={echo.name} mood={echo.current_mood} size="md" />
+        </TickPulse>
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-bold text-text-primary">{echo.name}</h2>

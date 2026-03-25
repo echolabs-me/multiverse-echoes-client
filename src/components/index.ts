@@ -18,6 +18,7 @@ export { SkipLink } from './SkipLink.tsx';
 export { Spinner } from './Spinner.tsx';
 export { StoryExportModal } from './StoryExportModal.tsx';
 export { Tabs } from './Tabs.tsx';
+export { TickPulse } from './TickPulse.tsx';
 export { ToastContainer } from './Toast.tsx';
 export { Tooltip } from './Tooltip.tsx';
 export { TopBar } from './TopBar.tsx';

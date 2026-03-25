@@ -178,4 +178,19 @@ pre {
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
+
+  /* Tick pulse animation — CDS-001 §7.3 */
+  --animate-tick-pulse: tick-pulse 1s ease-out forwards;
+}
+
+/* Tick pulse: barely-perceptible ripple. Max opacity 5%. */
+@keyframes tick-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(212, 145, 92, 0.05);
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(212, 145, 92, 0);
+    opacity: 0;
+  }
 }
