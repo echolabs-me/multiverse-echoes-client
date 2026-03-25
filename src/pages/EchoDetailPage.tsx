@@ -616,6 +616,7 @@ export function EchoDetailPage() {
         open={exportModal}
         onClose={() => setExportModal(false)}
         echoName={activeEcho.name}
+        echoId={activeEcho.echo_id}
       />
     </div>
   );

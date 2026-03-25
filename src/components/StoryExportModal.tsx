@@ -1,14 +1,24 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Download, FileText, FileJson, FileWarning, CheckCircle, Loader } from 'lucide-react';
+import {
+  Download,
+  FileText,
+  FileJson,
+  Film,
+  FileType,
+  CheckCircle,
+  Loader,
+  Lock,
+} from 'lucide-react';
 import { Button } from './Button.tsx';
 import { account } from '../lib/api/endpoints.ts';
-import type { ExportFormat, ExportStatus, DataExport } from '../types/api.ts';
+import type { ExportFormat, DataExport } from '../types/api.ts';
 
 interface StoryExportModalProps {
   open: boolean;
   onClose: () => void;
   echoName: string;
+  echoId: string;
 }
 
 const FORMAT_OPTIONS: Array<{
@@ -16,44 +26,45 @@ const FORMAT_OPTIONS: Array<{
   icon: React.ReactNode;
   labelKey: string;
   descKey: string;
-  disabled: boolean;
 }> = [
   {
     format: 'text',
     icon: <FileText size={20} />,
     labelKey: 'export.formatText',
     descKey: 'export.formatTextDesc',
-    disabled: false,
   },
   {
     format: 'json',
     icon: <FileJson size={20} />,
     labelKey: 'export.formatJson',
     descKey: 'export.formatJsonDesc',
-    disabled: false,
   },
   {
     format: 'pdf',
-    icon: <FileWarning size={20} />,
+    icon: <FileType size={20} />,
     labelKey: 'export.formatPdf',
     descKey: 'export.formatPdfDesc',
-    disabled: true,
+  },
+  {
+    format: 'video',
+    icon: <Film size={20} />,
+    labelKey: 'export.formatVideo',
+    descKey: 'export.formatVideoDesc',
   },
 ];
 
-const STATUS_ICONS: Record<ExportStatus, React.ReactNode> = {
-  Pending: <Loader size={16} className="animate-spin text-text-muted" />,
-  Processing: <Loader size={16} className="animate-spin text-accent" />,
-  Ready: <CheckCircle size={16} className="text-success" />,
-  Failed: <FileWarning size={16} className="text-danger" />,
-};
-
-export function StoryExportModal({ open, onClose, echoName }: StoryExportModalProps) {
+export function StoryExportModal({
+  open,
+  onClose,
+  echoName,
+  echoId,
+}: StoryExportModalProps) {
   const { t } = useTranslation();
   const [selectedFormat, setSelectedFormat] = useState<ExportFormat>('text');
   const [exportData, setExportData] = useState<DataExport | null>(null);
   const [isRequesting, setIsRequesting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tierGated, setTierGated] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -78,17 +89,29 @@ export function StoryExportModal({ open, onClose, echoName }: StoryExportModalPr
   const handleExport = async () => {
     setIsRequesting(true);
     setError(null);
+    setTierGated(false);
     try {
-      const result = await account.requestExport({ format: selectedFormat });
+      const result = await account.requestExport({
+        echo_id: echoId,
+        format: selectedFormat,
+      });
       setExportData(result);
 
       // Poll for status updates
-      if (result.status !== 'Ready' && result.status !== 'Failed') {
+      if (
+        result.status !== 'Ready' &&
+        result.status !== 'Failed'
+      ) {
         pollRef.current = setInterval(async () => {
           try {
-            const updated = await account.getExportStatus(result.export_id);
+            const updated = await account.getExportStatus(
+              result.export_id,
+            );
             setExportData(updated);
-            if (updated.status === 'Ready' || updated.status === 'Failed') {
+            if (
+              updated.status === 'Ready' ||
+              updated.status === 'Failed'
+            ) {
               if (pollRef.current) clearInterval(pollRef.current);
               pollRef.current = null;
             }
@@ -97,8 +120,13 @@ export function StoryExportModal({ open, onClose, echoName }: StoryExportModalPr
           }
         }, 3000);
       }
-    } catch {
-      setError('export.errorRequesting');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : '';
+      if (msg.includes('TIER_REQUIRED')) {
+        setTierGated(true);
+      } else {
+        setError('export.errorRequesting');
+      }
     } finally {
       setIsRequesting(false);
     }
@@ -111,8 +139,23 @@ export function StoryExportModal({ open, onClose, echoName }: StoryExportModalPr
     }
     setExportData(null);
     setError(null);
+    setTierGated(false);
     onClose();
   };
+
+  // Compute progress percentage for the bar.
+  const progressPercent =
+    exportData?.status === 'Processing'
+      ? 50
+      : exportData?.status === 'Ready'
+        ? 100
+        : exportData?.status === 'Failed'
+          ? 100
+          : 10;
+
+  const downloadUrl =
+    exportData?.download_url ?? exportData?.download_path ?? null;
+  const subtitleUrl = exportData?.subtitle_path ?? null;
 
   return (
     <dialog
@@ -132,7 +175,7 @@ export function StoryExportModal({ open, onClose, echoName }: StoryExportModalPr
           {t('export.disclaimer')}
         </div>
 
-        {!exportData ? (
+        {!exportData && !tierGated ? (
           <>
             {/* Format selection */}
             <fieldset className="mb-4 space-y-2">
@@ -143,11 +186,9 @@ export function StoryExportModal({ open, onClose, echoName }: StoryExportModalPr
                 <label
                   key={opt.format}
                   className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ${
-                    opt.disabled
-                      ? 'cursor-not-allowed border-border opacity-50'
-                      : selectedFormat === opt.format
-                        ? 'border-accent bg-accent/5'
-                        : 'border-border hover:bg-surface'
+                    selectedFormat === opt.format
+                      ? 'border-accent bg-accent/5'
+                      : 'border-border hover:bg-surface'
                   }`}
                 >
                   <input
@@ -156,14 +197,18 @@ export function StoryExportModal({ open, onClose, echoName }: StoryExportModalPr
                     value={opt.format}
                     checked={selectedFormat === opt.format}
                     onChange={() => setSelectedFormat(opt.format)}
-                    disabled={opt.disabled}
                     className="sr-only"
                   />
                   <span className="text-text-secondary">{opt.icon}</span>
-                  <div>
+                  <div className="flex-1">
                     <p className="text-sm font-medium">{t(opt.labelKey)}</p>
                     <p className="text-xs text-text-muted">{t(opt.descKey)}</p>
                   </div>
+                  {opt.format === 'video' && (
+                    <span className="rounded bg-accent/10 px-1.5 py-0.5 text-[10px] font-medium text-accent">
+                      Core+
+                    </span>
+                  )}
                 </label>
               ))}
             </fieldset>
@@ -174,36 +219,92 @@ export function StoryExportModal({ open, onClose, echoName }: StoryExportModalPr
               <Button variant="ghost" onClick={handleClose}>
                 {t('common.cancel')}
               </Button>
-              <Button onClick={() => void handleExport()} disabled={isRequesting}>
+              <Button
+                onClick={() => void handleExport()}
+                disabled={isRequesting}
+              >
                 <Download size={16} />
                 {isRequesting ? t('common.loading') : t('export.request')}
               </Button>
             </div>
           </>
+        ) : tierGated ? (
+          /* Tier gate CTA */
+          <div className="flex flex-col items-center gap-4 py-4">
+            <Lock size={32} className="text-text-muted" />
+            <p className="text-center text-sm text-text-secondary">
+              {t('export.tierRequired')}
+            </p>
+            <div className="flex gap-2">
+              <Button variant="ghost" onClick={handleClose}>
+                {t('common.cancel')}
+              </Button>
+              <Button onClick={handleClose}>{t('export.upgradeCta')}</Button>
+            </div>
+          </div>
         ) : (
           <>
-            {/* Export status */}
-            <div className="mb-4 flex items-center gap-3 rounded-lg border border-border p-4">
-              {STATUS_ICONS[exportData.status]}
-              <div>
+            {/* Export progress + status */}
+            <div className="mb-4">
+              {/* Progress bar */}
+              <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-surface-raised">
+                <div
+                  className={`h-full rounded-full transition-all duration-500 ${
+                    exportData?.status === 'Failed'
+                      ? 'bg-danger'
+                      : exportData?.status === 'Ready'
+                        ? 'bg-success'
+                        : 'bg-accent'
+                  }`}
+                  style={{ width: `${progressPercent}%` }}
+                  role="progressbar"
+                  aria-valuenow={progressPercent}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={t('export.progress')}
+                />
+              </div>
+
+              <div className="flex items-center gap-3">
+                {exportData?.status === 'Processing' && (
+                  <Loader
+                    size={16}
+                    className="animate-spin text-accent"
+                  />
+                )}
+                {exportData?.status === 'Ready' && (
+                  <CheckCircle size={16} className="text-success" />
+                )}
                 <p className="text-sm font-medium">
-                  {t(`export.status${exportData.status}`)}
-                </p>
-                <p className="text-xs text-text-muted">
-                  {new Date(exportData.created_at).toLocaleString()}
+                  {t(`export.status${exportData?.status ?? 'Processing'}`)}
                 </p>
               </div>
+              <p className="mt-1 text-xs text-text-muted">
+                {t('export.formatLabel')}: {exportData?.format}
+              </p>
             </div>
 
-            {exportData.status === 'Ready' && exportData.download_url && (
-              <a
-                href={exportData.download_url}
-                download
-                className="mb-4 flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-accent-hover"
-              >
-                <Download size={16} />
-                {t('export.download')}
-              </a>
+            {exportData?.status === 'Ready' && downloadUrl && (
+              <div className="mb-4 flex flex-col gap-2">
+                <a
+                  href={downloadUrl}
+                  download
+                  className="flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-accent-hover"
+                >
+                  <Download size={16} />
+                  {t('export.download')}
+                </a>
+                {subtitleUrl && (
+                  <a
+                    href={subtitleUrl}
+                    download
+                    className="flex items-center justify-center gap-2 rounded-md border border-border px-4 py-2 text-sm text-text-secondary transition-colors hover:bg-surface"
+                  >
+                    <FileText size={14} />
+                    {t('export.downloadSubtitles')}
+                  </a>
+                )}
+              </div>
             )}
 
             <div className="flex justify-end">

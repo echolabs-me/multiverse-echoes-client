@@ -318,7 +318,7 @@ export interface ResolveReportRequest {
 
 // --- Data Export ---
 
-export type ExportFormat = 'text' | 'json' | 'pdf';
+export type ExportFormat = 'text' | 'json' | 'pdf' | 'video' | 'book';
 export type ExportStatus = 'Pending' | 'Processing' | 'Ready' | 'Failed';
 
 export interface DataExport {
@@ -326,10 +326,13 @@ export interface DataExport {
   status: ExportStatus;
   format: ExportFormat;
   download_url?: string;
+  download_path?: string;
+  subtitle_path?: string;
   created_at: string;
 }
 
 export interface RequestExportBody {
+  echo_id: string;
   format: ExportFormat;
 }
 
