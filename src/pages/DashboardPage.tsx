@@ -6,6 +6,7 @@ import { TopBar, Sidebar, Card, Badge, EmptyState, Button, Spinner } from '../co
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
 import { TickPulse } from '../components/TickPulse.tsx';
+import { useAmbientSoundscape } from '../hooks/useAmbientSoundscape.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import type { EchoResponse } from '../types/api.ts';
@@ -127,6 +128,9 @@ export function DashboardPage() {
   const { echoList, activeEcho, isLoading, fetchEchoes, setActiveEcho } =
     useEchoStore();
   const unreadCount = useNotificationStore((s) => s.unreadCount);
+
+  // Ambient soundscape — plays while Dashboard is mounted.
+  useAmbientSoundscape();
 
   useEffect(() => {
     void fetchEchoes();
