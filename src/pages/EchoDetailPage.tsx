@@ -28,7 +28,7 @@ import {
   Input,
   StoryExportModal,
 } from '../components/index.ts';
-import { useToastStore } from '../components/Toast.tsx';
+import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';

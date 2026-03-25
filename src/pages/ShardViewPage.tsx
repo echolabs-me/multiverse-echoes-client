@@ -11,7 +11,7 @@ import {
   EmptyState,
   Modal,
 } from '../components/index.ts';
-import { useToastStore } from '../components/Toast.tsx';
+import { useToastStore } from '../stores/useToastStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';

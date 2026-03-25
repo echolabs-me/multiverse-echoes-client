@@ -21,7 +21,7 @@ import {
   Input,
   Spinner,
 } from '../components/index.ts';
-import { useToastStore } from '../components/Toast.tsx';
+import { useToastStore } from '../stores/useToastStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useThemeStore } from '../stores/useThemeStore.ts';
