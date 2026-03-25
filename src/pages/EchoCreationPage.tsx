@@ -272,10 +272,16 @@ export function EchoCreationPage() {
         </>
       ) : (
         <>
-          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent/20">
-            <span className="text-3xl font-bold text-accent">
-              {echoName[0] ?? '?'}
-            </span>
+          <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-accent/10 shadow-[0_0_40px_rgba(212,145,92,0.3)]">
+            <svg width="48" height="64" viewBox="0 0 48 64" fill="none" className="text-accent">
+              {/* Stylised Echo silhouette — branded birth icon */}
+              <ellipse cx="24" cy="16" rx="11" ry="13" stroke="currentColor" strokeWidth="1.5" opacity="0.9" />
+              <path d="M15 26 Q16 36 14 52 Q13.5 58 20 62 L28 62 Q34.5 58 34 52 Q32 36 33 26" stroke="currentColor" strokeWidth="1.5" opacity="0.8" />
+              {/* Inner glow lines */}
+              <line x1="18" y1="34" x2="30" y2="34" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+              <line x1="17" y1="42" x2="31" y2="42" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+              <line x1="17" y1="50" x2="31" y2="50" stroke="currentColor" strokeWidth="1" opacity="0.2" />
+            </svg>
           </div>
           <h1 className="mb-4 text-2xl font-bold text-text-primary">
             {t('echo.birthComplete')}

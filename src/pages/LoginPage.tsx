@@ -23,6 +23,7 @@ export function LoginPage() {
 
     try {
       await login({ email, password });
+      localStorage.setItem('has_logged_in', 'true');
       navigate('/dashboard');
     } catch {
       setError(t('auth.loginFailed'));
@@ -41,7 +42,9 @@ export function LoginPage() {
             aria-hidden="true"
           />
           <h1 className="text-2xl font-bold text-text-primary">
-            {t('auth.loginTitle')}
+            {localStorage.getItem('has_logged_in')
+              ? t('auth.loginTitleReturning')
+              : t('auth.loginTitle')}
           </h1>
         </div>
 

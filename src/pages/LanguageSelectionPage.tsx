@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Globe } from 'lucide-react';
 import { Tooltip } from '../components/index.ts';
 
 interface Language {
@@ -41,26 +42,11 @@ export function LanguageSelectionPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
-      {/* Echo silhouette — static 2D illustration */}
+      {/* Globe icon */}
       <div className="relative mb-12 flex items-center justify-center" aria-hidden="true">
-        <svg
-          width="120"
-          height="160"
-          viewBox="0 0 120 160"
-          className="text-accent opacity-30"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-        >
-          {/* Stylised Echo silhouette with parallel lines motif */}
-          <ellipse cx="60" cy="40" rx="28" ry="32" />
-          <path d="M38 65 Q40 90 35 130 Q34 145 50 155 L70 155 Q86 145 85 130 Q80 90 82 65" />
-          {/* Parallel lines motif */}
-          <line x1="45" y1="80" x2="75" y2="80" strokeOpacity="0.5" />
-          <line x1="43" y1="95" x2="77" y2="95" strokeOpacity="0.4" />
-          <line x1="41" y1="110" x2="79" y2="110" strokeOpacity="0.3" />
-          <line x1="43" y1="125" x2="77" y2="125" strokeOpacity="0.2" />
-        </svg>
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent/10">
+          <Globe size={40} className="text-accent" strokeWidth={1.5} />
+        </div>
       </div>
 
       <h1 className="mb-2 text-2xl font-bold text-text-primary">

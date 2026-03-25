@@ -146,12 +146,12 @@ export function StoryExportModal({
   // Compute progress percentage for the bar.
   const progressPercent =
     exportData?.status === 'Processing'
-      ? 50
+      ? 60
       : exportData?.status === 'Ready'
         ? 100
         : exportData?.status === 'Failed'
           ? 100
-          : 10;
+          : 25; // Pending starts at 25% to show progress immediately
 
   const downloadUrl =
     exportData?.download_url ?? exportData?.download_path ?? null;
@@ -304,6 +304,7 @@ export function StoryExportModal({
                     {t('export.downloadSubtitles')}
                   </a>
                 )}
+                <p className="text-center text-xs text-text-muted">{t('export.downloadHint')}</p>
               </div>
             )}
 

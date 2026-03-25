@@ -90,15 +90,23 @@ export function OraclePanel() {
   return (
     <>
       {/* Floating Action Button */}
-      <button
-        onClick={toggle}
-        className="fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-canvas shadow-lg transition-transform duration-[var(--duration-fast)] hover:scale-110 hover:bg-accent-hover focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:outline-none"
-        aria-label={t('oracle.toggle')}
-        aria-expanded={isOpen}
-        aria-controls="oracle-panel"
-      >
-        {isOpen ? <X size={24} /> : <Sparkles size={24} />}
-      </button>
+      <div className="fixed right-6 bottom-6 z-50 flex flex-col items-center gap-1">
+        {!isOpen && (
+          <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-medium text-text-secondary shadow-sm">
+            Oracle
+          </span>
+        )}
+        <button
+          onClick={toggle}
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-accent text-canvas shadow-lg transition-transform duration-[var(--duration-fast)] hover:scale-110 hover:bg-accent-hover focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:outline-none"
+          aria-label={t('oracle.toggle')}
+          aria-expanded={isOpen}
+          aria-controls="oracle-panel"
+          title={t('oracle.tooltip')}
+        >
+          {isOpen ? <X size={24} /> : <Sparkles size={24} />}
+        </button>
+      </div>
 
       {/* Slide-in Panel */}
       {isOpen && (

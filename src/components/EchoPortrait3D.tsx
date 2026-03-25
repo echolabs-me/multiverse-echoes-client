@@ -78,10 +78,12 @@ function SilhouetteMesh({ mood }: { mood: string }) {
         <sphereGeometry args={[0.28, 24, 24]} />
         <meshStandardMaterial
           color={color}
-          roughness={0.7}
-          metalness={0.1}
+          roughness={0.6}
+          metalness={0.15}
           transparent
-          opacity={0.85}
+          opacity={0.95}
+          emissive={color}
+          emissiveIntensity={0.08}
         />
       </mesh>
 
@@ -158,14 +160,21 @@ function PainterlyLighting({ mood }: { mood: string }) {
         intensity={0.3}
         color="#a0b4cc"
       />
-      {/* Subtle backlight rim */}
+      {/* Backlight rim — brighter for visibility against dark bg */}
       <directionalLight
         position={[0, 1, -2]}
-        intensity={0.2}
+        intensity={0.6}
         color={primaryColor}
       />
-      {/* Ambient to prevent total darkness */}
-      <ambientLight intensity={0.15} color="#ffffff" />
+      {/* Edge light from below for rim definition */}
+      <pointLight
+        position={[0, -1, 1]}
+        intensity={0.3}
+        color={primaryColor}
+        distance={4}
+      />
+      {/* Ambient raised for visibility */}
+      <ambientLight intensity={0.3} color="#ffffff" />
     </>
   );
 }

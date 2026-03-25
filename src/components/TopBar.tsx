@@ -1,5 +1,6 @@
 import { Bell, Search, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Avatar } from './Avatar.tsx';
 
 interface TopBarProps {
@@ -22,6 +23,8 @@ export function TopBar({
   className = '',
 }: TopBarProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const handleSearch = onSearchClick ?? (() => navigate('/search'));
 
   return (
     <header
@@ -36,7 +39,7 @@ export function TopBar({
 
       <div className="flex items-center gap-2">
         <button
-          onClick={onSearchClick}
+          onClick={handleSearch}
           className="rounded-md p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
           aria-label={t('common.search')}
         >

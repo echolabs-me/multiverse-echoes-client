@@ -47,7 +47,8 @@
     "createAccount": "Create Account",
     "alreadyHaveAccount": "Already have an account?",
     "logIn": "Log in",
-    "loginTitle": "Welcome back",
+    "loginTitle": "Sign in to Multiverse Echoes",
+    "loginTitleReturning": "Welcome back",
     "loginFailed": "Invalid email or password. Please try again.",
     "noAccount": "Don't have an account?",
     "createOne": "Create one",
@@ -326,7 +327,8 @@
     "download": "Download",
     "downloadSubtitles": "Download subtitles (.srt)",
     "progress": "Export progress",
-    "formatLabel": "Format"
+    "formatLabel": "Format",
+    "downloadHint": "File will be saved to your Downloads folder."
   },
   "conversation": {
     "echo": "Echo",
@@ -371,6 +373,7 @@
   "oracle": {
     "title": "Oracle Assistant",
     "toggle": "Toggle Oracle assistant",
+    "tooltip": "Ask the Oracle — your guide to the Multiverse",
     "welcomeMessage": "Ask me anything about Multiverse Echoes. I can help you navigate, explain features, or answer questions about your Echoes and Shards.",
     "inputPlaceholder": "Ask the Oracle...",
     "send": "Send message",
