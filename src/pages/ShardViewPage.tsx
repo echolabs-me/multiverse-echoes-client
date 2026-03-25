@@ -67,10 +67,10 @@ export function ShardViewPage() {
     if (!shardId || !selectedEchoId) return;
     try {
       await echoApi.travel(selectedEchoId, shardId);
-      addToast({ severity: 'success', message: 'Travel initiated' });
+      addToast('Travel initiated', 'success');
       setTravelModal(false);
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -258,7 +258,7 @@ export function ShardViewPage() {
 
       {/* Travel Modal */}
       <Modal
-        isOpen={travelModal}
+        open={travelModal}
         onClose={() => setTravelModal(false)}
         title={t('shardView.travelHere')}
       >

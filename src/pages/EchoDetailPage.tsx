@@ -108,15 +108,15 @@ export function EchoDetailPage() {
     try {
       if (activeEcho.status === 'Active') {
         await hibernateEcho(activeEcho.echo_id);
-        addToast({ severity: 'success', message: t('echoDetail.hibernated') });
+        addToast(t('echoDetail.hibernated'), 'success');
       } else {
         await wakeEcho(activeEcho.echo_id);
-        addToast({ severity: 'success', message: t('echoDetail.woken') });
+        addToast(t('echoDetail.woken'), 'success');
       }
       setHibernateModal(false);
       await fetchEcho(activeEcho.echo_id);
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -127,14 +127,14 @@ export function EchoDetailPage() {
         influence_type: influenceType,
         details: influenceDetails || undefined,
       });
-      addToast({ severity: 'success', message: t('echoDetail.influenceUsed') });
+      addToast(t('echoDetail.influenceUsed'), 'success');
       setInfluenceModal(false);
       setInfluenceDetails('');
       // Refresh influence balance
       const inf = await echoApi.influence(activeEcho.echo_id).catch(() => null);
       setInfluence(inf);
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -142,11 +142,11 @@ export function EchoDetailPage() {
     if (!activeEcho || !newName.trim()) return;
     try {
       await echoApi.rename(activeEcho.echo_id, newName.trim());
-      addToast({ severity: 'success', message: t('common.save') });
+      addToast(t('common.save'), 'success');
       setRenameModal(false);
       await fetchEcho(activeEcho.echo_id);
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -154,11 +154,11 @@ export function EchoDetailPage() {
     if (!activeEcho || !newPersona.trim()) return;
     try {
       await echoApi.updatePersona(activeEcho.echo_id, { persona_text: newPersona.trim() });
-      addToast({ severity: 'success', message: t('common.save') });
+      addToast(t('common.save'), 'success');
       setEditPersonaModal(false);
       await fetchEcho(activeEcho.echo_id);
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -167,7 +167,7 @@ export function EchoDetailPage() {
       await accountApi.updatePrivacy(!soloMode);
       setSoloMode(!soloMode);
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -510,7 +510,7 @@ export function EchoDetailPage() {
 
       {/* Hibernate/Wake Modal */}
       <Modal
-        isOpen={hibernateModal}
+        open={hibernateModal}
         onClose={() => setHibernateModal(false)}
         title={activeEcho.status === 'Active' ? t('echoDetail.hibernate') : t('echoDetail.wake')}
       >
@@ -529,7 +529,7 @@ export function EchoDetailPage() {
 
       {/* Influence Modal */}
       <Modal
-        isOpen={influenceModal}
+        open={influenceModal}
         onClose={() => setInfluenceModal(false)}
         title={t('echoDetail.useInfluence')}
       >
@@ -566,7 +566,7 @@ export function EchoDetailPage() {
 
       {/* Rename Modal */}
       <Modal
-        isOpen={renameModal}
+        open={renameModal}
         onClose={() => setRenameModal(false)}
         title={t('echoDetail.rename')}
       >
@@ -589,13 +589,13 @@ export function EchoDetailPage() {
 
       {/* Edit Persona Modal */}
       <Modal
-        isOpen={editPersonaModal}
+        open={editPersonaModal}
         onClose={() => setEditPersonaModal(false)}
         title={t('echoDetail.editPersona')}
       >
         <div className="mb-4">
           <Input
-            as="textarea"
+            multiline
             label={t('echoDetail.persona')}
             value={newPersona}
             onChange={(e) => setNewPersona(e.target.value)}

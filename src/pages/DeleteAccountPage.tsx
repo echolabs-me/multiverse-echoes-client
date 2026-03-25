@@ -22,11 +22,11 @@ export function DeleteAccountPage() {
     setIsDeleting(true);
     try {
       await accountApi.deleteAccount();
-      addToast({ severity: 'info', message: t('settings.deleteAccountGrace', { days: 30 }) });
+      addToast(t('settings.deleteAccountGrace', { days: 30 }), 'info');
       await logout();
       navigate('/login');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     } finally {
       setIsDeleting(false);
     }
@@ -35,10 +35,10 @@ export function DeleteAccountPage() {
   const handleCancel = async () => {
     try {
       await accountApi.cancelDeletion();
-      addToast({ severity: 'success', message: t('settings.deletionCancelled') });
+      addToast(t('settings.deletionCancelled'), 'success');
       navigate('/settings');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 

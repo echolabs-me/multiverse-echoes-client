@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, BookOpen, Zap, Filter, Share2 } from 'lucide-react';
@@ -31,14 +31,9 @@ export function PersonalFeedPage() {
     void fetchEchoes();
   }, [fetchEchoes]);
 
-  const loadFeed = useCallback(() => {
+  useEffect(() => {
     void fetchPersonalFeed(selectedEchoId || undefined);
   }, [fetchPersonalFeed, selectedEchoId]);
-
-  useEffect(() => {
-    loadFeed();
-    setPage(1);
-  }, [loadFeed]);
 
   const paginatedFeed = personalFeed.slice(0, page * PAGE_SIZE);
   const hasMore = paginatedFeed.length < personalFeed.length;
@@ -71,7 +66,7 @@ export function PersonalFeedPage() {
             <Filter size={16} className="text-text-muted" aria-hidden="true" />
             <select
               value={selectedEchoId}
-              onChange={(e) => setSelectedEchoId(e.target.value)}
+              onChange={(e) => { setSelectedEchoId(e.target.value); setPage(1); }}
               className="rounded-lg border border-border-default bg-surface-default px-3 py-2 text-sm text-text-primary"
               aria-label={t('feeds.filterByEcho')}
             >

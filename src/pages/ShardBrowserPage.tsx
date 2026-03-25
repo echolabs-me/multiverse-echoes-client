@@ -8,7 +8,6 @@ import {
   Badge,
   Spinner,
   EmptyState,
-  Input,
 } from '../components/index.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';

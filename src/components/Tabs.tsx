@@ -5,23 +5,34 @@ import {
   type KeyboardEvent,
 } from 'react';
 
-interface Tab {
+export interface Tab {
   id: string;
   label: string;
-  content: ReactNode;
+  content?: ReactNode;
 }
 
 interface TabsProps {
   tabs: Tab[];
   defaultTab?: string;
+  activeTab?: string;
+  onTabChange?: (id: string) => void;
   className?: string;
 }
 
-export function Tabs({ tabs, defaultTab, className = '' }: TabsProps) {
-  const [activeId, setActiveId] = useState(defaultTab ?? tabs[0]?.id ?? '');
+export function Tabs({ tabs, defaultTab, activeTab: controlledActiveTab, onTabChange, className = '' }: TabsProps) {
+  const [internalActiveId, setInternalActiveId] = useState(defaultTab ?? tabs[0]?.id ?? '');
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const activeTab = tabs.find((t) => t.id === activeId);
+  const activeId = controlledActiveTab ?? internalActiveId;
+  const setActiveId = (id: string) => {
+    if (onTabChange) {
+      onTabChange(id);
+    } else {
+      setInternalActiveId(id);
+    }
+  };
+
+  const activeTabObj = tabs.find((t) => t.id === activeId);
 
   const handleKeyDown = (e: KeyboardEvent, index: number) => {
     let nextIndex = index;
@@ -70,16 +81,16 @@ export function Tabs({ tabs, defaultTab, className = '' }: TabsProps) {
           </button>
         ))}
       </div>
-      {activeTab && (
+      {activeTabObj?.content && (
         <div
           role="tabpanel"
-          id={`panel-${activeTab.id}`}
-          aria-labelledby={`tab-${activeTab.id}`}
+          id={`panel-${activeTabObj.id}`}
+          aria-labelledby={`tab-${activeTabObj.id}`}
           tabIndex={0}
           className="pt-4"
           key={activeId}
         >
-          {activeTab.content}
+          {activeTabObj.content}
         </div>
       )}
     </div>

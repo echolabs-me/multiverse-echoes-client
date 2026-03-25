@@ -174,11 +174,11 @@ function AccountSection() {
         current_password: currentPassword,
         new_password: newPassword,
       });
-      addToast({ severity: 'success', message: t('settings.passwordChanged') });
+      addToast(t('settings.passwordChanged'), 'success');
       setCurrentPassword('');
       setNewPassword('');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     } finally {
       setIsChanging(false);
     }
@@ -188,9 +188,9 @@ function AccountSection() {
     try {
       await accountApi.revokeSession(sessionId);
       setSessions((prev) => prev.filter((s) => s.session_id !== sessionId));
-      addToast({ severity: 'success', message: t('settings.sessionRevoked') });
+      addToast(t('settings.sessionRevoked'), 'success');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -213,7 +213,7 @@ function AccountSection() {
             label={t('settings.newPassword')}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            hint={t('auth.passwordHint')}
+            placeholder={t('auth.passwordHint')}
           />
           <Button
             onClick={() => void handleChangePassword()}
@@ -277,7 +277,7 @@ function AccountSection() {
                 const result = await accountApi.linkDiscord();
                 window.open(result.auth_url, '_blank');
               } catch {
-                addToast({ severity: 'danger', message: t('common.error') });
+                addToast(t('common.error'), 'danger');
               }
             }}
           >
@@ -288,9 +288,9 @@ function AccountSection() {
             onClick={async () => {
               try {
                 await accountApi.unlinkDiscord();
-                addToast({ severity: 'success', message: t('settings.discordUnlinked') });
+                addToast(t('settings.discordUnlinked'), 'success');
               } catch {
-                addToast({ severity: 'danger', message: t('common.error') });
+                addToast(t('common.error'), 'danger');
               }
             }}
           >
@@ -325,16 +325,16 @@ function PrivacySection() {
       await accountApi.updatePrivacy(!soloMode);
       setSoloMode(!soloMode);
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
   const handleExport = async () => {
     try {
       await accountApi.requestExport();
-      addToast({ severity: 'success', message: t('settings.exportRequested') });
+      addToast(t('settings.exportRequested'), 'success');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -409,7 +409,7 @@ function NotificationPrefsSection() {
       const updated = await accountApi.updateNotificationPreferences({ [key]: value });
       setPrefs(updated);
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -568,9 +568,9 @@ function ApiKeysSection() {
         { key_id: result.key_id, name: result.name, last_four: result.api_key.slice(-4), created_at: new Date().toISOString() },
       ]);
       setNewKeyName('');
-      addToast({ severity: 'success', message: t('settings.apiKeyCreated') });
+      addToast(t('settings.apiKeyCreated'), 'success');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -578,9 +578,9 @@ function ApiKeysSection() {
     try {
       await apiKeysApi.revoke(keyId);
       setKeys((prev) => prev.filter((k) => k.key_id !== keyId));
-      addToast({ severity: 'success', message: t('settings.apiKeyRevoked') });
+      addToast(t('settings.apiKeyRevoked'), 'success');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 

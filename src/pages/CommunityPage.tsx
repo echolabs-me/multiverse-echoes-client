@@ -12,7 +12,6 @@ import {
 } from 'lucide-react';
 import {
   TopBar,
-  Card,
   Button,
   Spinner,
   EmptyState,
@@ -103,7 +102,7 @@ export function CommunityPage() {
       setMessages((prev) => [...prev, msg]);
       setMessageText('');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     } finally {
       setIsSending(false);
     }
@@ -121,9 +120,9 @@ export function CommunityPage() {
         prev.map((m) => (m.message_id === messageId ? updated : m)),
       );
       setEditingMessageId(null);
-      addToast({ severity: 'success', message: t('community.messageEdited') });
+      addToast(t('community.messageEdited'), 'success');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -132,9 +131,9 @@ export function CommunityPage() {
     try {
       await channelApi.deleteMessage(activeChannel.channel_id, messageId);
       setMessages((prev) => prev.filter((m) => m.message_id !== messageId));
-      addToast({ severity: 'success', message: t('community.messageDeleted') });
+      addToast(t('community.messageDeleted'), 'success');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -146,11 +145,11 @@ export function CommunityPage() {
         target_id: reportTargetId,
         reason: reportReason.trim(),
       });
-      addToast({ severity: 'success', message: t('community.reportSent') });
+      addToast(t('community.reportSent'), 'success');
       setReportModal(false);
       setReportReason('');
     } catch {
-      addToast({ severity: 'danger', message: t('common.error') });
+      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -261,6 +260,7 @@ export function CommunityPage() {
                                 if (e.key === 'Enter') void handleEdit(msg.message_id);
                                 if (e.key === 'Escape') setEditingMessageId(null);
                               }}
+                              // eslint-disable-next-line jsx-a11y/no-autofocus -- editing inline requires immediate focus
                               autoFocus
                             />
                             <Button
@@ -397,13 +397,13 @@ export function CommunityPage() {
 
       {/* Report Modal */}
       <Modal
-        isOpen={reportModal}
+        open={reportModal}
         onClose={() => setReportModal(false)}
         title={t('common.report')}
       >
         <div className="mb-4">
           <Input
-            as="textarea"
+            multiline
             label="Reason"
             value={reportReason}
             onChange={(e) => setReportReason(e.target.value)}

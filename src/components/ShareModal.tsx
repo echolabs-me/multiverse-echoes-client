@@ -143,7 +143,7 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
             <span>{copied ? t('common.copied') : t('share.copyLink')}</span>
           </button>
 
-          {typeof navigator !== 'undefined' && navigator.share && (
+          {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
             <button
               onClick={() => void handleNativeShare()}
               className="flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-left text-sm transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
