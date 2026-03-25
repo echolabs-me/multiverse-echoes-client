@@ -20,6 +20,7 @@ import { DeleteAccountPage } from './pages/DeleteAccountPage.tsx';
 import { SearchPage } from './pages/SearchPage.tsx';
 import { EchoConversationPage } from './pages/EchoConversationPage.tsx';
 import { AdminDashboardPage } from './pages/AdminDashboardPage.tsx';
+import { WaitlistPage } from './pages/WaitlistPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -65,6 +66,7 @@ export function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/admin" element={<AdminDashboardPage />} />
           <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
+          <Route path="/waitlist" element={<WaitlistPage />} />
         </Routes>
       </main>
     </BrowserRouter>

@@ -408,6 +408,31 @@ export interface OracleDeepLink {
   path: string;
 }
 
+// --- Waitlist ---
+
+export interface WaitlistSignupRequest {
+  email: string;
+  referral_code?: string;
+  source?: string;
+}
+
+export interface WaitlistSignupResponse {
+  entry_id: string;
+  position: number;
+  referral_code: string;
+}
+
+export interface WaitlistPositionResponse {
+  entry_id: string;
+  position: number;
+  status: string;
+  referral_count: number;
+}
+
+export interface WaitlistCountResponse {
+  count: number;
+}
+
 // --- WebSocket Events ---
 
 export interface WorldEvent {

@@ -42,6 +42,10 @@ import type {
   AdminUser,
   AdminShard,
   ResolveReportRequest,
+  WaitlistSignupRequest,
+  WaitlistSignupResponse,
+  WaitlistPositionResponse,
+  WaitlistCountResponse,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -389,4 +393,15 @@ export const reports = {
       method: 'POST',
       body: JSON.stringify(data),
     }),
+};
+
+export const waitlist = {
+  signup: (data: WaitlistSignupRequest) =>
+    request<WaitlistSignupResponse>('/waitlist', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  position: (entryId: string) =>
+    request<WaitlistPositionResponse>(`/waitlist/position/${entryId}`),
+  count: () => request<WaitlistCountResponse>('/waitlist/count'),
 };
