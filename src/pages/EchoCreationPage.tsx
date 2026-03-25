@@ -32,9 +32,11 @@ export function EchoCreationPage() {
 
   // Birth state
   const [isBirthComplete, setIsBirthComplete] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
   const createdEchoId = useRef<string | null>(null);
 
   async function handleCreate() {
+    setCreateError(null);
     setStep('birth');
 
     try {
@@ -52,9 +54,11 @@ export function EchoCreationPage() {
 
       createdEchoId.current = echo.echo_id;
       // Birth animation will call onComplete when done (15s or 3s for reduced motion).
-    } catch {
-      // On error, go back to consent
-      setStep('consent');
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Echo creation failed';
+      setCreateError(message);
+      setStep('destination');
     }
   }
 
@@ -295,6 +299,12 @@ export function EchoCreationPage() {
               {t('echo.personalShardDesc')}
             </p>
           </Card>
+
+          {createError && (
+            <p className="mb-4 rounded-lg bg-danger/10 px-4 py-2 text-sm text-danger">
+              {createError}
+            </p>
+          )}
 
           <div className="flex gap-3">
             <Button

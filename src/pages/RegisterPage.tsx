@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Button, Input } from '../components/index.ts';
+import { ApiRequestError, setTokens } from '../lib/api/client.ts';
 import { auth } from '../lib/api/endpoints.ts';
-import { ApiRequestError } from '../lib/api/client.ts';
+import { useAuthStore } from '../stores/useAuthStore.ts';
 
 export function RegisterPage() {
   const { t } = useTranslation();
@@ -48,9 +49,13 @@ export function RegisterPage() {
         privacy_accepted: privacyAccepted,
         age_confirmed: true,
       });
+      // Save tokens — server auto-logs-in on registration.
+      setTokens(result.access_token, result.refresh_token);
+      useAuthStore.setState({ isAuthenticated: true });
+
       if (result.email_verified) {
-        // Auto-verified (no email provider) — skip verification, go to login.
-        navigate('/login');
+        // Auto-verified (no email provider) — skip to onboarding.
+        navigate('/onboarding/welcome');
       } else {
         navigate('/verify-pending', { state: { email } });
       }

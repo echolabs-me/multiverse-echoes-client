@@ -29,6 +29,9 @@ export interface RegisterResponse {
   display_name: string;
   message: string;
   email_verified: boolean;
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
 }
 
 export interface LoginRequest {

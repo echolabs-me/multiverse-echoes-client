@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { User, LoginRequest, RegisterRequest } from '../types/api.ts';
+import type { User, LoginRequest, RegisterRequest, RegisterResponse } from '../types/api.ts';
 import { auth } from '../lib/api/endpoints.ts';
 import { setTokens, clearTokens, loadStoredTokens, configureApi } from '../lib/api/client.ts';
 
@@ -9,7 +9,7 @@ interface AuthState {
   isLoading: boolean;
 
   login: (data: LoginRequest) => Promise<void>;
-  register: (data: RegisterRequest) => Promise<void>;
+  register: (data: RegisterRequest) => Promise<RegisterResponse>;
   logout: () => Promise<void>;
   initialize: () => void;
 }
@@ -42,8 +42,11 @@ export const useAuthStore = create<AuthState>((set) => {
     register: async (data) => {
       set({ isLoading: true });
       try {
-        await auth.register(data);
-        set({ isLoading: false });
+        const response = await auth.register(data);
+        // Auto-login: server returns tokens on registration.
+        setTokens(response.access_token, response.refresh_token);
+        set({ isAuthenticated: true, isLoading: false });
+        return response;
       } catch {
         set({ isLoading: false });
         throw new Error('Registration failed');
