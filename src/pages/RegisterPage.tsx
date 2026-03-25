@@ -40,7 +40,7 @@ export function RegisterPage() {
     setIsSubmitting(true);
 
     try {
-      await auth.register({
+      const result = await auth.register({
         email,
         password,
         display_name: displayName,
@@ -48,7 +48,12 @@ export function RegisterPage() {
         privacy_accepted: privacyAccepted,
         age_confirmed: true,
       });
-      navigate('/verify-pending', { state: { email } });
+      if (result.email_verified) {
+        // Auto-verified (no email provider) — skip verification, go to login.
+        navigate('/login');
+      } else {
+        navigate('/verify-pending', { state: { email } });
+      }
     } catch (err) {
       if (err instanceof ApiRequestError) {
         if (err.code === 'EMAIL_TAKEN') {

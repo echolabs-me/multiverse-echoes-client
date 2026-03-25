@@ -28,6 +28,7 @@ export interface RegisterResponse {
   user_id: string;
   display_name: string;
   message: string;
+  email_verified: boolean;
 }
 
 export interface LoginRequest {
