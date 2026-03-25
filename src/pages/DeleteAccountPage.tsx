@@ -32,14 +32,11 @@ export function DeleteAccountPage() {
     }
   };
 
-  const handleCancel = async () => {
-    try {
-      await accountApi.cancelDeletion();
-      addToast(t('settings.deletionCancelled'), 'success');
-      navigate('/settings');
-    } catch {
-      addToast(t('common.error'), 'danger');
-    }
+  const handleCancel = () => {
+    // Just go back to settings. The cancel-deletion API is only needed
+    // if the account is already in PendingDeletion state (after DELETE
+    // was confirmed). This button dismisses the page without action.
+    navigate('/settings');
   };
 
   return (
@@ -88,7 +85,7 @@ export function DeleteAccountPage() {
               >
                 {t('settings.deleteAccount')}
               </Button>
-              <Button variant="secondary" onClick={() => void handleCancel()}>
+              <Button variant="secondary" onClick={handleCancel}>
                 {t('settings.cancelDeletion')}
               </Button>
             </div>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Plus, Compass, BookOpen, Zap, Users, ExternalLink } from 'lucide-react';
@@ -9,7 +9,8 @@ import { TickPulse } from '../components/TickPulse.tsx';
 import { useAmbientSoundscape } from '../hooks/useAmbientSoundscape.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
-import type { EchoResponse } from '../types/api.ts';
+import { echoes as echoApi } from '../lib/api/endpoints.ts';
+import type { EchoResponse, DiaryEntry } from '../types/api.ts';
 
 function EchoListItem({
   echo,
@@ -48,6 +49,19 @@ function EchoListItem({
 
 function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
   const { t } = useTranslation();
+  const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
+
+  // Fetch diary entries from Redb on mount and every 30s.
+  useEffect(() => {
+    const load = () => {
+      void echoApi.diary(echo.echo_id, 3).then(setDiaryEntries).catch(() => {});
+    };
+    load();
+    const interval = setInterval(load, 30_000);
+    return () => clearInterval(interval);
+  }, [echo.echo_id]);
+
+  const latestDiary = diaryEntries[0];
 
   return (
     <div className="flex flex-col gap-6">
@@ -88,9 +102,26 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
             {t('dashboard.latestDiary')}
           </h3>
         </div>
-        <p className="text-sm italic text-text-secondary">
-          {t('dashboard.latestDiaryEmpty')}
-        </p>
+        {latestDiary ? (
+          <div>
+            <p className="text-sm font-medium text-text-primary">
+              {latestDiary.simulated_date} — {latestDiary.mood}
+            </p>
+            <p className="mt-1 text-sm text-text-secondary">{latestDiary.content}</p>
+            {diaryEntries.length > 1 && (
+              <Link
+                to={`/echoes/${echo.echo_id}`}
+                className="mt-2 inline-block text-xs text-accent hover:text-accent-hover"
+              >
+                {t('dashboard.viewAllDiary', { count: diaryEntries.length })}
+              </Link>
+            )}
+          </div>
+        ) : (
+          <p className="text-sm italic text-text-secondary">
+            {t('dashboard.latestDiaryEmpty')}
+          </p>
+        )}
       </Card>
 
       {/* Recent Life Events */}

@@ -13,6 +13,7 @@ export function RegisterPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [tosAccepted, setTosAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
@@ -23,6 +24,7 @@ export function RegisterPage() {
   function validate(): Record<string, string> {
     const errs: Record<string, string> = {};
     if (password.length < 12) errs.password = t('auth.passwordTooShort');
+    if (password !== confirmPassword) errs.confirmPassword = t('auth.passwordMismatch');
     if (displayName.length < 3 || displayName.length > 30)
       errs.displayName = t('auth.displayNameInvalid');
     if (!tosAccepted) errs.tos = t('auth.tosRequired');
@@ -118,6 +120,16 @@ export function RegisterPage() {
             onChange={(e) => setPassword((e.target as HTMLInputElement).value)}
             error={errors.password}
             placeholder={t('auth.passwordHint')}
+            required
+            autoComplete="new-password"
+          />
+
+          <Input
+            label={t('auth.confirmPassword')}
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword((e.target as HTMLInputElement).value)}
+            error={errors.confirmPassword}
             required
             autoComplete="new-password"
           />
