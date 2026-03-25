@@ -57,14 +57,15 @@ export function EchoConversationPage() {
       try {
         const conv = await conversations.create(echoId);
         setConversationId(conv.conversation_id);
-      } catch {
-        setError('conversation.errorStarting');
+      } catch (err) {
+        const detail = err instanceof Error ? err.message : 'Unknown error';
+        setError(t('conversation.errorStarting', { detail }));
       } finally {
         setIsLoading(false);
       }
     };
     void init();
-  }, [echoId, limits.available]);
+  }, [echoId, limits.available, t]);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -107,8 +108,9 @@ export function EchoConversationPage() {
         content: trimmed,
       });
       setMessages((prev) => [...prev, echoResponse]);
-    } catch {
-      setError('conversation.errorSending');
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : 'Unknown error';
+      setError(t('conversation.errorSending', { detail }));
     } finally {
       setIsSending(false);
     }
@@ -119,8 +121,9 @@ export function EchoConversationPage() {
     try {
       await conversations.saveAsDiary(conversationId);
       setSaved(true);
-    } catch {
-      setError('conversation.errorSaving');
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : 'Unknown error';
+      setError(t('conversation.errorSaving', { detail }));
     }
   };
 
@@ -245,7 +248,7 @@ export function EchoConversationPage() {
           </div>
         )}
 
-        {error && <p className="text-center text-sm text-danger">{t(error)}</p>}
+        {error && <p className="text-center text-sm text-danger">{error}</p>}
 
         <div ref={messagesEndRef} />
       </div>

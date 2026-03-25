@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { User, LoginRequest, RegisterRequest, RegisterResponse } from '../types/api.ts';
-import { auth } from '../lib/api/endpoints.ts';
+import { auth, account } from '../lib/api/endpoints.ts';
 import { setTokens, clearTokens, loadStoredTokens, configureApi } from '../lib/api/client.ts';
 
 interface AuthState {
@@ -12,6 +12,8 @@ interface AuthState {
   register: (data: RegisterRequest) => Promise<RegisterResponse>;
   logout: () => Promise<void>;
   initialize: () => void;
+  setUser: (user: User) => void;
+  fetchProfile: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => {
@@ -33,6 +35,13 @@ export const useAuthStore = create<AuthState>((set) => {
         const response = await auth.login(data);
         setTokens(response.access_token, response.refresh_token);
         set({ isAuthenticated: true, isLoading: false });
+        // Fetch user profile after login
+        try {
+          const user = await account.getProfile();
+          set({ user });
+        } catch {
+          // Profile fetch is best-effort
+        }
       } catch {
         set({ isLoading: false });
         throw new Error('Login failed');
@@ -46,6 +55,13 @@ export const useAuthStore = create<AuthState>((set) => {
         // Auto-login: server returns tokens on registration.
         setTokens(response.access_token, response.refresh_token);
         set({ isAuthenticated: true, isLoading: false });
+        // Fetch user profile after registration
+        try {
+          const user = await account.getProfile();
+          set({ user });
+        } catch {
+          // Profile fetch is best-effort
+        }
         return response;
       } catch {
         set({ isLoading: false });
@@ -67,6 +83,21 @@ export const useAuthStore = create<AuthState>((set) => {
       loadStoredTokens();
       const hasToken = !!localStorage.getItem('access_token');
       set({ isAuthenticated: hasToken });
+      // Fetch profile if we have a token
+      if (hasToken) {
+        void account.getProfile().then((user) => set({ user })).catch(() => {});
+      }
+    },
+
+    setUser: (user) => set({ user }),
+
+    fetchProfile: async () => {
+      try {
+        const user = await account.getProfile();
+        set({ user });
+      } catch {
+        // Profile fetch failed
+      }
     },
   };
 });

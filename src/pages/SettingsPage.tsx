@@ -11,8 +11,6 @@ import {
   Key,
   Trash2,
   ExternalLink,
-  Copy,
-  Check,
 } from 'lucide-react';
 import {
   TopBar,
@@ -28,9 +26,8 @@ import { useThemeStore } from '../stores/useThemeStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
 import {
   account as accountApi,
-  apiKeys as apiKeysApi,
 } from '../lib/api/endpoints.ts';
-import type { ApiKey, NotificationPreferences } from '../types/api.ts';
+import type { NotificationPreferences } from '../types/api.ts';
 
 export function SettingsPage() {
   const navigate = useNavigate();
@@ -53,9 +50,8 @@ export function SettingsPage() {
     <div className="flex h-screen flex-col bg-canvas">
       <TopBar
         notificationCount={unreadCount}
-        onSearchClick={() => {}}
         onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => {}}
+        onProfileClick={() => navigate('/settings')}
       />
 
       <div className="flex-1 overflow-y-auto">
@@ -112,14 +108,28 @@ export function SettingsPage() {
 function ProfileSection() {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
+  const addToast = useToastStore((s) => s.addToast);
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(user?.display_name ?? '');
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!editName.trim() || editName.trim().length < 3) return;
-    // Display name update requires a dedicated endpoint (deferred).
-    // For now, just close the editor.
-    setIsEditing(false);
+    setIsSaving(true);
+    try {
+      const result = await accountApi.updateProfile({ display_name: editName.trim() });
+      // Update local auth store with new display name
+      useAuthStore.getState().setUser({
+        ...useAuthStore.getState().user!,
+        display_name: result.display_name,
+      });
+      addToast(t('settings.displayNameSaved'), 'success');
+      setIsEditing(false);
+    } catch {
+      addToast(t('common.error'), 'danger');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -138,7 +148,7 @@ function ProfileSection() {
                   maxLength={30}
                   className="flex-1 rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:outline-none"
                 />
-                <Button onClick={handleSave} disabled={editName.trim().length < 3}>
+                <Button onClick={() => void handleSave()} disabled={isSaving || editName.trim().length < 3}>
                   {t('common.save')}
                 </Button>
                 <Button variant="secondary" onClick={() => setIsEditing(false)}>
@@ -179,6 +189,7 @@ function AccountSection() {
   const addToast = useToastStore((s) => s.addToast);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isChanging, setIsChanging] = useState(false);
   const [sessions, setSessions] = useState<Array<{
     session_id: string;
@@ -203,8 +214,11 @@ function AccountSection() {
     void load();
   }, []);
 
+  const passwordsMismatch = newPassword !== confirmPassword && confirmPassword.length > 0;
+
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || newPassword.length < 12) return;
+    if (newPassword !== confirmPassword) return;
     setIsChanging(true);
     try {
       await accountApi.changePassword({
@@ -252,9 +266,21 @@ function AccountSection() {
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder={t('auth.passwordHint')}
           />
+          <div>
+            <Input
+              type="password"
+              label={t('settings.confirmNewPassword')}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder={t('auth.passwordHint')}
+            />
+            {passwordsMismatch && (
+              <p className="mt-1 text-xs text-danger">{t('settings.passwordMismatchChange')}</p>
+            )}
+          </div>
           <Button
             onClick={() => void handleChangePassword()}
-            disabled={isChanging || !currentPassword || newPassword.length < 12}
+            disabled={isChanging || !currentPassword || newPassword.length < 12 || newPassword !== confirmPassword}
           >
             {t('settings.changePassword')}
           </Button>
@@ -306,34 +332,10 @@ function AccountSection() {
         <h3 className="mb-4 text-sm font-semibold text-text-primary">
           {t('settings.discord')}
         </h3>
-        <div className="flex gap-2">
-          <Button
-            variant="secondary"
-            onClick={async () => {
-              try {
-                const result = await accountApi.linkDiscord();
-                window.open(result.auth_url, '_blank');
-              } catch {
-                addToast(t('common.error'), 'danger');
-              }
-            }}
-          >
-            {t('settings.linkDiscord')}
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={async () => {
-              try {
-                await accountApi.unlinkDiscord();
-                addToast(t('settings.discordUnlinked'), 'success');
-              } catch {
-                addToast(t('common.error'), 'danger');
-              }
-            }}
-          >
-            {t('settings.unlinkDiscord')}
-          </Button>
-        </div>
+        <p className="mb-3 text-sm text-text-muted">{t('settings.discordComingSoon')}</p>
+        <Button variant="secondary" disabled>
+          {t('settings.linkDiscord')}
+        </Button>
       </Card>
     </div>
   );
@@ -366,15 +368,6 @@ function PrivacySection() {
     }
   };
 
-  const handleExport = async () => {
-    try {
-      await accountApi.requestExport();
-      addToast(t('settings.exportRequested'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger');
-    }
-  };
-
   return (
     <div className="flex flex-col gap-4">
       <Card>
@@ -399,7 +392,8 @@ function PrivacySection() {
         <h3 className="mb-4 text-sm font-semibold text-text-primary">
           {t('settings.exportData')}
         </h3>
-        <Button variant="secondary" onClick={() => void handleExport()}>
+        <p className="mb-3 text-sm text-text-muted">{t('settings.exportComingSoon')}</p>
+        <Button variant="secondary" disabled>
           {t('settings.exportData')}
         </Button>
       </Card>
@@ -618,128 +612,15 @@ function AppearanceSection() {
 // --- API Keys Section ---
 function ApiKeysSection() {
   const { t } = useTranslation();
-  const addToast = useToastStore((s) => s.addToast);
-  const [keys, setKeys] = useState<ApiKey[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [newKeyName, setNewKeyName] = useState('');
-  const [createdKey, setCreatedKey] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    const load = async () => {
-      setIsLoading(true);
-      try {
-        const k = await apiKeysApi.list();
-        setKeys(k);
-      } catch {
-        // ignore
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    void load();
-  }, []);
-
-  const handleCreate = async () => {
-    if (!newKeyName.trim()) return;
-    try {
-      const result = await apiKeysApi.create({ name: newKeyName.trim() });
-      setCreatedKey(result.api_key);
-      setKeys((prev) => [
-        ...prev,
-        { key_id: result.key_id, name: result.name, last_four: result.api_key.slice(-4), created_at: new Date().toISOString() },
-      ]);
-      setNewKeyName('');
-      addToast(t('settings.apiKeyCreated'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger');
-    }
-  };
-
-  const handleRevoke = async (keyId: string) => {
-    try {
-      await apiKeysApi.revoke(keyId);
-      setKeys((prev) => prev.filter((k) => k.key_id !== keyId));
-      addToast(t('settings.apiKeyRevoked'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger');
-    }
-  };
-
-  const handleCopy = async (text: string) => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <div className="flex flex-col gap-4">
       <Card>
         <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.apiKeys')}</h3>
-
-        {/* Create new key */}
-        <div className="mb-4 flex gap-2">
-          <Input
-            label={t('settings.apiKeyName')}
-            value={newKeyName}
-            onChange={(e) => setNewKeyName(e.target.value)}
-            placeholder="My API Key"
-          />
-          <Button
-            onClick={() => void handleCreate()}
-            disabled={!newKeyName.trim()}
-            className="self-end"
-          >
-            {t('settings.createApiKey')}
-          </Button>
-        </div>
-
-        {/* Show created key */}
-        {createdKey && (
-          <div className="mb-4 rounded-lg border border-accent bg-accent-subtle p-3">
-            <p className="mb-1 text-xs text-text-muted">{t('settings.apiKeyCreated')}</p>
-            <div className="flex items-center gap-2">
-              <code className="flex-1 text-sm text-text-primary">{createdKey}</code>
-              <button
-                onClick={() => void handleCopy(createdKey)}
-                className="text-accent hover:text-accent/80"
-                aria-label={t('common.copyToClipboard')}
-              >
-                {copied ? <Check size={16} /> : <Copy size={16} />}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Key list */}
-        {isLoading ? (
-          <Spinner size="sm" />
-        ) : keys.length === 0 ? (
-          <p className="text-sm text-text-muted">{t('settings.noApiKeys')}</p>
-        ) : (
-          <div className="flex flex-col gap-2">
-            {keys.map((key) => (
-              <div
-                key={key.key_id}
-                className="flex items-center justify-between rounded-lg bg-surface-raised px-3 py-2"
-              >
-                <div>
-                  <p className="text-sm text-text-primary">{key.name}</p>
-                  <p className="text-xs text-text-muted">
-                    ...{key.last_four} &middot; Created{' '}
-                    {new Date(key.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-                <Button
-                  variant="ghost"
-                  onClick={() => void handleRevoke(key.key_id)}
-                >
-                  {t('settings.revokeApiKey')}
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
+        <p className="mb-3 text-sm text-text-muted">{t('settings.apiKeyComingSoon')}</p>
+        <Button variant="secondary" disabled>
+          {t('settings.createApiKey')}
+        </Button>
       </Card>
     </div>
   );

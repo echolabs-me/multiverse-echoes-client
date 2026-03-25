@@ -43,13 +43,19 @@ export function EchoCreationPage() {
         what_if_prompt: whatIfPrompt,
         persona_mode: 'detailed',
         consent_declaration: true,
+        persona_declaration: personaDeclaration,
       });
 
       createdEchoId.current = echo.echo_id;
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Echo creation failed';
-      setCreateError(message);
+      // Check for echo limit error
+      if (message.includes('ECHO_LIMIT') || message.includes('limit')) {
+        setCreateError('limit');
+      } else {
+        setCreateError(message);
+      }
       setStep('destination');
     }
   }
@@ -92,7 +98,7 @@ export function EchoCreationPage() {
 
           <div>
             <Input
-              label={t('echo.whatIfLabel')}
+              label={`${t('echo.whatIfLabel')} — ${t('echo.whatIfSubtitle')}`}
               multiline
               value={whatIfPrompt}
               onChange={(e) =>
@@ -232,9 +238,24 @@ export function EchoCreationPage() {
           </Card>
 
           {createError && (
-            <p className="mb-4 rounded-lg bg-danger/10 px-4 py-2 text-sm text-danger">
-              {createError}
-            </p>
+            <div className="mb-4 rounded-lg bg-danger/10 px-4 py-3">
+              {createError === 'limit' ? (
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-medium text-danger">{t('echo.limitTitle')}</p>
+                  <p className="text-sm text-text-secondary">{t('echo.limitDesc', { max: 1 })}</p>
+                  <div className="flex gap-2">
+                    <Button variant="secondary" onClick={() => navigate('/dashboard')}>
+                      {t('common.back')}
+                    </Button>
+                    <Button variant="primary" onClick={() => navigate('/plans')}>
+                      {t('echo.viewPlans')}
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-danger">{createError}</p>
+              )}
+            </div>
           )}
 
           <div className="flex gap-3">

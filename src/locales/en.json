@@ -99,6 +99,7 @@
     "detailedMode": "Want more control?",
     "whatIfTitle": "What if…",
     "whatIfLabel": "What path do you want to explore?",
+    "whatIfSubtitle": "What's your 'what if?'",
     "whatIfPlaceholder": "e.g. \"What if I had moved to Tokyo after university?\"",
     "whatIfHint": "Max 500 characters",
     "personaDeclaration": "This is inspired by me",
@@ -111,7 +112,11 @@
     "personalShard": "Personal Shard",
     "personalShardDesc": "A private world just for your Echo. Recommended for your first.",
     "birthTitle": "Your Echo is being born…",
-    "birthComplete": "Your Echo is alive."
+    "birthComplete": "Your Echo is alive.",
+    "limitTitle": "Echo limit reached",
+    "limitDesc": "Your current plan allows {{max}} Echo. Upgrade to create more, or return to the dashboard.",
+    "limitDesc_plural": "Your current plan allows {{max}} Echoes. Upgrade to create more, or return to the dashboard.",
+    "viewPlans": "View Plans"
   },
   "echoDetail": {
     "persona": "Persona",
@@ -256,10 +261,16 @@
     "apiKeyRevoked": "API key revoked",
     "noApiKeys": "No API keys created yet",
     "noSessions": "No active sessions",
+    "confirmNewPassword": "Confirm new password",
+    "passwordMismatchChange": "New passwords do not match",
+    "displayNameSaved": "Display name saved",
     "linkDiscord": "Link Discord Account",
     "unlinkDiscord": "Unlink Discord",
     "discordLinked": "Discord account linked",
     "discordUnlinked": "Discord account unlinked",
+    "discordComingSoon": "Discord integration is coming soon. Stay tuned!",
+    "exportComingSoon": "Data export is being built. You'll be notified when it's ready.",
+    "apiKeyComingSoon": "API key management is coming in a future update.",
     "deleteAccount": "Delete Account",
     "deleteAccountWarning": "This action will permanently delete your account and all associated data after a 30-day grace period.",
     "deleteAccountConfirm": "Type DELETE to confirm",
@@ -291,6 +302,7 @@
     "mood": "Mood",
     "tick": "Tick {{tick}}",
     "latestDiaryEmpty": "Your Echo's story is just beginning. Check back soon.",
+    "nextTick": "Next tick in {{seconds}}s",
     "viewAllDiary": "View all {{count}} entries",
     "recentEventsEmpty": "Life events will appear as your Echo experiences the world.",
     "relationshipsEmpty": "Relationships will form as your Echo meets others in the Shard."
@@ -345,8 +357,8 @@
     "tierGateTitle": "Upgrade to Talk",
     "tierGateDesc": "Direct Echo conversations are available on Core tier and above. Upgrade to have personal conversations with your Echoes.",
     "upgrade": "View Plans",
-    "errorStarting": "Could not start conversation. Please try again.",
-    "errorSending": "Message could not be sent. Please try again.",
+    "errorStarting": "Could not start conversation: {{detail}}",
+    "errorSending": "Message could not be sent: {{detail}}",
     "errorSaving": "Could not save conversation. Please try again."
   },
   "search": {

@@ -10,7 +10,7 @@ export function SkipLink({ targetId = 'main-content' }: SkipLinkProps) {
   return (
     <a
       href={`#${targetId}`}
-      className="fixed left-2 top-2 z-50 -translate-y-full rounded-md bg-accent px-4 py-2 text-sm font-medium text-canvas transition-transform focus:translate-y-0"
+      className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-canvas"
     >
       {t('common.skipToContent', 'Skip to main content')}
     </a>

@@ -91,8 +91,7 @@ export function NotificationsPage() {
     <div className="flex h-screen flex-col bg-canvas">
       <TopBar
         notificationCount={unreadCount}
-        onSearchClick={() => {}}
-        onNotificationClick={() => {}}
+        onNotificationClick={() => navigate('/notifications')}
         onProfileClick={() => navigate('/settings')}
       />
 

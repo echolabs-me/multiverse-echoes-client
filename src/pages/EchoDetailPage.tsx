@@ -200,7 +200,6 @@ export function EchoDetailPage() {
       <div className="flex h-screen flex-col bg-canvas">
         <TopBar
           notificationCount={unreadCount}
-          onSearchClick={() => {}}
           onNotificationClick={() => navigate('/notifications')}
           onProfileClick={() => navigate('/settings')}
         />
@@ -216,7 +215,6 @@ export function EchoDetailPage() {
       <div className="flex h-screen flex-col bg-canvas">
         <TopBar
           notificationCount={unreadCount}
-          onSearchClick={() => {}}
           onNotificationClick={() => navigate('/notifications')}
           onProfileClick={() => navigate('/settings')}
         />
@@ -237,7 +235,6 @@ export function EchoDetailPage() {
     <div className="flex h-screen flex-col bg-canvas">
       <TopBar
         notificationCount={unreadCount}
-        onSearchClick={() => {}}
         onNotificationClick={() => navigate('/notifications')}
         onProfileClick={() => navigate('/settings')}
       />
@@ -551,7 +548,7 @@ export function EchoDetailPage() {
           <Button variant="secondary" onClick={() => setHibernateModal(false)}>
             {t('common.cancel')}
           </Button>
-          <Button onClick={handleHibernateWake}>{t('common.confirm')}</Button>
+          <Button onClick={() => void handleHibernateWake()}>{t('common.confirm')}</Button>
         </div>
       </Modal>
 
@@ -569,8 +566,8 @@ export function EchoDetailPage() {
             aria-label={t('echoDetail.influenceType')}
           >
             <option value="nudge">{t('echoDetail.influenceNudge')}</option>
-            <option value="suggest">{t('echoDetail.influenceSuggest')}</option>
-            <option value="inspire">{t('echoDetail.influenceInspire')}</option>
+            <option value="suggest_activity">{t('echoDetail.influenceSuggest')}</option>
+            <option value="hint_relationship">{t('echoDetail.influenceInspire')}</option>
           </select>
           <Input
             label={t('echoDetail.influenceDetailsLabel')}
@@ -584,7 +581,7 @@ export function EchoDetailPage() {
             {t('common.cancel')}
           </Button>
           <Button
-            onClick={handleUseInfluence}
+            onClick={() => void handleUseInfluence()}
             disabled={influence !== null && influence.remaining <= 0}
           >
             {t('echoDetail.useInfluence')}

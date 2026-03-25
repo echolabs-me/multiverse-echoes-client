@@ -54,7 +54,7 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
   // Fetch diary entries from Redb on mount and every 30s.
   useEffect(() => {
     const load = () => {
-      void echoApi.diary(echo.echo_id, 3).then(setDiaryEntries).catch(() => {});
+      void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
     };
     load();
     const interval = setInterval(load, 30_000);
@@ -91,6 +91,7 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
           <p className="mt-1 text-sm text-text-muted">
             {t('dashboard.mood')}: {echo.current_mood}
           </p>
+          {echo.status === 'Active' && <DashboardTickCountdown />}
         </div>
       </div>
 
@@ -177,7 +178,6 @@ export function DashboardPage() {
     <div className="flex h-screen flex-col bg-canvas">
       <TopBar
         notificationCount={unreadCount}
-        onSearchClick={() => {}}
         onNotificationClick={() => navigate('/notifications')}
         onProfileClick={() => navigate('/settings')}
       />
@@ -243,5 +243,29 @@ export function DashboardPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+const TICK_INTERVAL = 60;
+
+function DashboardTickCountdown() {
+  const { t } = useTranslation();
+  const [seconds, setSeconds] = useState(TICK_INTERVAL);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSeconds((s) => (s <= 1 ? TICK_INTERVAL : s - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">
+      <span
+        className="inline-block h-1.5 w-1.5 rounded-full bg-success animate-pulse"
+        aria-hidden="true"
+      />
+      {t('dashboard.nextTick', { seconds })}
+    </p>
   );
 }

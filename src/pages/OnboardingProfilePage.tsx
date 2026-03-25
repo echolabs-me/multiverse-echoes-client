@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, Avatar } from '../components/index.ts';
+import { Button, Input } from '../components/index.ts';
 import { getComputedTokenColor } from '../lib/tokenColor.ts';
 
 /** Avatar colours reference CSS design tokens so they update with the active theme. */
@@ -63,14 +63,17 @@ export function OnboardingProfilePage() {
                     ? 'ring-2 ring-accent ring-offset-2 ring-offset-canvas'
                     : ''
                 }`}
-                aria-label={`Select ${avatar.id}`}
+                aria-label={`Select avatar ${avatar.id.slice(-1)}`}
                 aria-pressed={selectedAvatar === avatar.id}
               >
-                <Avatar
-                  alt={avatar.id}
-                  fallback={avatar.id.slice(-1)}
-                  size="lg"
-                />
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-full text-base font-medium text-canvas"
+                  style={{ backgroundColor: avatar.color || 'var(--accent)' }}
+                  role="img"
+                  aria-label={avatar.id}
+                >
+                  {avatar.id.slice(-1)}
+                </div>
               </button>
             ))}
           </div>

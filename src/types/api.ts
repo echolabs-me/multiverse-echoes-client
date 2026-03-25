@@ -94,6 +94,7 @@ export interface CreateEchoRequest {
   age_at_creation?: number;
   persona_mode?: 'detailed' | 'quick';
   consent_declaration: boolean;
+  persona_declaration?: 'inspired' | 'fictional';
 }
 
 export interface UpdatePersonaRequest {
@@ -377,8 +378,8 @@ export interface ConversationMessage {
 export interface CreateConversationResponse {
   conversation_id: string;
   echo_id: string;
-  status: string;
   created_at: string;
+  saved: boolean;
 }
 
 export interface SendConversationMessageRequest {

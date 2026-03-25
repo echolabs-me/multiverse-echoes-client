@@ -218,6 +218,15 @@ export const channels = {
 // --- Account ---
 
 export const account = {
+  getProfile: () =>
+    request<import('../../types/api.ts').User>('/account/me'),
+
+  updateProfile: (data: { display_name?: string }) =>
+    request<{ message: string; display_name: string }>('/account/me/profile', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
   getPrivacy: () =>
     request<{ solo_mode: boolean }>('/account/me/privacy'),
 

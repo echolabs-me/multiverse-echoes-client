@@ -37,7 +37,6 @@ export function ShardBrowserPage() {
     <div className="flex h-screen flex-col bg-canvas">
       <TopBar
         notificationCount={unreadCount}
-        onSearchClick={() => {}}
         onNotificationClick={() => navigate('/notifications')}
         onProfileClick={() => navigate('/settings')}
       />
