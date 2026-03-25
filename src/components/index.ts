@@ -3,6 +3,7 @@ export { Badge } from './Badge.tsx';
 export { BottomBar } from './BottomBar.tsx';
 export { Button } from './Button.tsx';
 export { Card } from './Card.tsx';
+export { EchoBirthAnimation } from './EchoBirthAnimation.tsx';
 export { Dropdown } from './Dropdown.tsx';
 export { EchoPortrait3D } from './EchoPortrait3D.tsx';
 export { EmptyState } from './EmptyState.tsx';

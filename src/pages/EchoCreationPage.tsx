@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, Card } from '../components/index.ts';
+import { EchoBirthAnimation } from '../components/EchoBirthAnimation.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
-import { Sparkles } from 'lucide-react';
 
 type Step = 'persona' | 'whatif' | 'consent' | 'destination' | 'birth';
 
@@ -48,10 +48,7 @@ export function EchoCreationPage() {
         consent_declaration: true,
       });
 
-      // Simulate birth animation delay
-      setTimeout(() => {
-        setIsBirthComplete(true);
-      }, 3000);
+      // Birth animation will call onComplete when done (15s or 3s for reduced motion).
     } catch {
       // On error, go back to consent
       setStep('consent');
@@ -288,31 +285,29 @@ export function EchoCreationPage() {
     );
   }
 
-  // Birth animation
+  // Birth animation — full cinematic version (Phase 5 Step 3)
+  const birthName =
+    personaMode === 'detailed' && echoName ? echoName : 'My Echo';
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4 text-center">
       {!isBirthComplete ? (
         <>
-          {/* Simplified birth animation — CSS particles */}
-          <div className="relative mb-8" aria-hidden="true">
-            <div className="h-32 w-32 animate-pulse rounded-full bg-accent/20" />
-            <Sparkles
-              size={48}
-              className="absolute inset-0 m-auto animate-spin text-accent"
-              style={{ animationDuration: '3s' }}
-            />
-          </div>
-          <h1 className="text-2xl font-bold text-text-primary">
+          <EchoBirthAnimation
+            echoName={birthName}
+            onComplete={() => setIsBirthComplete(true)}
+          />
+          <h1 className="mt-6 text-2xl font-bold text-text-primary">
             {t('echo.birthTitle')}
           </h1>
         </>
       ) : (
         <>
-          <Sparkles
-            size={48}
-            className="mb-6 text-accent"
-            aria-hidden="true"
-          />
+          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-accent/20">
+            <span className="text-3xl font-bold text-accent">
+              {birthName[0] ?? '?'}
+            </span>
+          </div>
           <h1 className="mb-4 text-2xl font-bold text-text-primary">
             {t('echo.birthComplete')}
           </h1>
