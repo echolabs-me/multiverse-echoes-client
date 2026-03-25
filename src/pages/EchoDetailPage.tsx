@@ -271,6 +271,7 @@ export function EchoDetailPage() {
               <p className="mt-1 text-sm text-text-secondary">
                 {t('dashboard.mood')}: {activeEcho.current_mood} &middot; {t('dashboard.tick', { tick: activeEcho.current_tick })}
               </p>
+              {activeEcho.status === 'Active' && <TickCountdown />}
             </div>
           </div>
 
@@ -315,22 +316,27 @@ export function EchoDetailPage() {
             >
               <MessageCircle size={16} /> {t('echoDetail.talkToEcho')}
             </Button>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                setHibernateModal(true);
-              }}
-            >
-              {activeEcho.status === 'Active' ? (
-                <>
-                  <Moon size={16} /> {t('echoDetail.hibernate')}
-                </>
-              ) : (
-                <>
-                  <Sun size={16} /> {t('echoDetail.wake')}
-                </>
-              )}
-            </Button>
+            <div className="flex flex-col items-start gap-1">
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setHibernateModal(true);
+                }}
+              >
+                {activeEcho.status === 'Active' ? (
+                  <>
+                    <Moon size={16} /> {t('echoDetail.hibernate')}
+                  </>
+                ) : (
+                  <>
+                    <Sun size={16} /> {t('echoDetail.wake')}
+                  </>
+                )}
+              </Button>
+              <p className="text-xs text-text-muted max-w-[200px]">
+                {t('echoDetail.hibernateHint')}
+              </p>
+            </div>
             <Button
               variant="secondary"
               onClick={() => setInfluenceModal(true)}
@@ -642,6 +648,30 @@ export function EchoDetailPage() {
         echoId={activeEcho.echo_id}
       />
     </div>
+  );
+}
+
+const TICK_INTERVAL = 60; // seconds — matches config/default.toml engine.tick_interval_seconds
+
+function TickCountdown() {
+  const { t } = useTranslation();
+  const [seconds, setSeconds] = useState(TICK_INTERVAL);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSeconds((s) => (s <= 1 ? TICK_INTERVAL : s - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">
+      <span
+        className="inline-block h-1.5 w-1.5 rounded-full bg-success animate-pulse"
+        aria-hidden="true"
+      />
+      {t('echoDetail.nextTick', { seconds })}
+    </p>
   );
 }
 

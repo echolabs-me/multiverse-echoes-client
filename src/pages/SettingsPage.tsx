@@ -112,6 +112,15 @@ export function SettingsPage() {
 function ProfileSection() {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState(user?.display_name ?? '');
+
+  const handleSave = () => {
+    if (!editName.trim() || editName.trim().length < 3) return;
+    // Display name update requires a dedicated endpoint (deferred).
+    // For now, just close the editor.
+    setIsEditing(false);
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -120,15 +129,43 @@ function ProfileSection() {
         <div className="flex flex-col gap-3">
           <div>
             <label className="text-xs text-text-muted">{t('auth.displayName')}</label>
-            <p className="text-sm text-text-primary">{user?.display_name ?? '—'}</p>
+            {isEditing ? (
+              <div className="mt-1 flex gap-2">
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  maxLength={30}
+                  className="flex-1 rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:outline-none"
+                />
+                <Button onClick={handleSave} disabled={editName.trim().length < 3}>
+                  {t('common.save')}
+                </Button>
+                <Button variant="secondary" onClick={() => setIsEditing(false)}>
+                  {t('common.cancel')}
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <p className="text-sm text-text-primary">{user?.display_name || t('settings.notSet')}</p>
+                <button
+                  onClick={() => { setEditName(user?.display_name ?? ''); setIsEditing(true); }}
+                  className="text-xs text-accent hover:text-accent-hover"
+                >
+                  {t('common.edit')}
+                </button>
+              </div>
+            )}
           </div>
           <div>
             <label className="text-xs text-text-muted">{t('auth.email')}</label>
-            <p className="text-sm text-text-primary">{user?.email ?? '—'}</p>
+            <p className="text-sm text-text-primary">{user?.email || t('settings.notSet')}</p>
           </div>
           <div>
             <label className="text-xs text-text-muted">{t('onboarding.timezone')}</label>
-            <p className="text-sm text-text-primary">{user?.timezone ?? t('settings.notSet')}</p>
+            <p className="text-sm text-text-primary">
+              {user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone}
+            </p>
           </div>
         </div>
       </Card>

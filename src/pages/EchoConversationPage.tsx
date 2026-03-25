@@ -135,7 +135,7 @@ export function EchoConversationPage() {
         <p className="max-w-md text-center text-text-secondary">
           {t('conversation.tierGateDesc')}
         </p>
-        <Button onClick={() => navigate('/settings')}>{t('conversation.upgrade')}</Button>
+        <Button onClick={() => navigate('/plans')}>{t('conversation.upgrade')}</Button>
         <Button variant="ghost" onClick={() => navigate(-1)}>
           {t('common.back')}
         </Button>

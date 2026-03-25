@@ -10,6 +10,7 @@
     "retry": "Retry",
     "cancel": "Cancel",
     "save": "Save",
+    "edit": "Edit",
     "delete": "Delete",
     "confirm": "Confirm",
     "close": "Close",
@@ -141,6 +142,8 @@
     "influenceDetailsPlaceholder": "What would you like to nudge your Echo towards?",
     "hibernate": "Hibernate",
     "wake": "Wake",
+    "hibernateHint": "Hibernating pauses your Echo's simulation. They won't age, make decisions, or generate new diary entries until you wake them. Useful if you want to pause a storyline or free up resources.",
+    "nextTick": "Next tick in {{seconds}}s",
     "hibernateConfirm": "Are you sure you want to hibernate this Echo? It will pause all autonomous activity.",
     "wakeConfirm": "Wake this Echo? It will resume autonomous activity.",
     "hibernated": "Echo hibernated",
@@ -172,8 +175,8 @@
   "shardBrowser": {
     "title": "Browse Shards",
     "searchPlaceholder": "Search shards by name...",
-    "empty": "No Shards to explore yet",
-    "emptyDesc": "Public Shards will appear here when new worlds open up."
+    "empty": "No public Shards yet",
+    "emptyDesc": "Your Echo lives in a Personal Shard for now — a private world all their own. Public Shards with themed worlds, unique cultures, and other Echoes to meet are coming soon. This is where it gets interesting."
   },
   "feeds": {
     "personalTitle": "Personal Feed",
