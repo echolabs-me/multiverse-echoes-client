@@ -1,6 +1,6 @@
 import type { ApiError } from '../../types/api.ts';
 
-const DEFAULT_BASE_URL = 'http://localhost:3000';
+const DEFAULT_BASE_URL = 'http://localhost:8080';
 
 let baseUrl = DEFAULT_BASE_URL;
 let accessToken: string | null = null;

@@ -121,7 +121,17 @@ export function RegisterPage() {
                 onChange={(e) => setTosAccepted(e.target.checked)}
                 className="mt-0.5 accent-accent"
               />
-              {t('auth.tosAgree')}
+              <span>
+                {t('auth.tosAgree')}{' '}
+                <a
+                  href="/terms-of-service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-accent-hover underline"
+                >
+                  {t('auth.tosLink')}
+                </a>
+              </span>
             </label>
             {errors.tos && (
               <p className="text-xs text-danger" role="alert">
@@ -136,7 +146,17 @@ export function RegisterPage() {
                 onChange={(e) => setPrivacyAccepted(e.target.checked)}
                 className="mt-0.5 accent-accent"
               />
-              {t('auth.privacyAgree')}
+              <span>
+                {t('auth.privacyAgree')}{' '}
+                <a
+                  href="/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent hover:text-accent-hover underline"
+                >
+                  {t('auth.privacyLink')}
+                </a>
+              </span>
             </label>
             {errors.privacy && (
               <p className="text-xs text-danger" role="alert">

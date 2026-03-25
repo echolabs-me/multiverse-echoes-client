@@ -21,6 +21,7 @@ import { SearchPage } from './pages/SearchPage.tsx';
 import { EchoConversationPage } from './pages/EchoConversationPage.tsx';
 import { AdminDashboardPage } from './pages/AdminDashboardPage.tsx';
 import { WaitlistPage } from './pages/WaitlistPage.tsx';
+import { LoginPage } from './pages/LoginPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -50,8 +51,7 @@ export function App() {
           <Route path="/verified" element={<VerifiedPage />} />
           <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
           <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
-          {/* Placeholder routes — built in subsequent steps */}
-          <Route path="/login" element={<PlaceholderPage title="Login" />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
@@ -70,13 +70,5 @@ export function App() {
         </Routes>
       </main>
     </BrowserRouter>
-  );
-}
-
-function PlaceholderPage({ title }: { title: string }) {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-canvas text-text-primary">
-      <h1 className="text-2xl font-semibold">{title}</h1>
-    </div>
   );
 }
