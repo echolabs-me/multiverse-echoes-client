@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Plus, Compass, BookOpen, Zap, Users, ExternalLink } from 'lucide-react';
 import { TopBar, Sidebar, Card, Badge, EmptyState, Button, Spinner } from '../components/index.ts';
+import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import type { EchoResponse } from '../types/api.ts';
@@ -49,10 +50,8 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
     <div className="flex flex-col gap-6">
       {/* Echo header */}
       <div className="flex items-center gap-4">
-        {/* Portrait placeholder — gradient with silhouette */}
-        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent/20 to-accent/5">
-          <span className="text-3xl font-bold text-accent">{echo.name[0]}</span>
-        </div>
+        {/* 3D mood-reactive portrait */}
+        <EchoPortrait3D name={echo.name} mood={echo.current_mood} size="md" />
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-bold text-text-primary">{echo.name}</h2>

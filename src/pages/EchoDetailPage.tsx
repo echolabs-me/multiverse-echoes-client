@@ -28,6 +28,7 @@ import {
   Input,
   StoryExportModal,
 } from '../components/index.ts';
+import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
@@ -231,9 +232,7 @@ export function EchoDetailPage() {
 
           {/* Echo header */}
           <div className="mb-6 flex items-start gap-4">
-            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent/20 to-accent/5">
-              <span className="text-4xl font-bold text-accent">{activeEcho.name[0]}</span>
-            </div>
+            <EchoPortrait3D name={activeEcho.name} mood={activeEcho.current_mood} size="lg" />
             <div className="flex-1">
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-text-primary">{activeEcho.name}</h1>
