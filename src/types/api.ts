@@ -127,6 +127,20 @@ export interface Shard {
   created_at: string;
 }
 
+// --- Diary ---
+
+export interface DiaryEntry {
+  diary_id: string;
+  echo_id: string;
+  tick_id: number;
+  simulated_date: string;
+  content: string;
+  mood: string;
+  location_name: string;
+  shard_id: string;
+  created_at: string;
+}
+
 // --- Feed ---
 
 export interface FeedItem {

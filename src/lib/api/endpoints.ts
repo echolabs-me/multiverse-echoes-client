@@ -9,6 +9,7 @@ import type {
   MessageResponse,
   EchoResponse,
   CreateEchoRequest,
+  DiaryEntry,
   UpdatePersonaRequest,
   Shard,
   FeedItem,
@@ -121,6 +122,9 @@ export const echoes = {
 
   memories: (echoId: string) =>
     request<EchoMemory[]>(`/echoes/${echoId}/memories`),
+
+  diary: (echoId: string, limit = 20, offset = 0) =>
+    request<DiaryEntry[]>(`/echoes/${echoId}/diary?limit=${limit}&offset=${offset}`),
 
   rename: (echoId: string, name: string) =>
     request<EchoResponse>(`/echoes/${echoId}`, {

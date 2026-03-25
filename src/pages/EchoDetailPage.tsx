@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -39,7 +39,7 @@ import type {
   EchoRelationship,
   InfluenceBalance,
   EchoMemory,
-  FeedItem,
+  DiaryEntry,
 } from '../types/api.ts';
 
 const PAGE_SIZE = 20;
@@ -57,6 +57,7 @@ export function EchoDetailPage() {
   const [relationships, setRelationships] = useState<EchoRelationship[]>([]);
   const [influence, setInfluence] = useState<InfluenceBalance | null>(null);
   const [memories, setMemories] = useState<EchoMemory[]>([]);
+  const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [diaryPage, setDiaryPage] = useState(1);
   const [showAllPersona, setShowAllPersona] = useState(false);
@@ -73,19 +74,25 @@ export function EchoDetailPage() {
   const [exportModal, setExportModal] = useState(false);
   const [soloMode, setSoloMode] = useState(false);
 
+  // Stable ref for echoId so polling doesn't depend on store function refs.
+  const echoIdRef = useRef(echoId);
+  echoIdRef.current = echoId;
+
   const loadData = useCallback(async () => {
     if (!echoId) return;
     setIsLoading(true);
     try {
       await fetchEcho(echoId);
-      const [rels, inf, mems] = await Promise.all([
+      const [rels, inf, mems, diary] = await Promise.all([
         echoApi.relationships(echoId).catch(() => [] as EchoRelationship[]),
         echoApi.influence(echoId).catch(() => null),
         echoApi.memories(echoId).catch(() => [] as EchoMemory[]),
+        echoApi.diary(echoId).catch(() => [] as DiaryEntry[]),
       ]);
       setRelationships(rels);
       setInfluence(inf);
       setMemories(mems);
+      setDiaryEntries(diary);
       await fetchPersonalFeed(echoId);
       // Load solo_mode
       const privacy = await accountApi.getPrivacy().catch(() => ({ solo_mode: false }));
@@ -100,17 +107,22 @@ export function EchoDetailPage() {
   }, [loadData]);
 
   // Poll for live updates every 30 seconds (tick counter, mood, diary, events).
+  // Uses echoIdRef to avoid re-creating the interval when store functions change.
   // Debt: replace with WebSocket subscription to /ws/echoes/:id/stream.
   useEffect(() => {
     if (!echoId) return;
     const interval = setInterval(() => {
-      void fetchEcho(echoId);
-      void fetchPersonalFeed(echoId);
+      const id = echoIdRef.current;
+      if (!id) return;
+      // Refresh echo (tick counter, mood) + diary entries from Redb.
+      void useEchoStore.getState().fetchEcho(id);
+      void echoApi.diary(id).then((d) => setDiaryEntries(d)).catch(() => {});
+      void useFeedStore.getState().fetchPersonalFeed(id);
     }, 30_000);
     return () => clearInterval(interval);
-  }, [echoId, fetchEcho, fetchPersonalFeed]);
+  }, [echoId]);
 
-  const diaryEntries = personalFeed.filter((f) => f.item_type === 'diary_entry');
+  // Life events still come from the feed store (no dedicated Redb repo yet).
   const lifeEvents = personalFeed.filter((f) => f.item_type === 'life_event');
   const paginatedDiary = diaryEntries.slice(0, diaryPage * PAGE_SIZE);
   const hasMoreDiary = paginatedDiary.length < diaryEntries.length;
@@ -376,7 +388,7 @@ export function EchoDetailPage() {
             ) : (
               <div className="flex flex-col gap-3">
                 {paginatedDiary.map((entry) => (
-                  <DiaryCard key={entry.item_id} entry={entry} />
+                  <DiaryCard key={entry.diary_id} entry={entry} />
                 ))}
                 {hasMoreDiary && (
                   <Button
@@ -633,13 +645,16 @@ export function EchoDetailPage() {
   );
 }
 
-function DiaryCard({ entry }: { entry: FeedItem }) {
+function DiaryCard({ entry }: { entry: DiaryEntry }) {
   return (
     <Card>
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-sm font-medium text-text-primary">{entry.title}</p>
-          <p className="mt-1 text-sm text-text-secondary">{entry.body}</p>
+          <p className="text-sm font-medium text-text-primary">
+            {entry.simulated_date} — {entry.mood}
+          </p>
+          <p className="mt-1 text-sm text-text-secondary">{entry.content}</p>
+          <p className="mt-1 text-xs text-text-muted">{entry.location_name}</p>
         </div>
         <span className="ml-3 shrink-0 text-xs text-text-muted">
           {new Date(entry.created_at).toLocaleDateString()}
