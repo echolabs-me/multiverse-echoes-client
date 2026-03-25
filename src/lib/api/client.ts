@@ -3,8 +3,9 @@ import type { ApiError } from '../../types/api.ts';
 const DEFAULT_BASE_URL = 'http://localhost:8080';
 
 let baseUrl = DEFAULT_BASE_URL;
-let accessToken: string | null = null;
-let refreshToken: string | null = null;
+// Restore tokens from localStorage on module load (survives full page reloads).
+let accessToken: string | null = localStorage.getItem('access_token');
+let refreshToken: string | null = localStorage.getItem('refresh_token');
 let onAuthFailure: (() => void) | null = null;
 
 export function configureApi(options: {
