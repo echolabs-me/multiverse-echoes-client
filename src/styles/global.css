@@ -179,8 +179,18 @@ pre {
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
 
+  /* Transition durations — CDS-001 §7.2 (maps tokens for Tailwind) */
+  --duration-fast: var(--duration-fast);
+  --duration-normal: var(--duration-normal);
+  --duration-slow: var(--duration-slow);
+
   /* Tick pulse animation — CDS-001 §7.3 */
   --animate-tick-pulse: tick-pulse 1s ease-out forwards;
+  --animate-fade-in: me-fade-in var(--duration-normal) ease-out forwards;
+  --animate-fade-out: me-fade-out var(--duration-fast) ease-in forwards;
+  --animate-slide-in: me-slide-in var(--duration-normal) ease-out forwards;
+  --animate-modal-in: me-modal-in var(--duration-normal) ease-out forwards;
+  --animate-modal-out: me-modal-out var(--duration-fast) ease-in forwards;
 }
 
 /* Tick pulse: barely-perceptible ripple. Max opacity 5%. */
@@ -192,5 +202,91 @@ pre {
   100% {
     box-shadow: 0 0 0 20px rgba(212, 145, 92, 0);
     opacity: 0;
+  }
+}
+
+/* CDS-001 §7.2 — Standard transition keyframes */
+@keyframes me-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes me-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes me-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes me-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes me-modal-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* Feed item highlight glow — CDS-001 §7.2 */
+@keyframes me-highlight-glow {
+  0% {
+    background-color: var(--accent-subtle);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* CDS-001 §7.2 — Standard transition classes (durations via tokens, auto-zero for reduced motion) */
+.transition-color-opacity {
+  transition-property: color, background-color, border-color, opacity;
+  transition-duration: var(--duration-fast);
+  transition-timing-function: ease;
+}
+
+.transition-page {
+  transition-property: opacity, transform;
+  transition-duration: var(--duration-slow);
+  transition-timing-function: ease-in-out;
+}
+
+/* Reduced motion: disable all keyframe animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -18,7 +18,7 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div
-      className={`flex flex-col items-center justify-center py-12 text-center ${className}`}
+      className={`flex animate-fade-in flex-col items-center justify-center py-12 text-center ${className}`}
     >
       <div className="mb-4 text-text-muted">
         {icon ?? <Inbox size={48} strokeWidth={1.5} aria-hidden="true" />}

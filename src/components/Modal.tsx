@@ -55,7 +55,7 @@ export function Modal({
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- <dialog> handles Escape natively
     <dialog
       ref={dialogRef}
-      className={`max-w-lg rounded-lg border border-border bg-surface p-0 shadow-lg backdrop:bg-black/50 ${className}`}
+      className={`max-w-lg rounded-lg border border-border bg-surface p-0 shadow-lg backdrop:bg-black/50 open:animate-modal-in ${className}`}
       onClick={handleBackdropClick}
       aria-labelledby="modal-title"
     >
@@ -65,7 +65,7 @@ export function Modal({
         </h2>
         <button
           onClick={onClose}
-          className="rounded-md p-1 text-text-muted hover:text-text-primary"
+          className="rounded-md p-1 text-text-muted transition-color-opacity hover:text-text-primary"
           aria-label="Close"
         >
           <X size={20} />

@@ -126,7 +126,7 @@ function FeedItemCard({
 
   return (
     <>
-      <Card variant="compact">
+      <Card variant="compact" className="animate-slide-in">
         <div className="flex items-start gap-3">
           <div className="mt-0.5">{icon}</div>
           <div className="flex-1">

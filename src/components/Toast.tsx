@@ -26,13 +26,13 @@ function ToastEntry({ toast }: { toast: ToastItem }) {
   return (
     <div
       role="alert"
-      className={`flex items-center gap-3 rounded-lg border px-4 py-3 shadow-lg ${config.bg} ${config.border}`}
+      className={`flex animate-slide-in items-center gap-3 rounded-lg border px-4 py-3 shadow-lg ${config.bg} ${config.border}`}
     >
       <Icon size={18} className="shrink-0" aria-hidden="true" />
       <p className="flex-1 text-sm text-text-primary">{toast.message}</p>
       <button
         onClick={() => removeToast(toast.id)}
-        className="shrink-0 text-text-muted hover:text-text-primary"
+        className="shrink-0 text-text-muted transition-color-opacity hover:text-text-primary"
         aria-label="Dismiss"
       >
         <X size={16} />
