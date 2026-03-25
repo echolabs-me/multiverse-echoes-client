@@ -128,7 +128,7 @@ function ProfileSection() {
           </div>
           <div>
             <label className="text-xs text-text-muted">{t('onboarding.timezone')}</label>
-            <p className="text-sm text-text-primary">{user?.timezone ?? 'Not set'}</p>
+            <p className="text-sm text-text-primary">{user?.timezone ?? t('settings.notSet')}</p>
           </div>
         </div>
       </Card>
@@ -232,7 +232,7 @@ function AccountSection() {
         {isLoadingSessions ? (
           <Spinner size="sm" />
         ) : sessions.length === 0 ? (
-          <p className="text-sm text-text-muted">No active sessions</p>
+          <p className="text-sm text-text-muted">{t('settings.noSessions')}</p>
         ) : (
           <div className="flex flex-col gap-2">
             {sessions.map((session) => (
@@ -348,7 +348,7 @@ function PrivacySection() {
             type="checkbox"
             checked={soloMode}
             onChange={() => void handleSoloModeToggle()}
-            className="h-4 w-4 rounded border-border-default accent-accent"
+            className="h-4 w-4 rounded border-border accent-accent"
             aria-label={t('settings.soloMode')}
           />
           <label htmlFor="solo-mode-toggle">
@@ -418,14 +418,14 @@ function NotificationPrefsSection() {
   }
 
   const categories: Array<{ key: keyof NotificationPreferences; label: string }> = [
-    { key: 'echo_life_event', label: 'Echo life events' },
-    { key: 'echo_diary', label: 'Diary updates' },
-    { key: 'community_message', label: 'Community messages' },
-    { key: 'follow', label: 'New followers' },
-    { key: 'system', label: 'System notifications' },
-    { key: 'travel', label: 'Travel completion' },
-    { key: 'influence', label: 'Influence used' },
-    { key: 'daily_digest', label: 'Daily digest' },
+    { key: 'echo_life_event', label: t('settings.prefEchoLifeEvent') },
+    { key: 'echo_diary', label: t('settings.prefDiary') },
+    { key: 'community_message', label: t('settings.prefCommunity') },
+    { key: 'follow', label: t('settings.prefFollowers') },
+    { key: 'system', label: t('settings.prefSystem') },
+    { key: 'travel', label: t('settings.prefTravel') },
+    { key: 'influence', label: t('settings.prefInfluence') },
+    { key: 'daily_digest', label: t('settings.prefDigest') },
   ];
 
   return (
@@ -443,12 +443,12 @@ function NotificationPrefsSection() {
                 <select
                   value={value}
                   onChange={(e) => void updatePref(key, e.target.value)}
-                  className="rounded border border-border-default bg-surface-default px-2 py-1 text-xs text-text-primary"
+                  className="rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary focus:border-accent focus:outline-none"
                   aria-label={`${label} preference`}
                 >
-                  <option value="InApp">In-app only</option>
-                  <option value="InAppAndEmail">In-app + Email</option>
-                  <option value="Off">Off</option>
+                  <option value="InApp">{t('settings.inAppOnly')}</option>
+                  <option value="InAppAndEmail">{t('settings.inAppAndEmail')}</option>
+                  <option value="Off">{t('settings.off')}</option>
                 </select>
               </div>
             );
@@ -457,7 +457,7 @@ function NotificationPrefsSection() {
       </Card>
 
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">Sound</h3>
+        <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.sound')}</h3>
         <SoundSettings />
       </Card>
     </div>
@@ -475,7 +475,7 @@ function SoundSettings() {
           type="checkbox"
           checked={enabled}
           onChange={() => setEnabled(!enabled)}
-          className="h-4 w-4 rounded border-border-default accent-accent"
+          className="h-4 w-4 rounded border-border accent-accent"
         />
         <span className="text-sm text-text-primary">{t('settings.soundEnabled')}</span>
       </label>
@@ -571,7 +571,7 @@ function AppearanceSection() {
       <Card>
         <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.language')}</h3>
         <p className="text-sm text-text-muted">
-          English is the only supported language at launch. More languages coming soon.
+          {t('settings.languageNote')}
         </p>
       </Card>
     </div>

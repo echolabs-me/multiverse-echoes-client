@@ -62,20 +62,20 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
             <h2 className="text-xl font-bold text-text-primary">{echo.name}</h2>
             <Link
               to={`/echoes/${echo.echo_id}`}
-              className="flex items-center gap-1 text-xs text-accent hover:text-accent/80"
+              className="flex items-center gap-1 text-xs text-accent hover:text-accent/80 transition-colors"
             >
               <ExternalLink size={12} />
-              View detail
+              {t('dashboard.viewDetail')}
             </Link>
           </div>
           <div className="flex items-center gap-2 text-sm text-text-secondary">
             <Badge variant={echo.status === 'Active' ? 'success' : 'default'}>
               {echo.status}
             </Badge>
-            <span>Tick {echo.current_tick}</span>
+            <span>{t('dashboard.tick', { tick: echo.current_tick })}</span>
           </div>
           <p className="mt-1 text-sm text-text-muted">
-            Mood: {echo.current_mood}
+            {t('dashboard.mood')}: {echo.current_mood}
           </p>
         </div>
       </div>
@@ -89,7 +89,7 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
           </h3>
         </div>
         <p className="text-sm italic text-text-secondary">
-          Diary entries will appear here as your Echo lives its life...
+          {t('dashboard.latestDiaryEmpty')}
         </p>
       </Card>
 
@@ -102,7 +102,7 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
           </h3>
         </div>
         <p className="text-sm text-text-muted">
-          Life events will appear here...
+          {t('dashboard.recentEventsEmpty')}
         </p>
       </Card>
 
@@ -115,7 +115,7 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
           </h3>
         </div>
         <p className="text-sm text-text-muted">
-          Relationships will form as your Echo meets others...
+          {t('dashboard.relationshipsEmpty')}
         </p>
       </Card>
     </div>

@@ -239,7 +239,7 @@ export function CommunityPage() {
                   </div>
                 ) : messages.length === 0 ? (
                   <p className="py-10 text-center text-sm text-text-muted">
-                    No messages yet. Be the first!
+                    {t('community.noMessagesYet')}
                   </p>
                 ) : (
                   <div className="flex flex-col gap-1">
@@ -255,7 +255,7 @@ export function CommunityPage() {
                               value={editText}
                               onChange={(e) => setEditText(e.target.value)}
                               maxLength={MAX_MESSAGE_LENGTH}
-                              className="flex-1 rounded border border-border-default bg-surface-default px-2 py-1 text-sm text-text-primary"
+                              className="flex-1 rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') void handleEdit(msg.message_id);
                                 if (e.key === 'Escape') setEditingMessageId(null);
@@ -366,7 +366,7 @@ export function CommunityPage() {
                       onChange={(e) => setMessageText(e.target.value)}
                       maxLength={MAX_MESSAGE_LENGTH}
                       placeholder={t('community.messagePlaceholder')}
-                      className="flex-1 rounded-lg border border-border-default bg-surface-default px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                      className="flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
@@ -404,10 +404,10 @@ export function CommunityPage() {
         <div className="mb-4">
           <Input
             multiline
-            label="Reason"
+            label={t('community.reportReason')}
             value={reportReason}
             onChange={(e) => setReportReason(e.target.value)}
-            placeholder="Describe the issue..."
+            placeholder={t('community.reportPlaceholder')}
           />
         </div>
         <div className="flex justify-end gap-2">

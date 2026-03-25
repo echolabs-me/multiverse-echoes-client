@@ -69,7 +69,7 @@ export function ShardBrowserPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t('shardBrowser.searchPlaceholder')}
-              className="w-full rounded-lg border border-border-default bg-surface-default py-2 pl-9 pr-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
               aria-label={t('shardBrowser.searchPlaceholder')}
             />
           </div>

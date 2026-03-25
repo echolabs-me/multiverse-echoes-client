@@ -199,8 +199,8 @@ export function EchoDetailPage() {
         />
         <div className="flex flex-1 items-center justify-center">
           <EmptyState
-            title={t('common.error')}
-            description="Echo not found"
+            title={t('echoDetail.echoNotFound')}
+            description={t('echoDetail.echoNotFoundDesc')}
             action={<Button onClick={() => navigate('/dashboard')}>{t('common.back')}</Button>}
           />
         </div>
@@ -246,7 +246,7 @@ export function EchoDetailPage() {
                 })}
               </p>
               <p className="mt-1 text-sm text-text-secondary">
-                Mood: {activeEcho.current_mood} &middot; Tick {activeEcho.current_tick}
+                {t('dashboard.mood')}: {activeEcho.current_mood} &middot; {t('dashboard.tick', { tick: activeEcho.current_tick })}
               </p>
             </div>
           </div>
@@ -279,7 +279,7 @@ export function EchoDetailPage() {
                 className="mt-1 flex items-center gap-1 text-xs text-accent hover:text-accent/80"
               >
                 {showAllPersona ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-                {showAllPersona ? t('common.close') : 'Show more'}
+                {showAllPersona ? t('common.showLess') : t('common.showMore')}
               </button>
             )}
           </Card>
@@ -496,7 +496,7 @@ export function EchoDetailPage() {
                   type="checkbox"
                   checked={soloMode}
                   onChange={handleSoloModeToggle}
-                  className="h-4 w-4 rounded border-border-default accent-accent"
+                  className="h-4 w-4 rounded border-border accent-accent"
                 />
                 <span className="text-sm text-text-primary">
                   {t('echoDetail.soloMode')}
@@ -536,18 +536,18 @@ export function EchoDetailPage() {
           <select
             value={influenceType}
             onChange={(e) => setInfluenceType(e.target.value)}
-            className="rounded-lg border border-border-default bg-surface-default px-3 py-2 text-sm text-text-primary"
-            aria-label="Influence type"
+            className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+            aria-label={t('echoDetail.influenceType')}
           >
-            <option value="nudge">Nudge</option>
-            <option value="suggest">Suggest</option>
-            <option value="inspire">Inspire</option>
+            <option value="nudge">{t('echoDetail.influenceNudge')}</option>
+            <option value="suggest">{t('echoDetail.influenceSuggest')}</option>
+            <option value="inspire">{t('echoDetail.influenceInspire')}</option>
           </select>
           <Input
-            label="Details (optional)"
+            label={t('echoDetail.influenceDetailsLabel')}
             value={influenceDetails}
             onChange={(e) => setInfluenceDetails(e.target.value)}
-            placeholder="What would you like to nudge your Echo towards?"
+            placeholder={t('echoDetail.influenceDetailsPlaceholder')}
           />
         </div>
         <div className="flex justify-end gap-2">

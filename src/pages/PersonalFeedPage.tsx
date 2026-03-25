@@ -67,7 +67,7 @@ export function PersonalFeedPage() {
             <select
               value={selectedEchoId}
               onChange={(e) => { setSelectedEchoId(e.target.value); setPage(1); }}
-              className="rounded-lg border border-border-default bg-surface-default px-3 py-2 text-sm text-text-primary"
+              className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
               aria-label={t('feeds.filterByEcho')}
             >
               <option value="">{t('feeds.allEchoes')}</option>

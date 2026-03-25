@@ -68,7 +68,7 @@ export function ShardViewPage() {
     if (!shardId || !selectedEchoId) return;
     try {
       await echoApi.travel(selectedEchoId, shardId);
-      addToast('Travel initiated', 'success');
+      addToast(t('shardView.travelInitiated'), 'success');
       setTravelModal(false);
     } catch {
       addToast(t('common.error'), 'danger');
@@ -107,8 +107,8 @@ export function ShardViewPage() {
         />
         <div className="flex flex-1 items-center justify-center">
           <EmptyState
-            title={t('common.error')}
-            description="Shard not found"
+            title={t('shardView.shardNotFound')}
+            description=""
             action={<Button onClick={() => navigate('/dashboard')}>{t('common.back')}</Button>}
           />
         </div>
@@ -215,7 +215,7 @@ export function ShardViewPage() {
                 </h2>
               </div>
               {channelMessages.length === 0 ? (
-                <p className="text-sm text-text-muted">No messages yet</p>
+                <p className="text-sm text-text-muted">{t('shardView.noMessagesYet')}</p>
               ) : (
                 <div className="flex flex-col gap-2">
                   {channelMessages.map((msg) => (
@@ -241,7 +241,7 @@ export function ShardViewPage() {
           {/* Recent activity from shard feed */}
           {shardFeed.length > 0 && (
             <section className="mb-6">
-              <h2 className="mb-3 text-lg font-semibold text-text-primary">Recent Activity</h2>
+              <h2 className="mb-3 text-lg font-semibold text-text-primary">{t('shardView.recentActivity')}</h2>
               <div className="flex flex-col gap-2">
                 {shardFeed.slice(0, 20).map((item) => (
                   <Card key={item.item_id} variant="compact">
@@ -265,15 +265,15 @@ export function ShardViewPage() {
         title={t('shardView.travelHere')}
       >
         <p className="mb-3 text-sm text-text-secondary">
-          Select an Echo to travel to {activeShard.name}:
+          {t('shardView.travelSelectEcho')}
         </p>
         <select
           value={selectedEchoId}
           onChange={(e) => setSelectedEchoId(e.target.value)}
-          className="mb-4 w-full rounded-lg border border-border-default bg-surface-default px-3 py-2 text-sm text-text-primary"
-          aria-label="Select Echo"
+          className="mb-4 w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          aria-label={t('shardView.travelSelectEcho')}
         >
-          <option value="">Choose an Echo...</option>
+          <option value="">{t('shardView.travelChooseEcho')}</option>
           {eligibleEchoes.map((e) => (
             <option key={e.echo_id} value={e.echo_id}>
               {e.name}
