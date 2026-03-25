@@ -2,21 +2,31 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Input, Avatar } from '../components/index.ts';
+import { getComputedTokenColor } from '../lib/tokenColor.ts';
 
-const DEFAULT_AVATARS = [
-  { id: 'avatar-1', color: '#D4915C' },
-  { id: 'avatar-2', color: '#6BAF7A' },
-  { id: 'avatar-3', color: '#5B9EC4' },
-  { id: 'avatar-4', color: '#D4A84C' },
-  { id: 'avatar-5', color: '#C45B5B' },
-  { id: 'avatar-6', color: '#8B6F47' },
-];
+/** Avatar colours reference CSS design tokens so they update with the active theme. */
+const AVATAR_TOKENS = [
+  { id: 'avatar-1', token: '--accent' },
+  { id: 'avatar-2', token: '--success' },
+  { id: 'avatar-3', token: '--info' },
+  { id: 'avatar-4', token: '--warning' },
+  { id: 'avatar-5', token: '--danger' },
+  { id: 'avatar-6', token: '--accent-renaissance-florence' },
+] as const;
+
+function getAvatarColors() {
+  return AVATAR_TOKENS.map((a) => ({
+    id: a.id,
+    color: getComputedTokenColor(a.token),
+  }));
+}
 
 export function OnboardingProfilePage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [selectedAvatar, setSelectedAvatar] = useState(DEFAULT_AVATARS[0]!.id);
+  const avatars = getAvatarColors();
+  const [selectedAvatar, setSelectedAvatar] = useState<string>(AVATAR_TOKENS[0].id);
   const [bio, setBio] = useState('');
   const [timezone] = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -44,7 +54,7 @@ export function OnboardingProfilePage() {
             {t('onboarding.avatar')}
           </label>
           <div className="flex gap-3">
-            {DEFAULT_AVATARS.map((avatar) => (
+            {avatars.map((avatar) => (
               <button
                 key={avatar.id}
                 onClick={() => setSelectedAvatar(avatar.id)}

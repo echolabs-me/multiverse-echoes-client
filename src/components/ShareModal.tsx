@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link2, Share2, Image, Check } from 'lucide-react';
 import { Button } from './Button.tsx';
+import { getComputedTokenColor } from '../lib/tokenColor.ts';
 
 interface ShareModalProps {
   open: boolean;
@@ -58,21 +59,21 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Background
-    ctx.fillStyle = '#0f1923';
+    // Background — reads live CSS token (respects dark/light mode)
+    ctx.fillStyle = getComputedTokenColor('--canvas') || '#0f1923';
     ctx.fillRect(0, 0, 800, 420);
 
     // Border accent
-    ctx.fillStyle = '#d4915c';
+    ctx.fillStyle = getComputedTokenColor('--accent') || '#d4915c';
     ctx.fillRect(0, 0, 800, 4);
 
     // Title
-    ctx.fillStyle = '#e8e0d8';
+    ctx.fillStyle = getComputedTokenColor('--text-primary') || '#e8e0d8';
     ctx.font = 'bold 24px Inter, sans-serif';
     ctx.fillText(title.slice(0, 60), 40, 60);
 
     // Body (wrap text)
-    ctx.fillStyle = '#9ba8b4';
+    ctx.fillStyle = getComputedTokenColor('--text-secondary') || '#9ba8b4';
     ctx.font = '16px Inter, sans-serif';
     const words = body.split(' ');
     let line = '';
@@ -96,12 +97,12 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
     }
 
     // Footer disclaimer
-    ctx.fillStyle = '#5e6f7e';
+    ctx.fillStyle = getComputedTokenColor('--text-muted') || '#5e6f7e';
     ctx.font = '12px Inter, sans-serif';
     ctx.fillText(t('share.imageDisclaimer'), 40, 390);
 
     // Brand
-    ctx.fillStyle = '#d4915c';
+    ctx.fillStyle = getComputedTokenColor('--accent') || '#d4915c';
     ctx.font = 'bold 14px Inter, sans-serif';
     ctx.fillText('Multiverse Echoes', 600, 390);
 
