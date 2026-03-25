@@ -99,6 +99,17 @@ export function EchoDetailPage() {
     void loadData();
   }, [loadData]);
 
+  // Poll for live updates every 30 seconds (tick counter, mood, diary, events).
+  // Debt: replace with WebSocket subscription to /ws/echoes/:id/stream.
+  useEffect(() => {
+    if (!echoId) return;
+    const interval = setInterval(() => {
+      void fetchEcho(echoId);
+      void fetchPersonalFeed(echoId);
+    }, 30_000);
+    return () => clearInterval(interval);
+  }, [echoId, fetchEcho, fetchPersonalFeed]);
+
   const diaryEntries = personalFeed.filter((f) => f.item_type === 'diary_entry');
   const lifeEvents = personalFeed.filter((f) => f.item_type === 'life_event');
   const paginatedDiary = diaryEntries.slice(0, diaryPage * PAGE_SIZE);
