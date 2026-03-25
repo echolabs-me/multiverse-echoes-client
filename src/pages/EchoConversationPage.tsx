@@ -14,7 +14,7 @@ interface TierLimits {
 }
 
 const TIER_LIMITS: Record<string, TierLimits> = {
-  Free: { available: false, dailyConversations: 0, maxMessages: 0 },
+  Free: { available: true, dailyConversations: 1, maxMessages: 10 },
   Basic: { available: true, dailyConversations: 5, maxMessages: 20 },
   Pro: { available: true, dailyConversations: 20, maxMessages: 50 },
   Enterprise: { available: true, dailyConversations: Infinity, maxMessages: Infinity },

@@ -6,7 +6,7 @@ import { initReactI18next } from 'react-i18next';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { EchoConversationPage } from '../src/pages/EchoConversationPage.tsx';
 
-// Mock stores — Free tier (shows gate)
+// Mock stores — Free tier (now allowed with limits)
 vi.mock('../src/stores/index.ts', () => ({
   useAuthStore: (selector: (s: Record<string, unknown>) => unknown) =>
     selector({ user: { display_name: 'Test', subscription_tier: 'Free' } }),
@@ -77,25 +77,24 @@ function renderConversation() {
 }
 
 describe('EchoConversationPage', () => {
-  it('shows tier gate for Free users', () => {
+  it('shows conversation UI for Free tier users', () => {
     renderConversation();
-    expect(screen.getByText('Upgrade to Talk')).toBeInTheDocument();
+    // Free tier is now allowed — should see the conversation interface, not a gate.
+    expect(screen.queryByText('Upgrade to Talk')).not.toBeInTheDocument();
   });
 
-  it('shows upgrade CTA button', () => {
+  it('shows Echo name in header', () => {
     renderConversation();
-    expect(screen.getByText('View Plans')).toBeInTheDocument();
+    expect(screen.getByText('Test Echo')).toBeInTheDocument();
   });
 
-  it('shows tier gate description', () => {
+  it('shows mood in header', () => {
     renderConversation();
-    expect(
-      screen.getByText('Direct Echo conversations are available on Core tier and above.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Feeling curious')).toBeInTheDocument();
   });
 
-  it('shows back button', () => {
+  it('shows message limit for Free tier', () => {
     renderConversation();
-    expect(screen.getByText('Back')).toBeInTheDocument();
+    expect(screen.getByText('0 / 10 messages')).toBeInTheDocument();
   });
 });

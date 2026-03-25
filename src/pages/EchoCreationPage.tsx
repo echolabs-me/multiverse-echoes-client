@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { X } from 'lucide-react';
 import { Button, Input, Card } from '../components/index.ts';
 import { EchoBirthAnimation } from '../components/EchoBirthAnimation.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
@@ -31,12 +32,13 @@ export function EchoCreationPage() {
 
   // Birth state
   const [isBirthComplete, setIsBirthComplete] = useState(false);
+  const createdEchoId = useRef<string | null>(null);
 
   async function handleCreate() {
     setStep('birth');
 
     try {
-      await createEcho({
+      const echo = await createEcho({
         name: personaMode === 'detailed' ? echoName : 'My Echo',
         persona_text: personaText,
         what_if_prompt: whatIfPrompt,
@@ -48,6 +50,7 @@ export function EchoCreationPage() {
         consent_declaration: true,
       });
 
+      createdEchoId.current = echo.echo_id;
       // Birth animation will call onComplete when done (15s or 3s for reduced motion).
     } catch {
       // On error, go back to consent
@@ -55,9 +58,25 @@ export function EchoCreationPage() {
     }
   }
 
+  function handleCancel() {
+    navigate('/dashboard');
+  }
+
+  // Cancel button shown at the top-right of each step
+  const cancelButton = (
+    <button
+      onClick={handleCancel}
+      className="absolute right-4 top-4 rounded-md p-1.5 text-text-secondary hover:bg-surface-raised hover:text-text-primary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+      aria-label={t('common.cancel')}
+    >
+      <X size={20} />
+    </button>
+  );
+
   if (step === 'persona') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
+      <div className="relative flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
+        {cancelButton}
         <h1 className="mb-2 text-2xl font-bold text-text-primary">
           {t('echo.createTitle')}
         </h1>
@@ -138,7 +157,8 @@ export function EchoCreationPage() {
 
   if (step === 'whatif') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
+      <div className="relative flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
+        {cancelButton}
         <h1 className="mb-2 text-2xl font-bold text-text-primary">
           {t('echo.whatIfTitle')}
         </h1>
@@ -207,7 +227,8 @@ export function EchoCreationPage() {
 
   if (step === 'consent') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
+      <div className="relative flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
+        {cancelButton}
         <h1 className="mb-6 text-2xl font-bold text-text-primary">
           {t('echo.consentTitle')}
         </h1>
@@ -259,7 +280,8 @@ export function EchoCreationPage() {
 
   if (step === 'destination') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
+      <div className="relative flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
+        {cancelButton}
         <h1 className="mb-6 text-2xl font-bold text-text-primary">
           {t('echo.destinationTitle')}
         </h1>
@@ -274,12 +296,21 @@ export function EchoCreationPage() {
             </p>
           </Card>
 
-          <Button
-            onClick={() => void handleCreate()}
-            className="w-full"
-          >
-            {t('echo.createButton')}
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              variant="secondary"
+              onClick={() => setStep('consent')}
+              className="flex-1"
+            >
+              {t('common.back')}
+            </Button>
+            <Button
+              onClick={() => void handleCreate()}
+              className="flex-1"
+            >
+              {t('echo.createButton')}
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -311,7 +342,11 @@ export function EchoCreationPage() {
           <h1 className="mb-4 text-2xl font-bold text-text-primary">
             {t('echo.birthComplete')}
           </h1>
-          <Button onClick={() => navigate('/dashboard')}>
+          <Button onClick={() => navigate(
+            createdEchoId.current
+              ? `/echoes/${createdEchoId.current}`
+              : '/dashboard'
+          )}>
             {t('common.continue')}
           </Button>
         </>
