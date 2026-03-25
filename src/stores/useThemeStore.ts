@@ -39,6 +39,11 @@ interface ThemeState {
   /** Unregister a custom theme override by id */
   unregisterOverride: (id: string) => void;
 
+  /** Whether 3D environments and portraits are disabled */
+  disable3D: boolean;
+  /** Toggle 3D rendering on/off */
+  setDisable3D: (disabled: boolean) => void;
+
   // Backwards-compatible aliases
   theme: ThemeBase;
   setTheme: (theme: ThemeBase) => void;
@@ -95,10 +100,13 @@ export const useThemeStore = create<ThemeState>((set, get) => {
 
   applyTheme(initialBase, initialOverride);
 
+  const initialDisable3D = localStorage.getItem('disable-3d') === 'true';
+
   return {
     base: initialBase,
     activeOverrideId: initialOverride?.id ?? null,
     overrides: allOverrides,
+    disable3D: initialDisable3D,
 
     setBase: (base) => {
       const state = get();
@@ -152,6 +160,11 @@ export const useThemeStore = create<ThemeState>((set, get) => {
       if (state.activeOverrideId === id) {
         applyTheme(state.base, null);
       }
+    },
+
+    setDisable3D: (disabled) => {
+      localStorage.setItem('disable-3d', String(disabled));
+      set({ disable3D: disabled });
     },
 
     // Backwards-compatible aliases

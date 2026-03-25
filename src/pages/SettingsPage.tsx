@@ -501,7 +501,7 @@ function SoundSettings() {
 // --- Appearance Section ---
 function AppearanceSection() {
   const { t } = useTranslation();
-  const { base, setBase, overrides, activeOverrideId, applyOverride } = useThemeStore();
+  const { base, setBase, overrides, activeOverrideId, applyOverride, disable3D, setDisable3D } = useThemeStore();
 
   return (
     <div className="flex flex-col gap-4">
@@ -548,6 +548,24 @@ function AppearanceSection() {
             </div>
           </div>
         )}
+      </Card>
+
+      <Card>
+        <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.3dEnvironments')}</h3>
+        <label className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            checked={!disable3D}
+            onChange={(e) => setDisable3D(!e.target.checked)}
+            className="h-4 w-4 rounded border-border accent-accent"
+          />
+          <span className="text-sm text-text-secondary">
+            {t('settings.enable3D')}
+          </span>
+        </label>
+        <p className="mt-2 text-xs text-text-muted">
+          {t('settings.3dDescription')}
+        </p>
       </Card>
 
       <Card>

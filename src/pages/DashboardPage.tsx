@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Plus, Compass, BookOpen, Zap, Users, ExternalLink } from 'lucide-react';
 import { TopBar, Sidebar, Card, Badge, EmptyState, Button, Spinner } from '../components/index.ts';
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
+import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import type { EchoResponse } from '../types/api.ts';
@@ -181,8 +182,9 @@ export function DashboardPage() {
           </div>
         </Sidebar>
 
-        {/* Main content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        {/* Main content with 3D shard environment behind */}
+        <div className="relative flex-1 overflow-y-auto p-6">
+          <ShardEnvironment3D shardName="Personal Shard" />
           {isLoading ? (
             <div className="flex items-center justify-center py-20">
               <Spinner size="lg" />

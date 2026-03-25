@@ -11,6 +11,7 @@ import {
   EmptyState,
   Modal,
 } from '../components/index.ts';
+import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
@@ -124,8 +125,9 @@ export function ShardViewPage() {
         onProfileClick={() => navigate('/settings')}
       />
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-4xl p-6">
+      <div className="relative flex-1 overflow-y-auto">
+        <ShardEnvironment3D shardName={activeShard.name} />
+        <div className="relative mx-auto max-w-4xl p-6">
           {/* Back */}
           <button
             onClick={() => navigate(-1)}

@@ -12,6 +12,7 @@ export { Modal } from './Modal.tsx';
 export { OraclePanel } from './OraclePanel.tsx';
 export { ShareModal } from './ShareModal.tsx';
 export { Sidebar } from './Sidebar.tsx';
+export { ShardEnvironment3D } from './ShardEnvironment3D.tsx';
 export { SkipLink } from './SkipLink.tsx';
 export { Spinner } from './Spinner.tsx';
 export { StoryExportModal } from './StoryExportModal.tsx';
