@@ -15,7 +15,8 @@ export type SoundEvent =
   | 'message'
   | 'travel'
   | 'influence'
-  | 'system';
+  | 'system'
+  | 'diary_entry';
 
 interface SoundState {
   enabled: boolean;
@@ -35,6 +36,7 @@ const frequencies: Record<SoundEvent, number> = {
   travel: 523,
   influence: 988,
   system: 440,
+  diary_entry: 587,
 };
 
 let audioCtx: AudioContext | null = null;

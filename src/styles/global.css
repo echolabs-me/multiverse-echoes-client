@@ -191,6 +191,8 @@ pre {
   --animate-slide-in: me-slide-in var(--duration-normal) ease-out forwards;
   --animate-modal-in: me-modal-in var(--duration-normal) ease-out forwards;
   --animate-modal-out: me-modal-out var(--duration-fast) ease-in forwards;
+  --animate-diary-arrive: me-diary-arrive 600ms ease-out forwards;
+  --animate-diary-glow: me-diary-glow 3s ease-out forwards;
 }
 
 /* Tick pulse: barely-perceptible ripple. Max opacity 5%. */
@@ -254,6 +256,31 @@ pre {
   to {
     opacity: 0;
     transform: scale(0.95);
+  }
+}
+
+/* Diary entry arrival — Phase 6B Step 10 */
+@keyframes me-diary-arrive {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.005);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes me-diary-glow {
+  0% {
+    box-shadow: 0 0 12px 2px var(--accent-subtle), 0 0 24px 4px rgba(212, 145, 92, 0.08);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent;
   }
 }
 

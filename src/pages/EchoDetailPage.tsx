@@ -32,6 +32,7 @@ import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useSystemStore } from '../stores/useSystemStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
+import { useSoundStore } from '../lib/sounds.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import type {
@@ -72,6 +73,12 @@ export function EchoDetailPage() {
   const [exportModal, setExportModal] = useState(false);
   const [soloMode, setSoloMode] = useState(false);
 
+  // Track which diary IDs were present on initial load (no animation for those).
+  const knownDiaryIdsRef = useRef<Set<string>>(new Set());
+  const [newDiaryIds, setNewDiaryIds] = useState<Set<string>>(new Set());
+  const initialLoadDoneRef = useRef(false);
+  const playSound = useSoundStore((s) => s.play);
+
   // Stable ref for echoId so polling doesn't depend on store function refs.
   const echoIdRef = useRef(echoId);
   echoIdRef.current = echoId;
@@ -79,6 +86,10 @@ export function EchoDetailPage() {
   const loadData = useCallback(async () => {
     if (!echoId) return;
     setIsLoading(true);
+    // Reset animation tracking for new echo.
+    initialLoadDoneRef.current = false;
+    knownDiaryIdsRef.current.clear();
+    setNewDiaryIds(new Set());
     try {
       await fetchEcho(echoId);
       const [rels, inf, mems, diary] = await Promise.all([
@@ -90,6 +101,9 @@ export function EchoDetailPage() {
       setRelationships(rels);
       setInfluence(inf);
       setMemories(mems);
+      // Initial load — mark all existing entries as known (no animation).
+      knownDiaryIdsRef.current = new Set(diary.map((d) => d.diary_id));
+      initialLoadDoneRef.current = true;
       setDiaryEntries(diary);
       await fetchPersonalFeed(echoId);
       // Load solo_mode
@@ -114,11 +128,31 @@ export function EchoDetailPage() {
       if (!id) return;
       // Refresh echo (tick counter, mood) + diary entries from Redb.
       void useEchoStore.getState().fetchEcho(id);
-      void echoApi.diary(id).then((d) => setDiaryEntries(d)).catch(() => {});
+      void echoApi.diary(id).then((d) => {
+        if (initialLoadDoneRef.current) {
+          const arrivals = d.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
+          if (arrivals.length > 0) {
+            const arrivalIds = new Set(arrivals.map((e) => e.diary_id));
+            setNewDiaryIds((prev) => new Set([...prev, ...arrivalIds]));
+            playSound('diary_entry');
+          }
+        }
+        setDiaryEntries(d);
+      }).catch(() => {});
       void useFeedStore.getState().fetchPersonalFeed(id);
     }, 30_000);
     return () => clearInterval(interval);
-  }, [echoId]);
+  }, [echoId, playSound]);
+
+  // After glow animation finishes, move diary ID from "new" to "known".
+  const handleAnimationEnd = useCallback((diaryId: string) => {
+    knownDiaryIdsRef.current.add(diaryId);
+    setNewDiaryIds((prev) => {
+      const next = new Set(prev);
+      next.delete(diaryId);
+      return next;
+    });
+  }, []);
 
   // Life events still come from the feed store (no dedicated Redb repo yet).
   const lifeEvents = personalFeed.filter((f) => f.item_type === 'life_event');
@@ -369,7 +403,12 @@ export function EchoDetailPage() {
             ) : (
               <div className="flex flex-col gap-3">
                 {paginatedDiary.map((entry) => (
-                  <DiaryCard key={entry.diary_id} entry={entry} />
+                  <DiaryCard
+                    key={entry.diary_id}
+                    entry={entry}
+                    isNew={newDiaryIds.has(entry.diary_id)}
+                    onAnimationEnd={handleAnimationEnd}
+                  />
                 ))}
                 {hasMoreDiary && (
                   <Button
@@ -651,21 +690,41 @@ function TickCountdown() {
   );
 }
 
-function DiaryCard({ entry }: { entry: DiaryEntry }) {
+function DiaryCard({
+  entry,
+  isNew,
+  onAnimationEnd,
+}: {
+  entry: DiaryEntry;
+  isNew?: boolean;
+  onAnimationEnd?: (diaryId: string) => void;
+}) {
   return (
-    <Card>
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-sm font-medium text-text-primary">
-            {entry.simulated_date} — {entry.mood}
-          </p>
-          <p className="mt-1 text-sm text-text-secondary">{entry.content}</p>
-          <p className="mt-1 text-xs text-text-muted">{entry.location_name}</p>
+    <div
+      className={isNew ? 'animate-diary-arrive' : ''}
+      style={isNew ? { opacity: 0 } : undefined}
+    >
+      <Card
+        className={isNew ? 'animate-diary-glow' : ''}
+        onAnimationEnd={
+          isNew
+            ? () => onAnimationEnd?.(entry.diary_id)
+            : undefined
+        }
+      >
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <p className="text-sm font-medium text-text-primary">
+              {entry.simulated_date} — {entry.mood}
+            </p>
+            <p className="mt-1 text-sm text-text-secondary">{entry.content}</p>
+            <p className="mt-1 text-xs text-text-muted">{entry.location_name}</p>
+          </div>
+          <span className="ml-3 shrink-0 text-xs text-text-muted">
+            {new Date(entry.created_at).toLocaleDateString()}
+          </span>
         </div>
-        <span className="ml-3 shrink-0 text-xs text-text-muted">
-          {new Date(entry.created_at).toLocaleDateString()}
-        </span>
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 }
