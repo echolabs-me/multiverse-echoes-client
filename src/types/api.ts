@@ -57,8 +57,8 @@ export interface RefreshResponse {
 // --- User ---
 
 export type AccountType = 'Standard' | 'Admin' | 'Bot';
-export type SubscriptionTier = 'Free' | 'Basic' | 'Pro' | 'Enterprise';
-export type AccountStatus = 'Active' | 'Suspended' | 'PendingDeletion';
+export type SubscriptionTier = 'Free' | 'Core' | 'Creator' | 'GodMode';
+export type AccountStatus = 'Active' | 'Suspended' | 'PendingDeletion' | 'Deleted';
 
 export interface User {
   user_id: string;
@@ -88,7 +88,7 @@ export interface User {
 
 // --- Echo ---
 
-export type EchoStatus = 'Active' | 'Hibernated' | 'Travelling' | 'PendingDeletion';
+export type EchoStatus = 'Active' | 'Hibernated' | 'Travelling' | 'Quarantined' | 'Deleted';
 
 export interface CreateEchoRequest {
   name: string;
