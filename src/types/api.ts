@@ -194,7 +194,7 @@ export interface InfluenceBalance {
 
 export interface UseInfluenceRequest {
   influence_type: string;
-  details?: string;
+  suggestion: string;
 }
 
 // --- Memory ---

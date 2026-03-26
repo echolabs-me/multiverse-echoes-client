@@ -191,7 +191,7 @@ export function EchoDetailPage() {
     try {
       await echoApi.useInfluence(activeEcho.echo_id, {
         influence_type: influenceType,
-        details: influenceDetails || undefined,
+        suggestion: influenceDetails,
       });
       addToast(t('echoDetail.influenceUsed'), 'success');
       setInfluenceModal(false);

@@ -24,8 +24,8 @@ const LFO_RATE = 0.05;
 /** Low-pass filter cutoff (Hz) — removes harsh overtones. */
 const FILTER_CUTOFF = 800;
 
-/** Fade duration in seconds. */
-const FADE_DURATION = 2.0;
+/** Fade duration in seconds — long fade avoids harsh onset after page transitions. */
+const FADE_DURATION = 4.0;
 
 interface SoundscapeNodes {
   ctx: AudioContext;
@@ -83,7 +83,7 @@ export function startSoundscape(volume: number): void {
     osc.detune.value = DETUNE[i]!;
 
     const gain = ctx.createGain();
-    gain.gain.value = 0.15; // Each voice quiet, combined is warm.
+    gain.gain.value = 0.1; // Each voice very quiet, combined is warm.
 
     osc.connect(gain);
     gain.connect(filter);

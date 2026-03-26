@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { SkipLink, ToastContainer } from './components/index.ts';
 import { AppLayout } from './components/AppLayout.tsx';
+import { useAuthStore } from './stores/useAuthStore.ts';
 import { LanguageSelectionPage } from './pages/LanguageSelectionPage.tsx';
 import { RegisterPage } from './pages/RegisterPage.tsx';
 import { VerifyPendingPage } from './pages/VerifyPendingPage.tsx';
@@ -32,6 +34,12 @@ function hasSelectedLocale(): boolean {
 }
 
 export function App() {
+  const initialize = useAuthStore((s) => s.initialize);
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
+
   return (
     <BrowserRouter>
       <SkipLink />

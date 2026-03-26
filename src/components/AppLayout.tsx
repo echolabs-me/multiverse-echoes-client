@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard,
@@ -13,6 +13,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
+import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { OracleSidebar } from './OracleSidebar.tsx';
 
@@ -130,11 +131,17 @@ export function AppLayout() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [oracleCollapsed, setOracleCollapsed] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [mobileOracleOpen, setMobileOracleOpen] = useState(false);
   const unreadCount = useNotificationStore((s) => s.unreadCount);
+
+  // Auth guard — redirect to login if not authenticated.
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
   const mobileNavItems: NavItem[] = [
     {
