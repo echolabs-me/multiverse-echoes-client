@@ -161,7 +161,8 @@
     "talkToEcho": "Talk to Echo",
     "exportStory": "Export Story",
     "sentiment": "Sentiment",
-    "strength": "Strength"
+    "strength": "Strength",
+    "moodHistory": "Mood history"
   },
   "shardView": {
     "echoes": "Echoes in this Shard",

@@ -35,6 +35,7 @@ import { useFeedStore } from '../stores/useFeedStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
 import { useMoodAtmosphere } from '../hooks/useMoodAtmosphere.ts';
 import { MoodParticles } from '../components/MoodParticles.tsx';
+import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import type {
@@ -407,6 +408,9 @@ export function EchoDetailPage() {
             </div>
           )}
 
+          {/* Mood history strip */}
+          <MoodHistoryStrip entries={diaryEntries} className="mb-4" />
+
           {/* Diary entries */}
           <section className="mb-6">
             <div className="mb-3 flex items-center gap-2">
@@ -719,6 +723,7 @@ function DiaryCard({
 }) {
   return (
     <div
+      id={`diary-${entry.diary_id}`}
       className={isNew ? 'animate-diary-arrive' : ''}
       style={isNew ? { opacity: 0 } : undefined}
     >
