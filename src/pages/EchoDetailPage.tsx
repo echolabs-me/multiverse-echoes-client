@@ -40,6 +40,7 @@ import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type {
   EchoRelationship,
   InfluenceBalance,
@@ -121,6 +122,7 @@ export function EchoDetailPage() {
       // Load solo_mode
       const privacy = await accountApi.getPrivacy().catch(() => ({ solo_mode: false }));
       setSoloMode(privacy.solo_mode);
+      trackEvent('diary.viewed', { echo_id: echoId });
     } finally {
       setIsLoading(false);
     }
@@ -138,6 +140,9 @@ export function EchoDetailPage() {
     (event: WsEchoEvent) => {
       const id = echoIdRef.current;
       if (!id) return;
+      if (event.type === 'ShardTravelCompleted' || event.type === 'EchoMoved') {
+        trackEvent('echo.travel_completed', { echo_id: id });
+      }
       if (event.type === 'DiaryEntryCreated') {
         void echoApi
           .diary(id)
@@ -207,9 +212,11 @@ export function EchoDetailPage() {
     try {
       if (activeEcho.status === 'Active') {
         await hibernateEcho(activeEcho.echo_id);
+        trackEvent('echo.hibernated', { reason: 'manual' });
         addToast(t('echoDetail.hibernated'), 'success');
       } else {
         await wakeEcho(activeEcho.echo_id);
+        trackEvent('echo.woken');
         addToast(t('echoDetail.woken'), 'success');
       }
       setHibernateModal(false);
@@ -226,6 +233,7 @@ export function EchoDetailPage() {
         influence_type: influenceType,
         suggestion: influenceDetails,
       });
+      trackEvent('nudge.sent', { echo_id: activeEcho.echo_id, influence_type: influenceType });
       addToast(t('echoDetail.influenceUsed'), 'success');
       setInfluenceModal(false);
       setInfluenceDetails('');
@@ -245,6 +253,7 @@ export function EchoDetailPage() {
     if (!activeEcho || !newName.trim()) return;
     try {
       await echoApi.rename(activeEcho.echo_id, newName.trim());
+      trackEvent('echo.renamed');
       addToast(t('common.save'), 'success');
       setRenameModal(false);
       await fetchEcho(activeEcho.echo_id);
@@ -257,6 +266,7 @@ export function EchoDetailPage() {
     if (!activeEcho || !newPersona.trim()) return;
     try {
       await echoApi.updatePersona(activeEcho.echo_id, { persona_text: newPersona.trim() });
+      trackEvent('echo.persona_edited', { fields_changed_count: 1 });
       addToast(t('common.save'), 'success');
       setEditPersonaModal(false);
       await fetchEcho(activeEcho.echo_id);
@@ -267,7 +277,7 @@ export function EchoDetailPage() {
 
   const handleSoloModeToggle = async () => {
     try {
-      await accountApi.updatePrivacy(!soloMode);
+      await accountApi.updatePrivacy({ solo_mode: !soloMode });
       setSoloMode(!soloMode);
     } catch {
       addToast(t('common.error'), 'danger');

@@ -12,6 +12,7 @@ import {
 } from '../components/index.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type { FeedItem } from '../types/api.ts';
 
 const PAGE_SIZE = 20;
@@ -26,6 +27,7 @@ export function PersonalFeedPage() {
 
   useEffect(() => {
     void fetchEchoes();
+    trackEvent('feed.viewed', { variant: 'personal' });
   }, [fetchEchoes]);
 
   useEffect(() => {
@@ -83,7 +85,7 @@ export function PersonalFeedPage() {
                 <FeedItemCard key={item.item_id} item={item} onEchoClick={(id) => navigate(`/echoes/${id}`)} />
               ))}
               {hasMore && (
-                <Button variant="ghost" onClick={() => setPage((p) => p + 1)}>
+                <Button variant="ghost" onClick={() => { setPage((p) => p + 1); trackEvent('feed.scrolled', { variant: 'personal' }); }}>
                   {t('common.loadMore')}
                 </Button>
               )}

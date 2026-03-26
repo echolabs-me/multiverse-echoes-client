@@ -6,6 +6,7 @@ import { Button, Input } from '../components/index.ts';
 import { ApiRequestError, setTokens } from '../lib/api/client.ts';
 import { auth } from '../lib/api/endpoints.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
+import { trackEvent } from '../lib/analytics.ts';
 
 export function RegisterPage() {
   const { t } = useTranslation();
@@ -54,6 +55,7 @@ export function RegisterPage() {
       // Save tokens — server auto-logs-in on registration.
       setTokens(result.access_token, result.refresh_token);
       useAuthStore.setState({ isAuthenticated: true });
+      trackEvent('account.registered', { method: 'email', locale: navigator.language });
 
       if (result.email_verified) {
         // Auto-verified (no email provider) — skip to onboarding.

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Eye, Heart, Sparkles } from 'lucide-react';
 import { Button, Card } from '../components/index.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type { ReactNode } from 'react';
 
 interface ExpectationCard {
@@ -37,6 +38,7 @@ export function OnboardingWelcomePage() {
   const isLastCard = currentCard === cards.length - 1;
 
   function handleNext() {
+    trackEvent('onboarding.step_completed', { step: `welcome_${currentCard + 1}` });
     if (isLastCard) {
       navigate('/onboarding/profile');
     } else {

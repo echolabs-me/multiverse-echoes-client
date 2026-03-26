@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Globe } from 'lucide-react';
 import { Tooltip } from '../components/index.ts';
+import { trackEvent } from '../lib/analytics.ts';
 
 interface Language {
   code: string;
@@ -32,9 +33,11 @@ export function LanguageSelectionPage() {
 
   const selectLanguage = useCallback(
     (code: string) => {
+      const oldLocale = i18n.language;
       void i18n.changeLanguage(code);
       localStorage.setItem('locale', code);
       localStorage.setItem('locale_selected', 'true');
+      trackEvent('account.locale_changed', { old_locale: oldLocale, new_locale: code });
       navigate('/register');
     },
     [i18n, navigate],

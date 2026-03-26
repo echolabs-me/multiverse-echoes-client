@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import { Button, Input, Card } from '../components/index.ts';
 import { EchoBirthAnimation } from '../components/EchoBirthAnimation.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
+import { trackEvent } from '../lib/analytics.ts';
 
 type Step = 'details' | 'consent' | 'destination' | 'birth';
 
@@ -47,6 +48,7 @@ export function EchoCreationPage() {
       });
 
       createdEchoId.current = echo.echo_id;
+      trackEvent('echo.created', { persona_mode: 'detailed', target_shard: 'personal' });
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Echo creation failed';

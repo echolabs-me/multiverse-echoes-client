@@ -13,6 +13,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { search } from '../lib/api/endpoints.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type { SearchResult } from '../types/api.ts';
 
 type ContentType = 'all' | 'Echo' | 'DiaryEntry' | 'LifeEvent' | 'Shard' | 'Message';
@@ -153,6 +154,7 @@ export function SearchPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
+    trackEvent('search.performed', { query_length: query.trim().length, scope: activeType });
     setSearchParams({ q: query.trim() });
     void performSearch(query.trim());
   };
@@ -164,6 +166,7 @@ export function SearchPage() {
   };
 
   const handleResultClick = (result: SearchResult) => {
+    trackEvent('search.result_clicked', { result_type: result.result_type, result_id: result.id });
     switch (result.result_type) {
       case 'Echo':
         navigate(`/echoes/${result.id}`);

@@ -19,6 +19,7 @@ import {
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { channels as channelApi, reports } from '../lib/api/endpoints.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type { Channel, ChannelMessage } from '../types/api.ts';
 
 const MAX_MESSAGE_LENGTH = 2000;
@@ -57,6 +58,7 @@ export function CommunityPage() {
         setChannelList(chs);
         if (chs.length > 0 && !activeChannel) {
           setActiveChannel(chs[0]!);
+          trackEvent('community.channel_joined', { channel_id: chs[0]!.channel_id });
         }
       } finally {
         setIsLoadingChannels(false);
@@ -93,6 +95,7 @@ export function CommunityPage() {
       const msg = await channelApi.sendMessage(activeChannel.channel_id, {
         body: messageText.trim(),
       });
+      trackEvent('community.message_sent', { channel_id: activeChannel.channel_id, message_length: messageText.trim().length });
       setMessages((prev) => [...prev, msg]);
       setMessageText('');
     } catch {

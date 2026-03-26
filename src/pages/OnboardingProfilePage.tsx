@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from '../components/index.ts';
 import { getComputedTokenColor } from '../lib/tokenColor.ts';
+import { trackEvent } from '../lib/analytics.ts';
 
 /** Avatar colours reference CSS design tokens so they update with the active theme. */
 const AVATAR_TOKENS = [
@@ -33,11 +34,14 @@ export function OnboardingProfilePage() {
   );
 
   function handleContinue() {
-    // Save profile via API in future — for now, proceed to Echo creation
+    trackEvent('onboarding.step_completed', { step: 'profile' });
+    trackEvent('onboarding.completed');
     navigate('/onboarding/create-echo');
   }
 
   function handleSkip() {
+    trackEvent('onboarding.step_completed', { step: 'profile_skipped' });
+    trackEvent('onboarding.completed');
     navigate('/onboarding/create-echo');
   }
 

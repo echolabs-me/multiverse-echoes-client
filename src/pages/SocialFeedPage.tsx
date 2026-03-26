@@ -11,6 +11,7 @@ import {
   ShareModal,
 } from '../components/index.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type { FeedItem } from '../types/api.ts';
 
 const PAGE_SIZE = 20;
@@ -23,6 +24,7 @@ export function SocialFeedPage() {
 
   useEffect(() => {
     void fetchSocialFeed();
+    trackEvent('feed.viewed', { variant: 'social' });
   }, [fetchSocialFeed]);
 
   // Sort by significance descending
@@ -64,7 +66,7 @@ export function SocialFeedPage() {
                 />
               ))}
               {hasMore && (
-                <Button variant="ghost" onClick={() => setPage((p) => p + 1)}>
+                <Button variant="ghost" onClick={() => { setPage((p) => p + 1); trackEvent('feed.scrolled', { variant: 'social' }); }}>
                   {t('common.loadMore')}
                 </Button>
               )}

@@ -19,6 +19,7 @@ import {
   EmptyState,
 } from '../components/index.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type { Notification } from '../types/api.ts';
 
 const categoryIcons: Record<string, typeof Bell> = {
@@ -71,12 +72,14 @@ export function NotificationsPage() {
 
   const handleMarkAllRead = async () => {
     const unread = notifications.filter((n) => !n.read);
+    trackEvent('notification.dismissed', { count: unread.length });
     for (const n of unread) {
       await markRead(n.notification_id);
     }
   };
 
   const handleClick = async (notification: Notification) => {
+    trackEvent('notification.clicked', { category: notification.category });
     if (!notification.read) {
       await markRead(notification.notification_id);
     }

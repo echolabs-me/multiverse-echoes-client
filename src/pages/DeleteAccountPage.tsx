@@ -6,6 +6,7 @@ import { Card, Button, Input } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
+import { trackEvent } from '../lib/analytics.ts';
 
 export function DeleteAccountPage() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export function DeleteAccountPage() {
     setIsDeleting(true);
     try {
       await accountApi.deleteAccount();
+      trackEvent('account.deletion_initiated', { tier: 'Free' });
       addToast(t('settings.deleteAccountGrace', { days: 30 }), 'info');
       await logout();
       navigate('/login');

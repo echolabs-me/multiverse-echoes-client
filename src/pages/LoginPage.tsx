@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Button, Input } from '../components/index.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
+import { trackEvent } from '../lib/analytics.ts';
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -24,6 +25,7 @@ export function LoginPage() {
     try {
       await login({ email, password });
       localStorage.setItem('has_logged_in', 'true');
+      trackEvent('account.login', { method: 'password' });
       navigate('/dashboard');
     } catch {
       setError(t('auth.loginFailed'));

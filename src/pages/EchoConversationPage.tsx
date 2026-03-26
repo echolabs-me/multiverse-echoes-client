@@ -5,6 +5,7 @@ import { ArrowLeft, Send, Save, Lock } from 'lucide-react';
 import { Button } from '../components/index.ts';
 import { useAuthStore, useEchoStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type { ConversationMessage } from '../types/api.ts';
 
 interface TierLimits {
@@ -57,6 +58,7 @@ export function EchoConversationPage() {
       try {
         const conv = await conversations.create(echoId);
         setConversationId(conv.conversation_id);
+        trackEvent('conversation.started', { echo_id: echoId });
       } catch (err) {
         const detail = err instanceof Error ? err.message : 'Unknown error';
         setError(t('conversation.errorStarting', { detail }));
@@ -107,6 +109,7 @@ export function EchoConversationPage() {
       const echoResponse = await conversations.sendMessage(conversationId, {
         content: trimmed,
       });
+      trackEvent('conversation.message_sent', { echo_id: echoId, message_number: userMessageCount + 1 });
       setMessages((prev) => [...prev, echoResponse]);
     } catch (err) {
       const detail = err instanceof Error ? err.message : 'Unknown error';

@@ -15,6 +15,7 @@ import { useToastStore } from '../stores/useToastStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { shards as shardApi, echoes as echoApi, feeds, channels } from '../lib/api/endpoints.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type { EchoResponse, FeedItem, Channel, ChannelMessage } from '../types/api.ts';
 
 export function ShardViewPage() {
@@ -52,6 +53,7 @@ export function ShardViewPage() {
         const msgs = await channels.messages(ch.channel_id, { limit: 50 }).catch(() => []);
         setChannelMessages(msgs);
       }
+      if (shardId) trackEvent('feed.viewed', { variant: 'shard', shard_id: shardId });
     } finally {
       setIsLoading(false);
     }
@@ -65,6 +67,7 @@ export function ShardViewPage() {
     if (!shardId || !selectedEchoId) return;
     try {
       await echoApi.travel(selectedEchoId, shardId);
+      trackEvent('echo.travel_initiated', { echo_id: selectedEchoId, destination_shard: shardId });
       addToast(t('shardView.travelInitiated'), 'success');
       setTravelModal(false);
     } catch {

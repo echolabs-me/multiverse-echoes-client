@@ -26,6 +26,7 @@ import {
   account as accountApi,
 } from '../lib/api/endpoints.ts';
 import { request } from '../lib/api/client.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import type { NotificationPreferences } from '../types/api.ts';
 
 export function SettingsPage() {
@@ -214,6 +215,7 @@ function AccountSection() {
         current_password: currentPassword,
         new_password: newPassword,
       });
+      trackEvent('account.password_changed');
       addToast(t('settings.passwordChanged'), 'success');
       setCurrentPassword('');
       setNewPassword('');
@@ -681,6 +683,7 @@ function DangerZoneSection() {
     setIsCancelling(true);
     try {
       await accountApi.cancelDeletion();
+      trackEvent('account.deletion_cancelled');
       addToast('Account deletion cancelled', 'success');
       // Refresh profile to update status
       const fetchProfile = useAuthStore.getState().fetchProfile;
