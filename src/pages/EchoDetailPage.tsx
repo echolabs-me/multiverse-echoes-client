@@ -32,6 +32,7 @@ import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
+import { useSystemStore } from '../stores/useSystemStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
@@ -648,18 +649,19 @@ export function EchoDetailPage() {
   );
 }
 
-const TICK_INTERVAL = 60; // seconds — matches config/default.toml engine.tick_interval_seconds
-
 function TickCountdown() {
   const { t } = useTranslation();
-  const [seconds, setSeconds] = useState(TICK_INTERVAL);
+  // Tick interval from server via GET /health → useSystemStore.
+  // Source: config/default.toml [engine] tick_interval_seconds.
+  const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
+  const [seconds, setSeconds] = useState(tickInterval);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setSeconds((s) => (s <= 1 ? TICK_INTERVAL : s - 1));
+      setSeconds((s) => (s <= 1 ? tickInterval : s - 1));
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [tickInterval]);
 
   return (
     <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">

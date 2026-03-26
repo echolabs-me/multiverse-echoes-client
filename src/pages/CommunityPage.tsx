@@ -25,7 +25,6 @@ import { channels as channelApi, reports } from '../lib/api/endpoints.ts';
 import type { Channel, ChannelMessage } from '../types/api.ts';
 
 const MAX_MESSAGE_LENGTH = 2000;
-const EDIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 
 export function CommunityPage() {
   const navigate = useNavigate();
@@ -153,14 +152,10 @@ export function CommunityPage() {
     }
   };
 
-  const canEditMessage = (msg: ChannelMessage) => {
-    if (msg.user_id !== user?.user_id) return false;
-    const created = new Date(msg.created_at).getTime();
-    return Date.now() - created < EDIT_WINDOW_MS;
-  };
-
-  const canDeleteMessage = (msg: ChannelMessage) =>
-    msg.user_id === user?.user_id;
+  // Edit/delete eligibility is computed server-side and returned on each message.
+  // Source: crates/api/src/routes/channels.rs MessageResponse::from_message().
+  const canEditMessage = (msg: ChannelMessage) => msg.can_edit ?? false;
+  const canDeleteMessage = (msg: ChannelMessage) => msg.can_delete ?? false;
 
   return (
     <div className="flex h-screen flex-col bg-canvas">
