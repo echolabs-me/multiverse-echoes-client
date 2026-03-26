@@ -193,6 +193,11 @@ pre {
   --animate-modal-out: me-modal-out var(--duration-fast) ease-in forwards;
   --animate-diary-arrive: me-diary-arrive 600ms ease-out forwards;
   --animate-diary-glow: me-diary-glow 3s ease-out forwards;
+
+  /* Mood atmosphere colours — set dynamically via useMoodAtmosphere hook */
+  --color-mood-primary: var(--mood-primary);
+  --color-mood-secondary: var(--mood-secondary);
+  --color-mood-accent: var(--mood-accent);
 }
 
 /* Tick pulse: barely-perceptible ripple. Max opacity 5%. */
@@ -277,7 +282,7 @@ pre {
 
 @keyframes me-diary-glow {
   0% {
-    box-shadow: 0 0 12px 2px var(--accent-subtle), 0 0 24px 4px rgba(212, 145, 92, 0.08);
+    box-shadow: 0 0 12px 2px var(--mood-secondary, var(--accent-subtle)), 0 0 24px 4px color-mix(in srgb, var(--mood-primary, var(--accent)) 12%, transparent);
   }
   100% {
     box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent;

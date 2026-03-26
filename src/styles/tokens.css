@@ -54,6 +54,12 @@
   --duration-normal: 200ms;
   --duration-slow: 250ms;
 
+  /* Mood atmosphere — Phase 6B Step 11 */
+  --mood-primary: var(--accent);
+  --mood-secondary: var(--accent-subtle);
+  --mood-accent: var(--accent-hover);
+  --mood-particle-speed: 1;
+
   /* Shard accents — CDS-001 §3.3 */
   --accent-cyber-tokyo: #00d4ff;
   --accent-nomad-australia: #c4783c;

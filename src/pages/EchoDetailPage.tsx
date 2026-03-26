@@ -33,6 +33,8 @@ import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useSystemStore } from '../stores/useSystemStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
+import { useMoodAtmosphere } from '../hooks/useMoodAtmosphere.ts';
+import { MoodParticles } from '../components/MoodParticles.tsx';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import type {
@@ -72,6 +74,11 @@ export function EchoDetailPage() {
   const [influenceDetails, setInfluenceDetails] = useState('');
   const [exportModal, setExportModal] = useState(false);
   const [soloMode, setSoloMode] = useState(false);
+
+  // Mood atmosphere — derive from latest diary entry or echo's current_mood.
+  const moodContainerRef = useRef<HTMLDivElement>(null);
+  const currentMood = diaryEntries[0]?.mood ?? activeEcho?.current_mood ?? null;
+  const moodPalette = useMoodAtmosphere(moodContainerRef, currentMood);
 
   // Track which diary IDs were present on initial load (no animation for those).
   const knownDiaryIdsRef = useRef<Set<string>>(new Set());
@@ -250,8 +257,19 @@ export function EchoDetailPage() {
   const personaTruncated = activeEcho.persona_text.length > 200 && !showAllPersona;
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex-1 overflow-y-auto">
+    <div ref={moodContainerRef} className="relative flex h-full flex-col">
+      {/* Mood-reactive background gradient */}
+      <div
+        className="pointer-events-none absolute inset-0 transition-[background] duration-300 ease-in-out"
+        style={{
+          background: `linear-gradient(180deg, ${moodPalette.gradientFrom} 0%, ${moodPalette.gradientTo} 100%)`,
+        }}
+        aria-hidden="true"
+      />
+      {/* Mood particles */}
+      <MoodParticles palette={moodPalette} />
+
+      <div className="relative flex-1 overflow-y-auto">
         <div className="mx-auto max-w-4xl p-6">
           {/* Back button */}
           <button
