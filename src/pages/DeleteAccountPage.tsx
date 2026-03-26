@@ -2,16 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
-import { TopBar, Card, Button, Input } from '../components/index.ts';
+import { Card, Button, Input } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
-import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 
 export function DeleteAccountPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
   const logout = useAuthStore((s) => s.logout);
   const addToast = useToastStore((s) => s.addToast);
   const [confirmText, setConfirmText] = useState('');
@@ -40,15 +38,8 @@ export function DeleteAccountPage() {
   };
 
   return (
-    <div className="flex h-screen flex-col bg-canvas">
-      <TopBar
-        notificationCount={unreadCount}
-        onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => navigate('/settings')}
-      />
-
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-xl p-6">
+    <div className="flex-1 overflow-y-auto">
+      <div className="mx-auto max-w-xl p-6">
           <button
             onClick={() => navigate('/settings')}
             className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
@@ -91,6 +82,5 @@ export function DeleteAccountPage() {
           </Card>
         </div>
       </div>
-    </div>
   );
 }

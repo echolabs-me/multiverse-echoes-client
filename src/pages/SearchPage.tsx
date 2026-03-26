@@ -12,9 +12,6 @@ import {
   Calendar,
   Clock,
 } from 'lucide-react';
-import { TopBar } from '../components/index.ts';
-import { useAuthStore } from '../stores/index.ts';
-import { useNotificationStore } from '../stores/index.ts';
 import { search } from '../lib/api/endpoints.ts';
 import type { SearchResult } from '../types/api.ts';
 
@@ -64,9 +61,6 @@ export function SearchPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const user = useAuthStore((s) => s.user);
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
-
   const initialQuery = searchParams.get('q') ?? '';
   const initialScope = searchParams.get('scope') as ContentType | null;
 
@@ -211,14 +205,7 @@ export function SearchPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-canvas">
-      <TopBar
-        userName={user?.display_name}
-        notificationCount={unreadCount}
-        onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => navigate('/settings')}
-      />
-
+    <div className="flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
         {/* Back button */}
         <button

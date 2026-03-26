@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, BookOpen, Zap, Filter, Share2 } from 'lucide-react';
 import {
-  TopBar,
   Card,
   Badge,
   Spinner,
@@ -13,7 +12,6 @@ import {
 } from '../components/index.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
-import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import type { FeedItem } from '../types/api.ts';
 
 const PAGE_SIZE = 20;
@@ -23,7 +21,6 @@ export function PersonalFeedPage() {
   const { t } = useTranslation();
   const { echoList, fetchEchoes } = useEchoStore();
   const { personalFeed, isLoading, fetchPersonalFeed } = useFeedStore();
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
   const [selectedEchoId, setSelectedEchoId] = useState<string>('');
   const [page, setPage] = useState(1);
 
@@ -39,15 +36,8 @@ export function PersonalFeedPage() {
   const hasMore = paginatedFeed.length < personalFeed.length;
 
   return (
-    <div className="flex h-screen flex-col bg-canvas">
-      <TopBar
-        notificationCount={unreadCount}
-        onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => navigate('/settings')}
-      />
-
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-3xl p-6">
+    <div className="flex-1 overflow-y-auto">
+      <div className="mx-auto max-w-3xl p-6">
           <button
             onClick={() => navigate('/dashboard')}
             className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
@@ -101,7 +91,6 @@ export function PersonalFeedPage() {
           )}
         </div>
       </div>
-    </div>
   );
 }
 

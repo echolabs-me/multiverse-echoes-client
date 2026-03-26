@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Plus, Compass, BookOpen, Zap, Users, ExternalLink } from 'lucide-react';
-import { TopBar, Sidebar, Card, Badge, EmptyState, Button, Spinner } from '../components/index.ts';
+import { Card, Badge, EmptyState, Button, Spinner } from '../components/index.ts';
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
 import { TickPulse } from '../components/TickPulse.tsx';
 import { useAmbientSoundscape } from '../hooks/useAmbientSoundscape.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
-import { useNotificationStore } from '../stores/useNotificationStore.ts';
+
 import { useSystemStore } from '../stores/useSystemStore.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import type { EchoResponse, DiaryEntry } from '../types/api.ts';
@@ -160,8 +160,6 @@ export function DashboardPage() {
   const navigate = useNavigate();
   const { echoList, activeEcho, isLoading, fetchEchoes, setActiveEcho } =
     useEchoStore();
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
-
   // Ambient soundscape — plays while Dashboard is mounted.
   useAmbientSoundscape();
 
@@ -176,15 +174,10 @@ export function DashboardPage() {
   }, [echoList, activeEcho, setActiveEcho]);
 
   return (
-    <div className="flex h-screen flex-col bg-canvas">
-      <TopBar
-        notificationCount={unreadCount}
-        onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => navigate('/settings')}
-      />
-
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar>
+    <div className="flex h-full flex-1 overflow-hidden">
+      {/* Echo list sidebar (page-specific, inside main content area) */}
+      <aside className="hidden w-56 flex-col border-r border-border bg-surface md:flex">
+        <div className="flex-1 overflow-y-auto p-2">
           {/* My Echoes */}
           <div className="mb-4">
             <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
@@ -219,29 +212,29 @@ export function DashboardPage() {
               {t('dashboard.browseShards')}
             </button>
           </div>
-        </Sidebar>
-
-        {/* Main content with 3D shard environment behind */}
-        <div className="relative flex-1 overflow-y-auto p-6">
-          <ShardEnvironment3D shardName="Personal Shard" />
-          {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <Spinner size="lg" />
-            </div>
-          ) : activeEcho ? (
-            <ActiveEchoPanel echo={activeEcho} />
-          ) : (
-            <EmptyState
-              title={t('dashboard.noEchoes')}
-              description={t('dashboard.noEchoesDesc')}
-              action={
-                <Button onClick={() => navigate('/onboarding/create-echo')}>
-                  {t('dashboard.createNewEcho')}
-                </Button>
-              }
-            />
-          )}
         </div>
+      </aside>
+
+      {/* Main content with 3D shard environment behind */}
+      <div className="relative flex-1 overflow-y-auto p-6">
+        <ShardEnvironment3D shardName="Personal Shard" />
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <Spinner size="lg" />
+          </div>
+        ) : activeEcho ? (
+          <ActiveEchoPanel echo={activeEcho} />
+        ) : (
+          <EmptyState
+            title={t('dashboard.noEchoes')}
+            description={t('dashboard.noEchoesDesc')}
+            action={
+              <Button onClick={() => navigate('/onboarding/create-echo')}>
+                {t('dashboard.createNewEcho')}
+              </Button>
+            }
+          />
+        )}
       </div>
     </div>
   );

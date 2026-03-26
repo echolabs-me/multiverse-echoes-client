@@ -13,14 +13,12 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import {
-  TopBar,
   Card,
   Button,
   Input,
   Spinner,
 } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
-import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useThemeStore } from '../stores/useThemeStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
@@ -32,8 +30,6 @@ import type { NotificationPreferences } from '../types/api.ts';
 export function SettingsPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
-
   const tabs = [
     { id: 'profile', label: t('settings.profile'), icon: User },
     { id: 'account', label: t('settings.account'), icon: Lock },
@@ -47,15 +43,8 @@ export function SettingsPage() {
   const [activeTab, setActiveTab] = useState('profile');
 
   return (
-    <div className="flex h-screen flex-col bg-canvas">
-      <TopBar
-        notificationCount={unreadCount}
-        onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => navigate('/settings')}
-      />
-
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-4xl p-6">
+    <div className="flex-1 overflow-y-auto">
+      <div className="mx-auto max-w-4xl p-6">
           <button
             onClick={() => navigate('/dashboard')}
             className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
@@ -100,7 +89,6 @@ export function SettingsPage() {
           {activeTab === 'danger' && <DangerZoneSection />}
         </div>
       </div>
-    </div>
   );
 }
 

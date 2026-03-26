@@ -3,20 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Search, MapPin } from 'lucide-react';
 import {
-  TopBar,
   Card,
   Badge,
   Spinner,
   EmptyState,
 } from '../components/index.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
-import { useNotificationStore } from '../stores/useNotificationStore.ts';
 
 export function ShardBrowserPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { shardList, isLoading, fetchShards } = useShardStore();
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -34,15 +31,8 @@ export function ShardBrowserPage() {
   }, [shardList, searchQuery]);
 
   return (
-    <div className="flex h-screen flex-col bg-canvas">
-      <TopBar
-        notificationCount={unreadCount}
-        onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => navigate('/settings')}
-      />
-
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-4xl p-6">
+    <div className="flex-1 overflow-y-auto">
+      <div className="mx-auto max-w-4xl p-6">
           {/* Back */}
           <button
             onClick={() => navigate('/dashboard')}
@@ -118,6 +108,5 @@ export function ShardBrowserPage() {
           )}
         </div>
       </div>
-    </div>
   );
 }

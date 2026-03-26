@@ -18,7 +18,6 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import {
-  TopBar,
   Card,
   Badge,
   Button,
@@ -31,7 +30,6 @@ import {
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
-import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useSystemStore } from '../stores/useSystemStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
@@ -50,7 +48,6 @@ export function EchoDetailPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { activeEcho, fetchEcho, hibernateEcho, wakeEcho } = useEchoStore();
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
   const { personalFeed, fetchPersonalFeed } = useFeedStore();
   const addToast = useToastStore((s) => s.addToast);
 
@@ -198,34 +195,20 @@ export function EchoDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen flex-col bg-canvas">
-        <TopBar
-          notificationCount={unreadCount}
-          onNotificationClick={() => navigate('/notifications')}
-          onProfileClick={() => navigate('/settings')}
-        />
-        <div className="flex flex-1 items-center justify-center">
-          <Spinner size="lg" />
-        </div>
+      <div className="flex flex-1 items-center justify-center">
+        <Spinner size="lg" />
       </div>
     );
   }
 
   if (!activeEcho) {
     return (
-      <div className="flex h-screen flex-col bg-canvas">
-        <TopBar
-          notificationCount={unreadCount}
-          onNotificationClick={() => navigate('/notifications')}
-          onProfileClick={() => navigate('/settings')}
+      <div className="flex flex-1 items-center justify-center">
+        <EmptyState
+          title={t('echoDetail.echoNotFound')}
+          description={t('echoDetail.echoNotFoundDesc')}
+          action={<Button onClick={() => navigate('/dashboard')}>{t('common.back')}</Button>}
         />
-        <div className="flex flex-1 items-center justify-center">
-          <EmptyState
-            title={t('echoDetail.echoNotFound')}
-            description={t('echoDetail.echoNotFoundDesc')}
-            action={<Button onClick={() => navigate('/dashboard')}>{t('common.back')}</Button>}
-          />
-        </div>
       </div>
     );
   }
@@ -233,13 +216,7 @@ export function EchoDetailPage() {
   const personaTruncated = activeEcho.persona_text.length > 200 && !showAllPersona;
 
   return (
-    <div className="flex h-screen flex-col bg-canvas">
-      <TopBar
-        notificationCount={unreadCount}
-        onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => navigate('/settings')}
-      />
-
+    <div className="flex h-full flex-col">
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-4xl p-6">
           {/* Back button */}

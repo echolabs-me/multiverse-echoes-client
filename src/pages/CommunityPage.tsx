@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Hash,
@@ -11,7 +10,6 @@ import {
   Lock,
 } from 'lucide-react';
 import {
-  TopBar,
   Button,
   Spinner,
   EmptyState,
@@ -19,7 +17,6 @@ import {
   Input,
 } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
-import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { channels as channelApi, reports } from '../lib/api/endpoints.ts';
 import type { Channel, ChannelMessage } from '../types/api.ts';
@@ -27,9 +24,7 @@ import type { Channel, ChannelMessage } from '../types/api.ts';
 const MAX_MESSAGE_LENGTH = 2000;
 
 export function CommunityPage() {
-  const navigate = useNavigate();
   const { t } = useTranslation();
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
   const user = useAuthStore((s) => s.user);
   const addToast = useToastStore((s) => s.addToast);
 
@@ -158,14 +153,8 @@ export function CommunityPage() {
   const canDeleteMessage = (msg: ChannelMessage) => msg.can_delete ?? false;
 
   return (
-    <div className="flex h-screen flex-col bg-canvas">
-      <TopBar
-        notificationCount={unreadCount}
-        onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => navigate('/settings')}
-      />
-
-      <div className="flex flex-1 overflow-hidden">
+    <>
+    <div className="flex h-full flex-1 overflow-hidden">
         {/* Channel sidebar */}
         <div className="w-60 shrink-0 overflow-y-auto border-r border-border bg-surface p-3">
           <h2 className="mb-3 px-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
@@ -413,6 +402,6 @@ export function CommunityPage() {
           </Button>
         </div>
       </Modal>
-    </div>
+    </>
   );
 }

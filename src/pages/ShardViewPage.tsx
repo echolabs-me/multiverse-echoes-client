@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, MapPin, Users, MessageSquare } from 'lucide-react';
 import {
-  TopBar,
   Card,
   Badge,
   Button,
@@ -13,7 +12,6 @@ import {
 } from '../components/index.ts';
 import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
-import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { shards as shardApi, echoes as echoApi, feeds, channels } from '../lib/api/endpoints.ts';
@@ -25,7 +23,6 @@ export function ShardViewPage() {
   const { t } = useTranslation();
   const { activeShard, fetchShard } = useShardStore();
   const { echoList } = useEchoStore();
-  const unreadCount = useNotificationStore((s) => s.unreadCount);
   const addToast = useToastStore((s) => s.addToast);
 
   const [shardEchoes, setShardEchoes] = useState<EchoResponse[]>([]);
@@ -82,48 +79,26 @@ export function ShardViewPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen flex-col bg-canvas">
-        <TopBar
-          notificationCount={unreadCount}
-          onSearchClick={() => {}}
-          onNotificationClick={() => navigate('/notifications')}
-          onProfileClick={() => navigate('/settings')}
-        />
-        <div className="flex flex-1 items-center justify-center">
-          <Spinner size="lg" />
-        </div>
+      <div className="flex flex-1 items-center justify-center">
+        <Spinner size="lg" />
       </div>
     );
   }
 
   if (!activeShard) {
     return (
-      <div className="flex h-screen flex-col bg-canvas">
-        <TopBar
-          notificationCount={unreadCount}
-          onSearchClick={() => {}}
-          onNotificationClick={() => navigate('/notifications')}
-          onProfileClick={() => navigate('/settings')}
+      <div className="flex flex-1 items-center justify-center">
+        <EmptyState
+          title={t('shardView.shardNotFound')}
+          description=""
+          action={<Button onClick={() => navigate('/dashboard')}>{t('common.back')}</Button>}
         />
-        <div className="flex flex-1 items-center justify-center">
-          <EmptyState
-            title={t('shardView.shardNotFound')}
-            description=""
-            action={<Button onClick={() => navigate('/dashboard')}>{t('common.back')}</Button>}
-          />
-        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen flex-col bg-canvas">
-      <TopBar
-        notificationCount={unreadCount}
-        onNotificationClick={() => navigate('/notifications')}
-        onProfileClick={() => navigate('/settings')}
-      />
-
+    <div className="flex h-full flex-col">
       <div className="relative flex-1 overflow-y-auto">
         <ShardEnvironment3D shardName={activeShard.name} />
         <div className="relative mx-auto max-w-4xl p-6">

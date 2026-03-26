@@ -393,7 +393,9 @@
     "clearHistory": "Clear conversation",
     "rateLimit": "{{limit}} questions per minute",
     "error": "The Oracle couldn't respond. Please try again.",
-    "conversation": "Oracle conversation"
+    "conversation": "Oracle conversation",
+    "expand": "Expand Oracle",
+    "collapse": "Collapse Oracle"
   },
   "admin": {
     "title": "Admin Dashboard",
@@ -456,7 +458,9 @@
     "notifications": "Notifications",
     "settings": "Settings",
     "personalFeed": "Personal Feed",
-    "socialFeed": "Social Feed"
+    "socialFeed": "Social Feed",
+    "browseShards": "Browse Shards",
+    "menu": "Menu"
   },
   "waitlist": {
     "heroTitle": "What would your life look like if you'd made different choices?",

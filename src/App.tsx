@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { OraclePanel, SkipLink, ToastContainer } from './components/index.ts';
+import { SkipLink, ToastContainer } from './components/index.ts';
+import { AppLayout } from './components/AppLayout.tsx';
 import { LanguageSelectionPage } from './pages/LanguageSelectionPage.tsx';
 import { RegisterPage } from './pages/RegisterPage.tsx';
 import { VerifyPendingPage } from './pages/VerifyPendingPage.tsx';
@@ -35,27 +36,34 @@ export function App() {
     <BrowserRouter>
       <SkipLink />
       <ToastContainer />
-      <OraclePanel />
-      <main id="main-content">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              hasSelectedLocale() ? (
-                <Navigate to="/login" replace />
-              ) : (
-                <Navigate to="/language" replace />
-              )
-            }
-          />
-          <Route path="/language" element={<LanguageSelectionPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/verify-pending" element={<VerifyPendingPage />} />
-          <Route path="/verified" element={<VerifiedPage />} />
-          <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
-          <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            hasSelectedLocale() ? (
+              <Navigate to="/login" replace />
+            ) : (
+              <Navigate to="/language" replace />
+            )
+          }
+        />
+
+        {/* Pre-auth routes — no app shell */}
+        <Route path="/language" element={<LanguageSelectionPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/verify-pending" element={<VerifyPendingPage />} />
+        <Route path="/verified" element={<VerifiedPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
+        <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
+        <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
+        <Route path="/waitlist" element={<WaitlistPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-of-service" element={<TermsPage />} />
+        <Route path="/plans" element={<PlansPage />} />
+
+        {/* App shell routes — NavSidebar + Oracle sidebar */}
+        <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
           <Route path="/echoes/:echoId/talk" element={<EchoConversationPage />} />
@@ -69,12 +77,8 @@ export function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/admin" element={<AdminDashboardPage />} />
           <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-          <Route path="/terms-of-service" element={<TermsPage />} />
-          <Route path="/plans" element={<PlansPage />} />
-          <Route path="/waitlist" element={<WaitlistPage />} />
-        </Routes>
-      </main>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
