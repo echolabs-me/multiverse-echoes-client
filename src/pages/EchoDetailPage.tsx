@@ -76,6 +76,7 @@ export function EchoDetailPage() {
   const [influenceDetails, setInfluenceDetails] = useState('');
   const [exportModal, setExportModal] = useState(false);
   const [soloMode, setSoloMode] = useState(false);
+  const [nudgeRipple, setNudgeRipple] = useState(false);
 
   // Mood atmosphere — derive from latest diary entry or echo's current_mood.
   const moodContainerRef = useRef<HTMLDivElement>(null);
@@ -195,6 +196,10 @@ export function EchoDetailPage() {
       addToast(t('echoDetail.influenceUsed'), 'success');
       setInfluenceModal(false);
       setInfluenceDetails('');
+      // Trigger ripple animation + sound
+      playSound('influence');
+      setNudgeRipple(true);
+      setTimeout(() => setNudgeRipple(false), 800);
       // Refresh influence balance
       const inf = await echoApi.influence(activeEcho.echo_id).catch(() => null);
       setInfluence(inf);
@@ -366,12 +371,27 @@ export function EchoDetailPage() {
                 {t('echoDetail.hibernateHint')}
               </p>
             </div>
-            <Button
-              variant="secondary"
-              onClick={() => setInfluenceModal(true)}
-            >
-              <Zap size={16} /> {t('echoDetail.useInfluence')}
-            </Button>
+            <div className="relative">
+              <Button
+                variant="secondary"
+                onClick={() => setInfluenceModal(true)}
+              >
+                <Zap size={16} /> {t('echoDetail.useInfluence')}
+              </Button>
+              {/* Nudge ripple effect */}
+              {nudgeRipple && (
+                <>
+                  <span
+                    className="pointer-events-none absolute inset-0 rounded-lg animate-nudge-ripple"
+                    aria-hidden="true"
+                  />
+                  <span
+                    className="pointer-events-none absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-accent animate-nudge-pulse"
+                    aria-hidden="true"
+                  />
+                </>
+              )}
+            </div>
             <Button
               variant="secondary"
               onClick={() => {

@@ -139,6 +139,7 @@ export interface DiaryEntry {
   mood: string;
   location_name: string;
   shard_id: string;
+  nudge_source?: string | null;
   created_at: string;
 }
 
