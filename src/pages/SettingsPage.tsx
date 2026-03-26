@@ -25,6 +25,7 @@ import { useSoundStore } from '../lib/sounds.ts';
 import {
   account as accountApi,
 } from '../lib/api/endpoints.ts';
+import { request } from '../lib/api/client.ts';
 import type { NotificationPreferences } from '../types/api.ts';
 
 export function SettingsPage() {
@@ -334,12 +335,15 @@ function PrivacySection() {
   const { t } = useTranslation();
   const addToast = useToastStore((s) => s.addToast);
   const [soloMode, setSoloMode] = useState(false);
+  const [doNotSell, setDoNotSell] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => {
     const load = async () => {
       try {
         const privacy = await accountApi.getPrivacy();
         setSoloMode(privacy.solo_mode);
+        setDoNotSell(privacy.do_not_sell);
       } catch {
         // ignore
       }
@@ -349,10 +353,38 @@ function PrivacySection() {
 
   const handleSoloModeToggle = async () => {
     try {
-      await accountApi.updatePrivacy(!soloMode);
+      await accountApi.updatePrivacy({ solo_mode: !soloMode });
       setSoloMode(!soloMode);
     } catch {
       addToast(t('common.error'), 'danger');
+    }
+  };
+
+  const handleDoNotSellToggle = async () => {
+    try {
+      const result = await accountApi.updatePrivacy({ do_not_sell: !doNotSell });
+      setDoNotSell(result.do_not_sell);
+    } catch {
+      addToast(t('common.error'), 'danger');
+    }
+  };
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    try {
+      const data = await request<Record<string, unknown>>('/account/export');
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'multiverse-echoes-export.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      addToast('Data exported successfully', 'success');
+    } catch {
+      addToast(t('common.error'), 'danger');
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -360,19 +392,37 @@ function PrivacySection() {
     <div className="flex flex-col gap-4">
       <Card>
         <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.privacy')}</h3>
-        <div className="flex items-center gap-3">
-          <input
-            id="solo-mode-toggle"
-            type="checkbox"
-            checked={soloMode}
-            onChange={() => void handleSoloModeToggle()}
-            className="h-4 w-4 rounded border-border accent-accent"
-            aria-label={t('settings.soloMode')}
-          />
-          <label htmlFor="solo-mode-toggle">
-            <span className="text-sm text-text-primary">{t('settings.soloMode')}</span>
-            <p className="text-xs text-text-muted">{t('settings.soloModeDesc')}</p>
-          </label>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <input
+              id="solo-mode-toggle"
+              type="checkbox"
+              checked={soloMode}
+              onChange={() => void handleSoloModeToggle()}
+              className="h-4 w-4 rounded border-border accent-accent"
+              aria-label={t('settings.soloMode')}
+            />
+            <label htmlFor="solo-mode-toggle">
+              <span className="text-sm text-text-primary">{t('settings.soloMode')}</span>
+              <p className="text-xs text-text-muted">{t('settings.soloModeDesc')}</p>
+            </label>
+          </div>
+          <div className="flex items-center gap-3">
+            <input
+              id="do-not-sell-toggle"
+              type="checkbox"
+              checked={doNotSell}
+              onChange={() => void handleDoNotSellToggle()}
+              className="h-4 w-4 rounded border-border accent-accent"
+              aria-label="Do Not Sell My Personal Information"
+            />
+            <label htmlFor="do-not-sell-toggle">
+              <span className="text-sm text-text-primary">Do Not Sell My Personal Information</span>
+              <p className="text-xs text-text-muted">
+                Opt out of any sale of personal data (CCPA). This also disables analytics tracking.
+              </p>
+            </label>
+          </div>
         </div>
       </Card>
 
@@ -380,9 +430,11 @@ function PrivacySection() {
         <h3 className="mb-4 text-sm font-semibold text-text-primary">
           {t('settings.exportData')}
         </h3>
-        <p className="mb-3 text-sm text-text-muted">{t('settings.exportComingSoon')}</p>
-        <Button variant="secondary" disabled>
-          {t('settings.exportData')}
+        <p className="mb-3 text-sm text-text-muted">
+          Download all your data as JSON, including echoes, diary entries, and conversations.
+        </p>
+        <Button variant="secondary" onClick={() => void handleExport()} disabled={isExporting}>
+          {isExporting ? 'Exporting...' : t('settings.exportData')}
         </Button>
       </Card>
 
@@ -618,17 +670,63 @@ function ApiKeysSection() {
 function DangerZoneSection() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const addToast = useToastStore((s) => s.addToast);
+  const user = useAuthStore((s) => s.user);
+  const [isCancelling, setIsCancelling] = useState(false);
+
+  const deletionScheduledAt = user?.deletion_scheduled_at;
+  const isPendingDeletion = user?.account_status === 'PendingDeletion';
+
+  const handleCancelDeletion = async () => {
+    setIsCancelling(true);
+    try {
+      await accountApi.cancelDeletion();
+      addToast('Account deletion cancelled', 'success');
+      // Refresh profile to update status
+      const fetchProfile = useAuthStore.getState().fetchProfile;
+      await fetchProfile();
+    } catch {
+      addToast(t('common.error'), 'danger');
+    } finally {
+      setIsCancelling(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
       <Card>
         <h3 className="mb-4 text-sm font-semibold text-danger">{t('settings.dangerZone')}</h3>
-        <p className="mb-4 text-sm text-text-secondary">
-          {t('settings.deleteAccountWarning')}
-        </p>
-        <Button variant="danger" onClick={() => navigate('/settings/delete-account')}>
-          {t('settings.deleteAccount')}
-        </Button>
+
+        {isPendingDeletion && deletionScheduledAt ? (
+          <div className="mb-4">
+            <div className="mb-3 rounded-md border border-danger/30 bg-danger/10 p-3">
+              <p className="text-sm font-medium text-danger">
+                Account scheduled for deletion on{' '}
+                {new Date(deletionScheduledAt).toLocaleDateString()}
+              </p>
+              <p className="mt-1 text-xs text-text-muted">
+                Your account and all data will be permanently deleted after this date.
+                Log in or cancel below to keep your account.
+              </p>
+            </div>
+            <Button
+              variant="secondary"
+              onClick={() => void handleCancelDeletion()}
+              disabled={isCancelling}
+            >
+              {isCancelling ? 'Cancelling...' : 'Cancel Deletion'}
+            </Button>
+          </div>
+        ) : (
+          <>
+            <p className="mb-4 text-sm text-text-secondary">
+              {t('settings.deleteAccountWarning')}
+            </p>
+            <Button variant="danger" onClick={() => navigate('/settings/delete-account')}>
+              {t('settings.deleteAccount')}
+            </Button>
+          </>
+        )}
       </Card>
     </div>
   );

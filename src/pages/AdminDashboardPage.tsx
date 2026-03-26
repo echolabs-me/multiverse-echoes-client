@@ -16,6 +16,7 @@ import {
 import { Tabs, Button, Badge, Spinner, Card } from '../components/index.ts';
 import { useAuthStore } from '../stores/index.ts';
 import { admin } from '../lib/api/endpoints.ts';
+import { request } from '../lib/api/client.ts';
 import type {
   SystemHealth,
   AdminAlert,
@@ -24,7 +25,7 @@ import type {
   AdminShard,
 } from '../types/api.ts';
 
-type AdminTab = 'dashboard' | 'reports' | 'users' | 'shards' | 'controls';
+type AdminTab = 'dashboard' | 'reports' | 'users' | 'shards' | 'controls' | 'analytics';
 
 export function AdminDashboardPage() {
   const { t } = useTranslation();
@@ -55,6 +56,7 @@ export function AdminDashboardPage() {
     { id: 'users', label: t('admin.tabUsers') },
     { id: 'shards', label: t('admin.tabShards') },
     { id: 'controls', label: t('admin.tabControls') },
+    { id: 'analytics', label: 'Analytics' },
   ];
 
   return (
@@ -83,6 +85,7 @@ export function AdminDashboardPage() {
         {activeTab === 'users' && <UsersView />}
         {activeTab === 'shards' && <ShardsView />}
         {activeTab === 'controls' && <ControlsView />}
+        {activeTab === 'analytics' && <AnalyticsView />}
       </div>
     </div>
   );
@@ -585,6 +588,87 @@ function ControlsView() {
         >
           <Database size={16} /> {t('admin.triggerBackup')}
         </Button>
+      </Card>
+    </div>
+  );
+}
+
+// --- Analytics View ---
+interface AnalyticsSummary {
+  dau: number;
+  registrations_7d: number;
+  echo_creations_7d: number;
+  diary_views_today: number;
+  safety_flagged_7d: number;
+  mrr: number;
+  subscriber_count: Record<string, number>;
+  churn_rate: number;
+}
+
+function AnalyticsView() {
+  const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await request<AnalyticsSummary>('/admin/analytics/summary');
+        setSummary(data);
+      } catch {
+        // Will show empty state
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    void load();
+  }, []);
+
+  if (isLoading) return <Spinner />;
+  if (!summary) return <p className="py-8 text-center text-text-muted">Failed to load analytics</p>;
+
+  const metrics = [
+    { label: 'DAU (Daily Active Users)', value: String(summary.dau), icon: <Users size={16} /> },
+    { label: 'Registrations (7d)', value: String(summary.registrations_7d), icon: <Users size={16} /> },
+    { label: 'Echo Creations (7d)', value: String(summary.echo_creations_7d), icon: <Activity size={16} /> },
+    { label: 'Diary Views (today)', value: String(summary.diary_views_today), icon: <Activity size={16} /> },
+    { label: 'Content Flagged (7d)', value: String(summary.safety_flagged_7d), icon: <AlertTriangle size={16} />, warn: summary.safety_flagged_7d > 0 },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        {metrics.map((m) => (
+          <Card key={m.label}>
+            <div className="flex items-center gap-2">
+              <span className={m.warn ? 'text-danger' : 'text-text-muted'}>{m.icon}</span>
+              <div>
+                <p className="text-xs text-text-muted">{m.label}</p>
+                <p className={`text-lg font-semibold ${m.warn ? 'text-danger' : 'text-text-primary'}`}>
+                  {m.value}
+                </p>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      {/* Revenue (stubs) */}
+      <Card>
+        <h3 className="mb-3 text-sm font-semibold text-text-secondary">Revenue (Coming Soon)</h3>
+        <div className="grid grid-cols-3 gap-4 text-sm">
+          <div>
+            <p className="text-text-muted">MRR</p>
+            <p className="text-lg font-semibold text-text-primary">${summary.mrr}</p>
+          </div>
+          <div>
+            <p className="text-text-muted">Churn Rate</p>
+            <p className="text-lg font-semibold text-text-primary">{summary.churn_rate}%</p>
+          </div>
+          <div>
+            <p className="text-text-muted">Subscribers</p>
+            <p className="text-text-secondary">Pending Stripe integration</p>
+          </div>
+        </div>
       </Card>
     </div>
   );

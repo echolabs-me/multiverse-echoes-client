@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
+import { trackEvent } from '../lib/analytics.ts';
 import { OracleSidebar } from './OracleSidebar.tsx';
 
 interface NavItem {
@@ -137,6 +138,12 @@ export function AppLayout() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [mobileOracleOpen, setMobileOracleOpen] = useState(false);
   const unreadCount = useNotificationStore((s) => s.unreadCount);
+
+  // Track page views on route changes (ME-UXF-001 §16.5)
+  useEffect(() => {
+    const pageName = location.pathname.split('/')[1] || 'dashboard';
+    trackEvent('page.viewed', { page_name: pageName, path: location.pathname });
+  }, [location.pathname]);
 
   // Auth guard — redirect to login if not authenticated.
   if (!isAuthenticated) {

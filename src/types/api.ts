@@ -81,6 +81,9 @@ export interface User {
   privacy_version: string;
   echo_count_limit: number;
   solo_mode: boolean;
+  deletion_scheduled_at: string | null;
+  do_not_sell: boolean;
+  analytics_opt_out: boolean;
 }
 
 // --- Echo ---

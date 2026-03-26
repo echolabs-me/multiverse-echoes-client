@@ -228,12 +228,12 @@ export const account = {
     }),
 
   getPrivacy: () =>
-    request<{ solo_mode: boolean }>('/account/me/privacy'),
+    request<{ solo_mode: boolean; do_not_sell: boolean; analytics_opt_out: boolean }>('/account/me/privacy'),
 
-  updatePrivacy: (soloMode: boolean) =>
-    request<MessageResponse>('/account/me/privacy', {
+  updatePrivacy: (data: { solo_mode?: boolean; do_not_sell?: boolean }) =>
+    request<{ solo_mode: boolean; do_not_sell: boolean; analytics_opt_out: boolean; updated_at: string }>('/account/me/privacy', {
       method: 'PATCH',
-      body: JSON.stringify({ solo_mode: soloMode }),
+      body: JSON.stringify(data),
     }),
 
   changePassword: (data: ChangePasswordRequest) =>
