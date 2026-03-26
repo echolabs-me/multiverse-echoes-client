@@ -295,13 +295,6 @@ export interface SystemHealth {
   total_shards: number;
 }
 
-export interface AdminAlert {
-  alert_id: string;
-  severity: 'info' | 'warning' | 'critical';
-  message: string;
-  created_at: string;
-}
-
 export interface AdminReport {
   report_id: string;
   reporter_user_id: string;
@@ -325,15 +318,6 @@ export interface AdminUser {
   echo_count: number;
   created_at: string;
   last_login_at: string;
-}
-
-export interface AdminShard {
-  shard_id: string;
-  name: string;
-  shard_type: string;
-  status: string;
-  echo_count: number;
-  max_capacity: number;
 }
 
 export interface ResolveReportRequest {

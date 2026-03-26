@@ -7,8 +7,6 @@ import {
   Users,
   Globe,
   Shield,
-  Pause,
-  Play,
   Database,
   Search,
   Clock,
@@ -19,10 +17,9 @@ import { admin } from '../lib/api/endpoints.ts';
 import { request } from '../lib/api/client.ts';
 import type {
   SystemHealth,
-  AdminAlert,
   AdminReport,
   AdminUser,
-  AdminShard,
+  Shard,
 } from '../types/api.ts';
 
 type AdminTab = 'dashboard' | 'reports' | 'users' | 'shards' | 'controls' | 'analytics';
@@ -95,15 +92,12 @@ export function AdminDashboardPage() {
 function DashboardView() {
   const { t } = useTranslation();
   const [health, setHealth] = useState<SystemHealth | null>(null);
-  const [alerts, setAlerts] = useState<AdminAlert[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [h, a] = await Promise.all([admin.systemHealth(), admin.alerts()]);
-        setHealth(h);
-        setAlerts(a);
+        setHealth(await admin.systemHealth());
       } catch {
         // Will show empty state
       } finally {
@@ -147,41 +141,6 @@ function DashboardView() {
         ))}
       </div>
 
-      {/* Alerts */}
-      {alerts.length > 0 && (
-        <div>
-          <h3 className="mb-2 text-sm font-semibold text-text-secondary">{t('admin.alerts')}</h3>
-          <div className="space-y-2">
-            {alerts.map((alert) => (
-              <div
-                key={alert.alert_id}
-                className={`flex items-center gap-3 rounded-lg border px-4 py-3 ${
-                  alert.severity === 'critical'
-                    ? 'border-danger bg-danger/10'
-                    : alert.severity === 'warning'
-                      ? 'border-warning bg-warning/10'
-                      : 'border-border bg-surface'
-                }`}
-              >
-                <AlertTriangle
-                  size={16}
-                  className={
-                    alert.severity === 'critical'
-                      ? 'text-danger'
-                      : alert.severity === 'warning'
-                        ? 'text-warning'
-                        : 'text-info'
-                  }
-                />
-                <p className="flex-1 text-sm text-text-primary">{alert.message}</p>
-                <time className="text-xs text-text-muted">
-                  {new Date(alert.created_at).toLocaleTimeString()}
-                </time>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -445,7 +404,7 @@ function UsersView() {
 // --- Shards View ---
 function ShardsView() {
   const { t } = useTranslation();
-  const [shards, setShards] = useState<AdminShard[]>([]);
+  const [shards, setShards] = useState<Shard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -522,72 +481,14 @@ function ShardsView() {
 // --- Controls View ---
 function ControlsView() {
   const { t } = useTranslation();
-  const [ticksPaused, setTicksPaused] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const handlePauseResume = async () => {
-    setIsProcessing(true);
-    try {
-      if (ticksPaused) {
-        await admin.resumeTicks();
-        setTicksPaused(false);
-      } else {
-        await admin.pauseTicks();
-        setTicksPaused(true);
-      }
-    } catch {
-      // Error handling
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleBackup = async () => {
-    setIsProcessing(true);
-    try {
-      await admin.triggerBackup();
-    } catch {
-      // Error handling
-    } finally {
-      setIsProcessing(false);
-    }
-  };
 
   return (
     <div className="space-y-6">
       <Card>
         <h3 className="mb-3 text-sm font-semibold text-text-secondary">{t('admin.tickControl')}</h3>
-        <div className="flex items-center gap-4">
-          <Button
-            variant={ticksPaused ? 'primary' : 'danger'}
-            onClick={() => void handlePauseResume()}
-            disabled={isProcessing}
-          >
-            {ticksPaused ? (
-              <>
-                <Play size={16} /> {t('admin.resumeTicks')}
-              </>
-            ) : (
-              <>
-                <Pause size={16} /> {t('admin.pauseTicks')}
-              </>
-            )}
-          </Button>
-          <span className="text-sm text-text-muted">
-            {ticksPaused ? t('admin.ticksPaused') : t('admin.ticksRunning')}
-          </span>
-        </div>
-      </Card>
-
-      <Card>
-        <h3 className="mb-3 text-sm font-semibold text-text-secondary">{t('admin.backupControl')}</h3>
-        <Button
-          variant="secondary"
-          onClick={() => void handleBackup()}
-          disabled={isProcessing}
-        >
-          <Database size={16} /> {t('admin.triggerBackup')}
-        </Button>
+        <p className="text-sm text-text-muted">
+          Tick pause/resume and backup controls will be available in a future release.
+        </p>
       </Card>
     </div>
   );

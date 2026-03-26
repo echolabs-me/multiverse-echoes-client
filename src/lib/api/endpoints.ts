@@ -38,10 +38,8 @@ import type {
   DataExport,
   RequestExportBody,
   SystemHealth,
-  AdminAlert,
   AdminReport,
   AdminUser,
-  AdminShard,
   ResolveReportRequest,
   WaitlistSignupRequest,
   WaitlistSignupResponse,
@@ -364,13 +362,11 @@ export const oracle = {
 export const admin = {
   systemHealth: () => request<SystemHealth>('/system/status'),
 
-  alerts: () => request<AdminAlert[]>('/admin/alerts'),
-
   reports: () => request<AdminReport[]>('/admin/reports'),
 
   resolveReport: (reportId: string, data: ResolveReportRequest) =>
-    request<MessageResponse>(`/admin/reports/${reportId}/resolve`, {
-      method: 'POST',
+    request<MessageResponse>(`/admin/reports/${reportId}`, {
+      method: 'PATCH',
       body: JSON.stringify(data),
     }),
 
@@ -389,13 +385,7 @@ export const admin = {
   unsuspendUser: (userId: string) =>
     request<MessageResponse>(`/admin/users/${userId}/unsuspend`, { method: 'POST' }),
 
-  shards: () => request<AdminShard[]>('/admin/shards'),
-
-  pauseTicks: () => request<MessageResponse>('/system/pause', { method: 'POST' }),
-
-  resumeTicks: () => request<MessageResponse>('/system/resume', { method: 'POST' }),
-
-  triggerBackup: () => request<MessageResponse>('/system/backup', { method: 'POST' }),
+  shards: () => request<Shard[]>('/shards'),
 };
 
 // --- Reports ---
