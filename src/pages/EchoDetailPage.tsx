@@ -39,11 +39,13 @@ import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
+import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import type {
   EchoRelationship,
   InfluenceBalance,
   EchoMemory,
   DiaryEntry,
+  WsEchoEvent,
 } from '../types/api.ts';
 
 const PAGE_SIZE = 20;
@@ -128,17 +130,46 @@ export function EchoDetailPage() {
     void loadData();
   }, [loadData]);
 
-  // Poll for live updates every 30 seconds (tick counter, mood, diary, events).
-  // Uses echoIdRef to avoid re-creating the interval when store functions change.
-  // Debt: replace with WebSocket subscription to /ws/echoes/:id/stream.
-  useEffect(() => {
-    if (!echoId) return;
-    const interval = setInterval(() => {
+  // WebSocket live updates — replaces 30-second polling.
+  // On DiaryEntryCreated: fetch new diary and trigger arrival animation.
+  // On MoodChanged: refresh echo state for mood atmosphere update.
+  // Falls back to polling on disconnect.
+  const handleWsEvent = useCallback(
+    (event: WsEchoEvent) => {
       const id = echoIdRef.current;
       if (!id) return;
-      // Refresh echo (tick counter, mood) + diary entries from Redb.
-      void useEchoStore.getState().fetchEcho(id);
-      void echoApi.diary(id).then((d) => {
+      if (event.type === 'DiaryEntryCreated') {
+        void echoApi
+          .diary(id)
+          .then((d) => {
+            if (initialLoadDoneRef.current) {
+              const arrivals = d.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
+              if (arrivals.length > 0) {
+                const arrivalIds = new Set(arrivals.map((e) => e.diary_id));
+                setNewDiaryIds((prev) => new Set([...prev, ...arrivalIds]));
+                playSound('diary_entry');
+              }
+            }
+            setDiaryEntries(d);
+          })
+          .catch(() => {});
+        void useFeedStore.getState().fetchPersonalFeed(id);
+      } else if (event.type === 'MoodChanged') {
+        void useEchoStore.getState().fetchEcho(id);
+      } else if (event.type === 'LifeEventOccurred') {
+        void useFeedStore.getState().fetchPersonalFeed(id);
+      }
+    },
+    [playSound],
+  );
+
+  const handleFallbackPoll = useCallback(() => {
+    const id = echoIdRef.current;
+    if (!id) return;
+    void useEchoStore.getState().fetchEcho(id);
+    void echoApi
+      .diary(id)
+      .then((d) => {
         if (initialLoadDoneRef.current) {
           const arrivals = d.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
           if (arrivals.length > 0) {
@@ -148,11 +179,13 @@ export function EchoDetailPage() {
           }
         }
         setDiaryEntries(d);
-      }).catch(() => {});
-      void useFeedStore.getState().fetchPersonalFeed(id);
-    }, 30_000);
-    return () => clearInterval(interval);
-  }, [echoId, playSound]);
+      })
+      .catch(() => {});
+    void useFeedStore.getState().fetchPersonalFeed(id);
+  }, [playSound]);
+
+  const wsPath = echoId ? `/ws/echoes/${echoId}/stream` : null;
+  useEchoWebSocket(wsPath, handleWsEvent, handleFallbackPoll);
 
   // After glow animation finishes, move diary ID from "new" to "known".
   const handleAnimationEnd = useCallback((diaryId: string) => {

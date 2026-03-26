@@ -461,6 +461,7 @@ export interface WaitlistCountResponse {
 
 // --- WebSocket Events ---
 
+/** Envelope for full WorldEvents (used by shard/channel streams). */
 export interface WorldEvent {
   event_id: string;
   tick_id: number;
@@ -478,4 +479,15 @@ export type WorldEventPayload =
   | { type: 'ShardTravelCompleted'; echo_id: string; shard_id: string }
   | { type: 'CommunityMessagePosted'; channel_id: string; message_id: string }
   | { type: 'NotificationCreated'; notification_id: string }
+  | { type: string; [key: string]: unknown };
+
+/** Flat tagged events sent over Echo/Dashboard WS streams (server's WsEchoEvent). */
+export type WsEchoEvent =
+  | { type: 'DiaryEntryCreated'; echo_id: string; diary_id: string; tick_id: number }
+  | { type: 'LifeEventOccurred'; echo_id: string; event_id: string; tick_id: number }
+  | { type: 'MoodChanged'; echo_id: string; mood: string; tick_id: number }
+  | { type: 'EchoMoved'; echo_id: string; from_location: string; to_location: string }
+  | { type: 'PersonalityShift'; echo_id: string; version: number }
+  | { type: 'Connected'; echo_id?: string; message: string }
+  | { type: 'Error'; message: string }
   | { type: string; [key: string]: unknown };

@@ -35,6 +35,14 @@ export function loadStoredTokens() {
   refreshToken = localStorage.getItem('refresh_token');
 }
 
+export function getBaseUrl(): string {
+  return baseUrl;
+}
+
+export function getAccessToken(): string | null {
+  return accessToken;
+}
+
 export class ApiRequestError extends Error {
   readonly status: number;
   readonly code: string;

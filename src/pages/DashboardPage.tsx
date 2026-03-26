@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Plus, Compass, BookOpen, Zap, Users, ExternalLink } from 'lucide-react';
@@ -7,11 +7,12 @@ import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
 import { TickPulse } from '../components/TickPulse.tsx';
 import { useAmbientSoundscape } from '../hooks/useAmbientSoundscape.ts';
+import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 
 import { useSystemStore } from '../stores/useSystemStore.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
-import type { EchoResponse, DiaryEntry } from '../types/api.ts';
+import type { EchoResponse, DiaryEntry, WsEchoEvent } from '../types/api.ts';
 
 function EchoListItem({
   echo,
@@ -52,15 +53,26 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
   const { t } = useTranslation();
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
 
-  // Fetch diary entries from Redb on mount and every 30s.
+  // Initial load
   useEffect(() => {
-    const load = () => {
-      void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
-    };
-    load();
-    const interval = setInterval(load, 30_000);
-    return () => clearInterval(interval);
+    void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
   }, [echo.echo_id]);
+
+  // Real-time updates via Dashboard WS stream — refreshes diary on new events.
+  const handleWsEvent = useCallback(
+    (event: WsEchoEvent) => {
+      if (event.type === 'DiaryEntryCreated' && event.echo_id === echo.echo_id) {
+        void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
+      }
+    },
+    [echo.echo_id],
+  );
+
+  const handleFallbackPoll = useCallback(() => {
+    void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
+  }, [echo.echo_id]);
+
+  useEchoWebSocket('/ws/dashboard/stream', handleWsEvent, handleFallbackPoll);
 
   const latestDiary = diaryEntries[0];
 
