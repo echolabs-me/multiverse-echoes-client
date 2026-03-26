@@ -36,6 +36,7 @@ import { useSoundStore } from '../lib/sounds.ts';
 import { useMoodAtmosphere } from '../hooks/useMoodAtmosphere.ts';
 import { MoodParticles } from '../components/MoodParticles.tsx';
 import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
+import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import type {
@@ -409,7 +410,16 @@ export function EchoDetailPage() {
           )}
 
           {/* Mood history strip */}
-          <MoodHistoryStrip entries={diaryEntries} className="mb-4" />
+          <MoodHistoryStrip entries={diaryEntries} className="mb-2" />
+
+          {/* Activity hint — ambient flavour between ticks */}
+          {activeEcho.status === 'Active' && (
+            <EchoActivityHint
+              mood={currentMood}
+              locationName={diaryEntries[0]?.location_name}
+              className="mb-3"
+            />
+          )}
 
           {/* Diary entries */}
           <section className="mb-6">
