@@ -2,6 +2,7 @@ import { Bell, Search, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from './Avatar.tsx';
+import { useAuthStore } from '../stores/useAuthStore.ts';
 
 interface TopBarProps {
   userName?: string;
@@ -14,7 +15,7 @@ interface TopBarProps {
 }
 
 export function TopBar({
-  userName = 'User',
+  userName,
   avatarSrc,
   notificationCount = 0,
   onSearchClick,
@@ -24,6 +25,8 @@ export function TopBar({
 }: TopBarProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const user = useAuthStore((s) => s.user);
+  const displayName = userName ?? user?.display_name ?? 'User';
   const handleSearch = onSearchClick ?? (() => navigate('/search'));
 
   return (
@@ -64,7 +67,7 @@ export function TopBar({
           className="rounded-full"
           aria-label={t('common.profile', 'Profile')}
         >
-          <Avatar src={avatarSrc} alt={userName} size="sm" />
+          <Avatar src={avatarSrc} alt={displayName} size="sm" />
         </button>
       </div>
     </header>

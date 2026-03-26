@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
+  ArrowLeft,
   Search as SearchIcon,
   User,
   BookOpen,
@@ -219,6 +220,15 @@ export function SearchPage() {
       />
 
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
+        {/* Back button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+        >
+          <ArrowLeft size={16} />
+          {t('common.back')}
+        </button>
+
         {/* Search input */}
         <form onSubmit={handleSubmit} className="relative mb-6">
           <SearchIcon
