@@ -374,7 +374,7 @@ function PrivacySection() {
   const handleExport = async () => {
     setIsExporting(true);
     try {
-      const data = await request<Record<string, unknown>>('/account/export');
+      const data = await request<Record<string, unknown>>('/account/me/export');
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');

@@ -264,7 +264,7 @@ export const account = {
     request<MessageResponse>('/account/me', { method: 'DELETE' }),
 
   cancelDeletion: () =>
-    request<MessageResponse>('/account/me/cancel-deletion', { method: 'POST' }),
+    request<MessageResponse>('/account/me/delete/cancel', { method: 'POST' }),
 
   getSessions: () =>
     request<Array<{ session_id: string; created_at: string; last_active: string; current: boolean }>>('/account/me/sessions'),
@@ -282,16 +282,16 @@ export const account = {
 // --- API Keys ---
 
 export const apiKeys = {
-  list: () => request<ApiKey[]>('/keys'),
+  list: () => request<ApiKey[]>('/account/me/api-keys'),
 
   create: (data: CreateApiKeyRequest) =>
-    request<CreateApiKeyResponse>('/keys', {
+    request<CreateApiKeyResponse>('/account/me/api-keys', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
   revoke: (keyId: string) =>
-    request<MessageResponse>(`/keys/${keyId}`, { method: 'DELETE' }),
+    request<MessageResponse>(`/account/me/api-keys/${keyId}`, { method: 'DELETE' }),
 };
 
 // --- Conversations ---
