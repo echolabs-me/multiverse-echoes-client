@@ -113,23 +113,45 @@ export interface EchoResponse {
   status: string;
   current_mood: string;
   current_tick: number;
+  current_shard_id: string;
   birth_hash: string;
   created_at: string;
 }
 
 // --- Shard ---
 
-export interface Shard {
+export interface ShardSummary {
   shard_id: string;
   name: string;
-  description: string;
   shard_type: string;
   status: string;
-  owner_user_id: string | null;
-  echo_count: number;
-  max_capacity: number;
+  description: string;
+  current_active_count: number;
+  current_hibernated_count: number;
+  max_active_echoes: number;
   created_at: string;
 }
+
+export interface ShardDetail {
+  shard_id: string;
+  name: string;
+  shard_type: string;
+  status: string;
+  description: string;
+  era: string;
+  region: string;
+  tags: string[];
+  current_active_count: number;
+  current_hibernated_count: number;
+  max_active_echoes: number;
+  max_hibernated_echoes: number;
+  allows_travel: boolean;
+  tick_rate_modifier: number;
+  created_at: string;
+}
+
+/** Alias for backward compatibility — maps to ShardSummary. */
+export type Shard = ShardSummary;
 
 // --- Diary ---
 

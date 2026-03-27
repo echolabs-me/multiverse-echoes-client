@@ -436,7 +436,7 @@ function ShardsView() {
           </thead>
           <tbody>
             {shards.map((s) => {
-              const capacityPct = s.max_capacity > 0 ? (s.echo_count / s.max_capacity) * 100 : 0;
+              const capacityPct = s.max_active_echoes > 0 ? (s.current_active_count / s.max_active_echoes) * 100 : 0;
               return (
                 <tr key={s.shard_id} className="border-b border-border">
                   <td className="px-3 py-2 text-text-primary">{s.name}</td>
@@ -449,7 +449,7 @@ function ShardsView() {
                   <td className="px-3 py-2">
                     <div className="flex items-center gap-2">
                       <span className={capacityPct > 90 ? 'text-danger' : 'text-text-secondary'}>
-                        {s.echo_count} / {s.max_capacity}
+                        {s.current_active_count} / {s.max_active_echoes}
                       </span>
                       <div className="h-2 w-16 overflow-hidden rounded-full bg-surface-raised">
                         <div

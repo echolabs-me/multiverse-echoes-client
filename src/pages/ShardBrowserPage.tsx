@@ -98,7 +98,7 @@ export function ShardBrowserPage() {
                       <span>{shard.shard_type}</span>
                       <span>&middot;</span>
                       <span>
-                        {shard.echo_count} / {shard.max_capacity} Echoes
+                        {shard.current_active_count} / {shard.max_active_echoes} Echoes
                       </span>
                     </div>
                   </div>
