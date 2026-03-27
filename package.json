@@ -15,6 +15,7 @@
     "test": "vitest run",
     "generate-types": "cd .. && cargo run --bin generate-types",
     "check-i18n": "node scripts/check-i18n-keys.js",
+    "check-strings": "node scripts/check-hardcoded-strings.js",
     "test:watch": "vitest"
   },
   "dependencies": {
