@@ -9,6 +9,7 @@ import { TickPulse } from '../components/TickPulse.tsx';
 import { useAmbientSoundscape } from '../hooks/useAmbientSoundscape.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
+import { SubscriptionExpiryBanner } from '../components/SubscriptionExpiryBanner.tsx';
 
 import { useSystemStore } from '../stores/useSystemStore.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
@@ -229,6 +230,7 @@ export function DashboardPage() {
 
       {/* Main content with 3D shard environment behind */}
       <div className="relative flex-1 overflow-y-auto p-6">
+        <SubscriptionExpiryBanner />
         <ShardEnvironment3D shardName="Personal Shard" />
         {isLoading ? (
           <div className="flex items-center justify-center py-20">

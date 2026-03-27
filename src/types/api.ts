@@ -153,6 +153,7 @@ export interface User {
   deletion_scheduled_at: string | null;
   do_not_sell: boolean;
   analytics_opt_out: boolean;
+  subscription_expires_at: string | null;
 }
 
 // --- Echo ---
@@ -720,13 +721,15 @@ export interface PaymentRecord {
   payment_id: string;
   user_id: string;
   payment_type: PaymentType;
-  provider_transaction_id: string;
-  amount_cents: number;
+  provider: string;
+  provider_payment_id: string;
+  amount_usd_cents: number;
   currency: string;
+  crypto_amount?: string | null;
   status: PaymentStatus;
   description: string;
   created_at: string;
-  completed_at: string | null;
+  confirmed_at: string | null;
 }
 
 // --- WebSocket Events ---

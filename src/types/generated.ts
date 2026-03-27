@@ -626,18 +626,24 @@ export type PaymentRecord = {
 	payment_id: string,
 	user_id: string,
 	payment_type: PaymentType,
-	provider_transaction_id: string,
-	amount_cents: number,
+	// Provider name: "nowpayments", "xaman", "stripe".
+	provider: string,
+	// Provider's reference ID for this payment.
+	provider_payment_id: string,
+	amount_usd_cents: number,
+	// What the user actually paid in (e.g., "BTC", "XRP", "USD").
 	currency: string,
+	// Actual crypto amount paid (string to avoid float).
+	crypto_amount?: string | null,
 	status: PaymentStatus,
 	description: string,
 	created_at: string,
-	completed_at: string | null,
+	confirmed_at: string | null,
 };
 
-export type PaymentStatus = "Pending" | "Completed" | "Failed" | "Refunded";
+export type PaymentStatus = "Pending" | "Confirming" | "Confirmed" | "Finished" | "Failed" | "Refunded" | "Expired";
 
-export type PaymentType = "Subscription" | "MarketplacePurchase";
+export type PaymentType = "Subscription" | "MarketplacePurchase" | "Tip";
 
 export type PersonaConsent = {
 	consent_id: string,
@@ -905,6 +911,11 @@ export type User = {
 	 *  Linked to do_not_sell per ME-PDP-001.
 	 */
 	analytics_opt_out?: boolean,
+	/**
+	 *  When the current paid subscription expires. None = Free tier (no expiry).
+	 *  Crypto payments set this to `now + duration_days`. Extension adds to existing.
+	 */
+	subscription_expires_at?: string | null,
 };
 
 export type UserInventory = {

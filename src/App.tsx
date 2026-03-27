@@ -28,6 +28,9 @@ import { LoginPage } from './pages/LoginPage.tsx';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage.tsx';
 import { TermsPage } from './pages/TermsPage.tsx';
 import { PlansPage } from './pages/PlansPage.tsx';
+import { PaymentSuccessPage } from './pages/PaymentSuccessPage.tsx';
+import { PaymentCancelledPage } from './pages/PaymentCancelledPage.tsx';
+import { TipPage } from './pages/TipPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -69,6 +72,9 @@ export function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsPage />} />
         <Route path="/plans" element={<PlansPage />} />
+        <Route path="/payment/success" element={<PaymentSuccessPage />} />
+        <Route path="/payment/cancelled" element={<PaymentCancelledPage />} />
+        <Route path="/tip" element={<TipPage />} />
 
         {/* App shell routes — NavSidebar + Oracle sidebar */}
         <Route element={<AppLayout />}>

@@ -388,6 +388,51 @@ export const admin = {
   shards: () => request<Shard[]>('/shards'),
 };
 
+// --- Payments ---
+
+export interface CreatePaymentResponse {
+  payment_id: string;
+  checkout_url: string | null;
+  qr_url: string | null;
+  deeplink_url: string | null;
+  payload: unknown;
+}
+
+export interface PaymentStatusResponse {
+  payment_id: string;
+  status: string;
+  provider: string;
+  amount_usd_cents: number;
+  confirmed_at: string | null;
+}
+
+export const payments = {
+  createNowpayments: (targetTier: string) =>
+    request<CreatePaymentResponse>('/payments/nowpayments/create', {
+      method: 'POST',
+      body: JSON.stringify({ target_tier: targetTier }),
+    }),
+
+  createXaman: (targetTier: string) =>
+    request<CreatePaymentResponse>('/payments/xaman/create', {
+      method: 'POST',
+      body: JSON.stringify({ target_tier: targetTier }),
+    }),
+
+  getStatus: (paymentId: string) =>
+    request<PaymentStatusResponse>(`/payments/${paymentId}/status`),
+
+  createTip: (provider: string, amountUsdCents: number, message?: string) =>
+    request<CreatePaymentResponse>('/payments/tip', {
+      method: 'POST',
+      body: JSON.stringify({
+        provider,
+        amount_usd_cents: amountUsdCents,
+        message: message || undefined,
+      }),
+    }),
+};
+
 // --- Reports ---
 
 export const reports = {
