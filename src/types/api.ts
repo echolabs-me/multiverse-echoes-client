@@ -707,21 +707,27 @@ export interface WorldEvent {
 }
 
 export type WorldEventPayload =
-  | { type: 'DiaryEntryCreated'; echo_id: string; entry_id: string }
+  | { type: 'DiaryEntryGenerated'; echo_id: string; diary_id: string }
   | { type: 'LifeEventOccurred'; echo_id: string; event_id: string }
   | { type: 'MoodChanged'; echo_id: string; old_mood: string; new_mood: string }
-  | { type: 'EchoInteraction'; source_id: string; target_id: string }
-  | { type: 'EchoHibernated'; echo_id: string }
+  | { type: 'EchoInteraction'; echo_a: string; echo_b: string; interaction_type: string; tick_id: number }
+  | { type: 'EchoHibernated'; echo_id: string; reason: string }
   | { type: 'EchoWoken'; echo_id: string }
+  | { type: 'EchoCreated'; echo_id: string; owner_id: string }
+  | { type: 'EchoDeleted'; echo_id: string }
   | { type: 'EchoMoved'; echo_id: string; shard_id: string; from_location: string; to_location: string; arrival_tick: number }
   | { type: 'EchoWealthChanged'; echo_id: string; old_value: number; new_value: number; reason: string }
+  | { type: 'RelationshipFormed'; echo_a: string; echo_b: string }
   | { type: 'ShardTravelCompleted'; echo_id: string; shard_id: string }
+  | { type: 'ShardCreated'; shard_id: string; shard_type: string; owner_id: string }
+  | { type: 'ShardStatusChanged'; shard_id: string; old_status: string; new_status: string }
   | { type: 'GlobalEventPropagated'; event_id: string; affected_shards: string[] }
-  | { type: 'CommunityMessagePosted'; channel_id: string; message_id: string }
+  | { type: 'PersonaUpdated'; echo_id: string; version: number }
+  | { type: 'CommunityMessagePosted'; channel_id: string; message_id: string; author_id: string }
   | { type: 'MessageDeleted'; channel_id: string; message_id: string; deleted_by: string }
   | { type: 'MessageEdited'; channel_id: string; message_id: string; author_id: string }
   | { type: 'FeedItemGenerated'; feed_item_id: string; echo_id: string; shard_id: string }
-  | { type: 'NotificationCreated'; notification_id: string }
+  | { type: 'NotificationCreated'; user_id: string; notification_id: string }
   | { type: string; [key: string]: unknown };
 
 /** Flat tagged events sent over Echo/Dashboard WS streams (server's WsEchoEvent). */
@@ -730,7 +736,17 @@ export type WsEchoEvent =
   | { type: 'LifeEventOccurred'; echo_id: string; event_id: string; tick_id: number }
   | { type: 'MoodChanged'; echo_id: string; mood: string; tick_id: number }
   | { type: 'EchoMoved'; echo_id: string; from_location: string; to_location: string }
-  | { type: 'PersonalityShift'; echo_id: string; version: number }
+  | { type: 'PersonaUpdated'; echo_id: string; version: number }
+  | { type: 'EchoHibernated'; echo_id: string; reason: string }
+  | { type: 'EchoWoken'; echo_id: string }
+  | { type: 'EchoWealthChanged'; echo_id: string; old_value: number; new_value: number; reason: string }
+  | { type: 'EchoDeleted'; echo_id: string }
+  | { type: 'ShardTravelCompleted'; echo_id: string; shard_id: string }
+  | { type: 'ShardCreated'; shard_id: string; shard_type: string }
+  | { type: 'CommunityMessagePosted'; channel_id: string; message_id: string; author_id: string }
+  | { type: 'CommunityMessageEdited'; channel_id: string; message_id: string; author_id: string }
+  | { type: 'CommunityMessageDeleted'; channel_id: string; message_id: string; deleted_by: string }
+  | { type: 'NotificationCreated'; notification_id: string }
   | { type: 'Connected'; echo_id?: string; message: string }
   | { type: 'Error'; message: string }
   | { type: string; [key: string]: unknown };
