@@ -99,7 +99,7 @@ export function StoryExportModal({
 
       // Poll for status updates
       if (
-        result.status !== 'Ready' &&
+        result.status !== 'Complete' &&
         result.status !== 'Failed'
       ) {
         pollRef.current = setInterval(async () => {
@@ -109,7 +109,7 @@ export function StoryExportModal({
             );
             setExportData(updated);
             if (
-              updated.status === 'Ready' ||
+              updated.status === 'Complete' ||
               updated.status === 'Failed'
             ) {
               if (pollRef.current) clearInterval(pollRef.current);
@@ -147,7 +147,7 @@ export function StoryExportModal({
   const progressPercent =
     exportData?.status === 'Processing'
       ? 60
-      : exportData?.status === 'Ready'
+      : exportData?.status === 'Complete'
         ? 100
         : exportData?.status === 'Failed'
           ? 100
@@ -252,7 +252,7 @@ export function StoryExportModal({
                   className={`h-full rounded-full transition-all duration-500 ${
                     exportData?.status === 'Failed'
                       ? 'bg-danger'
-                      : exportData?.status === 'Ready'
+                      : exportData?.status === 'Complete'
                         ? 'bg-success'
                         : 'bg-accent'
                   }`}
@@ -272,7 +272,7 @@ export function StoryExportModal({
                     className="animate-spin text-accent"
                   />
                 )}
-                {exportData?.status === 'Ready' && (
+                {exportData?.status === 'Complete' && (
                   <CheckCircle size={16} className="text-success" />
                 )}
                 <p className="text-sm font-medium">
@@ -284,7 +284,7 @@ export function StoryExportModal({
               </p>
             </div>
 
-            {exportData?.status === 'Ready' && downloadUrl && (
+            {exportData?.status === 'Complete' && downloadUrl && (
               <div className="mb-4 flex flex-col gap-2">
                 <a
                   href={downloadUrl}

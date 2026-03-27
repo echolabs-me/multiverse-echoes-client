@@ -491,14 +491,16 @@ function NotificationPrefsSection() {
   }
 
   const categories: Array<{ key: keyof NotificationPreferences; label: string }> = [
-    { key: 'echo_life_event', label: t('settings.prefEchoLifeEvent') },
-    { key: 'echo_diary', label: t('settings.prefDiary') },
-    { key: 'community_message', label: t('settings.prefCommunity') },
-    { key: 'follow', label: t('settings.prefFollowers') },
-    { key: 'system', label: t('settings.prefSystem') },
-    { key: 'travel', label: t('settings.prefTravel') },
-    { key: 'influence', label: t('settings.prefInfluence') },
+    { key: 'echo_life_events', label: t('settings.prefEchoLifeEvent') },
     { key: 'daily_digest', label: t('settings.prefDigest') },
+    { key: 'social', label: t('settings.prefFollowers') },
+    { key: 'community', label: t('settings.prefCommunity') },
+    { key: 'shard_activity', label: t('settings.prefTravel') },
+    { key: 'platform', label: t('settings.prefSystem') },
+    { key: 'marketplace', label: t('settings.prefMarketplace') },
+    { key: 'billing', label: t('settings.prefBilling') },
+    { key: 'moderation', label: t('settings.prefModeration') },
+    { key: 'account', label: t('settings.prefAccount') },
   ];
 
   return (

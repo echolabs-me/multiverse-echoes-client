@@ -56,9 +56,14 @@ export interface RefreshResponse {
 
 // --- User ---
 
-export type AccountType = 'Standard' | 'Admin' | 'Bot';
+export type AccountType = 'Standard' | 'Admin';
 export type SubscriptionTier = 'Free' | 'Core' | 'Creator' | 'GodMode';
 export type AccountStatus = 'Active' | 'Suspended' | 'PendingDeletion' | 'Deleted';
+export type ShardType = 'Public' | 'Private' | 'Personal';
+export type ChannelType = 'Shard' | 'Global' | 'Topic' | 'PrivateShard' | 'Event';
+export type EchoRelationshipType = 'Friend' | 'Rival' | 'RomanticPartner' | 'Colleague' | 'Acquaintance' | 'Family' | 'Mentor' | 'Adversary';
+export type NotificationDelivery = 'Off' | 'InApp' | 'InAppAndEmail';
+export type PersonaMode = 'Quick' | 'Detailed';
 
 export interface User {
   user_id: string;
@@ -88,7 +93,7 @@ export interface User {
 
 // --- Echo ---
 
-export type EchoStatus = 'Active' | 'Hibernated' | 'Travelling' | 'PendingDeletion' | 'Quarantined' | 'Deleted';
+export type EchoStatus = 'Active' | 'Travelling' | 'Hibernated' | 'Quarantined' | 'Deleted';
 
 export interface CreateEchoRequest {
   name: string;
@@ -123,7 +128,7 @@ export interface EchoResponse {
 export interface ShardSummary {
   shard_id: string;
   name: string;
-  shard_type: string;
+  shard_type: ShardType;
   status: string;
   description: string;
   current_active_count: number;
@@ -135,7 +140,7 @@ export interface ShardSummary {
 export interface ShardDetail {
   shard_id: string;
   name: string;
-  shard_type: string;
+  shard_type: ShardType;
   status: string;
   description: string;
   era: string;
@@ -249,7 +254,7 @@ export interface EchoMemory {
 export interface Channel {
   channel_id: string;
   name: string;
-  channel_type: string;
+  channel_type: ChannelType;
   scope_id: string | null;
   status: string;
   description: string;
@@ -287,16 +292,20 @@ export interface ChangePasswordRequest {
 }
 
 export interface NotificationPreferences {
-  echo_life_event: string;
-  echo_diary: string;
-  community_message: string;
-  follow: string;
-  system: string;
-  travel: string;
-  influence: string;
-  daily_digest: string;
-  sound_enabled: boolean;
-  sound_volume: number;
+  user_id: string;
+  echo_life_events: NotificationDelivery;
+  daily_digest: NotificationDelivery;
+  social: NotificationDelivery;
+  community: NotificationDelivery;
+  shard_activity: NotificationDelivery;
+  platform: NotificationDelivery;
+  marketplace: NotificationDelivery;
+  billing: NotificationDelivery;
+  moderation: NotificationDelivery;
+  account: NotificationDelivery;
+  quiet_hours_start: string | null;
+  quiet_hours_end: string | null;
+  updated_at: string;
 }
 
 // --- API Keys ---
@@ -364,7 +373,7 @@ export interface ResolveReportRequest {
 // --- Data Export ---
 
 export type ExportFormat = 'text' | 'json' | 'pdf' | 'video' | 'book';
-export type ExportStatus = 'Pending' | 'Processing' | 'Ready' | 'Failed';
+export type ExportStatus = 'Processing' | 'Complete' | 'Failed';
 
 export interface DataExport {
   export_id: string;
