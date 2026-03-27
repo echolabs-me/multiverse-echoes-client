@@ -332,7 +332,20 @@
     "nextTick": "Next tick in {{seconds}}s",
     "viewAllDiary": "View all {{count}} entries",
     "recentEventsEmpty": "Life events will appear as your Echo experiences the world.",
-    "relationshipsEmpty": "Relationships will form as your Echo meets others in the Shard."
+    "viewAllEvents": "View all events",
+    "relationshipsEmpty": "Relationships will form as your Echo meets others in the Shard.",
+    "viewAllRelationships": "View all relationships"
+  },
+  "communityFeed": {
+    "title": "Community Pulse",
+    "empty": "The multiverse is quiet... for now.",
+    "newActivity": "New activity",
+    "loadMore": "Load more",
+    "inShard": "in {{shard}}",
+    "justNow": "just now",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago",
+    "daysAgo": "{{count}}d ago"
   },
   "share": {
     "title": "Share",

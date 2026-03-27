@@ -15,6 +15,7 @@ import type {
   FeedItem,
   Notification,
   EchoRelationship,
+  LifeEvent,
   InfluenceBalance,
   UseInfluenceRequest,
   EchoMemory,
@@ -109,6 +110,9 @@ export const echoes = {
   relationships: (echoId: string) =>
     request<EchoRelationship[]>(`/echoes/${echoId}/relationships`),
 
+  timeline: (echoId: string, limit = 5) =>
+    request<LifeEvent[]>(`/echoes/${echoId}/timeline?limit=${limit}`),
+
   influence: (echoId: string) =>
     request<InfluenceBalance>(`/echoes/${echoId}/influence`),
 
@@ -157,6 +161,9 @@ export const feeds = {
   },
 
   social: () => request<FeedItem[]>('/feeds/social'),
+
+  community: (limit = 20, offset = 0) =>
+    request<FeedItem[]>(`/feeds/community?limit=${limit}&offset=${offset}`),
 
   shard: (shardId: string) =>
     request<FeedItem[]>(`/feeds/shard/${shardId}`),
