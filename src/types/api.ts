@@ -446,6 +446,214 @@ export interface WaitlistCountResponse {
   count: number;
 }
 
+// --- Life Event ---
+
+export type LifeEventType = 'Career' | 'Relationship' | 'Personal' | 'Conflict' | 'Achievement' | 'Travel' | 'Health' | 'Financial' | 'Social' | 'GlobalEvent';
+
+export interface LifeEvent {
+  event_id: string;
+  echo_id: string;
+  tick_id: number;
+  event_type: LifeEventType;
+  headline: string;
+  narrative: string;
+  significance_score: number;
+  location_name: string;
+  shard_id: string;
+  related_echo_ids: string[];
+  content_hash: string;
+  created_at: string;
+}
+
+// --- Marketplace ---
+
+export type MarketplaceCategory = 'DashboardTheme' | 'PortraitStyle' | 'ExportTemplate' | 'ShardAesthetic' | 'ScenarioPack' | 'SeasonalCosmetic' | 'SoundPack';
+
+export interface MarketplaceItem {
+  item_id: string;
+  name: string;
+  description: string;
+  category: MarketplaceCategory;
+  price_cents: number;
+  is_available: boolean;
+  is_limited_time: boolean;
+  available_from: string | null;
+  available_until: string | null;
+  preview_asset: string;
+  creator_id: string | null;
+  content_hash: string;
+  created_at: string;
+}
+
+// --- User Relationship ---
+
+export type UserRelationshipType = 'Follow' | 'Block' | 'Mute';
+
+export interface UserRelationship {
+  relationship_id: string;
+  source_user_id: string;
+  target_user_id: string;
+  relationship_type: UserRelationshipType;
+  created_at: string;
+}
+
+// --- Shard Theme ---
+
+export type EconomicModel = 'Capitalist' | 'Socialist' | 'Barter' | 'PostScarcity' | 'Feudal' | 'Custom';
+export type TechnologyLevel = 'Primitive' | 'Industrial' | 'Modern' | 'NearFuture' | 'FarFuture' | 'Fantasy';
+export type ConflictStyle = 'Peaceful' | 'Political' | 'Economic' | 'Military' | 'Survival';
+
+export interface ShardTheme {
+  theme_id: string;
+  shard_id: string;
+  setting_prompt: string;
+  cultural_norms: string;
+  economic_model: EconomicModel;
+  technology_level: TechnologyLevel;
+  conflict_style: ConflictStyle;
+  available_occupations: string[];
+  banned_elements: string[];
+  custom_rules: string;
+  shard_prompt_template: string | null;
+  starting_wealth: number;
+}
+
+// --- Shard Location ---
+
+export type LocationType = 'Residential' | 'Commercial' | 'Social' | 'Workplace' | 'Transit' | 'Landmark' | 'Wilderness';
+
+export interface ShardLocation {
+  location_id: string;
+  shard_id: string;
+  name: string;
+  location_type: LocationType;
+  description: string;
+  capacity: number;
+  connects_to: string[];
+  travel_time_ticks: number;
+  is_spawn_point: boolean;
+  social_density: number;
+  economic_activity: number;
+  danger_level: number;
+}
+
+// --- Shard Placement ---
+
+export type TravelState = 'Stationary' | 'Travelling';
+
+export interface ShardPlacement {
+  echo_id: string;
+  shard_id: string;
+  location_id: string;
+  arrived_at_tick: number;
+  travel_state: TravelState;
+  destination_id: string | null;
+  arrival_tick: number | null;
+}
+
+// --- Global Event ---
+
+export type GlobalEventType = 'Economic' | 'Social' | 'Environmental' | 'Political' | 'Cultural';
+export type GlobalEventStatus = 'Scheduled' | 'Active' | 'Completed';
+
+export interface GlobalEvent {
+  event_id: string;
+  name: string;
+  description: string;
+  event_type: GlobalEventType;
+  intensity: number;
+  affected_shards: string[];
+  start_tick: number;
+  duration_ticks: number;
+  status: GlobalEventStatus;
+  created_at: string;
+}
+
+// --- Content Flag ---
+
+export type ContentTier = 'T0' | 'T1' | 'T2' | 'T3';
+
+export interface ContentFlag {
+  flag_id: string;
+  tick_id: number;
+  echo_id: string;
+  tier: ContentTier;
+  raw_content_hash: string;
+  classification_reason: string;
+  action_taken: string;
+  reviewed_by: string | null;
+  review_timestamp: string | null;
+}
+
+// --- User Report ---
+
+export type ReportTargetType = 'Echo' | 'User' | 'Content' | 'Message';
+export type ReportStatus = 'Pending' | 'Reviewing' | 'Resolved' | 'Dismissed';
+
+export interface UserReport {
+  report_id: string;
+  reporter_user_id: string;
+  target_type: ReportTargetType;
+  target_id: string;
+  reason: string;
+  details: string;
+  status: ReportStatus;
+  priority: number;
+  created_at: string;
+  resolved_at: string | null;
+  resolution: string | null;
+}
+
+// --- Moderation Action ---
+
+export type ModerationActionType = 'ChannelMute' | 'ChannelBan' | 'MessageDelete' | 'ChannelLock';
+
+export interface ModerationAction {
+  action_id: string;
+  moderator_id: string;
+  target_user_id: string | null;
+  target_message_id: string | null;
+  target_channel_id: string | null;
+  action_type: ModerationActionType;
+  reason: string;
+  duration_seconds: number | null;
+  created_at: string;
+  expires_at: string | null;
+}
+
+// --- Consent Record ---
+
+export type ConsentType = 'ToS' | 'Privacy' | 'PersonaData' | 'CrossUserInteraction' | 'Community';
+
+export interface ConsentRecord {
+  consent_id: string;
+  user_id: string;
+  consent_type: ConsentType;
+  version: string;
+  granted_at: string;
+  withdrawn_at: string | null;
+  ip_hash: string;
+  context: string;
+}
+
+// --- Payment Record ---
+
+export type PaymentType = 'Subscription' | 'MarketplacePurchase';
+export type PaymentStatus = 'Pending' | 'Completed' | 'Failed' | 'Refunded';
+
+export interface PaymentRecord {
+  payment_id: string;
+  user_id: string;
+  payment_type: PaymentType;
+  provider_transaction_id: string;
+  amount_cents: number;
+  currency: string;
+  status: PaymentStatus;
+  description: string;
+  created_at: string;
+  completed_at: string | null;
+}
+
 // --- WebSocket Events ---
 
 /** Envelope for full WorldEvents (used by shard/channel streams). */
