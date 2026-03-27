@@ -68,10 +68,11 @@ function extractRecordKeys(filePath: string, varName: string): string[] {
 
 /** Verify the SubscriptionTier type in api.ts has exactly the expected values. */
 function extractSubscriptionTierValues(): string[] {
-  const apiTypesPath = path.resolve(__dirname, '../src/types/api.ts');
-  const content = fs.readFileSync(apiTypesPath, 'utf-8');
+  // Generated types are now the source of truth for enum definitions
+  const generatedPath = path.resolve(__dirname, '../src/types/generated.ts');
+  const content = fs.readFileSync(generatedPath, 'utf-8');
 
-  // Match: export type SubscriptionTier = 'Free' | 'Core' | 'Creator' | 'GodMode';
+  // Match: export type SubscriptionTier = "Free" | "Core" | "Creator" | "GodMode";
   const match = content.match(
     /export\s+type\s+SubscriptionTier\s*=\s*([^;]+);/,
   );
@@ -81,7 +82,7 @@ function extractSubscriptionTierValues(): string[] {
 
   // Extract the quoted values.
   const values: string[] = [];
-  const valuePattern = /'(\w+)'/g;
+  const valuePattern = /["'](\w+)["']/g;
   let m;
   while ((m = valuePattern.exec(match[1])) !== null) {
     values.push(m[1]);
