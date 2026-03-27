@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertCircle, CheckCircle, Info, X, XCircle } from 'lucide-react';
 import { useToastStore } from '../stores/useToastStore.ts';
 import type { ToastItem, ToastSeverity } from '../stores/useToastStore.ts';
@@ -14,6 +15,7 @@ const severityConfig: Record<
 };
 
 function ToastEntry({ toast }: { toast: ToastItem }) {
+  const { t } = useTranslation();
   const removeToast = useToastStore((s) => s.removeToast);
   const config = severityConfig[toast.severity];
   const Icon = config.icon;
@@ -33,7 +35,7 @@ function ToastEntry({ toast }: { toast: ToastItem }) {
       <button
         onClick={() => removeToast(toast.id)}
         className="shrink-0 text-text-muted transition-color-opacity hover:text-text-primary"
-        aria-label="Dismiss"
+        aria-label={t('common.dismiss')}
       >
         <X size={16} />
       </button>

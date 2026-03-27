@@ -38,7 +38,18 @@
     "showMore": "Show more",
     "showLess": "Show less",
     "loadMore": "Load more",
-    "markAllRead": "Mark all as read"
+    "markAllRead": "Mark all as read",
+    "sidebar": "Sidebar navigation",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "mobileNav": "Mobile navigation",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "skipToContent": "Skip to main content",
+    "dismiss": "Dismiss",
+    "edited": "(edited)",
+    "comingSoon": "Coming soon",
+    "messageActions": "Message actions"
   },
   "auth": {
     "email": "Email",
@@ -86,7 +97,10 @@
     "bio": "Bio",
     "bioHint": "Tell us about yourself (optional, max 500 chars)",
     "timezone": "Timezone",
-    "avatar": "Avatar"
+    "avatar": "Avatar",
+    "chooseLanguageTitle": "Choose your language",
+    "languagesComingSoon": "More languages coming soon",
+    "languageSelectionLabel": "Language selection"
   },
   "echo": {
     "createTitle": "Create Your Echo",
@@ -287,7 +301,15 @@
     "prefSystem": "System notifications",
     "prefTravel": "Travel completion",
     "prefInfluence": "Influence used",
-    "prefDigest": "Daily digest"
+    "prefDigest": "Daily digest",
+    "doNotSellLabel": "Do Not Sell My Personal Information",
+    "doNotSellDesc": "Opt out of any sale of personal data (CCPA). This also disables analytics tracking.",
+    "exporting": "Exporting...",
+    "cancelling": "Cancelling...",
+    "exportDesc": "Download all your data as JSON, including echoes, diary entries, and conversations.",
+    "dataExported": "Data exported successfully",
+    "deletionScheduled": "Account scheduled for deletion on {{date}}",
+    "deletionScheduledDesc": "Your account and all data will be permanently deleted after this date. Log in or cancel below to keep your account."
   },
   "dashboard": {
     "myEchoes": "My Echoes",

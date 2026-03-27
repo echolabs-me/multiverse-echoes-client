@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
 interface ModalProps {
@@ -16,6 +17,7 @@ export function Modal({
   children,
   className = '',
 }: ModalProps) {
+  const { t } = useTranslation();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
@@ -66,7 +68,7 @@ export function Modal({
         <button
           onClick={onClose}
           className="rounded-md p-1 text-text-muted transition-color-opacity hover:text-text-primary"
-          aria-label="Close"
+          aria-label={t('common.close')}
         >
           <X size={20} />
         </button>

@@ -12,7 +12,16 @@ vi.mock('../src/lib/analytics.ts', () => ({
 
 const testI18n = i18n.createInstance();
 void testI18n.use(initReactI18next).init({
-  resources: { en: { translation: {} } },
+  resources: {
+    en: {
+      translation: {
+        'onboarding.chooseLanguageTitle': 'Choose your language',
+        'onboarding.languagesComingSoon': 'More languages coming soon',
+        'onboarding.languageSelectionLabel': 'Language selection',
+        'common.comingSoon': 'Coming soon',
+      },
+    },
+  },
   lng: 'en',
   interpolation: { escapeValue: false },
 });

@@ -29,7 +29,7 @@ const languages: Language[] = [
 
 export function LanguageSelectionPage() {
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const selectLanguage = useCallback(
     (code: string) => {
@@ -53,17 +53,17 @@ export function LanguageSelectionPage() {
       </div>
 
       <h1 className="mb-2 text-2xl font-bold text-text-primary">
-        Choose your language
+        {t('onboarding.chooseLanguageTitle')}
       </h1>
       <p className="mb-10 text-sm text-text-secondary">
-        More languages coming soon
+        {t('onboarding.languagesComingSoon')}
       </p>
 
       {/* Language grid */}
       <div
         className="grid w-full max-w-lg grid-cols-2 gap-3 sm:grid-cols-3"
         role="listbox"
-        aria-label="Language selection"
+        aria-label={t('onboarding.languageSelectionLabel')}
       >
         {languages.map((lang) =>
           lang.available ? (
@@ -80,7 +80,7 @@ export function LanguageSelectionPage() {
               <span className="text-xs text-text-muted">{lang.name}</span>
             </button>
           ) : (
-            <Tooltip key={lang.code} content="Coming soon" position="top">
+            <Tooltip key={lang.code} content={t('common.comingSoon')} position="top">
               <div
                 role="option"
                 aria-selected={false}

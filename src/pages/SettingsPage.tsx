@@ -382,7 +382,7 @@ function PrivacySection() {
       a.download = 'multiverse-echoes-export.json';
       a.click();
       URL.revokeObjectURL(url);
-      addToast('Data exported successfully', 'success');
+      addToast(t('settings.dataExported'), 'success');
     } catch {
       addToast(t('common.error'), 'danger');
     } finally {
@@ -416,12 +416,12 @@ function PrivacySection() {
               checked={doNotSell}
               onChange={() => void handleDoNotSellToggle()}
               className="h-4 w-4 rounded border-border accent-accent"
-              aria-label="Do Not Sell My Personal Information"
+              aria-label={t('settings.doNotSellLabel')}
             />
             <label htmlFor="do-not-sell-toggle">
-              <span className="text-sm text-text-primary">Do Not Sell My Personal Information</span>
+              <span className="text-sm text-text-primary">{t('settings.doNotSellLabel')}</span>
               <p className="text-xs text-text-muted">
-                Opt out of any sale of personal data (CCPA). This also disables analytics tracking.
+                {t('settings.doNotSellDesc')}
               </p>
             </label>
           </div>
@@ -433,10 +433,10 @@ function PrivacySection() {
           {t('settings.exportData')}
         </h3>
         <p className="mb-3 text-sm text-text-muted">
-          Download all your data as JSON, including echoes, diary entries, and conversations.
+          {t('settings.exportDesc')}
         </p>
         <Button variant="secondary" onClick={() => void handleExport()} disabled={isExporting}>
-          {isExporting ? 'Exporting...' : t('settings.exportData')}
+          {isExporting ? t('settings.exporting') : t('settings.exportData')}
         </Button>
       </Card>
 
@@ -686,7 +686,7 @@ function DangerZoneSection() {
     try {
       await accountApi.cancelDeletion();
       trackEvent('account.deletion_cancelled');
-      addToast('Account deletion cancelled', 'success');
+      addToast(t('settings.deletionCancelled'), 'success');
       // Refresh profile to update status
       const fetchProfile = useAuthStore.getState().fetchProfile;
       await fetchProfile();
@@ -706,12 +706,10 @@ function DangerZoneSection() {
           <div className="mb-4">
             <div className="mb-3 rounded-md border border-danger/30 bg-danger/10 p-3">
               <p className="text-sm font-medium text-danger">
-                Account scheduled for deletion on{' '}
-                {new Date(deletionScheduledAt).toLocaleDateString()}
+                {t('settings.deletionScheduled', { date: new Date(deletionScheduledAt).toLocaleDateString() })}
               </p>
               <p className="mt-1 text-xs text-text-muted">
-                Your account and all data will be permanently deleted after this date.
-                Log in or cancel below to keep your account.
+                {t('settings.deletionScheduledDesc')}
               </p>
             </div>
             <Button
@@ -719,7 +717,7 @@ function DangerZoneSection() {
               onClick={() => void handleCancelDeletion()}
               disabled={isCancelling}
             >
-              {isCancelling ? 'Cancelling...' : 'Cancel Deletion'}
+              {isCancelling ? t('settings.cancelling') : t('settings.cancelDeletion')}
             </Button>
           </div>
         ) : (

@@ -217,7 +217,7 @@ export function CommunityPage() {
                 className="flex-1 overflow-y-auto px-4 py-3"
                 role="log"
                 aria-live="polite"
-                aria-label="Messages"
+                aria-label={t('community.title')}
               >
                 {isLoadingMessages ? (
                   <div className="flex items-center justify-center py-10">
@@ -272,7 +272,7 @@ export function CommunityPage() {
                                 {new Date(msg.created_at).toLocaleTimeString()}
                               </span>
                               {msg.is_edited && (
-                                <span className="text-xs text-text-muted">(edited)</span>
+                                <span className="text-xs text-text-muted">{t('common.edited')}</span>
                               )}
                             </div>
                             <p className="text-sm text-text-primary">{msg.content}</p>
@@ -286,7 +286,7 @@ export function CommunityPage() {
                                   )
                                 }
                                 className="rounded p-1 text-text-muted hover:bg-surface hover:text-text-primary"
-                                aria-label="Message actions"
+                                aria-label={t('common.messageActions')}
                               >
                                 <MoreVertical size={14} />
                               </button>
