@@ -172,14 +172,15 @@ export interface DiaryEntry {
 
 export interface FeedItem {
   item_id: string;
-  echo_id: string;
-  owner_user_id: string;
-  shard_id: string;
   item_type: string;
+  echo_id: string;
+  shard_id: string;
   title: string;
   body: string;
   significance: number;
+  tick_id: number;
   created_at: string;
+  is_public: boolean;
 }
 
 // --- Notification ---
@@ -198,14 +199,18 @@ export interface Notification {
 
 export interface EchoRelationship {
   relationship_id: string;
-  source_echo_id: string;
-  target_echo_id: string;
-  target_echo_name: string;
+  echo_a_id: string;
+  echo_b_id: string;
   relationship_type: string;
-  sentiment: number;
   status: string;
+  formed_at_tick: number;
   last_interaction_tick: number;
+  sentiment: number;
+  key_moments: string[];
+  is_cross_user: boolean;
+  cross_user_consent: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 // --- Influence ---
@@ -227,10 +232,16 @@ export interface UseInfluenceRequest {
 export interface EchoMemory {
   memory_id: string;
   echo_id: string;
-  content: string;
+  source_tick_id: number;
   memory_type: string;
-  strength: number;
+  content: string;
+  emotional_valence: number;
+  importance: number;
+  embedding_id: string;
+  is_summarised: boolean;
+  summarised_from: string[];
   created_at: string;
+  last_accessed_tick: number;
 }
 
 // --- Channel ---
@@ -239,30 +250,33 @@ export interface Channel {
   channel_id: string;
   name: string;
   channel_type: string;
-  shard_id: string | null;
+  scope_id: string | null;
+  status: string;
   description: string;
+  is_read_only: boolean;
+  slow_mode_seconds: number;
   created_at: string;
 }
 
 export interface ChannelMessage {
   message_id: string;
   channel_id: string;
-  user_id: string;
-  display_name: string;
-  body: string;
-  edited: boolean;
+  author_id: string;
+  content: string;
+  message_type: string;
   created_at: string;
-  updated_at: string;
+  edited_at: string | null;
+  is_edited: boolean;
   can_edit: boolean;
   can_delete: boolean;
 }
 
 export interface SendMessageRequest {
-  body: string;
+  content: string;
 }
 
 export interface EditMessageRequest {
-  body: string;
+  content: string;
 }
 
 // --- Account Settings ---
@@ -372,11 +386,8 @@ export interface RequestExportBody {
 export interface Conversation {
   conversation_id: string;
   echo_id: string;
-  user_id: string;
-  status: 'Active' | 'Closed';
-  message_count: number;
   created_at: string;
-  updated_at: string;
+  saved: boolean;
 }
 
 export interface ConversationMessage {

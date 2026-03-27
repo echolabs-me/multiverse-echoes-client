@@ -565,7 +565,7 @@ export function EchoDetailPage() {
                 {relationships.map((rel) => (
                   <Card key={rel.relationship_id} variant="compact">
                     <p className="text-sm font-medium text-text-primary">
-                      {rel.target_echo_name}
+                      {rel.echo_b_id}
                     </p>
                     <p className="text-xs text-text-muted">{rel.relationship_type}</p>
                     <div className="mt-2 flex items-center gap-4 text-xs text-text-secondary">
@@ -609,7 +609,7 @@ export function EchoDetailPage() {
                         <div className="h-1.5 w-16 rounded-full bg-surface-raised">
                           <div
                             className="h-1.5 rounded-full bg-accent"
-                            style={{ width: `${mem.strength * 100}%` }}
+                            style={{ width: `${mem.importance * 100}%` }}
                           />
                         </div>
                       </div>

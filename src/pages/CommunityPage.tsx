@@ -93,7 +93,7 @@ export function CommunityPage() {
     setIsSending(true);
     try {
       const msg = await channelApi.sendMessage(activeChannel.channel_id, {
-        body: messageText.trim(),
+        content: messageText.trim(),
       });
       trackEvent('community.message_sent', { channel_id: activeChannel.channel_id, message_length: messageText.trim().length });
       setMessages((prev) => [...prev, msg]);
@@ -111,7 +111,7 @@ export function CommunityPage() {
       const updated = await channelApi.editMessage(
         activeChannel.channel_id,
         messageId,
-        { body: editText.trim() },
+        { content: editText.trim() },
       );
       setMessages((prev) =>
         prev.map((m) => (m.message_id === messageId ? updated : m)),
@@ -266,16 +266,16 @@ export function CommunityPage() {
                           <>
                             <div className="flex items-baseline gap-2">
                               <span className="text-sm font-medium text-accent">
-                                {msg.display_name}
+                                {msg.author_id}
                               </span>
                               <span className="text-xs text-text-muted">
                                 {new Date(msg.created_at).toLocaleTimeString()}
                               </span>
-                              {msg.edited && (
+                              {msg.is_edited && (
                                 <span className="text-xs text-text-muted">(edited)</span>
                               )}
                             </div>
-                            <p className="text-sm text-text-primary">{msg.body}</p>
+                            <p className="text-sm text-text-primary">{msg.content}</p>
 
                             {/* Message actions */}
                             <div className="absolute right-2 top-2 hidden group-hover:flex">
@@ -296,7 +296,7 @@ export function CommunityPage() {
                                     <button
                                       onClick={() => {
                                         setEditingMessageId(msg.message_id);
-                                        setEditText(msg.body);
+                                        setEditText(msg.content);
                                         setMenuOpenId(null);
                                       }}
                                       className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm text-text-secondary hover:bg-surface-raised"

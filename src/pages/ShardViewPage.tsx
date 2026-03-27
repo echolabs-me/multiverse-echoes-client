@@ -200,9 +200,9 @@ export function ShardViewPage() {
                       <div className="flex items-start justify-between">
                         <div>
                           <span className="text-xs font-medium text-accent">
-                            {msg.display_name}
+                            {msg.author_id}
                           </span>
-                          <p className="text-sm text-text-primary">{msg.body}</p>
+                          <p className="text-sm text-text-primary">{msg.content}</p>
                         </div>
                         <span className="shrink-0 text-xs text-text-muted">
                           {new Date(msg.created_at).toLocaleTimeString()}
