@@ -313,7 +313,7 @@ export interface NotificationPreferences {
 export interface ApiKey {
   key_id: string;
   name: string;
-  last_four: string;
+  key_prefix: string;
   created_at: string;
 }
 
@@ -323,8 +323,9 @@ export interface CreateApiKeyRequest {
 
 export interface CreateApiKeyResponse {
   key_id: string;
-  api_key: string;
+  key: string;
   name: string;
+  created_at: string;
 }
 
 // --- Admin ---
