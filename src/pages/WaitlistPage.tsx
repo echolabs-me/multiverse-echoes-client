@@ -10,7 +10,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
-import { Eye, Sparkles, Share2, CheckCircle } from 'lucide-react';
+import { Eye, Sparkles, Share2, CheckCircle, Info } from 'lucide-react';
 import { Button, Input, Card } from '../components/index.ts';
 import { waitlist } from '../lib/api/endpoints.ts';
 
@@ -220,6 +220,29 @@ export function WaitlistPage() {
             </div>
           </Card>
         )}
+      </section>
+
+      {/* What to Expect */}
+      <section className="px-6 py-12">
+        <div className="mx-auto max-w-lg">
+          <h3 className="mb-6 text-center text-lg font-semibold">
+            {t('waitlist.expectTitle')}
+          </h3>
+          <ul className="flex flex-col gap-4">
+            <li className="flex items-start gap-3 text-sm text-text-secondary">
+              <Info size={16} className="mt-0.5 flex-shrink-0 text-accent" />
+              {t('waitlist.expectStep1')}
+            </li>
+            <li className="flex items-start gap-3 text-sm text-text-secondary">
+              <Info size={16} className="mt-0.5 flex-shrink-0 text-accent" />
+              {t('waitlist.expectStep2')}
+            </li>
+            <li className="flex items-start gap-3 text-sm text-text-secondary">
+              <Info size={16} className="mt-0.5 flex-shrink-0 text-accent" />
+              {t('waitlist.expectStep3')}
+            </li>
+          </ul>
+        </div>
       </section>
 
       {/* How It Works */}
