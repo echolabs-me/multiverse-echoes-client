@@ -32,8 +32,6 @@ export type ApiKey = {
 	key_id: string,
 	user_id: string,
 	name: string,
-	// SHA-256 hash of the actual key (never store raw key).
-	key_hash: string,
 	// Last 4 characters of the key for display.
 	key_prefix: string,
 	created_at: string,
@@ -867,7 +865,6 @@ export type User = {
 	email_verified: boolean,
 	display_name: string,
 	display_name_slug: string,
-	password_hash: string,
 	account_type: AccountType,
 	subscription_tier: SubscriptionTier,
 	created_at: string,
