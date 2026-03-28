@@ -11,6 +11,7 @@ import {
   Key,
   Trash2,
   ExternalLink,
+  MessageSquare,
 } from 'lucide-react';
 import {
   Card,
@@ -24,10 +25,11 @@ import { useThemeStore } from '../stores/useThemeStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
 import {
   account as accountApi,
+  feedback as feedbackApi,
 } from '../lib/api/endpoints.ts';
 import { request } from '../lib/api/client.ts';
 import { trackEvent } from '../lib/analytics.ts';
-import type { NotificationPreferences } from '../types/api.ts';
+import type { NotificationPreferences, FeedbackEntry } from '../types/api.ts';
 
 export function SettingsPage() {
   const navigate = useNavigate();
@@ -39,6 +41,7 @@ export function SettingsPage() {
     { id: 'notifications', label: t('settings.notificationPrefs'), icon: Bell },
     { id: 'appearance', label: t('settings.appearance'), icon: Palette },
     { id: 'apikeys', label: t('settings.apiKeys'), icon: Key },
+    { id: 'feedback', label: t('settings.myFeedback'), icon: MessageSquare },
     { id: 'danger', label: t('settings.dangerZone'), icon: Trash2 },
   ];
 
@@ -88,6 +91,7 @@ export function SettingsPage() {
           {activeTab === 'notifications' && <NotificationPrefsSection />}
           {activeTab === 'appearance' && <AppearanceSection />}
           {activeTab === 'apikeys' && <ApiKeysSection />}
+          {activeTab === 'feedback' && <MyFeedbackSection />}
           {activeTab === 'danger' && <DangerZoneSection />}
         </div>
       </div>
@@ -667,6 +671,57 @@ function ApiKeysSection() {
         </Button>
       </Card>
     </div>
+  );
+}
+
+// --- My Feedback Section ---
+function MyFeedbackSection() {
+  const { t } = useTranslation();
+  const [items, setItems] = useState<FeedbackEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void feedbackApi.myFeedback().then(setItems).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <Spinner />;
+
+  return (
+    <Card>
+      <h3 className="mb-3 text-sm font-semibold text-text-primary">
+        {t('settings.myFeedback')}
+      </h3>
+      {items.length === 0 ? (
+        <p className="text-sm text-text-muted">{t('settings.noFeedbackYet')}</p>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {items.map((item) => (
+            <div
+              key={item.feedback_id}
+              className="rounded border border-border p-3"
+            >
+              <div className="mb-1 flex items-center gap-2 text-xs">
+                <span className="font-medium text-accent">{item.feedback_type}</span>
+                <span className="text-text-muted">·</span>
+                <span className={item.status === 'Resolved' ? 'text-success' : 'text-text-muted'}>
+                  {item.status}
+                </span>
+                <span className="text-text-muted">·</span>
+                <span className="text-text-muted">
+                  {t('settings.feedbackSubmitted')} {new Date(item.created_at).toLocaleDateString()}
+                </span>
+              </div>
+              <p className="text-sm text-text-primary">{item.user_message}</p>
+              {item.resolution_notes && (
+                <p className="mt-1 text-xs text-success italic">
+                  Resolution: {item.resolution_notes}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </Card>
   );
 }
 

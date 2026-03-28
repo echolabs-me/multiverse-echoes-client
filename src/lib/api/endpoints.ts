@@ -46,6 +46,9 @@ import type {
   WaitlistSignupResponse,
   WaitlistPositionResponse,
   WaitlistCountResponse,
+  FeedbackEntry,
+  SubmitFeedbackRequest,
+  SubmitFeedbackResponse,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -393,6 +396,30 @@ export const admin = {
     request<MessageResponse>(`/admin/users/${userId}/unsuspend`, { method: 'POST' }),
 
   shards: () => request<Shard[]>('/shards'),
+
+  feedback: () => request<FeedbackEntry[]>('/admin/feedback'),
+
+  updateFeedbackStatus: (feedbackId: string, status: string, resolutionNotes?: string) =>
+    request<FeedbackEntry>(`/admin/feedback/${feedbackId}/status`, {
+      method: 'POST',
+      body: JSON.stringify({ status, resolution_notes: resolutionNotes }),
+    }),
+
+  updateFeedbackPriority: (feedbackId: string, priority: string) =>
+    request<FeedbackEntry>(`/admin/feedback/${feedbackId}/priority`, {
+      method: 'POST',
+      body: JSON.stringify({ priority }),
+    }),
+};
+
+export const feedback = {
+  submit: (data: SubmitFeedbackRequest) =>
+    request<SubmitFeedbackResponse>('/oracle/feedback', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  myFeedback: () => request<FeedbackEntry[]>('/oracle/feedback'),
 };
 
 // --- Payments ---

@@ -20,9 +20,12 @@ import type {
   AdminReport,
   AdminUser,
   Shard,
+  FeedbackEntry,
+  FeedbackStatus,
+  FeedbackPriority,
 } from '../types/api.ts';
 
-type AdminTab = 'dashboard' | 'reports' | 'users' | 'shards' | 'controls' | 'analytics';
+type AdminTab = 'dashboard' | 'reports' | 'users' | 'shards' | 'controls' | 'analytics' | 'feedback';
 
 export function AdminDashboardPage() {
   const { t } = useTranslation();
@@ -54,6 +57,7 @@ export function AdminDashboardPage() {
     { id: 'shards', label: t('admin.tabShards') },
     { id: 'controls', label: t('admin.tabControls') },
     { id: 'analytics', label: t('admin.tabAnalytics') },
+    { id: 'feedback', label: t('admin.tabFeedback') },
   ];
 
   return (
@@ -83,6 +87,7 @@ export function AdminDashboardPage() {
         {activeTab === 'shards' && <ShardsView />}
         {activeTab === 'controls' && <ControlsView />}
         {activeTab === 'analytics' && <AnalyticsView />}
+        {activeTab === 'feedback' && <FeedbackQueueView />}
       </div>
     </div>
   );
@@ -571,6 +576,155 @@ function AnalyticsView() {
           </div>
         </div>
       </Card>
+    </div>
+  );
+}
+
+// ─── Feedback Queue ──────────────────────────────────────────────────────────
+
+function FeedbackQueueView() {
+  const { t } = useTranslation();
+  const [items, setItems] = useState<FeedbackEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filterType, setFilterType] = useState<string>('all');
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+
+  const load = useCallback(() => {
+    void admin.feedback().then(setItems).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleStatus = async (id: string, status: FeedbackStatus, notes?: string) => {
+    try {
+      await admin.updateFeedbackStatus(id, status, notes);
+      load();
+    } catch { /* toast in future */ }
+  };
+
+  const handlePriority = async (id: string, priority: FeedbackPriority) => {
+    try {
+      await admin.updateFeedbackPriority(id, priority);
+      load();
+    } catch { /* toast in future */ }
+  };
+
+  const filtered = items.filter((i) => {
+    if (filterType !== 'all' && i.feedback_type !== filterType) return false;
+    if (filterStatus !== 'all' && i.status !== filterStatus) return false;
+    return true;
+  });
+
+  if (loading) return <Spinner />;
+
+  const typeBadgeColor: Record<string, 'danger' | 'warning' | 'success' | 'default'> = {
+    Bug: 'danger',
+    Frustration: 'warning',
+    FeatureRequest: 'default',
+    Praise: 'success',
+    General: 'default',
+  };
+
+  return (
+    <div>
+      <h2 className="mb-4 text-lg font-semibold text-text-primary">{t('admin.feedbackQueue')}</h2>
+
+      <div className="mb-4 flex gap-3">
+        <select
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value)}
+          className="rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary"
+        >
+          <option value="all">{t('admin.feedbackType')}: All</option>
+          <option value="Bug">Bug</option>
+          <option value="FeatureRequest">Feature Request</option>
+          <option value="Frustration">Frustration</option>
+          <option value="Praise">Praise</option>
+          <option value="General">General</option>
+        </select>
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          className="rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary"
+        >
+          <option value="all">{t('admin.feedbackStatus')}: All</option>
+          <option value="New">New</option>
+          <option value="Acknowledged">Acknowledged</option>
+          <option value="Resolved">Resolved</option>
+          <option value="Wontfix">Won't Fix</option>
+        </select>
+      </div>
+
+      {filtered.length === 0 ? (
+        <p className="text-sm text-text-muted">{t('admin.noFeedback')}</p>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {filtered.map((item) => (
+            <Card key={item.feedback_id}>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <div className="mb-1 flex items-center gap-2">
+                    <Badge variant={typeBadgeColor[item.feedback_type] ?? 'default'}>
+                      {item.feedback_type}
+                    </Badge>
+                    <Badge variant={item.status === 'New' ? 'warning' : 'default'}>
+                      {item.status}
+                    </Badge>
+                    {item.priority && <Badge variant="danger">{item.priority}</Badge>}
+                  </div>
+                  <p className="text-sm text-text-primary">{item.user_message}</p>
+                  <p className="mt-1 text-xs text-text-muted italic">{item.structured_summary}</p>
+                  <p className="mt-1 text-xs text-text-muted">
+                    {t('admin.feedbackScreen')}: {item.context.screen}
+                    {item.context.echo_id && ` · Echo: ${item.context.echo_id.slice(0, 8)}…`}
+                  </p>
+                  {item.resolution_notes && (
+                    <p className="mt-1 text-xs text-success">Resolution: {item.resolution_notes}</p>
+                  )}
+                  <p className="mt-1 text-xs text-text-muted">
+                    {new Date(item.created_at).toLocaleString()}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-1">
+                  {item.status === 'New' && (
+                    <Button
+                      variant="secondary"
+                      onClick={() => void handleStatus(item.feedback_id, 'Acknowledged')}
+                    >
+                      {t('admin.feedbackAcknowledge')}
+                    </Button>
+                  )}
+                  {item.status !== 'Resolved' && item.status !== 'Wontfix' && (
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        const notes = prompt(t('admin.feedbackResolutionNotes'));
+                        if (notes !== null) void handleStatus(item.feedback_id, 'Resolved', notes);
+                      }}
+                    >
+                      {t('admin.feedbackResolve')}
+                    </Button>
+                  )}
+                  <select
+                    value={item.priority ?? ''}
+                    onChange={(e) => {
+                      if (e.target.value) void handlePriority(item.feedback_id, e.target.value as FeedbackPriority);
+                    }}
+                    className="rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary"
+                  >
+                    <option value="">{t('admin.feedbackPriorityLabel')}</option>
+                    <option value="P0">P0</option>
+                    <option value="P1">P1</option>
+                    <option value="P2">P2</option>
+                    <option value="P3">P3</option>
+                    <option value="P4">P4</option>
+                  </select>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

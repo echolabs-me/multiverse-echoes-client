@@ -434,6 +434,47 @@ export interface ResolveReportRequest {
   notes: string;
 }
 
+// --- Feedback ---
+
+export type FeedbackType = 'Bug' | 'FeatureRequest' | 'Frustration' | 'Praise' | 'General';
+export type FeedbackStatus = 'New' | 'Acknowledged' | 'Resolved' | 'Wontfix';
+export type FeedbackPriority = 'P0' | 'P1' | 'P2' | 'P3' | 'P4';
+
+export interface FeedbackContext {
+  screen: string;
+  echo_id?: string | null;
+  shard_id?: string | null;
+  recent_events: string[];
+}
+
+export interface FeedbackEntry {
+  feedback_id: string;
+  user_id: string;
+  feedback_type: FeedbackType;
+  user_message: string;
+  structured_summary: string;
+  context: FeedbackContext;
+  status: FeedbackStatus;
+  priority?: FeedbackPriority | null;
+  github_issue_url?: string | null;
+  resolution_notes?: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SubmitFeedbackRequest {
+  user_message: string;
+  structured_summary: string;
+  feedback_type: FeedbackType;
+  context: FeedbackContext;
+}
+
+export interface SubmitFeedbackResponse {
+  feedback_id: string;
+  status: string;
+  message: string;
+}
+
 // --- Data Export ---
 
 export interface DataExport {
