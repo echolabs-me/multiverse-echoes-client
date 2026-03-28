@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   LogOut,
+  MessageCircle,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
@@ -45,6 +46,12 @@ function NavSidebar({
       labelKey: 'nav.dashboard',
       icon: <LayoutDashboard size={20} />,
       path: '/dashboard',
+    },
+    {
+      id: 'community',
+      labelKey: 'nav.community',
+      icon: <MessageCircle size={20} />,
+      path: '/community',
     },
     {
       id: 'shards',
@@ -170,6 +177,12 @@ export function AppLayout() {
       labelKey: 'nav.dashboard',
       icon: <LayoutDashboard size={20} />,
       path: '/dashboard',
+    },
+    {
+      id: 'community',
+      labelKey: 'nav.community',
+      icon: <MessageCircle size={20} />,
+      path: '/community',
     },
     {
       id: 'search',

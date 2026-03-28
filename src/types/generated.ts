@@ -526,6 +526,7 @@ export type MessageResponse = {
 	message_id: string,
 	channel_id: string,
 	author_id: string,
+	author_display_name: string,
 	content: string,
 	message_type: MessageType,
 	created_at: string,

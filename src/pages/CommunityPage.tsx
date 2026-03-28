@@ -19,8 +19,9 @@ import {
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { channels as channelApi, reports } from '../lib/api/endpoints.ts';
+import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
-import type { Channel, ChannelMessage } from '../types/api.ts';
+import type { Channel, ChannelMessage, WsEchoEvent } from '../types/api.ts';
 
 const MAX_MESSAGE_LENGTH = 2000;
 
@@ -82,6 +83,24 @@ export function CommunityPage() {
   useEffect(() => {
     void loadMessages();
   }, [loadMessages]);
+
+  // Real-time updates via WebSocket — refresh on new messages/edits/deletes.
+  const wsPath = activeChannel ? `/ws/channels/${activeChannel.channel_id}/stream` : null;
+
+  const handleWsEvent = useCallback(
+    (event: WsEchoEvent) => {
+      if (
+        event.type === 'CommunityMessagePosted' ||
+        event.type === 'CommunityMessageEdited' ||
+        event.type === 'CommunityMessageDeleted'
+      ) {
+        void loadMessages();
+      }
+    },
+    [loadMessages],
+  );
+
+  useEchoWebSocket(wsPath, handleWsEvent, loadMessages);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -267,7 +286,7 @@ export function CommunityPage() {
                           <>
                             <div className="flex items-baseline gap-2">
                               <span className="text-sm font-medium text-accent">
-                                {msg.author_id}
+                                {msg.author_display_name}
                               </span>
                               <span className="text-xs text-text-muted">
                                 {new Date(msg.created_at).toLocaleTimeString()}
