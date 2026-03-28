@@ -678,6 +678,18 @@ function FeedbackQueueView() {
                     {t('admin.feedbackScreen')}: {item.context.screen}
                     {item.context.echo_id && ` · Echo: ${item.context.echo_id.slice(0, 8)}…`}
                   </p>
+                  {item.github_issue_url && (
+                    <p className="mt-1 text-xs">
+                      <a
+                        href={item.github_issue_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-accent hover:text-accent/80 underline"
+                      >
+                        GitHub Issue
+                      </a>
+                    </p>
+                  )}
                   {item.resolution_notes && (
                     <p className="mt-1 text-xs text-success">Resolution: {item.resolution_notes}</p>
                   )}
@@ -719,6 +731,24 @@ function FeedbackQueueView() {
                     <option value="P3">P3</option>
                     <option value="P4">P4</option>
                   </select>
+                  {item.status === 'Acknowledged' &&
+                    item.priority &&
+                    item.priority !== 'P4' &&
+                    !item.github_issue_url && (
+                      <Button
+                        variant="secondary"
+                        onClick={async () => {
+                          try {
+                            await admin.createGithubIssue(item.feedback_id);
+                            load();
+                          } catch {
+                            /* toast in future */
+                          }
+                        }}
+                      >
+                        Create Issue
+                      </Button>
+                    )}
                 </div>
               </div>
             </Card>

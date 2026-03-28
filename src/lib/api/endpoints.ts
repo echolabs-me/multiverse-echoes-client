@@ -410,6 +410,11 @@ export const admin = {
       method: 'POST',
       body: JSON.stringify({ priority }),
     }),
+
+  createGithubIssue: (feedbackId: string) =>
+    request<FeedbackEntry>(`/admin/feedback/${feedbackId}/github`, {
+      method: 'POST',
+    }),
 };
 
 export const feedback = {
