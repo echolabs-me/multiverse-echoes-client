@@ -78,6 +78,12 @@ export function LoginPage() {
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? t('common.loading') : t('auth.logIn')}
           </Button>
+
+          <p className="text-right text-sm">
+            <Link to="/forgot-password" className="text-accent hover:text-accent-hover">
+              {t('auth.forgotPassword')}
+            </Link>
+          </p>
         </form>
 
         <p className="mt-6 text-center text-sm text-text-secondary">

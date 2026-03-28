@@ -25,6 +25,8 @@ import { EchoConversationPage } from './pages/EchoConversationPage.tsx';
 import { AdminDashboardPage } from './pages/AdminDashboardPage.tsx';
 import { WaitlistPage } from './pages/WaitlistPage.tsx';
 import { LoginPage } from './pages/LoginPage.tsx';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage.tsx';
+import { ResetPasswordPage } from './pages/ResetPasswordPage.tsx';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage.tsx';
 import { TermsPage } from './pages/TermsPage.tsx';
 import { PlansPage } from './pages/PlansPage.tsx';
@@ -65,6 +67,8 @@ export function App() {
         <Route path="/verify-pending" element={<VerifyPendingPage />} />
         <Route path="/verified" element={<VerifiedPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
         <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
         <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
