@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 const mockOscillator = {
   type: 'sine',
   frequency: { value: 0 },
-  detune: { value: 0 },
   connect: vi.fn(),
   start: vi.fn(),
   stop: vi.fn(),
@@ -13,16 +12,9 @@ const mockOscillator = {
 const mockGain = {
   gain: {
     value: 0,
-    linearRampToValueAtTime: vi.fn(),
+    setValueAtTime: vi.fn(),
     exponentialRampToValueAtTime: vi.fn(),
   },
-  connect: vi.fn(),
-};
-
-const mockFilter = {
-  type: 'lowpass',
-  frequency: { value: 0 },
-  Q: { value: 0 },
   connect: vi.fn(),
 };
 
@@ -33,12 +25,6 @@ const mockCtx = {
   createGain: vi.fn(() => ({
     ...mockGain,
     gain: { ...mockGain.gain },
-  })),
-  createBiquadFilter: vi.fn(() => ({
-    ...mockFilter,
-    frequency: { value: 0 },
-    Q: { value: 0 },
-    connect: vi.fn(),
   })),
   close: vi.fn(() => Promise.resolve()),
 };
@@ -52,40 +38,36 @@ const {
   isSoundscapePlaying,
 } = await import('../src/lib/ambientSoundscape.ts');
 
-describe('Ambient Soundscape', () => {
+describe('Dashboard Entry Chime', () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    // Reset by stopping and advancing past fade.
+    // Reset play guard.
     stopSoundscape();
-    vi.advanceTimersByTime(5000);
   });
 
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  it('is not playing initially', () => {
+  it('is never continuously playing', () => {
     expect(isSoundscapePlaying()).toBe(false);
   });
 
-  it('starts playing when called', () => {
+  it('plays chime without error', () => {
     startSoundscape(0.15);
-    expect(isSoundscapePlaying()).toBe(true);
+    expect(isSoundscapePlaying()).toBe(false); // Fire-and-forget, not continuous.
   });
 
-  it('is idempotent — calling start twice does not error', () => {
+  it('is idempotent — calling start twice only plays once', () => {
     startSoundscape(0.15);
-    startSoundscape(0.15);
-    expect(isSoundscapePlaying()).toBe(true);
+    startSoundscape(0.15); // Should be no-op (hasPlayed guard).
+    expect(isSoundscapePlaying()).toBe(false);
   });
 
-  it('stops after fade-out', () => {
+  it('plays again after stop resets the guard', () => {
     startSoundscape(0.15);
-    stopSoundscape();
-    // Still playing during fade.
-    expect(isSoundscapePlaying()).toBe(true);
-    // After fade.
-    vi.advanceTimersByTime(5000);
+    stopSoundscape(); // Resets hasPlayed.
+    startSoundscape(0.15); // Should play again.
     expect(isSoundscapePlaying()).toBe(false);
   });
 });

@@ -25,9 +25,14 @@ export const useAuthStore = create<AuthState>((set) => {
     },
   });
 
+  // Hydrate auth state synchronously from localStorage so the first render
+  // sees the correct value — prevents redirect-to-login on page refresh.
+  loadStoredTokens();
+  const hasStoredToken = !!localStorage.getItem('access_token');
+
   return {
     user: null,
-    isAuthenticated: false,
+    isAuthenticated: hasStoredToken,
     isLoading: false,
 
     login: async (data) => {

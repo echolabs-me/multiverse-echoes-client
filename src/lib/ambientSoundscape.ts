@@ -1,157 +1,86 @@
 /**
- * Ambient Soundscape — "Quiet Universe"
+ * Dashboard entry chime — "Quiet Universe"
  *
- * Generative ambient loop that evolves slowly using Web Audio API.
- * Warm, analog-inspired tones. No harsh digital beeps.
- * Default volume 15%, adjustable. No information conveyed by sound alone.
- *
- * Architecture: 3 detuned sine oscillators forming a warm pad chord,
- * shaped by a low-pass filter and slow LFO modulation. Fades in/out
- * smoothly to avoid harsh transitions.
+ * A short, subtle chime (< 1 second) that plays once when the Dashboard mounts.
+ * Uses Web Audio API: soft sine wave with quick exponential fade.
+ * No continuous loop — plays once and stops.
  *
  * Reference: ME-CDS-001 §8.1, ME-ACC-001.
  */
 
-/** Base frequencies for the warm pad chord (C major 7th voicing, low register). */
-const BASE_FREQS = [130.81, 164.81, 196.0]; // C3, E3, G3
+/** Chime frequency in Hz (G5 — bright but not harsh). */
+const CHIME_FREQ = 784;
 
-/** Detune amounts in cents for organic warmth. */
-const DETUNE = [0, 7, -5];
+/** Second harmonic for richness (an octave above, very quiet). */
+const HARMONIC_FREQ = 1568;
 
-/** LFO rate in Hz (very slow evolution). */
-const LFO_RATE = 0.05;
+/** Total chime duration in seconds. */
+const CHIME_DURATION = 0.6;
 
-/** Low-pass filter cutoff (Hz) — removes harsh overtones. */
-const FILTER_CUTOFF = 800;
-
-/** Fade duration in seconds — long fade avoids harsh onset after page transitions. */
-const FADE_DURATION = 4.0;
-
-interface SoundscapeNodes {
-  ctx: AudioContext;
-  oscillators: OscillatorNode[];
-  gains: GainNode[];
-  filter: BiquadFilterNode;
-  masterGain: GainNode;
-  lfo: OscillatorNode;
-  lfoGain: GainNode;
-}
-
-let nodes: SoundscapeNodes | null = null;
-let isPlaying = false;
+let hasPlayed = false;
 
 /**
- * Start the ambient soundscape.
- * Idempotent — calling while already playing is a no-op.
+ * Play a short entry chime. Idempotent per session — only plays once
+ * until resetChime() is called (on unmount).
  */
 export function startSoundscape(volume: number): void {
-  if (isPlaying) return;
+  if (hasPlayed) return;
+  hasPlayed = true;
 
   const ctx = new AudioContext();
+  const now = ctx.currentTime;
 
-  // Master gain (controlled by user volume).
-  const masterGain = ctx.createGain();
-  masterGain.gain.value = 0; // Start silent, fade in.
-  masterGain.connect(ctx.destination);
+  // Primary tone.
+  const osc1 = ctx.createOscillator();
+  osc1.type = 'sine';
+  osc1.frequency.value = CHIME_FREQ;
 
-  // Low-pass filter for warmth.
-  const filter = ctx.createBiquadFilter();
-  filter.type = 'lowpass';
-  filter.frequency.value = FILTER_CUTOFF;
-  filter.Q.value = 0.7;
-  filter.connect(masterGain);
+  const gain1 = ctx.createGain();
+  gain1.gain.setValueAtTime(volume * 0.3, now);
+  gain1.gain.exponentialRampToValueAtTime(0.001, now + CHIME_DURATION);
 
-  // LFO for slow filter modulation (evolving texture).
-  const lfo = ctx.createOscillator();
-  lfo.type = 'sine';
-  lfo.frequency.value = LFO_RATE;
+  osc1.connect(gain1);
+  gain1.connect(ctx.destination);
+  osc1.start(now);
+  osc1.stop(now + CHIME_DURATION);
 
-  const lfoGain = ctx.createGain();
-  lfoGain.gain.value = 200; // Modulate filter cutoff by ±200 Hz.
-  lfo.connect(lfoGain);
-  lfoGain.connect(filter.frequency);
-  lfo.start();
+  // Soft harmonic for shimmer.
+  const osc2 = ctx.createOscillator();
+  osc2.type = 'sine';
+  osc2.frequency.value = HARMONIC_FREQ;
 
-  // 3 detuned oscillators forming the pad chord.
-  const oscillators: OscillatorNode[] = [];
-  const gains: GainNode[] = [];
+  const gain2 = ctx.createGain();
+  gain2.gain.setValueAtTime(volume * 0.08, now);
+  gain2.gain.exponentialRampToValueAtTime(0.001, now + CHIME_DURATION * 0.7);
 
-  for (let i = 0; i < BASE_FREQS.length; i++) {
-    const osc = ctx.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.value = BASE_FREQS[i]!;
-    osc.detune.value = DETUNE[i]!;
+  osc2.connect(gain2);
+  gain2.connect(ctx.destination);
+  osc2.start(now);
+  osc2.stop(now + CHIME_DURATION);
 
-    const gain = ctx.createGain();
-    gain.gain.value = 0.1; // Each voice very quiet, combined is warm.
-
-    osc.connect(gain);
-    gain.connect(filter);
-    osc.start();
-
-    oscillators.push(osc);
-    gains.push(gain);
-  }
-
-  // Fade in.
-  masterGain.gain.linearRampToValueAtTime(
-    volume,
-    ctx.currentTime + FADE_DURATION,
-  );
-
-  nodes = { ctx, oscillators, gains, filter, masterGain, lfo, lfoGain };
-  isPlaying = true;
+  // Close the AudioContext after the chime finishes.
+  setTimeout(() => void ctx.close(), (CHIME_DURATION + 0.1) * 1000);
 }
 
 /**
- * Stop the ambient soundscape with a smooth fade-out.
+ * No-op for the chime (no continuous sound to stop).
+ * Resets the play guard so the chime can fire again on next mount.
  */
 export function stopSoundscape(): void {
-  if (!isPlaying || !nodes) return;
-
-  const { ctx, oscillators, lfo, masterGain } = nodes;
-
-  // Fade out.
-  masterGain.gain.linearRampToValueAtTime(
-    0.001,
-    ctx.currentTime + FADE_DURATION,
-  );
-
-  // Stop oscillators after fade.
-  setTimeout(() => {
-    for (const osc of oscillators) {
-      try {
-        osc.stop();
-      } catch {
-        // Already stopped.
-      }
-    }
-    try {
-      lfo.stop();
-    } catch {
-      // Already stopped.
-    }
-    void ctx.close();
-    nodes = null;
-    isPlaying = false;
-  }, FADE_DURATION * 1000 + 100);
+  hasPlayed = false;
 }
 
 /**
- * Update the soundscape volume (0.0–1.0).
+ * No-op — volume is set at play time, not continuously.
  */
-export function setSoundscapeVolume(volume: number): void {
-  if (!nodes) return;
-  const clamped = Math.max(0, Math.min(1, volume));
-  nodes.masterGain.gain.linearRampToValueAtTime(
-    clamped,
-    nodes.ctx.currentTime + 0.1,
-  );
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function setSoundscapeVolume(_volume: number): void {
+  // Chime is fire-and-forget; volume only applies on next play.
 }
 
 /**
- * Check if the soundscape is currently playing.
+ * Check if the chime has been played this session.
  */
 export function isSoundscapePlaying(): boolean {
-  return isPlaying;
+  return false; // Never continuously playing.
 }

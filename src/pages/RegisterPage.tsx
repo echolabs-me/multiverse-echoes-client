@@ -115,16 +115,18 @@ export function RegisterPage() {
             autoComplete="username"
           />
 
-          <Input
-            label={t('auth.password')}
-            type="password"
-            value={password}
-            onChange={(e) => setPassword((e.target as HTMLInputElement).value)}
-            error={errors.password}
-            placeholder={t('auth.passwordHint')}
-            required
-            autoComplete="new-password"
-          />
+          <div>
+            <Input
+              label={t('auth.password')}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword((e.target as HTMLInputElement).value)}
+              error={errors.password}
+              required
+              autoComplete="new-password"
+            />
+            <p className="mt-1 text-xs text-text-muted">{t('auth.passwordHint')}</p>
+          </div>
 
           <Input
             label={t('auth.confirmPassword')}
