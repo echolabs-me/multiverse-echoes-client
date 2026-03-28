@@ -224,7 +224,8 @@
     "editWindow": "Edit within 15 minutes",
     "messageDeleted": "Message deleted",
     "messageEdited": "Message edited",
-    "reportSent": "Report submitted"
+    "reportSent": "Report submitted",
+    "editMessageLabel": "Edit message"
   },
   "notifications": {
     "title": "Notifications",
@@ -446,6 +447,7 @@
     "tabUsers": "Users",
     "tabShards": "Shards",
     "tabControls": "Controls",
+    "tabAnalytics": "Analytics",
     "tickNumber": "Tick #",
     "tickDuration": "Tick Duration",
     "ramUsage": "RAM Usage",

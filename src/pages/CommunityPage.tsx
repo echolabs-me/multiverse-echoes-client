@@ -241,6 +241,7 @@ export function CommunityPage() {
                               value={editText}
                               onChange={(e) => setEditText(e.target.value)}
                               maxLength={MAX_MESSAGE_LENGTH}
+                              aria-label={t('community.editMessageLabel')}
                               className="flex-1 rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') void handleEdit(msg.message_id);

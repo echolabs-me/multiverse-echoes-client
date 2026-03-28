@@ -53,7 +53,7 @@ export function AdminDashboardPage() {
     { id: 'users', label: t('admin.tabUsers') },
     { id: 'shards', label: t('admin.tabShards') },
     { id: 'controls', label: t('admin.tabControls') },
-    { id: 'analytics', label: 'Analytics' },
+    { id: 'analytics', label: t('admin.tabAnalytics') },
   ];
 
   return (
