@@ -204,19 +204,32 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
     void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
   }, [echo.echo_id]);
 
+  // Track latest tick_id from WS events to keep counter fresh.
+  const [lastTickId, setLastTickId] = useState(echo.current_tick);
+  const { fetchEchoes } = useEchoStore();
+
   // Real-time updates via Dashboard WS stream — refreshes diary on new events.
   const handleWsEvent = useCallback(
     (event: WsEchoEvent) => {
-      if (event.type === 'DiaryEntryCreated' && event.echo_id === echo.echo_id) {
-        void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
+      if ('echo_id' in event && event.echo_id === echo.echo_id) {
+        if (event.type === 'DiaryEntryCreated' || event.type === 'MoodChanged') {
+          void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
+          // Re-fetch echo list to update current_tick display.
+          void fetchEchoes();
+        }
+        // Update local tick counter from WS event tick_id.
+        if ('tick_id' in event && typeof event.tick_id === 'number' && event.tick_id > lastTickId) {
+          setLastTickId(event.tick_id);
+        }
       }
     },
-    [echo.echo_id],
+    [echo.echo_id, fetchEchoes, lastTickId],
   );
 
   const handleFallbackPoll = useCallback(() => {
     void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
-  }, [echo.echo_id]);
+    void fetchEchoes();
+  }, [echo.echo_id, fetchEchoes]);
 
   useEchoWebSocket('/ws/dashboard/stream', handleWsEvent, handleFallbackPoll);
 
@@ -250,7 +263,7 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
           <p className="mt-1 text-sm text-text-muted">
             {t('dashboard.mood')}: {echo.current_mood}
           </p>
-          {echo.status === 'Active' && <DashboardTickCountdown />}
+          {echo.status === 'Active' && <DashboardTickCountdown key={lastTickId} />}
         </div>
       </div>
 

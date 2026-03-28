@@ -12,6 +12,7 @@ import {
   Sparkles,
   Menu,
   X,
+  LogOut,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
@@ -113,6 +114,19 @@ function NavSidebar({
           ))}
         </ul>
       </nav>
+      <div className="border-t border-border">
+        <button
+          onClick={() => {
+            void useAuthStore.getState().logout();
+            navigate('/login');
+          }}
+          className={`flex w-full items-center gap-3 px-3 py-2.5 text-sm text-text-muted hover:bg-surface-raised hover:text-danger transition-colors ${collapsed ? 'justify-center' : ''}`}
+          title={collapsed ? t('auth.logout') : undefined}
+        >
+          <LogOut size={20} />
+          {!collapsed && <span>{t('auth.logout')}</span>}
+        </button>
+      </div>
       <button
         onClick={onToggle}
         className="flex items-center justify-center border-t border-border p-3 text-text-muted hover:text-text-primary"

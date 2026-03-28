@@ -95,7 +95,7 @@ describe('Initialization ordering', () => {
     await expect(useSystemStore.getState().fetchHealth()).resolves.not.toThrow();
 
     // Fallback value should remain.
-    expect(useSystemStore.getState().tickIntervalSeconds).toBe(30);
+    expect(useSystemStore.getState().tickIntervalSeconds).toBe(60);
     expect(useSystemStore.getState().isLoaded).toBe(false);
 
     globalThis.fetch = originalFetch;
@@ -112,7 +112,7 @@ describe('Initialization ordering', () => {
     const { useSystemStore } = await import('../src/stores/useSystemStore.ts');
 
     await expect(useSystemStore.getState().fetchHealth()).resolves.not.toThrow();
-    expect(useSystemStore.getState().tickIntervalSeconds).toBe(30);
+    expect(useSystemStore.getState().tickIntervalSeconds).toBe(60);
 
     globalThis.fetch = originalFetch;
   });

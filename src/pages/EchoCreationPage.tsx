@@ -130,6 +130,10 @@ export function EchoCreationPage() {
             </p>
           </div>
 
+          <p className="text-xs text-text-muted italic">
+            {t('echo.inputCareHint')}
+          </p>
+
           {/* Persona declaration — ME-TSP-001 §9.4 */}
           <div className="flex flex-col gap-2">
             <label className="flex items-center gap-2 text-sm text-text-secondary">
