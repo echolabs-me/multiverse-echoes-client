@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -15,6 +15,7 @@ import {
   Settings,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   Lock,
 } from 'lucide-react';
 import {
@@ -50,6 +51,12 @@ import type {
 
 const PAGE_SIZE = 20;
 
+/** Extract the day number from a simulated_date string like "Day 14 Hour 8". */
+function parseDayNumber(simDate: string): number {
+  const match = /Day\s+(\d+)/i.exec(simDate);
+  return match ? parseInt(match[1], 10) : 0;
+}
+
 export function EchoDetailPage() {
   const { echoId } = useParams<{ echoId: string }>();
   const navigate = useNavigate();
@@ -68,6 +75,8 @@ export function EchoDetailPage() {
   const [diaryOffset, setDiaryOffset] = useState(0);
   const [hasMoreDiary, setHasMoreDiary] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  // Days the user has explicitly toggled from their default expand/collapse state.
+  const [toggledDays, setToggledDays] = useState<Set<number>>(new Set());
   const [showAllPersona, setShowAllPersona] = useState(false);
 
   // Modal state
@@ -255,6 +264,39 @@ export function EchoDetailPage() {
 
   // Life events still come from the feed store (no dedicated Redb repo yet).
   const lifeEvents = personalFeed.filter((f) => f.item_type === 'life_event');
+
+  // Group diary entries by simulated day for collapsible day sections.
+  const diaryByDay = useMemo(() => {
+    const groups: { day: number; entries: DiaryEntry[] }[] = [];
+    const dayMap = new Map<number, DiaryEntry[]>();
+    for (const entry of diaryEntries) {
+      const day = parseDayNumber(entry.simulated_date);
+      const existing = dayMap.get(day);
+      if (existing) {
+        existing.push(entry);
+      } else {
+        const arr = [entry];
+        dayMap.set(day, arr);
+        groups.push({ day, entries: arr });
+      }
+    }
+    return groups;
+  }, [diaryEntries]);
+
+  // Current day is the highest day number (first group since entries are newest-first).
+  const currentDay = diaryByDay.length > 0 ? diaryByDay[0].day : -1;
+
+  const toggleDay = useCallback((day: number) => {
+    setToggledDays((prev) => {
+      const next = new Set(prev);
+      if (next.has(day)) {
+        next.delete(day);
+      } else {
+        next.add(day);
+      }
+      return next;
+    });
+  }, []);
 
   const handleHibernateWake = async () => {
     if (!activeEcho) return;
@@ -561,15 +603,46 @@ export function EchoDetailPage() {
                 description={t('echoDetail.diaryEmptyDesc')}
               />
             ) : (
-              <div className="flex flex-col gap-3">
-                {diaryEntries.map((entry) => (
-                  <DiaryCard
-                    key={entry.diary_id}
-                    entry={entry}
-                    isNew={newDiaryIds.has(entry.diary_id)}
-                    onAnimationEnd={handleAnimationEnd}
-                  />
-                ))}
+              <div className="flex flex-col gap-2">
+                {diaryByDay.map(({ day, entries }) => {
+                  const isCurrentDay = day === currentDay;
+                  // Current day expanded by default; past days collapsed by default.
+                  // Toggling inverts the default.
+                  const defaultExpanded = isCurrentDay;
+                  const expanded = toggledDays.has(day) ? !defaultExpanded : defaultExpanded;
+                  return (
+                    <div key={day}>
+                      <button
+                        onClick={() => toggleDay(day)}
+                        className="mb-2 flex w-full items-center gap-2 border-b border-accent/20 pb-1 text-left"
+                      >
+                        {expanded ? (
+                          <ChevronDown size={16} className="text-accent" />
+                        ) : (
+                          <ChevronRight size={16} className="text-accent" />
+                        )}
+                        <span className="text-sm font-semibold text-accent">
+                          {t('echoDetail.simulatedDay', { day })}
+                        </span>
+                        <span className="text-xs text-text-muted">
+                          ({entries.length})
+                        </span>
+                      </button>
+                      {expanded && (
+                        <div className="mb-3 flex flex-col gap-3 pl-2">
+                          {entries.map((entry) => (
+                            <DiaryCard
+                              key={entry.diary_id}
+                              entry={entry}
+                              isNew={newDiaryIds.has(entry.diary_id)}
+                              onAnimationEnd={handleAnimationEnd}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
                 {hasMoreDiary && (
                   <Button
                     variant="ghost"

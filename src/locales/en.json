@@ -210,7 +210,8 @@
     "sentiment": "Sentiment",
     "strength": "Strength",
     "moodHistory": "Mood history",
-    "loadMoreDiary": "Load more entries"
+    "loadMoreDiary": "Load more entries",
+    "simulatedDay": "Day {{day}}"
   },
   "shardView": {
     "echoes": "Echoes in this Shard",
