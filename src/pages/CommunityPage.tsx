@@ -196,8 +196,8 @@ export function CommunityPage() {
           </p>
           {discordLinked === false && (
             <button
-              onClick={() => navigate('/settings')}
-              className="mb-3 flex w-full items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 text-left text-xs text-accent hover:bg-accent/20 transition-colors"
+              onClick={() => navigate('/settings?tab=account')}
+              className="mb-3 flex w-full items-center gap-2 rounded-lg bg-[#5865F2] px-3 py-2.5 text-left text-sm font-medium text-white shadow-sm hover:bg-[#4752C4] transition-colors"
             >
               <ExternalLink size={14} />
               {t('community.linkDiscord')}

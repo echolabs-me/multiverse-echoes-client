@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
@@ -33,6 +33,7 @@ import type { NotificationPreferences, FeedbackEntry } from '../types/api.ts';
 
 export function SettingsPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
   const tabs = [
     { id: 'profile', label: t('settings.profile'), icon: User },
@@ -45,7 +46,10 @@ export function SettingsPage() {
     { id: 'danger', label: t('settings.dangerZone'), icon: Trash2 },
   ];
 
-  const [activeTab, setActiveTab] = useState('profile');
+  const tabIds = tabs.map((tab) => tab.id);
+  const paramTab = searchParams.get('tab');
+  const initialTab = paramTab && tabIds.includes(paramTab) ? paramTab : 'profile';
+  const [activeTab, setActiveTab] = useState(initialTab);
 
   return (
     <div className="flex-1 overflow-y-auto">
@@ -69,7 +73,7 @@ export function SettingsPage() {
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => { setActiveTab(tab.id); setSearchParams({ tab: tab.id }); }}
                   className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm transition-colors ${
                     activeTab === tab.id
                       ? 'border-accent text-accent'
@@ -726,9 +730,13 @@ function DiscordLinkSection() {
           <p className="mb-3 text-sm text-text-muted">
             Link your Discord account to sync your identity across in-app and Discord communities.
           </p>
-          <Button variant="secondary" onClick={() => void handleLink()}>
+          <button
+            onClick={() => void handleLink()}
+            className="flex items-center gap-2 rounded-lg bg-[#5865F2] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#4752C4] transition-colors"
+          >
+            <ExternalLink size={14} />
             {t('settings.linkDiscord')}
-          </Button>
+          </button>
         </>
       )}
     </Card>
