@@ -285,6 +285,11 @@ export const account = {
 
   unlinkDiscord: () =>
     request<MessageResponse>('/account/me/discord/link', { method: 'DELETE' }),
+
+  discordStatus: () =>
+    request<{ linked: boolean; discord_user_id?: string; discord_username?: string }>(
+      '/account/me/discord',
+    ),
 };
 
 // --- API Keys ---
@@ -415,6 +420,10 @@ export const admin = {
     request<FeedbackEntry>(`/admin/feedback/${feedbackId}/github`, {
       method: 'POST',
     }),
+
+  tickStatus: () => request<{ paused: boolean }>('/admin/tick/status'),
+  tickPause: () => request<{ paused: boolean }>('/admin/tick/pause', { method: 'POST' }),
+  tickResume: () => request<{ paused: boolean }>('/admin/tick/resume', { method: 'POST' }),
 };
 
 export const feedback = {

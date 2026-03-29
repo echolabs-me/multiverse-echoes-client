@@ -486,6 +486,8 @@
     "feedbackWontfix": "Won't Fix",
     "feedbackResolutionNotes": "Resolution notes",
     "feedbackPriorityLabel": "Set Priority",
+    "pauseTick": "Pause Tick Engine",
+    "resumeTick": "Resume Tick Engine",
     "tickNumber": "Tick #",
     "tickDuration": "Tick Duration",
     "ramUsage": "RAM Usage",

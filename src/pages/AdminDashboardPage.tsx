@@ -486,14 +486,47 @@ function ShardsView() {
 // --- Controls View ---
 function ControlsView() {
   const { t } = useTranslation();
+  const [paused, setPaused] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void admin.tickStatus().then((s) => setPaused(s.paused)).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  const handleToggle = async () => {
+    try {
+      if (paused) {
+        const r = await admin.tickResume();
+        setPaused(r.paused);
+      } else {
+        const r = await admin.tickPause();
+        setPaused(r.paused);
+      }
+    } catch { /* */ }
+  };
+
+  if (loading) return <Spinner />;
 
   return (
     <div className="space-y-6">
       <Card>
         <h3 className="mb-3 text-sm font-semibold text-text-secondary">{t('admin.tickControl')}</h3>
-        <p className="text-sm text-text-muted">
-          Tick pause/resume and backup controls will be available in a future release.
-        </p>
+        <div className="flex items-center gap-4">
+          <Badge variant={paused ? 'warning' : 'success'}>
+            {paused ? 'Paused' : 'Running'}
+          </Badge>
+          <Button
+            variant={paused ? 'primary' : 'secondary'}
+            onClick={() => void handleToggle()}
+          >
+            {paused ? t('admin.resumeTick') : t('admin.pauseTick')}
+          </Button>
+        </div>
+        {paused && (
+          <p className="mt-3 text-xs text-text-muted">
+            Tick engine is paused. No Echoes will be processed until resumed.
+          </p>
+        )}
       </Card>
     </div>
   );

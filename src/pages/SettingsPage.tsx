@@ -323,15 +323,7 @@ function AccountSection() {
       </Card>
 
       {/* Discord */}
-      <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">
-          {t('settings.discord')}
-        </h3>
-        <p className="mb-3 text-sm text-text-muted">{t('settings.discordComingSoon')}</p>
-        <Button variant="secondary" disabled>
-          {t('settings.linkDiscord')}
-        </Button>
-      </Card>
+      <DiscordLinkSection />
     </div>
   );
 }
@@ -671,6 +663,75 @@ function ApiKeysSection() {
         </Button>
       </Card>
     </div>
+  );
+}
+
+// --- Discord Link Section ---
+function DiscordLinkSection() {
+  const { t } = useTranslation();
+  const addToast = useToastStore((s) => s.addToast);
+  const [linked, setLinked] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void accountApi
+      .discordStatus()
+      .then((s) => {
+        setLinked(s.linked);
+        setUsername(s.discord_username ?? null);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleLink = async () => {
+    try {
+      const { auth_url } = await accountApi.linkDiscord();
+      window.location.href = auth_url;
+    } catch {
+      addToast(t('common.error'), 'danger');
+    }
+  };
+
+  const handleUnlink = async () => {
+    try {
+      await accountApi.unlinkDiscord();
+      setLinked(false);
+      setUsername(null);
+      addToast(t('settings.discordUnlinked'), 'success');
+    } catch {
+      addToast(t('common.error'), 'danger');
+    }
+  };
+
+  if (loading) return <Card><Spinner /></Card>;
+
+  return (
+    <Card>
+      <h3 className="mb-4 text-sm font-semibold text-text-primary">
+        {t('settings.discord')}
+      </h3>
+      {linked ? (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-text-primary">
+            {t('settings.discordLinked')}: <strong>{username}</strong>
+          </p>
+          <Button variant="secondary" onClick={() => void handleUnlink()}>
+            {t('settings.unlinkDiscord')}
+          </Button>
+        </div>
+      ) : (
+        <>
+          <p className="mb-3 text-sm text-text-muted">
+            Link your Discord account to sync your identity across in-app and Discord communities.
+          </p>
+          <Button variant="secondary" onClick={() => void handleLink()}>
+            {t('settings.linkDiscord')}
+          </Button>
+        </>
+      )}
+    </Card>
   );
 }
 
