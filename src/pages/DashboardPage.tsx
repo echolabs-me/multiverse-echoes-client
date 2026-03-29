@@ -486,6 +486,18 @@ function DashboardTickCountdown({ lastTickId }: { lastTickId: number }) {
     return () => clearInterval(timer);
   }, [tickInterval]);
 
+  if (seconds === 0) {
+    return (
+      <p className="mt-1 flex items-center gap-1.5 text-xs text-accent animate-pulse">
+        <span
+          className="inline-block h-1.5 w-1.5 rounded-full bg-accent"
+          aria-hidden="true"
+        />
+        {t('dashboard.echoThinking')}
+      </p>
+    );
+  }
+
   return (
     <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">
       <span

@@ -795,6 +795,18 @@ function TickCountdown({ lastTickTimeRef }: { lastTickTimeRef: React.RefObject<n
     return () => clearInterval(timer);
   }, [tickInterval, lastTickTimeRef]);
 
+  if (seconds === 0) {
+    return (
+      <p className="mt-1 flex items-center gap-1.5 text-xs text-accent animate-pulse">
+        <span
+          className="inline-block h-1.5 w-1.5 rounded-full bg-accent"
+          aria-hidden="true"
+        />
+        {t('echoDetail.echoThinking')}
+      </p>
+    );
+  }
+
   return (
     <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">
       <span
