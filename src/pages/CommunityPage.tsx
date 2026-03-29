@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
-  Hash,
   Send,
   MoreVertical,
   Pencil,
@@ -227,7 +226,6 @@ export function CommunityPage() {
                   }`}
                   aria-current={activeChannel?.channel_id === ch.channel_id ? 'true' : undefined}
                 >
-                  <Hash size={14} aria-hidden="true" />
                   <span className="truncate">{ch.name}</span>
                 </button>
               ))}
@@ -248,7 +246,6 @@ export function CommunityPage() {
             <>
               {/* Channel header */}
               <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-                <Hash size={16} className="text-text-muted" aria-hidden="true" />
                 <h2 className="text-sm font-semibold text-text-primary">
                   {activeChannel.name}
                 </h2>

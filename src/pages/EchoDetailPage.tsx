@@ -569,6 +569,8 @@ export function EchoDetailPage() {
             <Button
               variant="primary"
               onClick={() => navigate(`/echoes/${activeEcho.echo_id}/talk`)}
+              disabled={activeEcho.status === 'Hibernated'}
+              title={activeEcho.status === 'Hibernated' ? t('echoDetail.hibernatedNoTalk') : undefined}
             >
               <MessageCircle size={16} /> {t('echoDetail.talkToEcho')}
             </Button>
