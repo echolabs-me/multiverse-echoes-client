@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import {
   Hash,
   Send,
@@ -8,6 +9,7 @@ import {
   Trash2,
   Flag,
   Lock,
+  ExternalLink,
 } from 'lucide-react';
 import {
   Button,
@@ -18,7 +20,7 @@ import {
 } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
-import { channels as channelApi, reports } from '../lib/api/endpoints.ts';
+import { channels as channelApi, reports, account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import type { Channel, ChannelMessage, WsEchoEvent } from '../types/api.ts';
@@ -27,9 +29,12 @@ const MAX_MESSAGE_LENGTH = 2000;
 
 export function CommunityPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
   const addToast = useToastStore((s) => s.addToast);
 
+  const [discordLinked, setDiscordLinked] = useState<boolean | null>(null);
+  const [discordUsername, setDiscordUsername] = useState<string | null>(null);
   const [channelList, setChannelList] = useState<Channel[]>([]);
   const [activeChannel, setActiveChannel] = useState<Channel | null>(null);
   const [messages, setMessages] = useState<ChannelMessage[]>([]);
@@ -50,8 +55,12 @@ export function CommunityPage() {
 
   const isFreeUser = user?.subscription_tier === 'Free';
 
-  // Load channels
+  // Load channels + Discord link status
   useEffect(() => {
+    void accountApi.discordStatus()
+      .then((s) => { setDiscordLinked(s.linked); setDiscordUsername(s.discord_username ?? null); })
+      .catch(() => setDiscordLinked(false));
+
     const load = async () => {
       setIsLoadingChannels(true);
       try {
@@ -179,13 +188,32 @@ export function CommunityPage() {
     <div className="flex h-full flex-1 overflow-hidden">
         {/* Channel sidebar */}
         <div className="w-60 shrink-0 overflow-y-auto border-r border-border bg-surface p-3">
-          <h2 className="mb-3 px-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
+          <h2 className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
             {t('community.channels')}
           </h2>
+          <p className="mb-3 px-2 text-xs text-text-muted">
+            {t('community.poweredByDiscord')}
+          </p>
+          {discordLinked === false && (
+            <button
+              onClick={() => navigate('/settings')}
+              className="mb-3 flex w-full items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 text-left text-xs text-accent hover:bg-accent/20 transition-colors"
+            >
+              <ExternalLink size={14} />
+              {t('community.linkDiscord')}
+            </button>
+          )}
+          {discordLinked && discordUsername && (
+            <p className="mb-3 px-2 text-xs text-success">
+              {t('community.discordConnected', { username: discordUsername })}
+            </p>
+          )}
           {isLoadingChannels ? (
             <Spinner size="sm" />
           ) : channelList.length === 0 ? (
-            <p className="px-2 text-xs text-text-muted">{t('community.noChannels')}</p>
+            <div className="px-2">
+              <p className="text-xs text-text-muted">{t('community.noChannelsDesc')}</p>
+            </div>
           ) : (
             <div className="flex flex-col gap-0.5">
               {channelList.map((ch) => (
