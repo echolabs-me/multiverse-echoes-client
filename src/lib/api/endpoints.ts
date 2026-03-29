@@ -128,8 +128,11 @@ export const echoes = {
   memories: (echoId: string) =>
     request<EchoMemory[]>(`/echoes/${echoId}/memories`),
 
-  diary: (echoId: string, limit = 20, offset = 0) =>
-    request<DiaryEntry[]>(`/echoes/${echoId}/diary?limit=${limit}&offset=${offset}`),
+  diary: (echoId: string, limit = 20, offset = 0, mood?: string) => {
+    const params = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+    if (mood) params.set('mood', mood);
+    return request<DiaryEntry[]>(`/echoes/${echoId}/diary?${params.toString()}`);
+  },
 
   rename: (echoId: string, name: string) =>
     request<EchoResponse>(`/echoes/${echoId}`, {

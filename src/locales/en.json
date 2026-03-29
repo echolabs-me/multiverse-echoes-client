@@ -211,7 +211,11 @@
     "strength": "Strength",
     "moodHistory": "Mood history",
     "loadMoreDiary": "Load more entries",
-    "simulatedDay": "Day {{day}}"
+    "simulatedDay": "Day {{day}}",
+    "searchDiary": "Search diary...",
+    "filterMood": "Filter by mood",
+    "allMoods": "All moods",
+    "clearFilters": "Clear"
   },
   "shardView": {
     "echoes": "Echoes in this Shard",

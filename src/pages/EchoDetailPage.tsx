@@ -17,6 +17,8 @@ import {
   ChevronUp,
   ChevronRight,
   Lock,
+  Search,
+  X,
 } from 'lucide-react';
 import {
   Card,
@@ -50,6 +52,7 @@ import type {
 } from '../types/api.ts';
 
 const PAGE_SIZE = 20;
+const DIARY_MOODS = ['happy', 'sad', 'anxious', 'calm', 'excited', 'angry', 'contemplative', 'neutral'] as const;
 
 /** Extract the day number from a simulated_date string like "Day 14 Hour 8". */
 function parseDayNumber(simDate: string): number {
@@ -78,6 +81,10 @@ export function EchoDetailPage() {
   // Days the user has explicitly toggled from their default expand/collapse state.
   const [toggledDays, setToggledDays] = useState<Set<number>>(new Set());
   const [showAllPersona, setShowAllPersona] = useState(false);
+
+  // Diary search & filter
+  const [diarySearch, setDiarySearch] = useState('');
+  const [moodFilter, setMoodFilter] = useState('');
 
   // Modal state
   const [hibernateModal, setHibernateModal] = useState(false);
@@ -144,7 +151,8 @@ export function EchoDetailPage() {
     if (!echoId || isLoadingMore) return;
     setIsLoadingMore(true);
     try {
-      const more = await echoApi.diary(echoId, PAGE_SIZE, diaryOffset);
+      const activeMood = moodFilter || undefined;
+      const more = await echoApi.diary(echoId, PAGE_SIZE, diaryOffset, activeMood);
       if (more.length > 0) {
         const newEntries = more.filter(
           (m) => !diaryEntries.some((d) => d.diary_id === m.diary_id),
@@ -156,11 +164,28 @@ export function EchoDetailPage() {
     } finally {
       setIsLoadingMore(false);
     }
-  }, [echoId, diaryOffset, isLoadingMore, diaryEntries]);
+  }, [echoId, diaryOffset, isLoadingMore, diaryEntries, moodFilter]);
 
   useEffect(() => {
     void loadData();
   }, [loadData]);
+
+  // Re-fetch diary when mood filter changes (without full page reload).
+  const moodFilterInitRef = useRef(true);
+  useEffect(() => {
+    // Skip on initial mount — loadData already fetched.
+    if (moodFilterInitRef.current) {
+      moodFilterInitRef.current = false;
+      return;
+    }
+    if (!echoId) return;
+    const activeMood = moodFilter || undefined;
+    void echoApi.diary(echoId, PAGE_SIZE, 0, activeMood).then((diary) => {
+      setDiaryEntries(diary);
+      setDiaryOffset(diary.length);
+      setHasMoreDiary(diary.length >= PAGE_SIZE);
+    }).catch(() => {});
+  }, [echoId, moodFilter]);
 
   // Track last tick completion time for countdown sync.
   const lastTickTimeRef = useRef(Number(localStorage.getItem('me_last_tick_at')) || 0);
@@ -265,11 +290,17 @@ export function EchoDetailPage() {
   // Life events still come from the feed store (no dedicated Redb repo yet).
   const lifeEvents = personalFeed.filter((f) => f.item_type === 'life_event');
 
-  // Group diary entries by simulated day for collapsible day sections.
+  // Apply client-side text search filter, then group by simulated day.
+  const filteredDiary = useMemo(() => {
+    if (!diarySearch.trim()) return diaryEntries;
+    const term = diarySearch.toLowerCase();
+    return diaryEntries.filter((e) => e.content.toLowerCase().includes(term));
+  }, [diaryEntries, diarySearch]);
+
   const diaryByDay = useMemo(() => {
     const groups: { day: number; entries: DiaryEntry[] }[] = [];
     const dayMap = new Map<number, DiaryEntry[]>();
-    for (const entry of diaryEntries) {
+    for (const entry of filteredDiary) {
       const day = parseDayNumber(entry.simulated_date);
       const existing = dayMap.get(day);
       if (existing) {
@@ -281,7 +312,7 @@ export function EchoDetailPage() {
       }
     }
     return groups;
-  }, [diaryEntries]);
+  }, [filteredDiary]);
 
   // Current day is the highest day number (first group since entries are newest-first).
   const currentDay = diaryByDay.length > 0 ? diaryByDay[0].day : -1;
@@ -632,11 +663,48 @@ export function EchoDetailPage() {
               <BookOpen size={18} className="text-accent" aria-hidden="true" />
               <h2 className="text-lg font-semibold text-text-primary">{t('echoDetail.diary')}</h2>
             </div>
-            {diaryEntries.length === 0 ? (
+            {/* Diary search and filter bar */}
+            {diaryEntries.length > 0 && (
+              <div className="mb-3 flex flex-wrap items-center gap-2">
+                <div className="relative flex-1 min-w-[180px]">
+                  <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" aria-hidden="true" />
+                  <input
+                    type="text"
+                    value={diarySearch}
+                    onChange={(e) => setDiarySearch(e.target.value)}
+                    placeholder={t('echoDetail.searchDiary')}
+                    className="w-full rounded-lg border border-border bg-surface py-1.5 pl-8 pr-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                  />
+                </div>
+                <select
+                  value={moodFilter}
+                  onChange={(e) => setMoodFilter(e.target.value)}
+                  className="rounded-lg border border-border bg-surface px-3 py-1.5 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                  aria-label={t('echoDetail.filterMood')}
+                >
+                  <option value="">{t('echoDetail.allMoods')}</option>
+                  {DIARY_MOODS.map((mood) => (
+                    <option key={mood} value={mood}>{mood}</option>
+                  ))}
+                </select>
+                {(diarySearch || moodFilter) && (
+                  <button
+                    onClick={() => { setDiarySearch(''); setMoodFilter(''); }}
+                    className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-text-muted hover:text-text-primary"
+                  >
+                    <X size={14} />
+                    {t('echoDetail.clearFilters')}
+                  </button>
+                )}
+              </div>
+            )}
+            {diaryEntries.length === 0 && !moodFilter && !diarySearch ? (
               <EmptyState
                 title={t('echoDetail.diaryEmpty')}
                 description={t('echoDetail.diaryEmptyDesc')}
               />
+            ) : filteredDiary.length === 0 ? (
+              <p className="text-sm italic text-text-muted">{t('common.noResults')}</p>
             ) : (
               <div className="flex flex-col gap-2">
                 {diaryByDay.map(({ day, entries }) => {
