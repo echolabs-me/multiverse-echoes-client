@@ -384,7 +384,11 @@ export function CommunityPage() {
 
               {/* Composer */}
               <div className="border-t border-border px-4 py-3">
-                {isFreeUser ? (
+                {activeChannel.is_read_only ? (
+                  <p className="py-1 text-center text-xs text-text-muted">
+                    {t('community.announcementsOnly')}
+                  </p>
+                ) : isFreeUser ? (
                   <div className="flex items-center gap-2 text-sm text-text-muted">
                     <Lock size={14} aria-hidden="true" />
                     {t('community.readOnly')}

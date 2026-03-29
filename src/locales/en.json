@@ -266,6 +266,7 @@
     "messagePlaceholder": "Type a message...",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Upgrade to Core to post messages",
+    "announcementsOnly": "This channel is for platform announcements only.",
     "editWindow": "Edit within 15 minutes",
     "messageDeleted": "Message deleted",
     "messageEdited": "Message edited",
