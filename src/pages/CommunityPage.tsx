@@ -272,7 +272,7 @@ export function CommunityPage() {
                       : 'text-text-primary'
                   }`}>{ch.name}</span>
                   {ch.description && (
-                    <span className="mt-0.5 block text-[11px] leading-snug text-text-muted">
+                    <span className="mt-0.5 block text-[11px] leading-snug text-text-secondary">
                       {ch.description}
                     </span>
                   )}
