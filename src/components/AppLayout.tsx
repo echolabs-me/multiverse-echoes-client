@@ -57,12 +57,6 @@ function NavSidebar({
       path: '/dashboard',
     },
     {
-      id: 'community',
-      labelKey: 'nav.community',
-      icon: <DiscordIcon size={20} />,
-      path: '/community',
-    },
-    {
       id: 'shards',
       labelKey: 'nav.browseShards',
       icon: <Compass size={20} />,
@@ -112,11 +106,9 @@ function NavSidebar({
                 aria-current={isActive(item.path) ? 'page' : undefined}
                 title={collapsed ? t(item.labelKey, item.id) : undefined}
               >
-                <span className={item.id === 'community' ? 'text-[#5865F2]' : ''}>{item.icon}</span>
+                {item.icon}
                 {!collapsed && (
-                  item.id === 'community'
-                    ? <span>Community <span className="font-semibold text-[#5865F2]">Discord</span></span>
-                    : <span>{t(item.labelKey, item.id)}</span>
+                  <span>{t(item.labelKey, item.id)}</span>
                 )}
                 {item.badge != null && item.badge > 0 && (
                   <span
@@ -200,12 +192,6 @@ export function AppLayout() {
       labelKey: 'nav.dashboard',
       icon: <LayoutDashboard size={20} />,
       path: '/dashboard',
-    },
-    {
-      id: 'community',
-      labelKey: 'nav.community',
-      icon: <DiscordIcon size={20} />,
-      path: '/community',
     },
     {
       id: 'search',
@@ -392,11 +378,8 @@ export function AppLayout() {
               item.path && isActive(item.path) ? 'page' : undefined
             }
           >
-            <span className={item.id === 'community' ? 'text-[#5865F2]' : ''}>{item.icon}</span>
-            {item.id === 'community'
-              ? <span><span className="font-semibold text-[#5865F2]">Discord</span></span>
-              : <span>{t(item.labelKey, item.id)}</span>
-            }
+            {item.icon}
+            <span>{t(item.labelKey, item.id)}</span>
             {item.badge != null && item.badge > 0 && (
               <span className="absolute -top-1 right-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-canvas">
                 {item.badge > 99 ? '99+' : item.badge}
