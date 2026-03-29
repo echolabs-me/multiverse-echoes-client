@@ -224,6 +224,25 @@ export const channels = {
     request<MessageResponse>(`/channels/${channelId}/messages/${messageId}`, {
       method: 'DELETE',
     }),
+
+  uploadImage: async (channelId: string, file: File): Promise<ChannelMessage> => {
+    const { getAccessToken, getBaseUrl } = await import('../api/client.ts');
+    const form = new FormData();
+    form.append('file', file);
+    const resp = await fetch(`${getBaseUrl()}/channels/${channelId}/upload`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${getAccessToken()}` },
+      body: form,
+    });
+    if (!resp.ok) throw new Error(`Upload failed: ${resp.status}`);
+    return resp.json() as Promise<ChannelMessage>;
+  },
+
+  pollVote: (channelId: string, data: { discord_message_id: string; discord_channel_id: string; answer_id: number }) =>
+    request<{ voted: boolean }>(`/channels/${channelId}/poll-vote`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 };
 
 // --- Account ---

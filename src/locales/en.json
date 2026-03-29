@@ -271,7 +271,15 @@
     "messageDeleted": "Message deleted",
     "messageEdited": "Message edited",
     "reportSent": "Report submitted",
-    "editMessageLabel": "Edit message"
+    "editMessageLabel": "Edit message",
+    "uploadImage": "Upload image",
+    "sharedImage": "Shared image",
+    "closeImage": "Close image",
+    "fileTooLarge": "File is too large. Maximum size is 5MB.",
+    "onlyImages": "Only image files are allowed.",
+    "votes": "votes",
+    "totalVotes": "{{count}} total votes",
+    "voteRecorded": "Vote recorded!"
   },
   "notifications": {
     "title": "Notifications",

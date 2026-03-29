@@ -107,6 +107,10 @@ export type ChannelMessage = {
 	is_deleted: boolean,
 	attached_echo_id: string | null,
 	attached_export_id: string | null,
+	// Discord CDN URL for image attachments.
+	image_url?: string | null,
+	// JSON-serialized poll data (question, options, votes).
+	poll_data?: string | null,
 };
 
 export type ChannelResponse = {
@@ -536,6 +540,8 @@ export type MessageResponse = {
 	is_edited: boolean,
 	can_edit: boolean,
 	can_delete: boolean,
+	image_url: string | null,
+	poll_data: string | null,
 };
 
 export type MessageType = "UserMessage" | "SystemMessage" | "EchoHighlight";

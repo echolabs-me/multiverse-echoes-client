@@ -341,6 +341,21 @@ export interface ChannelMessage {
   is_edited: boolean;
   can_edit: boolean;
   can_delete: boolean;
+  image_url: string | null;
+  poll_data: string | null;
+}
+
+export interface PollData {
+  question: string;
+  options: PollOption[];
+  discord_message_id: string;
+  discord_channel_id: string;
+}
+
+export interface PollOption {
+  id: number;
+  text: string;
+  votes: number;
 }
 
 export interface SendMessageRequest {

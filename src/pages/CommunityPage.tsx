@@ -9,6 +9,8 @@ import {
   Flag,
   Lock,
   ExternalLink,
+  Paperclip,
+  X,
 } from 'lucide-react';
 import {
   Button,
@@ -51,6 +53,8 @@ export function CommunityPage() {
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
   const isFreeUser = user?.subscription_tier === 'Free';
 
@@ -156,6 +160,42 @@ export function CommunityPage() {
       await channelApi.deleteMessage(activeChannel.channel_id, messageId);
       setMessages((prev) => prev.filter((m) => m.message_id !== messageId));
       addToast(t('community.messageDeleted'), 'success');
+    } catch {
+      addToast(t('common.error'), 'danger');
+    }
+  };
+
+  const handleImageUpload = async (file: File) => {
+    if (!activeChannel) return;
+    if (file.size > 5 * 1024 * 1024) {
+      addToast(t('community.fileTooLarge'), 'danger');
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      addToast(t('community.onlyImages'), 'danger');
+      return;
+    }
+    setIsSending(true);
+    try {
+      const msg = await channelApi.uploadImage(activeChannel.channel_id, file);
+      setMessages((prev) => [...prev, msg]);
+    } catch {
+      addToast(t('common.error'), 'danger');
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handlePollVote = async (msg: ChannelMessage, answerId: number) => {
+    if (!activeChannel || !msg.poll_data) return;
+    try {
+      const poll: import('../types/api.ts').PollData = JSON.parse(msg.poll_data);
+      await channelApi.pollVote(activeChannel.channel_id, {
+        discord_message_id: poll.discord_message_id,
+        discord_channel_id: poll.discord_channel_id,
+        answer_id: answerId,
+      });
+      addToast(t('community.voteRecorded'), 'success');
     } catch {
       addToast(t('common.error'), 'danger');
     }
@@ -329,7 +369,49 @@ export function CommunityPage() {
                                 <span className="text-xs text-text-muted">{t('common.edited')}</span>
                               )}
                             </div>
-                            <p className="text-sm text-text-primary">{msg.content}</p>
+                            {msg.content && (
+                              <p className="text-sm text-text-primary">{msg.content}</p>
+                            )}
+                            {msg.image_url && (
+                              <button
+                                onClick={() => setExpandedImage(msg.image_url)}
+                                className="mt-1 block"
+                              >
+                                <img
+                                  src={msg.image_url}
+                                  alt={t('community.sharedImage')}
+                                  className="max-h-48 max-w-xs rounded-lg border border-border object-cover hover:opacity-90 transition-opacity"
+                                />
+                              </button>
+                            )}
+                            {msg.poll_data && (() => {
+                              try {
+                                const poll: import('../types/api.ts').PollData = JSON.parse(msg.poll_data!);
+                                const totalVotes = poll.options.reduce((sum, o) => sum + o.votes, 0);
+                                return (
+                                  <div className="mt-2 rounded-lg border border-accent/30 bg-accent/5 p-3">
+                                    <p className="mb-2 text-sm font-semibold text-text-primary">{poll.question}</p>
+                                    <div className="flex flex-col gap-1.5">
+                                      {poll.options.map((opt) => (
+                                        <button
+                                          key={opt.id}
+                                          onClick={() => void handlePollVote(msg, opt.id)}
+                                          className="flex items-center justify-between rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary hover:border-accent hover:bg-accent/10 transition-colors"
+                                        >
+                                          <span>{opt.text}</span>
+                                          <span className="ml-2 text-xs text-text-muted">
+                                            {opt.votes} {t('community.votes')}
+                                          </span>
+                                        </button>
+                                      ))}
+                                    </div>
+                                    <p className="mt-1.5 text-xs text-text-muted">
+                                      {t('community.totalVotes', { count: totalVotes })}
+                                    </p>
+                                  </div>
+                                );
+                              } catch { return null; }
+                            })()}
 
                             {/* Message actions */}
                             <div className="absolute right-2 top-2 hidden group-hover:flex">
@@ -405,6 +487,26 @@ export function CommunityPage() {
                 ) : (
                   <div className="flex items-center gap-2">
                     <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/jpeg,image/png,image/gif,image/webp"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) void handleImageUpload(file);
+                        e.target.value = '';
+                      }}
+                    />
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isSending}
+                      className="rounded-lg p-2 text-text-muted hover:bg-surface-raised hover:text-text-primary transition-colors"
+                      aria-label={t('community.uploadImage')}
+                      title={t('community.uploadImage')}
+                    >
+                      <Paperclip size={16} />
+                    </button>
+                    <input
                       type="text"
                       value={messageText}
                       onChange={(e) => setMessageText(e.target.value)}
@@ -463,6 +565,27 @@ export function CommunityPage() {
           </Button>
         </div>
       </Modal>
+
+      {/* Expanded Image Overlay */}
+      {expandedImage && (
+        <button
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setExpandedImage(null)}
+          aria-label={t('community.closeImage')}
+        >
+          <span
+            className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+            aria-hidden="true"
+          >
+            <X size={20} />
+          </span>
+          <img
+            src={expandedImage}
+            alt={t('community.sharedImage')}
+            className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+          />
+        </button>
+      )}
     </>
   );
 }
