@@ -1,12 +1,15 @@
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { Button, Input } from '../components/index.ts';
 import { ApiRequestError, setTokens } from '../lib/api/client.ts';
 import { auth } from '../lib/api/endpoints.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
+
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
 
 export function RegisterPage() {
   const { t } = useTranslation();
@@ -21,6 +24,8 @@ export function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstileRef = useRef<TurnstileInstance>(null);
 
   function validate(): Record<string, string> {
     const errs: Record<string, string> = {};
@@ -33,6 +38,7 @@ export function RegisterPage() {
     return errs;
   }
 
+  // TODO: Add captcha (Cloudflare Turnstile preferred) before public beta — see backlog
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const validationErrors = validate();
@@ -51,6 +57,7 @@ export function RegisterPage() {
         tos_accepted: tosAccepted,
         privacy_accepted: privacyAccepted,
         age_confirmed: true,
+        cf_turnstile_response: turnstileToken,
       });
       // Save tokens — server auto-logs-in on registration.
       setTokens(result.access_token, result.refresh_token);
@@ -77,6 +84,7 @@ export function RegisterPage() {
       }
     } finally {
       setIsSubmitting(false);
+      turnstileRef.current?.reset();
     }
   }
 
@@ -126,6 +134,7 @@ export function RegisterPage() {
               autoComplete="new-password"
             />
             <p className="mt-1 text-xs text-text-muted">{t('auth.passwordHint')}</p>
+            <PasswordStrength password={password} />
           </div>
 
           <Input
@@ -197,6 +206,15 @@ export function RegisterPage() {
             </p>
           )}
 
+          {TURNSTILE_SITE_KEY && (
+            <Turnstile
+              ref={turnstileRef}
+              siteKey={TURNSTILE_SITE_KEY}
+              onSuccess={setTurnstileToken}
+              options={{ size: 'flexible', theme: 'dark' }}
+            />
+          )}
+
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? t('common.loading') : t('auth.createAccount')}
           </Button>
@@ -209,6 +227,47 @@ export function RegisterPage() {
           </Link>
         </p>
       </div>
+    </div>
+  );
+}
+
+function getPasswordStrength(password: string): { level: number; label: string } {
+  if (!password) return { level: 0, label: '' };
+  let score = 0;
+  if (password.length >= 12) score += 1;
+  if (password.length >= 16) score += 1;
+  if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score += 1;
+  if (/\d/.test(password)) score += 1;
+  if (/[^A-Za-z0-9]/.test(password)) score += 1;
+
+  if (score <= 1) return { level: 1, label: 'auth.strengthWeak' };
+  if (score <= 2) return { level: 2, label: 'auth.strengthFair' };
+  if (score <= 3) return { level: 3, label: 'auth.strengthGood' };
+  return { level: 4, label: 'auth.strengthStrong' };
+}
+
+const STRENGTH_COLORS = ['', 'bg-danger', 'bg-warning', 'bg-info', 'bg-success'];
+
+function PasswordStrength({ password }: { password: string }) {
+  const { t } = useTranslation();
+  const { level, label } = getPasswordStrength(password);
+  if (!password) return null;
+
+  return (
+    <div className="mt-2">
+      <div className="flex gap-1">
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className={`h-1 flex-1 rounded-full transition-colors ${
+              i <= level ? STRENGTH_COLORS[level] : 'bg-border'
+            }`}
+          />
+        ))}
+      </div>
+      <p className={`mt-1 text-xs ${level <= 1 ? 'text-danger' : level <= 2 ? 'text-warning' : 'text-text-muted'}`}>
+        {t(label)}
+      </p>
     </div>
   );
 }

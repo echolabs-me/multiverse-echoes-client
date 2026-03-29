@@ -132,6 +132,9 @@ export function EchoDetailPage() {
     void loadData();
   }, [loadData]);
 
+  // Track last tick completion time for countdown sync.
+  const lastTickTimeRef = useRef(Date.now());
+
   // WebSocket live updates — replaces 30-second polling.
   // On DiaryEntryCreated: fetch new diary and trigger arrival animation.
   // On MoodChanged: refresh echo state for mood atmosphere update.
@@ -144,6 +147,7 @@ export function EchoDetailPage() {
         trackEvent('echo.travel_completed', { echo_id: id });
       }
       if (event.type === 'DiaryEntryCreated') {
+        lastTickTimeRef.current = Date.now();
         void echoApi
           .diary(id)
           .then((d) => {
@@ -348,7 +352,7 @@ export function EchoDetailPage() {
               <p className="mt-1 text-sm text-text-secondary">
                 {t('dashboard.mood')}: {activeEcho.current_mood} &middot; {t('dashboard.tick', { tick: activeEcho.current_tick })}
               </p>
-              {activeEcho.status === 'Active' && <TickCountdown />}
+              {activeEcho.status === 'Active' && <TickCountdown lastTickTimeRef={lastTickTimeRef} />}
             </div>
           </div>
 
@@ -418,6 +422,8 @@ export function EchoDetailPage() {
               <Button
                 variant="secondary"
                 onClick={() => setInfluenceModal(true)}
+                disabled={activeEcho.status === 'Hibernated'}
+                title={activeEcho.status === 'Hibernated' ? t('echoDetail.hibernatedNoNudge') : undefined}
               >
                 <Zap size={16} /> {t('echoDetail.useInfluence')}
               </Button>
@@ -760,19 +766,19 @@ export function EchoDetailPage() {
   );
 }
 
-function TickCountdown() {
+function TickCountdown({ lastTickTimeRef }: { lastTickTimeRef: React.RefObject<number> }) {
   const { t } = useTranslation();
-  // Tick interval from server via GET /health → useSystemStore.
-  // Source: config/default.toml [engine] tick_interval_seconds.
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
   const [seconds, setSeconds] = useState(tickInterval);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setSeconds((s) => (s <= 1 ? tickInterval : s - 1));
+      const elapsed = Math.floor((Date.now() - lastTickTimeRef.current) / 1000);
+      const remaining = Math.max(0, tickInterval - elapsed);
+      setSeconds(remaining);
     }, 1000);
     return () => clearInterval(timer);
-  }, [tickInterval]);
+  }, [tickInterval, lastTickTimeRef]);
 
   return (
     <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">

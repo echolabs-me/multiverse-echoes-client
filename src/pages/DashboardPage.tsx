@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Plus, Compass, BookOpen, Zap, Users, ExternalLink } from 'lucide-react';
@@ -263,7 +263,7 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
           <p className="mt-1 text-sm text-text-muted">
             {t('dashboard.mood')}: {echo.current_mood}
           </p>
-          {echo.status === 'Active' && <DashboardTickCountdown key={lastTickId} />}
+          {echo.status === 'Active' && <DashboardTickCountdown lastTickId={lastTickId} />}
         </div>
       </div>
 
@@ -413,16 +413,23 @@ export function DashboardPage() {
   );
 }
 
-function DashboardTickCountdown() {
+function DashboardTickCountdown({ lastTickId }: { lastTickId: number }) {
   const { t } = useTranslation();
-  // Tick interval from server via GET /health → useSystemStore.
-  // Source: config/default.toml [engine] tick_interval_seconds.
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
+
+  // Track when the last tick completed. Reset whenever lastTickId changes.
+  const lastTickTimeRef = useRef(0);
+  useEffect(() => {
+    lastTickTimeRef.current = Date.now();
+  }, [lastTickId]);
+
   const [seconds, setSeconds] = useState(tickInterval);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setSeconds((s) => (s <= 1 ? tickInterval : s - 1));
+      const elapsed = Math.floor((Date.now() - lastTickTimeRef.current) / 1000);
+      const remaining = Math.max(0, tickInterval - elapsed);
+      setSeconds(remaining);
     }, 1000);
     return () => clearInterval(timer);
   }, [tickInterval]);

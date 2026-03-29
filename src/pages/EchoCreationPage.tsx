@@ -154,32 +154,51 @@ export function EchoCreationPage() {
             </p>
           </div>
 
-          <p className="text-xs text-text-muted italic">
-            {t('echo.inputCareHint')}
-          </p>
+          <div className="flex items-start gap-2 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2.5">
+            <span className="mt-0.5 text-base leading-none" aria-hidden="true">{'\u2728'}</span>
+            <p className="text-sm text-text-secondary">
+              {t('echo.inputCareHint')}
+            </p>
+          </div>
 
           {/* Persona declaration — ME-TSP-001 §9.4 */}
-          <div className="flex flex-col gap-2">
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
+          <div className="flex items-start gap-2 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2.5">
+            <span className="mt-0.5 text-base leading-none" aria-hidden="true">{'\ud83c\udfad'}</span>
+            <div className="flex flex-col gap-3">
+              <p className="text-sm font-medium text-text-primary">
+                {t('echo.personaSectionLabel')}
+              </p>
+              <label aria-label={t('echo.personaDeclaration')} className={`flex items-start gap-2 rounded-md border px-3 py-2 text-sm cursor-pointer transition-colors ${personaDeclaration === 'inspired' ? 'border-accent/50 bg-accent/10 text-text-primary' : 'border-border bg-transparent text-text-muted'}`}>
               <input
                 type="radio"
                 name="declaration"
                 checked={personaDeclaration === 'inspired'}
                 onChange={() => setPersonaDeclaration('inspired')}
-                className="accent-accent"
+                className="mt-1 accent-accent"
               />
-              {t('echo.personaDeclaration')}
+              <span>
+                <span className="font-medium">{t('echo.personaDeclaration')}</span>
+                <span className={`block mt-0.5 text-sm ${personaDeclaration === 'inspired' ? 'text-text-secondary' : 'text-text-muted'}`}>
+                  {t('echo.personaInspiredHint')}
+                </span>
+              </span>
             </label>
-            <label className="flex items-center gap-2 text-sm text-text-secondary">
+            <label aria-label={t('echo.personaFictional')} className={`flex items-start gap-2 rounded-md border px-3 py-2 text-sm cursor-pointer transition-colors ${personaDeclaration === 'fictional' ? 'border-accent/50 bg-accent/10 text-text-primary' : 'border-border bg-transparent text-text-muted'}`}>
               <input
                 type="radio"
                 name="declaration"
                 checked={personaDeclaration === 'fictional'}
                 onChange={() => setPersonaDeclaration('fictional')}
-                className="accent-accent"
+                className="mt-1 accent-accent"
               />
-              {t('echo.personaFictional')}
+              <span>
+                <span className="font-medium">{t('echo.personaFictional')}</span>
+                <span className={`block mt-0.5 text-sm ${personaDeclaration === 'fictional' ? 'text-text-secondary' : 'text-text-muted'}`}>
+                  {t('echo.personaFictionalHint')}
+                </span>
+              </span>
             </label>
+            </div>
           </div>
 
           <Button
@@ -265,11 +284,12 @@ export function EchoCreationPage() {
               {publicShards.map((shard) => (
                 <Card
                   key={shard.shard_id}
-                  className={`cursor-pointer transition-colors ${
+                  className={`cursor-pointer transition-all duration-200 ${
                     selectedShardId === shard.shard_id
-                      ? 'border-accent'
-                      : 'border-border hover:border-text-muted'
+                      ? 'border-accent !bg-accent/10 ring-2 ring-accent/25 scale-[1.02]'
+                      : 'border-border scale-100 opacity-60 hover:opacity-85 hover:border-text-muted'
                   }`}
+                  style={selectedShardId === shard.shard_id ? { boxShadow: '0 0 16px 2px var(--accent-subtle)' } : undefined}
                   onClick={() => setSelectedShardId(shard.shard_id)}
                 >
                   <div className="flex items-center gap-2">
@@ -280,11 +300,12 @@ export function EchoCreationPage() {
                 </Card>
               ))}
               <Card
-                className={`cursor-pointer transition-colors ${
+                className={`cursor-pointer transition-all duration-200 ${
                   selectedShardId === null
-                    ? 'border-accent'
-                    : 'border-border hover:border-text-muted'
+                    ? 'border-accent !bg-accent/10 ring-2 ring-accent/25 scale-[1.02]'
+                    : 'border-border scale-100 opacity-60 hover:opacity-85 hover:border-text-muted'
                 }`}
+                style={selectedShardId === null ? { boxShadow: '0 0 16px 2px var(--accent-subtle)' } : undefined}
                 onClick={() => setSelectedShardId(null)}
               >
                 <div className="flex items-center gap-2">

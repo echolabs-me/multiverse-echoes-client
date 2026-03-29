@@ -95,6 +95,7 @@ export interface RegisterRequest {
   tos_accepted: boolean;
   privacy_accepted: boolean;
   age_confirmed: boolean;
+  cf_turnstile_response?: string;
 }
 
 export interface RegisterResponse {
@@ -110,6 +111,7 @@ export interface RegisterResponse {
 export interface LoginRequest {
   email: string;
   password: string;
+  cf_turnstile_response?: string;
 }
 
 export interface LoginResponse {
