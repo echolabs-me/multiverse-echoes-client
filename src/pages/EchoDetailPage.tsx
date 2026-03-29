@@ -171,6 +171,14 @@ export function EchoDetailPage() {
   }, [loadData]);
 
   // Re-fetch diary when mood filter changes (without full page reload).
+  // Track the max number of entries the user has loaded (for filter clear restore).
+  const maxLoadedRef = useRef(PAGE_SIZE);
+  useEffect(() => {
+    if (diaryEntries.length > maxLoadedRef.current) {
+      maxLoadedRef.current = diaryEntries.length;
+    }
+  }, [diaryEntries.length]);
+
   const moodFilterInitRef = useRef(true);
   useEffect(() => {
     // Skip on initial mount — loadData already fetched.
@@ -180,7 +188,9 @@ export function EchoDetailPage() {
     }
     if (!echoId) return;
     const activeMood = moodFilter || undefined;
-    void echoApi.diary(echoId, PAGE_SIZE, 0, activeMood).then((diary) => {
+    // When clearing a filter, re-fetch all entries up to what was previously loaded.
+    const limit = activeMood ? PAGE_SIZE : Math.max(PAGE_SIZE, maxLoadedRef.current);
+    void echoApi.diary(echoId, limit, 0, activeMood).then((diary) => {
       setDiaryEntries(diary);
       setDiaryOffset(diary.length);
       setHasMoreDiary(diary.length >= PAGE_SIZE);
