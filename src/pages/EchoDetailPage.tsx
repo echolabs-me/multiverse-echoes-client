@@ -774,13 +774,10 @@ export function EchoDetailPage() {
                   );
                 })}
                 {hasMoreDiary && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => void loadMoreDiary()}
-                    disabled={isLoadingMore}
-                  >
-                    {isLoadingMore ? t('common.loading') : t('echoDetail.loadMoreDiary')}
-                  </Button>
+                  <InfiniteScrollTrigger
+                    onVisible={() => void loadMoreDiary()}
+                    isLoading={isLoadingMore}
+                  />
                 )}
               </div>
             )}
@@ -1091,6 +1088,41 @@ function DiaryCard({
           </span>
         </div>
       </Card>
+    </div>
+  );
+}
+
+/** Sentinel element that triggers a callback when it scrolls into view. */
+function InfiniteScrollTrigger({
+  onVisible,
+  isLoading,
+}: {
+  onVisible: () => void;
+  isLoading: boolean;
+}) {
+  const onVisibleRef = useRef(onVisible);
+  useEffect(() => { onVisibleRef.current = onVisible; }, [onVisible]);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const sentinelCallback = useCallback((node: HTMLDivElement | null) => {
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+    if (!node) return;
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          onVisibleRef.current();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    observerRef.current.observe(node);
+  }, []);
+
+  return (
+    <div ref={sentinelCallback} className="flex justify-center py-4">
+      {isLoading && <Spinner />}
     </div>
   );
 }
