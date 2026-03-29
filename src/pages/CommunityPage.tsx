@@ -99,7 +99,10 @@ export function CommunityPage() {
               const msgs = await channelApi.messages(ch.channel_id, { limit: 1 });
               if (msgs.length > 0) {
                 const lastSeen = getLastSeen(ch.channel_id);
-                if (lastSeen !== msgs[0]!.message_id) {
+                if (lastSeen === null) {
+                  // First visit — seed the last-seen so everything isn't marked NEW.
+                  localStorage.setItem(`community_lastSeen_${ch.channel_id}`, msgs[0]!.message_id);
+                } else if (lastSeen !== msgs[0]!.message_id) {
                   unread.add(ch.channel_id);
                 }
               }
@@ -654,11 +657,11 @@ export function CommunityPage() {
                     <button
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isSending}
-                      className="rounded-lg p-2 text-text-muted hover:bg-surface-raised hover:text-text-primary transition-colors"
+                      className="rounded-lg p-2 text-[#5865F2] hover:bg-[#5865F2]/10 transition-colors"
                       aria-label={t('community.uploadImage')}
                       title={t('community.uploadImage')}
                     >
-                      <Paperclip size={16} />
+                      <Paperclip size={18} />
                     </button>
                     <button
                       onClick={() => setShowPollForm(!showPollForm)}
@@ -666,12 +669,12 @@ export function CommunityPage() {
                       className={`rounded-lg p-2 transition-colors ${
                         showPollForm
                           ? 'bg-accent/20 text-accent'
-                          : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
+                          : 'text-emerald-500 hover:bg-emerald-500/10'
                       }`}
                       aria-label={t('community.createPoll')}
                       title={t('community.createPoll')}
                     >
-                      <BarChart3 size={16} />
+                      <BarChart3 size={18} />
                     </button>
                     <input
                       type="text"
@@ -679,7 +682,7 @@ export function CommunityPage() {
                       onChange={(e) => setMessageText(e.target.value)}
                       maxLength={MAX_MESSAGE_LENGTH}
                       placeholder={t('community.messagePlaceholder')}
-                      className="flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                      className="flex-1 rounded-lg border-2 border-accent/30 bg-surface px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
