@@ -152,6 +152,26 @@ export function CommunityPage() {
 
   useEchoWebSocket(wsPath, handleWsEvent, loadMessages);
 
+  // Global community stream — marks non-active channels as unread in real-time.
+  const handleCommunityEvent = useCallback(
+    (event: WsEchoEvent) => {
+      if (event.type === 'CommunityMessagePosted') {
+        const channelId = (event as { channel_id: string }).channel_id;
+        // Don't mark the active channel as unread — the user is already viewing it.
+        if (activeChannel && channelId === activeChannel.channel_id) return;
+        setUnreadChannels((prev) => {
+          if (prev.has(channelId)) return prev;
+          const next = new Set(prev);
+          next.add(channelId);
+          return next;
+        });
+      }
+    },
+    [activeChannel],
+  );
+
+  useEchoWebSocket('/ws/community/stream', handleCommunityEvent);
+
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
