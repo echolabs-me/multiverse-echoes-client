@@ -65,7 +65,9 @@ export function EchoDetailPage() {
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
   const [diaryVersion, setDiaryVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [diaryPage, setDiaryPage] = useState(1);
+  const [diaryOffset, setDiaryOffset] = useState(0);
+  const [hasMoreDiary, setHasMoreDiary] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [showAllPersona, setShowAllPersona] = useState(false);
 
   // Modal state
@@ -103,12 +105,13 @@ export function EchoDetailPage() {
     initialLoadDoneRef.current = false;
     knownDiaryIdsRef.current.clear();
     setNewDiaryIds(new Set());
+    setDiaryOffset(0);
     try {
       await fetchEcho(echoId);
       const [rels, inf, diary] = await Promise.all([
         echoApi.relationships(echoId).catch(() => [] as EchoRelationship[]),
         echoApi.influence(echoId).catch(() => null),
-        echoApi.diary(echoId).catch(() => [] as DiaryEntry[]),
+        echoApi.diary(echoId, PAGE_SIZE, 0).catch(() => [] as DiaryEntry[]),
       ]);
       setRelationships(rels);
       setInfluence(inf);
@@ -116,6 +119,8 @@ export function EchoDetailPage() {
       knownDiaryIdsRef.current = new Set(diary.map((d) => d.diary_id));
       initialLoadDoneRef.current = true;
       setDiaryEntries(diary);
+      setDiaryOffset(diary.length);
+      setHasMoreDiary(diary.length >= PAGE_SIZE);
       await fetchPersonalFeed(echoId);
       // Load solo_mode
       const privacy = await accountApi.getPrivacy().catch(() => ({ solo_mode: false }));
@@ -125,6 +130,24 @@ export function EchoDetailPage() {
       setIsLoading(false);
     }
   }, [echoId, fetchEcho, fetchPersonalFeed]);
+
+  const loadMoreDiary = useCallback(async () => {
+    if (!echoId || isLoadingMore) return;
+    setIsLoadingMore(true);
+    try {
+      const more = await echoApi.diary(echoId, PAGE_SIZE, diaryOffset);
+      if (more.length > 0) {
+        const newEntries = more.filter(
+          (m) => !diaryEntries.some((d) => d.diary_id === m.diary_id),
+        );
+        setDiaryEntries((prev) => [...prev, ...newEntries]);
+        setDiaryOffset((prev) => prev + more.length);
+      }
+      setHasMoreDiary(more.length >= PAGE_SIZE);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [echoId, diaryOffset, isLoadingMore, diaryEntries]);
 
   useEffect(() => {
     void loadData();
@@ -232,8 +255,6 @@ export function EchoDetailPage() {
 
   // Life events still come from the feed store (no dedicated Redb repo yet).
   const lifeEvents = personalFeed.filter((f) => f.item_type === 'life_event');
-  const paginatedDiary = diaryEntries.slice(0, diaryPage * PAGE_SIZE);
-  const hasMoreDiary = paginatedDiary.length < diaryEntries.length;
 
   const handleHibernateWake = async () => {
     if (!activeEcho) return;
@@ -541,7 +562,7 @@ export function EchoDetailPage() {
               />
             ) : (
               <div className="flex flex-col gap-3">
-                {paginatedDiary.map((entry) => (
+                {diaryEntries.map((entry) => (
                   <DiaryCard
                     key={entry.diary_id}
                     entry={entry}
@@ -552,9 +573,10 @@ export function EchoDetailPage() {
                 {hasMoreDiary && (
                   <Button
                     variant="ghost"
-                    onClick={() => setDiaryPage((p) => p + 1)}
+                    onClick={() => void loadMoreDiary()}
+                    disabled={isLoadingMore}
                   >
-                    {t('common.loadMore')}
+                    {isLoadingMore ? t('common.loading') : t('echoDetail.loadMoreDiary')}
                   </Button>
                 )}
               </div>

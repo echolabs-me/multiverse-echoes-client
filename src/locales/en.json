@@ -209,7 +209,8 @@
     "exportStory": "Export Story",
     "sentiment": "Sentiment",
     "strength": "Strength",
-    "moodHistory": "Mood history"
+    "moodHistory": "Mood history",
+    "loadMoreDiary": "Load more entries"
   },
   "shardView": {
     "echoes": "Echoes in this Shard",
