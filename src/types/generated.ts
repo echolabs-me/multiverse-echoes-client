@@ -470,6 +470,8 @@ export type GlobalEventType = "Economic" | "Social" | "Environmental" | "Politic
 export type HealthResponse = {
 	status: string,
 	tick_interval_seconds: number,
+	// Epoch milliseconds when the last tick completed. 0 if no tick has run yet.
+	last_tick_at: number,
 };
 
 // POST /echoes/:id/influence — Apply influence to an Echo.

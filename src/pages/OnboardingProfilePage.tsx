@@ -85,25 +85,41 @@ export function OnboardingProfilePage() {
 
         {/* Bio */}
         <div className="mb-6">
-          <Input
-            label={t('onboarding.bio')}
-            multiline
-            value={bio}
-            onChange={(e) => setBio((e.target as HTMLTextAreaElement).value)}
-            placeholder={t('onboarding.bioHint')}
-            maxLength={500}
-          />
-          <p className="mt-1 text-right text-xs text-text-muted">
-            {bio.length}/500
-          </p>
+          <div className="rounded-lg border border-accent/30 bg-accent/5 px-4 py-4">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="text-base" aria-hidden="true">{'\ud83d\udc64'}</span>
+              <p className="text-sm font-medium text-text-primary">
+                {t('onboarding.bio')}
+              </p>
+            </div>
+            <Input
+              multiline
+              value={bio}
+              onChange={(e) => setBio((e.target as HTMLTextAreaElement).value)}
+              placeholder={t('onboarding.bioHint')}
+              maxLength={500}
+            />
+            <p className="mt-1 text-right text-xs text-text-muted">
+              {bio.length}/500
+            </p>
+            <div className="mt-2 flex items-start gap-2 rounded-md bg-accent/10 px-3 py-2">
+              <span className="mt-0.5 text-base leading-none" aria-hidden="true">{'\u2728'}</span>
+              <p className="text-sm text-text-secondary">
+                {t('onboarding.bioCallout')}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Timezone */}
-        <div className="mb-8">
-          <label className="mb-1 block text-sm font-medium text-text-secondary">
-            {t('onboarding.timezone')}
-          </label>
-          <p className="text-sm text-text-primary">{timezone}</p>
+        <div className="mb-8 flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-3">
+          <span className="text-base" aria-hidden="true">{'\ud83c\udf10'}</span>
+          <div>
+            <p className="text-sm font-medium text-text-secondary">
+              {t('onboarding.timezone')}
+            </p>
+            <p className="text-sm text-text-primary">{timezone}</p>
+          </div>
         </div>
 
         <div className="flex gap-3">

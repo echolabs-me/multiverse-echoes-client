@@ -416,18 +416,26 @@ export function DashboardPage() {
 function DashboardTickCountdown({ lastTickId }: { lastTickId: number }) {
   const { t } = useTranslation();
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
+  const serverLastTickAt = useSystemStore((s) => s.lastTickAt);
 
-  // Track when the last tick completed. Reset whenever lastTickId changes.
-  const lastTickTimeRef = useRef(0);
+  // Seed from server on mount; update from WS events thereafter.
+  const lastTickTimeRef = useRef(serverLastTickAt || 0);
   useEffect(() => {
     lastTickTimeRef.current = Date.now();
   }, [lastTickId]);
 
-  const [seconds, setSeconds] = useState(tickInterval);
+  const [seconds, setSeconds] = useState(() => {
+    if (serverLastTickAt > 0) {
+      const elapsed = Math.floor((Date.now() - serverLastTickAt) / 1000);
+      return Math.max(0, tickInterval - elapsed);
+    }
+    return tickInterval;
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - lastTickTimeRef.current) / 1000);
+      const base = lastTickTimeRef.current || Date.now();
+      const elapsed = Math.floor((Date.now() - base) / 1000);
       const remaining = Math.max(0, tickInterval - elapsed);
       setSeconds(remaining);
     }, 1000);

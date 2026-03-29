@@ -16,6 +16,7 @@ import {
   Settings,
   ChevronDown,
   ChevronUp,
+  Lock,
 } from 'lucide-react';
 import {
   Card,
@@ -387,6 +388,18 @@ export function EchoDetailPage() {
                 {showAllPersona ? t('common.showLess') : t('common.showMore')}
               </button>
             )}
+            {activeEcho.current_tick === 0 && (
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-accent">
+                <Sparkles size={12} aria-hidden="true" />
+                {t('echoDetail.personaEditableHint')}
+              </p>
+            )}
+            {activeEcho.current_tick > 0 && (
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-text-muted">
+                <Lock size={12} aria-hidden="true" />
+                {t('echoDetail.personaLocked')}
+              </p>
+            )}
           </Card>
 
           {/* Quick Actions */}
@@ -456,6 +469,8 @@ export function EchoDetailPage() {
                 setNewPersona(activeEcho.persona_text);
                 setEditPersonaModal(true);
               }}
+              disabled={activeEcho.current_tick > 0}
+              title={activeEcho.current_tick > 0 ? t('echoDetail.personaLocked') : undefined}
             >
               <Pencil size={16} /> {t('echoDetail.editPersona')}
             </Button>
@@ -769,7 +784,14 @@ export function EchoDetailPage() {
 function TickCountdown({ lastTickTimeRef }: { lastTickTimeRef: React.RefObject<number> }) {
   const { t } = useTranslation();
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
-  const [seconds, setSeconds] = useState(tickInterval);
+  const serverLastTickAt = useSystemStore((s) => s.lastTickAt);
+  const [seconds, setSeconds] = useState(() => {
+    if (serverLastTickAt > 0) {
+      const elapsed = Math.floor((Date.now() - serverLastTickAt) / 1000);
+      return Math.max(0, tickInterval - elapsed);
+    }
+    return tickInterval;
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
