@@ -144,7 +144,7 @@
     "createButton": "Create My Echo",
     "destinationTitle": "Choose a starting Shard",
     "personalShard": "Personal Shard",
-    "personalShardDesc": "A private world just for your Echo. Recommended for your first.",
+    "personalShardDesc": "A private world just for your Echo. Quiet, no interactions with others.",
     "birthTitle": "Your Echo is being born…",
     "birthComplete": "Your Echo is alive.",
     "limitTitle": "Echo limit reached",

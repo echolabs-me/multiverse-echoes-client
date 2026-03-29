@@ -166,6 +166,7 @@ export interface CreateEchoRequest {
   persona_mode?: 'detailed' | 'quick';
   consent_declaration: boolean;
   persona_declaration?: 'inspired' | 'fictional';
+  shard_id?: string;
 }
 
 export interface UpdatePersonaRequest {

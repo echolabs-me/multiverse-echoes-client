@@ -1,11 +1,13 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { X } from 'lucide-react';
-import { Button, Input, Card } from '../components/index.ts';
+import { X, Globe, Home } from 'lucide-react';
+import { Button, Input, Card, Spinner } from '../components/index.ts';
 import { EchoBirthAnimation } from '../components/EchoBirthAnimation.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
+import { shards as shardsApi } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import type { Shard } from '../types/api.ts';
 
 type Step = 'details' | 'consent' | 'destination' | 'birth';
 
@@ -26,6 +28,26 @@ export function EchoCreationPage() {
   const [consentAcknowledge, setConsentAcknowledge] = useState(false);
   const [consentPrivacy, setConsentPrivacy] = useState(false);
 
+  // Shard selection
+  const [publicShards, setPublicShards] = useState<Shard[]>([]);
+  const [selectedShardId, setSelectedShardId] = useState<string | null>(null);
+  const [shardsLoading, setShardsLoading] = useState(true);
+  const shardsLoadedRef = useRef(false);
+
+  // Load public shards once on mount (not gated by step — avoids re-renders).
+  useEffect(() => {
+    if (shardsLoadedRef.current) return;
+    shardsLoadedRef.current = true;
+    void shardsApi
+      .list({ type: 'Public' })
+      .then((s) => {
+        setPublicShards(s);
+        if (s.length > 0) setSelectedShardId(s[0]!.shard_id);
+      })
+      .catch(() => {})
+      .finally(() => setShardsLoading(false));
+  }, []);
+
   // Birth
   const [isBirthComplete, setIsBirthComplete] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
@@ -45,10 +67,12 @@ export function EchoCreationPage() {
         persona_mode: 'detailed',
         consent_declaration: true,
         persona_declaration: personaDeclaration,
+        shard_id: selectedShardId ?? undefined,
       });
 
       createdEchoId.current = echo.echo_id;
-      trackEvent('echo.created', { persona_mode: 'detailed', target_shard: 'personal' });
+      const shardName = publicShards.find((s) => s.shard_id === selectedShardId)?.name ?? 'personal';
+      trackEvent('echo.created', { persona_mode: 'detailed', target_shard: shardName });
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Echo creation failed';
@@ -234,14 +258,47 @@ export function EchoCreationPage() {
         </h1>
 
         <div className="w-full max-w-lg">
-          <Card className="mb-4 cursor-pointer border-accent">
-            <h3 className="mb-1 font-semibold text-text-primary">
-              {t('echo.personalShard')}
-            </h3>
-            <p className="text-sm text-text-secondary">
-              {t('echo.personalShardDesc')}
-            </p>
-          </Card>
+          {shardsLoading ? (
+            <div className="mb-4 flex justify-center"><Spinner /></div>
+          ) : (
+            <div className="mb-4 flex flex-col gap-3">
+              {publicShards.map((shard) => (
+                <Card
+                  key={shard.shard_id}
+                  className={`cursor-pointer transition-colors ${
+                    selectedShardId === shard.shard_id
+                      ? 'border-accent'
+                      : 'border-border hover:border-text-muted'
+                  }`}
+                  onClick={() => setSelectedShardId(shard.shard_id)}
+                >
+                  <div className="flex items-center gap-2">
+                    <Globe size={16} className="text-accent" />
+                    <h3 className="font-semibold text-text-primary">{shard.name}</h3>
+                  </div>
+                  <p className="mt-1 text-sm text-text-secondary">{shard.description}</p>
+                </Card>
+              ))}
+              <Card
+                className={`cursor-pointer transition-colors ${
+                  selectedShardId === null
+                    ? 'border-accent'
+                    : 'border-border hover:border-text-muted'
+                }`}
+                onClick={() => setSelectedShardId(null)}
+              >
+                <div className="flex items-center gap-2">
+                  <Home size={16} className="text-text-muted" />
+                  <h3 className="font-semibold text-text-primary">
+                    {t('echo.personalShard')}
+                  </h3>
+                </div>
+                <p className="mt-1 text-sm text-text-secondary">
+                  {t('echo.personalShardDesc')}
+                </p>
+              </Card>
+            </div>
+          )}
 
           {createError && (
             <div className="mb-4 rounded-lg bg-danger/10 px-4 py-3">
