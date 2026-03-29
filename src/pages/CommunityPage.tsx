@@ -214,21 +214,27 @@ export function CommunityPage() {
               <p className="text-xs text-text-muted">{t('community.noChannelsDesc')}</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-0.5">
+            <div className="flex flex-col gap-1.5">
               {channelList.map((ch) => (
                 <button
                   key={ch.channel_id}
                   onClick={() => setActiveChannel(ch)}
-                  className={`flex flex-col rounded-lg px-3 py-2 text-left transition-colors ${
+                  className={`rounded-lg px-3 py-2.5 text-left transition-colors ${
                     activeChannel?.channel_id === ch.channel_id
-                      ? 'bg-accent-subtle text-accent'
-                      : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+                      ? 'bg-accent-subtle'
+                      : 'hover:bg-surface-raised'
                   }`}
                   aria-current={activeChannel?.channel_id === ch.channel_id ? 'true' : undefined}
                 >
-                  <span className="truncate text-sm">{ch.name}</span>
+                  <span className={`block text-sm font-medium ${
+                    activeChannel?.channel_id === ch.channel_id
+                      ? 'text-accent'
+                      : 'text-text-primary'
+                  }`}>{ch.name}</span>
                   {ch.description && (
-                    <span className="truncate text-[11px] text-text-muted">{ch.description}</span>
+                    <span className="mt-0.5 block text-[11px] leading-snug text-text-muted">
+                      {ch.description}
+                    </span>
                   )}
                 </button>
               ))}
