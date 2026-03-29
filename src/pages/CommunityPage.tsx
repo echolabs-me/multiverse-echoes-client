@@ -58,6 +58,22 @@ export function CommunityPage() {
 
   const isFreeUser = user?.subscription_tier === 'Free';
 
+  // Unread tracking — localStorage-backed per-channel last-seen message ID.
+  const [unreadChannels, setUnreadChannels] = useState<Set<string>>(new Set());
+
+  const getLastSeen = (channelId: string): string | null =>
+    localStorage.getItem(`community_lastSeen_${channelId}`);
+
+  const markChannelRead = useCallback((channelId: string, latestMessageId: string) => {
+    localStorage.setItem(`community_lastSeen_${channelId}`, latestMessageId);
+    setUnreadChannels((prev) => {
+      if (!prev.has(channelId)) return prev;
+      const next = new Set(prev);
+      next.delete(channelId);
+      return next;
+    });
+  }, []);
+
   // Load channels + Discord link status
   useEffect(() => {
     void accountApi.discordStatus()
@@ -69,6 +85,24 @@ export function CommunityPage() {
       try {
         const chs = await channelApi.list();
         setChannelList(chs);
+
+        // Check each channel for unread messages.
+        const unread = new Set<string>();
+        await Promise.all(
+          chs.map(async (ch) => {
+            try {
+              const msgs = await channelApi.messages(ch.channel_id, { limit: 1 });
+              if (msgs.length > 0) {
+                const lastSeen = getLastSeen(ch.channel_id);
+                if (lastSeen !== msgs[0]!.message_id) {
+                  unread.add(ch.channel_id);
+                }
+              }
+            } catch { /* ignore */ }
+          }),
+        );
+        setUnreadChannels(unread);
+
         if (chs.length > 0 && !activeChannel) {
           setActiveChannel(chs[0]!);
           trackEvent('community.channel_joined', { channel_id: chs[0]!.channel_id });
@@ -87,10 +121,14 @@ export function CommunityPage() {
     try {
       const msgs = await channelApi.messages(activeChannel.channel_id, { limit: 50 });
       setMessages(msgs);
+      // Mark channel as read when messages are viewed.
+      if (msgs.length > 0) {
+        markChannelRead(activeChannel.channel_id, msgs[msgs.length - 1]!.message_id);
+      }
     } finally {
       setIsLoadingMessages(false);
     }
-  }, [activeChannel]);
+  }, [activeChannel, markChannelRead]);
 
   useEffect(() => {
     void loadMessages();
@@ -266,11 +304,18 @@ export function CommunityPage() {
                   }`}
                   aria-current={activeChannel?.channel_id === ch.channel_id ? 'true' : undefined}
                 >
-                  <span className={`block text-sm font-medium ${
+                  <span className={`flex items-center gap-2 text-sm font-medium ${
                     activeChannel?.channel_id === ch.channel_id
                       ? 'text-accent'
                       : 'text-text-primary'
-                  }`}>{ch.name}</span>
+                  }`}>
+                    {ch.name}
+                    {unreadChannels.has(ch.channel_id) && activeChannel?.channel_id !== ch.channel_id && (
+                      <span className="rounded-full bg-accent px-1.5 py-0.5 text-[9px] font-bold uppercase leading-none text-canvas">
+                        {t('community.new')}
+                      </span>
+                    )}
+                  </span>
                   {ch.description && (
                     <span className="mt-0.5 block text-[11px] leading-snug text-text-secondary">
                       {ch.description}

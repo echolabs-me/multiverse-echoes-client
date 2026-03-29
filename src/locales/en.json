@@ -279,7 +279,8 @@
     "onlyImages": "Only image files are allowed.",
     "votes": "votes",
     "totalVotes": "{{count}} total votes",
-    "voteRecorded": "Vote recorded!"
+    "voteRecorded": "Vote recorded!",
+    "new": "new"
   },
   "notifications": {
     "title": "Notifications",
