@@ -63,6 +63,7 @@ export function EchoDetailPage() {
   const [influence, setInfluence] = useState<InfluenceBalance | null>(null);
   // Memories are internal infrastructure — not shown in user UI.
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
+  const [diaryVersion, setDiaryVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [diaryPage, setDiaryPage] = useState(1);
   const [showAllPersona, setShowAllPersona] = useState(false);
@@ -170,9 +171,7 @@ export function EchoDetailPage() {
         trackEvent('echo.travel_completed', { echo_id: id });
       }
       if (event.type === 'DiaryEntryCreated') {
-        const now = Date.now();
-        lastTickTimeRef.current = now;
-        try { localStorage.setItem('me_last_tick_at', String(now)); } catch { /* noop */ }
+        setDiaryVersion((v) => v + 1);
         void echoApi
           .diary(id)
           .then((d) => {
@@ -377,7 +376,7 @@ export function EchoDetailPage() {
               <p className="mt-1 text-sm text-text-secondary">
                 {t('dashboard.mood')}: {activeEcho.current_mood} &middot; {t('dashboard.tick', { tick: activeEcho.current_tick })}
               </p>
-              {activeEcho.status === 'Active' && <TickCountdown lastTickTimeRef={lastTickTimeRef} />}
+              {activeEcho.status === 'Active' && <TickCountdown lastTickTimeRef={lastTickTimeRef} diaryVersion={diaryVersion} />}
             </div>
           </div>
 
@@ -769,22 +768,31 @@ export function EchoDetailPage() {
   );
 }
 
-function TickCountdown({ lastTickTimeRef }: { lastTickTimeRef: React.RefObject<number> }) {
+function TickCountdown({ lastTickTimeRef, diaryVersion }: { lastTickTimeRef: React.RefObject<number>; diaryVersion: number }) {
   const { t } = useTranslation();
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
+
   const [isGenerating, setIsGenerating] = useState(() => {
     const stored = Number(localStorage.getItem('me_last_tick_at')) || 0;
-    if (stored > 0) {
-      return (Date.now() - stored) / 1000 >= tickInterval;
-    }
-    return false;
+    return stored > 0 && (Date.now() - stored) / 1000 >= tickInterval;
   });
+  const generatingRef = useRef(false);
+
+  // DiaryEntryCreated clears the generating flag via ref.
+  // The interval compute function syncs state from the ref every second.
+  const prevDiaryVersionRef = useRef(diaryVersion);
+  useEffect(() => {
+    if (diaryVersion > prevDiaryVersionRef.current) {
+      prevDiaryVersionRef.current = diaryVersion;
+      generatingRef.current = false;
+    }
+  }, [diaryVersion]);
+
   const [seconds, setSeconds] = useState(() => {
     const stored = Number(localStorage.getItem('me_last_tick_at')) || 0;
     if (stored > 0) {
-      const elapsed = Math.floor((Date.now() - stored) / 1000);
-      if (elapsed >= tickInterval) return 0;
-      return tickInterval - elapsed;
+      const remaining = tickInterval - Math.floor((Date.now() - stored) / 1000);
+      return Math.max(0, remaining);
     }
     return tickInterval;
   });
@@ -793,39 +801,31 @@ function TickCountdown({ lastTickTimeRef }: { lastTickTimeRef: React.RefObject<n
     const compute = () => {
       const base = lastTickTimeRef.current;
       if (base > 0) {
-        const elapsed = Math.floor((Date.now() - base) / 1000);
-        if (elapsed >= tickInterval) {
+        const remaining = tickInterval - Math.floor((Date.now() - base) / 1000);
+        if (remaining <= 0) {
           setSeconds(0);
-          setIsGenerating(true);
+          if (!generatingRef.current) {
+            generatingRef.current = true;
+          }
         } else {
-          setSeconds(tickInterval - elapsed);
-          setIsGenerating(false);
+          setSeconds(remaining);
         }
+        setIsGenerating(generatingRef.current);
       }
     };
     const timer = setInterval(compute, 1000);
     return () => clearInterval(timer);
   }, [tickInterval, lastTickTimeRef]);
 
-  if (isGenerating) {
-    return (
-      <p className="mt-1 flex items-center gap-1.5 text-xs text-accent">
-        <span
-          className="inline-block h-1.5 w-1.5 rounded-full bg-accent animate-pulse"
-          aria-hidden="true"
-        />
-        {t('echoDetail.echoThinking')}
-      </p>
-    );
-  }
-
   return (
     <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">
       <span
-        className="inline-block h-1.5 w-1.5 rounded-full bg-success animate-pulse"
+        className={`inline-block h-1.5 w-1.5 rounded-full ${isGenerating ? 'bg-accent' : 'bg-success'} animate-pulse`}
         aria-hidden="true"
       />
-      {t('echoDetail.nextTick', { seconds })}
+      {isGenerating
+        ? <span className="text-accent">{t('echoDetail.echoThinking')}</span>
+        : t('echoDetail.nextTick', { seconds })}
     </p>
   );
 }

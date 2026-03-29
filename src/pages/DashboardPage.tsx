@@ -206,6 +206,8 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
 
   // Track latest tick_id from WS events to keep counter fresh.
   const [lastTickId, setLastTickId] = useState(echo.current_tick);
+  // Server-authoritative tick timestamp, updated via ConnectionEstablished.
+  const [serverTickAt, setServerTickAt] = useState(0);
   const { fetchEchoes } = useEchoStore();
   const wsConnectedOnceRef = useRef(false);
 
@@ -218,6 +220,7 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
           const serverAt = event.last_tick_at as number;
           if (serverAt > 0) {
             writeLastTickAt(serverAt);
+            setServerTickAt(serverAt);
           }
         }
         // On reconnect (not first connect), re-fetch diary to catch missed events.
@@ -278,7 +281,7 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
           <p className="mt-1 text-sm text-text-muted">
             {t('dashboard.mood')}: {echo.current_mood}
           </p>
-          {echo.status === 'Active' && <DashboardTickCountdown lastTickId={lastTickId} />}
+          {echo.status === 'Active' && <DashboardTickCountdown lastTickId={lastTickId} serverTickAt={serverTickAt} />}
         </div>
       </div>
 
@@ -446,36 +449,43 @@ function writeLastTickAt(ms: number) {
   }
 }
 
-function DashboardTickCountdown({ lastTickId }: { lastTickId: number }) {
+function DashboardTickCountdown({ lastTickId, serverTickAt }: { lastTickId: number; serverTickAt: number }) {
   const { t } = useTranslation();
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
 
+  // Timer ref: updated by ConnectionEstablished (server authoritative) via serverTickAt prop.
+  // NOT updated on DiaryEntryCreated — the timer continues naturally.
   const lastTickTimeRef = useRef(readLastTickAt());
-  const initialTickIdRef = useRef(lastTickId);
+
+  // Sync ref from server-authoritative value (ConnectionEstablished).
+  useEffect(() => {
+    if (serverTickAt > 0) {
+      lastTickTimeRef.current = serverTickAt;
+    }
+  }, [serverTickAt]);
+
+  // Generating flag: independent of timer. Set at countdown=0, cleared by diary arrival.
   const [isGenerating, setIsGenerating] = useState(() => {
     const stored = readLastTickAt();
-    if (stored > 0) {
-      return (Date.now() - stored) / 1000 >= tickInterval;
-    }
-    return false;
+    return stored > 0 && (Date.now() - stored) / 1000 >= tickInterval;
   });
+  const generatingRef = useRef(false);
 
-  // On WS tick event (DiaryEntryCreated): update last tick time.
-  // The interval compute function will reset isGenerating on the next tick.
+  // DiaryEntryCreated clears the generating flag via ref.
+  // The interval compute function syncs state from the ref every second.
+  const prevTickIdRef = useRef(lastTickId);
   useEffect(() => {
-    if (lastTickId > initialTickIdRef.current) {
-      const now = Date.now();
-      lastTickTimeRef.current = now;
-      writeLastTickAt(now);
+    if (lastTickId > prevTickIdRef.current) {
+      prevTickIdRef.current = lastTickId;
+      generatingRef.current = false;
     }
   }, [lastTickId]);
 
   const [seconds, setSeconds] = useState(() => {
     const stored = readLastTickAt();
     if (stored > 0) {
-      const elapsed = Math.floor((Date.now() - stored) / 1000);
-      if (elapsed >= tickInterval) return 0;
-      return tickInterval - elapsed;
+      const remaining = tickInterval - Math.floor((Date.now() - stored) / 1000);
+      return Math.max(0, remaining);
     }
     return tickInterval;
   });
@@ -484,39 +494,31 @@ function DashboardTickCountdown({ lastTickId }: { lastTickId: number }) {
     const compute = () => {
       const base = lastTickTimeRef.current;
       if (base > 0) {
-        const elapsed = Math.floor((Date.now() - base) / 1000);
-        if (elapsed >= tickInterval) {
+        const remaining = tickInterval - Math.floor((Date.now() - base) / 1000);
+        if (remaining <= 0) {
           setSeconds(0);
-          setIsGenerating(true);
+          if (!generatingRef.current) {
+            generatingRef.current = true;
+          }
         } else {
-          setSeconds(tickInterval - elapsed);
-          setIsGenerating(false);
+          setSeconds(remaining);
         }
+        setIsGenerating(generatingRef.current);
       }
     };
     const timer = setInterval(compute, 1000);
     return () => clearInterval(timer);
   }, [tickInterval]);
 
-  if (isGenerating) {
-    return (
-      <p className="mt-1 flex items-center gap-1.5 text-xs text-accent">
-        <span
-          className="inline-block h-1.5 w-1.5 rounded-full bg-accent animate-pulse"
-          aria-hidden="true"
-        />
-        {t('dashboard.echoThinking')}
-      </p>
-    );
-  }
-
   return (
     <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">
       <span
-        className="inline-block h-1.5 w-1.5 rounded-full bg-success animate-pulse"
+        className={`inline-block h-1.5 w-1.5 rounded-full ${isGenerating ? 'bg-accent' : 'bg-success'} animate-pulse`}
         aria-hidden="true"
       />
-      {t('dashboard.nextTick', { seconds })}
+      {isGenerating
+        ? <span className="text-accent">{t('dashboard.echoThinking')}</span>
+        : t('dashboard.nextTick', { seconds })}
     </p>
   );
 }
