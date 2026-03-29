@@ -136,15 +136,32 @@ export function EchoDetailPage() {
   // On DiaryEntryCreated: fetch new diary and trigger arrival animation.
   // On MoodChanged: refresh echo state for mood atmosphere update.
   // Falls back to polling on disconnect.
+  const wsConnectedOnceRef = useRef(false);
   const handleWsEvent = useCallback(
     (event: WsEchoEvent) => {
-      // ConnectionEstablished: seed tick timer from server.
-      if (event.type === 'ConnectionEstablished' && 'last_tick_at' in event) {
-        const serverAt = event.last_tick_at as number;
-        if (serverAt > 0) {
-          lastTickTimeRef.current = serverAt;
-          try { localStorage.setItem('me_last_tick_at', String(serverAt)); } catch { /* noop */ }
+      // ConnectionEstablished: seed tick timer + catch up on reconnect.
+      if (event.type === 'ConnectionEstablished') {
+        if ('last_tick_at' in event) {
+          const serverAt = event.last_tick_at as number;
+          if (serverAt > 0) {
+            lastTickTimeRef.current = serverAt;
+            try { localStorage.setItem('me_last_tick_at', String(serverAt)); } catch { /* noop */ }
+          }
         }
+        // On reconnect, re-fetch diary to catch missed events.
+        const id = echoIdRef.current;
+        if (wsConnectedOnceRef.current && id) {
+          void echoApi.diary(id).then((d) => {
+            const arrivals = d.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
+            if (arrivals.length > 0) {
+              const arrivalIds = new Set(arrivals.map((e) => e.diary_id));
+              setNewDiaryIds((prev) => new Set([...prev, ...arrivalIds]));
+            }
+            setDiaryEntries(d);
+          }).catch(() => {});
+          void useEchoStore.getState().fetchEcho(id);
+        }
+        wsConnectedOnceRef.current = true;
       }
 
       const id = echoIdRef.current;

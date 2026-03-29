@@ -207,16 +207,25 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
   // Track latest tick_id from WS events to keep counter fresh.
   const [lastTickId, setLastTickId] = useState(echo.current_tick);
   const { fetchEchoes } = useEchoStore();
+  const wsConnectedOnceRef = useRef(false);
 
   // Real-time updates via Dashboard WS stream — refreshes diary on new events.
   const handleWsEvent = useCallback(
     (event: WsEchoEvent) => {
-      // ConnectionEstablished: seed tick timer from authoritative server value.
-      if (event.type === 'ConnectionEstablished' && 'last_tick_at' in event) {
-        const serverAt = event.last_tick_at as number;
-        if (serverAt > 0) {
-          writeLastTickAt(serverAt);
+      // ConnectionEstablished: seed tick timer + catch up on reconnect.
+      if (event.type === 'ConnectionEstablished') {
+        if ('last_tick_at' in event) {
+          const serverAt = event.last_tick_at as number;
+          if (serverAt > 0) {
+            writeLastTickAt(serverAt);
+          }
         }
+        // On reconnect (not first connect), re-fetch diary to catch missed events.
+        if (wsConnectedOnceRef.current) {
+          void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
+          void fetchEchoes();
+        }
+        wsConnectedOnceRef.current = true;
       }
 
       if ('echo_id' in event && event.echo_id === echo.echo_id) {
