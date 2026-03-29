@@ -215,7 +215,8 @@
     "searchDiary": "Search diary...",
     "filterMood": "Filter by mood",
     "allMoods": "All moods",
-    "clearFilters": "Clear"
+    "clearFilters": "Clear filters",
+    "noFilterMatch": "No diary entries match this filter"
   },
   "shardView": {
     "echoes": "Echoes in this Shard",

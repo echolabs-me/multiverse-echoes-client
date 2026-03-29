@@ -663,8 +663,8 @@ export function EchoDetailPage() {
               <BookOpen size={18} className="text-accent" aria-hidden="true" />
               <h2 className="text-lg font-semibold text-text-primary">{t('echoDetail.diary')}</h2>
             </div>
-            {/* Diary search and filter bar */}
-            {diaryEntries.length > 0 && (
+            {/* Diary search and filter bar — always visible when entries exist or a filter is active */}
+            {(diaryEntries.length > 0 || moodFilter || diarySearch) && (
               <div className="mb-3 flex flex-wrap items-center gap-2">
                 <div className="relative flex-1 min-w-[180px]">
                   <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" aria-hidden="true" />
@@ -704,7 +704,15 @@ export function EchoDetailPage() {
                 description={t('echoDetail.diaryEmptyDesc')}
               />
             ) : filteredDiary.length === 0 ? (
-              <p className="text-sm italic text-text-muted">{t('common.noResults')}</p>
+              <div className="flex flex-col items-center gap-3 py-8 text-center">
+                <p className="text-sm italic text-text-muted">{t('echoDetail.noFilterMatch')}</p>
+                <Button
+                  variant="secondary"
+                  onClick={() => { setDiarySearch(''); setMoodFilter(''); }}
+                >
+                  {t('echoDetail.clearFilters')}
+                </Button>
+              </div>
             ) : (
               <div className="flex flex-col gap-2">
                 {diaryByDay.map(({ day, entries }) => {
