@@ -214,15 +214,15 @@ export function CommunityPage() {
               <p className="text-xs text-text-muted">{t('community.noChannelsDesc')}</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-2">
               {channelList.map((ch) => (
                 <button
                   key={ch.channel_id}
                   onClick={() => setActiveChannel(ch)}
-                  className={`rounded-lg px-3 py-2.5 text-left transition-colors ${
+                  className={`rounded-lg border px-3 py-2.5 text-left transition-colors ${
                     activeChannel?.channel_id === ch.channel_id
-                      ? 'bg-accent-subtle'
-                      : 'hover:bg-surface-raised'
+                      ? 'border-accent/50 bg-accent/10 ring-2 ring-accent/25'
+                      : 'border-accent/20 bg-accent/5 hover:border-accent/40 hover:bg-accent/10'
                   }`}
                   aria-current={activeChannel?.channel_id === ch.channel_id ? 'true' : undefined}
                 >
