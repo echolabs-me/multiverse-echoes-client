@@ -7,7 +7,6 @@ import {
   Download,
   Zap,
   Users,
-  Brain,
   Sparkles,
   MessageCircle,
   Moon,
@@ -45,7 +44,6 @@ import { trackEvent } from '../lib/analytics.ts';
 import type {
   EchoRelationship,
   InfluenceBalance,
-  EchoMemory,
   DiaryEntry,
   WsEchoEvent,
 } from '../types/api.ts';
@@ -63,7 +61,7 @@ export function EchoDetailPage() {
   // Local state
   const [relationships, setRelationships] = useState<EchoRelationship[]>([]);
   const [influence, setInfluence] = useState<InfluenceBalance | null>(null);
-  const [memories, setMemories] = useState<EchoMemory[]>([]);
+  // Memories are internal infrastructure — not shown in user UI.
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [diaryPage, setDiaryPage] = useState(1);
@@ -106,15 +104,13 @@ export function EchoDetailPage() {
     setNewDiaryIds(new Set());
     try {
       await fetchEcho(echoId);
-      const [rels, inf, mems, diary] = await Promise.all([
+      const [rels, inf, diary] = await Promise.all([
         echoApi.relationships(echoId).catch(() => [] as EchoRelationship[]),
         echoApi.influence(echoId).catch(() => null),
-        echoApi.memories(echoId).catch(() => [] as EchoMemory[]),
         echoApi.diary(echoId).catch(() => [] as DiaryEntry[]),
       ]);
       setRelationships(rels);
       setInfluence(inf);
-      setMemories(mems);
       // Initial load — mark all existing entries as known (no animation).
       knownDiaryIdsRef.current = new Set(diary.map((d) => d.diary_id));
       initialLoadDoneRef.current = true;
@@ -603,43 +599,7 @@ export function EchoDetailPage() {
             )}
           </section>
 
-          {/* Memories */}
-          <section className="mb-6">
-            <div className="mb-3 flex items-center gap-2">
-              <Brain size={18} className="text-accent" aria-hidden="true" />
-              <h2 className="text-lg font-semibold text-text-primary">
-                {t('echoDetail.memories')}
-              </h2>
-            </div>
-            {memories.length === 0 ? (
-              <EmptyState
-                title={t('echoDetail.memoriesEmpty')}
-                description={t('echoDetail.memoriesEmptyDesc')}
-              />
-            ) : (
-              <div className="flex flex-col gap-2">
-                {memories.map((mem) => (
-                  <Card key={mem.memory_id} variant="compact">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <p className="text-sm text-text-primary">{mem.content}</p>
-                        <p className="text-xs text-text-muted">{mem.memory_type}</p>
-                      </div>
-                      <div className="flex items-center gap-1 text-xs text-text-secondary">
-                        <span>{t('echoDetail.strength')}:</span>
-                        <div className="h-1.5 w-16 rounded-full bg-surface-raised">
-                          <div
-                            className="h-1.5 rounded-full bg-accent"
-                            style={{ width: `${mem.importance * 100}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </section>
+          {/* Memories — hidden from user UI (internal infrastructure for tick context) */}
 
           {/* Echo Settings */}
           <section className="mb-6">
@@ -785,22 +745,35 @@ function TickCountdown({ lastTickTimeRef }: { lastTickTimeRef: React.RefObject<n
   const { t } = useTranslation();
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
   const serverLastTickAt = useSystemStore((s) => s.lastTickAt);
-  const [seconds, setSeconds] = useState(() => {
+  const fetchHealth = useSystemStore((s) => s.fetchHealth);
+
+  // On mount: fetch fresh last_tick_at so navigation doesn't reset.
+  useEffect(() => {
+    void fetchHealth();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Sync ref from server value.
+  useEffect(() => {
     if (serverLastTickAt > 0) {
-      const elapsed = Math.floor((Date.now() - serverLastTickAt) / 1000);
-      return Math.max(0, tickInterval - elapsed);
+      lastTickTimeRef.current = serverLastTickAt;
     }
-    return tickInterval;
-  });
+  }, [serverLastTickAt, lastTickTimeRef]);
+
+  const [seconds, setSeconds] = useState(tickInterval);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - lastTickTimeRef.current) / 1000);
-      const remaining = Math.max(0, tickInterval - elapsed);
-      setSeconds(remaining);
-    }, 1000);
+    const computeRemaining = () => {
+      const base = lastTickTimeRef.current;
+      if (base > 0) {
+        const elapsed = Math.floor((Date.now() - base) / 1000);
+        const remaining = tickInterval - (elapsed % tickInterval);
+        setSeconds(remaining === tickInterval ? 0 : remaining);
+      }
+    };
+    computeRemaining();
+    const timer = setInterval(computeRemaining, 1000);
     return () => clearInterval(timer);
-  }, [tickInterval, lastTickTimeRef]);
+  }, [tickInterval, lastTickTimeRef, serverLastTickAt]);
 
   return (
     <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">
