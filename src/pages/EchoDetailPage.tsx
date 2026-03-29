@@ -130,7 +130,7 @@ export function EchoDetailPage() {
   }, [loadData]);
 
   // Track last tick completion time for countdown sync.
-  const lastTickTimeRef = useRef(Date.now());
+  const lastTickTimeRef = useRef(Number(localStorage.getItem('me_last_tick_at')) || 0);
 
   // WebSocket live updates — replaces 30-second polling.
   // On DiaryEntryCreated: fetch new diary and trigger arrival animation.
@@ -138,13 +138,24 @@ export function EchoDetailPage() {
   // Falls back to polling on disconnect.
   const handleWsEvent = useCallback(
     (event: WsEchoEvent) => {
+      // ConnectionEstablished: seed tick timer from server.
+      if (event.type === 'ConnectionEstablished' && 'last_tick_at' in event) {
+        const serverAt = event.last_tick_at as number;
+        if (serverAt > 0) {
+          lastTickTimeRef.current = serverAt;
+          try { localStorage.setItem('me_last_tick_at', String(serverAt)); } catch { /* noop */ }
+        }
+      }
+
       const id = echoIdRef.current;
       if (!id) return;
       if (event.type === 'ShardTravelCompleted' || event.type === 'EchoMoved') {
         trackEvent('echo.travel_completed', { echo_id: id });
       }
       if (event.type === 'DiaryEntryCreated') {
-        lastTickTimeRef.current = Date.now();
+        const now = Date.now();
+        lastTickTimeRef.current = now;
+        try { localStorage.setItem('me_last_tick_at', String(now)); } catch { /* noop */ }
         void echoApi
           .diary(id)
           .then((d) => {
@@ -744,25 +755,18 @@ export function EchoDetailPage() {
 function TickCountdown({ lastTickTimeRef }: { lastTickTimeRef: React.RefObject<number> }) {
   const { t } = useTranslation();
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
-  const serverLastTickAt = useSystemStore((s) => s.lastTickAt);
-  const fetchHealth = useSystemStore((s) => s.fetchHealth);
-
-  // On mount: fetch fresh last_tick_at so navigation doesn't reset.
-  useEffect(() => {
-    void fetchHealth();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Sync ref from server value.
-  useEffect(() => {
-    if (serverLastTickAt > 0) {
-      lastTickTimeRef.current = serverLastTickAt;
+  const [seconds, setSeconds] = useState(() => {
+    const stored = Number(localStorage.getItem('me_last_tick_at')) || 0;
+    if (stored > 0) {
+      const elapsed = Math.floor((Date.now() - stored) / 1000);
+      const remaining = tickInterval - (elapsed % tickInterval);
+      return remaining === tickInterval ? 0 : remaining;
     }
-  }, [serverLastTickAt, lastTickTimeRef]);
-
-  const [seconds, setSeconds] = useState(tickInterval);
+    return tickInterval;
+  });
 
   useEffect(() => {
-    const computeRemaining = () => {
+    const compute = () => {
       const base = lastTickTimeRef.current;
       if (base > 0) {
         const elapsed = Math.floor((Date.now() - base) / 1000);
@@ -770,10 +774,9 @@ function TickCountdown({ lastTickTimeRef }: { lastTickTimeRef: React.RefObject<n
         setSeconds(remaining === tickInterval ? 0 : remaining);
       }
     };
-    computeRemaining();
-    const timer = setInterval(computeRemaining, 1000);
+    const timer = setInterval(compute, 1000);
     return () => clearInterval(timer);
-  }, [tickInterval, lastTickTimeRef, serverLastTickAt]);
+  }, [tickInterval, lastTickTimeRef]);
 
   return (
     <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">

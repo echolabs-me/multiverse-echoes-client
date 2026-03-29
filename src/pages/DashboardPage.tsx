@@ -211,13 +211,19 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
   // Real-time updates via Dashboard WS stream — refreshes diary on new events.
   const handleWsEvent = useCallback(
     (event: WsEchoEvent) => {
+      // ConnectionEstablished: seed tick timer from authoritative server value.
+      if (event.type === 'ConnectionEstablished' && 'last_tick_at' in event) {
+        const serverAt = event.last_tick_at as number;
+        if (serverAt > 0) {
+          writeLastTickAt(serverAt);
+        }
+      }
+
       if ('echo_id' in event && event.echo_id === echo.echo_id) {
         if (event.type === 'DiaryEntryCreated' || event.type === 'MoodChanged') {
           void echoApi.diary(echo.echo_id, 100).then(setDiaryEntries).catch(() => {});
-          // Re-fetch echo list to update current_tick display.
           void fetchEchoes();
         }
-        // Update local tick counter from WS event tick_id.
         if ('tick_id' in event && typeof event.tick_id === 'number' && event.tick_id > lastTickId) {
           setLastTickId(event.tick_id);
         }
@@ -413,32 +419,61 @@ export function DashboardPage() {
   );
 }
 
+const LS_KEY = 'me_last_tick_at';
+
+function readLastTickAt(): number {
+  try {
+    return Number(localStorage.getItem(LS_KEY)) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function writeLastTickAt(ms: number) {
+  try {
+    localStorage.setItem(LS_KEY, String(ms));
+  } catch {
+    // Storage full or unavailable — non-critical.
+  }
+}
+
 function DashboardTickCountdown({ lastTickId }: { lastTickId: number }) {
   const { t } = useTranslation();
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
-  const serverLastTickAt = useSystemStore((s) => s.lastTickAt);
 
-  // Seed from server on mount; update from WS events thereafter.
-  const lastTickTimeRef = useRef(serverLastTickAt || 0);
+  // Seed synchronously from localStorage on very first render — no flash of 60.
+  const lastTickTimeRef = useRef(readLastTickAt());
+  const initialTickIdRef = useRef(lastTickId);
+
+  // On WS tick event (not initial mount): mark "now" as last tick time.
   useEffect(() => {
-    lastTickTimeRef.current = Date.now();
+    if (lastTickId > initialTickIdRef.current) {
+      const now = Date.now();
+      lastTickTimeRef.current = now;
+      writeLastTickAt(now);
+    }
   }, [lastTickId]);
 
   const [seconds, setSeconds] = useState(() => {
-    if (serverLastTickAt > 0) {
-      const elapsed = Math.floor((Date.now() - serverLastTickAt) / 1000);
-      return Math.max(0, tickInterval - elapsed);
+    const stored = readLastTickAt();
+    if (stored > 0) {
+      const elapsed = Math.floor((Date.now() - stored) / 1000);
+      const remaining = tickInterval - (elapsed % tickInterval);
+      return remaining === tickInterval ? 0 : remaining;
     }
     return tickInterval;
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const base = lastTickTimeRef.current || Date.now();
-      const elapsed = Math.floor((Date.now() - base) / 1000);
-      const remaining = Math.max(0, tickInterval - elapsed);
-      setSeconds(remaining);
-    }, 1000);
+    const compute = () => {
+      const base = lastTickTimeRef.current;
+      if (base > 0) {
+        const elapsed = Math.floor((Date.now() - base) / 1000);
+        const remaining = tickInterval - (elapsed % tickInterval);
+        setSeconds(remaining === tickInterval ? 0 : remaining);
+      }
+    };
+    const timer = setInterval(compute, 1000);
     return () => clearInterval(timer);
   }, [tickInterval]);
 
