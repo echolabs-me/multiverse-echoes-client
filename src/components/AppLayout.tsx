@@ -13,8 +13,15 @@ import {
   Menu,
   X,
   LogOut,
-  MessageCircle,
 } from 'lucide-react';
+
+function DiscordIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60.1 4.9A58.5 58.5 0 0045.4.2a.2.2 0 00-.2.1 40.8 40.8 0 00-1.8 3.7 54 54 0 00-16.2 0A37.4 37.4 0 0025.4.3a.2.2 0 00-.2-.1A58.4 58.4 0 0010.5 5a.2.2 0 00-.1 0C1.5 18.7-.9 32 .3 45.2v.1a58.9 58.9 0 0018 9.1.2.2 0 00.3-.1 42.2 42.2 0 003.6-5.9.2.2 0 00-.1-.3 38.8 38.8 0 01-5.5-2.7.2.2 0 01 0-.4l1.1-.9a.2.2 0 01.2 0 42 42 0 0035.8 0 .2.2 0 01.2 0l1.1.9a.2.2 0 010 .3 36.4 36.4 0 01-5.5 2.7.2.2 0 00-.1.3 47.3 47.3 0 003.6 5.9.2.2 0 00.3.1A58.7 58.7 0 0071 45.3v-.1C72.4 30 68.4 16.8 60.1 5a.2.2 0 00-.1 0zM23.7 37.1c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1zm23.7 0c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1z" fill="currentColor"/>
+    </svg>
+  );
+}
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -50,7 +57,7 @@ function NavSidebar({
     {
       id: 'community',
       labelKey: 'nav.community',
-      icon: <MessageCircle size={20} />,
+      icon: <DiscordIcon size={20} />,
       path: '/community',
     },
     {
@@ -103,9 +110,11 @@ function NavSidebar({
                 aria-current={isActive(item.path) ? 'page' : undefined}
                 title={collapsed ? t(item.labelKey, item.id) : undefined}
               >
-                {item.icon}
+                <span className={item.id === 'community' ? 'text-[#5865F2]' : ''}>{item.icon}</span>
                 {!collapsed && (
-                  <span>{t(item.labelKey, item.id)}</span>
+                  item.id === 'community'
+                    ? <span>Community <span className="font-semibold text-[#5865F2]">Discord</span></span>
+                    : <span>{t(item.labelKey, item.id)}</span>
                 )}
                 {item.badge != null && item.badge > 0 && (
                   <span
@@ -181,7 +190,7 @@ export function AppLayout() {
     {
       id: 'community',
       labelKey: 'nav.community',
-      icon: <MessageCircle size={20} />,
+      icon: <DiscordIcon size={20} />,
       path: '/community',
     },
     {
@@ -327,8 +336,11 @@ export function AppLayout() {
               item.path && isActive(item.path) ? 'page' : undefined
             }
           >
-            {item.icon}
-            <span>{t(item.labelKey, item.id)}</span>
+            <span className={item.id === 'community' ? 'text-[#5865F2]' : ''}>{item.icon}</span>
+            {item.id === 'community'
+              ? <span><span className="font-semibold text-[#5865F2]">Discord</span></span>
+              : <span>{t(item.labelKey, item.id)}</span>
+            }
             {item.badge != null && item.badge > 0 && (
               <span className="absolute -top-1 right-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-canvas">
                 {item.badge > 99 ? '99+' : item.badge}
