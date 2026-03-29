@@ -287,6 +287,16 @@
     "pollOption": "Option {{n}}",
     "addOption": "Add option"
   },
+  "communitySidebar": {
+    "title": "Community",
+    "expand": "Expand Community",
+    "poweredBy": "Powered by Discord",
+    "selectChannel": "Select a channel",
+    "joinDiscord": "Join our Discord",
+    "joinDiscordDesc": "Link your Discord account to chat with the community while watching your Echoes.",
+    "linkAccount": "Link Discord Account",
+    "openFull": "Open full community view"
+  },
   "notifications": {
     "title": "Notifications",
     "empty": "All caught up",

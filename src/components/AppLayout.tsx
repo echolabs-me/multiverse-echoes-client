@@ -26,6 +26,8 @@ import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { OracleSidebar } from './OracleSidebar.tsx';
+import { CommunitySidebar } from './CommunitySidebar.tsx';
+import { useCommunitySidebarUnread } from '../hooks/useCommunitySidebarUnread.ts';
 
 interface NavItem {
   id: string;
@@ -165,9 +167,21 @@ export function AppLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [oracleCollapsed, setOracleCollapsed] = useState(false);
+  const [sidebarTab, setSidebarTab] = useState<'oracle' | 'community'>(
+    () => (localStorage.getItem('sidebar_tab') as 'oracle' | 'community') ?? 'oracle',
+  );
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [mobileOracleOpen, setMobileOracleOpen] = useState(false);
+  const communityHasUnread = useCommunitySidebarUnread();
   const unreadCount = useNotificationStore((s) => s.unreadCount);
+
+  const switchSidebarTab = (tab: 'oracle' | 'community') => {
+    setSidebarTab(tab);
+    localStorage.setItem('sidebar_tab', tab);
+    if (tab === 'community') {
+      window.dispatchEvent(new Event('community-sidebar-opened'));
+    }
+  };
 
   // Track page views on route changes (ME-UXF-001 §16.5)
   useEffect(() => {
@@ -283,29 +297,71 @@ export function AppLayout() {
           <Outlet />
         </main>
 
-        {/* Right Oracle sidebar — desktop only */}
+        {/* Right sidebar — Oracle / Community tabs — desktop only */}
         <div
           className={`hidden md:flex h-full flex-col border-l border-border bg-canvas transition-[width] duration-[var(--duration-slow)] ${
             oracleCollapsed ? 'w-12' : 'w-80 lg:w-96'
           }`}
         >
           {oracleCollapsed ? (
-            <button
-              onClick={() => setOracleCollapsed(false)}
-              className="flex h-full flex-col items-center pt-4 text-text-muted hover:text-accent"
-              aria-label={t('oracle.expand', 'Expand Oracle')}
-              title={t('oracle.title')}
-            >
-              <Sparkles size={20} />
-              <span
-                className="mt-2 text-[10px] font-medium"
-                style={{ writingMode: 'vertical-rl' }}
+            <div className="flex h-full flex-col items-center gap-4 pt-4">
+              <button
+                onClick={() => { setOracleCollapsed(false); switchSidebarTab('oracle'); }}
+                className="text-text-muted hover:text-accent"
+                aria-label={t('oracle.expand', 'Expand Oracle')}
+                title={t('oracle.title')}
               >
-                {t('oracle.title')}
-              </span>
-            </button>
+                <Sparkles size={20} />
+              </button>
+              <button
+                onClick={() => { setOracleCollapsed(false); switchSidebarTab('community'); }}
+                className="relative text-text-muted hover:text-[#5865F2]"
+                aria-label={t('communitySidebar.expand')}
+                title={t('communitySidebar.title')}
+              >
+                <DiscordIcon size={20} />
+                {communityHasUnread && (
+                  <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#5865F2]" />
+                )}
+              </button>
+            </div>
           ) : (
-            <OracleSidebar onCollapse={() => setOracleCollapsed(true)} />
+            <>
+              {/* Tab bar */}
+              <div className="flex border-b border-border">
+                <button
+                  onClick={() => switchSidebarTab('oracle')}
+                  className={`flex flex-1 items-center justify-center gap-1.5 py-2.5 text-xs font-medium transition-colors ${
+                    sidebarTab === 'oracle'
+                      ? 'border-b-2 border-accent text-accent'
+                      : 'text-text-muted hover:text-text-primary'
+                  }`}
+                >
+                  <Sparkles size={14} />
+                  {t('oracle.title')}
+                </button>
+                <button
+                  onClick={() => switchSidebarTab('community')}
+                  className={`relative flex flex-1 items-center justify-center gap-1.5 py-2.5 text-xs font-medium transition-colors ${
+                    sidebarTab === 'community'
+                      ? 'border-b-2 border-[#5865F2] text-[#5865F2]'
+                      : 'text-text-muted hover:text-text-primary'
+                  }`}
+                >
+                  <DiscordIcon size={14} />
+                  {t('communitySidebar.title')}
+                  {communityHasUnread && sidebarTab !== 'community' && (
+                    <span className="absolute top-1.5 right-4 h-2 w-2 rounded-full bg-[#5865F2]" />
+                  )}
+                </button>
+              </div>
+              {/* Tab content */}
+              {sidebarTab === 'oracle' ? (
+                <OracleSidebar onCollapse={() => setOracleCollapsed(true)} />
+              ) : (
+                <CommunitySidebar onCollapse={() => setOracleCollapsed(true)} />
+              )}
+            </>
           )}
         </div>
       </div>
@@ -350,26 +406,50 @@ export function AppLayout() {
         ))}
       </nav>
 
-      {/* Mobile Oracle overlay */}
+      {/* Mobile Oracle/Community overlay */}
       {mobileOracleOpen && (
         <div className="fixed inset-0 z-50 flex flex-col bg-canvas md:hidden">
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
-            <div className="flex items-center gap-2">
-              <Sparkles size={20} className="text-accent" />
-              <h2 className="text-lg font-semibold text-text-primary">
-                {t('oracle.title')}
-              </h2>
-            </div>
+          {/* Tab bar */}
+          <div className="flex border-b border-border">
+            <button
+              onClick={() => switchSidebarTab('oracle')}
+              className={`flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
+                sidebarTab === 'oracle'
+                  ? 'border-b-2 border-accent text-accent'
+                  : 'text-text-muted'
+              }`}
+            >
+              <Sparkles size={16} />
+              {t('oracle.title')}
+            </button>
+            <button
+              onClick={() => switchSidebarTab('community')}
+              className={`relative flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
+                sidebarTab === 'community'
+                  ? 'border-b-2 border-[#5865F2] text-[#5865F2]'
+                  : 'text-text-muted'
+              }`}
+            >
+              <DiscordIcon size={16} />
+              {t('communitySidebar.title')}
+              {communityHasUnread && sidebarTab !== 'community' && (
+                <span className="absolute top-2 right-6 h-2 w-2 rounded-full bg-[#5865F2]" />
+              )}
+            </button>
             <button
               onClick={() => setMobileOracleOpen(false)}
-              className="rounded-md p-1.5 text-text-muted hover:bg-surface hover:text-text-secondary"
+              className="px-3 text-text-muted hover:text-text-secondary"
               aria-label={t('common.close')}
             >
               <X size={20} />
             </button>
           </div>
           <div className="flex-1 overflow-hidden">
-            <OracleSidebar onCollapse={() => setMobileOracleOpen(false)} />
+            {sidebarTab === 'oracle' ? (
+              <OracleSidebar onCollapse={() => setMobileOracleOpen(false)} />
+            ) : (
+              <CommunitySidebar onCollapse={() => setMobileOracleOpen(false)} />
+            )}
           </div>
         </div>
       )}
