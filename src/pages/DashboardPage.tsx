@@ -450,11 +450,18 @@ function DashboardTickCountdown({ lastTickId }: { lastTickId: number }) {
   const { t } = useTranslation();
   const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
 
-  // Seed synchronously from localStorage on very first render — no flash of 60.
   const lastTickTimeRef = useRef(readLastTickAt());
   const initialTickIdRef = useRef(lastTickId);
+  const [isGenerating, setIsGenerating] = useState(() => {
+    const stored = readLastTickAt();
+    if (stored > 0) {
+      return (Date.now() - stored) / 1000 >= tickInterval;
+    }
+    return false;
+  });
 
-  // On WS tick event (not initial mount): mark "now" as last tick time.
+  // On WS tick event (DiaryEntryCreated): update last tick time.
+  // The interval compute function will reset isGenerating on the next tick.
   useEffect(() => {
     if (lastTickId > initialTickIdRef.current) {
       const now = Date.now();
@@ -467,8 +474,8 @@ function DashboardTickCountdown({ lastTickId }: { lastTickId: number }) {
     const stored = readLastTickAt();
     if (stored > 0) {
       const elapsed = Math.floor((Date.now() - stored) / 1000);
-      const remaining = tickInterval - (elapsed % tickInterval);
-      return remaining === tickInterval ? 0 : remaining;
+      if (elapsed >= tickInterval) return 0;
+      return tickInterval - elapsed;
     }
     return tickInterval;
   });
@@ -478,19 +485,24 @@ function DashboardTickCountdown({ lastTickId }: { lastTickId: number }) {
       const base = lastTickTimeRef.current;
       if (base > 0) {
         const elapsed = Math.floor((Date.now() - base) / 1000);
-        const remaining = tickInterval - (elapsed % tickInterval);
-        setSeconds(remaining === tickInterval ? 0 : remaining);
+        if (elapsed >= tickInterval) {
+          setSeconds(0);
+          setIsGenerating(true);
+        } else {
+          setSeconds(tickInterval - elapsed);
+          setIsGenerating(false);
+        }
       }
     };
     const timer = setInterval(compute, 1000);
     return () => clearInterval(timer);
   }, [tickInterval]);
 
-  if (seconds === 0) {
+  if (isGenerating) {
     return (
-      <p className="mt-1 flex items-center gap-1.5 text-xs text-accent animate-pulse">
+      <p className="mt-1 flex items-center gap-1.5 text-xs text-accent">
         <span
-          className="inline-block h-1.5 w-1.5 rounded-full bg-accent"
+          className="inline-block h-1.5 w-1.5 rounded-full bg-accent animate-pulse"
           aria-hidden="true"
         />
         {t('dashboard.echoThinking')}
