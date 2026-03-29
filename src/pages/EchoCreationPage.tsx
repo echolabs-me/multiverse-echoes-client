@@ -120,11 +120,22 @@ export function EchoCreationPage() {
             placeholder={t('echo.namePlaceholder')}
             maxLength={50}
             required
+            className="!bg-canvas border-accent/20"
           />
 
-          <div>
+          <div className="rounded-lg border-2 border-accent/40 bg-accent/5 px-4 py-4">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="text-xl" aria-hidden="true">{'\ud83c\udf0c'}</span>
+              <div>
+                <p className="text-sm font-semibold text-text-primary">
+                  {t('echo.whatIfLabel')}
+                </p>
+                <p className="text-xs text-accent">
+                  {t('echo.whatIfSubtitle')}
+                </p>
+              </div>
+            </div>
             <Input
-              label={`${t('echo.whatIfLabel')} — ${t('echo.whatIfSubtitle')}`}
               multiline
               value={whatIfPrompt}
               onChange={(e) =>
@@ -132,10 +143,16 @@ export function EchoCreationPage() {
               }
               placeholder={t('echo.whatIfPlaceholder')}
               maxLength={500}
+              className="!bg-canvas border-accent/30 min-h-[120px] text-base"
             />
-            <p className="mt-1 text-right text-xs text-text-muted">
-              {whatIfPrompt.length}/500
-            </p>
+            <div className="mt-2 flex items-center justify-between">
+              <p className="text-xs text-text-muted italic">
+                {t('echo.whatIfHint')}
+              </p>
+              <p className="text-xs text-text-muted">
+                {whatIfPrompt.length}/500
+              </p>
+            </div>
           </div>
 
           <div>
@@ -148,6 +165,7 @@ export function EchoCreationPage() {
               }
               placeholder={t('echo.personaOptionalPlaceholder')}
               maxLength={1000}
+              className="!bg-canvas border-accent/20 min-h-[100px]"
             />
             <p className="mt-1 text-right text-xs text-text-muted">
               {personaText.length}/1000

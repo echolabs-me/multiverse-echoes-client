@@ -98,6 +98,7 @@ export function OnboardingProfilePage() {
               onChange={(e) => setBio((e.target as HTMLTextAreaElement).value)}
               placeholder={t('onboarding.bioHint')}
               maxLength={500}
+              className="!bg-canvas border-accent/20 min-h-[100px]"
             />
             <p className="mt-1 text-right text-xs text-text-muted">
               {bio.length}/500

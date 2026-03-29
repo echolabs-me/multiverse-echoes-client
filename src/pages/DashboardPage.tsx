@@ -343,13 +343,17 @@ function ActiveEchoPanel({ echo }: { echo: EchoResponse }) {
 export function DashboardPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { echoList, activeEcho, isLoading, fetchEchoes, setActiveEcho } =
+  const { echoList, activeEcho, fetchEchoes, setActiveEcho } =
     useEchoStore();
   // Ambient soundscape — plays while Dashboard is mounted.
   useAmbientSoundscape();
 
+  // Track initial load separately so background refreshes (WS reconnect calling
+  // fetchEchoes) don't flash a full-page spinner by unmounting ActiveEchoPanel.
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
+
   useEffect(() => {
-    void fetchEchoes();
+    void fetchEchoes().finally(() => setInitialLoadDone(true));
   }, [fetchEchoes]);
 
   useEffect(() => {
@@ -404,7 +408,7 @@ export function DashboardPage() {
       <div className="relative flex-1 overflow-y-auto p-6">
         <SubscriptionExpiryBanner />
         <ShardEnvironment3D shardName="Personal Shard" />
-        {isLoading ? (
+        {!initialLoadDone ? (
           <div className="flex items-center justify-center py-20">
             <Spinner size="lg" />
           </div>
