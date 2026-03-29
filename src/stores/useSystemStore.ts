@@ -9,7 +9,7 @@ interface SystemState {
 }
 
 export const useSystemStore = create<SystemState>((set) => ({
-  tickIntervalSeconds: 60, // Fallback until fetched from server (matches config/default.toml)
+  tickIntervalSeconds: 120, // Fallback until fetched from server (matches config/default.toml)
   lastTickAt: 0,
   isLoaded: false,
 

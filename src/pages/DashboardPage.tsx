@@ -155,7 +155,7 @@ function CommunityPulse() {
 
   useEffect(() => {
     fetchFeed();
-    const interval = setInterval(fetchFeed, 60000);
+    const interval = setInterval(fetchFeed, 120000);
     return () => clearInterval(interval);
   }, [fetchFeed]);
 
