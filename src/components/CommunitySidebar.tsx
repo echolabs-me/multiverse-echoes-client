@@ -250,7 +250,14 @@ export function CommunitySidebar({ onCollapse }: CommunitySidebarProps) {
             className="flex w-full items-center justify-between rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-text-primary hover:border-accent/40 transition-colors"
           >
             <span className="truncate">{activeChannel?.name ?? t('communitySidebar.selectChannel')}</span>
-            <ChevronDown size={14} className={`text-text-muted transition-transform ${showChannelPicker ? 'rotate-180' : ''}`} />
+            <span className="flex items-center gap-1">
+              {unreadChannels.size > 0 && (
+                <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#5865F2] px-1 text-[9px] font-bold text-white">
+                  {unreadChannels.size}
+                </span>
+              )}
+              <ChevronDown size={14} className={`text-text-muted transition-transform ${showChannelPicker ? 'rotate-180' : ''}`} />
+            </span>
           </button>
           {showChannelPicker && (
             <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-lg border border-border bg-surface py-1 shadow-lg">
