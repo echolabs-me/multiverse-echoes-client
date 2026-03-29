@@ -693,8 +693,13 @@ function DiscordLinkSection() {
     try {
       const { auth_url } = await accountApi.linkDiscord();
       window.location.href = auth_url;
-    } catch {
-      addToast(t('common.error'), 'danger');
+    } catch (err) {
+      console.error('[DiscordLink] link failed:', err);
+      const msg =
+        err instanceof Error && err.message
+          ? err.message
+          : t('common.error');
+      addToast(msg, 'danger');
     }
   };
 
@@ -713,17 +718,33 @@ function DiscordLinkSection() {
 
   return (
     <Card>
-      <h3 className="mb-4 text-sm font-semibold text-text-primary">
-        {t('settings.discord')}
-      </h3>
+      <div className="flex items-center gap-2 mb-4">
+        <svg width="20" height="16" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60.1 4.9A58.5 58.5 0 0045.4.2a.2.2 0 00-.2.1 40.8 40.8 0 00-1.8 3.7 54 54 0 00-16.2 0A37.4 37.4 0 0025.4.3a.2.2 0 00-.2-.1A58.4 58.4 0 0010.5 5a.2.2 0 00-.1 0C1.5 18.7-.9 32 .3 45.2v.1a58.9 58.9 0 0018 9.1.2.2 0 00.3-.1 42.2 42.2 0 003.6-5.9.2.2 0 00-.1-.3 38.8 38.8 0 01-5.5-2.7.2.2 0 01 0-.4l1.1-.9a.2.2 0 01.2 0 42 42 0 0035.8 0 .2.2 0 01.2 0l1.1.9a.2.2 0 010 .3 36.4 36.4 0 01-5.5 2.7.2.2 0 00-.1.3 47.3 47.3 0 003.6 5.9.2.2 0 00.3.1A58.7 58.7 0 0071 45.3v-.1C72.4 30 68.4 16.8 60.1 5a.2.2 0 00-.1 0zM23.7 37.1c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1zm23.7 0c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1z" fill="#5865F2"/>
+        </svg>
+        <h3 className="text-sm font-semibold text-text-primary">
+          {t('settings.discord')}
+        </h3>
+      </div>
       {linked ? (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-text-primary">
-            {t('settings.discordLinked')}: <strong>{username}</strong>
-          </p>
-          <Button variant="secondary" onClick={() => void handleUnlink()}>
+        <div className="flex items-center justify-between rounded-lg border border-[#5865F2]/30 bg-[#5865F2]/10 px-4 py-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#5865F2]">
+              <span className="text-sm font-bold text-white">
+                {(username ?? '?')[0].toUpperCase()}
+              </span>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-text-primary">{username}</p>
+              <p className="text-xs text-[#5865F2]">{t('settings.discordLinked')}</p>
+            </div>
+          </div>
+          <button
+            onClick={() => void handleUnlink()}
+            className="rounded-md border border-border px-3 py-1.5 text-xs text-text-secondary hover:bg-surface-hover transition-colors"
+          >
             {t('settings.unlinkDiscord')}
-          </Button>
+          </button>
         </div>
       ) : (
         <>
