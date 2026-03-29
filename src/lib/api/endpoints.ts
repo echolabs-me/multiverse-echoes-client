@@ -243,6 +243,12 @@ export const channels = {
       method: 'POST',
       body: JSON.stringify(data),
     }),
+
+  createPoll: (channelId: string, data: { question: string; options: string[] }) =>
+    request<{ created: boolean }>(`/channels/${channelId}/poll`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 };
 
 // --- Account ---

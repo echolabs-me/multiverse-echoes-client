@@ -10,7 +10,9 @@ import {
   Lock,
   ExternalLink,
   Paperclip,
+  BarChart3,
   X,
+  Plus,
 } from 'lucide-react';
 import {
   Button,
@@ -55,6 +57,9 @@ export function CommunityPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
+  const [showPollForm, setShowPollForm] = useState(false);
+  const [pollQuestion, setPollQuestion] = useState('');
+  const [pollOptions, setPollOptions] = useState(['', '']);
 
   const isFreeUser = user?.subscription_tier === 'Free';
 
@@ -153,12 +158,17 @@ export function CommunityPage() {
   useEchoWebSocket(wsPath, handleWsEvent, loadMessages);
 
   // Global community stream — marks non-active channels as unread in real-time.
+  // Use a ref for activeChannel so the callback is stable and doesn't cause WS reconnects.
+  const activeChannelRef = useRef(activeChannel);
+  activeChannelRef.current = activeChannel;
+
   const handleCommunityEvent = useCallback(
     (event: WsEchoEvent) => {
       if (event.type === 'CommunityMessagePosted') {
         const channelId = (event as { channel_id: string }).channel_id;
+        const current = activeChannelRef.current;
         // Don't mark the active channel as unread — the user is already viewing it.
-        if (activeChannel && channelId === activeChannel.channel_id) return;
+        if (current && channelId === current.channel_id) return;
         setUnreadChannels((prev) => {
           if (prev.has(channelId)) return prev;
           const next = new Set(prev);
@@ -167,7 +177,7 @@ export function CommunityPage() {
         });
       }
     },
-    [activeChannel],
+    [], // Stable — no deps, uses ref for activeChannel
   );
 
   useEchoWebSocket('/ws/community/stream', handleCommunityEvent);
@@ -256,6 +266,27 @@ export function CommunityPage() {
       addToast(t('community.voteRecorded'), 'success');
     } catch {
       addToast(t('common.error'), 'danger');
+    }
+  };
+
+  const handleCreatePoll = async () => {
+    if (!activeChannel || !pollQuestion.trim()) return;
+    const validOptions = pollOptions.filter((o) => o.trim());
+    if (validOptions.length < 2) return;
+    setIsSending(true);
+    try {
+      await channelApi.createPoll(activeChannel.channel_id, {
+        question: pollQuestion.trim(),
+        options: validOptions.map((o) => o.trim()),
+      });
+      setShowPollForm(false);
+      setPollQuestion('');
+      setPollOptions(['', '']);
+      void loadMessages();
+    } catch {
+      addToast(t('common.error'), 'danger');
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -538,6 +569,64 @@ export function CommunityPage() {
                 )}
               </div>
 
+              {/* Poll creation form */}
+              {showPollForm && !activeChannel.is_read_only && (
+                <div className="border-t border-border px-4 py-3">
+                  <div className="rounded-lg border border-accent/30 bg-accent/5 p-3">
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-accent">
+                      {t('community.createPoll')}
+                    </p>
+                    <input
+                      type="text"
+                      value={pollQuestion}
+                      onChange={(e) => setPollQuestion(e.target.value)}
+                      placeholder={t('community.pollQuestion')}
+                      maxLength={300}
+                      className="mb-2 w-full rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                    />
+                    {pollOptions.map((opt, i) => (
+                      <input
+                        key={i}
+                        type="text"
+                        value={opt}
+                        onChange={(e) => {
+                          const next = [...pollOptions];
+                          next[i] = e.target.value;
+                          setPollOptions(next);
+                        }}
+                        placeholder={t('community.pollOption', { n: i + 1 })}
+                        maxLength={55}
+                        className="mb-1 w-full rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                      />
+                    ))}
+                    <div className="mt-2 flex items-center gap-2">
+                      {pollOptions.length < 4 && (
+                        <button
+                          onClick={() => setPollOptions([...pollOptions, ''])}
+                          className="flex items-center gap-1 text-xs text-accent hover:underline"
+                        >
+                          <Plus size={12} /> {t('community.addOption')}
+                        </button>
+                      )}
+                      <div className="ml-auto flex gap-2">
+                        <Button
+                          variant="secondary"
+                          onClick={() => { setShowPollForm(false); setPollQuestion(''); setPollOptions(['', '']); }}
+                        >
+                          {t('common.cancel')}
+                        </Button>
+                        <Button
+                          onClick={() => void handleCreatePoll()}
+                          disabled={!pollQuestion.trim() || pollOptions.filter((o) => o.trim()).length < 2 || isSending}
+                        >
+                          {t('community.createPollBtn')}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Composer */}
               <div className="border-t border-border px-4 py-3">
                 {activeChannel.is_read_only ? (
@@ -570,6 +659,19 @@ export function CommunityPage() {
                       title={t('community.uploadImage')}
                     >
                       <Paperclip size={16} />
+                    </button>
+                    <button
+                      onClick={() => setShowPollForm(!showPollForm)}
+                      disabled={isSending}
+                      className={`rounded-lg p-2 transition-colors ${
+                        showPollForm
+                          ? 'bg-accent/20 text-accent'
+                          : 'text-text-muted hover:bg-surface-raised hover:text-text-primary'
+                      }`}
+                      aria-label={t('community.createPoll')}
+                      title={t('community.createPoll')}
+                    >
+                      <BarChart3 size={16} />
                     </button>
                     <input
                       type="text"

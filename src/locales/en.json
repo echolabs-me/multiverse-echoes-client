@@ -280,7 +280,12 @@
     "votes": "votes",
     "totalVotes": "{{count}} total votes",
     "voteRecorded": "Vote recorded!",
-    "new": "new"
+    "new": "new",
+    "createPoll": "Create poll",
+    "createPollBtn": "Create",
+    "pollQuestion": "What do you want to ask?",
+    "pollOption": "Option {{n}}",
+    "addOption": "Add option"
   },
   "notifications": {
     "title": "Notifications",
