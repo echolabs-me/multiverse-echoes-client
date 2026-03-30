@@ -5,8 +5,8 @@ import { ChevronDown, X } from 'lucide-react';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
-import { echoes as echoApi } from '../lib/api/endpoints.ts';
-import type { EchoResponse } from '../types/api.ts';
+import { echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
+import type { EchoResponse, FeedItem } from '../types/api.ts';
 
 /**
  * Mini-card Echo item for the sidebar.
@@ -141,8 +141,61 @@ export function EchoSidebar() {
           ))}
         </ul>
       </nav>
+
+      {/* Community Pulse — recent activity across all echoes */}
+      <CommunityPulse />
     </aside>
   );
+}
+
+/**
+ * Compact community pulse feed at the bottom of the echo sidebar.
+ */
+function CommunityPulse() {
+  const { t } = useTranslation();
+  const [items, setItems] = useState<FeedItem[]>([]);
+
+  useEffect(() => {
+    void feeds.community(8).then(setItems).catch(() => {});
+    const interval = setInterval(() => {
+      void feeds.community(8).then(setItems).catch(() => {});
+    }, 120_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (items.length === 0) return null;
+
+  return (
+    <div className="border-t border-border px-2 py-2">
+      <div className="flex items-center gap-1.5 px-1 mb-1.5">
+        <span className="relative flex h-1.5 w-1.5">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50 motion-reduce:animate-none" />
+          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+        </span>
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-text-muted">
+          {t('communityFeed.title')}
+        </span>
+      </div>
+      <div className="flex flex-col gap-0.5 max-h-36 overflow-y-auto">
+        {items.map((item) => (
+          <div key={item.item_id} className="rounded px-2 py-1">
+            <p className="truncate text-[11px] text-text-secondary">{item.title}</p>
+            <p className="text-[10px] text-text-muted">{formatRelativeTime(item.created_at)}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function formatRelativeTime(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const minutes = Math.floor(diff / 60_000);
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.floor(hours / 24)}d ago`;
 }
 
 /**

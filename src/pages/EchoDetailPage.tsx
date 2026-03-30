@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
-  ArrowLeft,
   BookOpen,
   Download,
   Zap,
@@ -482,15 +481,6 @@ export function EchoDetailPage() {
 
       <div className="relative flex-1 overflow-y-auto">
         <div className="mx-auto max-w-4xl p-6">
-          {/* Back button */}
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
-          >
-            <ArrowLeft size={16} />
-            {t('common.back')}
-          </button>
-
           {/* Mobile Echo switcher — dropdown for quick navigation */}
           <div className="relative mb-4">
             <MobileEchoSwitcher />
