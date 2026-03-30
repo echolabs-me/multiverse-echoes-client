@@ -35,6 +35,7 @@ import type {
   Conversation,
   ConversationMessage,
   CreateConversationResponse,
+  ActiveConversationResponse,
   SendConversationMessageRequest,
   DataExport,
   RequestExportBody,
@@ -342,6 +343,10 @@ export const conversations = {
     request<CreateConversationResponse>(`/echoes/${echoId}/conversations`, {
       method: 'POST',
     }),
+
+  /** Find an active conversation (last message < 30min ago) or create a new one. */
+  findActive: (echoId: string) =>
+    request<ActiveConversationResponse>(`/echoes/${echoId}/conversations/active`),
 
   list: (echoId: string) =>
     request<Conversation[]>(`/echoes/${echoId}/conversations`),

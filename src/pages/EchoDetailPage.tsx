@@ -40,7 +40,8 @@ import { MoodParticles } from '../components/MoodParticles.tsx';
 import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
-import { echoes as echoApi, feeds, reports } from '../lib/api/endpoints.ts';
+import { EchoConversationPanel } from '../components/EchoConversationPanel.tsx';
+import { echoes as echoApi, feeds, reports, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
@@ -49,6 +50,7 @@ import type {
   EchoRelationship,
   InfluenceBalance,
   DiaryEntry,
+  Conversation,
   WsEchoEvent,
 } from '../types/api.ts';
 
@@ -97,6 +99,9 @@ export function EchoDetailPage() {
   const [influenceDetails, setInfluenceDetails] = useState('');
   const [exportModal, setExportModal] = useState(false);
   const [reportModal, setReportModal] = useState(false);
+  const [showConversation, setShowConversation] = useState(false);
+  const [pastConversations, setPastConversations] = useState<Conversation[]>([]);
+  const [showPastConversations, setShowPastConversations] = useState(false);
   const [reportTargetId, setReportTargetId] = useState('');
   const [reportReason, setReportReason] = useState('');
   const [soloMode, setSoloMode] = useState(false);
@@ -141,6 +146,8 @@ export function EchoDetailPage() {
       setDiaryOffset(diary.length);
       setHasMoreDiary(diary.length >= PAGE_SIZE);
       await fetchPersonalFeed(echoId);
+      const convList = await conversations.list(echoId).catch(() => [] as Conversation[]);
+      setPastConversations(convList);
       // Load solo_mode
       const privacy = await accountApi.getPrivacy().catch(() => ({ solo_mode: false }));
       setSoloMode(privacy.solo_mode);
@@ -480,7 +487,9 @@ export function EchoDetailPage() {
   const personaTruncated = activeEcho.persona_text.length > 200 && !showAllPersona;
 
   return (
-    <div ref={moodContainerRef} className="relative flex h-full flex-col">
+    <div className="flex h-full">
+      {/* Main content — shrinks when conversation panel is open on desktop */}
+      <div ref={moodContainerRef} className={`relative flex h-full flex-col ${showConversation ? 'w-[60%]' : 'w-full'} transition-[width] duration-300`}>
       {/* Mood-reactive background gradient */}
       <div
         className="pointer-events-none absolute inset-0 transition-[background] duration-300 ease-in-out"
@@ -567,11 +576,21 @@ export function EchoDetailPage() {
 
           {/* Action Toolbar */}
           <div className="my-4 flex flex-wrap gap-2">
-            {/* Talk — primary action, accent glow */}
+            {/* Talk — primary action, accent glow. Desktop: toggle side panel. Mobile: navigate. */}
             <button
-              onClick={() => navigate(`/echoes/${activeEcho.echo_id}/talk`)}
+              onClick={() => {
+                if (window.innerWidth >= 1024) {
+                  setShowConversation((prev) => !prev);
+                } else {
+                  navigate(`/echoes/${activeEcho.echo_id}/talk`);
+                }
+              }}
               disabled={activeEcho.status === 'Hibernated'}
-              className="action-btn-primary flex items-center gap-1.5 rounded-lg border border-accent/40 bg-accent/10 px-3.5 py-2 text-xs font-semibold text-accent hover:bg-accent/20 hover:border-accent/60 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className={`action-btn-primary flex items-center gap-1.5 rounded-lg border px-3.5 py-2 text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+                showConversation
+                  ? 'border-accent bg-accent/20 text-accent'
+                  : 'border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 hover:border-accent/60'
+              }`}
             >
               <MessageCircle size={14} /> {t('echoDetail.talkToEcho')}
             </button>
@@ -629,6 +648,43 @@ export function EchoDetailPage() {
           <div className="mb-4">
             <CommunityPulseCard />
           </div>
+
+          {/* Past Conversations */}
+          {pastConversations.length > 0 && (
+            <div className="mb-4">
+              <button
+                onClick={() => setShowPastConversations((p) => !p)}
+                className="flex w-full items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-left text-xs font-medium text-text-secondary hover:bg-surface-raised transition-colors"
+              >
+                <MessageCircle size={14} />
+                {t('conversation.pastConversations', { count: pastConversations.length })}
+                {showPastConversations ? <ChevronUp size={14} className="ml-auto" /> : <ChevronDown size={14} className="ml-auto" />}
+              </button>
+              {showPastConversations && (
+                <div className="mt-2 space-y-1.5">
+                  {pastConversations.map((conv) => (
+                    <button
+                      key={conv.conversation_id}
+                      onClick={() => navigate(`/echoes/${activeEcho.echo_id}/talk`)}
+                      className="flex w-full items-center justify-between rounded-lg border border-border/50 bg-surface/50 px-3 py-2 text-left text-xs transition-colors hover:bg-surface-raised"
+                    >
+                      <span className="text-text-primary">
+                        {new Date(conv.created_at).toLocaleDateString([], {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </span>
+                      {conv.saved && (
+                        <Badge variant="success">{t('conversation.saved')}</Badge>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Mood history strip */}
           <MoodHistoryStrip entries={diaryEntries} className="mb-2" />
@@ -999,6 +1055,19 @@ export function EchoDetailPage() {
           </Button>
         </div>
       </Modal>
+    </div>
+
+      {/* Conversation side panel — desktop only (>= 1024px) */}
+      {showConversation && activeEcho && (
+        <div className="hidden h-full w-[40%] lg:block">
+          <EchoConversationPanel
+            echoId={activeEcho.echo_id}
+            echoName={activeEcho.name}
+            echoMood={activeEcho.current_mood}
+            onClose={() => setShowConversation(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -535,6 +535,15 @@ export interface CreateConversationResponse {
   saved: boolean;
 }
 
+export interface ActiveConversationResponse {
+  conversation_id: string;
+  echo_id: string;
+  created_at: string;
+  saved: boolean;
+  resumed: boolean;
+  messages: ConversationMessage[];
+}
+
 export interface SendConversationMessageRequest {
   content: string;
 }

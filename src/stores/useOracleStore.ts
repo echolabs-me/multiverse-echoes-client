@@ -128,30 +128,46 @@ export const useOracleStore = create<OracleState>((set, get) => ({
 
     try {
       let retries = 0;
+      const maxRetries = 8;
+      const deepThoughtThreshold = 6;
+      const queuedText = 'The Oracle is busy guiding the multiverse right now. They\u2019ll be with you shortly.';
+      const deepThoughtText = 'The Oracle is taking a while \u2014 they\u2019re deep in thought. Hang tight, they\u2019ll respond soon.';
       let response = await oracle.ask({
         question,
         context: get().context,
       });
 
       // Handle 202 queued response (Oracle returns __QUEUED__ marker).
-      while (retries < 3 && response.answer === '__QUEUED__') {
+      // 8 retries × 15s = 2 minutes. Show "deep in thought" after attempt 6
+      // but keep retrying in the background.
+      while (retries < maxRetries && response.answer === '__QUEUED__') {
         if (retries === 0) {
           const queuedMsg: OracleMessage = {
             id: genId(),
             role: 'oracle',
-            text: 'The Oracle is busy guiding the multiverse right now. They\u2019ll be with you shortly.',
+            text: queuedText,
             timestamp: Date.now(),
           };
           set({ messages: [...get().messages, queuedMsg], isLoading: true });
+        }
+        if (retries === deepThoughtThreshold) {
+          const msgs = get().messages.filter((m) => m.text !== queuedText);
+          const deepMsg: OracleMessage = {
+            id: genId(),
+            role: 'oracle',
+            text: deepThoughtText,
+            timestamp: Date.now(),
+          };
+          set({ messages: [...msgs, deepMsg], isLoading: true });
         }
         await new Promise((r) => setTimeout(r, 15_000));
         retries++;
         response = await oracle.ask({ question, context: get().context });
       }
 
-      // Remove queued placeholder if present.
+      // Remove queued/deep-thought placeholder if present.
       if (retries > 0) {
-        const msgs = get().messages.filter((m) => m.text !== 'The Oracle is busy guiding the multiverse right now. They\u2019ll be with you shortly.');
+        const msgs = get().messages.filter((m) => m.text !== queuedText && m.text !== deepThoughtText);
         set({ messages: msgs });
       }
 

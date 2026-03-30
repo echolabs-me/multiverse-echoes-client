@@ -484,7 +484,8 @@
     "errorSending": "Message could not be sent: {{detail}}",
     "errorSaving": "Could not save conversation. Please try again.",
     "echoQueued": "Your Echo is busy living their life right now\u2026 They will be with you shortly.",
-    "echoDeepThought": "Your Echo is taking a while \u2014 they're deep in thought. You can wait or come back shortly."
+    "echoDeepThought": "Your Echo is taking a while \u2014 they're deep in thought. You can wait or come back shortly.",
+    "pastConversations": "Past Conversations ({{count}})"
   },
   "search": {
     "placeholder": "Search Echoes, diary entries, events, shards...",
