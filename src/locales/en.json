@@ -3,6 +3,12 @@
     "title": "Multiverse Echoes",
     "tagline": "Autonomous Life Simulation Platform"
   },
+  "tickTimer": {
+    "nextTick": "Next tick in {{time}}",
+    "generating": "Echoes are living\u2026",
+    "arrived": "New entries!",
+    "countdown": "Next tick in {{seconds}} seconds"
+  },
   "common": {
     "loading": "Loading...",
     "error": "Something went wrong on our end. We're looking into it.",

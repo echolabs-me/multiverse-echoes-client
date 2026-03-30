@@ -27,6 +27,7 @@ import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { OracleSidebar } from './OracleSidebar.tsx';
 import { CommunitySidebar } from './CommunitySidebar.tsx';
+import { TickTimer } from './TickTimer.tsx';
 import { useCommunitySidebarUnread } from '../hooks/useCommunitySidebarUnread.ts';
 
 interface NavItem {
@@ -222,10 +223,13 @@ export function AppLayout() {
       <header className="flex h-14 items-center justify-between border-b border-border bg-surface px-4">
         <div className="flex items-center gap-3">
           <Sparkles size={24} className="text-accent" aria-hidden="true" />
-          <span className="text-lg font-semibold text-text-primary">
+          <span className="hidden sm:inline text-lg font-semibold text-text-primary">
             {t('app.title')}
           </span>
         </div>
+
+        {/* Global tick countdown — the heartbeat of the simulation */}
+        <TickTimer />
 
         {/* Mobile-only hamburger */}
         <button

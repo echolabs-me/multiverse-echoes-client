@@ -33,7 +33,6 @@ import {
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
-import { useSystemStore } from '../stores/useSystemStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
 import { useMoodAtmosphere } from '../hooks/useMoodAtmosphere.ts';
@@ -73,7 +72,6 @@ export function EchoDetailPage() {
   const [influence, setInfluence] = useState<InfluenceBalance | null>(null);
   // Memories are internal infrastructure — not shown in user UI.
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
-  const [diaryVersion, setDiaryVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [diaryOffset, setDiaryOffset] = useState(0);
   const [hasMoreDiary, setHasMoreDiary] = useState(false);
@@ -197,9 +195,6 @@ export function EchoDetailPage() {
     }).catch(() => {});
   }, [echoId, moodFilter]);
 
-  // Track last tick completion time for countdown sync.
-  const lastTickTimeRef = useRef(Number(localStorage.getItem('me_last_tick_at')) || 0);
-
   // WebSocket live updates — replaces 30-second polling.
   // On DiaryEntryCreated: fetch new diary and trigger arrival animation.
   // On MoodChanged: refresh echo state for mood atmosphere update.
@@ -212,7 +207,6 @@ export function EchoDetailPage() {
         if ('last_tick_at' in event) {
           const serverAt = event.last_tick_at as number;
           if (serverAt > 0) {
-            lastTickTimeRef.current = serverAt;
             try { localStorage.setItem('me_last_tick_at', String(serverAt)); } catch { /* noop */ }
           }
         }
@@ -238,7 +232,6 @@ export function EchoDetailPage() {
         trackEvent('echo.travel_completed', { echo_id: id });
       }
       if (event.type === 'DiaryEntryCreated') {
-        setDiaryVersion((v) => v + 1);
         void echoApi
           .diary(id)
           .then((d) => {
@@ -515,7 +508,6 @@ export function EchoDetailPage() {
               <p className="mt-1 text-sm text-text-secondary">
                 {t('dashboard.mood')}: {activeEcho.current_mood} &middot; {t('dashboard.tick', { tick: activeEcho.current_tick })}
               </p>
-              {activeEcho.status === 'Active' && <TickCountdown lastTickTimeRef={lastTickTimeRef} diaryVersion={diaryVersion} />}
             </div>
           </div>
 
@@ -989,68 +981,6 @@ export function EchoDetailPage() {
         echoId={activeEcho.echo_id}
       />
     </div>
-  );
-}
-
-function TickCountdown({ lastTickTimeRef, diaryVersion }: { lastTickTimeRef: React.RefObject<number>; diaryVersion: number }) {
-  const { t } = useTranslation();
-  const tickInterval = useSystemStore((s) => s.tickIntervalSeconds);
-
-  const [isGenerating, setIsGenerating] = useState(() => {
-    const stored = Number(localStorage.getItem('me_last_tick_at')) || 0;
-    return stored > 0 && (Date.now() - stored) / 1000 >= tickInterval;
-  });
-  const generatingRef = useRef(false);
-
-  // DiaryEntryCreated clears the generating flag via ref.
-  // The interval compute function syncs state from the ref every second.
-  const prevDiaryVersionRef = useRef(diaryVersion);
-  useEffect(() => {
-    if (diaryVersion > prevDiaryVersionRef.current) {
-      prevDiaryVersionRef.current = diaryVersion;
-      generatingRef.current = false;
-    }
-  }, [diaryVersion]);
-
-  const [seconds, setSeconds] = useState(() => {
-    const stored = Number(localStorage.getItem('me_last_tick_at')) || 0;
-    if (stored > 0) {
-      const remaining = tickInterval - Math.floor((Date.now() - stored) / 1000);
-      return Math.max(0, remaining);
-    }
-    return tickInterval;
-  });
-
-  useEffect(() => {
-    const compute = () => {
-      const base = lastTickTimeRef.current;
-      if (base > 0) {
-        const remaining = tickInterval - Math.floor((Date.now() - base) / 1000);
-        if (remaining <= 0) {
-          setSeconds(0);
-          if (!generatingRef.current) {
-            generatingRef.current = true;
-          }
-        } else {
-          setSeconds(remaining);
-        }
-        setIsGenerating(generatingRef.current);
-      }
-    };
-    const timer = setInterval(compute, 1000);
-    return () => clearInterval(timer);
-  }, [tickInterval, lastTickTimeRef]);
-
-  return (
-    <p className="mt-1 flex items-center gap-1.5 text-xs text-text-muted">
-      <span
-        className={`inline-block h-1.5 w-1.5 rounded-full ${isGenerating ? 'bg-accent' : 'bg-success'} animate-pulse`}
-        aria-hidden="true"
-      />
-      {isGenerating
-        ? <span className="text-accent">{t('echoDetail.echoThinking')}</span>
-        : t('echoDetail.nextTick', { seconds })}
-    </p>
   );
 }
 

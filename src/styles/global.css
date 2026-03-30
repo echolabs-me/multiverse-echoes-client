@@ -350,3 +350,32 @@ pre {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Tick Timer animations — CDS-001 accent #D4915C */
+.tick-timer-pulse {
+  animation: tick-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tick-pulse {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 0 transparent); }
+  50% { opacity: 0.8; filter: drop-shadow(0 0 6px var(--color-accent, #D4915C)); }
+}
+
+.tick-timer-flash {
+  animation: tick-flash 0.6s ease-out;
+}
+
+@keyframes tick-flash {
+  0% { filter: drop-shadow(0 0 8px var(--color-success, #4ade80)); }
+  100% { filter: drop-shadow(0 0 0 transparent); }
+}
+
+.tick-timer-arrived {
+  animation: tick-arrived 0.4s ease-out;
+}
+
+@keyframes tick-arrived {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
