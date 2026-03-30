@@ -106,11 +106,57 @@ export function EchoConversationPage() {
     setMessages((prev) => [...prev, optimisticUserMsg]);
 
     try {
-      const echoResponse = await conversations.sendMessage(conversationId, {
+      // Send message with auto-retry on 202 (LLM busy with tick).
+      let retries = 0;
+      const maxRetries = 3;
+      let echoResponse = await conversations.sendMessage(conversationId, {
         content: trimmed,
       });
-      trackEvent('conversation.message_sent', { echo_id: echoId, message_number: userMessageCount + 1 });
-      setMessages((prev) => [...prev, echoResponse]);
+
+      // Detect 202 queued response (has 'status' field instead of normal message fields).
+      const isQueued = (r: unknown): boolean =>
+        typeof r === 'object' && r !== null && 'status' in r && (r as Record<string, unknown>).status === 'queued';
+
+      while (retries < maxRetries && isQueued(echoResponse)) {
+        // Show queued message while waiting.
+        if (retries === 0) {
+          const queuedMsg: ConversationMessage = {
+            message_id: `queued-${Date.now()}`,
+            conversation_id: conversationId,
+            role: 'echo',
+            content: t('conversation.echoQueued'),
+            created_at: new Date().toISOString(),
+          };
+          setMessages((prev) => [...prev, queuedMsg]);
+        }
+        // Wait then retry silently.
+        await new Promise((r) => setTimeout(r, 15_000));
+        retries++;
+        echoResponse = await conversations.sendMessage(conversationId, {
+          content: trimmed,
+        });
+      }
+
+      if (retries >= maxRetries && isQueued(echoResponse)) {
+        // Still queued after max retries — show fallback.
+        setMessages((prev) => {
+          const filtered = prev.filter((m) => !m.message_id.startsWith('queued-'));
+          return [...filtered, {
+            message_id: `fallback-${Date.now()}`,
+            conversation_id: conversationId,
+            role: 'echo',
+            content: t('conversation.echoDeepThought'),
+            created_at: new Date().toISOString(),
+          }];
+        });
+      } else {
+        // Got a real response — replace any queued message.
+        trackEvent('conversation.message_sent', { echo_id: echoId, message_number: userMessageCount + 1 });
+        setMessages((prev) => {
+          const filtered = prev.filter((m) => !m.message_id.startsWith('queued-'));
+          return [...filtered, echoResponse];
+        });
+      }
     } catch (err) {
       const detail = err instanceof Error ? err.message : 'Unknown error';
       setError(t('conversation.errorSending', { detail }));

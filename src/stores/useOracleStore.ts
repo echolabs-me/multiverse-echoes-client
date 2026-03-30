@@ -127,20 +127,42 @@ export const useOracleStore = create<OracleState>((set, get) => ({
     set({ messages: [...get().messages, userMsg], isLoading: true, error: null });
 
     try {
-      const response = await oracle.ask({
+      let retries = 0;
+      let response = await oracle.ask({
         question,
         context: get().context,
       });
 
+      // Handle 202 queued response (Oracle returns __QUEUED__ marker).
+      while (retries < 3 && response.answer === '__QUEUED__') {
+        if (retries === 0) {
+          const queuedMsg: OracleMessage = {
+            id: genId(),
+            role: 'oracle',
+            text: 'The Oracle is busy guiding the multiverse right now. They\u2019ll be with you shortly.',
+            timestamp: Date.now(),
+          };
+          set({ messages: [...get().messages, queuedMsg], isLoading: true });
+        }
+        await new Promise((r) => setTimeout(r, 15_000));
+        retries++;
+        response = await oracle.ask({ question, context: get().context });
+      }
+
+      // Remove queued placeholder if present.
+      if (retries > 0) {
+        const msgs = get().messages.filter((m) => m.text !== 'The Oracle is busy guiding the multiverse right now. They\u2019ll be with you shortly.');
+        set({ messages: msgs });
+      }
+
       // Check if the Oracle's response contains a feedback marker.
       const marker = parseFeedbackMarker(response.answer);
-      // Strip the marker from the displayed text.
       const displayText = response.answer.replace(/\[FEEDBACK_PENDING:\w+:.+?\]/, '').trim();
 
       const oracleMsg: OracleMessage = {
         id: genId(),
         role: 'oracle',
-        text: displayText,
+        text: displayText || 'The Oracle is deep in thought. Please try again shortly.',
         deep_links: response.deep_links,
         timestamp: Date.now(),
       };
