@@ -148,23 +148,27 @@ export function EchoSidebar() {
   );
 }
 
-/** Compact echo activity feed at the sidebar bottom. */
+/**
+ * Community Pulse — fixed footer in the Echo sidebar.
+ * Uses the personal feed (user's own echoes' activity, no is_public filter).
+ * Stays pinned at the bottom while echo cards scroll above.
+ */
 function CommunityPulse() {
   const { t } = useTranslation();
   const [items, setItems] = useState<FeedItem[]>([]);
 
-  useEffect(() => {
-    void feeds.community(6).then(setItems).catch(() => {});
-    const interval = setInterval(() => {
-      void feeds.community(6).then(setItems).catch(() => {});
-    }, 120_000);
-    return () => clearInterval(interval);
+  const fetchFeed = useCallback(() => {
+    void feeds.personal().then((data) => setItems(data.slice(0, 6))).catch(() => {});
   }, []);
 
-  if (items.length === 0) return null;
+  useEffect(() => {
+    fetchFeed();
+    const interval = setInterval(fetchFeed, 60_000);
+    return () => clearInterval(interval);
+  }, [fetchFeed]);
 
   return (
-    <div className="flex-shrink-0 border-t border-border px-2 py-2 overflow-hidden">
+    <div className="flex-shrink-0 border-t border-border px-2 py-2">
       <div className="flex items-center gap-1.5 px-1 mb-1">
         <span className="relative flex h-1.5 w-1.5">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50 motion-reduce:animate-none" />
@@ -174,13 +178,17 @@ function CommunityPulse() {
           {t('communityFeed.title')}
         </span>
       </div>
-      <ul className="flex flex-col gap-0.5 max-h-32 overflow-y-auto">
-        {items.map((item) => (
-          <li key={item.item_id} className="rounded px-2 py-0.5">
-            <p className="truncate text-[11px] text-text-secondary">{item.title}</p>
-          </li>
-        ))}
-      </ul>
+      {items.length === 0 ? (
+        <p className="px-2 text-[11px] italic text-text-muted">{t('communityFeed.empty')}</p>
+      ) : (
+        <ul className="flex flex-col gap-0.5 max-h-32 overflow-y-auto">
+          {items.map((item) => (
+            <li key={item.item_id} className="rounded px-2 py-0.5">
+              <p className="truncate text-[11px] text-text-secondary">{item.title}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
