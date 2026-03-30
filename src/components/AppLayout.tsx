@@ -220,25 +220,32 @@ export function AppLayout() {
   return (
     <div className="flex h-screen flex-col bg-canvas">
       {/* Top bar — logo + mobile hamburger */}
-      <header className="flex h-14 items-center justify-between border-b border-border bg-surface px-4">
-        <div className="flex items-center gap-3">
-          <Sparkles size={24} className="text-accent" aria-hidden="true" />
-          <span className="hidden sm:inline text-lg font-semibold text-text-primary">
+      <header className="relative flex h-14 items-center border-b border-border bg-surface px-4">
+        {/* Left — logo */}
+        <div className="flex items-center gap-2 min-w-0">
+          <Sparkles size={22} className="flex-shrink-0 text-accent" aria-hidden="true" />
+          <span className="hidden md:inline text-base font-semibold text-text-primary truncate">
             {t('app.title')}
           </span>
         </div>
 
-        {/* Global tick countdown — the heartbeat of the simulation */}
-        <TickTimer />
+        {/* Center — tick timer hero */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="pointer-events-auto">
+            <TickTimer />
+          </div>
+        </div>
 
-        {/* Mobile-only hamburger */}
-        <button
-          onClick={() => setMobileNavOpen(!mobileNavOpen)}
-          className="rounded-md p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary md:hidden"
-          aria-label={t('nav.menu', 'Menu')}
-        >
-          {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        {/* Right — mobile hamburger */}
+        <div className="ml-auto">
+          <button
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            className="rounded-md p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary md:hidden"
+            aria-label={t('nav.menu', 'Menu')}
+          >
+            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile nav drawer */}
