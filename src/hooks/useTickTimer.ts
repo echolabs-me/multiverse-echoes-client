@@ -55,11 +55,14 @@ export function useTickTimer(): TickTimerData {
     return tickInterval;
   });
 
-  // Track whether we're generating (ref for interval callback access).
+  // Synchronous state ref — updated inline (not via useEffect) so the
+  // interval callback always sees the latest state without a render delay.
   const stateRef = useRef(state);
-  useEffect(() => {
-    stateRef.current = state;
-  }, [state]);
+
+  function setTimerState(next: TickTimerState) {
+    stateRef.current = next;
+    setState(next);
+  }
 
   // Arrived timeout ref — auto-transition back to counting_down.
   const arrivedTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -84,10 +87,10 @@ export function useTickTimer(): TickTimerData {
         writeLastTickAt(now);
 
         // Transition to "arrived" state briefly.
-        setState('arrived');
+        setTimerState('arrived');
         clearTimeout(arrivedTimerRef.current);
         arrivedTimerRef.current = setTimeout(() => {
-          setState('counting_down');
+          setTimerState('counting_down');
         }, 2000);
       }
     },
@@ -108,13 +111,16 @@ export function useTickTimer(): TickTimerData {
       const base = lastTickAtRef.current;
       if (base <= 0) return;
 
+      // Never override the arrived state — let its 2s timeout handle the transition.
+      if (stateRef.current === 'arrived') return;
+
       const elapsed = (Date.now() - base) / 1000;
       const remaining = tickInterval - Math.floor(elapsed);
 
       if (remaining <= 0) {
         setSecondsRemaining(0);
         if (stateRef.current === 'counting_down') {
-          setState('generating');
+          setTimerState('generating');
           generatingStartRef.current = Date.now();
         }
         // Safety valve: if stuck generating for >90s, force reset.
@@ -125,14 +131,14 @@ export function useTickTimer(): TickTimerData {
             lastTickAtRef.current = now;
             writeLastTickAt(now);
             generatingStartRef.current = 0;
-            setState('counting_down');
+            setTimerState('counting_down');
           }
         }
       } else {
         setSecondsRemaining(remaining);
         if (stateRef.current === 'generating') {
           generatingStartRef.current = 0;
-          setState('counting_down');
+          setTimerState('counting_down');
         }
       }
     };
