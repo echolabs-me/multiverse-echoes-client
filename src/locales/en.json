@@ -5,6 +5,7 @@
   },
   "tickTimer": {
     "nextTick": "Next tick in {{time}}",
+    "nextHeartbeat": "Next heartbeat",
     "generating": "Echoes are living\u2026",
     "arrived": "New entries!",
     "countdown": "Next tick in {{seconds}} seconds"

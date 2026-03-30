@@ -2,30 +2,24 @@ import { useTranslation } from 'react-i18next';
 import { useTickTimer } from '../hooks/useTickTimer.ts';
 
 /**
- * Global tick countdown timer — the heartbeat of the simulation.
- * Centered in the app header as the hero element.
+ * Global tick timer — heartbeat monitor + ambient progress bar.
  *
- * State machine (unchanged from useTickTimer):
- * - COUNTING_DOWN: gradient progress arc + large countdown digits
- * - GENERATING: heartbeat glow pulse, "Echoes are living..."
- * - ARRIVED: ripple effect outward, then back to countdown
+ * Renders two layers:
+ * 1. Centered digits + label (positioned in the header flow)
+ * 2. Full-width ambient bar at the bottom of the header (absolute positioned,
+ *    breaks out of the center container via a portal-like absolute wrapper)
+ *
+ * State machine (from useTickTimer, unchanged):
+ * - COUNTING_DOWN: bar fills left→right, digits count down
+ * - GENERATING: ECG heartbeat sweep across bar, "Echoes are living..."
+ * - ARRIVED: warm flash, bar resets
  */
 export function TickTimer() {
   const { t } = useTranslation();
   const { state, secondsRemaining, tickInterval } = useTickTimer();
 
-  // Progress fraction (0 = just ticked, 1 = about to tick).
   const progress = tickInterval > 0 ? 1 - secondsRemaining / tickInterval : 0;
 
-  // SVG arc parameters — large ring that fills the header height.
-  const size = 44;
-  const mobileSize = 38;
-  const strokeWidth = 3.5;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference * (1 - progress);
-
-  // Format seconds as M:SS.
   const minutes = Math.floor(secondsRemaining / 60);
   const secs = secondsRemaining % 60;
   const timeDisplay = `${minutes}:${secs.toString().padStart(2, '0')}`;
@@ -33,150 +27,88 @@ export function TickTimer() {
   const isGenerating = state === 'generating';
   const isArrived = state === 'arrived';
 
-  // Glow intensity increases as countdown approaches zero.
-  const glowIntensity = isGenerating ? 1 : Math.min(progress * 1.5, 1);
-  const glowRadius = Math.round(4 + glowIntensity * 8);
+  // Glow intensity ramps up as countdown approaches zero.
+  const glowOpacity = isGenerating ? 0.5 : Math.min(progress * 0.45, 0.45);
 
   return (
-    <div
-      className="tick-timer-hero flex items-center gap-3"
-      aria-live="polite"
-      aria-label={
-        isGenerating
-          ? t('tickTimer.generating')
-          : isArrived
-            ? t('tickTimer.arrived')
-            : t('tickTimer.countdown', { seconds: secondsRemaining })
-      }
-    >
-      {/* Ring + digits container */}
+    <>
+      {/* Centered digits + label */}
       <div
-        className={`tick-timer-ring relative flex-shrink-0 ${
-          isGenerating ? 'tick-timer-heartbeat' : ''
-        } ${isArrived ? 'tick-timer-ripple' : ''}`}
-        style={{
-          filter: isGenerating
-            ? undefined
-            : `drop-shadow(0 0 ${glowRadius}px rgba(212, 145, 92, ${glowIntensity * 0.4}))`,
-        }}
+        className="flex flex-col items-center"
+        aria-live="polite"
+        aria-label={
+          isGenerating
+            ? t('tickTimer.generating')
+            : isArrived
+              ? t('tickTimer.arrived')
+              : t('tickTimer.countdown', { seconds: secondsRemaining })
+        }
       >
-        {/* Desktop ring */}
-        <svg
-          width={size}
-          height={size}
-          viewBox={`0 0 ${size} ${size}`}
-          className="-rotate-90 hidden sm:block"
-        >
-          <defs>
-            <linearGradient id="tick-ring-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="var(--accent, #d4915c)" />
-              <stop offset="100%" stopColor="#f5dcc0" />
-            </linearGradient>
-            <linearGradient id="tick-ring-success" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="var(--success, #6baf7a)" />
-              <stop offset="100%" stopColor="#b8e6c0" />
-            </linearGradient>
-          </defs>
-          {/* Background ring */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={strokeWidth}
-            className="text-border opacity-30"
-          />
-          {/* Progress arc with gradient */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke={isArrived ? 'url(#tick-ring-success)' : 'url(#tick-ring-grad)'}
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-            strokeDashoffset={isGenerating ? 0 : dashOffset}
-            strokeLinecap="round"
-            className={`transition-[stroke-dashoffset] duration-1000 ease-linear ${
-              isGenerating ? 'opacity-50' : ''
+        {isGenerating ? (
+          <span className="tick-digit-breathe text-base sm:text-lg font-semibold text-accent leading-tight">
+            {t('tickTimer.generating')}
+          </span>
+        ) : (
+          <span
+            className={`tick-digit-breathe text-xl sm:text-2xl font-semibold tabular-nums leading-tight tracking-wide ${
+              isArrived ? 'text-success' : ''
             }`}
-          />
-        </svg>
-        {/* Mobile ring (slightly smaller) */}
-        <svg
-          width={mobileSize}
-          height={mobileSize}
-          viewBox={`0 0 ${size} ${size}`}
-          className="-rotate-90 sm:hidden"
-        >
-          <defs>
-            <linearGradient id="tick-ring-grad-m" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="var(--accent, #d4915c)" />
-              <stop offset="100%" stopColor="#f5dcc0" />
-            </linearGradient>
-            <linearGradient id="tick-ring-success-m" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="var(--success, #6baf7a)" />
-              <stop offset="100%" stopColor="#b8e6c0" />
-            </linearGradient>
-          </defs>
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={strokeWidth}
-            className="text-border opacity-30"
-          />
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke={isArrived ? 'url(#tick-ring-success-m)' : 'url(#tick-ring-grad-m)'}
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-            strokeDashoffset={isGenerating ? 0 : dashOffset}
-            strokeLinecap="round"
-            className={`transition-[stroke-dashoffset] duration-1000 ease-linear ${
-              isGenerating ? 'opacity-50' : ''
-            }`}
-          />
-        </svg>
-
-        {/* Center content — large digits or generating indicator */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          {isGenerating ? (
-            <span className="h-2.5 w-2.5 rounded-full bg-accent tick-timer-dot-pulse" />
-          ) : (
-            <span
-              className={`tick-timer-digits text-sm sm:text-[15px] font-mono font-bold tabular-nums leading-none ${
-                isArrived ? 'text-success' : 'text-accent'
-              }`}
-            >
-              {timeDisplay}
-            </span>
-          )}
-        </div>
+            style={isArrived ? undefined : { color: '#E8E0D8' }}
+          >
+            {timeDisplay}
+          </span>
+        )}
+        {/* Sub-label — hidden on mobile during generating */}
+        {!isGenerating && (
+          <span className="hidden sm:block text-[10px] text-text-muted mt-0.5">
+            {isArrived
+              ? t('tickTimer.arrived')
+              : t('tickTimer.nextHeartbeat')}
+          </span>
+        )}
       </div>
 
-      {/* Label — always visible, responsive sizing */}
-      <span
-        className={`text-[11px] sm:text-xs font-medium transition-colors duration-300 whitespace-nowrap ${
-          isGenerating
-            ? 'text-accent'
-            : isArrived
-              ? 'text-success'
-              : 'text-text-muted'
-        }`}
+      {/* Full-width ambient bar — positioned at header bottom via absolute in AppLayout */}
+      <div
+        className="tick-bar absolute bottom-0 left-0 right-0 h-[3px] overflow-hidden"
+        aria-hidden="true"
       >
-        {isGenerating
-          ? t('tickTimer.generating')
-          : isArrived
-            ? t('tickTimer.arrived')
-            : t('tickTimer.nextTick', { time: timeDisplay })}
-      </span>
-    </div>
+        {/* Track (dim baseline) */}
+        <div className="absolute inset-0 bg-border opacity-20" />
+
+        {/* Fill — width transitions smoothly during countdown */}
+        {!isGenerating && !isArrived && (
+          <div
+            className="tick-bar-fill absolute inset-y-0 left-0"
+            style={{ width: `${progress * 100}%` }}
+          />
+        )}
+
+        {/* Heartbeat sweep — during generating */}
+        {isGenerating && (
+          <div className="tick-bar-heartbeat-sweep absolute inset-0" />
+        )}
+
+        {/* Shimmer overlay during generating */}
+        {isGenerating && (
+          <div className="tick-bar-shimmer absolute inset-0" />
+        )}
+
+        {/* Flash on arrival */}
+        {isArrived && (
+          <div className="tick-bar-flash absolute inset-0" />
+        )}
+
+        {/* Ambient glow bleeding upward */}
+        <div
+          className="absolute bottom-0 left-0 h-[6px] transition-opacity duration-1000"
+          style={{
+            width: isGenerating ? '100%' : `${progress * 100}%`,
+            opacity: isGenerating ? 0.4 : glowOpacity,
+            boxShadow: `0 -3px 8px 0 rgba(212, 145, 92, ${isGenerating ? 0.35 : glowOpacity})`,
+          }}
+        />
+      </div>
+    </>
   );
 }

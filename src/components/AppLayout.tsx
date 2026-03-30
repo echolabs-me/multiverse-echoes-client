@@ -220,16 +220,16 @@ export function AppLayout() {
   return (
     <div className="flex h-screen flex-col bg-canvas">
       {/* Top bar — logo + mobile hamburger */}
-      <header className="relative flex h-14 items-center border-b border-border bg-surface px-4">
+      <header className="relative flex h-14 items-center border-b border-border bg-surface px-4 overflow-hidden">
         {/* Left — logo */}
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex items-center gap-2 min-w-0 z-10">
           <Sparkles size={22} className="flex-shrink-0 text-accent" aria-hidden="true" />
           <span className="hidden md:inline text-base font-semibold text-text-primary truncate">
             {t('app.title')}
           </span>
         </div>
 
-        {/* Center — tick timer hero */}
+        {/* Center — tick timer digits + full-width ambient bar */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="pointer-events-auto">
             <TickTimer />
@@ -237,7 +237,7 @@ export function AppLayout() {
         </div>
 
         {/* Right — mobile hamburger */}
-        <div className="ml-auto">
+        <div className="ml-auto z-10">
           <button
             onClick={() => setMobileNavOpen(!mobileNavOpen)}
             className="rounded-md p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary md:hidden"

@@ -351,74 +351,66 @@ pre {
   }
 }
 
-/* ── Tick Timer — hero header animations ── */
+/* ── Tick Timer — heartbeat monitor + ambient bar ── */
 
-/* Heartbeat glow during generating state */
-.tick-timer-heartbeat {
-  animation: tick-heartbeat 1.6s ease-in-out infinite;
-}
-
-@keyframes tick-heartbeat {
-  0%, 100% {
-    filter: drop-shadow(0 0 4px rgba(212, 145, 92, 0.3));
-    transform: scale(1);
-  }
-  30% {
-    filter: drop-shadow(0 0 14px rgba(212, 145, 92, 0.7));
-    transform: scale(1.06);
-  }
-  50% {
-    filter: drop-shadow(0 0 6px rgba(212, 145, 92, 0.4));
-    transform: scale(1);
-  }
-  70% {
-    filter: drop-shadow(0 0 10px rgba(212, 145, 92, 0.55));
-    transform: scale(1.03);
-  }
-}
-
-/* Pulsing dot inside ring during generating */
-.tick-timer-dot-pulse {
-  animation: tick-dot 1.6s ease-in-out infinite;
-}
-
-@keyframes tick-dot {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.4); }
-}
-
-/* Ripple outward on diary arrival */
-.tick-timer-ripple {
-  animation: tick-ripple 0.7s ease-out;
-}
-
-.tick-timer-ripple::after {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  border: 2px solid var(--success, #6baf7a);
-  animation: tick-ripple-ring 0.7s ease-out;
-  pointer-events: none;
-}
-
-@keyframes tick-ripple {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-
-@keyframes tick-ripple-ring {
-  0% { opacity: 0.8; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.6); }
-}
-
-/* Subtle digit breathing — scale pulse each second */
-.tick-timer-digits {
-  animation: tick-digit-breathe 1s ease-in-out infinite;
+/* Digit breathing — subtle opacity pulse so numbers feel alive */
+.tick-digit-breathe {
+  animation: tick-digit-breathe 2s ease-in-out infinite;
 }
 
 @keyframes tick-digit-breathe {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
+  50% { opacity: 0.82; }
+}
+
+/* Ambient bar fill — feathered right edge via gradient mask */
+.tick-bar-fill {
+  background: linear-gradient(90deg, #d4915c 0%, #f5dcc0 85%, transparent 100%);
+  transition: width 1s linear;
+}
+
+/* ECG heartbeat sweep during generating — a bright spike travels left→right */
+.tick-bar-heartbeat-sweep {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent calc(var(--sweep, 0%) - 8%),
+    rgba(212, 145, 92, 0.15) calc(var(--sweep, 0%) - 5%),
+    rgba(212, 145, 92, 0.3) calc(var(--sweep, 0%) - 3%),
+    rgba(245, 220, 192, 0.9) calc(var(--sweep, 0%) - 1%),
+    #fff var(--sweep, 0%),
+    rgba(245, 220, 192, 0.9) calc(var(--sweep, 0%) + 1%),
+    rgba(212, 145, 92, 0.3) calc(var(--sweep, 0%) + 3%),
+    rgba(212, 145, 92, 0.15) calc(var(--sweep, 0%) + 5%),
+    transparent calc(var(--sweep, 0%) + 8%),
+    transparent 100%
+  );
+  animation: tick-heartbeat-sweep 1.8s ease-in-out infinite;
+}
+
+@keyframes tick-heartbeat-sweep {
+  0% { --sweep: -10%; }
+  100% { --sweep: 110%; }
+}
+
+/* Shimmer overlay during generating — subtle brightness oscillation */
+.tick-bar-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(212, 145, 92, 0.12), transparent);
+  animation: tick-bar-shimmer 2.4s ease-in-out infinite;
+}
+
+@keyframes tick-bar-shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* Flash on arrival — warm white that fades */
+.tick-bar-flash {
+  background: linear-gradient(90deg, rgba(245, 220, 192, 0.7), rgba(255, 255, 255, 0.9), rgba(245, 220, 192, 0.7));
+  animation: tick-bar-flash 0.8s ease-out forwards;
+}
+
+@keyframes tick-bar-flash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
 }
