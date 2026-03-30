@@ -94,7 +94,7 @@ export function CommunityPulseCard() {
               </div>
               <p
                 className="text-xs text-text-secondary leading-snug pl-[14px]"
-                style={isExpanded ? undefined : { display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                style={isExpanded ? undefined : { display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
               >
                 {content}
               </p>

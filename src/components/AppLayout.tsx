@@ -326,7 +326,7 @@ export function AppLayout() {
         <MoodAtmosphereWrapper show={location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')}>
           {/* Community Pulse pane */}
           {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
-            <aside className="hidden md:flex h-full w-64 flex-shrink-0 flex-col border-r border-border/50 overflow-y-auto">
+            <aside className="hidden md:flex h-full w-96 flex-shrink-0 flex-col border-r border-border/50 overflow-y-auto">
               <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
                 {t('communityFeed.title')}
               </div>
