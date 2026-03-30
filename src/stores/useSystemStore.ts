@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { getBaseUrl } from '../lib/api/client.ts';
 
 interface SystemState {
   tickIntervalSeconds: number;
@@ -15,7 +16,7 @@ export const useSystemStore = create<SystemState>((set) => ({
 
   fetchHealth: async () => {
     try {
-      const resp = await fetch('http://localhost:8080/health');
+      const resp = await fetch(`${getBaseUrl()}/health`);
       if (resp.ok) {
         const data = (await resp.json()) as {
           tick_interval_seconds?: number;
