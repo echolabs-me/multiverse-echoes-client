@@ -353,7 +353,7 @@ pre {
 
 /* ── Tick Timer — heartbeat monitor + ambient bar ── */
 
-/* Digit breathing — subtle opacity pulse so numbers feel alive */
+/* Digit/text breathing — subtle opacity pulse */
 .tick-digit-breathe {
   animation: tick-digit-breathe 2s ease-in-out infinite;
 }
@@ -363,13 +363,19 @@ pre {
   50% { opacity: 0.82; }
 }
 
-/* Ambient bar fill — feathered right edge via gradient mask */
+/* Ambient bar — contained, pointer-events disabled, no overflow bleed */
+.tick-bar {
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Bar fill — feathered right edge */
 .tick-bar-fill {
   background: linear-gradient(90deg, #d4915c 0%, #f5dcc0 85%, transparent 100%);
   transition: width 1s linear;
 }
 
-/* ECG heartbeat sweep during generating — a bright spike travels left→right */
+/* ECG heartbeat sweep — bright spike travels left→right */
 .tick-bar-heartbeat-sweep {
   background: linear-gradient(
     90deg,
@@ -393,18 +399,22 @@ pre {
   100% { --sweep: 110%; }
 }
 
-/* Shimmer overlay during generating — subtle brightness oscillation */
-.tick-bar-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(212, 145, 92, 0.12), transparent);
-  animation: tick-bar-shimmer 2.4s ease-in-out infinite;
+/* Double-pulse heartbeat rhythm: thump-thump... pause... thump-thump */
+.tick-bar-double-pulse {
+  background: rgba(212, 145, 92, 0.15);
+  animation: tick-double-pulse 2s ease-in-out infinite;
 }
 
-@keyframes tick-bar-shimmer {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
+@keyframes tick-double-pulse {
+  0%   { opacity: 0.2; }
+  15%  { opacity: 0.9; }
+  25%  { opacity: 0.3; }
+  35%  { opacity: 0.7; }
+  50%  { opacity: 0.2; }
+  100% { opacity: 0.2; }
 }
 
-/* Flash on arrival — warm white that fades */
+/* Flash on arrival — warm white fade */
 .tick-bar-flash {
   background: linear-gradient(90deg, rgba(245, 220, 192, 0.7), rgba(255, 255, 255, 0.9), rgba(245, 220, 192, 0.7));
   animation: tick-bar-flash 0.8s ease-out forwards;

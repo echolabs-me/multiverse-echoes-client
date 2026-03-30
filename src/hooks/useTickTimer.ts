@@ -99,6 +99,10 @@ export function useTickTimer(): TickTimerData {
   useEchoWebSocket(wsPath, handleWsEvent);
 
   // Countdown interval — updates every second.
+  // Safety valve: if generating lingers beyond 90s (LLM timeout + margin),
+  // auto-reset to counting_down. The tick completed even if no diary arrived.
+  const generatingStartRef = useRef<number>(0);
+
   useEffect(() => {
     const compute = () => {
       const base = lastTickAtRef.current;
@@ -109,15 +113,25 @@ export function useTickTimer(): TickTimerData {
 
       if (remaining <= 0) {
         setSecondsRemaining(0);
-        // Only transition to generating if not already in arrived state.
         if (stateRef.current === 'counting_down') {
           setState('generating');
+          generatingStartRef.current = Date.now();
+        }
+        // Safety valve: if stuck generating for >90s, force reset.
+        if (stateRef.current === 'generating' && generatingStartRef.current > 0) {
+          const generatingFor = (Date.now() - generatingStartRef.current) / 1000;
+          if (generatingFor > 90) {
+            const now = Date.now();
+            lastTickAtRef.current = now;
+            writeLastTickAt(now);
+            generatingStartRef.current = 0;
+            setState('counting_down');
+          }
         }
       } else {
         setSecondsRemaining(remaining);
-        // If we were generating but time went back (new tick arrived via non-WS path),
-        // reset to counting_down.
         if (stateRef.current === 'generating') {
+          generatingStartRef.current = 0;
           setState('counting_down');
         }
       }

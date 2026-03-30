@@ -1,17 +1,19 @@
 import { useTranslation } from 'react-i18next';
 import { useTickTimer } from '../hooks/useTickTimer.ts';
 
+const NEON_GLOW = '0 0 8px rgba(212, 145, 92, 0.5), 0 0 20px rgba(212, 145, 92, 0.2)';
+const NEON_GLOW_SUCCESS = '0 0 8px rgba(107, 175, 122, 0.5), 0 0 20px rgba(107, 175, 122, 0.2)';
+
 /**
  * Global tick timer — heartbeat monitor + ambient progress bar.
  *
- * Renders two layers:
- * 1. Centered digits + label (positioned in the header flow)
- * 2. Full-width ambient bar at the bottom of the header (absolute positioned,
- *    breaks out of the center container via a portal-like absolute wrapper)
+ * Renders:
+ * 1. Centered digits + label in a horizontal row
+ * 2. Full-width ambient bar at the bottom edge of the header
  *
  * State machine (from useTickTimer, unchanged):
  * - COUNTING_DOWN: bar fills left→right, digits count down
- * - GENERATING: ECG heartbeat sweep across bar, "Echoes are living..."
+ * - GENERATING: heartbeat bar pulse, dramatic text
  * - ARRIVED: warm flash, bar resets
  */
 export function TickTimer() {
@@ -27,14 +29,13 @@ export function TickTimer() {
   const isGenerating = state === 'generating';
   const isArrived = state === 'arrived';
 
-  // Glow intensity ramps up as countdown approaches zero.
   const glowOpacity = isGenerating ? 0.5 : Math.min(progress * 0.45, 0.45);
 
   return (
     <>
-      {/* Centered digits + label */}
+      {/* Centered digits + label — horizontal layout */}
       <div
-        className="flex flex-col items-center"
+        className="flex items-baseline gap-2"
         aria-live="polite"
         aria-label={
           isGenerating
@@ -45,38 +46,56 @@ export function TickTimer() {
         }
       >
         {isGenerating ? (
-          <span className="tick-digit-breathe text-base sm:text-lg font-semibold text-accent leading-tight">
-            {t('tickTimer.generating')}
-          </span>
+          <>
+            {/* Full text on desktop, short on mobile */}
+            <span
+              className="tick-digit-breathe hidden sm:inline text-sm font-semibold text-accent leading-tight"
+              style={{ textShadow: NEON_GLOW }}
+            >
+              {t('tickTimer.generating')}
+            </span>
+            <span
+              className="tick-digit-breathe sm:hidden text-sm font-semibold text-accent leading-tight"
+              style={{ textShadow: NEON_GLOW }}
+            >
+              {t('tickTimer.generatingShort')}
+            </span>
+          </>
         ) : (
-          <span
-            className={`tick-digit-breathe text-xl sm:text-2xl font-semibold tabular-nums leading-tight tracking-wide ${
-              isArrived ? 'text-success' : ''
-            }`}
-            style={isArrived ? undefined : { color: '#E8E0D8' }}
-          >
-            {timeDisplay}
-          </span>
-        )}
-        {/* Sub-label — hidden on mobile during generating */}
-        {!isGenerating && (
-          <span className="hidden sm:block text-[10px] text-text-muted mt-0.5">
-            {isArrived
-              ? t('tickTimer.arrived')
-              : t('tickTimer.nextHeartbeat')}
-          </span>
+          <>
+            <span
+              className={`tick-digit-breathe text-xl sm:text-2xl font-semibold tabular-nums leading-none tracking-wide ${
+                isArrived ? 'text-success' : ''
+              }`}
+              style={{
+                color: isArrived ? undefined : '#E8E0D8',
+                textShadow: isArrived ? NEON_GLOW_SUCCESS : NEON_GLOW,
+              }}
+            >
+              {timeDisplay}
+            </span>
+            {/* Label to the right — hidden on mobile */}
+            <span
+              className="hidden sm:inline text-xs text-text-muted leading-none"
+              style={{ textShadow: '0 0 6px rgba(212, 145, 92, 0.15)' }}
+            >
+              {isArrived
+                ? t('tickTimer.arrived')
+                : t('tickTimer.untilNextHeartbeat')}
+            </span>
+          </>
         )}
       </div>
 
-      {/* Full-width ambient bar — positioned at header bottom via absolute in AppLayout */}
+      {/* Full-width ambient bar at header bottom */}
       <div
-        className="tick-bar absolute bottom-0 left-0 right-0 h-[3px] overflow-hidden"
+        className="tick-bar absolute bottom-0 left-0 right-0 h-[3px] pointer-events-none"
         aria-hidden="true"
       >
-        {/* Track (dim baseline) */}
+        {/* Track */}
         <div className="absolute inset-0 bg-border opacity-20" />
 
-        {/* Fill — width transitions smoothly during countdown */}
+        {/* Fill during countdown */}
         {!isGenerating && !isArrived && (
           <div
             className="tick-bar-fill absolute inset-y-0 left-0"
@@ -84,14 +103,14 @@ export function TickTimer() {
           />
         )}
 
-        {/* Heartbeat sweep — during generating */}
+        {/* Heartbeat sweep during generating */}
         {isGenerating && (
           <div className="tick-bar-heartbeat-sweep absolute inset-0" />
         )}
 
-        {/* Shimmer overlay during generating */}
+        {/* Double-pulse heartbeat glow during generating */}
         {isGenerating && (
-          <div className="tick-bar-shimmer absolute inset-0" />
+          <div className="tick-bar-double-pulse absolute inset-0" />
         )}
 
         {/* Flash on arrival */}
@@ -99,13 +118,13 @@ export function TickTimer() {
           <div className="tick-bar-flash absolute inset-0" />
         )}
 
-        {/* Ambient glow bleeding upward */}
+        {/* Ambient upward glow — contained within the bar's overflow:hidden parent */}
         <div
-          className="absolute bottom-0 left-0 h-[6px] transition-opacity duration-1000"
+          className="absolute bottom-0 left-0 h-[3px] transition-opacity duration-1000"
           style={{
             width: isGenerating ? '100%' : `${progress * 100}%`,
-            opacity: isGenerating ? 0.4 : glowOpacity,
-            boxShadow: `0 -3px 8px 0 rgba(212, 145, 92, ${isGenerating ? 0.35 : glowOpacity})`,
+            opacity: isGenerating ? 0.5 : glowOpacity,
+            boxShadow: `0 0 6px 1px rgba(212, 145, 92, ${isGenerating ? 0.4 : glowOpacity})`,
           }}
         />
       </div>

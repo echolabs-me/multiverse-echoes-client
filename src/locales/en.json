@@ -5,8 +5,9 @@
   },
   "tickTimer": {
     "nextTick": "Next tick in {{time}}",
-    "nextHeartbeat": "Next heartbeat",
-    "generating": "Echoes are living\u2026",
+    "untilNextHeartbeat": "until next heartbeat",
+    "generating": "Echoes are living their lives, building relationships, and writing their diaries.",
+    "generatingShort": "Echoes are living their lives\u2026",
     "arrived": "New entries!",
     "countdown": "Next tick in {{seconds}} seconds"
   },
