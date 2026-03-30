@@ -30,6 +30,8 @@ import { CommunitySidebar } from './CommunitySidebar.tsx';
 import { TickTimer } from './TickTimer.tsx';
 import { EchoSidebar } from './EchoSidebar.tsx';
 import { CommunityPulseCard } from './CommunityPulseCard.tsx';
+import { MoodParticles } from './MoodParticles.tsx';
+import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
 import { useCommunitySidebarUnread } from '../hooks/useCommunitySidebarUnread.ts';
 
 interface NavItem {
@@ -152,6 +154,35 @@ function NavSidebar({
         {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
       </button>
     </aside>
+  );
+}
+
+/**
+ * Wraps children in the mood-reactive gradient + particle layer.
+ * When `show` is true and a palette is available, renders the gradient
+ * background and floating particles across all children (pulse, sidebar, main).
+ */
+function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: React.ReactNode }) {
+  const palette = useMoodPaletteStore((s) => s.palette);
+
+  return (
+    <div className="relative flex flex-1 overflow-hidden">
+      {show && palette && (
+        <>
+          <div
+            className="pointer-events-none absolute inset-0 z-0 transition-[background] duration-300 ease-in-out"
+            style={{
+              background: `linear-gradient(180deg, ${palette.gradientFrom} 0%, ${palette.gradientTo} 100%)`,
+            }}
+            aria-hidden="true"
+          />
+          <div className="pointer-events-none absolute inset-0 z-0">
+            <MoodParticles palette={palette} />
+          </div>
+        </>
+      )}
+      {children}
+    </div>
   );
 }
 
@@ -291,27 +322,30 @@ export function AppLayout() {
           onToggle={() => setNavCollapsed(!navCollapsed)}
         />
 
-        {/* Community Pulse pane — shown on dashboard and echo detail routes */}
-        {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
-          <aside className="hidden md:flex h-full w-64 flex-col border-r border-border bg-surface overflow-y-auto">
-            <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
-              {t('communityFeed.title')}
-            </div>
-            <div className="flex-1 overflow-y-auto px-2 pb-2">
-              <CommunityPulseCard />
-            </div>
-          </aside>
-        )}
+        {/* Mood-reactive zone — gradient + particles span pulse, echo sidebar, and main content */}
+        <MoodAtmosphereWrapper show={location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')}>
+          {/* Community Pulse pane */}
+          {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
+            <aside className="hidden md:flex h-full w-64 flex-shrink-0 flex-col border-r border-border/50 overflow-y-auto">
+              <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                {t('communityFeed.title')}
+              </div>
+              <div className="flex-1 overflow-y-auto px-2 pb-2">
+                <CommunityPulseCard />
+              </div>
+            </aside>
+          )}
 
-        {/* Echo list sidebar — shown on dashboard and echo detail routes */}
-        {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
-          <EchoSidebar />
-        )}
+          {/* Echo list sidebar */}
+          {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
+            <EchoSidebar />
+          )}
 
-        {/* Main content */}
-        <main id="main-content" className="flex-1 overflow-y-auto">
-          <Outlet />
-        </main>
+          {/* Main content */}
+          <main id="main-content" className="flex-1 overflow-y-auto">
+            <Outlet />
+          </main>
+        </MoodAtmosphereWrapper>
 
         {/* Right sidebar — Oracle / Community tabs — desktop only */}
         <div

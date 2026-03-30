@@ -132,7 +132,7 @@ export function EchoSidebar() {
 
   return (
     <aside
-      className="hidden md:flex h-full w-64 flex-col border-r border-border bg-surface"
+      className="hidden md:flex h-full w-64 flex-col border-r border-border/50 bg-transparent"
       aria-label={t('echoSidebar.title')}
     >
       <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">

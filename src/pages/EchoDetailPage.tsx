@@ -36,6 +36,7 @@ import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
 import { useMoodAtmosphere } from '../hooks/useMoodAtmosphere.ts';
+import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
 import { MoodParticles } from '../components/MoodParticles.tsx';
 import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
@@ -111,6 +112,13 @@ export function EchoDetailPage() {
   const moodContainerRef = useRef<HTMLDivElement>(null);
   const currentMood = diaryEntries[0]?.mood ?? activeEcho?.current_mood ?? null;
   const moodPalette = useMoodAtmosphere(moodContainerRef, currentMood);
+
+  // Publish palette to shared store so AppLayout can render gradient + particles
+  // across the full width (pulse pane, echo sidebar, and main content).
+  const setPalette = useMoodPaletteStore((s) => s.setPalette);
+  useEffect(() => {
+    setPalette(moodPalette);
+  }, [moodPalette, setPalette]);
 
   // Track which diary IDs were present on initial load (no animation for those).
   const knownDiaryIdsRef = useRef<Set<string>>(new Set());
