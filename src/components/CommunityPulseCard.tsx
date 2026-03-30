@@ -65,6 +65,8 @@ export function CommunityPulseCard() {
           const shardName = shardNames[item.shard_id] ?? '';
           const content = item.body || item.title || '';
           const isExpanded = expandedItems.has(item.item_id);
+          const isLifeEvent = item.item_type === 'LifeEvent';
+          const isRelationship = item.item_type === 'RelationshipChange';
 
           return (
             <button
@@ -75,7 +77,13 @@ export function CommunityPulseCard() {
                 else next.add(item.item_id);
                 return next;
               })}
-              className="w-full rounded-lg bg-surface-raised/50 px-2.5 py-2 text-left transition-colors hover:bg-surface-raised"
+              className={`w-full rounded-lg px-2.5 py-2 text-left transition-colors ${
+                isLifeEvent
+                  ? 'bg-accent/10 border border-accent/20 hover:bg-accent/15'
+                  : isRelationship
+                    ? 'bg-pink-500/10 border border-pink-500/20 hover:bg-pink-500/15'
+                    : 'bg-surface-raised/50 hover:bg-surface-raised'
+              }`}
             >
               <div className="flex items-center gap-1.5 mb-0.5">
                 <span
@@ -83,6 +91,11 @@ export function CommunityPulseCard() {
                   style={{ backgroundColor: moodColor }}
                 />
                 <span className="text-xs font-medium text-text-primary truncate">{echoName}</span>
+                {(isLifeEvent || isRelationship) && (
+                  <span className={`text-[10px] font-semibold uppercase ${isLifeEvent ? 'text-accent' : 'text-pink-400'}`}>
+                    {isLifeEvent ? 'Life Event' : 'Relationship'}
+                  </span>
+                )}
                 {shardName && (
                   <>
                     <span className="text-xs text-text-secondary">·</span>
