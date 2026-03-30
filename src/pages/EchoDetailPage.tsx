@@ -266,6 +266,8 @@ export function EchoDetailPage() {
             setDiaryEntries(d);
           })
           .catch(() => {});
+        // Re-fetch echo metadata so current_tick and current_mood stay in sync.
+        void useEchoStore.getState().fetchEcho(id);
         void useFeedStore.getState().fetchPersonalFeed(id);
       } else if (event.type === 'MoodChanged') {
         void useEchoStore.getState().fetchEcho(id);
