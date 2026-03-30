@@ -553,22 +553,24 @@ export function EchoDetailPage() {
             )}
           </Card>
 
-          {/* Action Toolbar — compact horizontal row */}
-          <div className="my-4 flex flex-wrap gap-1.5">
+          {/* Action Toolbar */}
+          <div className="my-4 flex flex-wrap gap-2">
+            {/* Talk — primary action, accent glow */}
             <button
               onClick={() => navigate(`/echoes/${activeEcho.echo_id}/talk`)}
               disabled={activeEcho.status === 'Hibernated'}
-              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="action-btn-primary flex items-center gap-1.5 rounded-lg border border-accent/40 bg-accent/10 px-3.5 py-2 text-xs font-semibold text-accent hover:bg-accent/20 hover:border-accent/60 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               <MessageCircle size={14} /> {t('echoDetail.talkToEcho')}
             </button>
+            {/* Nudge */}
             <div className="relative">
               <button
                 onClick={() => setInfluenceModal(true)}
                 disabled={activeEcho.status === 'Hibernated'}
-                className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed transition-all"
               >
-                <Zap size={14} /> {t('echoDetail.useInfluence')}
+                <Zap size={14} className="text-amber-400" /> {t('echoDetail.useInfluence')}
                 {influence && influence.daily_limit < 1000 && (
                   <span className="text-text-muted">({influence.remaining})</span>
                 )}
@@ -577,31 +579,37 @@ export function EchoDetailPage() {
                 <span className="pointer-events-none absolute inset-0 rounded-lg animate-nudge-ripple" aria-hidden="true" />
               )}
             </div>
+            {/* Hibernate/Wake */}
             <button
               onClick={() => setHibernateModal(true)}
-              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+              className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent transition-all"
             >
-              {activeEcho.status === 'Active' ? <Moon size={14} /> : <Sun size={14} />}
+              {activeEcho.status === 'Active'
+                ? <Moon size={14} className="text-blue-400" />
+                : <Sun size={14} className="text-amber-400" />}
               {activeEcho.status === 'Active' ? t('echoDetail.hibernate') : t('echoDetail.wake')}
             </button>
+            {/* Rename */}
             <button
               onClick={() => { setNewName(activeEcho.name); setRenameModal(true); }}
-              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+              className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent transition-all"
             >
-              <Pencil size={14} /> {t('echoDetail.rename')}
+              <Pencil size={14} className="text-emerald-400" /> {t('echoDetail.rename')}
             </button>
+            {/* Edit Persona */}
             <button
               onClick={() => { setNewPersona(activeEcho.persona_text); setEditPersonaModal(true); }}
               disabled={activeEcho.current_tick > 0}
-              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
-              <Pencil size={14} /> {t('echoDetail.editPersona')}
+              <Pencil size={14} className="text-violet-400" /> {t('echoDetail.editPersona')}
             </button>
+            {/* Export */}
             <button
               onClick={() => setExportModal(true)}
-              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+              className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent transition-all"
             >
-              <Download size={14} /> {t('echoDetail.exportStory')}
+              <Download size={14} className="text-sky-400" /> {t('echoDetail.exportStory')}
             </button>
           </div>
 

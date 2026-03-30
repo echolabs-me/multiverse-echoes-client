@@ -8,6 +8,18 @@ import { getMoodColor } from '../lib/moodColor.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import type { EchoResponse } from '../types/api.ts';
 
+/** Core moods for the legend — one entry per colour family. */
+const MOOD_LEGEND = [
+  { mood: 'happy', color: '#FF9F43' },
+  { mood: 'sad', color: '#5B7FCC' },
+  { mood: 'calm', color: '#2ECC71' },
+  { mood: 'angry', color: '#E74C3C' },
+  { mood: 'anxious', color: '#9B59B6' },
+  { mood: 'excited', color: '#F39C12' },
+  { mood: 'contemplative', color: '#6C8EBF' },
+  { mood: 'neutral', color: '#8E8E93' },
+];
+
 /**
  * Mini-card Echo item for the sidebar.
  * Shows mood dot, name, mood + tick, diary preview, shard name.
@@ -141,6 +153,21 @@ export function EchoSidebar() {
           ))}
         </ul>
       </nav>
+
+      {/* Mood Legend */}
+      <div className="flex-shrink-0 border-t border-border px-3 py-2.5">
+        <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
+          {t('echoSidebar.moodLegend')}
+        </p>
+        <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+          {MOOD_LEGEND.map(({ mood, color }) => (
+            <div key={mood} className="flex items-center gap-1.5">
+              <span className="h-2 w-2 flex-shrink-0 rounded-full" style={{ backgroundColor: color }} />
+              <span className="text-[11px] text-text-muted capitalize">{mood}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </aside>
   );
 }

@@ -424,3 +424,29 @@ pre {
   0% { opacity: 1; }
   100% { opacity: 0; }
 }
+
+/* ── Action toolbar button effects ── */
+
+.action-btn:hover {
+  box-shadow: 0 0 12px rgba(212, 145, 92, 0.15), 0 1px 3px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.action-btn-primary {
+  box-shadow: 0 0 8px rgba(212, 145, 92, 0.2);
+}
+
+.action-btn-primary:hover {
+  box-shadow: 0 0 16px rgba(212, 145, 92, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.action-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 0 8px rgba(212, 145, 92, 0.2);
+}

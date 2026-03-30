@@ -608,7 +608,8 @@
     "tick": "Tick {{tick}}",
     "switchEcho": "Switch Echo",
     "selectEcho": "Select an Echo",
-    "unknownShard": "Unknown Shard"
+    "unknownShard": "Unknown Shard",
+    "moodLegend": "Mood Guide"
   },
   "payment": {
     "title": "Plans",
