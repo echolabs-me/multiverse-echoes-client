@@ -362,7 +362,7 @@ export function AppLayout() {
               {sidebarTab === 'oracle' ? (
                 <OracleSidebar onCollapse={() => setOracleCollapsed(true)} />
               ) : (
-                <CommunitySidebar onCollapse={() => setOracleCollapsed(true)} />
+                <CommunitySidebar />
               )}
             </>
           )}
@@ -448,7 +448,7 @@ export function AppLayout() {
             {sidebarTab === 'oracle' ? (
               <OracleSidebar onCollapse={() => setMobileOracleOpen(false)} />
             ) : (
-              <CommunitySidebar onCollapse={() => setMobileOracleOpen(false)} />
+              <CommunitySidebar />
             )}
           </div>
         </div>

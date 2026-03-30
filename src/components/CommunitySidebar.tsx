@@ -25,11 +25,7 @@ function DiscordIcon({ size = 16 }: { size?: number }) {
   );
 }
 
-interface CommunitySidebarProps {
-  onCollapse: () => void;
-}
-
-export function CommunitySidebar({ onCollapse }: CommunitySidebarProps) {
+export function CommunitySidebar() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const user = useAuthStore((s) => s.user);
@@ -414,15 +410,6 @@ export function CommunitySidebar({ onCollapse }: CommunitySidebarProps) {
         </button>
       )}
 
-      {/* Link to full community page */}
-      <div className="border-t border-border px-3 py-1.5">
-        <button
-          onClick={() => { onCollapse(); navigate('/community'); }}
-          className="w-full text-center text-[10px] text-accent hover:underline"
-        >
-          {t('communitySidebar.openFull')}
-        </button>
-      </div>
     </div>
   );
 }

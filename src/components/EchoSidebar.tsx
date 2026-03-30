@@ -5,8 +5,8 @@ import { ChevronDown, X } from 'lucide-react';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
-import { echoes as echoApi } from '../lib/api/endpoints.ts';
-import type { EchoResponse } from '../types/api.ts';
+import { echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
+import type { EchoResponse, FeedItem } from '../types/api.ts';
 
 /**
  * Mini-card Echo item for the sidebar.
@@ -141,7 +141,47 @@ export function EchoSidebar() {
           ))}
         </ul>
       </nav>
+
+      {/* Community Pulse — echo activity feed */}
+      <CommunityPulse />
     </aside>
+  );
+}
+
+/** Compact echo activity feed at the sidebar bottom. */
+function CommunityPulse() {
+  const { t } = useTranslation();
+  const [items, setItems] = useState<FeedItem[]>([]);
+
+  useEffect(() => {
+    void feeds.community(6).then(setItems).catch(() => {});
+    const interval = setInterval(() => {
+      void feeds.community(6).then(setItems).catch(() => {});
+    }, 120_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (items.length === 0) return null;
+
+  return (
+    <div className="flex-shrink-0 border-t border-border px-2 py-2 overflow-hidden">
+      <div className="flex items-center gap-1.5 px-1 mb-1">
+        <span className="relative flex h-1.5 w-1.5">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50 motion-reduce:animate-none" />
+          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+        </span>
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-text-muted">
+          {t('communityFeed.title')}
+        </span>
+      </div>
+      <ul className="flex flex-col gap-0.5 max-h-32 overflow-y-auto">
+        {items.map((item) => (
+          <li key={item.item_id} className="rounded px-2 py-0.5">
+            <p className="truncate text-[11px] text-text-secondary">{item.title}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
