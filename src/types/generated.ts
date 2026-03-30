@@ -6,6 +6,17 @@ export type AccountStatus = "Active" | "Suspended" | "PendingDeletion" | "Delete
 
 export type AccountType = "Standard" | "Admin";
 
+export type ActiveConversationResponse = {
+	conversation_id: string,
+	echo_id: string,
+	created_at: string,
+	saved: boolean,
+	// Whether this conversation was resumed (true) or newly created (false).
+	resumed: boolean,
+	// Preloaded messages if this was a resumed conversation.
+	messages: ConversationMessageResponse[],
+};
+
 // A single analytics event.
 export type AnalyticsEvent = {
 	id: string,
@@ -172,6 +183,13 @@ export type ConversationMessage = {
 	message_id: string,
 	conversation_id: string,
 	role: ConversationRole,
+	content: string,
+	created_at: string,
+};
+
+export type ConversationMessageResponse = {
+	message_id: string,
+	role: string,
 	content: string,
 	created_at: string,
 };
