@@ -28,6 +28,7 @@ import { trackEvent } from '../lib/analytics.ts';
 import { OracleSidebar } from './OracleSidebar.tsx';
 import { CommunitySidebar } from './CommunitySidebar.tsx';
 import { TickTimer } from './TickTimer.tsx';
+import { EchoSidebar } from './EchoSidebar.tsx';
 import { useCommunitySidebarUnread } from '../hooks/useCommunitySidebarUnread.ts';
 
 interface NavItem {
@@ -288,6 +289,11 @@ export function AppLayout() {
           collapsed={navCollapsed}
           onToggle={() => setNavCollapsed(!navCollapsed)}
         />
+
+        {/* Echo list sidebar — shown on dashboard and echo detail routes */}
+        {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
+          <EchoSidebar />
+        )}
 
         {/* Main content */}
         <main id="main-content" className="flex-1 overflow-y-auto">

@@ -603,6 +603,12 @@
     "browseShards": "Browse Shards",
     "menu": "Menu"
   },
+  "echoSidebar": {
+    "title": "Echoes",
+    "switchEcho": "Switch Echo",
+    "selectEcho": "Select an Echo",
+    "unknownShard": "Unknown Shard"
+  },
   "payment": {
     "title": "Plans",
     "subtitle": "Choose the right plan for your multiverse.",

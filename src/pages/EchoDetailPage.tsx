@@ -39,6 +39,7 @@ import { useMoodAtmosphere } from '../hooks/useMoodAtmosphere.ts';
 import { MoodParticles } from '../components/MoodParticles.tsx';
 import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
+import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
@@ -489,6 +490,11 @@ export function EchoDetailPage() {
             <ArrowLeft size={16} />
             {t('common.back')}
           </button>
+
+          {/* Mobile Echo switcher — dropdown for quick navigation */}
+          <div className="relative mb-4">
+            <MobileEchoSwitcher />
+          </div>
 
           {/* Echo header */}
           <div className="mb-6 flex items-start gap-4">
