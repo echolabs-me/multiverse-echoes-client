@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Sparkles, X, Send, Trash2, ExternalLink } from 'lucide-react';
+import { Sparkles, X, Send, Trash2, ExternalLink, Flag } from 'lucide-react';
+import { reports } from '../lib/api/endpoints.ts';
+import { useToastStore } from '../stores/useToastStore.ts';
 import { useOracleStore } from '../stores/useOracleStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import type { OracleMessage } from '../stores/useOracleStore.ts';
@@ -222,10 +224,25 @@ function MessageBubble({
   message: OracleMessage;
   onDeepLink: (path: string) => void;
 }) {
+  const { t } = useTranslation();
+  const addToast = useToastStore((s) => s.addToast);
   const isUser = message.role === 'user';
 
+  const handleReport = async () => {
+    try {
+      await reports.create({
+        target_type: 'content',
+        target_id: '00000000-0000-0000-0000-000000000000',
+        reason: `[Oracle] ${message.text.slice(0, 150)}`,
+      });
+      addToast(t('community.reportSent'), 'success');
+    } catch {
+      addToast(t('common.error'), 'danger');
+    }
+  };
+
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`group flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
         className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
           isUser
@@ -247,6 +264,16 @@ function MessageBubble({
               </button>
             ))}
           </div>
+        )}
+        {!isUser && (
+          <button
+            onClick={() => void handleReport()}
+            className="mt-1 rounded p-0.5 text-text-muted opacity-0 transition-opacity hover:text-danger group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none"
+            aria-label={t('common.report')}
+            title={t('common.report')}
+          >
+            <Flag size={12} />
+          </button>
         )}
       </div>
     </div>

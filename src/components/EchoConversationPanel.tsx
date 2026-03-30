@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Send, X } from 'lucide-react';
+import { ReportButton } from './ReportButton.tsx';
 import { useAuthStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -242,7 +243,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
         {messages.map((msg) => (
           <div
             key={msg.message_id}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`group flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
               className={`max-w-[80%] rounded-2xl px-3 py-2 text-xs ${
@@ -252,12 +253,17 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
               }`}
             >
               <p className="whitespace-pre-wrap">{msg.content}</p>
-              <time className="mt-0.5 block text-right text-[9px] opacity-60">
-                {new Date(msg.created_at).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </time>
+              <div className="mt-0.5 flex items-center justify-end gap-1">
+                <time className="text-[9px] opacity-60">
+                  {new Date(msg.created_at).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </time>
+                {msg.role === 'echo' && !msg.message_id.startsWith('queued-') && !msg.message_id.startsWith('temp-') && !msg.message_id.startsWith('fallback-') && (
+                  <ReportButton targetType="content" targetId={msg.message_id} size={10} />
+                )}
+              </div>
             </div>
           </div>
         ))}

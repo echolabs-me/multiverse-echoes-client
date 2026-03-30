@@ -12,6 +12,7 @@ export { Input } from './Input.tsx';
 export { Modal } from './Modal.tsx';
 export { AppLayout } from './AppLayout.tsx';
 export { OraclePanel } from './OraclePanel.tsx';
+export { ReportButton } from './ReportButton.tsx';
 export { OracleSidebar } from './OracleSidebar.tsx';
 export { ShareModal } from './ShareModal.tsx';
 export { Sidebar } from './Sidebar.tsx';

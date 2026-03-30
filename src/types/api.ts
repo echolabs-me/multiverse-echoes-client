@@ -272,6 +272,7 @@ export interface EchoRelationship {
   relationship_id: string;
   echo_a_id: string;
   echo_b_id: string;
+  other_echo_name?: string;
   relationship_type: string;
   status: string;
   formed_at_tick: number;

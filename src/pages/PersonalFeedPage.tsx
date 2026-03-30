@@ -9,6 +9,7 @@ import {
   EmptyState,
   Button,
   ShareModal,
+  ReportButton,
 } from '../components/index.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
@@ -116,7 +117,7 @@ function FeedItemCard({
 
   return (
     <>
-      <Card variant="compact" className="animate-slide-in">
+      <Card variant="compact" className="group animate-slide-in">
         <div className="flex items-start gap-3">
           <div className="mt-0.5">{icon}</div>
           <div className="flex-1">
@@ -141,6 +142,7 @@ function FeedItemCard({
               >
                 <Share2 size={14} />
               </button>
+              <ReportButton targetType="content" targetId={item.item_id} />
             </div>
           </div>
         </div>

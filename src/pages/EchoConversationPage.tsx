@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Send, Lock } from 'lucide-react';
-import { Button } from '../components/index.ts';
+import { Button, ReportButton } from '../components/index.ts';
 import { useAuthStore, useEchoStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -269,7 +269,7 @@ export function EchoConversationPage() {
         {messages.map((msg) => (
           <div
             key={msg.message_id}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`group flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
               className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm ${
@@ -279,12 +279,17 @@ export function EchoConversationPage() {
               }`}
             >
               <p className="whitespace-pre-wrap">{msg.content}</p>
-              <time className="mt-1 block text-right text-[10px] opacity-60">
-                {new Date(msg.created_at).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </time>
+              <div className="mt-1 flex items-center justify-end gap-1">
+                <time className="text-[10px] opacity-60">
+                  {new Date(msg.created_at).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </time>
+                {msg.role === 'echo' && !msg.message_id.startsWith('queued-') && !msg.message_id.startsWith('temp-') && !msg.message_id.startsWith('fallback-') && (
+                  <ReportButton targetType="content" targetId={msg.message_id} size={12} />
+                )}
+              </div>
             </div>
           </div>
         ))}

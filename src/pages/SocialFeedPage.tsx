@@ -9,6 +9,7 @@ import {
   EmptyState,
   Button,
   ShareModal,
+  ReportButton,
 } from '../components/index.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -97,7 +98,7 @@ function SocialFeedCard({
 
   return (
     <>
-      <Card variant="compact" className="animate-slide-in">
+      <Card variant="compact" className="group animate-slide-in">
         <div className="flex items-start gap-3">
           <div className="mt-0.5">{icon}</div>
           <div className="flex-1">
@@ -126,6 +127,7 @@ function SocialFeedCard({
               >
                 <Share2 size={14} />
               </button>
+              <ReportButton targetType="content" targetId={item.item_id} />
             </div>
           </div>
         </div>

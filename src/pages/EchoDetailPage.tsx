@@ -870,22 +870,50 @@ export function EchoDetailPage() {
               />
             ) : (
               <div className="grid gap-3 sm:grid-cols-2">
-                {relationships.map((rel) => (
-                  <Card key={rel.relationship_id} variant="compact">
-                    <p className="text-sm font-medium text-text-primary">
-                      {rel.echo_b_id}
-                    </p>
-                    <p className="text-xs text-text-muted">{rel.relationship_type}</p>
-                    <div className="mt-2 flex items-center gap-4 text-xs text-text-secondary">
-                      <span>
-                        {t('echoDetail.sentiment')}: {(rel.sentiment * 100).toFixed(0)}%
-                      </span>
-                      <Badge variant={rel.status === 'Active' ? 'success' : 'default'}>
-                        {rel.status}
-                      </Badge>
-                    </div>
-                  </Card>
-                ))}
+                {relationships.map((rel) => {
+                  const sentimentPct = Math.round(
+                    (rel.sentiment / 1000) * 100
+                  );
+                  const sentimentColor =
+                    sentimentPct >= 60
+                      ? 'text-emerald-400'
+                      : sentimentPct >= 30
+                        ? 'text-amber-400'
+                        : 'text-red-400';
+
+                  return (
+                    <Card key={rel.relationship_id} variant="compact">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-text-primary">
+                            {rel.other_echo_name ?? rel.echo_b_id}
+                          </p>
+                          <p className="text-xs text-accent">{rel.relationship_type}</p>
+                        </div>
+                        <Badge variant={rel.status === 'Active' ? 'success' : 'default'}>
+                          {rel.status}
+                        </Badge>
+                      </div>
+                      <div className="mt-2">
+                        <div className="mb-1 flex items-center justify-between text-xs text-text-secondary">
+                          <span>{t('echoDetail.sentiment')}</span>
+                          <span className={sentimentColor}>{sentimentPct}%</span>
+                        </div>
+                        <div className="h-1.5 w-full rounded-full bg-surface-raised">
+                          <div
+                            className={`h-1.5 rounded-full ${sentimentPct >= 60 ? 'bg-emerald-500' : sentimentPct >= 30 ? 'bg-amber-500' : 'bg-red-500'}`}
+                            style={{ width: `${Math.min(100, Math.max(0, sentimentPct))}%` }}
+                          />
+                        </div>
+                      </div>
+                      {rel.is_cross_user && (
+                        <p className="mt-1 text-[10px] text-text-muted">
+                          {t('echoDetail.crossUser')}
+                        </p>
+                      )}
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </section>

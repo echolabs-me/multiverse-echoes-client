@@ -8,7 +8,7 @@ import {
   BarChart3,
   ChevronDown,
 } from 'lucide-react';
-import { Button, Spinner } from './index.ts';
+import { Button, Spinner, ReportButton } from './index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { channels as channelApi, account as accountApi } from '../lib/api/endpoints.ts';
@@ -289,12 +289,13 @@ export function CommunitySidebar() {
         ) : (
           <div className="flex flex-col gap-2">
             {messages.map((msg) => (
-              <div key={msg.message_id} className="text-xs">
+              <div key={msg.message_id} className="group text-xs">
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-medium text-accent">{msg.author_display_name}</span>
                   <span className="text-[10px] text-text-muted">
                     {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
+                  <ReportButton targetType="message" targetId={msg.message_id} size={10} />
                 </div>
                 {msg.content && <p className="text-text-primary">{msg.content}</p>}
                 {msg.image_url && (

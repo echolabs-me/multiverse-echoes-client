@@ -29,6 +29,7 @@ import { ForgotPasswordPage } from './pages/ForgotPasswordPage.tsx';
 import { ResetPasswordPage } from './pages/ResetPasswordPage.tsx';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage.tsx';
 import { TermsPage } from './pages/TermsPage.tsx';
+import { AccessibilityPage } from './pages/AccessibilityPage.tsx';
 import { PlansPage } from './pages/PlansPage.tsx';
 import { PaymentSuccessPage } from './pages/PaymentSuccessPage.tsx';
 import { PaymentCancelledPage } from './pages/PaymentCancelledPage.tsx';
@@ -75,6 +76,7 @@ export function App() {
         <Route path="/waitlist" element={<WaitlistPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsPage />} />
+        <Route path="/accessibility" element={<AccessibilityPage />} />
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/payment/success" element={<PaymentSuccessPage />} />
         <Route path="/payment/cancelled" element={<PaymentCancelledPage />} />
