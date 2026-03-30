@@ -1272,7 +1272,7 @@ function CommunityPulseCard() {
                 <span className="text-[10px] text-text-muted">{formatTimeAgo(item.created_at)}</span>
               </div>
               {/* Content — click to expand/collapse */}
-              <p className={`text-sm text-text-secondary leading-snug ${isExpanded ? '' : 'line-clamp-5'}`}>{content}</p>
+              <p className="text-sm text-text-secondary leading-snug" style={isExpanded ? undefined : { display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{content}</p>
               {!isExpanded && content.length > 200 && (
                 <span className="text-[10px] text-accent mt-0.5 inline-block">show more</span>
               )}
