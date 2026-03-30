@@ -29,6 +29,7 @@ import { OracleSidebar } from './OracleSidebar.tsx';
 import { CommunitySidebar } from './CommunitySidebar.tsx';
 import { TickTimer } from './TickTimer.tsx';
 import { EchoSidebar } from './EchoSidebar.tsx';
+import { CommunityPulseCard } from './CommunityPulseCard.tsx';
 import { useCommunitySidebarUnread } from '../hooks/useCommunitySidebarUnread.ts';
 
 interface NavItem {
@@ -289,6 +290,18 @@ export function AppLayout() {
           collapsed={navCollapsed}
           onToggle={() => setNavCollapsed(!navCollapsed)}
         />
+
+        {/* Community Pulse pane — shown on dashboard and echo detail routes */}
+        {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
+          <aside className="hidden md:flex h-full w-64 flex-col border-r border-border bg-surface overflow-y-auto">
+            <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+              {t('communityFeed.title')}
+            </div>
+            <div className="flex-1 overflow-y-auto px-2 pb-2">
+              <CommunityPulseCard />
+            </div>
+          </aside>
+        )}
 
         {/* Echo list sidebar — shown on dashboard and echo detail routes */}
         {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (

@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
 import { feeds } from '../lib/api/endpoints.ts';
@@ -23,7 +22,6 @@ function formatTimeAgo(dateStr: string): string {
  * Rendered once in the EchoSidebar, not per-echo.
  */
 export function CommunityPulseCard() {
-  const { t } = useTranslation();
   const { echoList } = useEchoStore();
   const [items, setItems] = useState<FeedItem[]>([]);
   const [shardNames, setShardNames] = useState<Record<string, string>>({});
@@ -59,15 +57,7 @@ export function CommunityPulseCard() {
   if (items.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-1.5">
-      <div className="flex items-center gap-2 px-1">
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50 motion-reduce:animate-none" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-        </span>
-        <h2 className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">{t('communityFeed.title')}</h2>
-      </div>
-      <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1">
         {items.map((item) => {
           const echo = echoNameMap.get(item.echo_id);
           const echoName = echo?.name ?? item.echo_id.slice(0, 8);
@@ -114,7 +104,6 @@ export function CommunityPulseCard() {
             </button>
           );
         })}
-      </div>
     </div>
   );
 }
