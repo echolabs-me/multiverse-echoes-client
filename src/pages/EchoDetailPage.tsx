@@ -18,6 +18,7 @@ import {
   Lock,
   Search,
   X,
+  Flag,
 } from 'lucide-react';
 import {
   Card,
@@ -39,7 +40,7 @@ import { MoodParticles } from '../components/MoodParticles.tsx';
 import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
-import { echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
+import { echoes as echoApi, feeds, reports } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
@@ -95,6 +96,9 @@ export function EchoDetailPage() {
   const [influenceType, setInfluenceType] = useState('nudge');
   const [influenceDetails, setInfluenceDetails] = useState('');
   const [exportModal, setExportModal] = useState(false);
+  const [reportModal, setReportModal] = useState(false);
+  const [reportTargetId, setReportTargetId] = useState('');
+  const [reportReason, setReportReason] = useState('');
   const [soloMode, setSoloMode] = useState(false);
   const [nudgeRipple, setNudgeRipple] = useState(false);
 
@@ -737,6 +741,7 @@ export function EchoDetailPage() {
                               entry={entry}
                               isNew={newDiaryIds.has(entry.diary_id)}
                               onAnimationEnd={handleAnimationEnd}
+                              onReport={(id) => { setReportTargetId(id); setReportModal(true); }}
                             />
                           ))}
                         </div>
@@ -957,6 +962,43 @@ export function EchoDetailPage() {
         echoName={activeEcho.name}
         echoId={activeEcho.echo_id}
       />
+
+      {/* Report Content Modal */}
+      <Modal open={reportModal} onClose={() => { setReportModal(false); setReportReason(''); }} title={t('common.report')}>
+        <textarea
+          value={reportReason}
+          onChange={(e) => setReportReason(e.target.value)}
+          placeholder={t('community.reportPlaceholder')}
+          maxLength={500}
+          rows={3}
+          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+        />
+        <div className="mt-3 flex justify-end gap-2">
+          <Button variant="secondary" onClick={() => { setReportModal(false); setReportReason(''); }}>
+            {t('common.cancel')}
+          </Button>
+          <Button
+            onClick={async () => {
+              if (!reportReason.trim()) return;
+              try {
+                await reports.create({
+                  target_type: 'content',
+                  target_id: reportTargetId,
+                  reason: reportReason.trim(),
+                });
+                addToast(t('community.reportSent'), 'success');
+                setReportModal(false);
+                setReportReason('');
+              } catch {
+                addToast(t('common.error'), 'danger');
+              }
+            }}
+            disabled={!reportReason.trim()}
+          >
+            {t('common.report')}
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }
@@ -965,11 +1007,15 @@ function DiaryCard({
   entry,
   isNew,
   onAnimationEnd,
+  onReport,
 }: {
   entry: DiaryEntry;
   isNew?: boolean;
   onAnimationEnd?: (diaryId: string) => void;
+  onReport?: (diaryId: string) => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <div
       id={`diary-${entry.diary_id}`}
@@ -992,9 +1038,20 @@ function DiaryCard({
             <p className="mt-1 text-sm text-text-secondary">{entry.content}</p>
             <p className="mt-1 text-xs text-text-muted">{entry.location_name}</p>
           </div>
-          <span className="ml-3 shrink-0 text-xs text-text-muted">
-            {new Date(entry.created_at).toLocaleDateString()}
-          </span>
+          <div className="ml-3 flex shrink-0 flex-col items-end gap-1">
+            <span className="text-xs text-text-muted">
+              {new Date(entry.created_at).toLocaleDateString()}
+            </span>
+            {onReport && (
+              <button
+                onClick={() => onReport(entry.diary_id)}
+                className="text-text-muted hover:text-danger transition-colors"
+                title={t('common.report')}
+              >
+                <Flag size={12} />
+              </button>
+            )}
+          </div>
         </div>
       </Card>
     </div>
