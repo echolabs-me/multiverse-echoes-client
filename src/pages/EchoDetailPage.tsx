@@ -268,7 +268,9 @@ export function EchoDetailPage() {
           })
           .catch(() => {});
         // Re-fetch echo metadata so current_tick and current_mood stay in sync.
+        // fetchEchoes refreshes the full sidebar list (all echoes tick together).
         void useEchoStore.getState().fetchEcho(id);
+        void useEchoStore.getState().fetchEchoes();
         void useFeedStore.getState().fetchPersonalFeed(id);
       } else if (event.type === 'MoodChanged') {
         void useEchoStore.getState().fetchEcho(id);
@@ -1269,8 +1271,11 @@ function CommunityPulseCard() {
                 <span className="text-[10px] text-text-muted">·</span>
                 <span className="text-[10px] text-text-muted">{formatTimeAgo(item.created_at)}</span>
               </div>
-              {/* Content */}
-              <p className={`text-sm text-text-secondary leading-snug ${isExpanded ? '' : 'line-clamp-3'}`}>{content}</p>
+              {/* Content — click to expand/collapse */}
+              <p className={`text-sm text-text-secondary leading-snug ${isExpanded ? '' : 'line-clamp-5'}`}>{content}</p>
+              {!isExpanded && content.length > 200 && (
+                <span className="text-[10px] text-accent mt-0.5 inline-block">show more</span>
+              )}
             </button>
           );
         })}
