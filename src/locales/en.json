@@ -518,7 +518,8 @@
     "error": "The Oracle couldn't respond. Please try again.",
     "conversation": "Oracle conversation",
     "expand": "Expand Oracle",
-    "collapse": "Collapse Oracle"
+    "collapse": "Collapse Oracle",
+    "reportProblem": "Report a problem"
   },
   "admin": {
     "title": "Admin Dashboard",
@@ -584,6 +585,9 @@
     "shardStatus": "Status",
     "shardPopulation": "Population",
     "tickControl": "Tick Engine",
+    "manualTick": "Manual Tick",
+    "manualTickDesc": "Trigger a tick immediately without waiting for the next scheduled interval. Useful for demos.",
+    "triggerTick": "Trigger Tick Now",
     "pauseTicks": "Pause Ticks",
     "resumeTicks": "Resume Ticks",
     "ticksPaused": "Tick engine is paused",

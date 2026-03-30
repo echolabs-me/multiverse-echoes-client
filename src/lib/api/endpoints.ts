@@ -452,6 +452,7 @@ export const admin = {
   tickStatus: () => request<{ paused: boolean }>('/admin/tick/status'),
   tickPause: () => request<{ paused: boolean }>('/admin/tick/pause', { method: 'POST' }),
   tickResume: () => request<{ paused: boolean }>('/admin/tick/resume', { method: 'POST' }),
+  triggerTick: () => request<{ message: string; tick_id: number }>('/system/tick', { method: 'POST' }),
 };
 
 export const feedback = {

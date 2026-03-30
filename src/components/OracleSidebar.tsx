@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Sparkles, Send, Trash2, ChevronLeft, ExternalLink } from 'lucide-react';
+import { Sparkles, Send, Trash2, ChevronLeft, ExternalLink, Flag } from 'lucide-react';
+import { reports } from '../lib/api/endpoints.ts';
+import { useToastStore } from '../stores/useToastStore.ts';
 import { useOracleStore } from '../stores/useOracleStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import type { OracleMessage } from '../stores/useOracleStore.ts';
@@ -34,6 +36,9 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
   const user = useAuthStore((s) => s.user);
 
   const [input, setInput] = useState('');
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const addToast = useToastStore((s) => s.addToast);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -83,6 +88,14 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
         </div>
         <div className="flex items-center gap-1">
           <button
+            onClick={() => setReportOpen(!reportOpen)}
+            className={`rounded-md p-1.5 transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${reportOpen ? 'text-danger' : 'text-text-muted hover:text-text-secondary'}`}
+            aria-label={t('oracle.reportProblem')}
+            title={t('oracle.reportProblem')}
+          >
+            <Flag size={14} />
+          </button>
+          <button
             onClick={clearHistory}
             className="rounded-md p-1.5 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
             aria-label={t('oracle.clearHistory')}
@@ -110,6 +123,50 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
         aria-live="polite"
         aria-label={t('oracle.conversation')}
       >
+        {/* Inline report form */}
+        {reportOpen && (
+          <div className="mx-2 mb-3 rounded-lg border border-danger/30 bg-surface p-3">
+            <p className="mb-2 text-xs font-semibold text-danger">{t('oracle.reportProblem')}</p>
+            <textarea
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+              placeholder={t('community.reportPlaceholder')}
+              maxLength={500}
+              rows={2}
+              className="w-full rounded-md border border-border bg-canvas px-2 py-1.5 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+            />
+            <div className="mt-2 flex justify-end gap-1.5">
+              <button
+                onClick={() => { setReportOpen(false); setReportReason(''); }}
+                className="rounded px-2 py-1 text-[11px] text-text-muted hover:text-text-primary"
+              >
+                {t('common.cancel')}
+              </button>
+              <button
+                onClick={async () => {
+                  if (!reportReason.trim()) return;
+                  try {
+                    await reports.create({
+                      target_type: 'content',
+                      target_id: '00000000-0000-0000-0000-000000000000',
+                      reason: `[Oracle] ${reportReason.trim()}`,
+                    });
+                    addToast(t('community.reportSent'), 'success');
+                    setReportOpen(false);
+                    setReportReason('');
+                  } catch {
+                    addToast(t('common.error'), 'danger');
+                  }
+                }}
+                disabled={!reportReason.trim()}
+                className="rounded bg-danger px-2 py-1 text-[11px] font-medium text-white hover:bg-danger/80 disabled:opacity-40"
+              >
+                {t('common.report')}
+              </button>
+            </div>
+          </div>
+        )}
+
         {messages.length === 0 && (
           <div className="flex flex-col items-center gap-3 pt-8 text-center">
             <Sparkles size={32} className="text-accent opacity-50" />

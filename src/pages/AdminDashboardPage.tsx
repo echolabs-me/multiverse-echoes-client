@@ -528,6 +528,20 @@ function ControlsView() {
           </p>
         )}
       </Card>
+      <Card>
+        <h3 className="mb-3 text-sm font-semibold text-text-secondary">{t('admin.manualTick')}</h3>
+        <p className="mb-3 text-xs text-text-muted">{t('admin.manualTickDesc')}</p>
+        <Button
+          variant="secondary"
+          onClick={async () => {
+            try {
+              await admin.triggerTick();
+            } catch { /* */ }
+          }}
+        >
+          {t('admin.triggerTick')}
+        </Button>
+      </Card>
     </div>
   );
 }
