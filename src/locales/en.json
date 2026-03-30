@@ -605,6 +605,7 @@
   },
   "echoSidebar": {
     "title": "Echoes",
+    "tick": "Tick {{tick}}",
     "switchEcho": "Switch Echo",
     "selectEcho": "Select an Echo",
     "unknownShard": "Unknown Shard"
