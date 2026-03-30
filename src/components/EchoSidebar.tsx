@@ -6,6 +6,7 @@ import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
+import { CommunityPulseCard } from './CommunityPulseCard.tsx';
 import type { EchoResponse } from '../types/api.ts';
 
 /** Core moods for the legend — one entry per colour family. */
@@ -153,6 +154,11 @@ export function EchoSidebar() {
           ))}
         </ul>
       </nav>
+
+      {/* Community Pulse — single instance for all echoes */}
+      <div className="flex-shrink-0 border-t border-border px-2 py-3 overflow-y-auto max-h-[40%]">
+        <CommunityPulseCard />
+      </div>
 
       {/* Mood Legend */}
       <div className="flex-shrink-0 border-t border-border px-3 py-3">

@@ -41,9 +41,8 @@ import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
 import { EchoConversationPanel } from '../components/EchoConversationPanel.tsx';
-import { echoes as echoApi, feeds, reports, conversations } from '../lib/api/endpoints.ts';
+import { echoes as echoApi, reports, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
-import { getMoodColor } from '../lib/moodColor.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import type {
@@ -661,11 +660,6 @@ export function EchoDetailPage() {
             </button>
           </div>
 
-          {/* Community Pulse — activity across all echoes */}
-          <div className="mb-4">
-            <CommunityPulseCard />
-          </div>
-
           {/* Past Conversations */}
           {pastConversations.length > 0 && (
             <div className="mb-4">
@@ -1184,113 +1178,3 @@ function InfiniteScrollTrigger({
   );
 }
 
-/** Format a date as relative time (e.g. "2 hours ago", "3 days ago"). */
-function formatTimeAgo(dateStr: string): string {
-  const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-  if (seconds < 60) return 'just now';
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-
-/**
- * Community Pulse — full-width activity feed card.
- * Shows recent diary/life event activity across all user's echoes,
- * with Echo name + Shard name attribution on each item.
- */
-function CommunityPulseCard() {
-  const { t } = useTranslation();
-  const { echoList } = useEchoStore();
-  const [items, setItems] = useState<import('../types/api.ts').FeedItem[]>([]);
-  const [shardNames, setShardNames] = useState<Record<string, string>>({});
-  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-
-  const fetchFeed = useCallback(() => {
-    void feeds.personal().then((data) => setItems(data.slice(0, 8))).catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    fetchFeed();
-    const interval = setInterval(fetchFeed, 60_000);
-    return () => clearInterval(interval);
-  }, [fetchFeed]);
-
-  // Resolve shard names from items we have.
-  useEffect(() => {
-    const unknownShardIds = items
-      .map((i) => i.shard_id)
-      .filter((id) => id && !shardNames[id]);
-    const unique = [...new Set(unknownShardIds)];
-    for (const id of unique) {
-      void import('../lib/api/endpoints.ts').then(({ shards }) =>
-        shards.get(id).then((s) => {
-          setShardNames((prev) => ({ ...prev, [id]: s.name }));
-        }).catch(() => {}),
-      );
-    }
-  }, [items, shardNames]);
-
-  const echoNameMap = new Map(echoList.map((e) => [e.echo_id, e]));
-
-  if (items.length === 0) return null;
-
-  return (
-    <Card>
-      <div className="mb-3 flex items-center gap-2">
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50 motion-reduce:animate-none" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-        </span>
-        <h2 className="text-sm font-semibold text-text-primary">{t('communityFeed.title')}</h2>
-      </div>
-      <div className="flex flex-col gap-2">
-        {items.map((item) => {
-          const echo = echoNameMap.get(item.echo_id);
-          const echoName = echo?.name ?? item.echo_id.slice(0, 8);
-          const moodColor = echo ? getMoodColor(echo.current_mood) : '#8E8E93';
-          const shardName = shardNames[item.shard_id] ?? '';
-          const content = item.body || item.title || '';
-          const isExpanded = expandedItems.has(item.item_id);
-
-          return (
-            <button
-              key={item.item_id}
-              onClick={() => setExpandedItems((prev) => {
-                const next = new Set(prev);
-                if (next.has(item.item_id)) next.delete(item.item_id);
-                else next.add(item.item_id);
-                return next;
-              })}
-              className="w-full rounded-lg bg-surface-raised px-3 py-2 text-left transition-colors hover:bg-surface-raised/80"
-            >
-              {/* Attribution: Echo name + shard */}
-              <div className="flex items-center gap-1.5 mb-1">
-                <span
-                  className="h-2 w-2 flex-shrink-0 rounded-full"
-                  style={{ backgroundColor: moodColor }}
-                />
-                <span className="text-xs font-medium text-text-primary">{echoName}</span>
-                {shardName && (
-                  <>
-                    <span className="text-xs text-text-secondary">·</span>
-                    <span className="text-xs text-text-secondary">{shardName}</span>
-                  </>
-                )}
-                <span className="text-xs text-text-secondary">·</span>
-                <span className="text-xs text-text-secondary">{formatTimeAgo(item.created_at)}</span>
-              </div>
-              {/* Content — click to expand/collapse */}
-              <p className="text-sm text-text-secondary leading-snug" style={isExpanded ? undefined : { display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{content}</p>
-              {!isExpanded && content.length > 200 && (
-                <span className="text-[10px] text-accent mt-0.5 inline-block">show more</span>
-              )}
-            </button>
-          );
-        })}
-      </div>
-    </Card>
-  );
-}
