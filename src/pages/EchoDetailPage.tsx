@@ -123,6 +123,16 @@ export function EchoDetailPage() {
   const echoIdRef = useRef(echoId);
   echoIdRef.current = echoId;
 
+  // Debounce fetchEchoes — multiple DiaryEntryCreated events fire per tick
+  // (one per Echo), but we only need one list refresh after all are done.
+  const fetchEchoesTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const debouncedFetchEchoes = useCallback(() => {
+    clearTimeout(fetchEchoesTimerRef.current);
+    fetchEchoesTimerRef.current = setTimeout(() => {
+      void useEchoStore.getState().fetchEchoes();
+    }, 2000);
+  }, []);
+
   const loadData = useCallback(async () => {
     if (!echoId) return;
     setIsLoading(true);
@@ -268,9 +278,10 @@ export function EchoDetailPage() {
           })
           .catch(() => {});
         // Re-fetch echo metadata so current_tick and current_mood stay in sync.
-        // fetchEchoes refreshes the full sidebar list (all echoes tick together).
+        // fetchEchoes is debounced — multiple diary events per tick coalesce
+        // into one list refresh after all echoes have been processed.
         void useEchoStore.getState().fetchEcho(id);
-        void useEchoStore.getState().fetchEchoes();
+        debouncedFetchEchoes();
         void useFeedStore.getState().fetchPersonalFeed(id);
       } else if (event.type === 'MoodChanged') {
         void useEchoStore.getState().fetchEcho(id);
@@ -278,7 +289,7 @@ export function EchoDetailPage() {
         void useFeedStore.getState().fetchPersonalFeed(id);
       }
     },
-    [playSound],
+    [playSound, debouncedFetchEchoes],
   );
 
   const handleFallbackPoll = useCallback(() => {
