@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Send, Save, Lock } from 'lucide-react';
+import { ArrowLeft, Send, Lock } from 'lucide-react';
 import { Button } from '../components/index.ts';
 import { useAuthStore, useEchoStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
@@ -34,7 +34,6 @@ export function EchoConversationPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [saved, setSaved] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -60,7 +59,6 @@ export function EchoConversationPage() {
         setConversationId(result.conversation_id);
         if (result.resumed && result.messages.length > 0) {
           setMessages(result.messages);
-          setSaved(result.saved);
           trackEvent('conversation.resumed', { echo_id: echoId });
         } else {
           trackEvent('conversation.started', { echo_id: echoId });
@@ -193,17 +191,6 @@ export function EchoConversationPage() {
     }
   };
 
-  const handleSave = async () => {
-    if (!conversationId || saved) return;
-    try {
-      await conversations.saveAsDiary(conversationId);
-      setSaved(true);
-    } catch (err) {
-      const detail = err instanceof Error ? err.message : 'Unknown error';
-      setError(t('conversation.errorSaving', { detail }));
-    }
-  };
-
   // Free tier gate
   if (!limits.available) {
     return (
@@ -248,17 +235,6 @@ export function EchoConversationPage() {
           )}
         </div>
         <div className="flex items-center gap-2">
-          {messages.length > 0 && (
-            <button
-              onClick={() => void handleSave()}
-              disabled={saved}
-              className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-sm text-text-secondary transition-colors hover:bg-surface-raised disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
-              aria-label={t('conversation.save')}
-            >
-              <Save size={16} />
-              {saved ? t('conversation.saved') : t('conversation.save')}
-            </button>
-          )}
           {isFinite(limits.maxMessages) && (
             <span className="text-xs text-text-muted">
               {t('conversation.messageCount', {

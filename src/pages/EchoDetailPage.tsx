@@ -100,6 +100,7 @@ export function EchoDetailPage() {
   const [exportModal, setExportModal] = useState(false);
   const [reportModal, setReportModal] = useState(false);
   const [showConversation, setShowConversation] = useState(false);
+  const [resumeConversationId, setResumeConversationId] = useState<string | undefined>();
   const [pastConversations, setPastConversations] = useState<Conversation[]>([]);
   const [showPastConversations, setShowPastConversations] = useState(false);
   const [reportTargetId, setReportTargetId] = useState('');
@@ -582,6 +583,7 @@ export function EchoDetailPage() {
             <button
               onClick={() => {
                 if (window.innerWidth >= 1024) {
+                  setResumeConversationId(undefined);
                   setShowConversation((prev) => !prev);
                 } else {
                   navigate(`/echoes/${activeEcho.echo_id}/talk`);
@@ -667,7 +669,10 @@ export function EchoDetailPage() {
                   {pastConversations.map((conv) => (
                     <button
                       key={conv.conversation_id}
-                      onClick={() => navigate(`/echoes/${activeEcho.echo_id}/talk`)}
+                      onClick={() => {
+                        setResumeConversationId(conv.conversation_id);
+                        setShowConversation(true);
+                      }}
                       className="flex w-full items-center justify-between rounded-lg border border-border/50 bg-surface/50 px-3 py-2 text-left text-xs transition-colors hover:bg-surface-raised"
                     >
                       <span className="text-text-primary">
@@ -1063,10 +1068,12 @@ export function EchoDetailPage() {
       {showConversation && activeEcho && (
         <div className="hidden h-full w-[40%] lg:block">
           <EchoConversationPanel
+            key={resumeConversationId ?? 'active'}
             echoId={activeEcho.echo_id}
             echoName={activeEcho.name}
             echoMood={activeEcho.current_mood}
             onClose={() => setShowConversation(false)}
+            resumeConversationId={resumeConversationId}
           />
         </div>
       )}
@@ -1164,6 +1171,18 @@ function InfiniteScrollTrigger({
   );
 }
 
+/** Format a date as relative time (e.g. "2 hours ago", "3 days ago"). */
+function formatTimeAgo(dateStr: string): string {
+  const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (seconds < 60) return 'just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
 /**
  * Community Pulse — full-width activity feed card.
  * Shows recent diary/life event activity across all user's echoes,
@@ -1236,6 +1255,8 @@ function CommunityPulseCard() {
                     <span className="text-[10px] text-text-muted">{shardName}</span>
                   </>
                 )}
+                <span className="text-[10px] text-text-muted">·</span>
+                <span className="text-[10px] text-text-muted">{formatTimeAgo(item.created_at)}</span>
               </div>
               {/* Content */}
               <p className="text-sm text-text-secondary leading-snug">{content}</p>

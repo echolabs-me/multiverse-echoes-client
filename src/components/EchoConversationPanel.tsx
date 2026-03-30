@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Send, Save, X } from 'lucide-react';
+import { Send, X } from 'lucide-react';
 import { useAuthStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -24,9 +24,11 @@ interface EchoConversationPanelProps {
   echoName: string;
   echoMood: string;
   onClose: () => void;
+  /** If provided, load this specific past conversation instead of find-or-create. */
+  resumeConversationId?: string;
 }
 
-export function EchoConversationPanel({ echoId, echoName, echoMood, onClose }: EchoConversationPanelProps) {
+export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, resumeConversationId }: EchoConversationPanelProps) {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
 
@@ -36,7 +38,6 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose }: E
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [saved, setSaved] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -44,21 +45,27 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose }: E
   const tier = user?.subscription_tier ?? 'Free';
   const limits = TIER_LIMITS[tier] ?? TIER_LIMITS.Free;
 
-  // Find active conversation or create a new one on mount.
+  // Load a specific past conversation or find/create an active one.
   useEffect(() => {
     if (!echoId || !limits.available) return;
 
     const init = async () => {
       setIsLoading(true);
       try {
-        const result = await conversations.findActive(echoId);
-        setConversationId(result.conversation_id);
-        if (result.resumed && result.messages.length > 0) {
-          setMessages(result.messages);
-          setSaved(result.saved);
+        if (resumeConversationId) {
+          setConversationId(resumeConversationId);
+          const msgs = await conversations.messages(resumeConversationId);
+          setMessages(msgs);
           trackEvent('conversation.resumed', { echo_id: echoId });
         } else {
-          trackEvent('conversation.started', { echo_id: echoId });
+          const result = await conversations.findActive(echoId);
+          setConversationId(result.conversation_id);
+          if (result.resumed && result.messages.length > 0) {
+            setMessages(result.messages);
+            trackEvent('conversation.resumed', { echo_id: echoId });
+          } else {
+            trackEvent('conversation.started', { echo_id: echoId });
+          }
         }
       } catch (err) {
         const detail = err instanceof Error ? err.message : 'Unknown error';
@@ -68,7 +75,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose }: E
       }
     };
     void init();
-  }, [echoId, limits.available, t]);
+  }, [echoId, limits.available, t, resumeConversationId]);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -181,17 +188,6 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose }: E
     }
   }, [input, conversationId, isSending, messages, limits.maxMessages, t, echoId, userMessageCount]);
 
-  const handleSave = async () => {
-    if (!conversationId || saved) return;
-    try {
-      await conversations.saveAsDiary(conversationId);
-      setSaved(true);
-    } catch (err) {
-      const detail = err instanceof Error ? err.message : 'Unknown error';
-      setError(t('conversation.errorSaving', { detail }));
-    }
-  };
-
   return (
     <div className="flex h-full flex-col border-l border-border bg-canvas">
       {/* Header */}
@@ -205,17 +201,6 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose }: E
           )}
         </div>
         <div className="flex items-center gap-2">
-          {messages.length > 0 && (
-            <button
-              onClick={() => void handleSave()}
-              disabled={saved}
-              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-text-secondary transition-colors hover:bg-surface-raised disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
-              aria-label={t('conversation.save')}
-            >
-              <Save size={14} />
-              {saved ? t('conversation.saved') : t('conversation.save')}
-            </button>
-          )}
           {isFinite(limits.maxMessages) && (
             <span className="text-xs text-text-muted">
               {t('conversation.messageCount', {
