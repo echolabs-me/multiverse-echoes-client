@@ -29,7 +29,10 @@ export const useEchoStore = create<EchoState>((set, get) => ({
 
   fetchEcho: async (id) => {
     const echo = await echoes.get(id);
-    set({ activeEcho: echo });
+    set({
+      activeEcho: echo,
+      echoList: get().echoList.map((e) => (e.echo_id === id ? echo : e)),
+    });
   },
 
   createEcho: async (data) => {
