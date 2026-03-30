@@ -62,17 +62,17 @@ function EchoCard({
         </span>
       </div>
       {/* Row 2: mood + tick */}
-      <p className="truncate text-[11px] text-text-muted pl-[18px]">
+      <p className="truncate text-[11px] text-text-secondary pl-[18px]">
         {echo.current_mood} · {t('echoSidebar.tick', { tick: echo.current_tick })}
       </p>
       {/* Row 3: diary preview */}
       {latestDiary && (
-        <p className="line-clamp-2 text-[11px] text-text-muted pl-[18px] italic leading-snug">
+        <p className="line-clamp-2 text-xs text-text-secondary pl-[18px] italic leading-snug">
           &ldquo;{latestDiary}&rdquo;
         </p>
       )}
       {/* Row 4: shard name */}
-      <p className="truncate text-[10px] text-text-muted pl-[18px] opacity-60">
+      <p className="truncate text-[11px] text-text-muted pl-[18px]">
         {shardName}
       </p>
     </button>
@@ -155,15 +155,15 @@ export function EchoSidebar() {
       </nav>
 
       {/* Mood Legend */}
-      <div className="flex-shrink-0 border-t border-border px-3 py-2.5">
-        <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
+      <div className="flex-shrink-0 border-t border-border px-3 py-3">
+        <p className="mb-2 text-xs font-semibold text-text-primary">
           {t('echoSidebar.moodLegend')}
         </p>
-        <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
           {MOOD_LEGEND.map(({ mood, color }) => (
-            <div key={mood} className="flex items-center gap-1.5">
-              <span className="h-2 w-2 flex-shrink-0 rounded-full" style={{ backgroundColor: color }} />
-              <span className="text-[11px] text-text-muted capitalize">{mood}</span>
+            <div key={mood} className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full" style={{ backgroundColor: color }} />
+              <span className="text-xs text-text-secondary capitalize">{mood}</span>
             </div>
           ))}
         </div>
