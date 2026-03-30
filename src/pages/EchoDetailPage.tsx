@@ -1193,6 +1193,7 @@ function CommunityPulseCard() {
   const { echoList } = useEchoStore();
   const [items, setItems] = useState<import('../types/api.ts').FeedItem[]>([]);
   const [shardNames, setShardNames] = useState<Record<string, string>>({});
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   const fetchFeed = useCallback(() => {
     void feeds.personal().then((data) => setItems(data.slice(0, 8))).catch(() => {});
@@ -1238,10 +1239,20 @@ function CommunityPulseCard() {
           const echoName = echo?.name ?? item.echo_id.slice(0, 8);
           const moodColor = echo ? getMoodColor(echo.current_mood) : '#8E8E93';
           const shardName = shardNames[item.shard_id] ?? '';
-          const content = item.title || (item.body?.slice(0, 150) + (item.body?.length > 150 ? '…' : ''));
+          const content = item.title || item.body || '';
+          const isExpanded = expandedItems.has(item.item_id);
 
           return (
-            <div key={item.item_id} className="rounded-lg bg-surface-raised px-3 py-2">
+            <button
+              key={item.item_id}
+              onClick={() => setExpandedItems((prev) => {
+                const next = new Set(prev);
+                if (next.has(item.item_id)) next.delete(item.item_id);
+                else next.add(item.item_id);
+                return next;
+              })}
+              className="w-full rounded-lg bg-surface-raised px-3 py-2 text-left transition-colors hover:bg-surface-raised/80"
+            >
               {/* Attribution: Echo name + shard */}
               <div className="flex items-center gap-1.5 mb-1">
                 <span
@@ -1259,8 +1270,8 @@ function CommunityPulseCard() {
                 <span className="text-[10px] text-text-muted">{formatTimeAgo(item.created_at)}</span>
               </div>
               {/* Content */}
-              <p className="text-sm text-text-secondary leading-snug">{content}</p>
-            </div>
+              <p className={`text-sm text-text-secondary leading-snug ${isExpanded ? '' : 'line-clamp-3'}`}>{content}</p>
+            </button>
           );
         })}
       </div>
