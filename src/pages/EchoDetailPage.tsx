@@ -1264,12 +1264,12 @@ function CommunityPulseCard() {
                 <span className="text-xs font-medium text-text-primary">{echoName}</span>
                 {shardName && (
                   <>
-                    <span className="text-[10px] text-text-muted">·</span>
-                    <span className="text-[10px] text-text-muted">{shardName}</span>
+                    <span className="text-xs text-text-secondary">·</span>
+                    <span className="text-xs text-text-secondary">{shardName}</span>
                   </>
                 )}
-                <span className="text-[10px] text-text-muted">·</span>
-                <span className="text-[10px] text-text-muted">{formatTimeAgo(item.created_at)}</span>
+                <span className="text-xs text-text-secondary">·</span>
+                <span className="text-xs text-text-secondary">{formatTimeAgo(item.created_at)}</span>
               </div>
               {/* Content — click to expand/collapse */}
               <p className="text-sm text-text-secondary leading-snug" style={isExpanded ? undefined : { display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{content}</p>
