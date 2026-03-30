@@ -168,23 +168,25 @@ function CommunityPulse() {
   }, [fetchFeed]);
 
   return (
-    <div className="flex-shrink-0 border-t border-border px-2 py-2">
-      <div className="flex items-center gap-1.5 px-1 mb-1">
-        <span className="relative flex h-1.5 w-1.5">
+    <div className="flex-shrink-0 border-t border-border bg-surface-raised/50">
+      {/* Header */}
+      <div className="flex items-center gap-2 px-3 pt-3 pb-1.5">
+        <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50 motion-reduce:animate-none" />
-          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
         </span>
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-text-muted">
+        <span className="text-xs font-semibold text-text-primary">
           {t('communityFeed.title')}
         </span>
       </div>
+      {/* Feed items */}
       {items.length === 0 ? (
-        <p className="px-2 text-[11px] italic text-text-muted">{t('communityFeed.empty')}</p>
+        <p className="px-3 pb-3 text-xs italic text-text-muted">{t('communityFeed.empty')}</p>
       ) : (
-        <ul className="flex flex-col gap-0.5 max-h-32 overflow-y-auto">
+        <ul className="flex flex-col gap-1 px-2 pb-3 overflow-y-auto max-h-44">
           {items.map((item) => (
-            <li key={item.item_id} className="rounded px-2 py-0.5">
-              <p className="truncate text-[11px] text-text-secondary">{item.title}</p>
+            <li key={item.item_id} className="rounded-md bg-surface px-2.5 py-1.5">
+              <p className="text-xs text-text-secondary leading-snug">{item.title}</p>
             </li>
           ))}
         </ul>
