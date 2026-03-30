@@ -1241,7 +1241,7 @@ function CommunityPulseCard() {
           const echoName = echo?.name ?? item.echo_id.slice(0, 8);
           const moodColor = echo ? getMoodColor(echo.current_mood) : '#8E8E93';
           const shardName = shardNames[item.shard_id] ?? '';
-          const content = item.title || item.body || '';
+          const content = item.body || item.title || '';
           const isExpanded = expandedItems.has(item.item_id);
 
           return (
