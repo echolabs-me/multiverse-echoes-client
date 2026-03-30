@@ -417,6 +417,7 @@ export interface SystemHealth {
   tick_duration_ms: number;
   ram_usage_mb: number;
   vram_usage_mb: number;
+  vram_total_mb: number;
   active_echoes: number;
   hibernated_echoes: number;
   total_users: number;

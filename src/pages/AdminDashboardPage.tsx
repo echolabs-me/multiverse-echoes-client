@@ -119,7 +119,7 @@ function DashboardView() {
         { label: t('admin.tickNumber'), value: String(health.tick_number), icon: <Activity size={16} /> },
         { label: t('admin.tickDuration'), value: `${String(health.tick_duration_ms)}ms`, icon: <Clock size={16} />, warn: health.tick_duration_ms > 5000 },
         { label: t('admin.ramUsage'), value: `${String(health.ram_usage_mb)} MB`, icon: <Database size={16} />, warn: health.ram_usage_mb > 4096 },
-        { label: t('admin.vramUsage'), value: `${String(health.vram_usage_mb)} MB`, icon: <Database size={16} />, warn: health.vram_usage_mb > 8192 },
+        { label: t('admin.vramUsage'), value: health.vram_total_mb > 0 ? `${String(health.vram_usage_mb)} / ${String(health.vram_total_mb)} MB` : `${String(health.vram_usage_mb)} MB`, icon: <Database size={16} />, warn: health.vram_total_mb > 0 && (health.vram_usage_mb / health.vram_total_mb) > 0.9 },
         { label: t('admin.activeEchoes'), value: String(health.active_echoes), icon: <Users size={16} /> },
         { label: t('admin.hibernatedEchoes'), value: String(health.hibernated_echoes), icon: <Users size={16} /> },
         { label: t('admin.totalUsers'), value: String(health.total_users), icon: <Users size={16} /> },
