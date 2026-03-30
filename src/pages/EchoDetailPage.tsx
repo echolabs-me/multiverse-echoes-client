@@ -169,6 +169,14 @@ export function EchoDetailPage() {
     void loadData();
   }, [loadData]);
 
+  // Reset per-echo UI state when switching echoes via the sidebar.
+  useEffect(() => {
+    setToggledDays(new Set());
+    setDiarySearch('');
+    setMoodFilter('');
+    setShowAllPersona(false);
+  }, [echoId]);
+
   // Re-fetch diary when mood filter changes (without full page reload).
   // Track the max number of entries the user has loaded (for filter clear restore).
   const maxLoadedRef = useRef(PAGE_SIZE);
