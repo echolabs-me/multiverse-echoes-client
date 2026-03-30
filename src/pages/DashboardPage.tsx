@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Plus, Compass, BookOpen, Zap, Users, ExternalLink } from 'lucide-react';
+import { BookOpen, Zap, Users, ExternalLink } from 'lucide-react';
 import { Card, Badge, EmptyState, Button, Spinner } from '../components/index.ts';
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
@@ -12,41 +12,6 @@ import { useEchoStore } from '../stores/useEchoStore.ts';
 import { SubscriptionExpiryBanner } from '../components/SubscriptionExpiryBanner.tsx';
 import { echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
 import type { EchoResponse, DiaryEntry, LifeEvent, EchoRelationship, FeedItem, WsEchoEvent } from '../types/api.ts';
-
-function EchoListItem({
-  echo,
-  isActive,
-  onClick,
-}: {
-  echo: EchoResponse;
-  isActive: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
-        isActive
-          ? 'bg-accent-subtle text-accent'
-          : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
-      }`}
-      aria-current={isActive ? 'true' : undefined}
-    >
-      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-raised text-xs font-medium">
-        {echo.name[0]}
-      </div>
-      <div className="flex-1 overflow-hidden">
-        <p className="truncate text-sm font-medium">{echo.name}</p>
-        <p className="truncate text-xs text-text-muted">{echo.current_mood}</p>
-      </div>
-      <Badge
-        variant={echo.status === 'Active' ? 'success' : 'default'}
-      >
-        {echo.status}
-      </Badge>
-    </button>
-  );
-}
 
 function LifeEventsSection({ echoId }: { echoId: string }) {
   const { t } = useTranslation();
@@ -353,46 +318,6 @@ export function DashboardPage() {
 
   return (
     <div className="flex h-full flex-1 overflow-hidden">
-      {/* Echo list sidebar (page-specific, inside main content area) */}
-      <aside className="hidden w-56 flex-col border-r border-border bg-surface md:flex">
-        <div className="flex-1 overflow-y-auto p-2">
-          {/* My Echoes */}
-          <div className="mb-4">
-            <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
-              {t('dashboard.myEchoes')}
-            </h3>
-            <div className="flex flex-col gap-1">
-              {echoList.map((echo) => (
-                <EchoListItem
-                  key={echo.echo_id}
-                  echo={echo}
-                  isActive={activeEcho?.echo_id === echo.echo_id}
-                  onClick={() => setActiveEcho(echo)}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="flex flex-col gap-1">
-            <button
-              onClick={() => navigate('/onboarding/create-echo')}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-surface-raised hover:text-text-primary"
-            >
-              <Plus size={16} />
-              {t('dashboard.createNewEcho')}
-            </button>
-            <button
-              onClick={() => navigate('/shards/browse')}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-surface-raised hover:text-text-primary"
-            >
-              <Compass size={16} />
-              {t('dashboard.browseShards')}
-            </button>
-          </div>
-        </div>
-      </aside>
-
       {/* Main content with 3D shard environment behind */}
       <div className="relative flex-1 overflow-y-auto p-6">
         <SubscriptionExpiryBanner />
