@@ -37,7 +37,6 @@ import { useFeedStore } from '../stores/useFeedStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
 import { useMoodAtmosphere } from '../hooks/useMoodAtmosphere.ts';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
-import { MoodParticles } from '../components/MoodParticles.tsx';
 import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
@@ -513,17 +512,6 @@ export function EchoDetailPage() {
     <div className="flex h-full">
       {/* Main content — shrinks when conversation panel is open on desktop */}
       <div ref={moodContainerRef} className={`relative flex h-full flex-col ${showConversation ? 'w-[60%]' : 'w-full'} transition-[width] duration-300`}>
-      {/* Mood-reactive background gradient */}
-      <div
-        className="pointer-events-none absolute inset-0 transition-[background] duration-300 ease-in-out"
-        style={{
-          background: `linear-gradient(180deg, ${moodPalette.gradientFrom} 0%, ${moodPalette.gradientTo} 100%)`,
-        }}
-        aria-hidden="true"
-      />
-      {/* Mood particles */}
-      <MoodParticles palette={moodPalette} />
-
       <div className="relative flex-1 overflow-y-auto">
         <div className="mx-auto max-w-4xl p-6">
           {/* Mobile Echo switcher — dropdown for quick navigation */}
