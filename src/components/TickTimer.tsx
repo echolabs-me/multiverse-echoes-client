@@ -33,9 +33,9 @@ export function TickTimer() {
 
   return (
     <>
-      {/* Centered digits + label — horizontal layout */}
+      {/* Centered digits + label — horizontal layout with neon markers */}
       <div
-        className="flex items-baseline gap-2"
+        className="flex items-center gap-2"
         aria-live="polite"
         aria-label={
           isGenerating
@@ -45,9 +45,17 @@ export function TickTimer() {
               : t('tickTimer.countdown', { seconds: secondsRemaining })
         }
       >
+        {/* Left marker */}
+        <span
+          className={`tick-digit-breathe text-[10px] leading-none ${isArrived ? 'text-success' : 'text-accent'}`}
+          style={{ textShadow: isArrived ? NEON_GLOW_SUCCESS : NEON_GLOW }}
+          aria-hidden="true"
+        >
+          ◆
+        </span>
+
         {isGenerating ? (
           <>
-            {/* Full text on desktop, short on mobile */}
             <span
               className="tick-digit-breathe hidden sm:inline text-sm font-semibold text-accent leading-tight"
               style={{ textShadow: NEON_GLOW }}
@@ -74,7 +82,6 @@ export function TickTimer() {
             >
               {timeDisplay}
             </span>
-            {/* Label to the right — hidden on mobile */}
             <span
               className="hidden sm:inline text-xs text-text-muted leading-none"
               style={{ textShadow: '0 0 6px rgba(212, 145, 92, 0.15)' }}
@@ -85,6 +92,15 @@ export function TickTimer() {
             </span>
           </>
         )}
+
+        {/* Right marker */}
+        <span
+          className={`tick-digit-breathe text-[10px] leading-none ${isArrived ? 'text-success' : 'text-accent'}`}
+          style={{ textShadow: isArrived ? NEON_GLOW_SUCCESS : NEON_GLOW }}
+          aria-hidden="true"
+        >
+          ◆
+        </span>
       </div>
 
       {/* Full-width ambient bar at header bottom */}
