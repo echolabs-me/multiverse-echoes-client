@@ -5,8 +5,8 @@ import { ChevronDown, X } from 'lucide-react';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
-import { echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
-import type { EchoResponse, FeedItem } from '../types/api.ts';
+import { echoes as echoApi } from '../lib/api/endpoints.ts';
+import type { EchoResponse } from '../types/api.ts';
 
 /**
  * Mini-card Echo item for the sidebar.
@@ -141,57 +141,7 @@ export function EchoSidebar() {
           ))}
         </ul>
       </nav>
-
-      {/* Community Pulse — echo activity feed */}
-      <CommunityPulse />
     </aside>
-  );
-}
-
-/**
- * Community Pulse — fixed footer in the Echo sidebar.
- * Uses the personal feed (user's own echoes' activity, no is_public filter).
- * Stays pinned at the bottom while echo cards scroll above.
- */
-function CommunityPulse() {
-  const { t } = useTranslation();
-  const [items, setItems] = useState<FeedItem[]>([]);
-
-  const fetchFeed = useCallback(() => {
-    void feeds.personal().then((data) => setItems(data.slice(0, 6))).catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    fetchFeed();
-    const interval = setInterval(fetchFeed, 60_000);
-    return () => clearInterval(interval);
-  }, [fetchFeed]);
-
-  return (
-    <div className="flex-shrink-0 border-t border-border bg-surface-raised/50">
-      {/* Header */}
-      <div className="flex items-center gap-2 px-3 pt-3 pb-1.5">
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50 motion-reduce:animate-none" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-        </span>
-        <span className="text-xs font-semibold text-text-primary">
-          {t('communityFeed.title')}
-        </span>
-      </div>
-      {/* Feed items */}
-      {items.length === 0 ? (
-        <p className="px-3 pb-3 text-xs italic text-text-muted">{t('communityFeed.empty')}</p>
-      ) : (
-        <ul className="flex flex-col gap-1 px-2 pb-3 overflow-y-auto max-h-44">
-          {items.map((item) => (
-            <li key={item.item_id} className="rounded-md bg-surface px-2.5 py-1.5">
-              <p className="text-xs text-text-secondary leading-snug">{item.title}</p>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
   );
 }
 

@@ -39,8 +39,9 @@ import { MoodParticles } from '../components/MoodParticles.tsx';
 import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
-import { echoes as echoApi } from '../lib/api/endpoints.ts';
+import { echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
+import { getMoodColor } from '../lib/moodColor.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import type {
@@ -552,98 +553,62 @@ export function EchoDetailPage() {
             )}
           </Card>
 
-          {/* Quick Actions */}
-          <div className="my-6 flex flex-wrap gap-2">
-            <Button
-              variant="primary"
+          {/* Action Toolbar — compact horizontal row */}
+          <div className="my-4 flex flex-wrap gap-1.5">
+            <button
               onClick={() => navigate(`/echoes/${activeEcho.echo_id}/talk`)}
               disabled={activeEcho.status === 'Hibernated'}
-              title={activeEcho.status === 'Hibernated' ? t('echoDetail.hibernatedNoTalk') : undefined}
+              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              <MessageCircle size={16} /> {t('echoDetail.talkToEcho')}
-            </Button>
-            <div className="flex flex-col items-start gap-1">
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setHibernateModal(true);
-                }}
-              >
-                {activeEcho.status === 'Active' ? (
-                  <>
-                    <Moon size={16} /> {t('echoDetail.hibernate')}
-                  </>
-                ) : (
-                  <>
-                    <Sun size={16} /> {t('echoDetail.wake')}
-                  </>
-                )}
-              </Button>
-              <p className="text-xs text-text-muted max-w-[200px]">
-                {t('echoDetail.hibernateHint')}
-              </p>
-            </div>
+              <MessageCircle size={14} /> {t('echoDetail.talkToEcho')}
+            </button>
             <div className="relative">
-              <Button
-                variant="secondary"
+              <button
                 onClick={() => setInfluenceModal(true)}
                 disabled={activeEcho.status === 'Hibernated'}
-                title={activeEcho.status === 'Hibernated' ? t('echoDetail.hibernatedNoNudge') : undefined}
+                className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
-                <Zap size={16} /> {t('echoDetail.useInfluence')}
-              </Button>
-              {/* Nudge ripple effect */}
+                <Zap size={14} /> {t('echoDetail.useInfluence')}
+                {influence && influence.daily_limit < 1000 && (
+                  <span className="text-text-muted">({influence.remaining})</span>
+                )}
+              </button>
               {nudgeRipple && (
-                <>
-                  <span
-                    className="pointer-events-none absolute inset-0 rounded-lg animate-nudge-ripple"
-                    aria-hidden="true"
-                  />
-                  <span
-                    className="pointer-events-none absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-accent animate-nudge-pulse"
-                    aria-hidden="true"
-                  />
-                </>
+                <span className="pointer-events-none absolute inset-0 rounded-lg animate-nudge-ripple" aria-hidden="true" />
               )}
             </div>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                setNewName(activeEcho.name);
-                setRenameModal(true);
-              }}
+            <button
+              onClick={() => setHibernateModal(true)}
+              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
             >
-              <Pencil size={16} /> {t('echoDetail.rename')}
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                setNewPersona(activeEcho.persona_text);
-                setEditPersonaModal(true);
-              }}
+              {activeEcho.status === 'Active' ? <Moon size={14} /> : <Sun size={14} />}
+              {activeEcho.status === 'Active' ? t('echoDetail.hibernate') : t('echoDetail.wake')}
+            </button>
+            <button
+              onClick={() => { setNewName(activeEcho.name); setRenameModal(true); }}
+              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+            >
+              <Pencil size={14} /> {t('echoDetail.rename')}
+            </button>
+            <button
+              onClick={() => { setNewPersona(activeEcho.persona_text); setEditPersonaModal(true); }}
               disabled={activeEcho.current_tick > 0}
-              title={activeEcho.current_tick > 0 ? t('echoDetail.personaLocked') : undefined}
+              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              <Pencil size={16} /> {t('echoDetail.editPersona')}
-            </Button>
-            <Button
-              variant="secondary"
+              <Pencil size={14} /> {t('echoDetail.editPersona')}
+            </button>
+            <button
               onClick={() => setExportModal(true)}
+              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
             >
-              <Download size={16} /> {t('echoDetail.exportStory')}
-            </Button>
+              <Download size={14} /> {t('echoDetail.exportStory')}
+            </button>
           </div>
 
-          {/* Influence balance */}
-          {influence && (
-            <div className="mb-6 text-sm text-text-secondary">
-              <Zap size={14} className="mr-1 inline text-accent" aria-hidden="true" />
-              {t('echoDetail.influenceRemaining', {
-                remaining: influence.remaining,
-                limit: influence.daily_limit,
-              })}
-            </div>
-          )}
+          {/* Community Pulse — activity across all echoes */}
+          <div className="mb-4">
+            <CommunityPulseCard />
+          </div>
 
           {/* Mood history strip */}
           <MoodHistoryStrip entries={diaryEntries} className="mb-2" />
@@ -1052,5 +1017,88 @@ function InfiniteScrollTrigger({
     <div ref={sentinelCallback} className="flex justify-center py-4">
       {isLoading && <Spinner />}
     </div>
+  );
+}
+
+/**
+ * Community Pulse — full-width activity feed card.
+ * Shows recent diary/life event activity across all user's echoes,
+ * with Echo name + Shard name attribution on each item.
+ */
+function CommunityPulseCard() {
+  const { t } = useTranslation();
+  const { echoList } = useEchoStore();
+  const [items, setItems] = useState<import('../types/api.ts').FeedItem[]>([]);
+  const [shardNames, setShardNames] = useState<Record<string, string>>({});
+
+  const fetchFeed = useCallback(() => {
+    void feeds.personal().then((data) => setItems(data.slice(0, 8))).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetchFeed();
+    const interval = setInterval(fetchFeed, 60_000);
+    return () => clearInterval(interval);
+  }, [fetchFeed]);
+
+  // Resolve shard names from items we have.
+  useEffect(() => {
+    const unknownShardIds = items
+      .map((i) => i.shard_id)
+      .filter((id) => id && !shardNames[id]);
+    const unique = [...new Set(unknownShardIds)];
+    for (const id of unique) {
+      void import('../lib/api/endpoints.ts').then(({ shards }) =>
+        shards.get(id).then((s) => {
+          setShardNames((prev) => ({ ...prev, [id]: s.name }));
+        }).catch(() => {}),
+      );
+    }
+  }, [items, shardNames]);
+
+  const echoNameMap = new Map(echoList.map((e) => [e.echo_id, e]));
+
+  if (items.length === 0) return null;
+
+  return (
+    <Card>
+      <div className="mb-3 flex items-center gap-2">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-50 motion-reduce:animate-none" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+        </span>
+        <h2 className="text-sm font-semibold text-text-primary">{t('communityFeed.title')}</h2>
+      </div>
+      <div className="flex flex-col gap-2">
+        {items.map((item) => {
+          const echo = echoNameMap.get(item.echo_id);
+          const echoName = echo?.name ?? item.echo_id.slice(0, 8);
+          const moodColor = echo ? getMoodColor(echo.current_mood) : '#8E8E93';
+          const shardName = shardNames[item.shard_id] ?? '';
+          const content = item.title || (item.body?.slice(0, 150) + (item.body?.length > 150 ? '…' : ''));
+
+          return (
+            <div key={item.item_id} className="rounded-lg bg-surface-raised px-3 py-2">
+              {/* Attribution: Echo name + shard */}
+              <div className="flex items-center gap-1.5 mb-1">
+                <span
+                  className="h-2 w-2 flex-shrink-0 rounded-full"
+                  style={{ backgroundColor: moodColor }}
+                />
+                <span className="text-xs font-medium text-text-primary">{echoName}</span>
+                {shardName && (
+                  <>
+                    <span className="text-[10px] text-text-muted">·</span>
+                    <span className="text-[10px] text-text-muted">{shardName}</span>
+                  </>
+                )}
+              </div>
+              {/* Content */}
+              <p className="text-sm text-text-secondary leading-snug">{content}</p>
+            </div>
+          );
+        })}
+      </div>
+    </Card>
   );
 }
