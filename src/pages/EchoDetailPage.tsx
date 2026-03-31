@@ -203,6 +203,9 @@ export function EchoDetailPage() {
     setDiarySearch('');
     setMoodFilter('');
     setShowAllPersona(false);
+    setShowConversation(false);
+    setResumeConversationId(undefined);
+    setShowPastConversations(false);
   }, [echoId]);
 
   // Re-fetch diary when mood filter changes (without full page reload).

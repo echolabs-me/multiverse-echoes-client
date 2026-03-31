@@ -48,9 +48,15 @@ export function EchoConversationPage() {
     }
   }, [echoId, activeEcho, fetchEcho]);
 
-  // Find active conversation or create a new one on mount.
+  // Find active conversation or create a new one on mount / echo switch.
   useEffect(() => {
     if (!echoId || !limits.available) return;
+
+    // Reset state from previous echo before loading.
+    setConversationId(null);
+    setMessages([]);
+    setError(null);
+    setInput('');
 
     const init = async () => {
       setIsLoading(true);

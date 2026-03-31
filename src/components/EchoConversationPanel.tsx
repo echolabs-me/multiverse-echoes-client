@@ -50,6 +50,12 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
   useEffect(() => {
     if (!echoId || !limits.available) return;
 
+    // Reset state from previous echo before loading.
+    setConversationId(null);
+    setMessages([]);
+    setError(null);
+    setInput('');
+
     const init = async () => {
       setIsLoading(true);
       try {
