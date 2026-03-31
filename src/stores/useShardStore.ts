@@ -19,8 +19,12 @@ export const useShardStore = create<ShardState>((set) => ({
 
   fetchShards: async (params) => {
     set({ isLoading: true });
-    const list = await shards.list(params);
-    set({ shardList: list, isLoading: false });
+    try {
+      const list = await shards.list(params);
+      set({ shardList: list, isLoading: false });
+    } catch {
+      set({ isLoading: false });
+    }
   },
 
   fetchShard: async (id) => {

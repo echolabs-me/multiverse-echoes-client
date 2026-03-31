@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { Button, Input } from '../components/index.ts';
-import { ApiRequestError, setTokens } from '../lib/api/client.ts';
-import { auth } from '../lib/api/endpoints.ts';
+import { ApiRequestError } from '../lib/api/client.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
 
@@ -50,7 +49,7 @@ export function RegisterPage() {
     setIsSubmitting(true);
 
     try {
-      const result = await auth.register({
+      const result = await useAuthStore.getState().register({
         email,
         password,
         display_name: displayName,
@@ -59,9 +58,6 @@ export function RegisterPage() {
         age_confirmed: true,
         cf_turnstile_response: turnstileToken,
       });
-      // Save tokens — server auto-logs-in on registration.
-      setTokens(result.access_token, result.refresh_token);
-      useAuthStore.setState({ isAuthenticated: true });
       trackEvent('account.registered', { method: 'email', locale: navigator.language });
 
       if (result.email_verified) {

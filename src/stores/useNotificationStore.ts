@@ -19,12 +19,16 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
 
   fetchNotifications: async () => {
     set({ isLoading: true });
-    const items = await notifications.list();
-    set({
-      notifications: items,
-      unreadCount: items.filter((n) => !n.read).length,
-      isLoading: false,
-    });
+    try {
+      const items = await notifications.list();
+      set({
+        notifications: items,
+        unreadCount: items.filter((n) => !n.read).length,
+        isLoading: false,
+      });
+    } catch {
+      set({ isLoading: false });
+    }
   },
 
   markRead: async (id) => {
