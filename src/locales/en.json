@@ -631,6 +631,8 @@
     "payWithXRP": "Pay with XRP",
     "payWithCard": "Pay with Card",
     "cardComingSoon": "Available after company incorporation",
+    "manageSubscription": "Manage Subscription",
+    "currentPlan": "This is your current plan",
     "subscribing": "Creating payment...",
     "successTitle": "Payment confirmed!",
     "successDesc": "Your tier has been upgraded. Enjoy your new features.",

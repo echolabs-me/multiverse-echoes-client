@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Check, CreditCard, Coins, Wallet } from 'lucide-react';
+import { ArrowLeft, Check, CreditCard, Coins, Wallet, Settings } from 'lucide-react';
 import { Card, Badge } from '../components/index.ts';
 import { payments } from '../lib/api/endpoints.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
@@ -10,6 +10,7 @@ const TIERS = [
   {
     name: 'Free',
     key: 'Free' as const,
+    stripeKey: '',
     price: 0,
     features: [
       '1 Echo',
@@ -21,9 +22,10 @@ const TIERS = [
   {
     name: 'Core',
     key: 'Core' as const,
-    price: 999,
+    stripeKey: 'core',
+    price: 900,
     features: [
-      '3 Echoes',
+      '5 Echoes',
       '5 conversations/day (20 messages)',
       'Access to public Shards',
       '5 influence points/day',
@@ -33,9 +35,10 @@ const TIERS = [
   {
     name: 'Creator',
     key: 'Creator' as const,
-    price: 2499,
+    stripeKey: 'creator',
+    price: 2900,
     features: [
-      '10 Echoes',
+      '20 Echoes',
       '20 conversations/day (50 messages)',
       'Create custom Shards',
       '20 influence points/day',
@@ -46,7 +49,8 @@ const TIERS = [
   {
     name: 'God Mode',
     key: 'GodMode' as const,
-    price: 4999,
+    stripeKey: 'god_mode',
+    price: 9900,
     features: [
       '50 Echoes',
       'Unlimited conversations',
@@ -65,6 +69,7 @@ export function PlansPage() {
   const [loading, setLoading] = useState<string | null>(null);
 
   const currentTier = user?.subscription_tier ?? 'Free';
+  const isPaid = currentTier !== 'Free';
 
   const handlePayment = async (tierKey: string, provider: 'nowpayments' | 'xaman') => {
     setLoading(`${tierKey}-${provider}`);
@@ -76,6 +81,34 @@ export function PlansPage() {
 
       if (result.checkout_url) {
         window.location.href = result.checkout_url;
+      }
+    } catch {
+      // Error handled by API client
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const handleStripeCheckout = async (stripeKey: string) => {
+    setLoading(`stripe-${stripeKey}`);
+    try {
+      const result = await payments.stripeCheckout(stripeKey);
+      if (result.checkout_url) {
+        window.location.href = result.checkout_url;
+      }
+    } catch {
+      // Error handled by API client
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    setLoading('manage');
+    try {
+      const result = await payments.stripePortal();
+      if (result.portal_url) {
+        window.location.href = result.portal_url;
       }
     } catch {
       // Error handled by API client
@@ -98,6 +131,19 @@ export function PlansPage() {
         <h1 className="mb-2 text-2xl font-bold text-text-primary">{t('payment.title')}</h1>
         <p className="mb-8 text-sm text-text-secondary">{t('payment.subtitle')}</p>
 
+        {isPaid && (
+          <div className="mb-6">
+            <button
+              onClick={() => void handleManageSubscription()}
+              disabled={loading === 'manage'}
+              className="flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-primary hover:bg-surface-raised disabled:opacity-50 transition-colors"
+            >
+              <Settings size={16} />
+              {loading === 'manage' ? t('common.loading') : t('payment.manageSubscription')}
+            </button>
+          </div>
+        )}
+
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {TIERS.map((tier) => {
             const isCurrent = tier.key === currentTier;
@@ -111,7 +157,7 @@ export function PlansPage() {
                     {isCurrent && <Badge variant="success">{t('payment.current')}</Badge>}
                   </div>
                   <p className="text-xl font-semibold text-accent">
-                    {isFree ? t('payment.free') : `$${(tier.price / 100).toFixed(2)}${t('payment.perMonth')}`}
+                    {isFree ? t('payment.free') : `$${(tier.price / 100).toFixed(0)}${t('payment.perMonth')}`}
                   </p>
                   <ul className="flex flex-col gap-1.5">
                     {tier.features.map((feature) => (
@@ -125,30 +171,34 @@ export function PlansPage() {
                   {!isFree && !isCurrent && (
                     <div className="mt-2 flex flex-col gap-2">
                       <button
-                        onClick={() => handlePayment(tier.key, 'nowpayments')}
+                        onClick={() => void handleStripeCheckout(tier.stripeKey)}
                         disabled={loading !== null}
                         className="flex items-center justify-center gap-2 rounded-lg bg-accent px-3 py-2 text-xs font-medium text-white hover:bg-accent/90 disabled:opacity-50"
+                      >
+                        <CreditCard size={14} />
+                        {loading === `stripe-${tier.stripeKey}` ? t('payment.subscribing') : t('payment.payWithCard')}
+                      </button>
+                      <button
+                        onClick={() => void handlePayment(tier.key, 'nowpayments')}
+                        disabled={loading !== null}
+                        className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-medium text-text-primary hover:bg-surface-hover disabled:opacity-50"
                       >
                         <Coins size={14} />
                         {loading === `${tier.key}-nowpayments` ? t('payment.subscribing') : t('payment.payWithCrypto')}
                       </button>
                       <button
-                        onClick={() => handlePayment(tier.key, 'xaman')}
+                        onClick={() => void handlePayment(tier.key, 'xaman')}
                         disabled={loading !== null}
                         className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-medium text-text-primary hover:bg-surface-hover disabled:opacity-50"
                       >
                         <Wallet size={14} />
                         {loading === `${tier.key}-xaman` ? t('payment.subscribing') : t('payment.payWithXRP')}
                       </button>
-                      <button
-                        disabled
-                        title={t('payment.cardComingSoon')}
-                        className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-medium text-text-muted opacity-50"
-                      >
-                        <CreditCard size={14} />
-                        {t('payment.payWithCard')}
-                      </button>
                     </div>
+                  )}
+
+                  {isCurrent && !isFree && (
+                    <p className="mt-2 text-center text-xs text-text-muted">{t('payment.currentPlan')}</p>
                   )}
                 </div>
               </Card>

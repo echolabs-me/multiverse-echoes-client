@@ -513,6 +513,16 @@ export const payments = {
         message: message || undefined,
       }),
     }),
+  stripeCheckout: (tier: string) =>
+    request<{ checkout_url: string }>('/payments/stripe/checkout', {
+      method: 'POST',
+      body: JSON.stringify({ tier }),
+    }),
+
+  stripePortal: () =>
+    request<{ portal_url: string }>('/payments/stripe/portal', {
+      method: 'POST',
+    }),
 };
 
 // --- Reports ---
