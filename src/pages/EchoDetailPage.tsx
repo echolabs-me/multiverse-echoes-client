@@ -19,6 +19,7 @@ import {
   Search,
   X,
   Flag,
+  MoreHorizontal,
 } from 'lucide-react';
 import {
   Card,
@@ -102,6 +103,7 @@ export function EchoDetailPage() {
   const [resumeConversationId, setResumeConversationId] = useState<string | undefined>();
   const [pastConversations, setPastConversations] = useState<Conversation[]>([]);
   const [showPastConversations, setShowPastConversations] = useState(false);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [reportTargetId, setReportTargetId] = useState('');
   const [reportReason, setReportReason] = useState('');
   const [soloMode, setSoloMode] = useState(false);
@@ -206,6 +208,7 @@ export function EchoDetailPage() {
     setShowConversation(false);
     setResumeConversationId(undefined);
     setShowPastConversations(false);
+    setShowMoreMenu(false);
   }, [echoId]);
 
   // Re-fetch diary when mood filter changes (without full page reload).
@@ -625,38 +628,56 @@ export function EchoDetailPage() {
                 <span className="pointer-events-none absolute inset-0 rounded-lg animate-nudge-ripple" aria-hidden="true" />
               )}
             </div>
-            {/* Hibernate/Wake */}
-            <button
-              onClick={() => setHibernateModal(true)}
-              className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent transition-all"
-            >
-              {activeEcho.status === 'Active'
-                ? <Moon size={14} className="text-blue-400" />
-                : <Sun size={14} className="text-amber-400" />}
-              {activeEcho.status === 'Active' ? t('echoDetail.hibernate') : t('echoDetail.wake')}
-            </button>
-            {/* Rename */}
-            <button
-              onClick={() => { setNewName(activeEcho.name); setRenameModal(true); }}
-              className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent transition-all"
-            >
-              <Pencil size={14} className="text-emerald-400" /> {t('echoDetail.rename')}
-            </button>
-            {/* Edit Persona */}
-            <button
-              onClick={() => { setNewPersona(activeEcho.persona_text); setEditPersonaModal(true); }}
-              disabled={activeEcho.current_tick > 0}
-              className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-            >
-              <Pencil size={14} className="text-violet-400" /> {t('echoDetail.editPersona')}
-            </button>
-            {/* Export */}
-            <button
-              onClick={() => setExportModal(true)}
-              className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent transition-all"
-            >
-              <Download size={14} className="text-sky-400" /> {t('echoDetail.exportStory')}
-            </button>
+            {/* More actions overflow menu */}
+            <div className="relative">
+              <button
+                onClick={() => setShowMoreMenu((p) => !p)}
+                className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent transition-all"
+                aria-label={t('common.more')}
+              >
+                <MoreHorizontal size={16} />
+              </button>
+              {showMoreMenu && (
+                <>
+                  <button
+                    className="fixed inset-0 z-40 cursor-default"
+                    onClick={() => setShowMoreMenu(false)}
+                    aria-label="Close menu"
+                    tabIndex={-1}
+                  />
+                  <div className="absolute left-0 z-50 mt-1 w-48 rounded-lg border border-border bg-surface shadow-lg py-1">
+                    <button
+                      onClick={() => { setHibernateModal(true); setShowMoreMenu(false); }}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+                    >
+                      {activeEcho.status === 'Active'
+                        ? <Moon size={14} className="text-blue-400" />
+                        : <Sun size={14} className="text-amber-400" />}
+                      {activeEcho.status === 'Active' ? t('echoDetail.hibernate') : t('echoDetail.wake')}
+                    </button>
+                    <button
+                      onClick={() => { setNewName(activeEcho.name); setRenameModal(true); setShowMoreMenu(false); }}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+                    >
+                      <Pencil size={14} className="text-emerald-400" /> {t('echoDetail.rename')}
+                    </button>
+                    <button
+                      onClick={() => { setNewPersona(activeEcho.persona_text); setEditPersonaModal(true); setShowMoreMenu(false); }}
+                      disabled={activeEcho.current_tick > 0}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    >
+                      <Pencil size={14} className="text-violet-400" /> {t('echoDetail.editPersona')}
+                    </button>
+                    <button
+                      onClick={() => { setExportModal(true); setShowMoreMenu(false); }}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+                    >
+                      <Download size={14} className="text-sky-400" /> {t('echoDetail.exportStory')}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Past Conversations */}
