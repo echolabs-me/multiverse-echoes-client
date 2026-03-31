@@ -25,7 +25,6 @@ export function CommunityPulseCard() {
   const { echoList } = useEchoStore();
   const [items, setItems] = useState<FeedItem[]>([]);
   const [shardNames, setShardNames] = useState<Record<string, string>>({});
-  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   const fetchFeed = useCallback(() => {
     void feeds.personal().then((data) => setItems(data.slice(0, 8))).catch(() => {});
@@ -63,26 +62,19 @@ export function CommunityPulseCard() {
           const echoName = echo?.name ?? item.echo_id.slice(0, 8);
           const moodColor = echo ? getMoodColor(echo.current_mood) : '#8E8E93';
           const shardName = shardNames[item.shard_id] ?? '';
-          const content = item.body || item.title || '';
-          const isExpanded = expandedItems.has(item.item_id);
+          const headline = item.title || '';
           const isLifeEvent = item.item_type === 'LifeEvent';
           const isRelationship = item.item_type === 'RelationshipChange';
 
           return (
-            <button
+            <div
               key={item.item_id}
-              onClick={() => setExpandedItems((prev) => {
-                const next = new Set(prev);
-                if (next.has(item.item_id)) next.delete(item.item_id);
-                else next.add(item.item_id);
-                return next;
-              })}
               className={`w-full rounded-lg px-2.5 py-2 text-left transition-colors ${
                 isLifeEvent
-                  ? 'bg-accent/10 border border-accent/20 hover:bg-accent/15'
+                  ? 'bg-accent/10 border border-accent/20'
                   : isRelationship
-                    ? 'bg-pink-500/10 border border-pink-500/20 hover:bg-pink-500/15'
-                    : 'bg-surface-raised/50 hover:bg-surface-raised'
+                    ? 'bg-pink-500/10 border border-pink-500/20'
+                    : 'bg-surface-raised/50'
               }`}
             >
               <div className="flex items-center gap-1.5 mb-0.5">
@@ -105,16 +97,10 @@ export function CommunityPulseCard() {
                 <span className="text-xs text-text-secondary">·</span>
                 <span className="text-xs text-text-secondary whitespace-nowrap">{formatTimeAgo(item.created_at)}</span>
               </div>
-              <p
-                className="text-xs text-text-secondary leading-snug pl-[14px]"
-                style={isExpanded ? undefined : { display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
-              >
-                {content}
+              <p className="text-xs text-text-secondary leading-snug pl-[14px] line-clamp-2">
+                {headline}
               </p>
-              {!isExpanded && content.length > 150 && (
-                <span className="text-[10px] text-accent mt-0.5 pl-[14px] inline-block">show more</span>
-              )}
-            </button>
+            </div>
           );
         })}
     </div>
