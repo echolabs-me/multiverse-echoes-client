@@ -943,6 +943,10 @@ export type User = {
 	 *  Crypto payments set this to `now + duration_days`. Extension adds to existing.
 	 */
 	subscription_expires_at?: string | null,
+	// Stripe customer ID (cus_...). Populated on first Stripe checkout.
+	stripe_customer_id?: string | null,
+	// Stripe subscription ID (sub_...). Populated on checkout.session.completed.
+	stripe_subscription_id?: string | null,
 };
 
 export type UserInventory = {
