@@ -368,41 +368,6 @@ export function EchoDetailPage() {
   // Current day is the highest day number (first group since entries are newest-first).
   const currentDay = diaryByDay.length > 0 ? diaryByDay[0].day : -1;
 
-  // Map life events to simulated days using tick_id ranges from diary entries.
-  const lifeEventsByDay = useMemo(() => {
-    if (lifeEvents.length === 0 || diaryEntries.length === 0) return new Map<number, typeof lifeEvents>();
-    // Build tick_id -> day mapping from diary entries.
-    const tickToDay = new Map<number, number>();
-    for (const entry of diaryEntries) {
-      tickToDay.set(entry.tick_id, parseDayNumber(entry.simulated_date));
-    }
-    const result = new Map<number, typeof lifeEvents>();
-    for (const event of lifeEvents) {
-      // Find exact tick match first, then nearest.
-      let day = tickToDay.get(event.tick_id);
-      if (day === undefined) {
-        // Find the diary entry with the closest tick_id.
-        let closest = diaryEntries[0];
-        let minDiff = Math.abs(event.tick_id - closest.tick_id);
-        for (const entry of diaryEntries) {
-          const diff = Math.abs(event.tick_id - entry.tick_id);
-          if (diff < minDiff) {
-            minDiff = diff;
-            closest = entry;
-          }
-        }
-        day = parseDayNumber(closest.simulated_date);
-      }
-      const existing = result.get(day);
-      if (existing) {
-        existing.push(event);
-      } else {
-        result.set(day, [event]);
-      }
-    }
-    return result;
-  }, [lifeEvents, diaryEntries]);
-
   const toggleDay = useCallback((day: number) => {
     setToggledDays((prev) => {
       const next = new Set(prev);
@@ -794,19 +759,8 @@ export function EchoDetailPage() {
                   const isCurrentDay = day === currentDay;
                   const defaultExpanded = isCurrentDay;
                   const expanded = toggledDays.has(day) ? !defaultExpanded : defaultExpanded;
-                  const dayLifeEvents = lifeEventsByDay.get(day) ?? [];
                   return (
                     <div key={day}>
-                      {/* Life event milestone markers for this day */}
-                      {dayLifeEvents.map((event) => (
-                        <div
-                          key={event.item_id}
-                          className="mb-2 flex items-center gap-2 rounded-lg border border-accent/30 bg-accent/10 px-3 py-2"
-                        >
-                          <Sparkles size={16} className="shrink-0 text-accent" aria-hidden="true" />
-                          <span className="text-sm font-medium text-accent">{event.title}</span>
-                        </div>
-                      ))}
                       <button
                         onClick={() => toggleDay(day)}
                         className="mb-2 flex w-full items-center gap-2 border-b border-accent/20 pb-1 text-left"
