@@ -67,9 +67,12 @@ export function MoodHistoryStrip({ entries, className = '' }: MoodHistoryStripPr
 
   return (
     <div className={`relative ${className}`}>
+      <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+        {t('echoDetail.moodJourney', 'Mood Journey')}
+      </p>
       <div
         ref={stripRef}
-        className="relative h-2.5 w-full overflow-hidden rounded-full"
+        className="relative h-4 w-full overflow-hidden rounded-[3px]"
         style={{ background: `linear-gradient(to right, ${gradientStops})` }}
         role="img"
         aria-label={t('echoDetail.moodHistory', 'Mood history')}

@@ -221,6 +221,7 @@
     "crossUser": "Cross-user relationship",
     "strength": "Strength",
     "moodHistory": "Mood history",
+    "moodJourney": "Mood Journey",
     "loadMoreDiary": "Load more entries",
     "simulatedDay": "Day {{day}}",
     "searchDiary": "Search diary...",
