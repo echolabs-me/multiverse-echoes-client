@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Zap, Users } from 'lucide-react';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
 import { feeds } from '../lib/api/endpoints.ts';
@@ -66,10 +67,16 @@ export function CommunityPulseCard() {
           const isLifeEvent = item.item_type === 'LifeEvent';
           const isRelationship = item.item_type === 'RelationshipChange';
 
+          const borderColor = isLifeEvent
+            ? 'border-l-accent'
+            : isRelationship
+              ? 'border-l-pink-400'
+              : 'border-l-border';
+
           return (
             <div
               key={item.item_id}
-              className={`w-full rounded-lg px-2.5 py-2 text-left transition-colors ${
+              className={`w-full rounded-lg border-l-[3px] px-2.5 py-2 text-left ${borderColor} ${
                 isLifeEvent
                   ? 'bg-accent/10 border border-accent/20'
                   : isRelationship
@@ -83,10 +90,11 @@ export function CommunityPulseCard() {
                   style={{ backgroundColor: moodColor }}
                 />
                 <span className="text-xs font-medium text-text-primary truncate">{echoName}</span>
-                {(isLifeEvent || isRelationship) && (
-                  <span className={`text-[10px] font-semibold uppercase ${isLifeEvent ? 'text-accent' : 'text-pink-400'}`}>
-                    {isLifeEvent ? 'Life Event' : 'Relationship'}
-                  </span>
+                {isLifeEvent && (
+                  <Zap size={11} className="flex-shrink-0 text-accent fill-accent" />
+                )}
+                {isRelationship && (
+                  <Users size={11} className="flex-shrink-0 text-pink-400" />
                 )}
                 {shardName && (
                   <>
@@ -94,10 +102,15 @@ export function CommunityPulseCard() {
                     <span className="text-xs text-text-secondary truncate">{shardName}</span>
                   </>
                 )}
-                <span className="text-xs text-text-secondary">·</span>
-                <span className="text-xs text-text-secondary whitespace-nowrap">{formatTimeAgo(item.created_at)}</span>
+                <span className="ml-auto text-[10px] text-text-muted whitespace-nowrap">{formatTimeAgo(item.created_at)}</span>
               </div>
-              <p className="text-xs text-text-secondary leading-snug pl-[14px] line-clamp-2">
+              <p className={`text-xs leading-snug pl-[14px] line-clamp-2 ${
+                isLifeEvent
+                  ? 'text-text-primary font-medium'
+                  : isRelationship
+                    ? 'text-text-primary'
+                    : 'text-text-secondary'
+              }`}>
                 {headline}
               </p>
             </div>
