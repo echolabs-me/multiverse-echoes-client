@@ -964,11 +964,11 @@ export function EchoDetailPage() {
         onClose={() => setInfluenceModal(false)}
         title={t('echoDetail.useInfluence')}
       >
-        <p className="mb-2 text-xs text-text-muted">
+        <p className="mb-2 text-xs text-text-secondary">
           {t('echoDetail.influenceHelperText')}
         </p>
         {influence && influence.daily_limit < 1000 && (
-          <p className="mb-3 text-xs text-text-muted">
+          <p className="mb-3 text-xs text-text-secondary">
             {t('echoDetail.influenceBudgetInfo', {
               remaining: influence.remaining,
               limit: influence.daily_limit,
