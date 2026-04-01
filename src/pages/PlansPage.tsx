@@ -182,7 +182,7 @@ export function PlansPage() {
                       <button
                         onClick={() => void handlePayment(tier.key, 'nowpayments')}
                         disabled={loading !== null}
-                        className="flex items-center justify-center gap-2 rounded-lg bg-[#05C46B] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#04a85c] disabled:opacity-50 transition-colors"
+                        className="flex items-center justify-center gap-2 rounded-lg bg-black px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-900 disabled:opacity-50 transition-colors"
                       >
                         <NowPaymentsLogo height={18} />
                         {loading === `${tier.key}-nowpayments` ? t('payment.subscribing') : t('payment.payWithCrypto')}
