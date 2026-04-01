@@ -300,6 +300,12 @@ export function EchoDetailPage() {
         void useEchoStore.getState().fetchEcho(id);
         debouncedFetchEchoes();
         void useFeedStore.getState().fetchPersonalFeed(id);
+      } else if (event.type === 'DiaryImageReady') {
+        // Background image generation completed — re-fetch diary to get image_url
+        void echoApi
+          .diary(id)
+          .then((d) => setDiaryEntries(d))
+          .catch(() => {});
       } else if (event.type === 'MoodChanged') {
         void useEchoStore.getState().fetchEcho(id);
       } else if (event.type === 'LifeEventOccurred') {

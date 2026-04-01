@@ -845,6 +845,7 @@ export type WorldEventPayload =
 /** Flat tagged events sent over Echo/Dashboard WS streams (server's WsEchoEvent). */
 export type WsEchoEvent =
   | { type: 'DiaryEntryCreated'; echo_id: string; diary_id: string; tick_id: number }
+  | { type: 'DiaryImageReady'; echo_id: string; diary_id: string; image_url: string }
   | { type: 'LifeEventOccurred'; echo_id: string; event_id: string; tick_id: number }
   | { type: 'MoodChanged'; echo_id: string; mood: string; tick_id: number }
   | { type: 'EchoMoved'; echo_id: string; from_location: string; to_location: string }
