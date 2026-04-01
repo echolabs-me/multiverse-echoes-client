@@ -33,6 +33,7 @@ import {
   StoryExportModal,
 } from '../components/index.ts';
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
+import { getMoodColor } from '../lib/moodColor.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
@@ -1160,6 +1161,10 @@ function DiaryCard({
   onReport?: (diaryId: string) => void;
 }) {
   const { t } = useTranslation();
+  const mc = getMoodColor(entry.mood);
+  const r = parseInt(mc.slice(1, 3), 16);
+  const g = parseInt(mc.slice(3, 5), 16);
+  const b = parseInt(mc.slice(5, 7), 16);
 
   return (
     <div
@@ -1169,6 +1174,10 @@ function DiaryCard({
     >
       <Card
         className={isNew ? 'animate-diary-glow' : ''}
+        style={{
+          boxShadow: `0 0 14px 3px rgba(${r},${g},${b},0.12)`,
+          borderLeft: `3px solid rgba(${r},${g},${b},0.35)`,
+        }}
         onAnimationEnd={
           isNew
             ? () => onAnimationEnd?.(entry.diary_id)
