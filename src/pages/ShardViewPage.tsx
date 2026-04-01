@@ -124,7 +124,7 @@ export function ShardViewPage() {
               </Badge>
               <span>
                 {t('shardView.capacity', {
-                  count: activeShard.current_active_count,
+                  count: shardEchoes.length,
                   max: activeShard.max_active_echoes,
                 })}
               </span>

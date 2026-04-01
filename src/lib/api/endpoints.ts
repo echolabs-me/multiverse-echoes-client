@@ -289,13 +289,13 @@ export const account = {
     }),
 
   requestExport: (data?: RequestExportBody) =>
-    request<DataExport>('/account/me/export', {
+    request<DataExport>('/account/me/story-export', {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     }),
 
   getExportStatus: (exportId: string) =>
-    request<DataExport>(`/account/me/export/${exportId}`),
+    request<DataExport>(`/account/me/story-export/${exportId}`),
 
   deleteAccount: () =>
     request<MessageResponse>('/account/me', { method: 'DELETE' }),
