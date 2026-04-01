@@ -458,6 +458,7 @@
   "export": {
     "title": "Export Echo Story",
     "subtitle": "Export {{name}}'s story as a file",
+    "subtitleMultiple": "Export selected Echoes' stories as a file",
     "disclaimer": "This export contains AI-generated content. The narrative was autonomously created by the simulation engine and does not represent real events or real people.",
     "selectFormat": "Choose format",
     "formatText": "Plain Text",

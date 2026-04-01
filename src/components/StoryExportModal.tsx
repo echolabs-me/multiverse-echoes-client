@@ -299,7 +299,11 @@ export function StoryExportModal({
       <div className="p-6">
         <h2 className="mb-1 text-lg font-semibold">{t('export.title')}</h2>
         <p className="mb-4 text-sm text-text-secondary">
-          {t('export.subtitle', { name: echoName })}
+          {selectedEchoIds.size > 1
+            ? t('export.subtitleMultiple')
+            : t('export.subtitle', {
+                name: allEchoes.find((e) => selectedEchoIds.has(e.echo_id))?.name ?? echoName,
+              })}
         </p>
 
         {/* AI Disclaimer */}
