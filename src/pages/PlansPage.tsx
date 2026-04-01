@@ -171,20 +171,20 @@ export function PlansPage() {
                       <Tooltip content={t('payment.cardComingSoon')} position="top">
                         <button
                           onClick={() => addToast(t('payment.cardComingSoon'), 'info')}
-                          className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#635BFF] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#5851db] transition-colors"
+                          className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#635BFF] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#5851db] transition-colors"
                         >
-                          <StripeLogo height={22} />
+                          <StripeLogo height={20} />
                           <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white/90">{t('common.comingSoon')}</span>
                         </button>
                       </Tooltip>
 
-                      {/* NOWPayments — branded green button */}
+                      {/* NOWPayments — black button */}
                       <button
                         onClick={() => void handlePayment(tier.key, 'nowpayments')}
                         disabled={loading !== null}
-                        className="flex items-center justify-center gap-2 rounded-lg bg-black px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-900 disabled:opacity-50 transition-colors"
+                        className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-black px-5 py-2.5 text-xs font-semibold text-white hover:bg-neutral-900 disabled:opacity-50 transition-colors"
                       >
-                        <NowPaymentsLogo height={18} />
+                        <NowPaymentsLogo height={16} />
                         {loading === `${tier.key}-nowpayments` ? t('payment.subscribing') : t('payment.payWithCrypto')}
                       </button>
 
@@ -192,9 +192,9 @@ export function PlansPage() {
                       <button
                         onClick={() => void handlePayment(tier.key, 'xaman')}
                         disabled={loading !== null}
-                        className="flex items-center justify-center gap-2 rounded-lg bg-[#3052FF] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#2744d9] disabled:opacity-50 transition-colors"
+                        className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#3052FF] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#2744d9] disabled:opacity-50 transition-colors"
                       >
-                        <XamanLogo height={18} />
+                        <XamanLogo height={16} />
                         {loading === `${tier.key}-xaman` ? t('payment.subscribing') : t('payment.payWithXRP')}
                       </button>
                     </div>
