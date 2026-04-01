@@ -73,6 +73,10 @@ export function CommunityPulseCard() {
               ? 'border-l-pink-400'
               : 'border-l-border';
 
+          const mr = parseInt(moodColor.slice(1, 3), 16);
+          const mg = parseInt(moodColor.slice(3, 5), 16);
+          const mb = parseInt(moodColor.slice(5, 7), 16);
+
           return (
             <div
               key={item.item_id}
@@ -83,6 +87,7 @@ export function CommunityPulseCard() {
                     ? 'bg-pink-500/10 border border-pink-500/20'
                     : 'bg-surface-raised/50'
               }`}
+              style={{ boxShadow: `0 0 10px 2px rgba(${mr},${mg},${mb},0.1)` }}
             >
               <div className="flex items-center gap-1.5 mb-0.5">
                 <span
