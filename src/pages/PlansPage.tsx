@@ -173,7 +173,7 @@ export function PlansPage() {
                           onClick={() => addToast(t('payment.cardComingSoon'), 'info')}
                           className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#635BFF] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#5851db] transition-colors"
                         >
-                          <StripeLogo size={36} className="text-white" />
+                          <StripeLogo height={22} />
                           <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white/90">{t('common.comingSoon')}</span>
                         </button>
                       </Tooltip>
@@ -184,7 +184,7 @@ export function PlansPage() {
                         disabled={loading !== null}
                         className="flex items-center justify-center gap-2 rounded-lg bg-[#05C46B] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#04a85c] disabled:opacity-50 transition-colors"
                       >
-                        <NowPaymentsLogo size={18} />
+                        <NowPaymentsLogo height={18} />
                         {loading === `${tier.key}-nowpayments` ? t('payment.subscribing') : t('payment.payWithCrypto')}
                       </button>
 
@@ -194,7 +194,7 @@ export function PlansPage() {
                         disabled={loading !== null}
                         className="flex items-center justify-center gap-2 rounded-lg bg-[#3052FF] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#2744d9] disabled:opacity-50 transition-colors"
                       >
-                        <XamanLogo size={18} />
+                        <XamanLogo height={18} />
                         {loading === `${tier.key}-xaman` ? t('payment.subscribing') : t('payment.payWithXRP')}
                       </button>
                     </div>
