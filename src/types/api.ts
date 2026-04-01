@@ -237,6 +237,7 @@ export interface DiaryEntry {
   location_name: string;
   shard_id: string;
   nudge_source?: string | null;
+  image_url?: string | null;
   created_at: string;
 }
 

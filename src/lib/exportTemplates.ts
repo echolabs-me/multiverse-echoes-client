@@ -34,7 +34,7 @@ export interface ExportData {
   echoName: string;
   whatIfPrompt: string;
   persona: string;
-  diaryEntries: Array<{ tick: number; content: string; created_at: string }>;
+  diaryEntries: Array<{ tick: number; content: string; created_at: string; image_url?: string | null }>;
   lifeEvents: Array<{ tick: number; event_type: string; description: string; created_at: string }>;
   relationships: Array<{ target_name: string; type: string; sentiment: number }>;
 }
@@ -67,6 +67,9 @@ const textTemplate: ExportTemplate = {
     for (const entry of data.diaryEntries) {
       lines.push(`### Tick ${entry.tick} (${entry.created_at})`);
       lines.push(entry.content);
+      if (entry.image_url) {
+        lines.push(`[Image: ${entry.image_url}]`);
+      }
       lines.push('');
     }
     lines.push(`## Life Events`);

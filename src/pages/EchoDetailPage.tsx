@@ -1205,6 +1205,14 @@ function DiaryCard({
             : undefined
         }
       >
+        {entry.image_url && (
+          <img
+            src={entry.image_url}
+            alt="Scene from diary entry"
+            loading="lazy"
+            className="w-full rounded-t-lg mb-3 animate-fade-in"
+          />
+        )}
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <p className="text-sm font-medium text-text-primary">

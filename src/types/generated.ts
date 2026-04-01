@@ -299,6 +299,8 @@ export type DiaryEntry = {
 	content_hash: string,
 	// If this diary entry was influenced by a user nudge, the nudge text.
 	nudge_source?: string | null,
+	// URL of the generated scene image for this diary entry.
+	image_url?: string | null,
 	created_at: string,
 };
 
