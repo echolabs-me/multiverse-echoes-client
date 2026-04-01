@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Button } from './Button.tsx';
 import { account } from '../lib/api/endpoints.ts';
+import { getBaseUrl, getAccessToken } from '../lib/api/client.ts';
 import type { ExportFormat, DataExport } from '../types/api.ts';
 
 interface StoryExportModalProps {
@@ -26,6 +27,7 @@ const FORMAT_OPTIONS: Array<{
   icon: React.ReactNode;
   labelKey: string;
   descKey: string;
+  disabled?: boolean;
 }> = [
   {
     format: 'text',
@@ -50,8 +52,23 @@ const FORMAT_OPTIONS: Array<{
     icon: <Film size={20} />,
     labelKey: 'export.formatVideo',
     descKey: 'export.formatVideoDesc',
+    disabled: true,
   },
 ];
+
+/** Map server status (lowercase) to i18n key suffix. */
+function statusKey(status: string | undefined): string {
+  switch (status?.toLowerCase()) {
+    case 'complete':
+      return 'statusComplete';
+    case 'failed':
+      return 'statusFailed';
+    case 'processing':
+      return 'statusProcessing';
+    default:
+      return 'statusPending';
+  }
+}
 
 export function StoryExportModal({
   open,
@@ -132,6 +149,38 @@ export function StoryExportModal({
     }
   };
 
+  const handleDownload = () => {
+    if (!exportData) return;
+    const path = account.downloadExport(exportData.export_id);
+    const url = `${getBaseUrl()}${path}`;
+    const token = getAccessToken();
+
+    // Fetch with auth header, create blob, trigger download
+    void fetch(url, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const disposition = res.headers.get('Content-Disposition');
+        const match = disposition?.match(/filename="?([^"]+)"?/);
+        const filename = match?.[1] ?? `${echoName}-story.${selectedFormat === 'json' ? 'json' : 'txt'}`;
+        return res.blob().then((blob) => ({ blob, filename }));
+      })
+      .then(({ blob, filename }) => {
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(blobUrl);
+      })
+      .catch(() => {
+        setError('export.errorRequesting');
+      });
+  };
+
   const handleClose = () => {
     if (pollRef.current) {
       clearInterval(pollRef.current);
@@ -151,11 +200,7 @@ export function StoryExportModal({
         ? 100
         : exportData?.status === 'Failed'
           ? 100
-          : 25; // Pending starts at 25% to show progress immediately
-
-  const downloadUrl =
-    exportData?.download_url ?? exportData?.download_path ?? null;
-  const subtitleUrl = exportData?.subtitle_path ?? null;
+          : 25;
 
   return (
     <dialog
@@ -185,10 +230,12 @@ export function StoryExportModal({
               {FORMAT_OPTIONS.map((opt) => (
                 <label
                   key={opt.format}
-                  className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ${
-                    selectedFormat === opt.format
-                      ? 'border-accent bg-accent/5'
-                      : 'border-border hover:bg-surface'
+                  className={`flex items-center gap-3 rounded-lg border p-3 transition-colors ${
+                    opt.disabled
+                      ? 'cursor-not-allowed border-border opacity-50'
+                      : selectedFormat === opt.format
+                        ? 'cursor-pointer border-accent bg-accent/5'
+                        : 'cursor-pointer border-border hover:bg-surface'
                   }`}
                 >
                   <input
@@ -197,6 +244,7 @@ export function StoryExportModal({
                     value={opt.format}
                     checked={selectedFormat === opt.format}
                     onChange={() => setSelectedFormat(opt.format)}
+                    disabled={opt.disabled}
                     className="sr-only"
                   />
                   <span className="text-text-secondary">{opt.icon}</span>
@@ -204,9 +252,9 @@ export function StoryExportModal({
                     <p className="text-sm font-medium">{t(opt.labelKey)}</p>
                     <p className="text-xs text-text-secondary">{t(opt.descKey)}</p>
                   </div>
-                  {opt.format === 'video' && (
-                    <span className="rounded bg-accent/10 px-1.5 py-0.5 text-[10px] font-medium text-accent">
-                      Core+
+                  {opt.disabled && (
+                    <span className="rounded bg-surface-raised px-1.5 py-0.5 text-[10px] font-medium text-text-muted">
+                      {t('export.comingPostLaunch')}
                     </span>
                   )}
                 </label>
@@ -276,7 +324,7 @@ export function StoryExportModal({
                   <CheckCircle size={16} className="text-success" />
                 )}
                 <p className="text-sm font-medium">
-                  {t(`export.status${exportData?.status ?? 'Processing'}`)}
+                  {t(`export.${statusKey(exportData?.status)}`)}
                 </p>
               </div>
               <p className="mt-1 text-xs text-text-secondary">
@@ -284,26 +332,15 @@ export function StoryExportModal({
               </p>
             </div>
 
-            {exportData?.status === 'Complete' && downloadUrl && (
+            {exportData?.status === 'Complete' && (
               <div className="mb-4 flex flex-col gap-2">
-                <a
-                  href={downloadUrl}
-                  download
+                <button
+                  onClick={handleDownload}
                   className="flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-accent-hover"
                 >
                   <Download size={16} />
                   {t('export.download')}
-                </a>
-                {subtitleUrl && (
-                  <a
-                    href={subtitleUrl}
-                    download
-                    className="flex items-center justify-center gap-2 rounded-md border border-border px-4 py-2 text-sm text-text-secondary transition-colors hover:bg-surface"
-                  >
-                    <FileText size={14} />
-                    {t('export.downloadSubtitles')}
-                  </a>
-                )}
+                </button>
                 <p className="text-center text-xs text-text-secondary">{t('export.downloadHint')}</p>
               </div>
             )}

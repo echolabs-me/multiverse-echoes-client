@@ -297,6 +297,9 @@ export const account = {
   getExportStatus: (exportId: string) =>
     request<DataExport>(`/account/me/story-export/${exportId}`),
 
+  downloadExport: (exportId: string) =>
+    `/account/me/story-export/${exportId}/download`,
+
   deleteAccount: () =>
     request<MessageResponse>('/account/me', { method: 'DELETE' }),
 
