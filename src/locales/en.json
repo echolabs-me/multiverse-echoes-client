@@ -236,7 +236,9 @@
     "filterMood": "Filter by mood",
     "allMoods": "All moods",
     "clearFilters": "Clear filters",
-    "noFilterMatch": "No diary entries match this filter"
+    "noFilterMatch": "No diary entries match this filter",
+    "travellingTo": "Arriving at {{shard}}\u2026",
+    "travellingDesc": "Your Echo is settling into their new world. Their first diary entry here will appear after the next tick."
   },
   "shardView": {
     "echoes": "Echoes in this Shard",
@@ -631,7 +633,8 @@
     "switchEcho": "Switch Echo",
     "selectEcho": "Select an Echo",
     "unknownShard": "Unknown Shard",
-    "moodLegend": "Mood Guide"
+    "moodLegend": "Mood Guide",
+    "arrivingAt": "Arriving at {{shard}}\u2026"
   },
   "payment": {
     "title": "Plans",

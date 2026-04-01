@@ -23,22 +23,34 @@ const MOOD_LEGEND = [
 /**
  * Mini-card Echo item for the sidebar.
  * Shows mood dot, name, mood + tick, diary preview, shard name.
+ * If the Echo just travelled (shard_id mismatch with latest diary), shows a transit indicator.
  */
 function EchoCard({
   echo,
   isActive,
   shardName,
   latestDiary,
+  latestDiaryShardId,
   onClick,
 }: {
   echo: EchoResponse;
   isActive: boolean;
   shardName: string;
   latestDiary: string | null;
+  latestDiaryShardId: string | null;
   onClick: () => void;
 }) {
   const { t } = useTranslation();
   const moodColor = getMoodColor(echo.current_mood);
+
+  // Echo has moved to a new shard but hasn't ticked there yet
+  const isTravelling =
+    latestDiaryShardId !== null
+      ? latestDiaryShardId !== echo.current_shard_id
+      : latestDiary === null; // no diary at all — brand new echo, show indicator if just created
+
+  // Only show travelling if the echo is active (not hibernated)
+  const showTravelIndicator = isTravelling && echo.status === 'Active';
 
   return (
     <button
@@ -65,12 +77,16 @@ function EchoCard({
       <p className="truncate text-[11px] text-text-secondary pl-[18px]">
         {echo.current_mood} · {t('echoSidebar.tick', { tick: echo.current_tick })}
       </p>
-      {/* Row 3: diary preview */}
-      {latestDiary && (
+      {/* Row 3: travelling indicator or diary preview */}
+      {showTravelIndicator ? (
+        <p className="truncate text-xs text-accent pl-[18px] italic leading-snug">
+          {t('echoSidebar.arrivingAt', { shard: shardName })}
+        </p>
+      ) : latestDiary ? (
         <p className="line-clamp-2 text-xs text-text-secondary pl-[18px] italic leading-snug">
           &ldquo;{latestDiary}&rdquo;
         </p>
-      )}
+      ) : null}
       {/* Row 4: shard name */}
       <p className="truncate text-[11px] text-text-muted pl-[18px]">
         {shardName}
@@ -90,7 +106,7 @@ export function EchoSidebar() {
   const { echoId } = useParams<{ echoId: string }>();
   const { echoList, fetchEchoes } = useEchoStore();
   const { shardList, fetchShards } = useShardStore();
-  const [diaryPreviews, setDiaryPreviews] = useState<Record<string, string>>({});
+  const [diaryPreviews, setDiaryPreviews] = useState<Record<string, { snippet: string; shardId: string | null }>>({});
 
   useEffect(() => {
     if (echoList.length === 0) void fetchEchoes();
@@ -105,13 +121,16 @@ export function EchoSidebar() {
     for (const echo of echoList) {
       if (diaryPreviews[echo.echo_id] !== undefined) continue;
       void echoApi.diary(echo.echo_id, 1).then((entries) => {
-        const snippet = entries[0]?.content ?? '';
+        const entry = entries[0];
         setDiaryPreviews((prev) => ({
           ...prev,
-          [echo.echo_id]: snippet.slice(0, 120),
+          [echo.echo_id]: {
+            snippet: entry ? entry.content.slice(0, 120) : '',
+            shardId: entry?.shard_id ?? null,
+          },
         }));
       }).catch(() => {
-        setDiaryPreviews((prev) => ({ ...prev, [echo.echo_id]: '' }));
+        setDiaryPreviews((prev) => ({ ...prev, [echo.echo_id]: { snippet: '', shardId: null } }));
       });
     }
   }, [echoList, diaryPreviews]);
@@ -161,7 +180,8 @@ export function EchoSidebar() {
                 echo={echo}
                 isActive={echo.echo_id === activeId}
                 shardName={shardNameMap.get(echo.current_shard_id) ?? t('echoSidebar.unknownShard')}
-                latestDiary={diaryPreviews[echo.echo_id] || null}
+                latestDiary={diaryPreviews[echo.echo_id]?.snippet || null}
+                latestDiaryShardId={diaryPreviews[echo.echo_id]?.shardId ?? null}
                 onClick={() => handleClick(echo)}
               />
             </li>

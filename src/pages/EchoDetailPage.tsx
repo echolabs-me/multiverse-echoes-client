@@ -20,6 +20,7 @@ import {
   X,
   Flag,
   MoreHorizontal,
+  Navigation,
 } from 'lucide-react';
 import {
   Card,
@@ -34,6 +35,7 @@ import {
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
+import { useShardStore } from '../stores/useShardStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
 import { useMoodAtmosphere } from '../hooks/useMoodAtmosphere.ts';
@@ -68,6 +70,7 @@ export function EchoDetailPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { activeEcho, fetchEcho, hibernateEcho, wakeEcho } = useEchoStore();
+  const { shardList } = useShardStore();
   const { personalFeed, fetchPersonalFeed } = useFeedStore();
   const addToast = useToastStore((s) => s.addToast);
 
@@ -712,6 +715,27 @@ export function EchoDetailPage() {
               className="mb-3"
             />
           )}
+
+          {/* Travel indicator — Echo moved to new shard but hasn't ticked yet */}
+          {activeEcho && activeEcho.status === 'Active' && (
+            diaryEntries.length === 0 ||
+            diaryEntries[0]?.shard_id !== activeEcho.current_shard_id
+          ) && (() => {
+            const shardName = shardList.find((s) => s.shard_id === activeEcho.current_shard_id)?.name ?? activeEcho.current_shard_id;
+            return (
+              <div className="mb-4 flex items-center gap-3 rounded-lg border border-accent/30 bg-accent/5 px-4 py-3">
+                <Navigation size={18} className="shrink-0 text-accent" />
+                <div>
+                  <p className="text-sm font-medium text-text-primary">
+                    {t('echoDetail.travellingTo', { shard: shardName })}
+                  </p>
+                  <p className="text-xs text-text-secondary">
+                    {t('echoDetail.travellingDesc')}
+                  </p>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Diary entries */}
           <section className="mb-6">
