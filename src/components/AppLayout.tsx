@@ -65,26 +65,26 @@ function NavSidebar() {
 
   return (
     <aside
-      className="hidden md:flex h-full w-14 flex-shrink-0 flex-col border-r border-border bg-surface"
+      className="hidden md:flex h-full w-[76px] flex-shrink-0 flex-col border-r border-border bg-surface"
       aria-label={t('common.sidebar', 'Sidebar navigation')}
     >
-      <nav className="flex-1 overflow-y-auto p-1.5">
+      <nav className="flex-1 overflow-y-auto px-1.5 py-2">
         <ul className="flex flex-col gap-1">
           {items.map((item) => (
             <li key={item.id}>
               <button
                 onClick={() => navigate(item.path)}
-                className={`relative flex w-full items-center justify-center rounded-lg p-2.5 transition-colors ${
+                className={`relative flex w-full flex-col items-center gap-0.5 rounded-lg px-1 py-2 text-center transition-colors ${
                   isActive(item.path)
                     ? 'bg-accent-subtle text-accent'
                     : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
                 }`}
                 aria-current={isActive(item.path) ? 'page' : undefined}
-                title={t(item.labelKey, item.id)}
               >
                 {item.icon}
+                <span className="text-[9px] font-medium leading-tight">{t(item.labelKey, item.id)}</span>
                 {item.badge != null && item.badge > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-0.5 text-[9px] font-bold text-canvas">
+                  <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-0.5 text-[9px] font-bold text-canvas">
                     {item.badge > 99 ? '99+' : item.badge}
                   </span>
                 )}
@@ -93,16 +93,16 @@ function NavSidebar() {
           ))}
         </ul>
       </nav>
-      <div className="border-t border-border p-1.5">
+      <div className="border-t border-border px-1.5 py-2">
         <button
           onClick={() => {
             void useAuthStore.getState().logout();
             navigate('/login');
           }}
-          className="flex w-full items-center justify-center rounded-lg p-2.5 text-text-muted hover:bg-surface-raised hover:text-danger transition-colors"
-          title={t('auth.logout')}
+          className="flex w-full flex-col items-center gap-0.5 rounded-lg px-1 py-2 text-text-muted hover:bg-surface-raised hover:text-danger transition-colors"
         >
           <LogOut size={20} />
+          <span className="text-[9px] font-medium leading-tight">{t('auth.logout')}</span>
         </button>
       </div>
     </aside>
