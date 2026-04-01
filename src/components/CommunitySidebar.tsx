@@ -287,7 +287,7 @@ export function CommunitySidebar() {
             {t('community.noMessagesYet')}
           </p>
         ) : (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col">
             {messages.map((msg, idx) => {
               const prev = idx > 0 ? messages[idx - 1] : null;
               const sameAuthor = prev !== null && prev.author_id === msg.author_id;
@@ -298,7 +298,7 @@ export function CommunitySidebar() {
               const displayName = msg.author_display_name || 'Unknown User';
 
               return (
-                <div key={msg.message_id} className="group text-xs">
+                <div key={msg.message_id} className={`group text-xs ${showHeader && idx > 0 ? 'mt-3' : ''}`}>
                   {showHeader && (
                     <div className="flex items-baseline gap-1.5">
                       <span className="font-medium text-accent">{displayName}</span>

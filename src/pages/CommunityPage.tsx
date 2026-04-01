@@ -420,7 +420,7 @@ export function CommunityPage() {
                     {t('community.noMessagesYet')}
                   </p>
                 ) : (
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col">
                     {messages.map((msg, idx) => {
                       const prev = idx > 0 ? messages[idx - 1] : null;
                       const sameAuthor = prev !== null && prev.author_id === msg.author_id;
@@ -433,7 +433,7 @@ export function CommunityPage() {
                       return (
                       <div
                         key={msg.message_id}
-                        className={`group relative rounded-lg px-3 hover:bg-surface-raised ${showHeader ? 'pt-2 pb-1' : 'py-0.5'}`}
+                        className={`group relative rounded-lg px-3 hover:bg-surface-raised ${showHeader ? 'mt-3 pt-2 pb-1' : 'py-0.5'}`}
                       >
                         {editingMessageId === msg.message_id ? (
                           <div className="flex gap-2">
