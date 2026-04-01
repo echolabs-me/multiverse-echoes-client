@@ -841,7 +841,8 @@ export type ShardType = "Public" | "Private" | "Personal";
 export type StoryExport = {
 	export_id: string,
 	user_id: string,
-	echo_id: string,
+	// Selected Echo IDs to export (one or more).
+	echo_ids: string[],
 	format: ExportFormat,
 	status: ExportStatus,
 	created_at: string,
@@ -849,12 +850,21 @@ export type StoryExport = {
 	download_path: string | null,
 	// Subtitle file path for video exports.
 	subtitle_path: string | null,
+	// Optional date range filter (inclusive start).
+	from_date: string | null,
+	// Optional date range filter (inclusive end).
+	to_date: string | null,
 };
 
 // Request body for story export.
 export type StoryExportRequest = {
-	echo_id: string,
+	// One or more Echo IDs to export.
+	echo_ids: string[],
 	format: ExportFormat,
+	// Optional date range filter (ISO date, e.g. "2026-01-15").
+	from_date: string | null,
+	// Optional date range filter (ISO date, e.g. "2026-04-01").
+	to_date: string | null,
 };
 
 // Response for story export.

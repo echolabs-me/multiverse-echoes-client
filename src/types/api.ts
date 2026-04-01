@@ -509,8 +509,10 @@ export interface DataExport {
 }
 
 export interface RequestExportBody {
-  echo_id: string;
+  echo_ids: string[];
   format: ExportFormat;
+  from_date?: string;
+  to_date?: string;
 }
 
 // --- Conversation ---

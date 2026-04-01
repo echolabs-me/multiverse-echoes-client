@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Download,
@@ -9,9 +9,11 @@ import {
   CheckCircle,
   Loader,
   Lock,
+  ChevronDown,
+  ChevronRight,
 } from 'lucide-react';
 import { Button } from './Button.tsx';
-import { account } from '../lib/api/endpoints.ts';
+import { account, echoes as echoesApi } from '../lib/api/endpoints.ts';
 import { getBaseUrl, getAccessToken } from '../lib/api/client.ts';
 import type { ExportFormat, DataExport } from '../types/api.ts';
 
@@ -20,6 +22,12 @@ interface StoryExportModalProps {
   onClose: () => void;
   echoName: string;
   echoId: string;
+}
+
+interface EchoOption {
+  echo_id: string;
+  name: string;
+  shard_name: string;
 }
 
 const FORMAT_OPTIONS: Array<{
@@ -56,14 +64,14 @@ const FORMAT_OPTIONS: Array<{
   },
 ];
 
-/** Map server status (lowercase) to i18n key suffix. */
+/** Map server status to i18n key suffix. */
 function statusKey(status: string | undefined): string {
-  switch (status?.toLowerCase()) {
-    case 'complete':
+  switch (status) {
+    case 'Complete':
       return 'statusComplete';
-    case 'failed':
+    case 'Failed':
       return 'statusFailed';
-    case 'processing':
+    case 'Processing':
       return 'statusProcessing';
     default:
       return 'statusPending';
@@ -85,16 +93,61 @@ export function StoryExportModal({
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
+  // Echo selection state
+  const [allEchoes, setAllEchoes] = useState<EchoOption[]>([]);
+  const [selectedEchoIds, setSelectedEchoIds] = useState<Set<string>>(new Set([echoId]));
+  const [echoesLoading, setEchoesLoading] = useState(false);
+
+  // Date range state
+  const [dateRangeOpen, setDateRangeOpen] = useState(false);
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+
+  // Fetch all user echoes when dialog opens
+  const fetchEchoes = useCallback(async () => {
+    setEchoesLoading(true);
+    try {
+      const list = await echoesApi.list();
+      // Resolve shard names in parallel
+      const shardCache = new Map<string, string>();
+      const uniqueShardIds = [...new Set(list.map((e) => e.current_shard_id))];
+      await Promise.all(
+        uniqueShardIds.map(async (sid) => {
+          try {
+            const shard = await import('../lib/api/endpoints.ts').then((m) => m.shards.get(sid));
+            shardCache.set(sid, shard.name);
+          } catch {
+            // ignore
+          }
+        }),
+      );
+      setAllEchoes(
+        list.map((e) => ({
+          echo_id: e.echo_id,
+          name: e.name,
+          shard_name: shardCache.get(e.current_shard_id) ?? '',
+        })),
+      );
+    } catch {
+      // Fallback: just show the current echo
+      setAllEchoes([{ echo_id: echoId, name: echoName, shard_name: '' }]);
+    } finally {
+      setEchoesLoading(false);
+    }
+  }, [echoId, echoName]);
+
   // Open/close dialog
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
     if (open && !dialog.open) {
       dialog.showModal();
+      setSelectedEchoIds(new Set([echoId]));
+      void fetchEchoes();
     } else if (!open && dialog.open) {
       dialog.close();
     }
-  }, [open]);
+  }, [open, echoId, fetchEchoes]);
 
   // Clean up polling on unmount
   useEffect(() => {
@@ -103,14 +156,33 @@ export function StoryExportModal({
     };
   }, []);
 
+  const toggleEcho = (id: string) => {
+    setSelectedEchoIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const selectAll = () => {
+    setSelectedEchoIds(new Set(allEchoes.map((e) => e.echo_id)));
+  };
+
   const handleExport = async () => {
+    if (selectedEchoIds.size === 0) return;
     setIsRequesting(true);
     setError(null);
     setTierGated(false);
     try {
       const result = await account.requestExport({
-        echo_id: echoId,
+        echo_ids: Array.from(selectedEchoIds),
         format: selectedFormat,
+        from_date: fromDate || undefined,
+        to_date: toDate || undefined,
       });
       setExportData(result);
 
@@ -163,7 +235,7 @@ export function StoryExportModal({
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const disposition = res.headers.get('Content-Disposition');
         const match = disposition?.match(/filename="?([^"]+)"?/);
-        const filename = match?.[1] ?? `${echoName}-story.${selectedFormat === 'json' ? 'json' : 'txt'}`;
+        const filename = match?.[1] ?? `${echoName}-story.${selectedFormat === 'json' ? 'json' : selectedFormat === 'pdf' ? 'pdf' : 'txt'}`;
         return res.blob().then((blob) => ({ blob, filename }));
       })
       .then(({ blob, filename }) => {
@@ -189,6 +261,9 @@ export function StoryExportModal({
     setExportData(null);
     setError(null);
     setTierGated(false);
+    setDateRangeOpen(false);
+    setFromDate('');
+    setToDate('');
     onClose();
   };
 
@@ -222,7 +297,91 @@ export function StoryExportModal({
 
         {!exportData && !tierGated ? (
           <>
-            {/* Format selection */}
+            {/* Step 1: Echo selection */}
+            <fieldset className="mb-4">
+              <legend className="mb-2 text-sm font-medium text-text-secondary">
+                {t('export.selectEchoes')}
+              </legend>
+              {echoesLoading ? (
+                <div className="flex items-center gap-2 py-2 text-xs text-text-secondary">
+                  <Loader size={14} className="animate-spin" />
+                  {t('common.loading')}
+                </div>
+              ) : (
+                <>
+                  <div className="mb-2 max-h-40 space-y-1 overflow-y-auto rounded-lg border border-border p-2">
+                    {allEchoes.map((echo) => (
+                      <label
+                        key={echo.echo_id}
+                        className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-sm transition-colors hover:bg-surface"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedEchoIds.has(echo.echo_id)}
+                          onChange={() => toggleEcho(echo.echo_id)}
+                          className="rounded border-border"
+                        />
+                        <span className="flex-1 truncate">{echo.name}</span>
+                        {echo.shard_name && (
+                          <span className="text-xs text-text-secondary">
+                            {echo.shard_name}
+                          </span>
+                        )}
+                      </label>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={selectAll}
+                    className="text-xs font-medium text-accent hover:text-accent-hover"
+                  >
+                    {t('export.selectAll')}
+                  </button>
+                </>
+              )}
+            </fieldset>
+
+            {/* Step 2: Date range (collapsible) */}
+            <div className="mb-4">
+              <button
+                type="button"
+                onClick={() => setDateRangeOpen((p) => !p)}
+                className="flex items-center gap-1.5 text-sm font-medium text-text-secondary hover:text-text-primary"
+              >
+                {dateRangeOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                {t('export.dateRange')}
+              </button>
+              {dateRangeOpen && (
+                <div className="mt-2 flex items-center gap-3 rounded-lg border border-border p-3">
+                  <div className="flex flex-1 flex-col gap-1">
+                    <label className="text-xs text-text-secondary" htmlFor="export-from">
+                      {t('export.dateFrom')}
+                    </label>
+                    <input
+                      id="export-from"
+                      type="date"
+                      value={fromDate}
+                      onChange={(e) => setFromDate(e.target.value)}
+                      className="rounded border border-border bg-canvas px-2 py-1.5 text-sm"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col gap-1">
+                    <label className="text-xs text-text-secondary" htmlFor="export-to">
+                      {t('export.dateTo')}
+                    </label>
+                    <input
+                      id="export-to"
+                      type="date"
+                      value={toDate}
+                      onChange={(e) => setToDate(e.target.value)}
+                      className="rounded border border-border bg-canvas px-2 py-1.5 text-sm"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Step 3: Format selection */}
             <fieldset className="mb-4 space-y-2">
               <legend className="mb-2 text-sm font-medium text-text-secondary">
                 {t('export.selectFormat')}
@@ -263,13 +422,14 @@ export function StoryExportModal({
 
             {error && <p className="mb-4 text-sm text-danger">{t(error)}</p>}
 
+            {/* Step 4: Export button */}
             <div className="flex justify-end gap-2">
               <Button variant="ghost" onClick={handleClose}>
                 {t('common.cancel')}
               </Button>
               <Button
                 onClick={() => void handleExport()}
-                disabled={isRequesting}
+                disabled={isRequesting || selectedEchoIds.size === 0}
               >
                 <Download size={16} />
                 {isRequesting ? t('common.loading') : t('export.request')}
