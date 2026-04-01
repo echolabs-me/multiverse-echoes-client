@@ -426,7 +426,7 @@ export function CommunityPage() {
                       const sameAuthor = prev !== null && prev.author_id === msg.author_id;
                       const withinWindow =
                         sameAuthor &&
-                        Math.abs(new Date(msg.created_at).getTime() - new Date(prev!.created_at).getTime()) < 5 * 60 * 1000;
+                        Math.abs(new Date(msg.created_at).getTime() - new Date(prev!.created_at).getTime()) < 60 * 60 * 1000;
                       const showHeader = !withinWindow;
                       const displayName = msg.author_display_name || 'Unknown User';
 
