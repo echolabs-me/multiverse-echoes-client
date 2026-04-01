@@ -314,7 +314,7 @@ function AccountSection() {
         {isLoadingSessions ? (
           <Spinner size="sm" />
         ) : sessions.length === 0 ? (
-          <p className="text-sm text-text-muted">{t('settings.noSessions')}</p>
+          <p className="text-sm text-text-secondary">{t('settings.noSessions')}</p>
         ) : (
           <div className="flex flex-col gap-2">
             {sessions.map((session) => (
@@ -426,7 +426,7 @@ function PrivacySection() {
             />
             <label htmlFor="solo-mode-toggle">
               <span className="text-sm text-text-primary">{t('settings.soloMode')}</span>
-              <p className="text-xs text-text-muted">{t('settings.soloModeDesc')}</p>
+              <p className="text-xs text-text-secondary">{t('settings.soloModeDesc')}</p>
             </label>
           </div>
           <div className="flex items-center gap-3">
@@ -440,7 +440,7 @@ function PrivacySection() {
             />
             <label htmlFor="do-not-sell-toggle">
               <span className="text-sm text-text-primary">{t('settings.doNotSellLabel')}</span>
-              <p className="text-xs text-text-muted">
+              <p className="text-xs text-text-secondary">
                 {t('settings.doNotSellDesc')}
               </p>
             </label>
@@ -452,7 +452,7 @@ function PrivacySection() {
         <h3 className="mb-4 text-sm font-semibold text-text-primary">
           {t('settings.exportData')}
         </h3>
-        <p className="mb-3 text-sm text-text-muted">
+        <p className="mb-3 text-sm text-text-secondary">
           {t('settings.exportDesc')}
         </p>
         <Button variant="secondary" onClick={() => void handleExport()} disabled={isExporting}>
@@ -658,14 +658,14 @@ function AppearanceSection() {
             {t('settings.enable3D')}
           </span>
         </label>
-        <p className="mt-2 text-xs text-text-muted">
+        <p className="mt-2 text-xs text-text-secondary">
           {t('settings.3dDescription')}
         </p>
       </Card>
 
       <Card>
         <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.language')}</h3>
-        <p className="text-sm text-text-muted">
+        <p className="text-sm text-text-secondary">
           {t('settings.languageNote')}
         </p>
       </Card>
@@ -681,7 +681,7 @@ function ApiKeysSection() {
     <div className="flex flex-col gap-4">
       <Card>
         <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.apiKeys')}</h3>
-        <p className="mb-3 text-sm text-text-muted">{t('settings.apiKeyComingSoon')}</p>
+        <p className="mb-3 text-sm text-text-secondary">{t('settings.apiKeyComingSoon')}</p>
         <Button variant="secondary" disabled>
           {t('settings.createApiKey')}
         </Button>
@@ -768,7 +768,7 @@ function DiscordLinkSection() {
         </div>
       ) : (
         <>
-          <p className="mb-3 text-sm text-text-muted">
+          <p className="mb-3 text-sm text-text-secondary">
             Link your Discord account to sync your identity across in-app and Discord communities.
           </p>
           <button
@@ -802,7 +802,7 @@ function MyFeedbackSection() {
         {t('settings.myFeedback')}
       </h3>
       {items.length === 0 ? (
-        <p className="text-sm text-text-muted">{t('settings.noFeedbackYet')}</p>
+        <p className="text-sm text-text-secondary">{t('settings.noFeedbackYet')}</p>
       ) : (
         <div className="flex flex-col gap-3">
           {items.map((item) => (
@@ -873,7 +873,7 @@ function DangerZoneSection() {
               <p className="text-sm font-medium text-danger">
                 {t('settings.deletionScheduled', { date: new Date(deletionScheduledAt).toLocaleDateString() })}
               </p>
-              <p className="mt-1 text-xs text-text-muted">
+              <p className="mt-1 text-xs text-text-secondary">
                 {t('settings.deletionScheduledDesc')}
               </p>
             </div>

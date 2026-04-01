@@ -171,7 +171,7 @@ export function StoryExportModal({
         </p>
 
         {/* AI Disclaimer */}
-        <div className="mb-4 rounded-md bg-surface p-3 text-xs text-text-muted">
+        <div className="mb-4 rounded-md bg-surface p-3 text-xs text-text-secondary">
           {t('export.disclaimer')}
         </div>
 
@@ -202,7 +202,7 @@ export function StoryExportModal({
                   <span className="text-text-secondary">{opt.icon}</span>
                   <div className="flex-1">
                     <p className="text-sm font-medium">{t(opt.labelKey)}</p>
-                    <p className="text-xs text-text-muted">{t(opt.descKey)}</p>
+                    <p className="text-xs text-text-secondary">{t(opt.descKey)}</p>
                   </div>
                   {opt.format === 'video' && (
                     <span className="rounded bg-accent/10 px-1.5 py-0.5 text-[10px] font-medium text-accent">
@@ -279,7 +279,7 @@ export function StoryExportModal({
                   {t(`export.status${exportData?.status ?? 'Processing'}`)}
                 </p>
               </div>
-              <p className="mt-1 text-xs text-text-muted">
+              <p className="mt-1 text-xs text-text-secondary">
                 {t('export.formatLabel')}: {exportData?.format}
               </p>
             </div>
@@ -304,7 +304,7 @@ export function StoryExportModal({
                     {t('export.downloadSubtitles')}
                   </a>
                 )}
-                <p className="text-center text-xs text-text-muted">{t('export.downloadHint')}</p>
+                <p className="text-center text-xs text-text-secondary">{t('export.downloadHint')}</p>
               </div>
             )}
 

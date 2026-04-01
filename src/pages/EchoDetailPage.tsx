@@ -562,7 +562,7 @@ export function EchoDetailPage() {
               </p>
             )}
             {activeEcho.current_tick > 0 && (
-              <p className="mt-2 flex items-center gap-1.5 text-xs text-text-muted">
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-text-secondary">
                 <Lock size={12} aria-hidden="true" />
                 {t('echoDetail.personaLocked')}
               </p>
@@ -785,7 +785,7 @@ export function EchoDetailPage() {
               />
             ) : filteredDiary.length === 0 ? (
               <div className="flex flex-col items-center gap-3 py-8 text-center">
-                <p className="text-sm italic text-text-muted">{t('echoDetail.noFilterMatch')}</p>
+                <p className="text-sm italic text-text-secondary">{t('echoDetail.noFilterMatch')}</p>
                 <Button
                   variant="secondary"
                   onClick={() => { setDiarySearch(''); setMoodFilter(''); }}
@@ -925,7 +925,7 @@ export function EchoDetailPage() {
                         </div>
                       </div>
                       {rel.is_cross_user && (
-                        <p className="mt-1 text-[10px] text-text-muted">
+                        <p className="mt-1 text-[10px] text-text-secondary">
                           {t('echoDetail.crossUser')}
                         </p>
                       )}
@@ -1174,7 +1174,7 @@ function DiaryCard({
               {entry.simulated_date} — {entry.mood}
             </p>
             <p className="mt-1 text-sm text-text-secondary">{entry.content}</p>
-            <p className="mt-1 text-xs text-text-muted">{entry.location_name}</p>
+            <p className="mt-1 text-xs text-text-secondary">{entry.location_name}</p>
           </div>
           <div className="ml-3 flex shrink-0 flex-col items-end gap-1">
             <span className="text-xs text-text-muted">

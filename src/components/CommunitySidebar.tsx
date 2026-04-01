@@ -283,7 +283,7 @@ export function CommunitySidebar() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-3 py-2">
         {messages.length === 0 ? (
-          <p className="py-8 text-center text-xs text-text-muted">
+          <p className="py-8 text-center text-xs text-text-secondary">
             {t('community.noMessagesYet')}
           </p>
         ) : (
@@ -418,7 +418,7 @@ export function CommunitySidebar() {
       )}
       {activeChannel?.is_read_only && (
         <div className="border-t border-border px-3 py-2">
-          <p className="text-center text-[10px] text-text-muted">{t('community.announcementsOnly')}</p>
+          <p className="text-center text-[10px] text-text-secondary">{t('community.announcementsOnly')}</p>
         </div>
       )}
 

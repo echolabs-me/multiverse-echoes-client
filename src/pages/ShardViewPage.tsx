@@ -174,7 +174,7 @@ export function ShardViewPage() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-text-primary">{echo.name}</p>
-                        <p className="text-xs text-text-muted">{echo.current_mood}</p>
+                        <p className="text-xs text-text-secondary">{echo.current_mood}</p>
                       </div>
                       <Badge
                         variant={echo.status === 'Active' ? 'success' : 'default'}

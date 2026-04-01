@@ -177,7 +177,7 @@ export function WaitlistPage() {
               </p>
             )}
             {totalCount !== null && totalCount > 0 && (
-              <p className="text-xs text-text-muted">
+              <p className="text-xs text-text-secondary">
                 {t('waitlist.socialProofCount', { count: totalCount })}
               </p>
             )}
@@ -214,7 +214,7 @@ export function WaitlistPage() {
                   })}
                 </p>
               )}
-              <p className="text-xs text-text-muted">
+              <p className="text-xs text-text-secondary">
                 {t('waitlist.referralHint')}
               </p>
             </div>
@@ -292,7 +292,7 @@ export function WaitlistPage() {
           <p className="mb-4 text-text-secondary">
             {t('waitlist.socialProofDesc')}
           </p>
-          <p className="text-sm italic text-text-muted">
+          <p className="text-sm italic text-text-secondary">
             {t('waitlist.socialProofQuote')}
           </p>
         </div>

@@ -127,7 +127,7 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
         <div className="mb-4 rounded-lg border border-border bg-surface p-4">
           <p className="text-sm font-medium text-text-primary line-clamp-2">{title}</p>
           <p className="mt-1 text-xs text-text-secondary line-clamp-3">{body}</p>
-          <p className="mt-2 text-[10px] text-text-muted">{t('share.previewDisclaimer')}</p>
+          <p className="mt-2 text-[10px] text-text-secondary">{t('share.previewDisclaimer')}</p>
         </div>
 
         {/* Share actions */}

@@ -126,7 +126,7 @@ export function OraclePanel() {
                 <h2 className="text-lg font-semibold text-text-primary">
                   {t('oracle.title')}
                 </h2>
-                <p className="text-xs text-text-muted">{t('oracle.subtitle')}</p>
+                <p className="text-xs text-text-secondary">{t('oracle.subtitle')}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -148,7 +148,7 @@ export function OraclePanel() {
           </div>
 
           {/* Rate limit info */}
-          <div className="border-b border-border px-4 py-2 text-xs text-text-muted">
+          <div className="border-b border-border px-4 py-2 text-xs text-text-secondary">
             {t('oracle.rateLimit', { limit: String(rateLimit) })}
           </div>
 
@@ -161,7 +161,7 @@ export function OraclePanel() {
             {messages.length === 0 && (
               <div className="flex flex-col items-center gap-3 pt-12 text-center">
                 <Sparkles size={40} className="text-accent opacity-50" />
-                <p className="text-sm text-text-muted">
+                <p className="text-sm text-text-secondary">
                   {t('oracle.welcomeMessage')}
                 </p>
               </div>

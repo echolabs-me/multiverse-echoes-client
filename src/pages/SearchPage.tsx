@@ -236,7 +236,7 @@ export function SearchPage() {
             className="w-full rounded-lg border border-border bg-surface py-3 pr-20 pl-10 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
             aria-label={t('search.placeholder')}
           />
-          <kbd className="absolute top-1/2 right-3 -translate-y-1/2 rounded border border-border bg-canvas px-2 py-0.5 text-xs text-text-muted">
+          <kbd className="absolute top-1/2 right-3 -translate-y-1/2 rounded border border-border bg-canvas px-2 py-0.5 text-xs text-text-secondary">
             {t('search.shortcut')}
           </kbd>
         </form>
@@ -336,7 +336,7 @@ export function SearchPage() {
         {/* Results */}
         {!isLoading && hasSearched && (
           <>
-            <p className="mb-4 text-sm text-text-muted">
+            <p className="mb-4 text-sm text-text-secondary">
               {t('search.resultCount', { count: results.length })}
             </p>
 

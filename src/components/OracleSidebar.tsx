@@ -113,7 +113,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
       </div>
 
       {/* Rate limit info */}
-      <div className="border-b border-border px-3 py-1.5 text-[11px] text-text-muted">
+      <div className="border-b border-border px-3 py-1.5 text-[11px] text-text-secondary">
         {t('oracle.rateLimit', { limit: String(rateLimit) })}
       </div>
 
@@ -170,7 +170,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
         {messages.length === 0 && (
           <div className="flex flex-col items-center gap-3 pt-8 text-center">
             <Sparkles size={32} className="text-accent opacity-50" />
-            <p className="text-xs text-text-muted">
+            <p className="text-xs text-text-secondary">
               {t('oracle.welcomeMessage')}
             </p>
           </div>

@@ -146,7 +146,7 @@ export function EchoCreationPage() {
               className="!bg-canvas border-accent/30 min-h-[120px] text-base"
             />
             <div className="mt-2 flex items-center justify-between">
-              <p className="text-xs text-text-muted italic">
+              <p className="text-xs text-text-secondary italic">
                 {t('echo.whatIfHint')}
               </p>
               <p className="text-xs text-text-muted">
@@ -196,7 +196,7 @@ export function EchoCreationPage() {
               />
               <span>
                 <span className="font-medium">{t('echo.personaDeclaration')}</span>
-                <span className={`block mt-0.5 text-sm ${personaDeclaration === 'inspired' ? 'text-text-secondary' : 'text-text-muted'}`}>
+                <span className={`block mt-0.5 text-sm ${personaDeclaration === 'inspired' ? 'text-text-primary' : 'text-text-secondary'}`}>
                   {t('echo.personaInspiredHint')}
                 </span>
               </span>
@@ -211,7 +211,7 @@ export function EchoCreationPage() {
               />
               <span>
                 <span className="font-medium">{t('echo.personaFictional')}</span>
-                <span className={`block mt-0.5 text-sm ${personaDeclaration === 'fictional' ? 'text-text-secondary' : 'text-text-muted'}`}>
+                <span className={`block mt-0.5 text-sm ${personaDeclaration === 'fictional' ? 'text-text-primary' : 'text-text-secondary'}`}>
                   {t('echo.personaFictionalHint')}
                 </span>
               </span>

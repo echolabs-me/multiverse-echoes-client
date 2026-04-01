@@ -201,7 +201,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
       <header className="flex items-center gap-3 border-b border-border bg-surface px-4 py-3">
         <div className="flex-1">
           <h2 className="text-sm font-semibold text-text-primary">{echoName}</h2>
-          <p className="text-xs text-text-muted">
+          <p className="text-xs text-text-secondary">
             {echoMood
               ? t('conversation.mood', { mood: echoMood })
               : t('conversation.subtitle')}
@@ -209,7 +209,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
         </div>
         <div className="flex items-center gap-2">
           {isFinite(limits.maxMessages) && (
-            <span className="text-xs text-text-muted">
+            <span className="text-xs text-text-secondary">
               {t('conversation.messageCount', {
                 count: userMessageCount,
                 max: limits.maxMessages,
@@ -242,7 +242,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
 
         {!isLoading && messages.length === 0 && conversationId && (
           <div className="flex flex-col items-center gap-2 pt-8 text-center">
-            <p className="text-xs text-text-muted">{t('conversation.startPrompt')}</p>
+            <p className="text-xs text-text-secondary">{t('conversation.startPrompt')}</p>
           </div>
         )}
 
