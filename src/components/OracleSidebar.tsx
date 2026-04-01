@@ -87,43 +87,35 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
 
   return (
     <div className="flex h-full flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border px-3 py-2.5">
-        <div className="flex items-center gap-2">
-          <Sparkles size={18} className="text-accent" />
-          <h2 className="text-sm font-semibold text-text-primary">
-            {t('oracle.title')}
-          </h2>
-        </div>
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => setReportOpen(!reportOpen)}
-            className={`rounded-md p-1.5 transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${reportOpen ? 'text-danger' : 'text-text-muted hover:text-text-secondary'}`}
-            aria-label={t('oracle.reportProblem')}
-            title={t('oracle.reportProblem')}
-          >
-            <Flag size={14} />
-          </button>
-          <button
-            onClick={clearHistory}
-            className="rounded-md p-1.5 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
-            aria-label={t('oracle.clearHistory')}
-          >
-            <Trash2 size={14} />
-          </button>
-          <button
-            onClick={onCollapse}
-            className="hidden md:inline-flex rounded-md p-1.5 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
-            aria-label={t('oracle.collapse', 'Collapse Oracle')}
-          >
-            <ChevronLeft size={14} className="rotate-180" />
-          </button>
-        </div>
-      </div>
-
-      {/* Rate limit info */}
-      <div className="border-b border-border px-3 py-1.5 text-[11px] text-text-secondary">
-        {t('oracle.rateLimit', { limit: String(rateLimit) })}
+      {/* Utility bar — tab bar in AppLayout provides the main header */}
+      <div className="flex items-center justify-end gap-1 border-b border-border px-3 py-1.5">
+        <span className="mr-auto text-[11px] text-text-secondary">
+          {t('oracle.rateLimit', { limit: String(rateLimit) })}
+        </span>
+        <button
+          onClick={() => setReportOpen(!reportOpen)}
+          className={`rounded-md p-1 transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${reportOpen ? 'text-danger' : 'text-text-muted hover:text-text-secondary'}`}
+          aria-label={t('oracle.reportProblem')}
+          title={t('oracle.reportProblem')}
+        >
+          <Flag size={13} />
+        </button>
+        <button
+          onClick={clearHistory}
+          className="rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+          aria-label={t('oracle.clearHistory')}
+          title={t('oracle.clearHistory')}
+        >
+          <Trash2 size={13} />
+        </button>
+        <button
+          onClick={onCollapse}
+          className="hidden md:inline-flex rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+          aria-label={t('oracle.collapse', 'Collapse Oracle')}
+          title={t('oracle.collapse', 'Collapse Oracle')}
+        >
+          <ChevronLeft size={13} className="rotate-180" />
+        </button>
       </div>
 
       {/* Messages */}
