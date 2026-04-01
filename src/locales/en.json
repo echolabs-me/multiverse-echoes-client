@@ -549,7 +549,11 @@
     "conversation": "Oracle conversation",
     "expand": "Expand Oracle",
     "collapse": "Collapse Oracle",
-    "reportProblem": "Report a problem"
+    "reportProblem": "Report a problem",
+    "tagline": "Your all-knowing guide to the Multiverse",
+    "suggestion1": "Where are all my Echoes?",
+    "suggestion2": "What happened recently?",
+    "suggestion3": "Explain nudges to me"
   },
   "admin": {
     "title": "Admin Dashboard",

@@ -15,6 +15,12 @@ const RATE_LIMITS: Record<string, number> = {
   GodMode: 10,
 };
 
+const SUGGESTED_QUESTIONS = [
+  'oracle.suggestion1',
+  'oracle.suggestion2',
+  'oracle.suggestion3',
+];
+
 interface OracleSidebarProps {
   onCollapse: () => void;
 }
@@ -75,6 +81,11 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
     void ask(trimmed);
   };
 
+  const handleSuggestedQuestion = (key: string) => {
+    if (isLoading) return;
+    void ask(t(key));
+  };
+
   const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
     e.target.style.height = 'auto';
@@ -87,35 +98,49 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
 
   return (
     <div className="flex h-full flex-col">
-      {/* Utility bar — tab bar in AppLayout provides the main header */}
-      <div className="flex items-center justify-end gap-1 border-b border-border px-3 py-1.5">
-        <span className="mr-auto text-[11px] text-text-secondary">
-          {t('oracle.rateLimit', { limit: String(rateLimit) })}
-        </span>
-        <button
-          onClick={() => setReportOpen(!reportOpen)}
-          className={`rounded-md p-1 transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${reportOpen ? 'text-danger' : 'text-text-muted hover:text-text-secondary'}`}
-          aria-label={t('oracle.reportProblem')}
-          title={t('oracle.reportProblem')}
-        >
-          <Flag size={13} />
-        </button>
-        <button
-          onClick={clearHistory}
-          className="rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
-          aria-label={t('oracle.clearHistory')}
-          title={t('oracle.clearHistory')}
-        >
-          <Trash2 size={13} />
-        </button>
-        <button
-          onClick={onCollapse}
-          className="hidden md:inline-flex lg:hidden rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
-          aria-label={t('oracle.collapse', 'Collapse Oracle')}
-          title={t('oracle.collapse', 'Collapse Oracle')}
-        >
-          <ChevronLeft size={13} className="rotate-180" />
-        </button>
+      {/* Header — premium branding */}
+      <div className="border-b border-border px-3 py-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/10">
+              <Sparkles size={15} className="text-accent" />
+            </div>
+            <div>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-accent">
+                {t('oracle.title')}
+              </h2>
+            </div>
+          </div>
+          <div className="flex items-center gap-0.5">
+            <button
+              onClick={() => setReportOpen(!reportOpen)}
+              className={`rounded-md p-1 transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${reportOpen ? 'text-danger' : 'text-text-muted hover:text-text-secondary'}`}
+              aria-label={t('oracle.reportProblem')}
+              title={t('oracle.reportProblem')}
+            >
+              <Flag size={12} />
+            </button>
+            <button
+              onClick={clearHistory}
+              className="rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+              aria-label={t('oracle.clearHistory')}
+              title={t('oracle.clearHistory')}
+            >
+              <Trash2 size={12} />
+            </button>
+            <button
+              onClick={onCollapse}
+              className="hidden md:inline-flex lg:hidden rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+              aria-label={t('oracle.collapse', 'Collapse Oracle')}
+              title={t('oracle.collapse', 'Collapse Oracle')}
+            >
+              <ChevronLeft size={12} className="rotate-180" />
+            </button>
+          </div>
+        </div>
+        <p className="mt-1 text-[10px] text-text-secondary">
+          {t('oracle.tagline')}
+        </p>
       </div>
 
       {/* Messages */}
@@ -126,7 +151,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
       >
         {/* Inline report form */}
         {reportOpen && (
-          <div className="mx-2 mb-3 rounded-lg border border-danger/30 bg-surface p-3">
+          <div className="mb-3 rounded-lg border border-danger/30 bg-surface p-3">
             <p className="mb-2 text-xs font-semibold text-danger">{t('oracle.reportProblem')}</p>
             <textarea
               value={reportReason}
@@ -168,12 +193,27 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
           </div>
         )}
 
-        {messages.length === 0 && (
-          <div className="flex flex-col items-center gap-3 pt-8 text-center">
-            <Sparkles size={32} className="text-accent opacity-50" />
-            <p className="text-xs text-text-secondary">
+        {/* Empty state with suggested questions */}
+        {messages.length === 0 && !reportOpen && (
+          <div className="flex flex-col items-center gap-4 pt-6 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
+              <Sparkles size={24} className="text-accent" />
+            </div>
+            <p className="text-xs text-text-secondary leading-relaxed px-2">
               {t('oracle.welcomeMessage')}
             </p>
+            <div className="flex w-full flex-col gap-1.5 px-1">
+              {SUGGESTED_QUESTIONS.map((key) => (
+                <button
+                  key={key}
+                  onClick={() => handleSuggestedQuestion(key)}
+                  disabled={isLoading}
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-left text-[11px] text-text-secondary transition-colors hover:border-accent/50 hover:bg-accent/5 hover:text-text-primary disabled:opacity-50"
+                >
+                  {t(key)}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
@@ -199,36 +239,41 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
-      <form
-        onSubmit={handleSubmit}
-        className="flex gap-2 border-t border-border px-3 py-2.5"
-      >
-        <textarea
-          ref={inputRef}
-          rows={1}
-          value={input}
-          onChange={handleTextareaInput}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSubmit(e);
-            }
-          }}
-          placeholder={t('oracle.inputPlaceholder')}
-          className="flex-1 resize-none rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
-          aria-label={t('oracle.inputPlaceholder')}
-          disabled={isLoading}
-        />
-        <button
-          type="submit"
-          disabled={!input.trim() || isLoading}
-          className="flex items-center justify-center rounded-md bg-accent px-3 py-2 text-canvas transition-colors hover:bg-accent-hover focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40"
-          aria-label={t('oracle.send')}
+      {/* Input + rate limit */}
+      <div className="border-t border-border">
+        <form
+          onSubmit={handleSubmit}
+          className="flex gap-2 px-3 pt-2.5 pb-1.5"
         >
-          <Send size={14} />
-        </button>
-      </form>
+          <textarea
+            ref={inputRef}
+            rows={1}
+            value={input}
+            onChange={handleTextareaInput}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(e);
+              }
+            }}
+            placeholder={t('oracle.inputPlaceholder')}
+            className="flex-1 resize-none rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
+            aria-label={t('oracle.inputPlaceholder')}
+            disabled={isLoading}
+          />
+          <button
+            type="submit"
+            disabled={!input.trim() || isLoading}
+            className="flex items-center justify-center rounded-md bg-accent px-3 py-2 text-canvas transition-colors hover:bg-accent-hover focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40"
+            aria-label={t('oracle.send')}
+          >
+            <Send size={14} />
+          </button>
+        </form>
+        <p className="px-3 pb-2 text-[9px] text-text-muted">
+          {t('oracle.rateLimit', { limit: String(rateLimit) })}
+        </p>
+      </div>
     </div>
   );
 }
