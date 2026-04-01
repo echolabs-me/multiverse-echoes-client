@@ -122,9 +122,12 @@ export function OraclePanel() {
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <div className="flex items-center gap-2">
               <Sparkles size={20} className="text-accent" />
-              <h2 className="text-lg font-semibold text-text-primary">
-                {t('oracle.title')}
-              </h2>
+              <div>
+                <h2 className="text-lg font-semibold text-text-primary">
+                  {t('oracle.title')}
+                </h2>
+                <p className="text-xs text-text-muted">{t('oracle.subtitle')}</p>
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <button

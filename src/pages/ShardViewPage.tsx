@@ -72,8 +72,9 @@ export function ShardViewPage() {
       trackEvent('echo.travel_initiated', { echo_id: selectedEchoId, destination_shard: shardId });
       addToast(t('shardView.travelInitiated'), 'success');
       setTravelModal(false);
-    } catch {
-      addToast(t('common.error'), 'danger');
+    } catch (err: unknown) {
+      const detail = err instanceof Error ? err.message : t('common.error');
+      addToast(detail, 'danger');
     }
   };
 

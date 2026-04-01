@@ -73,17 +73,16 @@ export function TickTimer() {
           <>
             <span
               className={`tick-digit-breathe text-xl sm:text-2xl font-semibold tabular-nums leading-none tracking-wide ${
-                isArrived ? 'text-success' : ''
+                isArrived ? 'text-success' : 'text-text-primary'
               }`}
               style={{
-                color: isArrived ? undefined : '#E8E0D8',
                 textShadow: isArrived ? NEON_GLOW_SUCCESS : NEON_GLOW,
               }}
             >
               {timeDisplay}
             </span>
             <span
-              className="hidden sm:inline text-xs text-text-muted leading-none"
+              className="hidden sm:inline text-xs text-text-secondary leading-none"
               style={{ textShadow: '0 0 6px rgba(212, 145, 92, 0.15)' }}
             >
               {isArrived

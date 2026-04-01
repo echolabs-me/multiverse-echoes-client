@@ -30,6 +30,7 @@ import {
   Modal,
   Input,
   StoryExportModal,
+  Tooltip,
 } from '../components/index.ts';
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
@@ -411,9 +412,10 @@ export function EchoDetailPage() {
         suggestion: influenceDetails.trim(),
       });
       trackEvent('nudge.sent', { echo_id: activeEcho.echo_id, influence_type: influenceType });
-      addToast(t('echoDetail.influenceUsed'), 'success');
       setInfluenceModal(false);
       setInfluenceDetails('');
+      // Delay toast so it renders after the <dialog> leaves the top layer
+      setTimeout(() => addToast(t('echoDetail.influenceUsed'), 'success'), 150);
       // Trigger ripple animation + sound
       playSound('influence');
       setNudgeRipple(true);
@@ -583,16 +585,18 @@ export function EchoDetailPage() {
             </button>
             {/* Nudge */}
             <div className="relative">
-              <button
-                onClick={() => setInfluenceModal(true)}
-                disabled={activeEcho.status === 'Hibernated'}
-                className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              >
-                <Zap size={14} className="text-amber-400" /> {t('echoDetail.useInfluence')}
-                {influence && influence.daily_limit < 1000 && (
-                  <span className="text-text-muted">({influence.remaining})</span>
-                )}
-              </button>
+              <Tooltip content={t('echoDetail.influenceBudgetTooltip')} position="bottom">
+                <button
+                  onClick={() => setInfluenceModal(true)}
+                  disabled={activeEcho.status === 'Hibernated'}
+                  className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                >
+                  <Zap size={14} className="text-amber-400" /> {t('echoDetail.useInfluence')}
+                  {influence && influence.daily_limit < 1000 && (
+                    <span className="text-text-muted">({influence.remaining} {t('echoDetail.influenceLeftToday')})</span>
+                  )}
+                </button>
+              </Tooltip>
               {nudgeRipple && (
                 <span className="pointer-events-none absolute inset-0 rounded-lg animate-nudge-ripple" aria-hidden="true" />
               )}

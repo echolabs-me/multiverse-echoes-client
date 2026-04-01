@@ -201,11 +201,11 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
       <header className="flex items-center gap-3 border-b border-border bg-surface px-4 py-3">
         <div className="flex-1">
           <h2 className="text-sm font-semibold text-text-primary">{echoName}</h2>
-          {echoMood && (
-            <p className="text-xs text-text-muted">
-              {t('conversation.mood', { mood: echoMood })}
-            </p>
-          )}
+          <p className="text-xs text-text-muted">
+            {echoMood
+              ? t('conversation.mood', { mood: echoMood })
+              : t('conversation.subtitle')}
+          </p>
         </div>
         <div className="flex items-center gap-2">
           {isFinite(limits.maxMessages) && (

@@ -108,7 +108,7 @@ export const echoes = {
   travel: (echoId: string, targetShardId: string) =>
     request<MessageResponse>(`/echoes/${echoId}/travel`, {
       method: 'POST',
-      body: JSON.stringify({ target_shard_id: targetShardId }),
+      body: JSON.stringify({ destination_shard_id: targetShardId }),
     }),
 
   relationships: (echoId: string) =>

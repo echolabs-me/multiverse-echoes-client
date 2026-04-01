@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import {
   Card,
+  Badge,
   Button,
   Input,
   Spinner,
@@ -184,6 +185,7 @@ function ProfileSection() {
 // --- Account Section ---
 function AccountSection() {
   const { t } = useTranslation();
+  const user = useAuthStore((s) => s.user);
   const addToast = useToastStore((s) => s.addToast);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -246,6 +248,24 @@ function AccountSection() {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Subscription Tier */}
+      <Card>
+        <h3 className="mb-3 text-sm font-semibold text-text-primary">
+          {t('settings.subscriptionTier')}
+        </h3>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Badge variant="default">{user?.subscription_tier ?? 'Free'}</Badge>
+          </div>
+          <Link
+            to="/plans"
+            className="text-xs font-medium text-accent hover:text-accent-hover transition-colors"
+          >
+            {t('settings.managePlan')}
+          </Link>
+        </div>
+      </Card>
+
       {/* Change Password */}
       <Card>
         <h3 className="mb-4 text-sm font-semibold text-text-primary">
