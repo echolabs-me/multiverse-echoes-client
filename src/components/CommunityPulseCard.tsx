@@ -87,7 +87,10 @@ export function CommunityPulseCard() {
                     ? 'bg-pink-500/10 border border-pink-500/20'
                     : 'bg-surface-raised/50'
               }`}
-              style={{ boxShadow: `0 0 10px 2px rgba(${mr},${mg},${mb},0.1)` }}
+              style={{
+                boxShadow: `0 0 14px 3px rgba(${mr},${mg},${mb},0.15)`,
+                borderLeftColor: `rgba(${mr},${mg},${mb},0.5)`,
+              }}
             >
               <div className="flex items-center gap-1.5 mb-0.5">
                 <span
