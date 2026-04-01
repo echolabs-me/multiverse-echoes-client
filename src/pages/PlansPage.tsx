@@ -97,19 +97,8 @@ export function PlansPage() {
     }
   };
 
-  const handleStripeCheckout = async (stripeKey: string) => {
-    setLoading(`stripe-${stripeKey}`);
-    try {
-      const result = await payments.stripeCheckout(stripeKey);
-      if (result.checkout_url) {
-        window.location.href = result.checkout_url;
-      }
-    } catch {
-      addToast(t('common.errorGeneric'), 'danger');
-    } finally {
-      setLoading(null);
-    }
-  };
+  // Stripe checkout handler removed — will be re-added after company incorporation.
+  // The Stripe API endpoint (payments.stripeCheckout) still exists in endpoints.ts.
 
   const handleManageSubscription = async () => {
     setLoading('manage');
@@ -178,15 +167,14 @@ export function PlansPage() {
 
                   {!isFree && !isCurrent && (
                     <div className="mt-2 flex flex-col gap-2">
-                      {/* Stripe — branded purple button */}
+                      {/* Stripe — branded purple button with Coming Soon badge */}
                       <Tooltip content={t('payment.cardComingSoon')} position="top">
                         <button
-                          onClick={() => void handleStripeCheckout(tier.stripeKey)}
-                          disabled
-                          className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#635BFF] px-3 py-2.5 text-xs font-semibold text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                          onClick={() => addToast(t('payment.cardComingSoon'), 'info')}
+                          className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#635BFF] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#5851db] transition-colors"
                         >
                           <StripeLogo size={36} className="text-white" />
-                          <span className="sr-only">{t('payment.payWithCard')}</span>
+                          <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white/90">{t('common.comingSoon')}</span>
                         </button>
                       </Tooltip>
 

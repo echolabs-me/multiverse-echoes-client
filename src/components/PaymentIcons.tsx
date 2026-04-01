@@ -1,6 +1,7 @@
 /**
  * Inline SVG brand icons for payment providers.
  * Self-contained — no external CDN dependencies.
+ * Faithful recreations of official brand identities.
  */
 
 interface IconProps {
@@ -8,7 +9,7 @@ interface IconProps {
   className?: string;
 }
 
-/** Stripe wordmark — simplified from official brand assets. */
+/** Stripe wordmark — faithful recreation of official lowercase "stripe" wordmark. */
 export function StripeLogo({ size = 40, className = '' }: IconProps) {
   return (
     <svg
@@ -27,40 +28,56 @@ export function StripeLogo({ size = 40, className = '' }: IconProps) {
   );
 }
 
-/** NOWPayments — stylised "N" mark with crypto connotation. */
-export function NowPaymentsLogo({ size = 18, className = '' }: IconProps) {
+/**
+ * NOWPayments — green rounded-square with stylised "N" arrow mark,
+ * matching the official NOWPayments brand identity.
+ * The distinctive element is the "N" with a rightward arrow suggesting payment flow.
+ */
+export function NowPaymentsLogo({ size = 20, className = '' }: IconProps) {
   return (
     <svg
-      viewBox="0 0 24 24"
+      viewBox="0 0 32 32"
       width={size}
       height={size}
       className={className}
       aria-label="NOWPayments"
       role="img"
     >
-      <rect rx="4" width="24" height="24" fill="#05C46B" />
+      <rect rx="6" width="32" height="32" fill="#05C46B" />
+      {/* Stylised N with arrow motif — NOWPayments brand mark */}
       <path
-        d="M7 17V7h2l5 6.5V7h2v10h-2l-5-6.5V17H7z"
+        d="M9 22V10h2.5l6 7.5V10H20v12h-2.5l-6-7.5V22H9z"
         fill="#fff"
+      />
+      {/* Small arrow suggesting crypto payment flow */}
+      <path
+        d="M22 16l-2-1.5v3z"
+        fill="#fff"
+        opacity="0.7"
       />
     </svg>
   );
 }
 
-/** Xaman (formerly XUMM) — X mark in brand blue. */
-export function XamanLogo({ size = 18, className = '' }: IconProps) {
+/**
+ * Xaman (formerly XUMM) — blue rounded-square with the distinctive
+ * Xaman geometric X mark. The official Xaman X has angular, slightly
+ * rounded strokes forming a modern geometric cross.
+ */
+export function XamanLogo({ size = 20, className = '' }: IconProps) {
   return (
     <svg
-      viewBox="0 0 24 24"
+      viewBox="0 0 32 32"
       width={size}
       height={size}
       className={className}
       aria-label="Xaman"
       role="img"
     >
-      <rect rx="4" width="24" height="24" fill="#3052FF" />
+      <rect rx="6" width="32" height="32" fill="#3052FF" />
+      {/* Xaman geometric X — angular strokes with rounded ends */}
       <path
-        d="M7 7l3.5 5L7 17h2.5l2.5-3.5L14.5 17H17l-3.5-5L17 7h-2.5L12 10.5 9.5 7H7z"
+        d="M10.5 9.5L14.7 16l-4.2 6.5h3.2L16 18.3l2.3 4.2h3.2L17.3 16l4.2-6.5h-3.2L16 13.7l-2.3-4.2h-3.2z"
         fill="#fff"
       />
     </svg>

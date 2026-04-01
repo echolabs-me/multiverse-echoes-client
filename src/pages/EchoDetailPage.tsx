@@ -672,7 +672,7 @@ export function EchoDetailPage() {
                 className="flex w-full items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-left text-xs font-medium text-text-secondary hover:bg-surface-raised transition-colors"
               >
                 <MessageCircle size={14} />
-                {t('conversation.pastConversations', { count: pastConversations.length })}
+                {t('conversation.pastConversations', { name: activeEcho.name, count: pastConversations.length })}
                 {showPastConversations ? <ChevronUp size={14} className="ml-auto" /> : <ChevronDown size={14} className="ml-auto" />}
               </button>
               {showPastConversations && (
