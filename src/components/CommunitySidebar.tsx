@@ -394,7 +394,7 @@ export function CommunitySidebar() {
                 onChange={(e) => setPollQuestion(e.target.value)}
                 placeholder={t('community.pollQuestion')}
                 maxLength={300}
-                className="w-full rounded border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                className="w-full rounded border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
               />
               {pollOptions.map((opt, i) => (
                 <input
@@ -408,7 +408,7 @@ export function CommunitySidebar() {
                   }}
                   placeholder={t('community.pollOption', { n: i + 1 })}
                   maxLength={55}
-                  className="w-full rounded border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                  className="w-full rounded border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
                 />
               ))}
               <div className="flex items-center gap-2">
@@ -474,7 +474,7 @@ export function CommunitySidebar() {
               onChange={(e) => setMessageText(e.target.value)}
               maxLength={MAX_MESSAGE_LENGTH}
               placeholder={t('community.messagePlaceholder')}
-              className="flex-1 rounded border border-border bg-surface px-2 py-1.5 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+              className="flex-1 rounded border border-border bg-surface px-2 py-1.5 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();

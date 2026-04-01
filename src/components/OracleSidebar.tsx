@@ -157,7 +157,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
               placeholder={t('community.reportPlaceholder')}
               maxLength={500}
               rows={2}
-              className="w-full rounded-md border border-border bg-canvas px-2 py-1.5 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+              className="w-full rounded-md border border-border bg-canvas px-2 py-1.5 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
             />
             <div className="mt-2 flex justify-end gap-1.5">
               <button
@@ -255,7 +255,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
               }
             }}
             placeholder={t('oracle.inputPlaceholder')}
-            className="flex-1 resize-none rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
+            className="flex-1 resize-none rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
             aria-label={t('oracle.inputPlaceholder')}
             disabled={isLoading}
           />
