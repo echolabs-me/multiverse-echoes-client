@@ -132,9 +132,15 @@ export const useOracleStore = create<OracleState>((set, get) => ({
       const deepThoughtThreshold = 6;
       const queuedText = 'The Oracle is busy guiding the multiverse right now. They\u2019ll be with you shortly.';
       const deepThoughtText = 'The Oracle is taking a while \u2014 they\u2019re deep in thought. Hang tight, they\u2019ll respond soon.';
+      // Build conversation history from stored messages (last 20, excluding current).
+      const history = get().messages.slice(-20).map((m) => ({
+        role: m.role === 'user' ? 'user' : 'oracle',
+        text: m.text,
+      }));
       let response = await oracle.ask({
         question,
         context: get().context,
+        history,
       });
 
       // Handle 202 queued response (Oracle returns __QUEUED__ marker).
@@ -162,7 +168,7 @@ export const useOracleStore = create<OracleState>((set, get) => ({
         }
         await new Promise((r) => setTimeout(r, 15_000));
         retries++;
-        response = await oracle.ask({ question, context: get().context });
+        response = await oracle.ask({ question, context: get().context, history });
       }
 
       // Remove queued/deep-thought placeholder if present.

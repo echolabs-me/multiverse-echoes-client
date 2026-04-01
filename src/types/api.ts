@@ -578,6 +578,7 @@ export interface SearchParams {
 export interface OracleAskRequest {
   question: string;
   context?: OracleContext;
+  history?: Array<{ role: string; text: string }>;
 }
 
 export interface OracleContext {

@@ -635,6 +635,8 @@ export type OracleAskRequest = {
 	context_id: string | null,
 	// Client sends context as a nested object.
 	context: OracleContextPayload | null,
+	// Conversation history for session continuity (last N exchanges).
+	history?: OracleHistoryMessage[],
 };
 
 export type OracleAskResponse = {
@@ -647,6 +649,12 @@ export type OracleContextPayload = {
 	echo_id: string | null,
 	shard_id: string | null,
 	screen: string | null,
+};
+
+// A prior message in the Oracle conversation for session continuity.
+export type OracleHistoryMessage = {
+	role: string,
+	text: string,
 };
 
 export type PaymentRecord = {

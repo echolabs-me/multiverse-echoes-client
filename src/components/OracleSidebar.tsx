@@ -40,7 +40,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
   const [reportReason, setReportReason] = useState('');
   const addToast = useToastStore((s) => s.addToast);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const tier = user?.subscription_tier ?? 'Free';
   const rateLimit = RATE_LIMITS[tier] ?? 3;
@@ -69,7 +69,16 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
     const trimmed = input.trim();
     if (!trimmed || isLoading) return;
     setInput('');
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+    }
     void ask(trimmed);
+  };
+
+  const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+    e.target.style.height = 'auto';
+    e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
   };
 
   const handleDeepLink = (path: string) => {
@@ -203,13 +212,19 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
         onSubmit={handleSubmit}
         className="flex gap-2 border-t border-border px-3 py-2.5"
       >
-        <input
+        <textarea
           ref={inputRef}
-          type="text"
+          rows={1}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={handleTextareaInput}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit(e);
+            }
+          }}
           placeholder={t('oracle.inputPlaceholder')}
-          className="flex-1 rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
+          className="flex-1 resize-none rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
           aria-label={t('oracle.inputPlaceholder')}
           disabled={isLoading}
         />
