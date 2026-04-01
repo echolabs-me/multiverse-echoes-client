@@ -1,8 +1,13 @@
 import type { ApiError } from '../../types/api.ts';
 
-const DEFAULT_BASE_URL = 'http://localhost:8080';
+function resolveBaseUrl(): string {
+  const envUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
+  if (envUrl) return envUrl.replace(/\/+$/, '');
+  // Derive from current origin — works when frontend and backend share a host.
+  return window.location.origin;
+}
 
-let baseUrl = DEFAULT_BASE_URL;
+let baseUrl = resolveBaseUrl();
 // Restore tokens from localStorage on module load (survives full page reloads).
 let accessToken: string | null = localStorage.getItem('access_token');
 let refreshToken: string | null = localStorage.getItem('refresh_token');
