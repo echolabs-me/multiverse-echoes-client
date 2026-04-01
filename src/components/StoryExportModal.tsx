@@ -98,6 +98,9 @@ export function StoryExportModal({
   const [selectedEchoIds, setSelectedEchoIds] = useState<Set<string>>(new Set([echoId]));
   const [echoesLoading, setEchoesLoading] = useState(false);
 
+  // Download state
+  const [isDownloading, setIsDownloading] = useState(false);
+
   // Date range state
   const [dateRangeOpen, setDateRangeOpen] = useState(false);
   const [fromDate, setFromDate] = useState('');
@@ -222,7 +225,8 @@ export function StoryExportModal({
   };
 
   const handleDownload = () => {
-    if (!exportData) return;
+    if (!exportData || isDownloading) return;
+    setIsDownloading(true);
     const path = account.downloadExport(exportData.export_id);
     const url = `${getBaseUrl()}${path}`;
     const token = getAccessToken();
@@ -250,6 +254,9 @@ export function StoryExportModal({
       })
       .catch(() => {
         setError('export.errorRequesting');
+      })
+      .finally(() => {
+        setIsDownloading(false);
       });
   };
 
@@ -261,6 +268,7 @@ export function StoryExportModal({
     setExportData(null);
     setError(null);
     setTierGated(false);
+    setIsDownloading(false);
     setDateRangeOpen(false);
     setFromDate('');
     setToDate('');
@@ -496,10 +504,15 @@ export function StoryExportModal({
               <div className="mb-4 flex flex-col gap-2">
                 <button
                   onClick={handleDownload}
-                  className="flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-accent-hover"
+                  disabled={isDownloading}
+                  className="flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-canvas transition-colors hover:bg-accent-hover disabled:opacity-70"
                 >
-                  <Download size={16} />
-                  {t('export.download')}
+                  {isDownloading ? (
+                    <Loader size={16} className="animate-spin" />
+                  ) : (
+                    <Download size={16} />
+                  )}
+                  {isDownloading ? t('export.downloading') : t('export.download')}
                 </button>
                 <p className="text-center text-xs text-text-secondary">{t('export.downloadHint')}</p>
               </div>

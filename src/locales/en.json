@@ -482,6 +482,7 @@
     "dateFrom": "From",
     "dateTo": "To",
     "download": "Download",
+    "downloading": "Downloading...",
     "downloadSubtitles": "Download subtitles (.srt)",
     "progress": "Export progress",
     "formatLabel": "Format",
