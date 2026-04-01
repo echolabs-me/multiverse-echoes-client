@@ -203,6 +203,15 @@ export function EchoSidebar() {
           ))}
         </ul>
       </nav>
+      <div className="px-3 pb-3">
+        <button
+          onClick={() => navigate('/onboarding/create-echo')}
+          className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-border/50 py-2 text-xs text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-colors"
+        >
+          <span className="text-sm">+</span>
+          {t('echoSidebar.createEcho')}
+        </button>
+      </div>
     </aside>
   );
 }

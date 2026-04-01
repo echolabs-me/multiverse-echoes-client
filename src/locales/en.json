@@ -649,7 +649,8 @@
     "selectEcho": "Select an Echo",
     "unknownShard": "Unknown Shard",
     "moodLegend": "Mood Guide",
-    "arrivingAt": "Arriving at {{shard}}\u2026"
+    "arrivingAt": "Arriving at {{shard}}\u2026",
+    "createEcho": "Create Echo"
   },
   "payment": {
     "title": "Plans",
