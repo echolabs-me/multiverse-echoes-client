@@ -239,7 +239,11 @@ export function StoryExportModal({
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const disposition = res.headers.get('Content-Disposition');
         const match = disposition?.match(/filename="?([^"]+)"?/);
-        const filename = match?.[1] ?? `${echoName}-story.${selectedFormat === 'json' ? 'json' : selectedFormat === 'pdf' ? 'pdf' : 'txt'}`;
+        const fallbackName = selectedEchoIds.size > 1
+          ? 'echoes-story'
+          : `${allEchoes.find((e) => selectedEchoIds.has(e.echo_id))?.name ?? echoName}-story`;
+        const ext = selectedFormat === 'json' ? 'json' : selectedFormat === 'pdf' ? 'pdf' : 'txt';
+        const filename = match?.[1] ?? `${fallbackName}.${ext}`;
         return res.blob().then((blob) => ({ blob, filename }));
       })
       .then(({ blob, filename }) => {
