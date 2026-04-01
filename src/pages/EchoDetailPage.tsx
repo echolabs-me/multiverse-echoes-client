@@ -570,41 +570,46 @@ export function EchoDetailPage() {
           </Card>
 
           {/* Action Toolbar */}
-          <div className="my-4 flex flex-wrap gap-2">
-            {/* Talk — primary action, accent glow. Desktop: toggle side panel. Mobile: navigate. */}
-            <button
-              onClick={() => {
-                if (window.innerWidth >= 1024) {
-                  setResumeConversationId(undefined);
-                  setShowConversation((prev) => !prev);
-                } else {
-                  navigate(`/echoes/${activeEcho.echo_id}/talk`);
-                }
-              }}
-              disabled={activeEcho.status === 'Hibernated'}
-              className={`action-btn-primary flex items-center gap-1.5 rounded-lg border px-3.5 py-2 text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
-                showConversation
-                  ? 'border-accent bg-accent/20 text-accent'
-                  : 'border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 hover:border-accent/60'
-              }`}
-            >
-              <MessageCircle size={14} /> {t('echoDetail.talkToEcho')}
-            </button>
-            {/* Nudge */}
-            <div className="relative">
+          <div className="my-4 space-y-2">
+            {/* Primary actions — Talk + Nudge */}
+            <div className="flex gap-2">
+              {/* Talk — primary CTA */}
               <button
-                onClick={() => setInfluenceModal(true)}
+                onClick={() => {
+                  if (window.innerWidth >= 1024) {
+                    setResumeConversationId(undefined);
+                    setShowConversation((prev) => !prev);
+                  } else {
+                    navigate(`/echoes/${activeEcho.echo_id}/talk`);
+                  }
+                }}
                 disabled={activeEcho.status === 'Hibernated'}
-                className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                className={`action-btn-primary flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+                  showConversation
+                    ? 'bg-accent text-canvas shadow-md shadow-accent/20'
+                    : 'bg-accent text-canvas shadow-md shadow-accent/20 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/30'
+                }`}
               >
-                <Zap size={14} className="text-amber-400" /> {t('echoDetail.useInfluence')}
-                {influence && influence.daily_limit < 1000 && (
-                  <span className="text-text-muted">({influence.remaining} {t('echoDetail.influenceLeftToday')})</span>
-                )}
+                <MessageCircle size={18} /> {t('echoDetail.talkToEcho')}
               </button>
-              {nudgeRipple && (
-                <span className="pointer-events-none absolute inset-0 rounded-lg animate-nudge-ripple" aria-hidden="true" />
-              )}
+              {/* Nudge */}
+              <div className="relative flex-1">
+                <button
+                  onClick={() => setInfluenceModal(true)}
+                  disabled={activeEcho.status === 'Hibernated'}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm font-semibold text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/15 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                >
+                  <Zap size={18} className="text-amber-400" /> {t('echoDetail.useInfluence')}
+                  {influence && influence.daily_limit < 1000 && (
+                    <span className="ml-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+                      {influence.remaining}
+                    </span>
+                  )}
+                </button>
+                {nudgeRipple && (
+                  <span className="pointer-events-none absolute inset-0 rounded-xl animate-nudge-ripple" aria-hidden="true" />
+                )}
+              </div>
             </div>
             {/* Nudge confirmation banner */}
             {nudgeConfirmed && (
@@ -612,14 +617,14 @@ export function EchoDetailPage() {
                 <Zap size={12} /> {t('echoDetail.influenceUsed')}
               </div>
             )}
-            {/* More actions overflow menu */}
-            <div className="relative">
+            {/* More actions overflow menu — secondary */}
+            <div className="relative inline-flex">
               <button
                 onClick={() => setShowMoreMenu((p) => !p)}
-                className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent transition-all"
+                className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-text-muted hover:border-border hover:text-text-secondary transition-all"
                 aria-label={t('common.more')}
               >
-                <MoreHorizontal size={16} />
+                <MoreHorizontal size={14} /> {t('common.more')}
               </button>
               {showMoreMenu && (
                 <>
