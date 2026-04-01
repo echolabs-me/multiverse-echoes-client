@@ -288,49 +288,61 @@ export function CommunitySidebar() {
           </p>
         ) : (
           <div className="flex flex-col gap-2">
-            {messages.map((msg) => (
-              <div key={msg.message_id} className="group text-xs">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="font-medium text-accent">{msg.author_display_name}</span>
-                  <span className="text-[10px] text-text-muted">
-                    {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                  <ReportButton targetType="message" targetId={msg.message_id} size={10} />
-                </div>
-                {msg.content && <p className="text-text-primary">{msg.content}</p>}
-                {msg.image_url && (
-                  <button onClick={() => setExpandedImage(msg.image_url)} className="mt-0.5 block">
-                    <img
-                      src={msg.image_url}
-                      alt={t('community.sharedImage')}
-                      className="max-h-32 max-w-full rounded border border-border object-cover hover:opacity-90 transition-opacity"
-                    />
-                  </button>
-                )}
-                {msg.poll_data && (() => {
-                  try {
-                    const poll: PollData = JSON.parse(msg.poll_data!);
-                    return (
-                      <div className="mt-1 rounded border border-accent/30 bg-accent/5 p-2">
-                        <p className="mb-1 text-xs font-semibold text-text-primary">{poll.question}</p>
-                        <div className="flex flex-col gap-1">
-                          {poll.options.map((opt) => (
-                            <button
-                              key={opt.id}
-                              onClick={() => void handlePollVote(msg, opt.id)}
-                              className="flex items-center justify-between rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary hover:border-accent transition-colors"
-                            >
-                              <span>{opt.text}</span>
-                              <span className="text-text-muted">{opt.votes}</span>
-                            </button>
-                          ))}
+            {messages.map((msg, idx) => {
+              const prev = idx > 0 ? messages[idx - 1] : null;
+              const sameAuthor = prev !== null && prev.author_id === msg.author_id;
+              const withinWindow =
+                sameAuthor &&
+                Math.abs(new Date(msg.created_at).getTime() - new Date(prev!.created_at).getTime()) < 5 * 60 * 1000;
+              const showHeader = !withinWindow;
+              const displayName = msg.author_display_name || 'Unknown User';
+
+              return (
+                <div key={msg.message_id} className="group text-xs">
+                  {showHeader && (
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="font-medium text-accent">{displayName}</span>
+                      <span className="text-[10px] text-text-muted">
+                        {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                      <ReportButton targetType="message" targetId={msg.message_id} size={10} />
+                    </div>
+                  )}
+                  {msg.content && <p className="text-text-primary">{msg.content}</p>}
+                  {msg.image_url && (
+                    <button onClick={() => setExpandedImage(msg.image_url)} className="mt-0.5 block">
+                      <img
+                        src={msg.image_url}
+                        alt={t('community.sharedImage')}
+                        className="max-h-32 max-w-full rounded border border-border object-cover hover:opacity-90 transition-opacity"
+                      />
+                    </button>
+                  )}
+                  {msg.poll_data && (() => {
+                    try {
+                      const poll: PollData = JSON.parse(msg.poll_data!);
+                      return (
+                        <div className="mt-1 rounded border border-accent/30 bg-accent/5 p-2">
+                          <p className="mb-1 text-xs font-semibold text-text-primary">{poll.question}</p>
+                          <div className="flex flex-col gap-1">
+                            {poll.options.map((opt) => (
+                              <button
+                                key={opt.id}
+                                onClick={() => void handlePollVote(msg, opt.id)}
+                                className="flex items-center justify-between rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary hover:border-accent transition-colors"
+                              >
+                                <span>{opt.text}</span>
+                                <span className="text-text-muted">{opt.votes}</span>
+                              </button>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  } catch { return null; }
-                })()}
-              </div>
-            ))}
+                      );
+                    } catch { return null; }
+                  })()}
+                </div>
+              );
+            })}
             <div ref={messagesEndRef} />
           </div>
         )}

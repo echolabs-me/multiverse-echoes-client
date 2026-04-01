@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, MapPin, Users, MessageSquare } from 'lucide-react';
+import { ArrowLeft, MapPin, Users } from 'lucide-react';
 import {
   Card,
   Badge,
@@ -14,9 +14,9 @@ import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
-import { shards as shardApi, echoes as echoApi, feeds, channels } from '../lib/api/endpoints.ts';
+import { shards as shardApi, echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
-import type { EchoResponse, FeedItem, Channel, ChannelMessage } from '../types/api.ts';
+import type { EchoResponse, FeedItem } from '../types/api.ts';
 
 export function ShardViewPage() {
   const { shardId } = useParams<{ shardId: string }>();
@@ -28,8 +28,6 @@ export function ShardViewPage() {
 
   const [shardEchoes, setShardEchoes] = useState<EchoResponse[]>([]);
   const [shardFeed, setShardFeed] = useState<FeedItem[]>([]);
-  const [shardChannel, setShardChannel] = useState<Channel | null>(null);
-  const [channelMessages, setChannelMessages] = useState<ChannelMessage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [travelModal, setTravelModal] = useState(false);
   const [selectedEchoId, setSelectedEchoId] = useState('');
@@ -39,20 +37,12 @@ export function ShardViewPage() {
     setIsLoading(true);
     try {
       await fetchShard(shardId);
-      const [echoesResult, feedResult, channelsResult] = await Promise.all([
+      const [echoesResult, feedResult] = await Promise.all([
         shardApi.echoes(shardId).catch(() => [] as EchoResponse[]),
         feeds.shard(shardId).catch(() => [] as FeedItem[]),
-        channels.list({ shard_id: shardId }).catch(() => [] as Channel[]),
       ]);
       setShardEchoes(echoesResult);
       setShardFeed(feedResult);
-
-      if (channelsResult.length > 0) {
-        const ch = channelsResult[0]!;
-        setShardChannel(ch);
-        const msgs = await channels.messages(ch.channel_id, { limit: 50 }).catch(() => []);
-        setChannelMessages(msgs);
-      }
       if (shardId) trackEvent('feed.viewed', { variant: 'shard', shard_id: shardId });
     } finally {
       setIsLoading(false);
@@ -184,39 +174,6 @@ export function ShardViewPage() {
               </div>
             )}
           </section>
-
-          {/* Shard channel messages */}
-          {shardChannel && (
-            <section className="mb-6">
-              <div className="mb-3 flex items-center gap-2">
-                <MessageSquare size={18} className="text-accent" aria-hidden="true" />
-                <h2 className="text-lg font-semibold text-text-primary">
-                  {t('shardView.channel')}
-                </h2>
-              </div>
-              {channelMessages.length === 0 ? (
-                <p className="text-sm text-text-muted">{t('shardView.noMessagesYet')}</p>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  {channelMessages.map((msg) => (
-                    <Card key={msg.message_id} variant="compact">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <span className="text-xs font-medium text-accent">
-                            {msg.author_id}
-                          </span>
-                          <p className="text-sm text-text-primary">{msg.content}</p>
-                        </div>
-                        <span className="shrink-0 text-xs text-text-muted">
-                          {new Date(msg.created_at).toLocaleTimeString()}
-                        </span>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </section>
-          )}
 
           {/* Recent activity from shard feed */}
           {shardFeed.length > 0 && (

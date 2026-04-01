@@ -421,10 +421,19 @@ export function CommunityPage() {
                   </p>
                 ) : (
                   <div className="flex flex-col gap-1">
-                    {messages.map((msg) => (
+                    {messages.map((msg, idx) => {
+                      const prev = idx > 0 ? messages[idx - 1] : null;
+                      const sameAuthor = prev !== null && prev.author_id === msg.author_id;
+                      const withinWindow =
+                        sameAuthor &&
+                        Math.abs(new Date(msg.created_at).getTime() - new Date(prev!.created_at).getTime()) < 5 * 60 * 1000;
+                      const showHeader = !withinWindow;
+                      const displayName = msg.author_display_name || 'Unknown User';
+
+                      return (
                       <div
                         key={msg.message_id}
-                        className="group relative rounded-lg px-3 py-2 hover:bg-surface-raised"
+                        className={`group relative rounded-lg px-3 hover:bg-surface-raised ${showHeader ? 'pt-2 pb-1' : 'py-0.5'}`}
                       >
                         {editingMessageId === msg.message_id ? (
                           <div className="flex gap-2">
@@ -457,17 +466,19 @@ export function CommunityPage() {
                           </div>
                         ) : (
                           <>
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-sm font-medium text-accent">
-                                {msg.author_display_name}
-                              </span>
-                              <span className="text-xs text-text-muted">
-                                {new Date(msg.created_at).toLocaleTimeString()}
-                              </span>
-                              {msg.is_edited && (
-                                <span className="text-xs text-text-muted">{t('common.edited')}</span>
-                              )}
-                            </div>
+                            {showHeader && (
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-sm font-medium text-accent">
+                                  {displayName}
+                                </span>
+                                <span className="text-xs text-text-muted">
+                                  {new Date(msg.created_at).toLocaleTimeString()}
+                                </span>
+                                {msg.is_edited && (
+                                  <span className="text-xs text-text-muted">{t('common.edited')}</span>
+                                )}
+                              </div>
+                            )}
                             {msg.content && (
                               <p className="text-sm text-text-primary">{msg.content}</p>
                             )}
@@ -566,7 +577,8 @@ export function CommunityPage() {
                           </>
                         )}
                       </div>
-                    ))}
+                      );
+                    })}
                     <div ref={messagesEndRef} />
                   </div>
                 )}
