@@ -30,7 +30,6 @@ import {
   Modal,
   Input,
   StoryExportModal,
-  Tooltip,
 } from '../components/index.ts';
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
@@ -109,6 +108,7 @@ export function EchoDetailPage() {
   const [reportReason, setReportReason] = useState('');
   const [soloMode, setSoloMode] = useState(false);
   const [nudgeRipple, setNudgeRipple] = useState(false);
+  const [nudgeConfirmed, setNudgeConfirmed] = useState(false);
 
   // Mood atmosphere — derive from latest diary entry or echo's current_mood.
   const moodContainerRef = useRef<HTMLDivElement>(null);
@@ -414,8 +414,12 @@ export function EchoDetailPage() {
       trackEvent('nudge.sent', { echo_id: activeEcho.echo_id, influence_type: influenceType });
       setInfluenceModal(false);
       setInfluenceDetails('');
-      // Delay toast so it renders after the <dialog> leaves the top layer
-      setTimeout(() => addToast(t('echoDetail.influenceUsed'), 'success'), 150);
+      // Show inline confirmation (guaranteed visible, not dependent on toast z-index)
+      setNudgeConfirmed(true);
+      setTimeout(() => setNudgeConfirmed(false), 4000);
+      // Also fire toast as backup
+      console.log('[ME] Nudge toast firing:', t('echoDetail.influenceUsed'));
+      addToast(t('echoDetail.influenceUsed'), 'success');
       // Trigger ripple animation + sound
       playSound('influence');
       setNudgeRipple(true);
@@ -585,22 +589,26 @@ export function EchoDetailPage() {
             </button>
             {/* Nudge */}
             <div className="relative">
-              <Tooltip content={t('echoDetail.influenceBudgetTooltip')} position="bottom">
-                <button
-                  onClick={() => setInfluenceModal(true)}
-                  disabled={activeEcho.status === 'Hibernated'}
-                  className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                >
-                  <Zap size={14} className="text-amber-400" /> {t('echoDetail.useInfluence')}
-                  {influence && influence.daily_limit < 1000 && (
-                    <span className="text-text-muted">({influence.remaining} {t('echoDetail.influenceLeftToday')})</span>
-                  )}
-                </button>
-              </Tooltip>
+              <button
+                onClick={() => setInfluenceModal(true)}
+                disabled={activeEcho.status === 'Hibernated'}
+                className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-3.5 py-2 text-xs font-medium text-text-secondary hover:border-accent/40 hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              >
+                <Zap size={14} className="text-amber-400" /> {t('echoDetail.useInfluence')}
+                {influence && influence.daily_limit < 1000 && (
+                  <span className="text-text-muted">({influence.remaining} {t('echoDetail.influenceLeftToday')})</span>
+                )}
+              </button>
               {nudgeRipple && (
                 <span className="pointer-events-none absolute inset-0 rounded-lg animate-nudge-ripple" aria-hidden="true" />
               )}
             </div>
+            {/* Nudge confirmation banner */}
+            {nudgeConfirmed && (
+              <div className="flex items-center gap-1.5 rounded-lg border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-medium text-success animate-slide-in">
+                <Zap size={12} /> {t('echoDetail.influenceUsed')}
+              </div>
+            )}
             {/* More actions overflow menu */}
             <div className="relative">
               <button
@@ -956,9 +964,17 @@ export function EchoDetailPage() {
         onClose={() => setInfluenceModal(false)}
         title={t('echoDetail.useInfluence')}
       >
-        <p className="mb-3 text-xs text-text-muted">
+        <p className="mb-2 text-xs text-text-muted">
           {t('echoDetail.influenceHelperText')}
         </p>
+        {influence && influence.daily_limit < 1000 && (
+          <p className="mb-3 text-xs text-text-muted">
+            {t('echoDetail.influenceBudgetInfo', {
+              remaining: influence.remaining,
+              limit: influence.daily_limit,
+            })}
+          </p>
+        )}
         <div className="mb-4 flex flex-col gap-3">
           <select
             value={influenceType}

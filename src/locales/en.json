@@ -206,6 +206,7 @@
     "influenceDetailsRequired": "Please enter a suggestion for your Echo.",
     "influenceLeftToday": "left today",
     "influenceBudgetTooltip": "You have a daily budget of influence points shared across all your Echoes. Unused points reset at midnight UTC.",
+    "influenceBudgetInfo": "Daily influence budget: {{remaining}} of {{limit}} remaining. Shared across all Echoes. Resets at midnight UTC.",
     "influenceHelperText": "Nudges gently influence your Echo's behaviour. They won't follow instructions literally but will weave your suggestion into their life.",
     "hibernate": "Hibernate",
     "wake": "Wake",
