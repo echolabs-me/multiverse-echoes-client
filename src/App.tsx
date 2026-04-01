@@ -34,6 +34,7 @@ import { PlansPage } from './pages/PlansPage.tsx';
 import { PaymentSuccessPage } from './pages/PaymentSuccessPage.tsx';
 import { PaymentCancelledPage } from './pages/PaymentCancelledPage.tsx';
 import { TipPage } from './pages/TipPage.tsx';
+import { NotFoundPage } from './pages/NotFoundPage.tsx';
 
 function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
@@ -98,6 +99,9 @@ export function App() {
           <Route path="/admin" element={<AdminDashboardPage />} />
           <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
         </Route>
+
+        {/* 404 catch-all */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

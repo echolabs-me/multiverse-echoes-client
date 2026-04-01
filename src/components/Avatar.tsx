@@ -13,6 +13,7 @@ const sizeClasses = {
 };
 
 function getInitials(name: string): string {
+  if (!name) return '?';
   return name
     .split(/\s+/)
     .slice(0, 2)
