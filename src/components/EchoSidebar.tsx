@@ -79,7 +79,7 @@ function EchoCard({
       </p>
       {/* Row 3: travelling indicator or diary preview */}
       {showTravelIndicator ? (
-        <p className="truncate text-xs text-accent pl-[18px] italic leading-snug">
+        <p className="text-xs text-accent pl-[18px] italic leading-snug">
           {t('echoSidebar.arrivingAt', { shard: shardName })}
         </p>
       ) : latestDiary ? (
@@ -106,7 +106,7 @@ export function EchoSidebar() {
   const { echoId } = useParams<{ echoId: string }>();
   const { echoList, fetchEchoes } = useEchoStore();
   const { shardList, fetchShards } = useShardStore();
-  const [diaryPreviews, setDiaryPreviews] = useState<Record<string, { snippet: string; shardId: string | null }>>({});
+  const [diaryPreviews, setDiaryPreviews] = useState<Record<string, { snippet: string; shardId: string | null; tick: number }>>({});
 
   useEffect(() => {
     if (echoList.length === 0) void fetchEchoes();
@@ -117,9 +117,11 @@ export function EchoSidebar() {
   }, [shardList.length, fetchShards]);
 
   // Fetch latest diary entry for each echo (1 entry each, lightweight).
+  // Re-fetches when echo.current_tick changes (new diary entry arrived).
   useEffect(() => {
     for (const echo of echoList) {
-      if (diaryPreviews[echo.echo_id] !== undefined) continue;
+      const cached = diaryPreviews[echo.echo_id];
+      if (cached !== undefined && cached.tick === echo.current_tick) continue;
       void echoApi.diary(echo.echo_id, 1).then((entries) => {
         const entry = entries[0];
         setDiaryPreviews((prev) => ({
@@ -127,10 +129,11 @@ export function EchoSidebar() {
           [echo.echo_id]: {
             snippet: entry ? entry.content.slice(0, 120) : '',
             shardId: entry?.shard_id ?? null,
+            tick: echo.current_tick,
           },
         }));
       }).catch(() => {
-        setDiaryPreviews((prev) => ({ ...prev, [echo.echo_id]: { snippet: '', shardId: null } }));
+        setDiaryPreviews((prev) => ({ ...prev, [echo.echo_id]: { snippet: '', shardId: null, tick: echo.current_tick } }));
       });
     }
   }, [echoList, diaryPreviews]);

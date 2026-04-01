@@ -55,13 +55,21 @@ export function ShardViewPage() {
     if (echoList.length === 0) void fetchEchoes();
   }, [loadData, echoList.length, fetchEchoes]);
 
+  const [travelConfirmed, setTravelConfirmed] = useState(false);
+
   const handleTravel = async () => {
     if (!shardId || !selectedEchoId) return;
     try {
       await echoApi.travel(selectedEchoId, shardId);
       trackEvent('echo.travel_initiated', { echo_id: selectedEchoId, destination_shard: shardId });
-      addToast(t('shardView.travelInitiated'), 'success');
       setTravelModal(false);
+      // Show inline confirmation (same pattern as nudge — toast may be behind dialog)
+      setTravelConfirmed(true);
+      setTimeout(() => setTravelConfirmed(false), 5000);
+      addToast(t('shardView.travelInitiated'), 'success');
+      // Refresh shard data + echo list to reflect the move
+      void loadData();
+      void fetchEchoes();
     } catch (err: unknown) {
       const detail = err instanceof Error ? err.message : t('common.error');
       addToast(detail, 'danger');
@@ -125,12 +133,17 @@ export function ShardViewPage() {
             </div>
           </div>
 
-          {/* Travel button */}
+          {/* Travel button + confirmation */}
           {eligibleEchoes.length > 0 && (
             <div className="mb-6">
               <Button variant="secondary" onClick={() => setTravelModal(true)}>
                 <MapPin size={16} /> {t('shardView.travelHere')}
               </Button>
+            </div>
+          )}
+          {travelConfirmed && (
+            <div className="mb-6 flex items-center gap-2 rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm font-medium text-success animate-slide-in">
+              <MapPin size={16} /> {t('shardView.travelInitiated')}
             </div>
           )}
 
