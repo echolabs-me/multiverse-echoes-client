@@ -218,6 +218,7 @@
     "hibernated": "Echo hibernated",
     "woken": "Echo woken",
     "rename": "Rename",
+    "renameLocked": "Name locked",
     "editPersona": "Edit Persona",
     "personaLocked": "Your Echo's personality is set once they begin living",
     "personaEditableHint": "You can still edit this before the first tick",

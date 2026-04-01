@@ -187,6 +187,7 @@ export interface EchoResponse {
   current_shard_id: string;
   birth_hash: string;
   created_at: string;
+  name_locked: boolean;
 }
 
 // --- Shard ---

@@ -641,9 +641,11 @@ export function EchoDetailPage() {
                     </button>
                     <button
                       onClick={() => { setNewName(activeEcho.name); setRenameModal(true); setShowMoreMenu(false); }}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+                      disabled={activeEcho.name_locked}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                     >
-                      <Pencil size={14} className="text-emerald-400" /> {t('echoDetail.rename')}
+                      {activeEcho.name_locked ? <Lock size={14} className="text-text-muted" /> : <Pencil size={14} className="text-emerald-400" />}
+                      {activeEcho.name_locked ? t('echoDetail.renameLocked') : t('echoDetail.rename')}
                     </button>
                     <button
                       onClick={() => { setNewPersona(activeEcho.persona_text); setEditPersonaModal(true); setShowMoreMenu(false); }}

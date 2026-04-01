@@ -393,6 +393,8 @@ export type EchoResponse = {
 	current_shard_id: string,
 	birth_hash: string,
 	created_at: string,
+	// True if the Echo has ticked at least once — name cannot be changed.
+	name_locked: boolean,
 };
 
 export type EchoStatus = "Active" | "Travelling" | "Hibernated" | "Quarantined" | "Deleted";
