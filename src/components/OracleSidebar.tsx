@@ -110,7 +110,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
         </button>
         <button
           onClick={onCollapse}
-          className="hidden md:inline-flex rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+          className="hidden md:inline-flex lg:hidden rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
           aria-label={t('oracle.collapse', 'Collapse Oracle')}
           title={t('oracle.collapse', 'Collapse Oracle')}
         >
