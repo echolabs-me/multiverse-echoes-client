@@ -865,7 +865,14 @@ export function EchoDetailPage() {
             ) : (
               <div className="flex flex-col gap-2">
                 {lifeEvents.map((event) => (
-                  <Card key={event.item_id} variant="compact">
+                  <Card
+                    key={event.item_id}
+                    variant="compact"
+                    style={{
+                      boxShadow: '0 0 14px 3px rgba(243,156,18,0.12)',
+                      borderLeft: '3px solid rgba(243,156,18,0.4)',
+                    }}
+                  >
                     <div className="flex items-start justify-between">
                       <div>
                         <p className="text-sm font-medium text-text-primary">{event.title}</p>
@@ -907,8 +914,22 @@ export function EchoDetailPage() {
                         ? 'text-amber-400'
                         : 'text-red-400';
 
+                  // Sentiment glow: emerald (warm), amber (neutral), red (cold)
+                  const glowRgb = sentimentPct >= 60
+                    ? '16,185,129'   // emerald-500
+                    : sentimentPct >= 30
+                      ? '245,158,11' // amber-500
+                      : '239,68,68'; // red-500
+
                   return (
-                    <Card key={rel.relationship_id} variant="compact">
+                    <Card
+                      key={rel.relationship_id}
+                      variant="compact"
+                      style={{
+                        boxShadow: `0 0 14px 3px rgba(${glowRgb},0.12)`,
+                        borderLeft: `3px solid rgba(${glowRgb},0.4)`,
+                      }}
+                    >
                       <div className="flex items-start justify-between">
                         <div>
                           <p className="text-sm font-medium text-text-primary">
