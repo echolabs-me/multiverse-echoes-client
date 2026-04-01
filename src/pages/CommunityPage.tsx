@@ -426,14 +426,16 @@ export function CommunityPage() {
                       const sameAuthor = prev !== null && prev.author_id === msg.author_id;
                       const withinWindow =
                         sameAuthor &&
-                        Math.abs(new Date(msg.created_at).getTime() - new Date(prev!.created_at).getTime()) < 60 * 60 * 1000;
+                        Math.abs(new Date(msg.created_at).getTime() - new Date(prev!.created_at).getTime()) < 7 * 60 * 1000;
                       const showHeader = !withinWindow;
                       const displayName = msg.author_display_name || 'Unknown User';
+                      const initial = displayName[0]?.toUpperCase() ?? '?';
+                      const timeStr = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
                       return (
                       <div
                         key={msg.message_id}
-                        className={`group relative rounded-lg px-3 hover:bg-surface-raised ${showHeader ? 'mt-3 pt-2 pb-1' : 'py-0.5'}`}
+                        className={`group/msg relative rounded-lg px-3 hover:bg-surface-raised ${showHeader ? 'mt-4 pt-2 pb-1' : 'py-0.5 pl-12'}`}
                       >
                         {editingMessageId === msg.message_id ? (
                           <div className="flex gap-2">
@@ -466,21 +468,37 @@ export function CommunityPage() {
                           </div>
                         ) : (
                           <>
-                            {showHeader && (
-                              <div className="flex items-baseline gap-2">
-                                <span className="text-sm font-medium text-accent">
-                                  {displayName}
+                            {showHeader ? (
+                              <div className="flex items-start gap-3">
+                                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/20 text-xs font-bold text-accent">
+                                  {initial}
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-baseline gap-2">
+                                    <span className="text-sm font-medium text-accent">
+                                      {displayName}
+                                    </span>
+                                    <span className="text-xs text-text-muted">
+                                      {timeStr}
+                                    </span>
+                                    {msg.is_edited && (
+                                      <span className="text-xs text-text-muted">{t('common.edited')}</span>
+                                    )}
+                                  </div>
+                                  {msg.content && (
+                                    <p className="text-sm text-text-primary">{msg.content}</p>
+                                  )}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="group/line flex items-start">
+                                <span className="mr-3 mt-0.5 hidden w-8 shrink-0 text-center text-[10px] text-text-muted group-hover/line:inline">
+                                  {timeStr}
                                 </span>
-                                <span className="text-xs text-text-muted">
-                                  {new Date(msg.created_at).toLocaleTimeString()}
-                                </span>
-                                {msg.is_edited && (
-                                  <span className="text-xs text-text-muted">{t('common.edited')}</span>
+                                {msg.content && (
+                                  <p className="text-sm text-text-primary">{msg.content}</p>
                                 )}
                               </div>
-                            )}
-                            {msg.content && (
-                              <p className="text-sm text-text-primary">{msg.content}</p>
                             )}
                             {msg.image_url && (
                               <button
