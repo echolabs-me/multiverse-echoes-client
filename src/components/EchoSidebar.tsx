@@ -8,6 +8,14 @@ import { getMoodColor } from '../lib/moodColor.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import type { EchoResponse } from '../types/api.ts';
 
+/** Convert hex color to rgba string. */
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 /** Core moods for the legend — one entry per colour family. */
 const MOOD_LEGEND = [
   { mood: 'happy', color: '#FF9F43' },
@@ -61,7 +69,8 @@ function EchoCard({
           : 'hover:bg-surface-raised border border-transparent'
       }`}
       style={{
-        boxShadow: `0 0 12px 2px ${moodColor}26, inset 0 0 0 1px ${moodColor}10`,
+        boxShadow: `0 0 14px 3px ${hexToRgba(moodColor, 0.15)}`,
+        borderLeft: `3px solid ${hexToRgba(moodColor, 0.4)}`,
       }}
       aria-current={isActive ? 'page' : undefined}
     >
