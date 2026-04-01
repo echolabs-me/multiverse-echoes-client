@@ -23,7 +23,7 @@ export function ShardViewPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { activeShard, fetchShard } = useShardStore();
-  const { echoList } = useEchoStore();
+  const { echoList, fetchEchoes } = useEchoStore();
   const addToast = useToastStore((s) => s.addToast);
 
   const [shardEchoes, setShardEchoes] = useState<EchoResponse[]>([]);
@@ -61,7 +61,9 @@ export function ShardViewPage() {
 
   useEffect(() => {
     void loadData();
-  }, [loadData]);
+    // Ensure user's echoes are loaded (needed for travel button visibility)
+    if (echoList.length === 0) void fetchEchoes();
+  }, [loadData, echoList.length, fetchEchoes]);
 
   const handleTravel = async () => {
     if (!shardId || !selectedEchoId) return;

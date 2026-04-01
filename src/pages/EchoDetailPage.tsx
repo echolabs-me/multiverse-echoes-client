@@ -401,10 +401,14 @@ export function EchoDetailPage() {
 
   const handleUseInfluence = async () => {
     if (!activeEcho) return;
+    if (!influenceDetails.trim()) {
+      addToast(t('echoDetail.influenceDetailsRequired'), 'danger');
+      return;
+    }
     try {
       await echoApi.useInfluence(activeEcho.echo_id, {
         influence_type: influenceType,
-        suggestion: influenceDetails,
+        suggestion: influenceDetails.trim(),
       });
       trackEvent('nudge.sent', { echo_id: activeEcho.echo_id, influence_type: influenceType });
       addToast(t('echoDetail.influenceUsed'), 'success');
@@ -948,6 +952,9 @@ export function EchoDetailPage() {
         onClose={() => setInfluenceModal(false)}
         title={t('echoDetail.useInfluence')}
       >
+        <p className="mb-3 text-xs text-text-muted">
+          {t('echoDetail.influenceHelperText')}
+        </p>
         <div className="mb-4 flex flex-col gap-3">
           <select
             value={influenceType}

@@ -192,7 +192,8 @@ export function SearchPage() {
     return acc;
   }, {});
 
-  function highlightSnippet(text: string, q: string): React.ReactNode {
+  function highlightSnippet(text: string | undefined | null, q: string): React.ReactNode {
+    if (!text) return '';
     if (!q.trim()) return text;
     const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
     const parts = text.split(regex);
