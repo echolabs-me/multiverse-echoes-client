@@ -98,18 +98,16 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
 
   return (
     <div className="flex h-full flex-col">
-      {/* Header — premium branding */}
-      <div className="border-b border-border px-3 py-3">
+      {/* Header — premium branding with accent left border */}
+      <div className="border-b border-border border-l-2 border-l-accent px-3 py-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/10">
-              <Sparkles size={15} className="text-accent" />
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/15">
+              <Sparkles size={22} className="text-accent" />
             </div>
-            <div>
-              <h2 className="text-xs font-bold uppercase tracking-wider text-accent">
-                {t('oracle.title')}
-              </h2>
-            </div>
+            <h2 className="text-sm font-bold text-accent">
+              {t('oracle.title')}
+            </h2>
           </div>
           <div className="flex items-center gap-0.5">
             <button
@@ -138,7 +136,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
             </button>
           </div>
         </div>
-        <p className="mt-1 text-[10px] text-text-secondary">
+        <p className="mt-1.5 text-[11px] text-text-secondary">
           {t('oracle.tagline')}
         </p>
       </div>
@@ -208,7 +206,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
                   key={key}
                   onClick={() => handleSuggestedQuestion(key)}
                   disabled={isLoading}
-                  className="rounded-lg border border-border bg-surface px-3 py-2 text-left text-[11px] text-text-secondary transition-colors hover:border-accent/50 hover:bg-accent/5 hover:text-text-primary disabled:opacity-50"
+                  className="rounded-full border border-accent/30 px-3 py-1.5 text-left text-[11px] text-text-secondary transition-colors hover:border-accent hover:bg-accent/5 hover:text-accent disabled:opacity-50"
                 >
                   {t(key)}
                 </button>
@@ -270,7 +268,7 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
             <Send size={14} />
           </button>
         </form>
-        <p className="px-3 pb-2 text-[9px] text-text-muted">
+        <p className="px-3 pb-2 text-[9px] text-text-secondary">
           {t('oracle.rateLimit', { limit: String(rateLimit) })}
         </p>
       </div>

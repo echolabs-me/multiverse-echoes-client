@@ -256,7 +256,7 @@ export function CommunitySidebar() {
             </span>
           </div>
           {discordUsername && (
-            <span className="text-[10px] text-text-muted">{discordUsername}</span>
+            <span className="text-[10px] text-text-secondary">{discordUsername}</span>
           )}
         </div>
 
