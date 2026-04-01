@@ -41,6 +41,9 @@ export function CommunitySidebar() {
   const [isSending, setIsSending] = useState(false);
   const [showChannelPicker, setShowChannelPicker] = useState(false);
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
+  const [showPollForm, setShowPollForm] = useState(false);
+  const [pollQuestion, setPollQuestion] = useState('');
+  const [pollOptions, setPollOptions] = useState(['', '']);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -191,6 +194,24 @@ export function CommunitySidebar() {
       });
       addToast(t('community.voteRecorded'), 'success');
     } catch { addToast(t('common.error'), 'danger'); }
+  };
+
+  const handleCreatePoll = async () => {
+    if (!activeChannel) return;
+    const validOptions = pollOptions.filter((o) => o.trim());
+    if (!pollQuestion.trim() || validOptions.length < 2) return;
+    setIsSending(true);
+    try {
+      await channelApi.createPoll(activeChannel.channel_id, {
+        question: pollQuestion.trim(),
+        options: validOptions.map((o) => o.trim()),
+      });
+      setShowPollForm(false);
+      setPollQuestion('');
+      setPollOptions(['', '']);
+      await loadMessages();
+      addToast(t('community.pollCreated'), 'success');
+    } catch { addToast(t('common.error'), 'danger'); } finally { setIsSending(false); }
   };
 
   // ── Not linked CTA ──
@@ -365,6 +386,60 @@ export function CommunitySidebar() {
       {/* Composer */}
       {activeChannel && !activeChannel.is_read_only && !isFreeUser && (
         <div className="border-t border-border px-3 py-2">
+          {showPollForm && (
+            <div className="mb-2 space-y-1.5 rounded-lg border border-border bg-surface p-2">
+              <input
+                type="text"
+                value={pollQuestion}
+                onChange={(e) => setPollQuestion(e.target.value)}
+                placeholder={t('community.pollQuestion')}
+                maxLength={300}
+                className="w-full rounded border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+              />
+              {pollOptions.map((opt, i) => (
+                <input
+                  key={i}
+                  type="text"
+                  value={opt}
+                  onChange={(e) => {
+                    const next = [...pollOptions];
+                    next[i] = e.target.value;
+                    setPollOptions(next);
+                  }}
+                  placeholder={t('community.pollOption', { n: i + 1 })}
+                  maxLength={55}
+                  className="w-full rounded border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                />
+              ))}
+              <div className="flex items-center gap-2">
+                {pollOptions.length < 4 && (
+                  <button
+                    type="button"
+                    onClick={() => setPollOptions((prev) => [...prev, ''])}
+                    className="text-[10px] font-medium text-accent hover:text-accent-hover"
+                  >
+                    + {t('community.addOption')}
+                  </button>
+                )}
+                <div className="flex-1" />
+                <button
+                  type="button"
+                  onClick={() => { setShowPollForm(false); setPollQuestion(''); setPollOptions(['', '']); }}
+                  className="rounded px-2 py-0.5 text-[10px] text-text-secondary hover:bg-surface-raised"
+                >
+                  {t('common.cancel')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void handleCreatePoll()}
+                  disabled={isSending || !pollQuestion.trim() || pollOptions.filter((o) => o.trim()).length < 2}
+                  className="rounded bg-emerald-600 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-emerald-500 disabled:opacity-50"
+                >
+                  {t('community.createPoll')}
+                </button>
+              </div>
+            </div>
+          )}
           <div className="flex items-center gap-1.5">
             <input
               ref={fileInputRef}
@@ -386,6 +461,7 @@ export function CommunitySidebar() {
               <Paperclip size={14} />
             </button>
             <button
+              onClick={() => setShowPollForm((p) => !p)}
               disabled={isSending}
               className="rounded p-1.5 text-emerald-500 hover:bg-emerald-500/10 transition-colors"
               title={t('community.createPoll')}

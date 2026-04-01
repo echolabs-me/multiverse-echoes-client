@@ -306,7 +306,8 @@
     "createPollBtn": "Create",
     "pollQuestion": "What do you want to ask?",
     "pollOption": "Option {{n}}",
-    "addOption": "Add option"
+    "addOption": "Add option",
+    "pollCreated": "Poll created!"
   },
   "communitySidebar": {
     "title": "Community",
