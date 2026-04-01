@@ -55,11 +55,14 @@ function EchoCard({
   return (
     <button
       onClick={onClick}
-      className={`flex w-full flex-col gap-1 rounded-lg px-3 py-2.5 text-left transition-colors ${
+      className={`flex w-full flex-col gap-1 rounded-lg px-3 py-2.5 text-left transition-all ${
         isActive
           ? 'bg-accent-subtle border border-accent/30'
           : 'hover:bg-surface-raised border border-transparent'
       }`}
+      style={{
+        boxShadow: `0 0 12px 2px ${moodColor}26, inset 0 0 0 1px ${moodColor}10`,
+      }}
       aria-current={isActive ? 'page' : undefined}
     >
       {/* Row 1: mood dot + name */}
