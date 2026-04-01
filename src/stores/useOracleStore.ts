@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { OracleContext, OracleDeepLink, FeedbackType } from '../types/api.ts';
 import { oracle, feedback } from '../lib/api/endpoints.ts';
 
@@ -59,7 +60,9 @@ function genId(): string {
   return `oracle-msg-${String(nextId)}`;
 }
 
-export const useOracleStore = create<OracleState>((set, get) => ({
+export const useOracleStore = create<OracleState>()(
+  persist(
+    (set, get) => ({
   isOpen: false,
   messages: [],
   isLoading: false,
@@ -201,4 +204,12 @@ export const useOracleStore = create<OracleState>((set, get) => ({
   },
 
   clearHistory: () => set({ messages: [], error: null, pendingFeedback: null }),
-}));
+}),
+    {
+      name: 'oracle-conversation',
+      storage: createJSONStorage(() => sessionStorage),
+      // Only persist messages — transient state (isLoading, error) should reset.
+      partialize: (state) => ({ messages: state.messages }),
+    },
+  ),
+);
