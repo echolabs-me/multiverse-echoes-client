@@ -668,6 +668,7 @@
     "tipMinimum": "Minimum tip is ${{min}}",
     "tipMaximum": "Maximum tip is ${{max}}",
     "provider": "Payment method",
+    "cryptoUnavailable": "Crypto payments temporarily unavailable. Please try again later or use card payment.",
     "checkingStatus": "Checking payment status..."
   },
   "waitlist": {

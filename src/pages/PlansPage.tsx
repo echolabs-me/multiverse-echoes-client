@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Check, CreditCard, Coins, Wallet, Settings } from 'lucide-react';
-import { Card, Badge } from '../components/index.ts';
+import { ArrowLeft, Check, Settings } from 'lucide-react';
+import { Card, Badge, Tooltip } from '../components/index.ts';
+import { StripeLogo, NowPaymentsLogo, XamanLogo } from '../components/PaymentIcons.tsx';
 import { payments } from '../lib/api/endpoints.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
+import { useToastStore } from '../stores/useToastStore.ts';
 
 const TIERS = [
   {
@@ -66,6 +68,7 @@ export function PlansPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
+  const addToast = useToastStore((s) => s.addToast);
   const [loading, setLoading] = useState<string | null>(null);
 
   const currentTier = user?.subscription_tier ?? 'Free';
@@ -82,8 +85,13 @@ export function PlansPage() {
       if (result.checkout_url) {
         window.location.href = result.checkout_url;
       }
-    } catch {
-      // Error handled by API client
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : '';
+      if (msg.includes('Rate lookup') || msg.includes('rate')) {
+        addToast(t('payment.cryptoUnavailable'), 'warning');
+      } else {
+        addToast(t('common.errorGeneric'), 'danger');
+      }
     } finally {
       setLoading(null);
     }
@@ -97,7 +105,7 @@ export function PlansPage() {
         window.location.href = result.checkout_url;
       }
     } catch {
-      // Error handled by API client
+      addToast(t('common.errorGeneric'), 'danger');
     } finally {
       setLoading(null);
     }
@@ -111,7 +119,7 @@ export function PlansPage() {
         window.location.href = result.portal_url;
       }
     } catch {
-      // Error handled by API client
+      addToast(t('common.errorGeneric'), 'danger');
     } finally {
       setLoading(null);
     }
@@ -170,28 +178,35 @@ export function PlansPage() {
 
                   {!isFree && !isCurrent && (
                     <div className="mt-2 flex flex-col gap-2">
-                      <button
-                        onClick={() => void handleStripeCheckout(tier.stripeKey)}
-                        disabled={loading !== null}
-                        className="flex items-center justify-center gap-2 rounded-lg bg-accent px-3 py-2 text-xs font-medium text-white hover:bg-accent/90 disabled:opacity-50"
-                      >
-                        <CreditCard size={14} />
-                        {loading === `stripe-${tier.stripeKey}` ? t('payment.subscribing') : t('payment.payWithCard')}
-                      </button>
+                      {/* Stripe — branded purple button */}
+                      <Tooltip content={t('payment.cardComingSoon')} position="top">
+                        <button
+                          onClick={() => void handleStripeCheckout(tier.stripeKey)}
+                          disabled
+                          className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#635BFF] px-3 py-2.5 text-xs font-semibold text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <StripeLogo size={36} className="text-white" />
+                          <span className="sr-only">{t('payment.payWithCard')}</span>
+                        </button>
+                      </Tooltip>
+
+                      {/* NOWPayments — branded green button */}
                       <button
                         onClick={() => void handlePayment(tier.key, 'nowpayments')}
                         disabled={loading !== null}
-                        className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-medium text-text-primary hover:bg-surface-hover disabled:opacity-50"
+                        className="flex items-center justify-center gap-2 rounded-lg bg-[#05C46B] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#04a85c] disabled:opacity-50 transition-colors"
                       >
-                        <Coins size={14} />
+                        <NowPaymentsLogo size={18} />
                         {loading === `${tier.key}-nowpayments` ? t('payment.subscribing') : t('payment.payWithCrypto')}
                       </button>
+
+                      {/* Xaman — branded blue button */}
                       <button
                         onClick={() => void handlePayment(tier.key, 'xaman')}
                         disabled={loading !== null}
-                        className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-medium text-text-primary hover:bg-surface-hover disabled:opacity-50"
+                        className="flex items-center justify-center gap-2 rounded-lg bg-[#3052FF] px-3 py-2.5 text-xs font-semibold text-white hover:bg-[#2744d9] disabled:opacity-50 transition-colors"
                       >
-                        <Wallet size={14} />
+                        <XamanLogo size={18} />
                         {loading === `${tier.key}-xaman` ? t('payment.subscribing') : t('payment.payWithXRP')}
                       </button>
                     </div>
