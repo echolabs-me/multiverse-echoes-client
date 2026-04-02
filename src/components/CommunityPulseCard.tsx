@@ -92,25 +92,26 @@ export function CommunityPulseCard() {
                 borderLeftColor: `rgba(${mr},${mg},${mb},0.5)`,
               }}
             >
-              <div className="flex items-center gap-1.5 mb-0.5">
+              <div className="flex items-start gap-1.5 mb-0.5">
                 <span
-                  className="h-2 w-2 flex-shrink-0 rounded-full"
+                  className="mt-0.5 h-2 w-2 flex-shrink-0 rounded-full"
                   style={{ backgroundColor: moodColor }}
                 />
-                <span className="text-xs font-medium text-text-primary truncate">{echoName}</span>
-                {isLifeEvent && (
-                  <Zap size={11} className="flex-shrink-0 text-accent fill-accent" />
-                )}
-                {isRelationship && (
-                  <Users size={11} className="flex-shrink-0 text-pink-400" />
-                )}
-                {shardName && (
-                  <>
-                    <span className="text-xs text-text-secondary">·</span>
-                    <span className="text-xs text-text-secondary truncate">{shardName}</span>
-                  </>
-                )}
-                <span className="ml-auto text-[10px] text-text-muted whitespace-nowrap">{formatTimeAgo(item.created_at)}</span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs font-medium text-text-primary">{echoName}</span>
+                    {isLifeEvent && (
+                      <Zap size={11} className="flex-shrink-0 text-accent fill-accent" />
+                    )}
+                    {isRelationship && (
+                      <Users size={11} className="flex-shrink-0 text-pink-400" />
+                    )}
+                    <span className="ml-auto text-[10px] text-text-muted whitespace-nowrap">{formatTimeAgo(item.created_at)}</span>
+                  </div>
+                  {shardName && (
+                    <p className="text-[11px] text-text-muted">{shardName}</p>
+                  )}
+                </div>
               </div>
               <p className={`text-xs leading-snug pl-[14px] line-clamp-2 ${
                 isLifeEvent

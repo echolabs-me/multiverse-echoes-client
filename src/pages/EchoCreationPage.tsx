@@ -113,15 +113,20 @@ export function EchoCreationPage() {
         </p>
 
         <div className="w-full max-w-lg flex flex-col gap-4">
-          <Input
-            label={t('echo.nameLabel')}
-            value={echoName}
-            onChange={(e) => setEchoName((e.target as HTMLInputElement).value)}
-            placeholder={t('echo.namePlaceholder')}
-            maxLength={50}
-            required
-            className="!bg-canvas border-accent/20"
-          />
+          <div>
+            <Input
+              label={t('echo.nameLabel')}
+              value={echoName}
+              onChange={(e) => setEchoName((e.target as HTMLInputElement).value)}
+              placeholder={t('echo.namePlaceholder')}
+              maxLength={24}
+              required
+              className="!bg-canvas border-accent/20"
+            />
+            <p className="mt-1 text-right text-xs text-text-muted">
+              {echoName.length}/24
+            </p>
+          </div>
 
           <div className="rounded-lg border-2 border-accent/40 bg-accent/5 px-4 py-4">
             <div className="mb-3 flex items-center gap-2">
