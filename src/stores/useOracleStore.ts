@@ -91,16 +91,19 @@ export const useOracleStore = create<OracleState>()(
       set({ messages: [...get().messages, userMsg], isLoading: true, error: null });
 
       try {
-        await feedback.submit({
+        const result = await feedback.submit({
           user_message: pf.userMessage,
           structured_summary: pf.summary,
           feedback_type: pf.type,
           context: { screen: state.context.screen ?? '', recent_events: [] },
         });
+        // Use the server's response message — it tells the user whether the
+        // GH Issue was actually created or if it failed.
+        const serverMsg = result.message ?? `Your ${pf.type.toLowerCase()} feedback has been submitted.`;
         const confirmMsg: OracleMessage = {
           id: genId(),
           role: 'oracle',
-          text: `Your ${pf.type.toLowerCase()} feedback has been submitted. Thank you for helping us improve Multiverse Echoes.`,
+          text: `${serverMsg} Thank you for helping us improve Multiverse Echoes.`,
           timestamp: Date.now(),
         };
         set({ messages: [...get().messages, confirmMsg], isLoading: false, pendingFeedback: null });
