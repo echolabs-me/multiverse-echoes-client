@@ -28,6 +28,7 @@ import { CommunitySidebar } from './CommunitySidebar.tsx';
 import { TickTimer } from './TickTimer.tsx';
 import { EchoSidebar } from './EchoSidebar.tsx';
 import { CommunityPulseCard } from './CommunityPulseCard.tsx';
+import { FeedbackButton } from './FeedbackButton.tsx';
 import { MoodParticles } from './MoodParticles.tsx';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
 import { useCommunitySidebarUnread } from '../hooks/useCommunitySidebarUnread.ts';
@@ -376,6 +377,8 @@ export function AppLayout() {
           </div>
         </div>
       )}
+
+      <FeedbackButton />
     </div>
   );
 }

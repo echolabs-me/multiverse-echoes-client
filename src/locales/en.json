@@ -3,6 +3,15 @@
     "title": "Multiverse Echoes",
     "tagline": "Autonomous Life Simulation Platform"
   },
+  "feedback": {
+    "button": "Feedback",
+    "title": "How's your experience?",
+    "subtitle": "Tell us what you think. Bug reports, feature ideas, or just say hi.",
+    "placeholder": "What's on your mind?",
+    "submit": "Send Feedback",
+    "thankYou": "Thank you!",
+    "weRead": "We read every message."
+  },
   "tickTimer": {
     "nextTick": "Next tick in {{time}}",
     "untilNextHeartbeat": "until next heartbeat",
