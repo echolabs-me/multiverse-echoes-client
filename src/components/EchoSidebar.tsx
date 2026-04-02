@@ -88,9 +88,10 @@ function EchoCard({
         borderLeft: `3px solid ${hexToRgba(moodColor, 0.4)}`,
       }}
     >
-      {/* Drag handle */}
+      {/* Drag handle — mood-colored */}
       <div
-        className="flex-shrink-0 cursor-grab active:cursor-grabbing px-1 py-3 text-text-muted/40 hover:text-text-muted/70 touch-none"
+        className="flex-shrink-0 cursor-grab active:cursor-grabbing px-1 py-3 touch-none transition-opacity opacity-40 hover:opacity-80"
+        style={{ color: moodColor }}
         {...dragHandleProps}
       >
         <GripVertical size={14} />
