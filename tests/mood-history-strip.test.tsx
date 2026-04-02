@@ -147,9 +147,8 @@ describe('MoodHistoryStrip', () => {
         <MoodHistoryStrip entries={entries} />
       </Wrapper>,
     );
-    // Reversed: b (oldest) first, a (newest) last
-    expect(screen.getByText('2087-03-01')).toBeInTheDocument();
-    expect(screen.getByText('2087-04-05')).toBeInTheDocument();
+    // Reversed: b (oldest) first, a (newest) last — shown as single line
+    expect(screen.getByText('2087-03-01 — 2087-04-05')).toBeInTheDocument();
   });
 
   it('does not show date range for single entry', () => {

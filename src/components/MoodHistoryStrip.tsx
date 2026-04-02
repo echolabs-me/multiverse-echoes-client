@@ -4,13 +4,11 @@ import { getMoodPalette } from '../hooks/useMoodAtmosphere.ts';
 import type { DiaryEntry } from '../types/api.ts';
 
 /**
- * MoodHistoryStrip — Phase 6B Step 12 (redesigned for #4)
+ * MoodHistoryStrip — interactive mood timeline.
  *
- * Visual mood journey showing distinct colour segments per diary entry.
- * Each segment is individually visible with its mood colour, hover reveals
- * mood/date tooltip, clicking scrolls to the entry.
- *
- * Entries displayed chronologically left-to-right (oldest first).
+ * Tall, visually rich timeline with distinct mood-coloured segments,
+ * mood labels, dot markers along a track, and a playhead indicator.
+ * Clicking a segment scrolls to that diary entry.
  */
 
 interface MoodHistoryStripProps {
@@ -18,14 +16,16 @@ interface MoodHistoryStripProps {
   className?: string;
 }
 
-export function MoodHistoryStrip({ entries, className = '' }: MoodHistoryStripProps) {
+export function MoodHistoryStrip({
+  entries,
+  className = '',
+}: MoodHistoryStripProps) {
   const { t } = useTranslation();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [tooltipX, setTooltipX] = useState(0);
   const [containerWidth, setContainerWidth] = useState(200);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Chronological order (oldest first) — diary entries come newest-first from API
   const chronological = useMemo(() => [...entries].reverse(), [entries]);
 
   const handleMouseMove = useCallback(
@@ -39,20 +39,17 @@ export function MoodHistoryStrip({ entries, className = '' }: MoodHistoryStripPr
     [],
   );
 
-  const handleClick = useCallback(
-    (entry: DiaryEntry) => {
-      const el = document.getElementById(`diary-${entry.diary_id}`);
-      if (!el) return;
-      const prefersReducedMotion = window.matchMedia(
-        '(prefers-reduced-motion: reduce)',
-      ).matches;
-      el.scrollIntoView({
-        behavior: prefersReducedMotion ? 'instant' : 'smooth',
-        block: 'center',
-      });
-    },
-    [],
-  );
+  const handleClick = useCallback((entry: DiaryEntry) => {
+    const el = document.getElementById(`diary-${entry.diary_id}`);
+    if (!el) return;
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+    el.scrollIntoView({
+      behavior: prefersReducedMotion ? 'instant' : 'smooth',
+      block: 'center',
+    });
+  }, []);
 
   if (entries.length === 0) return null;
 
@@ -61,85 +58,151 @@ export function MoodHistoryStrip({ entries, className = '' }: MoodHistoryStripPr
 
   return (
     <div className={`relative ${className}`} ref={containerRef}>
-      <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
-        {t('echoDetail.moodJourney', 'Mood Journey')}
-      </p>
+      {/* Header row */}
+      <div className="mb-3 flex items-center justify-between">
+        <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          {t('echoDetail.moodJourney', 'Mood Journey')}
+        </p>
+        {chronological.length > 1 && (
+          <p className="text-[10px] tabular-nums text-text-muted">
+            {firstDate} — {lastDate}
+          </p>
+        )}
+      </div>
 
-      {/* Main mood bar */}
+      {/* Timeline container */}
       <div
-        className="relative flex h-8 w-full gap-[2px] overflow-hidden rounded-lg"
+        className="relative"
         role="img"
         aria-label={t('echoDetail.moodHistory', 'Mood history')}
         onMouseLeave={() => setHoveredIndex(null)}
       >
-        {chronological.map((entry, i) => {
-          const palette = getMoodPalette(entry.mood);
-          const isHovered = hoveredIndex === i;
-          const isLatest = i === chronological.length - 1;
+        {/* Segment bar — the tall coloured blocks */}
+        <div className="flex w-full gap-[3px] overflow-hidden rounded-xl">
+          {chronological.map((entry, i) => {
+            const palette = getMoodPalette(entry.mood);
+            const isHovered = hoveredIndex === i;
+            const isLatest = i === chronological.length - 1;
+            const anyHovered = hoveredIndex !== null;
 
-          return (
-            <button
-              key={entry.diary_id}
-              className="relative h-full min-w-[3px] flex-1 cursor-pointer border-none p-0 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
-              style={{
-                background: isHovered
-                  ? `linear-gradient(to bottom, ${palette.accent}, ${palette.primary})`
-                  : `linear-gradient(to bottom, ${palette.primary}dd, ${palette.secondary})`,
-                transform: isHovered ? 'scaleY(1.15)' : 'scaleY(1)',
-                opacity: hoveredIndex !== null && !isHovered ? 0.6 : 1,
-                boxShadow: isHovered
-                  ? `0 0 12px ${palette.primary}80, inset 0 1px 0 ${palette.accent}40`
-                  : `inset 0 1px 0 ${palette.accent}20`,
-                borderRadius: i === 0 ? '6px 0 0 6px' : i === chronological.length - 1 ? '0 6px 6px 0' : '0',
-              }}
-              onClick={() => handleClick(entry)}
-              onMouseMove={(e) => handleMouseMove(e, i)}
-              onFocus={() => setHoveredIndex(i)}
-              onBlur={() => setHoveredIndex(null)}
-              aria-label={`${entry.simulated_date} — ${entry.mood}`}
-            >
-              {/* Pulse dot on latest segment */}
-              {isLatest && (
-                <span
-                  className="absolute right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full"
-                  style={{ backgroundColor: palette.accent }}
-                  aria-hidden="true"
-                >
-                  <span
-                    className="absolute inset-0 animate-ping rounded-full"
-                    style={{ backgroundColor: palette.accent, opacity: 0.4 }}
+            return (
+              <button
+                key={entry.diary_id}
+                className="group relative min-w-[4px] flex-1 cursor-pointer border-none p-0 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
+                style={{
+                  height: isHovered ? '120px' : '100px',
+                  background: `linear-gradient(to bottom, ${palette.primary}, ${palette.secondary}cc)`,
+                  opacity: anyHovered && !isHovered ? 0.45 : 1,
+                  boxShadow: isHovered
+                    ? `0 0 20px ${palette.primary}60, 0 4px 12px ${palette.primary}30`
+                    : 'none',
+                  borderRadius:
+                    i === 0
+                      ? '12px 2px 2px 12px'
+                      : i === chronological.length - 1
+                        ? '2px 12px 12px 2px'
+                        : '2px',
+                }}
+                onClick={() => handleClick(entry)}
+                onMouseMove={(e) => handleMouseMove(e, i)}
+                onFocus={() => setHoveredIndex(i)}
+                onBlur={() => setHoveredIndex(null)}
+                aria-label={`${entry.simulated_date} — ${entry.mood}`}
+              >
+                {/* Inner glow overlay on hover */}
+                {isHovered && (
+                  <div
+                    className="absolute inset-0 rounded-[inherit]"
+                    style={{
+                      background: `linear-gradient(to bottom, ${palette.accent}30, transparent 60%)`,
+                    }}
                   />
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
+                )}
 
-      {/* Date range below the bar */}
-      {chronological.length > 1 && (
-        <div className="mt-1.5 flex justify-between text-[10px] text-text-muted">
-          <span>{firstDate}</span>
-          <span>{lastDate}</span>
+                {/* Mood label — shown inside segment when wide enough or hovered */}
+                <span
+                  className="absolute bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-medium uppercase tracking-wide transition-opacity duration-200"
+                  style={{
+                    color: `${palette.accent}`,
+                    opacity: isHovered ? 1 : 0.6,
+                    textShadow: `0 1px 3px ${palette.secondary}`,
+                  }}
+                >
+                  {isHovered ? entry.mood : ''}
+                </span>
+
+                {/* "Now" playhead on latest segment */}
+                {isLatest && (
+                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2">
+                    <div
+                      className="h-3 w-3 rotate-45 rounded-[2px]"
+                      style={{
+                        backgroundColor: palette.accent,
+                        boxShadow: `0 0 8px ${palette.accent}80`,
+                      }}
+                    />
+                    <div
+                      className="absolute inset-0 h-3 w-3 rotate-45 animate-ping rounded-[2px]"
+                      style={{
+                        backgroundColor: palette.accent,
+                        opacity: 0.3,
+                      }}
+                    />
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </div>
-      )}
+
+        {/* Dot track — a line of dots along the bottom edge */}
+        <div className="mt-4 flex w-full items-center">
+          <div className="flex w-full items-center gap-0">
+            {chronological.map((entry, i) => {
+              const palette = getMoodPalette(entry.mood);
+              const isHovered = hoveredIndex === i;
+              const isLatest = i === chronological.length - 1;
+              return (
+                <div key={`dot-${entry.diary_id}`} className="flex flex-1 items-center justify-center">
+                  <div
+                    className="rounded-full transition-all duration-200"
+                    style={{
+                      width: isHovered ? '10px' : isLatest ? '8px' : '5px',
+                      height: isHovered ? '10px' : isLatest ? '8px' : '5px',
+                      backgroundColor: isHovered || isLatest ? palette.accent : palette.primary,
+                      boxShadow: isHovered
+                        ? `0 0 8px ${palette.accent}80`
+                        : isLatest
+                          ? `0 0 6px ${palette.accent}60`
+                          : 'none',
+                      opacity: isHovered ? 1 : 0.7,
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
       {/* Tooltip */}
       {hoveredIndex !== null && chronological[hoveredIndex] && (
         <div
-          className="pointer-events-none absolute z-10 -translate-x-1/2 rounded-lg px-3 py-2 text-xs shadow-lg"
+          className="pointer-events-none absolute z-10 -translate-x-1/2 rounded-xl px-4 py-2.5 text-xs shadow-xl"
           style={{
-            left: `${Math.max(40, Math.min(tooltipX, containerWidth - 40))}px`,
-            bottom: '100%',
-            marginBottom: '4px',
-            backgroundColor: getMoodPalette(chronological[hoveredIndex].mood).secondary,
-            border: `1px solid ${getMoodPalette(chronological[hoveredIndex].mood).primary}40`,
+            left: `${Math.max(50, Math.min(tooltipX, containerWidth - 50))}px`,
+            top: '-8px',
+            transform: 'translate(-50%, -100%)',
+            backgroundColor: getMoodPalette(chronological[hoveredIndex].mood)
+              .secondary,
+            border: `1px solid ${getMoodPalette(chronological[hoveredIndex].mood).primary}50`,
+            backdropFilter: 'blur(8px)',
           }}
         >
-          <p className="font-medium capitalize text-text-primary">
+          <p className="text-sm font-semibold capitalize text-text-primary">
             {chronological[hoveredIndex].mood}
           </p>
-          <p className="text-text-muted">
+          <p className="mt-0.5 text-text-muted">
             {chronological[hoveredIndex].simulated_date}
           </p>
           {chronological[hoveredIndex].location_name && (

@@ -722,7 +722,7 @@ export function EchoDetailPage() {
           )}
 
           {/* Mood history strip */}
-          <MoodHistoryStrip entries={diaryEntries} className="mb-2" />
+          <MoodHistoryStrip entries={diaryEntries} className="mb-6" />
 
           {/* Activity hint — ambient flavour between ticks */}
           {activeEcho.status === 'Active' && (
