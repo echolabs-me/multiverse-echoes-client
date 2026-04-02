@@ -228,7 +228,7 @@ export function AppLayout() {
         {/* Left nav — icon-only on desktop */}
         <NavSidebar />
 
-        {/* Mood-reactive zone — gradient + particles span pulse, echo sidebar, and main content */}
+        {/* Mood-reactive zone — gradient + particles span ALL content panes */}
         <MoodAtmosphereWrapper show={location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')}>
           {/* Community Pulse pane */}
           {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
@@ -251,17 +251,17 @@ export function AppLayout() {
           <main id="main-content" className="flex-1 overflow-y-auto">
             <Outlet />
           </main>
+
+          {/* ── Oracle pane — dedicated column on xl+, overlay trigger on lg ── */}
+          <aside className="hidden lg:flex h-full w-[260px] xl:w-[280px] flex-shrink-0 flex-col border-l border-border/50">
+            <OracleSidebar onCollapse={() => {/* no-op on desktop — always visible */}} />
+          </aside>
+
+          {/* ── Community pane — dedicated column on xl+, hidden on lg (Discord icon in Oracle opens overlay) ── */}
+          <aside className="hidden xl:flex h-full w-[240px] flex-shrink-0 flex-col border-l border-border/50">
+            <CommunitySidebar />
+          </aside>
         </MoodAtmosphereWrapper>
-
-        {/* ── Oracle pane — dedicated column on xl+, overlay trigger on lg ── */}
-        <aside className="hidden lg:flex h-full w-[260px] xl:w-[280px] flex-shrink-0 flex-col border-l border-border bg-canvas">
-          <OracleSidebar onCollapse={() => {/* no-op on desktop — always visible */}} />
-        </aside>
-
-        {/* ── Community pane — dedicated column on xl+, hidden on lg (Discord icon in Oracle opens overlay) ── */}
-        <aside className="hidden xl:flex h-full w-[240px] flex-shrink-0 flex-col border-l border-border bg-canvas">
-          <CommunitySidebar />
-        </aside>
 
         {/* Community overlay trigger for lg screens (xl hides this since the pane is visible) */}
         <button
