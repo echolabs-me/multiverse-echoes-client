@@ -368,6 +368,7 @@
     "inAppOnly": "In-app only",
     "inAppAndEmail": "In-app + Email",
     "off": "Off",
+    "alwaysOn": "Always on",
     "createApiKey": "Create API Key",
     "apiKeyName": "Key name",
     "apiKeyCreated": "API key created — copy it now, it won't be shown again",

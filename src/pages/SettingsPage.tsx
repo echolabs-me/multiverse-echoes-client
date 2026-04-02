@@ -531,20 +531,27 @@ function NotificationPrefsSection() {
         </h3>
         <div className="flex flex-col gap-3">
           {categories.map(({ key, label }) => {
+            const mandatory = key === 'platform' || key === 'moderation';
             const value = prefs[key] as string;
             return (
               <div key={key} className="flex items-center justify-between">
                 <span className="text-sm text-text-primary">{label}</span>
-                <select
-                  value={value}
-                  onChange={(e) => void updatePref(key, e.target.value)}
-                  className="rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary focus:border-accent focus:outline-none"
-                  aria-label={`${label} preference`}
-                >
-                  <option value="InApp">{t('settings.inAppOnly')}</option>
-                  <option value="InAppAndEmail">{t('settings.inAppAndEmail')}</option>
-                  <option value="Off">{t('settings.off')}</option>
-                </select>
+                {mandatory ? (
+                  <span className="rounded border border-border bg-surface/50 px-2 py-1 text-xs text-text-muted">
+                    {t('settings.alwaysOn')}
+                  </span>
+                ) : (
+                  <select
+                    value={value}
+                    onChange={(e) => void updatePref(key, e.target.value)}
+                    className="rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary focus:border-accent focus:outline-none"
+                    aria-label={`${label} preference`}
+                  >
+                    <option value="InApp">{t('settings.inAppOnly')}</option>
+                    <option value="InAppAndEmail">{t('settings.inAppAndEmail')}</option>
+                    <option value="Off">{t('settings.off')}</option>
+                  </select>
+                )}
               </div>
             );
           })}

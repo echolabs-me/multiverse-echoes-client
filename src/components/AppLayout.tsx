@@ -153,6 +153,15 @@ export function AppLayout() {
     trackEvent('page.viewed', { page_name: pageName, path: location.pathname });
   }, [location.pathname]);
 
+  // Poll notifications on mount + every 60s as fallback for missed WS events.
+  useEffect(() => {
+    void useNotificationStore.getState().fetchNotifications();
+    const interval = setInterval(() => {
+      void useNotificationStore.getState().fetchNotifications();
+    }, 60_000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Auth guard
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
