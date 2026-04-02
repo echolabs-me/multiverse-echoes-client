@@ -123,11 +123,15 @@ export function CommunityPulseCard() {
               }}
             >
               <div className="flex items-center gap-1.5">
+                <span
+                  className="h-2 w-2 flex-shrink-0 rounded-full"
+                  style={{ backgroundColor: moodColor }}
+                />
                 <Icon size={11} className={`flex-shrink-0 ${iconColor} ${isLifeEvent ? 'fill-accent' : ''}`} />
                 <span className="text-xs font-medium text-text-primary truncate">{echoName}</span>
                 <span className="ml-auto text-[10px] text-text-muted whitespace-nowrap">{formatTimeAgo(item.created_at)}</span>
               </div>
-              <p className="text-xs leading-snug pl-[17px] text-text-secondary line-clamp-1">
+              <p className="text-xs leading-snug pl-[27px] text-text-secondary line-clamp-1">
                 {tickerText}
               </p>
             </div>
