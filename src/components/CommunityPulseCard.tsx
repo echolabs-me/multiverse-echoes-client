@@ -110,11 +110,7 @@ export function CommunityPulseCard() {
               className="w-full rounded-lg border-l-[3px] px-2.5 py-1.5 text-left bg-surface-raised/50"
               style={{
                 boxShadow: `0 0 10px 2px rgba(${mr},${mg},${mb},0.10)`,
-                borderLeftColor: isLifeEvent
-                  ? 'var(--color-accent)'
-                  : isRelationship
-                    ? 'rgb(244,114,182)'
-                    : `rgba(${mr},${mg},${mb},0.4)`,
+                borderLeftColor: `rgba(${mr},${mg},${mb},0.5)`,
               }}
             >
               <div className="flex items-center gap-1.5">
