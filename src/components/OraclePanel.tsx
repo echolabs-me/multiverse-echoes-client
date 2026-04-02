@@ -159,9 +159,9 @@ export function OraclePanel() {
           </div>
 
           {/* Feedback banner — always visible during closed beta */}
-          <div className="border-b border-border bg-accent/8 px-4 py-2">
-            <p className="text-xs leading-relaxed text-text-secondary">
-              <MessageCircle size={12} className="mr-1 inline-block text-accent" />
+          <div className="border-b-2 border-accent bg-accent/20 px-4 py-2.5">
+            <p className="text-sm font-semibold leading-relaxed text-accent">
+              <MessageCircle size={16} className="mr-1.5 -mt-0.5 inline-block" />
               {t('oracle.feedbackBanner')}
             </p>
           </div>

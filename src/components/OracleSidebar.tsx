@@ -159,9 +159,9 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
       </div>
 
       {/* Feedback banner — always visible during closed beta */}
-      <div className="border-b border-border bg-accent/8 px-3 py-2">
-        <p className="text-[11px] leading-relaxed text-text-secondary">
-          <MessageCircle size={10} className="mr-1 inline-block text-accent" />
+      <div className="border-b-2 border-accent bg-accent/20 px-3 py-2.5">
+        <p className="text-xs font-semibold leading-relaxed text-accent">
+          <MessageCircle size={14} className="mr-1.5 -mt-0.5 inline-block" />
           {t('oracle.feedbackBanner')}
         </p>
       </div>
