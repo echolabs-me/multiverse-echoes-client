@@ -158,9 +158,9 @@ export function OraclePanel() {
             {t('oracle.rateLimit', { limit: String(rateLimit) })}
           </div>
 
-          {/* Feedback banner — always visible during closed beta */}
-          <div className="border-b-2 border-accent bg-accent/20 px-4 py-2.5">
-            <p className="text-sm font-semibold leading-relaxed text-accent">
+          {/* Feedback banner — bold neon red frame, closed beta */}
+          <div className="mx-3 mt-2 mb-1 rounded-md border-2 border-red-500 bg-red-500/10 px-4 py-2.5 shadow-[0_0_8px_rgba(239,68,68,0.4)]">
+            <p className="text-sm font-bold leading-relaxed text-red-400">
               <MessageCircle size={16} className="mr-1.5 -mt-0.5 inline-block" />
               {t('oracle.feedbackBanner')}
             </p>
