@@ -17,16 +17,18 @@ interface PendingFeedback {
   userMessage: string;
 }
 
-/** Parse [FEEDBACK_PENDING:Type:Summary] marker from Oracle response text. */
+/** Parse [FEEDBACK_PENDING:Type:Summary] marker from Oracle response text.
+ *  Type may be multi-word (e.g. "Cosmetic Issue") — the LLM doesn't always
+ *  stick to single-word types, so we match liberally and normalize. */
 function parseFeedbackMarker(text: string): PendingFeedback | null {
-  const match = text.match(/\[FEEDBACK_PENDING:(\w+):(.+?)\]/);
+  const match = text.match(/\[FEEDBACK_PENDING:([^:]+):(.+?)\]/);
   if (!match) return null;
-  const typeStr = match[1].toLowerCase();
+  const typeStr = match[1].toLowerCase().trim();
   const feedbackType: FeedbackType =
-    typeStr === 'bug' ? 'Bug'
-    : typeStr === 'feature' ? 'FeatureRequest'
-    : typeStr === 'frustration' ? 'Frustration'
-    : typeStr === 'praise' ? 'Praise'
+    typeStr.includes('bug') ? 'Bug'
+    : typeStr.includes('feature') ? 'FeatureRequest'
+    : typeStr.includes('frustrat') ? 'Frustration'
+    : typeStr.includes('praise') ? 'Praise'
     : 'General';
   return { type: feedbackType, summary: match[2].trim(), userMessage: '' };
 }
@@ -185,7 +187,7 @@ export const useOracleStore = create<OracleState>()(
 
       // Check if the Oracle's response contains a feedback marker.
       const marker = parseFeedbackMarker(response.answer);
-      const displayText = response.answer.replace(/\[FEEDBACK_PENDING:\w+:.+?\]/, '').trim();
+      const displayText = response.answer.replace(/\[FEEDBACK_PENDING:[^\]]+\]/, '').trim();
 
       const oracleMsg: OracleMessage = {
         id: genId(),
