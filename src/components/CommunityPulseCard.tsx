@@ -5,6 +5,12 @@ import { getMoodColor } from '../lib/moodColor.ts';
 import { feeds } from '../lib/api/endpoints.ts';
 import type { FeedItem } from '../types/api.ts';
 
+/** Extract the first complete sentence from text. */
+function firstSentence(text: string): string {
+  const match = text.match(/^[^.!?]*[.!?]/);
+  return match ? match[0] : text;
+}
+
 /** Format a date as relative time (e.g. "2 hours ago", "3 days ago"). */
 function formatTimeAgo(dateStr: string): string {
   const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
@@ -63,7 +69,6 @@ export function CommunityPulseCard() {
           const echoName = echo?.name ?? item.echo_id.slice(0, 8);
           const moodColor = echo ? getMoodColor(echo.current_mood) : '#8E8E93';
           const shardName = shardNames[item.shard_id] ?? '';
-          const headline = item.title || '';
           const isLifeEvent = item.item_type === 'LifeEvent';
           const isRelationship = item.item_type === 'RelationshipChange';
 
@@ -118,9 +123,11 @@ export function CommunityPulseCard() {
                   ? 'text-text-primary font-medium'
                   : isRelationship
                     ? 'text-text-primary'
-                    : 'text-text-secondary'
+                    : 'text-text-secondary italic'
               }`}>
-                {headline}
+                {isLifeEvent || isRelationship
+                  ? item.title
+                  : firstSentence(item.body || item.title)}
               </p>
             </div>
           );
