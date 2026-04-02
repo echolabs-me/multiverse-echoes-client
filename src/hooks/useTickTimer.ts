@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { useSystemStore } from '../stores/useSystemStore.ts';
 import { useEchoWebSocket } from './useEchoWebSocket.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
+import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import type { WsEchoEvent } from '../types/api.ts';
 
 export type TickTimerState = 'counting_down' | 'generating' | 'arrived';
@@ -77,6 +78,12 @@ export function useTickTimer(): TickTimerData {
             writeLastTickAt(serverAt);
           }
         }
+        return;
+      }
+
+      // Real-time notification refresh.
+      if (event.type === 'NotificationCreated') {
+        void useNotificationStore.getState().fetchNotifications();
         return;
       }
 

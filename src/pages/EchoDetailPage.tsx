@@ -38,6 +38,7 @@ import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
+import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
 import { useMoodAtmosphere } from '../hooks/useMoodAtmosphere.ts';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
@@ -310,6 +311,8 @@ export function EchoDetailPage() {
         void useEchoStore.getState().fetchEcho(id);
       } else if (event.type === 'LifeEventOccurred') {
         void useFeedStore.getState().fetchPersonalFeed(id);
+      } else if (event.type === 'NotificationCreated') {
+        void useNotificationStore.getState().fetchNotifications();
       }
     },
     [playSound, debouncedFetchEchoes],
