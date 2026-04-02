@@ -1,7 +1,21 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, X } from 'lucide-react';
+import { ChevronDown, X, GripVertical } from 'lucide-react';
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
@@ -40,6 +54,7 @@ function EchoCard({
   latestDiary,
   latestDiaryShardId,
   onClick,
+  dragHandleProps,
 }: {
   echo: EchoResponse;
   isActive: boolean;
@@ -47,6 +62,7 @@ function EchoCard({
   latestDiary: string | null;
   latestDiaryShardId: string | null;
   onClick: () => void;
+  dragHandleProps?: Record<string, unknown>;
 }) {
   const { t } = useTranslation();
   const moodColor = getMoodColor(echo.current_mood);
@@ -61,9 +77,8 @@ function EchoCard({
   const showTravelIndicator = isTravelling && echo.status === 'Active';
 
   return (
-    <button
-      onClick={onClick}
-      className={`flex w-full flex-col gap-1 rounded-lg px-3 py-2.5 text-left transition-all ${
+    <div
+      className={`flex w-full items-start gap-0 rounded-lg transition-all ${
         isActive
           ? 'bg-accent-subtle border border-accent/30'
           : 'hover:bg-surface-raised border border-transparent'
@@ -72,43 +87,96 @@ function EchoCard({
         boxShadow: `0 0 14px 3px ${hexToRgba(moodColor, 0.15)}`,
         borderLeft: `3px solid ${hexToRgba(moodColor, 0.4)}`,
       }}
-      aria-current={isActive ? 'page' : undefined}
     >
-      {/* Row 1: mood dot + name */}
-      <div className="flex items-center gap-2">
-        <span
-          className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
-          style={{ backgroundColor: moodColor }}
-          aria-label={echo.current_mood}
-        />
-        <span className={`truncate text-sm font-medium ${isActive ? 'text-accent' : 'text-text-primary'}`}>
-          {echo.name}
-        </span>
+      {/* Drag handle */}
+      <div
+        className="flex-shrink-0 cursor-grab active:cursor-grabbing px-1 py-3 text-text-muted/40 hover:text-text-muted/70 touch-none"
+        {...dragHandleProps}
+      >
+        <GripVertical size={14} />
       </div>
-      {/* Row 2: mood + tick */}
-      <p className="truncate text-[11px] text-text-secondary pl-[18px]">
-        {echo.current_mood} · {t('echoSidebar.tick', { tick: echo.current_tick })}
-      </p>
-      {/* Row 3: travelling indicator or diary preview */}
-      {showTravelIndicator ? (
-        <p className="text-xs text-accent pl-[18px] italic leading-snug">
-          {t('echoSidebar.arrivingAt', { shard: shardName })}
+      <button
+        onClick={onClick}
+        className="flex flex-1 min-w-0 flex-col gap-1 py-2.5 pr-3 text-left"
+        aria-current={isActive ? 'page' : undefined}
+      >
+        {/* Row 1: mood dot + name */}
+        <div className="flex items-center gap-2">
+          <span
+            className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
+            style={{ backgroundColor: moodColor }}
+            aria-label={echo.current_mood}
+          />
+          <span className={`truncate text-sm font-medium ${isActive ? 'text-accent' : 'text-text-primary'}`}>
+            {echo.name}
+          </span>
+        </div>
+        {/* Row 2: mood + tick */}
+        <p className="truncate text-[11px] text-text-secondary pl-[18px]">
+          {echo.current_mood} · {t('echoSidebar.tick', { tick: echo.current_tick })}
         </p>
-      ) : latestDiary ? (
-        <p className="line-clamp-2 text-xs text-text-secondary pl-[18px] italic leading-snug">
-          &ldquo;{latestDiary}&rdquo;
+        {/* Row 3: travelling indicator or diary preview */}
+        {showTravelIndicator ? (
+          <p className="text-xs text-accent pl-[18px] italic leading-snug">
+            {t('echoSidebar.arrivingAt', { shard: shardName })}
+          </p>
+        ) : latestDiary ? (
+          <p className="line-clamp-2 text-xs text-text-secondary pl-[18px] italic leading-snug">
+            &ldquo;{latestDiary}&rdquo;
+          </p>
+        ) : null}
+        {/* Row 4: shard name */}
+        <p className="truncate text-[11px] text-text-muted pl-[18px]">
+          {shardName}
         </p>
-      ) : null}
-      {/* Row 4: shard name */}
-      <p className="truncate text-[11px] text-text-muted pl-[18px]">
-        {shardName}
-      </p>
-    </button>
+      </button>
+    </div>
+  );
+}
+
+/** Sortable wrapper that provides drag transform + handle props to EchoCard. */
+function SortableEchoItem({
+  echo,
+  isActive,
+  shardName,
+  latestDiary,
+  latestDiaryShardId,
+  onClick,
+}: {
+  echo: EchoResponse;
+  isActive: boolean;
+  shardName: string;
+  latestDiary: string | null;
+  latestDiaryShardId: string | null;
+  onClick: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: echo.echo_id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 10 : undefined,
+  };
+
+  return (
+    <li ref={setNodeRef} style={style} {...attributes}>
+      <EchoCard
+        echo={echo}
+        isActive={isActive}
+        shardName={shardName}
+        latestDiary={latestDiary}
+        latestDiaryShardId={latestDiaryShardId}
+        onClick={onClick}
+        dragHandleProps={listeners}
+      />
+    </li>
   );
 }
 
 /**
- * Desktop Echo sidebar — persistent mini-card list.
+ * Desktop Echo sidebar — persistent mini-card list with drag-to-reorder.
  * Each card is a glanceable overview; clicking navigates to full detail.
  */
 export function EchoSidebar() {
@@ -116,7 +184,7 @@ export function EchoSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { echoId } = useParams<{ echoId: string }>();
-  const { echoList, fetchEchoes } = useEchoStore();
+  const { echoList, fetchEchoes, reorderEchoes } = useEchoStore();
   const { shardList, fetchShards } = useShardStore();
   const [diaryPreviews, setDiaryPreviews] = useState<Record<string, { snippet: string; shardId: string | null; tick: number }>>({});
 
@@ -162,6 +230,23 @@ export function EchoSidebar() {
     [navigate],
   );
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+  );
+
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+      if (!over || active.id === over.id) return;
+      const oldIndex = echoList.findIndex((e) => e.echo_id === active.id);
+      const newIndex = echoList.findIndex((e) => e.echo_id === over.id);
+      if (oldIndex !== -1 && newIndex !== -1) {
+        reorderEchoes(oldIndex, newIndex);
+      }
+    },
+    [echoList, reorderEchoes],
+  );
+
   if (echoList.length === 0) return null;
 
   return (
@@ -188,20 +273,30 @@ export function EchoSidebar() {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-2 pb-2">
-        <ul className="flex flex-col gap-1">
-          {echoList.map((echo) => (
-            <li key={echo.echo_id}>
-              <EchoCard
-                echo={echo}
-                isActive={echo.echo_id === activeId}
-                shardName={shardNameMap.get(echo.current_shard_id) ?? t('echoSidebar.unknownShard')}
-                latestDiary={diaryPreviews[echo.echo_id]?.snippet || null}
-                latestDiaryShardId={diaryPreviews[echo.echo_id]?.shardId ?? null}
-                onClick={() => handleClick(echo)}
-              />
-            </li>
-          ))}
-        </ul>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={echoList.map((e) => e.echo_id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <ul className="flex flex-col gap-1">
+              {echoList.map((echo) => (
+                <SortableEchoItem
+                  key={echo.echo_id}
+                  echo={echo}
+                  isActive={echo.echo_id === activeId}
+                  shardName={shardNameMap.get(echo.current_shard_id) ?? t('echoSidebar.unknownShard')}
+                  latestDiary={diaryPreviews[echo.echo_id]?.snippet || null}
+                  latestDiaryShardId={diaryPreviews[echo.echo_id]?.shardId ?? null}
+                  onClick={() => handleClick(echo)}
+                />
+              ))}
+            </ul>
+          </SortableContext>
+        </DndContext>
       </nav>
       <div className="px-3 pb-3 pt-2 border-t border-border/50">
         <button

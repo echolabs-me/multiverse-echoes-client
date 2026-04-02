@@ -119,6 +119,8 @@ export function useTickTimer(): TickTimerData {
       if (base <= 0) return;
 
       // Never override the arrived state — let its 2s timeout handle the transition.
+      // Also skip the first tick after arrived clears to avoid a flicker frame
+      // where remaining briefly shows 0 before the new countdown stabilises.
       if (stateRef.current === 'arrived') return;
 
       const elapsed = (Date.now() - base) / 1000;
@@ -142,6 +144,10 @@ export function useTickTimer(): TickTimerData {
           }
         }
       } else {
+        // Only update if we're not in a post-arrived transition frame.
+        // After arrived → counting_down, the remaining calc is always valid
+        // because lastTickAtRef was updated on the DiaryEntryCreated event.
+        if (stateRef.current !== 'counting_down' && stateRef.current !== 'generating') return;
         setSecondsRemaining(remaining);
         if (stateRef.current === 'generating') {
           generatingStartRef.current = 0;

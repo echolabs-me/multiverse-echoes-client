@@ -1,4 +1,4 @@
-import { Bell, Search, Sparkles } from 'lucide-react';
+import { Bell, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from './Avatar.tsx';
@@ -33,12 +33,12 @@ export function TopBar({
     <header
       className={`flex h-14 items-center justify-between border-b border-border bg-surface px-4 ${className}`}
     >
-      <div className="flex items-center gap-3">
-        <Sparkles size={24} className="text-accent" aria-hidden="true" />
-        <span className="text-lg font-semibold text-text-primary">
+      <button className="flex items-center gap-2.5" onClick={() => navigate('/dashboard')} aria-label={t('app.title')}>
+        <img src="/favicon.svg" alt="" aria-hidden="true" className="h-7 w-7" />
+        <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-accent to-[#47bfff] bg-clip-text text-transparent">
           {t('app.title')}
         </span>
-      </div>
+      </button>
 
       <div className="flex items-center gap-2">
         <button
