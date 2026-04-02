@@ -1216,7 +1216,7 @@ function DiaryCard({
             src={entry.image_url}
             alt="Scene from diary entry"
             loading="lazy"
-            className="w-full rounded-t-lg mb-3 animate-fade-in"
+            className="mx-auto max-h-64 rounded-lg mb-3 animate-fade-in object-cover"
           />
         )}
         <div className="flex items-start justify-between">
