@@ -8,10 +8,9 @@ import { getMoodPalette } from '../src/hooks/useMoodAtmosphere.ts';
 import type { DiaryEntry } from '../src/types/api.ts';
 
 /**
- * Phase 6B Testing — Mood History Strip
+ * Phase 6B Testing — Mood History Strip (redesigned for #4)
  *
  * Tests rendering logic, segment count, colour mapping, and edge cases.
- * Does NOT test visual appearance (gradients, tooltips) — tests the logic underneath.
  */
 
 const testI18n = i18n.createInstance();
@@ -80,7 +79,6 @@ describe('MoodHistoryStrip', () => {
         <MoodHistoryStrip entries={entries} />
       </Wrapper>,
     );
-    // Each entry gets a button for hover/click interaction
     const buttons = screen.getAllByRole('button');
     expect(buttons).toHaveLength(5);
   });
@@ -102,7 +100,6 @@ describe('MoodHistoryStrip', () => {
     const entries = [
       makeDiaryEntry({ diary_id: 'a', mood: 'flibbertigibbet' }),
     ];
-    // Should render without crashing
     const { container } = render(
       <Wrapper>
         <MoodHistoryStrip entries={entries} />
@@ -111,7 +108,7 @@ describe('MoodHistoryStrip', () => {
     expect(container.querySelector('[role="img"]')).toBeInTheDocument();
   });
 
-  it('gradient style contains mood primary colours', () => {
+  it('each segment button uses its mood primary colour in style', () => {
     const entries = [
       makeDiaryEntry({ diary_id: 'a', mood: 'happy' }),
       makeDiaryEntry({ diary_id: 'b', mood: 'sad' }),
@@ -121,17 +118,13 @@ describe('MoodHistoryStrip', () => {
         <MoodHistoryStrip entries={entries} />
       </Wrapper>,
     );
-    const strip = screen.getByRole('img', { name: 'Mood history' });
-    const style = strip.getAttribute('style') ?? '';
-    // Entries come newest-first from API, component reverses to chronological
-    // So 'b' (sad) is newest, reversed order is [b, a] → [sad, happy] chronologically
-    // Wait — entries array order is [a, b], reversed = [b, a]
-    // Actually: "Entries come newest-first from API" — so entries[0]=a is newest
-    // Component does [...entries].reverse() → [b, a] is chronological
+    const buttons = screen.getAllByRole('button');
+    // Entries come newest-first, component reverses: [b, a] → chronological [sad, happy]
+    // So button[0] = sad (entry b), button[1] = happy (entry a)
     const sadPrimary = getMoodPalette('sad').primary;
     const happyPrimary = getMoodPalette('happy').primary;
-    expect(style).toContain(sadPrimary);
-    expect(style).toContain(happyPrimary);
+    expect(buttons[0].getAttribute('style')).toContain(sadPrimary);
+    expect(buttons[1].getAttribute('style')).toContain(happyPrimary);
   });
 
   it('applies custom className', () => {
@@ -142,5 +135,47 @@ describe('MoodHistoryStrip', () => {
       </Wrapper>,
     );
     expect(container.firstChild).toHaveClass('mt-4');
+  });
+
+  it('shows date range when multiple entries', () => {
+    const entries = [
+      makeDiaryEntry({ diary_id: 'a', simulated_date: '2087-04-05' }),
+      makeDiaryEntry({ diary_id: 'b', simulated_date: '2087-03-01' }),
+    ];
+    render(
+      <Wrapper>
+        <MoodHistoryStrip entries={entries} />
+      </Wrapper>,
+    );
+    // Reversed: b (oldest) first, a (newest) last
+    expect(screen.getByText('2087-03-01')).toBeInTheDocument();
+    expect(screen.getByText('2087-04-05')).toBeInTheDocument();
+  });
+
+  it('does not show date range for single entry', () => {
+    const entries = [makeDiaryEntry({ simulated_date: '2087-03-15' })];
+    const { container } = render(
+      <Wrapper>
+        <MoodHistoryStrip entries={entries} />
+      </Wrapper>,
+    );
+    // No date range div when only 1 entry
+    const spans = container.querySelectorAll('.justify-between span');
+    expect(spans).toHaveLength(0);
+  });
+
+  it('latest segment has a pulse indicator', () => {
+    const entries = [
+      makeDiaryEntry({ diary_id: 'a', mood: 'happy' }),
+      makeDiaryEntry({ diary_id: 'b', mood: 'calm' }),
+    ];
+    render(
+      <Wrapper>
+        <MoodHistoryStrip entries={entries} />
+      </Wrapper>,
+    );
+    // The ping animation class should be present on the latest segment
+    const pingEl = document.querySelector('.animate-ping');
+    expect(pingEl).toBeInTheDocument();
   });
 });
