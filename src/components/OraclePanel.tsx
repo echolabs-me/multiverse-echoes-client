@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Sparkles, X, Send, Trash2, ExternalLink, Flag } from 'lucide-react';
+import { Sparkles, X, Send, Trash2, ExternalLink, Flag, MessageCircle } from 'lucide-react';
 import { reports } from '../lib/api/endpoints.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useOracleStore } from '../stores/useOracleStore.ts';
@@ -40,6 +40,12 @@ export function OraclePanel() {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFeedbackPill = (text: string) => {
+    if (isLoading) return;
+    setInput(text);
+    inputRef.current?.focus();
+  };
 
   const tier = user?.subscription_tier ?? 'Free';
   const rateLimit = RATE_LIMITS[tier] ?? 3;
@@ -152,6 +158,14 @@ export function OraclePanel() {
             {t('oracle.rateLimit', { limit: String(rateLimit) })}
           </div>
 
+          {/* Feedback banner — always visible during closed beta */}
+          <div className="border-b border-border bg-accent/8 px-4 py-2">
+            <p className="text-xs leading-relaxed text-text-secondary">
+              <MessageCircle size={12} className="mr-1 inline-block text-accent" />
+              {t('oracle.feedbackBanner')}
+            </p>
+          </div>
+
           {/* Messages */}
           <div
             className="flex-1 space-y-4 overflow-y-auto px-4 py-4"
@@ -164,6 +178,28 @@ export function OraclePanel() {
                 <p className="text-sm text-text-secondary">
                   {t('oracle.welcomeMessage')}
                 </p>
+                <div className="flex gap-2 pt-2">
+                  <button
+                    onClick={() => handleFeedbackPill(t('oracle.feedbackPillReport'))}
+                    disabled={isLoading}
+                    className="rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 text-xs font-medium text-accent transition-colors hover:border-accent hover:bg-accent/10 disabled:opacity-50"
+                  >
+                    <span className="inline-flex items-center gap-1">
+                      <MessageCircle size={12} />
+                      {t('oracle.feedbackPillReport')}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => handleFeedbackPill(t('oracle.feedbackPillShare'))}
+                    disabled={isLoading}
+                    className="rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 text-xs font-medium text-accent transition-colors hover:border-accent hover:bg-accent/10 disabled:opacity-50"
+                  >
+                    <span className="inline-flex items-center gap-1">
+                      <MessageCircle size={12} />
+                      {t('oracle.feedbackPillShare')}
+                    </span>
+                  </button>
+                </div>
               </div>
             )}
 

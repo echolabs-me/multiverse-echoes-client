@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Sparkles, Send, Trash2, ChevronLeft, ExternalLink, Flag } from 'lucide-react';
+import { Sparkles, Send, Trash2, ChevronLeft, ExternalLink, Flag, MessageCircle } from 'lucide-react';
 import { reports } from '../lib/api/endpoints.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useOracleStore } from '../stores/useOracleStore.ts';
@@ -19,6 +19,12 @@ const SUGGESTED_QUESTIONS = [
   'oracle.suggestion1',
   'oracle.suggestion2',
   'oracle.suggestion3',
+];
+
+/** Feedback pills populate the input (don't auto-send) so users can add context. */
+const FEEDBACK_PILLS = [
+  'oracle.feedbackPillReport',
+  'oracle.feedbackPillShare',
 ];
 
 interface OracleSidebarProps {
@@ -86,6 +92,17 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
     void ask(t(key));
   };
 
+  const handleFeedbackPill = (key: string) => {
+    if (isLoading) return;
+    const text = t(key);
+    setInput(text);
+    // Focus and place cursor at end so user can add context
+    if (inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.style.height = 'auto';
+    }
+  };
+
   const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
     e.target.style.height = 'auto';
@@ -138,6 +155,14 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
         </div>
         <p className="mt-1.5 text-[11px] text-text-secondary">
           {t('oracle.tagline')}
+        </p>
+      </div>
+
+      {/* Feedback banner — always visible during closed beta */}
+      <div className="border-b border-border bg-accent/8 px-3 py-2">
+        <p className="text-[11px] leading-relaxed text-text-secondary">
+          <MessageCircle size={10} className="mr-1 inline-block text-accent" />
+          {t('oracle.feedbackBanner')}
         </p>
       </div>
 
@@ -211,6 +236,21 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
                   {t(key)}
                 </button>
               ))}
+              <div className="mt-2 flex gap-1.5">
+                {FEEDBACK_PILLS.map((key) => (
+                  <button
+                    key={key}
+                    onClick={() => handleFeedbackPill(key)}
+                    disabled={isLoading}
+                    className="rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 text-[11px] font-medium text-accent transition-colors hover:border-accent hover:bg-accent/10 disabled:opacity-50"
+                  >
+                    <span className="inline-flex items-center gap-1">
+                      <MessageCircle size={10} />
+                      {t(key)}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}

@@ -554,7 +554,10 @@
     "tagline": "Your all-knowing guide to the Multiverse",
     "suggestion1": "Where are all my Echoes?",
     "suggestion2": "What happened recently?",
-    "suggestion3": "Explain nudges to me"
+    "suggestion3": "Explain nudges to me",
+    "feedbackPillReport": "Report an issue",
+    "feedbackPillShare": "Share feedback",
+    "feedbackBanner": "Spotted a bug or have feedback? Just tell me — I'll send it straight to the team."
   },
   "admin": {
     "title": "Admin Dashboard",
