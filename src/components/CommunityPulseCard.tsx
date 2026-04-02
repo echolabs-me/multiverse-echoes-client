@@ -17,13 +17,8 @@ function formatTimeAgo(dateStr: string): string {
   return `${days}d ago`;
 }
 
-/** Get a short event-style summary for diary entries (location-based). */
-function diaryTickerText(item: FeedItem, shardName: string): string {
-  // Use headline if it's short and event-like
-  if (item.title && item.title.length <= 60 && item.title.length > 5) {
-    return item.title;
-  }
-  // Fall back to location-based summary
+/** Get a short location-based summary for diary entries. */
+function diaryTickerText(shardName: string): string {
   if (shardName) {
     return `Exploring ${shardName}`;
   }
@@ -92,7 +87,7 @@ export function CommunityPulseCard() {
 
           // Event text — news ticker style
           const tickerText = isDiary
-            ? diaryTickerText(item, shardName)
+            ? diaryTickerText(shardName)
             : item.title || item.body;
 
           // Icon per type
