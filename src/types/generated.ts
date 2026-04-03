@@ -841,6 +841,11 @@ export type ShardTheme = {
 	custom_rules: string,
 	shard_prompt_template: string | null,
 	/**
+	 *  Proper-noun-free visual description for image prompt generation.
+	 *  Colors, lighting, composition, atmosphere, textures — no names, dates, or places.
+	 */
+	visual_style: string | null,
+	/**
 	 *  Starting wealth for Echoes entering this Shard (fixed-point).
 	 *  Default: 1000 (1.0 in fixed-point).
 	 */

@@ -684,6 +684,7 @@ export interface ShardTheme {
   banned_elements: string[];
   custom_rules: string;
   shard_prompt_template: string | null;
+  visual_style: string | null;
   starting_wealth: number;
 }
 
