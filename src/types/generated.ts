@@ -64,6 +64,10 @@ export type ApiKeyListItem = {
 export type BetaInvite = {
 	id: string,
 	code: string,
+	/**
+	 *  Email address the invite was issued to (for auto-claim on registration).
+	 */
+	email: string | null,
 	created_by: string,
 	claimed_by: string | null,
 	claimed_at: string | null,
@@ -844,7 +848,7 @@ export type ShardTheme = {
 	 *  Proper-noun-free visual description for image prompt generation.
 	 *  Colors, lighting, composition, atmosphere, textures — no names, dates, or places.
 	 */
-	visual_style: string | null,
+	visual_style?: string | null,
 	/**
 	 *  Starting wealth for Echoes entering this Shard (fixed-point).
 	 *  Default: 1000 (1.0 in fixed-point).
