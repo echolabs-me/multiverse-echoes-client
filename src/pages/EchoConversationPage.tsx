@@ -36,7 +36,7 @@ export function EchoConversationPage() {
   const [error, setError] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const tier = user?.subscription_tier ?? 'Free';
   const limits = TIER_LIMITS[tier] ?? TIER_LIMITS.Free;
@@ -322,16 +322,29 @@ export function EchoConversationPage() {
         onSubmit={(e) => void handleSend(e)}
         className="flex gap-2 border-t border-border px-4 py-3"
       >
-        <input
+        <textarea
           ref={inputRef}
-          type="text"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            e.target.style.height = 'auto';
+            e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              if (input.trim() && !isSending && !atLimit && conversationId) {
+                void handleSend(e as unknown as React.FormEvent);
+              }
+            }
+          }}
           placeholder={
             atLimit ? t('conversation.atLimit') : t('conversation.inputPlaceholder')
           }
           disabled={isSending || atLimit || !conversationId}
-          className="flex-1 rounded-full border border-border bg-surface px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40"
+          rows={1}
+          className="flex-1 resize-none rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40"
+          style={{ maxHeight: '150px' }}
           aria-label={t('conversation.inputPlaceholder')}
         />
         <button
