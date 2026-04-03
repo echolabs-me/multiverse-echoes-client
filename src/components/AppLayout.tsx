@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Outlet, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -12,6 +12,7 @@ import {
   X,
   LogOut,
 } from 'lucide-react';
+import { TabletPaneScroller } from './TabletPaneScroller';
 
 function DiscordIcon({ size = 20 }: { size?: number }) {
   return (
@@ -162,6 +163,42 @@ export function AppLayout() {
     return () => clearInterval(interval);
   }, []);
 
+  const showEchoPanes = location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/');
+
+  // Tablet panes — memoized to avoid re-creating on every render.
+  // Must be before auth guard (React hooks must be called unconditionally).
+  const tabletPanes = useMemo(() => [
+    {
+      id: 'community-pulse',
+      label: t('communityFeed.title'),
+      content: (
+        <div className="h-full overflow-y-auto px-2 pb-2">
+          <CommunityPulseCard />
+        </div>
+      ),
+    },
+    {
+      id: 'echoes',
+      label: t('echoSidebar.title'),
+      content: <EchoSidebar forceVisible />,
+    },
+    {
+      id: 'detail',
+      label: t('nav.dashboard'),
+      content: <div className="h-full overflow-y-auto"><Outlet /></div>,
+    },
+    {
+      id: 'oracle',
+      label: t('oracle.title'),
+      content: <OracleSidebar onCollapse={() => {}} />,
+    },
+    {
+      id: 'community',
+      label: t('communitySidebar.title'),
+      content: <CommunitySidebar />,
+    },
+  ], [t]);
+
   // Auth guard
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -233,62 +270,81 @@ export function AppLayout() {
         </div>
       )}
 
-      <div className="flex flex-1 overflow-hidden">
-        {/* Left nav — icon-only on desktop */}
+      <div className="flex flex-1 overflow-y-hidden">
+        {/* Left nav — icon-only, visible on md+ */}
         <NavSidebar />
 
-        {/* Mood-reactive zone — gradient + particles span ALL content panes */}
-        <MoodAtmosphereWrapper show={location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')}>
-          {/* Community Pulse pane */}
-          {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
-            <aside className="hidden lg:flex h-full w-[311px] flex-shrink-0 flex-col border-r border-border/50 overflow-y-auto">
-              <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
-                {t('communityFeed.title')}
-              </div>
-              <div className="flex-1 overflow-y-auto px-2 pb-2">
-                <CommunityPulseCard />
-              </div>
-            </aside>
-          )}
+        {/* ═══ TABLET LAYOUT (md to min-[1440px]) — swipeable pane scroller ═══ */}
+        {showEchoPanes && (
+          <div className="hidden md:flex xl:hidden flex-1 min-w-0">
+            <TabletPaneScroller
+              initialPane={2}
+              panes={tabletPanes}
+            />
+          </div>
+        )}
 
-          {/* Echo list sidebar */}
-          {(location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/')) && (
-            <EchoSidebar />
-          )}
-
-          {/* Main content */}
-          <main id="main-content" className="flex-1 overflow-y-auto">
-            <Outlet />
+        {/* Non-echo pages on tablet (settings, search, etc.) */}
+        {!showEchoPanes && (
+          <main className="hidden md:flex xl:hidden flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto"><Outlet /></div>
           </main>
+        )}
 
-          {/* ── Oracle pane — dedicated column on xl+, overlay trigger on lg ── */}
-          <aside className="hidden lg:flex h-full w-[260px] xl:w-[280px] flex-shrink-0 flex-col border-l border-border/50">
-            <OracleSidebar onCollapse={() => {/* no-op on desktop — always visible */}} />
-          </aside>
+        {/* ═══ PHONE LAYOUT (<md) — single pane, full width ═══ */}
+        <main className="flex-1 overflow-y-auto md:hidden">
+          <Outlet />
+        </main>
 
-          {/* ── Community pane — dedicated column on xl+, hidden on lg (Discord icon in Oracle opens overlay) ── */}
-          <aside className="hidden xl:flex h-full w-[240px] flex-shrink-0 flex-col border-l border-border/50">
-            <CommunitySidebar />
-          </aside>
-        </MoodAtmosphereWrapper>
+        {/* ═══ DESKTOP LAYOUT (1440px+) — all panes in flex row ═══ */}
+        <div className="hidden xl:flex flex-1 overflow-hidden">
+          <MoodAtmosphereWrapper show={showEchoPanes}>
+            {/* Community Pulse — 1920px+ only */}
+            {showEchoPanes && (
+              <aside className="hidden min-[1920px]:flex h-full w-[311px] flex-shrink-0 flex-col border-r border-border/50 overflow-y-auto">
+                <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                  {t('communityFeed.title')}
+                </div>
+                <div className="flex-1 overflow-y-auto px-2 pb-2">
+                  <CommunityPulseCard />
+                </div>
+              </aside>
+            )}
 
-        {/* Community overlay trigger for lg screens (xl hides this since the pane is visible) */}
-        <button
-          onClick={() => setMobileCommunityOpen(true)}
-          className="hidden lg:flex xl:hidden fixed bottom-4 right-4 z-40 items-center justify-center rounded-full bg-[#5865F2] p-3 text-white shadow-lg hover:bg-[#4752c4] transition-colors"
-          aria-label={t('communitySidebar.title')}
-          title={t('communitySidebar.title')}
-        >
-          <DiscordIcon size={20} />
-          {communityHasUnread && (
-            <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-canvas bg-danger" />
-          )}
-        </button>
+            {showEchoPanes && <EchoSidebar />}
+
+            <main id="main-content" className="flex-1 overflow-y-auto">
+              <Outlet />
+            </main>
+
+            <aside className="flex h-full w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-l border-border/50">
+              <OracleSidebar onCollapse={() => {}} />
+            </aside>
+
+            {/* Community pane — 1920px+ */}
+            <aside className="hidden min-[1920px]:flex h-full w-[240px] flex-shrink-0 flex-col border-l border-border/50">
+              <CommunitySidebar />
+            </aside>
+          </MoodAtmosphereWrapper>
+
+          {/* Community FAB for 1440-1920 range */}
+          <button
+            onClick={() => setMobileCommunityOpen(true)}
+            className="hidden xl:flex min-[1920px]:hidden fixed bottom-4 right-4 z-40 items-center justify-center rounded-full bg-[#5865F2] p-3 text-white shadow-lg hover:bg-[#4752c4] transition-colors"
+            aria-label={t('communitySidebar.title')}
+            title={t('communitySidebar.title')}
+          >
+            <DiscordIcon size={20} />
+            {communityHasUnread && (
+              <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-canvas bg-danger" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile bottom bar */}
       <nav
-        className="flex h-14 items-center justify-around border-t border-border bg-surface lg:hidden"
+        className="flex h-14 items-center justify-around border-t border-border bg-surface md:hidden"
         aria-label={t('common.mobileNav', 'Mobile navigation')}
       >
         {mobileNavItems.map((item) => (
@@ -321,33 +377,21 @@ export function AppLayout() {
         ))}
       </nav>
 
-      {/* Mobile Oracle overlay */}
+      {/* Oracle overlay — phone only (tablets use pane scroller, desktop has pane) */}
       {mobileOracleOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-canvas lg:hidden">
+        <div className="fixed inset-0 z-50 flex flex-col bg-canvas md:hidden">
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <div className="flex items-center gap-2">
               <Sparkles size={16} className="text-accent" />
               <span className="text-sm font-semibold">{t('oracle.title')}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => { setMobileOracleOpen(false); setMobileCommunityOpen(true); }}
-                className="relative rounded-md p-1.5 text-text-muted hover:text-[#5865F2]"
-                title={t('communitySidebar.title')}
-              >
-                <DiscordIcon size={18} />
-                {communityHasUnread && (
-                  <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#5865F2]" />
-                )}
-              </button>
-              <button
-                onClick={() => setMobileOracleOpen(false)}
-                className="rounded-md p-1.5 text-text-muted hover:text-text-secondary"
-                aria-label={t('common.close')}
-              >
-                <X size={20} />
-              </button>
-            </div>
+            <button
+              onClick={() => setMobileOracleOpen(false)}
+              className="rounded-md p-1.5 text-text-muted hover:text-text-secondary"
+              aria-label={t('common.close')}
+            >
+              <X size={20} />
+            </button>
           </div>
           <div className="flex-1 overflow-hidden">
             <OracleSidebar onCollapse={() => setMobileOracleOpen(false)} />
@@ -355,22 +399,16 @@ export function AppLayout() {
         </div>
       )}
 
-      {/* Community overlay (lg screens + mobile) */}
+      {/* Community overlay — phone + desktop 1440-1920 (tablets use pane scroller) */}
       {mobileCommunityOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-canvas xl:hidden">
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
-            <div className="flex items-center gap-2">
-              <DiscordIcon size={16} />
-              <span className="text-sm font-semibold">{t('communitySidebar.title')}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => { setMobileCommunityOpen(false); setMobileOracleOpen(true); }}
-                className="rounded-md p-1.5 text-accent hover:text-accent-hover lg:hidden"
-                title={t('oracle.title')}
-              >
-                <Sparkles size={18} />
-              </button>
+        <>
+          <button className="hidden xl:block min-[1920px]:hidden fixed inset-0 z-40 bg-black/30 cursor-default" onClick={() => setMobileCommunityOpen(false)} aria-label={t('common.close')} tabIndex={-1} />
+          <div className="fixed inset-0 xl:inset-y-0 xl:left-auto xl:right-0 xl:w-[380px] z-50 flex flex-col bg-canvas xl:border-l xl:border-border xl:shadow-xl min-[1920px]:hidden">
+            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <div className="flex items-center gap-2">
+                <DiscordIcon size={16} />
+                <span className="text-sm font-semibold">{t('communitySidebar.title')}</span>
+              </div>
               <button
                 onClick={() => setMobileCommunityOpen(false)}
                 className="rounded-md p-1.5 text-text-muted hover:text-text-secondary"
@@ -379,11 +417,11 @@ export function AppLayout() {
                 <X size={20} />
               </button>
             </div>
+            <div className="flex-1 overflow-hidden">
+              <CommunitySidebar />
+            </div>
           </div>
-          <div className="flex-1 overflow-hidden">
-            <CommunitySidebar />
-          </div>
-        </div>
+        </>
       )}
 
     </div>

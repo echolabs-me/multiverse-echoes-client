@@ -64,10 +64,8 @@ export type ApiKeyListItem = {
 export type BetaInvite = {
 	id: string,
 	code: string,
-	/**
-	 *  Email address the invite was issued to (for auto-claim on registration).
-	 */
-	email: string | null,
+	// Email address the invite was issued to (for auto-claim on registration).
+	email?: string | null,
 	created_by: string,
 	claimed_by: string | null,
 	claimed_at: string | null,

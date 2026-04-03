@@ -180,7 +180,7 @@ function SortableEchoItem({
  * Desktop Echo sidebar — persistent mini-card list with drag-to-reorder.
  * Each card is a glanceable overview; clicking navigates to full detail.
  */
-export function EchoSidebar() {
+export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -252,7 +252,10 @@ export function EchoSidebar() {
 
   return (
     <aside
-      className="hidden lg:flex h-full w-[232px] flex-col border-r border-border/50 bg-transparent"
+      className={forceVisible
+        ? "flex h-full w-full flex-col bg-transparent"
+        : "hidden md:flex h-full w-[200px] lg:w-[232px] flex-col border-r border-border/50 bg-transparent"
+      }
       aria-label={t('echoSidebar.title')}
     >
       <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
@@ -338,7 +341,7 @@ export function MobileEchoSwitcher() {
   if (echoList.length <= 1) return null;
 
   return (
-    <div className="lg:hidden">
+    <div className="md:hidden">
       {/* Switcher button */}
       <button
         onClick={() => setIsOpen(!isOpen)}

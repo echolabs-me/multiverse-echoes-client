@@ -67,6 +67,7 @@ async function tryRefreshToken(): Promise<boolean> {
     const response = await fetch(`${baseUrl}/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ refresh_token: refreshToken }),
     });
 
@@ -97,6 +98,7 @@ export async function request<T>(
   let response = await fetch(`${baseUrl}${path}`, {
     ...options,
     headers,
+    credentials: 'include',
   });
 
   // Auto-refresh on 401
@@ -107,6 +109,7 @@ export async function request<T>(
       response = await fetch(`${baseUrl}${path}`, {
         ...options,
         headers,
+        credentials: 'include',
       });
     }
   }
