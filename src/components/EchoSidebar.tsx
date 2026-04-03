@@ -252,7 +252,7 @@ export function EchoSidebar() {
 
   return (
     <aside
-      className="hidden md:flex h-full w-[232px] flex-col border-r border-border/50 bg-transparent"
+      className="hidden lg:flex h-full w-[232px] flex-col border-r border-border/50 bg-transparent"
       aria-label={t('echoSidebar.title')}
     >
       <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
@@ -338,7 +338,7 @@ export function MobileEchoSwitcher() {
   if (echoList.length <= 1) return null;
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       {/* Switcher button */}
       <button
         onClick={() => setIsOpen(!isOpen)}

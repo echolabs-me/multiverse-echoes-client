@@ -586,7 +586,7 @@ export function EchoDetailPage() {
               {/* Talk — primary CTA */}
               <button
                 onClick={() => {
-                  if (window.innerWidth >= 768) {
+                  if (window.innerWidth >= 1024) {
                     setResumeConversationId(undefined);
                     setShowConversation((prev) => !prev);
                   } else {
@@ -1162,9 +1162,9 @@ export function EchoDetailPage() {
       </Modal>
     </div>
 
-      {/* Conversation side panel — tablet+ (>= 768px) */}
+      {/* Conversation side panel — desktop only (>= 1024px) */}
       {showConversation && activeEcho && (
-        <div className="hidden h-full w-[40%] md:block">
+        <div className="hidden h-full w-[40%] lg:block">
           <EchoConversationPanel
             key={resumeConversationId ?? 'active'}
             echoId={activeEcho.echo_id}
