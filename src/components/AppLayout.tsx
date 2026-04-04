@@ -57,6 +57,7 @@ function NavSidebar() {
   const items: NavItem[] = [
     { id: 'dashboard', labelKey: 'nav.dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
     { id: 'shards', labelKey: 'nav.browseShards', icon: <Compass size={20} />, path: '/shards/browse' },
+    { id: 'community', labelKey: 'communitySidebar.title', icon: <DiscordIcon size={20} />, path: '/community' },
     { id: 'search', labelKey: 'common.search', icon: <Search size={20} />, path: '/search' },
     { id: 'notifications', labelKey: 'nav.notifications', icon: <Bell size={20} />, path: '/notifications', badge: unreadCount },
     { id: 'settings', labelKey: 'nav.settings', icon: <Settings size={20} />, path: '/settings' },
