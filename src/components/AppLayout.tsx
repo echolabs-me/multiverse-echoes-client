@@ -31,7 +31,6 @@ import { CommunityPulseCard } from './CommunityPulseCard.tsx';
 import { TabletLayout } from './TabletLayout.tsx';
 import { MoodParticles } from './MoodParticles.tsx';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
-import { useCommunitySidebarUnread } from '../hooks/useCommunitySidebarUnread.ts';
 
 interface NavItem {
   id: string;
@@ -145,8 +144,6 @@ export function AppLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [mobileOracleOpen, setMobileOracleOpen] = useState(false);
-  const [mobileCommunityOpen, setMobileCommunityOpen] = useState(false);
-  const communityHasUnread = useCommunitySidebarUnread();
   const unreadCount = useNotificationStore((s) => s.unreadCount);
 
   // Track page views on route changes (ME-UXF-001 §16.5)
@@ -283,18 +280,6 @@ export function AppLayout() {
             </aside>
           </MoodAtmosphereWrapper>
 
-          {/* Community FAB for 1440-1920 range */}
-          <button
-            onClick={() => setMobileCommunityOpen(true)}
-            className="hidden xl:flex min-[1920px]:hidden fixed bottom-4 right-4 z-40 items-center justify-center rounded-full bg-[#5865F2] p-3 text-white shadow-lg hover:bg-[#4752c4] transition-colors"
-            aria-label={t('communitySidebar.title')}
-            title={t('communitySidebar.title')}
-          >
-            <DiscordIcon size={20} />
-            {communityHasUnread && (
-              <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-canvas bg-danger" />
-            )}
-          </button>
         </div>
       </div>
 
@@ -355,30 +340,6 @@ export function AppLayout() {
         </div>
       )}
 
-      {/* Community overlay — phone + desktop 1440-1920 */}
-      {mobileCommunityOpen && (
-        <>
-          <button className="hidden xl:block min-[1920px]:hidden fixed inset-0 z-40 bg-black/30 cursor-default" onClick={() => setMobileCommunityOpen(false)} aria-label={t('common.close')} tabIndex={-1} />
-          <div className="fixed inset-0 xl:inset-y-0 xl:left-auto xl:right-0 xl:w-[380px] z-50 flex flex-col bg-canvas xl:border-l xl:border-border xl:shadow-xl min-[1920px]:hidden">
-            <div className="flex items-center justify-between border-b border-border px-4 py-3">
-              <div className="flex items-center gap-2">
-                <DiscordIcon size={16} />
-                <span className="text-sm font-semibold">{t('communitySidebar.title')}</span>
-              </div>
-              <button
-                onClick={() => setMobileCommunityOpen(false)}
-                className="rounded-md p-1.5 text-text-muted hover:text-text-secondary"
-                aria-label={t('common.close')}
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="flex-1 overflow-hidden">
-              <CommunitySidebar />
-            </div>
-          </div>
-        </>
-      )}
 
     </div>
   );
