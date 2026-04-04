@@ -49,7 +49,13 @@ export class MoshiAudioBridge {
    */
   async connect(wsUrl: string): Promise<void> {
     // 1. Create AudioContext (user gesture context)
-    this.audioCtx = new AudioContext({ sampleRate: SAMPLE_RATE });
+    // Safari may ignore sampleRate — we check and adapt.
+    try {
+      this.audioCtx = new AudioContext({ sampleRate: SAMPLE_RATE });
+    } catch {
+      // Fallback: let browser pick its default rate
+      this.audioCtx = new AudioContext();
+    }
     if (this.audioCtx.state === 'suspended') {
       await this.audioCtx.resume();
     }
@@ -134,9 +140,10 @@ export class MoshiAudioBridge {
   }
 
   private async startMicCapture(): Promise<void> {
+    // Note: sampleRate constraint is NOT supported on Safari iOS — omit it
+    // and let opus-recorder's built-in resampler handle the conversion.
     this.mediaStream = await navigator.mediaDevices.getUserMedia({
       audio: {
-        sampleRate: { ideal: SAMPLE_RATE },
         channelCount: 1,
         echoCancellation: true,
         noiseSuppression: true,
@@ -177,6 +184,7 @@ export class MoshiAudioBridge {
   private schedulePlayback(pcm: Float32Array): void {
     if (!this.audioCtx || !this.gainNode) return;
 
+    // Use the decoder's output rate (24kHz from Moshi) — AudioContext handles resampling
     const buffer = this.audioCtx.createBuffer(1, pcm.length, SAMPLE_RATE);
     buffer.getChannelData(0).set(pcm);
 

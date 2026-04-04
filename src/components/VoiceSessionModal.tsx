@@ -161,7 +161,7 @@ export function VoiceSessionModal({
   }[state];
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface-base/95 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface-base/95 backdrop-blur-sm pb-safe pt-safe" style={{ touchAction: 'manipulation' }}>
       {/* Close / hang up */}
       <button
         onClick={() => void endSession()}
