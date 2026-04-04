@@ -1,9 +1,12 @@
 /**
  * VoiceSessionModal — Full-duplex voice conversation with an Echo.
  *
- * Connects to the Moshi WebSocket for real-time audio in/out.
- * Shows the Echo's portrait with a pulse animation while speaking.
- * Handles microphone permission, connection lifecycle, and clean shutdown.
+ * Audio pipeline:
+ *   Mic → opus-recorder (Ogg Opus) → \x01 prefix → Moshi WS
+ *   Moshi WS → strip \x01 → decoderWorker (Ogg Opus → PCM) → AudioContext playback
+ *
+ * Video pipeline (when MuseTalk sidecar is running):
+ *   MuseTalk WS → JPEG frames → <img> tag (replaces static portrait)
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -12,6 +15,7 @@ import { Mic, MicOff, Phone, PhoneOff, Loader2 } from 'lucide-react';
 import { Button } from './index.ts';
 import { getBaseUrl } from '../lib/api/client.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
+import { MoshiAudioBridge } from '../lib/moshiAudio.ts';
 
 type SessionState = 'idle' | 'starting' | 'connecting' | 'active' | 'error';
 
@@ -33,183 +37,136 @@ export function VoiceSessionModal({
   const [error, setError] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [innerMonologue, setInnerMonologue] = useState('');
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
-  const wsRef = useRef<WebSocket | null>(null);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const mediaStreamRef = useRef<MediaStream | null>(null);
-  const processorRef = useRef<ScriptProcessorNode | null>(null);
+  // MuseTalk video frame (future)
+  const [videoFrame, setVideoFrame] = useState<string | null>(null);
+  const videoWsRef = useRef<WebSocket | null>(null);
 
-  const cleanupRef = useRef(false);
+  const bridgeRef = useRef<MoshiAudioBridge | null>(null);
+  const cleanupDoneRef = useRef(false);
 
   const cleanup = useCallback(async () => {
-    if (cleanupRef.current) return;
-    cleanupRef.current = true;
+    if (cleanupDoneRef.current) return;
+    cleanupDoneRef.current = true;
 
-    // Close WebSocket
-    if (wsRef.current) {
-      wsRef.current.close();
-      wsRef.current = null;
+    // Disconnect audio bridge
+    if (bridgeRef.current) {
+      await bridgeRef.current.disconnect();
+      bridgeRef.current = null;
     }
 
-    // Stop audio processing
-    if (processorRef.current) {
-      processorRef.current.disconnect();
-      processorRef.current = null;
+    // Close MuseTalk video WS
+    if (videoWsRef.current) {
+      videoWsRef.current.close();
+      videoWsRef.current = null;
     }
 
-    // Stop microphone
-    if (mediaStreamRef.current) {
-      mediaStreamRef.current.getTracks().forEach((t) => t.stop());
-      mediaStreamRef.current = null;
+    // Clean up video frame URL
+    if (videoFrame) {
+      URL.revokeObjectURL(videoFrame);
     }
 
-    // Close audio context
-    if (audioCtxRef.current) {
-      await audioCtxRef.current.close().catch(() => {});
-      audioCtxRef.current = null;
-    }
-
-    // Stop the server-side Moshi process
+    // Stop server-side Moshi
     try {
       await echoApi.stopVoiceSession(echoId);
-    } catch {
-      // Best effort — session may already be stopped
-    }
+    } catch { /* best effort */ }
 
-    cleanupRef.current = false;
-  }, [echoId]);
+    cleanupDoneRef.current = false;
+  }, [echoId, videoFrame]);
 
-  // Cleanup on unmount
   useEffect(() => {
-    return () => {
-      void cleanup();
-    };
+    return () => { void cleanup(); };
   }, [cleanup]);
+
+  // Fade out speaking indicator after silence
+  const speakingTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const markSpeaking = useCallback(() => {
+    setIsSpeaking(true);
+    clearTimeout(speakingTimeoutRef.current);
+    speakingTimeoutRef.current = setTimeout(() => setIsSpeaking(false), 500);
+  }, []);
 
   const startSession = useCallback(async () => {
     setState('starting');
     setError(null);
     setInnerMonologue('');
+    setVideoFrame(null);
 
     try {
-      // 1. Request microphone permission
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          sampleRate: 24000,
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
-        },
-      });
-      mediaStreamRef.current = stream;
-
-      // 2. Start server-side Moshi process
+      // 1. Start server-side Moshi
       const { voice_ws_url } = await echoApi.startVoiceSession(echoId);
-
-      // 3. Wait for Moshi to load (model takes ~10-60s on first start)
       setState('connecting');
 
-      // Poll until Moshi is ready (returns 200)
+      // 2. Poll until Moshi is ready (model loading ~60-120s first time)
       const baseUrl = getBaseUrl();
-      const moshiHealthUrl = `${baseUrl}/voice/`;
       let ready = false;
       for (let i = 0; i < 120; i++) {
         try {
-          const resp = await fetch(moshiHealthUrl);
-          if (resp.ok) {
-            ready = true;
-            break;
-          }
-        } catch {
-          // Not ready yet
-        }
+          const resp = await fetch(`${baseUrl}/voice/`);
+          if (resp.ok) { ready = true; break; }
+        } catch { /* not ready */ }
         await new Promise((r) => setTimeout(r, 1000));
       }
+      if (!ready) throw new Error('Voice server did not start in time');
 
-      if (!ready) {
-        throw new Error('Moshi server did not start within timeout');
-      }
+      // 3. Create audio bridge and connect
+      const bridge = new MoshiAudioBridge({
+        onHandshake: () => setState('active'),
+        onText: (text) => setInnerMonologue((prev) => prev + text),
+        onAudioActivity: () => markSpeaking(),
+        onVideoFrame: (blob) => {
+          const url = URL.createObjectURL(blob);
+          setVideoFrame((prev) => {
+            if (prev) URL.revokeObjectURL(prev);
+            return url;
+          });
+        },
+        onError: (msg) => { setError(msg); setState('error'); },
+        onClose: () => setIsSpeaking(false),
+      });
 
-      // 4. Connect WebSocket to Moshi
+      bridgeRef.current = bridge;
+
       const wsBase = baseUrl.replace(/^http/, 'ws');
-      const wsUrl = `${wsBase}${voice_ws_url}`;
-      const ws = new WebSocket(wsUrl);
-      ws.binaryType = 'arraybuffer';
-      wsRef.current = ws;
+      await bridge.connect(`${wsBase}${voice_ws_url}`);
 
-      ws.onopen = () => {
-        setState('active');
-      };
-
-      ws.onmessage = (event) => {
-        if (!(event.data instanceof ArrayBuffer)) return;
-        const data = new Uint8Array(event.data);
-        if (data.length === 0) return;
-
-        const kind = data[0];
-        if (kind === 0) {
-          // Handshake
-          setState('active');
-        } else if (kind === 1) {
-          // Audio data from Moshi — decode and play
-          // For now, we rely on the Moshi web UI's audio handling
-          // In a full implementation, decode Opus and play via Web Audio API
-        } else if (kind === 2) {
-          // Text (inner monologue)
-          const text = new TextDecoder().decode(data.slice(1));
-          setInnerMonologue((prev) => prev + text);
-        }
-      };
-
-      ws.onerror = () => {
-        setError('Voice connection error');
-        setState('error');
-      };
-
-      ws.onclose = () => {
-        if (state === 'active') {
-          setState('idle');
-        }
-      };
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to start voice session';
       setError(msg);
       setState('error');
       void cleanup();
     }
-  }, [echoId, cleanup, state]);
+  }, [echoId, cleanup, markSpeaking]);
 
   const endSession = useCallback(async () => {
     setState('idle');
+    setIsSpeaking(false);
     await cleanup();
     onClose();
   }, [cleanup, onClose]);
 
   const toggleMute = useCallback(() => {
-    if (mediaStreamRef.current) {
-      const track = mediaStreamRef.current.getAudioTracks()[0];
-      if (track) {
-        track.enabled = !track.enabled;
-        setIsMuted(!track.enabled);
-      }
-    }
-  }, []);
+    const newMuted = !isMuted;
+    setIsMuted(newMuted);
+    bridgeRef.current?.setMuted(newMuted);
+  }, [isMuted]);
 
   const stateLabel = {
-    idle: t('voice.tapToStart', 'Tap to start conversation'),
-    starting: t('voice.requestingMic', 'Requesting microphone...'),
-    connecting: t('voice.connecting', 'Connecting to Echo...'),
-    active: t('voice.speaking', 'Speaking...'),
-    error: error || t('voice.error', 'Connection error'),
+    idle: t('voice.tapToStart'),
+    starting: t('voice.requestingMic'),
+    connecting: t('voice.connecting'),
+    active: t('voice.speaking'),
+    error: error || t('voice.error'),
   }[state];
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface-base/95 backdrop-blur-sm">
-      {/* Close button */}
+      {/* Close / hang up */}
       <button
         onClick={() => void endSession()}
         className="absolute right-4 top-4 rounded-full p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
-        aria-label={t('voice.close', 'Close')}
+        aria-label={t('voice.close')}
       >
         <PhoneOff size={24} />
       </button>
@@ -217,28 +174,27 @@ export function VoiceSessionModal({
       {/* Echo name */}
       <h2 className="mb-6 text-xl font-semibold text-text-primary">{echoName}</h2>
 
-      {/* Portrait with pulse animation */}
+      {/* Portrait / MuseTalk video */}
       <div
-        className={`relative mb-8 h-48 w-48 overflow-hidden rounded-full border-4 ${
+        className={`relative mb-8 h-48 w-48 overflow-hidden rounded-full border-4 transition-all duration-300 ${
           state === 'active'
-            ? 'border-accent animate-pulse'
+            ? isSpeaking
+              ? 'border-accent shadow-lg shadow-accent/40 scale-105'
+              : 'border-accent/60 shadow-md shadow-accent/20'
             : 'border-border-default'
         }`}
       >
-        {avatarUrl ? (
-          <img
-            src={avatarUrl}
-            alt={echoName}
-            className="h-full w-full object-cover"
-            loading="eager"
-          />
+        {videoFrame ? (
+          <img src={videoFrame} alt={echoName} className="h-full w-full object-cover" />
+        ) : avatarUrl ? (
+          <img src={avatarUrl} alt={echoName} className="h-full w-full object-cover" loading="eager" />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-surface-raised text-4xl font-bold text-text-secondary">
             {echoName[0]}
           </div>
         )}
 
-        {/* Connecting overlay */}
+        {/* Loading overlay */}
         {(state === 'starting' || state === 'connecting') && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
             <Loader2 className="h-12 w-12 animate-spin text-white" />
@@ -246,16 +202,12 @@ export function VoiceSessionModal({
         )}
       </div>
 
-      {/* Status label */}
-      <p
-        className={`mb-6 text-sm ${
-          state === 'error' ? 'text-red-400' : 'text-text-secondary'
-        }`}
-      >
+      {/* Status */}
+      <p className={`mb-6 text-sm ${state === 'error' ? 'text-red-400' : 'text-text-secondary'}`}>
         {stateLabel}
       </p>
 
-      {/* Inner monologue (what the Echo is thinking) */}
+      {/* Inner monologue */}
       {innerMonologue && state === 'active' && (
         <div className="mb-6 max-w-md rounded-lg bg-surface-raised px-4 py-2 text-sm italic text-text-secondary">
           {innerMonologue.slice(-200)}
@@ -270,25 +222,23 @@ export function VoiceSessionModal({
             className="flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-white"
           >
             <Phone size={20} />
-            {t('voice.startCall', 'Start Call')}
+            {t('voice.startCall')}
           </Button>
         ) : state === 'active' ? (
           <>
             <button
               onClick={toggleMute}
               className={`rounded-full p-4 ${
-                isMuted
-                  ? 'bg-red-500/20 text-red-400'
-                  : 'bg-surface-raised text-text-primary'
+                isMuted ? 'bg-red-500/20 text-red-400' : 'bg-surface-raised text-text-primary'
               }`}
-              aria-label={isMuted ? t('voice.unmute', 'Unmute') : t('voice.mute', 'Mute')}
+              aria-label={isMuted ? t('voice.unmute') : t('voice.mute')}
             >
               {isMuted ? <MicOff size={24} /> : <Mic size={24} />}
             </button>
             <button
               onClick={() => void endSession()}
               className="rounded-full bg-red-500 p-4 text-white"
-              aria-label={t('voice.endCall', 'End Call')}
+              aria-label={t('voice.endCall')}
             >
               <PhoneOff size={24} />
             </button>
@@ -296,9 +246,7 @@ export function VoiceSessionModal({
         ) : (
           <Button disabled className="flex items-center gap-2 rounded-full px-6 py-3 opacity-50">
             <Loader2 size={20} className="animate-spin" />
-            {state === 'starting'
-              ? t('voice.starting', 'Starting...')
-              : t('voice.connectingShort', 'Connecting...')}
+            {state === 'starting' ? t('voice.starting') : t('voice.connectingShort')}
           </Button>
         )}
       </div>
