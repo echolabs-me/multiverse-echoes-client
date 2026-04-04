@@ -8,43 +8,24 @@
   &::-webkit-scrollbar { display: none; }
 }
 
-/* Tablet pane carousel — pure CSS, native iOS scroll physics */
-.tablet-scroll-track {
-  display: flex;
-  flex: 1;
-  gap: 12px;
-  padding: 8px 15%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  perspective: 1200px;
-  &::-webkit-scrollbar { display: none; }
-}
-.tablet-scroll-card {
-  flex: 0 0 70%;
-  height: 100%;
-  scroll-snap-align: center;
-  transition: transform 0.25s ease-out, opacity 0.25s ease-out;
-}
-.tablet-scroll-card[data-position="center"] {
-  transform: scale(1) translateZ(0px);
-  opacity: 1;
-  z-index: 3;
-}
-.tablet-scroll-card[data-position="near"] {
-  transform: scale(0.92) translateZ(-80px);
-  opacity: 0.7;
-  z-index: 2;
-}
-.tablet-scroll-card[data-position="far"] {
-  transform: scale(0.84) translateZ(-160px);
-  opacity: 0.5;
-  z-index: 1;
-}
 
 
+
+/* Tablet split-view panel slide animations */
+.animate-slide-in-left {
+  animation: slide-in-left 200ms ease forwards;
+}
+.animate-slide-in-right {
+  animation: slide-in-right 200ms ease forwards;
+}
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
 
 /* CDS-001 §4.1 — Font stacks */
 @font-face {

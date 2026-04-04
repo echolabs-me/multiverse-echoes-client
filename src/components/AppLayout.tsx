@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -12,7 +12,6 @@ import {
   X,
   LogOut,
 } from 'lucide-react';
-import { TabletPaneScroller } from './TabletPaneScroller';
 
 function DiscordIcon({ size = 20 }: { size?: number }) {
   return (
@@ -29,6 +28,7 @@ import { CommunitySidebar } from './CommunitySidebar.tsx';
 import { TickTimer } from './TickTimer.tsx';
 import { EchoSidebar } from './EchoSidebar.tsx';
 import { CommunityPulseCard } from './CommunityPulseCard.tsx';
+import { TabletLayout } from './TabletLayout.tsx';
 import { MoodParticles } from './MoodParticles.tsx';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
 import { useCommunitySidebarUnread } from '../hooks/useCommunitySidebarUnread.ts';
@@ -165,39 +165,6 @@ export function AppLayout() {
 
   const showEchoPanes = location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/');
 
-  // Tablet panes — memoized to avoid re-creating on every render.
-  // Must be before auth guard (React hooks must be called unconditionally).
-  const tabletPanes = useMemo(() => [
-    {
-      id: 'community-pulse',
-      label: t('communityFeed.title'),
-      content: (
-        <div className="h-full overflow-y-auto px-2 pb-2">
-          <CommunityPulseCard />
-        </div>
-      ),
-    },
-    {
-      id: 'echoes',
-      label: t('echoSidebar.title'),
-      content: <EchoSidebar forceVisible />,
-    },
-    {
-      id: 'detail',
-      label: t('nav.dashboard'),
-      content: <div className="h-full overflow-y-auto"><Outlet /></div>,
-    },
-    {
-      id: 'oracle',
-      label: t('oracle.title'),
-      content: <OracleSidebar onCollapse={() => {}} />,
-    },
-    {
-      id: 'community',
-      label: t('communitySidebar.title'),
-      content: <CommunitySidebar />,
-    },
-  ], [t]);
 
   // Auth guard
   if (!isAuthenticated) {
@@ -274,22 +241,10 @@ export function AppLayout() {
         {/* Left nav — icon-only, visible on md+ */}
         <NavSidebar />
 
-        {/* ═══ TABLET LAYOUT (md to min-[1440px]) — swipeable pane scroller ═══ */}
-        {showEchoPanes && (
-          <div className="hidden md:flex xl:hidden flex-1 min-w-0">
-            <TabletPaneScroller
-              initialPane={2}
-              panes={tabletPanes}
-            />
-          </div>
-        )}
-
-        {/* Non-echo pages on tablet (settings, search, etc.) */}
-        {!showEchoPanes && (
-          <main className="hidden md:flex xl:hidden flex-1 overflow-y-auto">
-            <div className="flex-1 overflow-y-auto"><Outlet /></div>
-          </main>
-        )}
+        {/* ═══ TABLET LAYOUT (md to xl) — split-view master-detail ═══ */}
+        <div className="hidden md:flex xl:hidden flex-1 min-w-0">
+          <TabletLayout showEchoPanes={showEchoPanes} />
+        </div>
 
         {/* ═══ PHONE LAYOUT (<md) — single pane, full width ═══ */}
         <main className="flex-1 overflow-y-auto md:hidden">
@@ -318,7 +273,7 @@ export function AppLayout() {
             </main>
 
             <aside className="flex h-full w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-l border-border/50">
-              <OracleSidebar onCollapse={() => {}} />
+              <OracleSidebar />
             </aside>
 
             {/* Community pane — 1920px+ */}
@@ -377,7 +332,7 @@ export function AppLayout() {
         ))}
       </nav>
 
-      {/* Oracle overlay — phone only (tablets use pane scroller, desktop has pane) */}
+      {/* Oracle overlay — phone only (tablets use TabletLayout overlay, desktop has pane) */}
       {mobileOracleOpen && (
         <div className="fixed inset-0 z-50 flex flex-col bg-canvas md:hidden">
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
@@ -394,12 +349,12 @@ export function AppLayout() {
             </button>
           </div>
           <div className="flex-1 overflow-hidden">
-            <OracleSidebar onCollapse={() => setMobileOracleOpen(false)} />
+            <OracleSidebar />
           </div>
         </div>
       )}
 
-      {/* Community overlay — phone + desktop 1440-1920 (tablets use pane scroller) */}
+      {/* Community overlay — phone + desktop 1440-1920 */}
       {mobileCommunityOpen && (
         <>
           <button className="hidden xl:block min-[1920px]:hidden fixed inset-0 z-40 bg-black/30 cursor-default" onClick={() => setMobileCommunityOpen(false)} aria-label={t('common.close')} tabIndex={-1} />

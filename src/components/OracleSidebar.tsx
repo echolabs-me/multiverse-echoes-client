@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Sparkles, Send, Trash2, ChevronLeft, ExternalLink, MessageCircle } from 'lucide-react';
+import { Sparkles, Send, Trash2, ExternalLink, MessageCircle } from 'lucide-react';
 import { useOracleStore } from '../stores/useOracleStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import type { OracleMessage } from '../stores/useOracleStore.ts';
@@ -19,11 +19,7 @@ const SUGGESTED_QUESTIONS = [
   'oracle.suggestion3',
 ];
 
-interface OracleSidebarProps {
-  onCollapse: () => void;
-}
-
-export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
+export function OracleSidebar() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -113,14 +109,6 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
               title={t('oracle.clearHistory')}
             >
               <Trash2 size={12} />
-            </button>
-            <button
-              onClick={onCollapse}
-              className="hidden md:inline-flex lg:hidden rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
-              aria-label={t('oracle.collapse', 'Collapse Oracle')}
-              title={t('oracle.collapse', 'Collapse Oracle')}
-            >
-              <ChevronLeft size={12} className="rotate-180" />
             </button>
           </div>
         </div>
