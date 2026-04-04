@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Outlet, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -11,6 +11,8 @@ import {
   Menu,
   X,
   LogOut,
+  ChevronDown,
+  ChevronRight,
 } from 'lucide-react';
 
 function DiscordIcon({ size = 20 }: { size?: number }) {
@@ -264,7 +266,15 @@ export function AppLayout() {
               </aside>
             )}
 
-            {showEchoPanes && <EchoSidebar />}
+            {showEchoPanes && (
+              <div className="flex h-full flex-shrink-0 flex-col border-r border-border/50">
+                {/* Community Pulse — collapsible in sidebar for screens <1920px */}
+                <div className="min-[1920px]:hidden">
+                  <DesktopPulseSection />
+                </div>
+                <EchoSidebar />
+              </div>
+            )}
 
             <main id="main-content" className="flex-1 overflow-y-auto">
               <Outlet />
@@ -341,6 +351,49 @@ export function AppLayout() {
       )}
 
 
+    </div>
+  );
+}
+
+const DESKTOP_PULSE_KEY = 'desktop-pulse-open';
+
+/**
+ * Collapsible Community Pulse for the desktop echo sidebar (screens 1280-1919px).
+ * Above 1920px, the full-width Pulse aside renders instead.
+ */
+function DesktopPulseSection() {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(() => {
+    const stored = localStorage.getItem(DESKTOP_PULSE_KEY);
+    return stored === null ? true : stored === 'true';
+  });
+
+  const toggle = useCallback(() => {
+    setOpen((prev) => {
+      localStorage.setItem(DESKTOP_PULSE_KEY, String(!prev));
+      return !prev;
+    });
+  }, []);
+
+  return (
+    <div className="flex-shrink-0 border-b border-border/50">
+      <button
+        onClick={toggle}
+        className="flex w-full items-center justify-between px-3 py-1.5 text-left hover:bg-surface-raised transition-colors"
+      >
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+          {t('communityFeed.title')}
+        </span>
+        {open
+          ? <ChevronDown size={12} className="text-text-muted" />
+          : <ChevronRight size={12} className="text-text-muted" />
+        }
+      </button>
+      {open && (
+        <div className="max-h-[200px] overflow-y-auto px-2 pb-2">
+          <CommunityPulseCard />
+        </div>
+      )}
     </div>
   );
 }
