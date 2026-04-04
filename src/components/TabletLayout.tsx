@@ -12,13 +12,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Outlet, useParams, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { PanelLeftClose, PanelLeftOpen, Sparkles, X } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen, Sparkles, X, ChevronDown, ChevronRight } from 'lucide-react';
 import { EchoSidebar } from './EchoSidebar.tsx';
 import { OracleSidebar } from './OracleSidebar.tsx';
+import { CommunityPulseCard } from './CommunityPulseCard.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useOracleStore } from '../stores/useOracleStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
+
+const PULSE_STORAGE_KEY = 'tablet-pulse-open';
 
 const SIDEBAR_STORAGE_KEY = 'tablet-echo-sidebar-open';
 
@@ -119,6 +122,7 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
               <PanelLeftClose size={14} />
             </button>
           </div>
+          <SidebarPulseSection />
           <EchoSidebar forceVisible />
         </aside>
       )}
@@ -184,6 +188,7 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
                 <X size={14} />
               </button>
             </div>
+            <SidebarPulseSection />
             <EchoSidebar forceVisible />
           </aside>
         </>
@@ -205,6 +210,47 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
             <OracleSidebar />
           </aside>
         </>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Collapsible Community Pulse section — sits above the echo list in the sidebar.
+ * Toggle state persisted in localStorage.
+ */
+function SidebarPulseSection() {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(() => {
+    const stored = localStorage.getItem(PULSE_STORAGE_KEY);
+    return stored === null ? true : stored === 'true';
+  });
+
+  const toggle = useCallback(() => {
+    setOpen((prev) => {
+      localStorage.setItem(PULSE_STORAGE_KEY, String(!prev));
+      return !prev;
+    });
+  }, []);
+
+  return (
+    <div className="flex-shrink-0 border-b border-border/50">
+      <button
+        onClick={toggle}
+        className="flex w-full items-center justify-between px-3 py-1.5 text-left hover:bg-surface-raised transition-colors"
+      >
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+          {t('communityFeed.title')}
+        </span>
+        {open
+          ? <ChevronDown size={12} className="text-text-muted" />
+          : <ChevronRight size={12} className="text-text-muted" />
+        }
+      </button>
+      {open && (
+        <div className="max-h-[200px] overflow-y-auto px-2 pb-2">
+          <CommunityPulseCard />
+        </div>
       )}
     </div>
   );
