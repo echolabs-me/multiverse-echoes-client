@@ -189,6 +189,7 @@ export interface EchoResponse {
   birth_hash: string;
   created_at: string;
   name_locked: boolean;
+  avatar_url: string | null;
 }
 
 // --- Shard ---
@@ -857,6 +858,7 @@ export type WsEchoEvent =
   | { type: 'EchoWealthChanged'; echo_id: string; old_value: number; new_value: number; reason: string }
   | { type: 'EchoDeleted'; echo_id: string }
   | { type: 'ShardTravelCompleted'; echo_id: string; shard_id: string }
+  | { type: 'EchoAvatarReady'; echo_id: string; avatar_url: string }
   | { type: 'ShardCreated'; shard_id: string; shard_type: string }
   | { type: 'CommunityMessagePosted'; channel_id: string; message_id: string; author_id: string }
   | { type: 'CommunityMessageEdited'; channel_id: string; message_id: string; author_id: string }

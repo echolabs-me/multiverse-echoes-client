@@ -350,6 +350,11 @@ export type Echo = {
 	updated_at: string,
 	hibernated_at: string | null,
 	deleted_at: string | null,
+	/**
+	 *  URL of the AI-generated portrait image (face, generated once at creation from bio).
+	 *  Used as the MuseTalk reference face for voice sessions.
+	 */
+	avatar_url?: string | null,
 };
 
 export type EchoMemory = {
@@ -399,6 +404,8 @@ export type EchoResponse = {
 	created_at: string,
 	// True if the Echo has ticked at least once — name cannot be changed.
 	name_locked: boolean,
+	// URL of the AI-generated portrait image (face). Null if generation failed or pending.
+	avatar_url: string | null,
 };
 
 export type EchoStatus = "Active" | "Travelling" | "Hibernated" | "Quarantined" | "Deleted";
@@ -1129,7 +1136,9 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
 // Phase 7 — user feedback system.
 { FeedbackSubmitted: { user_id: string; feedback_id: string } } | { CommunityMessagePosted: { channel_id: string; message_id: string; author_id: string } } | { MessageDeleted: { channel_id: string; message_id: string; deleted_by: string } } | { MessageEdited: { channel_id: string; message_id: string; author_id: string } } | { FeedItemGenerated: { feed_item_id: string; echo_id: string; shard_id: string } } | { UserFollowed: { source_user_id: string; target_user_id: string } } | { UserBlocked: { source_user_id: string; target_user_id: string } } | { UserMuted: { source_user_id: string; target_user_id: string } } | { NotificationCreated: { user_id: string; notification_id: string } } | 
 // Emitted when the daily digest notification is generated. Phase 7 digest system.
-{ DailyDigestGenerated: { user_id: string; notification_id: string } } | { EmergencyHibernation: { reason: string } };
+{ DailyDigestGenerated: { user_id: string; notification_id: string } } | 
+// Emitted when an Echo's AI-generated portrait is ready (background generation complete).
+{ EchoAvatarReady: { echo_id: string; avatar_url: string } } | { EmergencyHibernation: { reason: string } };
 
 // Events sent over the WebSocket to clients.
-export type WsEchoEvent = { type: "DiaryEntryCreated"; echo_id: string; diary_id: string; tick_id: number } | { type: "DiaryImageReady"; echo_id: string; diary_id: string; image_url: string } | { type: "LifeEventOccurred"; echo_id: string; event_id: string; tick_id: number } | { type: "MoodChanged"; echo_id: string; mood: string; tick_id: number } | { type: "EchoMoved"; echo_id: string; from_location: string; to_location: string } | { type: "PersonaUpdated"; echo_id: string; version: number } | { type: "EchoHibernated"; echo_id: string; reason: string } | { type: "EchoWoken"; echo_id: string } | { type: "EchoWealthChanged"; echo_id: string; old_value: number; new_value: number; reason: string } | { type: "EchoDeleted"; echo_id: string } | { type: "ShardTravelCompleted"; echo_id: string; shard_id: string } | { type: "ShardCreated"; shard_id: string; shard_type: string } | { type: "CommunityMessagePosted"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageEdited"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageDeleted"; channel_id: string; message_id: string; deleted_by: string } | { type: "NotificationCreated"; notification_id: string } | { type: "Connected"; echo_id: string; message: string } | { type: "Error"; message: string };
+export type WsEchoEvent = { type: "DiaryEntryCreated"; echo_id: string; diary_id: string; tick_id: number } | { type: "DiaryImageReady"; echo_id: string; diary_id: string; image_url: string } | { type: "LifeEventOccurred"; echo_id: string; event_id: string; tick_id: number } | { type: "MoodChanged"; echo_id: string; mood: string; tick_id: number } | { type: "EchoMoved"; echo_id: string; from_location: string; to_location: string } | { type: "PersonaUpdated"; echo_id: string; version: number } | { type: "EchoHibernated"; echo_id: string; reason: string } | { type: "EchoWoken"; echo_id: string } | { type: "EchoWealthChanged"; echo_id: string; old_value: number; new_value: number; reason: string } | { type: "EchoDeleted"; echo_id: string } | { type: "ShardTravelCompleted"; echo_id: string; shard_id: string } | { type: "ShardCreated"; shard_id: string; shard_type: string } | { type: "CommunityMessagePosted"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageEdited"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageDeleted"; channel_id: string; message_id: string; deleted_by: string } | { type: "NotificationCreated"; notification_id: string } | { type: "EchoAvatarReady"; echo_id: string; avatar_url: string } | { type: "Connected"; echo_id: string; message: string } | { type: "Error"; message: string };

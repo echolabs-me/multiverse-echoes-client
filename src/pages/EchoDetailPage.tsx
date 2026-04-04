@@ -309,6 +309,9 @@ export function EchoDetailPage() {
         void useFeedStore.getState().fetchPersonalFeed(id);
       } else if (event.type === 'NotificationCreated') {
         void useNotificationStore.getState().fetchNotifications();
+      } else if (event.type === 'EchoAvatarReady') {
+        // Portrait generated — re-fetch echo to get avatar_url
+        void useEchoStore.getState().fetchEcho(id);
       }
     },
     [playSound, debouncedFetchEchoes],
@@ -511,7 +514,7 @@ export function EchoDetailPage() {
 
           {/* Echo header */}
           <div className="mb-6 flex items-start gap-4">
-            <EchoPortrait3D name={activeEcho.name} mood={activeEcho.current_mood} size="lg" />
+            <EchoPortrait3D name={activeEcho.name} mood={activeEcho.current_mood} size="lg" avatarUrl={activeEcho.avatar_url} />
             <div className="flex-1">
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-text-primary">{activeEcho.name}</h1>

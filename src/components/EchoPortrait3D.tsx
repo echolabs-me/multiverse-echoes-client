@@ -225,6 +225,8 @@ export interface EchoPortrait3DProps {
   size?: 'sm' | 'md' | 'lg';
   /** Force 2D fallback (e.g., user toggle in Settings) */
   disable3D?: boolean;
+  /** AI-generated portrait URL. When set, shows the image instead of 3D silhouette. */
+  avatarUrl?: string | null;
 }
 
 export function EchoPortrait3D({
@@ -232,9 +234,32 @@ export function EchoPortrait3D({
   mood,
   size = 'md',
   disable3D = false,
+  avatarUrl,
 }: EchoPortrait3DProps) {
   const reducedMotion = useReducedMotion();
   const gpuAvailable = useGpuAvailable();
+
+  const sizeClass = size === 'lg' ? 'h-24 w-24' : size === 'md' ? 'h-20 w-20' : 'h-14 w-14';
+  const theme = getMoodTheme(mood);
+
+  // If an AI-generated portrait exists, show it with a mood-tinted border.
+  if (avatarUrl) {
+    return (
+      <div
+        className={`${sizeClass} shrink-0 overflow-hidden rounded-xl`}
+        style={{ border: `2px solid ${theme.primary}44` }}
+        role="img"
+        aria-label={`${name} portrait, mood: ${mood}`}
+      >
+        <img
+          src={avatarUrl}
+          alt={`${name} portrait`}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    );
+  }
 
   // Use static fallback when: reduced motion, no GPU, or user disabled 3D.
   const use2D = reducedMotion || !gpuAvailable || disable3D;
@@ -242,8 +267,6 @@ export function EchoPortrait3D({
   if (use2D) {
     return <StaticFallback name={name} mood={mood} size={size} />;
   }
-
-  const sizeClass = size === 'lg' ? 'h-24 w-24' : size === 'md' ? 'h-20 w-20' : 'h-14 w-14';
 
   return (
     <div

@@ -140,6 +140,9 @@ export const echoes = {
       method: 'PATCH',
       body: JSON.stringify({ name }),
     }),
+
+  regenerateAvatar: (echoId: string) =>
+    request<EchoResponse>(`/echoes/${echoId}/avatar/regenerate`, { method: 'POST' }),
 };
 
 // --- Shards ---

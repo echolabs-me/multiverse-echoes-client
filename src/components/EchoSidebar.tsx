@@ -101,13 +101,22 @@ function EchoCard({
         className="flex flex-1 min-w-0 flex-col gap-1 py-2.5 pr-3 text-left"
         aria-current={isActive ? 'page' : undefined}
       >
-        {/* Row 1: mood dot + name */}
+        {/* Row 1: avatar/mood dot + name */}
         <div className="flex items-center gap-2">
-          <span
-            className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
-            style={{ backgroundColor: moodColor }}
-            aria-label={echo.current_mood}
-          />
+          {echo.avatar_url ? (
+            <img
+              src={echo.avatar_url}
+              alt=""
+              className="h-6 w-6 flex-shrink-0 rounded-full object-cover"
+              style={{ border: `1.5px solid ${hexToRgba(moodColor, 0.5)}` }}
+            />
+          ) : (
+            <span
+              className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
+              style={{ backgroundColor: moodColor }}
+              aria-label={echo.current_mood}
+            />
+          )}
           <span className={`truncate text-sm font-medium ${isActive ? 'text-accent' : 'text-text-primary'}`}>
             {echo.name}
           </span>
