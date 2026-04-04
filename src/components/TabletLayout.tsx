@@ -79,12 +79,18 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
   }, [location.pathname, isLandscape]);
 
   const toggleEchoSidebar = useCallback(() => {
-    setEchoSidebarOpen((prev) => !prev);
+    setEchoSidebarOpen((prev) => {
+      if (!prev) setOracleOpen(false); // close Oracle when opening echo list
+      return !prev;
+    });
   }, []);
 
   const toggleOracle = useCallback(() => {
-    setOracleOpen((prev) => !prev);
-  }, []);
+    setOracleOpen((prev) => {
+      if (!prev && !isLandscape) setEchoSidebarOpen(false); // close echo list when opening Oracle (portrait)
+      return !prev;
+    });
+  }, [isLandscape]);
 
   // Non-echo pages (settings, search, etc.) — just render Outlet full width
   if (!showEchoPanes) {
