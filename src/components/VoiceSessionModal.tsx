@@ -44,6 +44,7 @@ export function VoiceSessionModal({
   const videoWsRef = useRef<WebSocket | null>(null);
 
   const bridgeRef = useRef<MoshiAudioBridge | null>(null);
+  const sessionNonceRef = useRef<number | undefined>(undefined);
   const cleanupDoneRef = useRef(false);
 
   const cleanup = useCallback(async () => {
@@ -67,10 +68,11 @@ export function VoiceSessionModal({
       URL.revokeObjectURL(videoFrame);
     }
 
-    // Stop server-side Moshi
+    // Stop server-side Moshi (pass nonce to prevent killing a newer session)
     try {
-      await echoApi.stopVoiceSession(echoId);
+      await echoApi.stopVoiceSession(echoId, sessionNonceRef.current);
     } catch { /* best effort */ }
+    sessionNonceRef.current = undefined;
 
     cleanupDoneRef.current = false;
   }, [echoId, videoFrame]);
@@ -95,7 +97,8 @@ export function VoiceSessionModal({
 
     try {
       // 1. Start server-side Moshi
-      const { voice_ws_url } = await echoApi.startVoiceSession(echoId);
+      const { voice_ws_url, session_nonce } = await echoApi.startVoiceSession(echoId);
+      sessionNonceRef.current = session_nonce;
       setState('connecting');
 
       // 2. Poll sidecar /health — returns 200 only when both sidecar AND Moshi are up
