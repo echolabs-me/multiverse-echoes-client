@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
@@ -13,11 +13,14 @@ const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | u
 export function RegisterPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const codeFromUrl = searchParams.get('code') ?? '';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [inviteCode, setInviteCode] = useState(codeFromUrl);
   const [tosAccepted, setTosAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,6 +60,7 @@ export function RegisterPage() {
         privacy_accepted: privacyAccepted,
         age_confirmed: true,
         cf_turnstile_response: turnstileToken,
+        invite_code: inviteCode,
       });
       trackEvent('account.registered', { method: 'email', locale: navigator.language });
 
@@ -72,6 +76,8 @@ export function RegisterPage() {
           setErrors({ email: t('auth.emailTaken') });
         } else if (err.code === 'DISPLAY_NAME_TAKEN') {
           setErrors({ displayName: t('auth.displayNameTaken') });
+        } else if (err.code === 'INVALID_INVITE_CODE') {
+          setErrors({ inviteCode: t('auth.invalidInviteCode') });
         } else {
           setErrors({ form: err.message });
         }
@@ -99,6 +105,20 @@ export function RegisterPage() {
         </div>
 
         <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
+          <div>
+            <Input
+              label={t('auth.inviteCode')}
+              value={inviteCode}
+              onChange={(e) => setInviteCode((e.target as HTMLInputElement).value)}
+              error={errors.inviteCode}
+              placeholder="GITEX-ABC12345"
+              required
+              readOnly={!!codeFromUrl}
+              autoComplete="off"
+            />
+            <p className="mt-1 text-xs text-text-secondary">{t('auth.inviteCodeHint')}</p>
+          </div>
+
           <Input
             label={t('auth.email')}
             type="email"

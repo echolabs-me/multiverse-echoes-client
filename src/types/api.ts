@@ -96,6 +96,7 @@ export interface RegisterRequest {
   privacy_accepted: boolean;
   age_confirmed: boolean;
   cf_turnstile_response?: string;
+  invite_code: string;
 }
 
 export interface RegisterResponse {
