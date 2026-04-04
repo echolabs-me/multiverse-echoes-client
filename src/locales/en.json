@@ -228,6 +228,7 @@
     "settings": "Echo Settings",
     "soloMode": "Solo mode (no cross-user interactions)",
     "talkToEcho": "Talk to Echo",
+    "voiceCall": "Voice Call",
     "exportStory": "Export Story",
     "sentiment": "Sentiment",
     "crossUser": "Cross-user relationship",
@@ -731,5 +732,19 @@
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "footerTagline": "All rights reserved."
+  },
+  "voice": {
+    "tapToStart": "Tap to start conversation",
+    "requestingMic": "Requesting microphone...",
+    "connecting": "Connecting to Echo...",
+    "speaking": "Speaking...",
+    "error": "Connection error",
+    "close": "Close",
+    "startCall": "Start Call",
+    "endCall": "End Call",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "starting": "Starting...",
+    "connectingShort": "Connecting..."
   }
 }

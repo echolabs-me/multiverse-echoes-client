@@ -20,6 +20,7 @@ import {
   X,
   MoreHorizontal,
   Navigation,
+  Phone,
 } from 'lucide-react';
 import {
   Card,
@@ -32,6 +33,7 @@ import {
   StoryExportModal,
 } from '../components/index.ts';
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
+import { VoiceSessionModal } from '../components/VoiceSessionModal.tsx';
 import { getMoodColor } from '../lib/moodColor.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
@@ -103,6 +105,7 @@ export function EchoDetailPage() {
   const [influenceDetails, setInfluenceDetails] = useState('');
   const [exportModal, setExportModal] = useState(false);
   const [showConversation, setShowConversation] = useState(false);
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [resumeConversationId, setResumeConversationId] = useState<string | undefined>();
   const [pastConversations, setPastConversations] = useState<Conversation[]>([]);
   const [showPastConversations, setShowPastConversations] = useState(false);
@@ -620,6 +623,14 @@ export function EchoDetailPage() {
                 )}
               </div>
             </div>
+            {/* Voice call button */}
+            <button
+              onClick={() => setShowVoiceModal(true)}
+              disabled={activeEcho.status === 'Hibernated'}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-purple-500/30 bg-purple-500/10 px-4 py-3 text-sm font-semibold text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/15 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            >
+              <Phone size={18} /> {t('echoDetail.voiceCall', 'Talk to ' + activeEcho.name)}
+            </button>
             {/* Nudge confirmation banner */}
             {nudgeConfirmed && (
               <div className="flex items-center gap-1.5 rounded-lg border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-medium text-success animate-slide-in">
@@ -1136,6 +1147,16 @@ export function EchoDetailPage() {
             resumeConversationId={resumeConversationId}
           />
         </div>
+      )}
+
+      {/* Voice session modal */}
+      {showVoiceModal && activeEcho && (
+        <VoiceSessionModal
+          echoId={activeEcho.echo_id}
+          echoName={activeEcho.name}
+          avatarUrl={activeEcho.avatar_url}
+          onClose={() => setShowVoiceModal(false)}
+        />
       )}
     </div>
   );

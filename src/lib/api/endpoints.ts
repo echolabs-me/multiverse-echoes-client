@@ -143,6 +143,15 @@ export const echoes = {
 
   regenerateAvatar: (echoId: string) =>
     request<EchoResponse>(`/echoes/${echoId}/avatar/regenerate`, { method: 'POST' }),
+
+  startVoiceSession: (echoId: string) =>
+    request<{ voice_ws_url: string; echo_id: string }>(`/echoes/${echoId}/voice/start`, { method: 'POST' }),
+
+  stopVoiceSession: (echoId: string) =>
+    request<void>(`/echoes/${echoId}/voice/stop`, { method: 'POST' }),
+
+  voiceStatus: (echoId: string) =>
+    request<{ active: boolean; voice_ws_url: string | null }>(`/echoes/${echoId}/voice/status`),
 };
 
 // --- Shards ---
