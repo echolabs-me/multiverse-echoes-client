@@ -98,10 +98,10 @@ export function VoiceSessionModal({
       const { voice_ws_url } = await echoApi.startVoiceSession(echoId);
       setState('connecting');
 
-      // 2. Poll until Moshi is ready (model loading ~60-120s first time)
+      // 2. Poll until sidecar is ready (first time: model loading ~90s + avatar prep ~30s)
       const baseUrl = getBaseUrl();
       let ready = false;
-      for (let i = 0; i < 120; i++) {
+      for (let i = 0; i < 240; i++) {
         try {
           const resp = await fetch(`${baseUrl}/voice/`);
           if (resp.ok) { ready = true; break; }
