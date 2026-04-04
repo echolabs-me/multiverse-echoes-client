@@ -9,7 +9,6 @@ import {
   EmptyState,
   Button,
   ShareModal,
-  ReportButton,
 } from '../components/index.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -127,7 +126,6 @@ function SocialFeedCard({
               >
                 <Share2 size={14} />
               </button>
-              <ReportButton targetType="content" targetId={item.item_id} />
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Send, Lock } from 'lucide-react';
-import { Button, ReportButton } from '../components/index.ts';
+import { Button } from '../components/index.ts';
 import { useAuthStore, useEchoStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -292,9 +292,6 @@ export function EchoConversationPage() {
                     minute: '2-digit',
                   })}
                 </time>
-                {msg.role === 'echo' && !msg.message_id.startsWith('queued-') && !msg.message_id.startsWith('temp-') && !msg.message_id.startsWith('fallback-') && (
-                  <ReportButton targetType="content" targetId={msg.message_id} size={12} />
-                )}
               </div>
             </div>
           </div>

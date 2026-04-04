@@ -18,7 +18,6 @@ import {
   Lock,
   Search,
   X,
-  Flag,
   MoreHorizontal,
   Navigation,
 } from 'lucide-react';
@@ -46,7 +45,7 @@ import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
 import { EchoConversationPanel } from '../components/EchoConversationPanel.tsx';
-import { echoes as echoApi, reports, conversations } from '../lib/api/endpoints.ts';
+import { echoes as echoApi, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -103,14 +102,11 @@ export function EchoDetailPage() {
   const [influenceType, setInfluenceType] = useState('nudge');
   const [influenceDetails, setInfluenceDetails] = useState('');
   const [exportModal, setExportModal] = useState(false);
-  const [reportModal, setReportModal] = useState(false);
   const [showConversation, setShowConversation] = useState(false);
   const [resumeConversationId, setResumeConversationId] = useState<string | undefined>();
   const [pastConversations, setPastConversations] = useState<Conversation[]>([]);
   const [showPastConversations, setShowPastConversations] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
-  const [reportTargetId, setReportTargetId] = useState('');
-  const [reportReason, setReportReason] = useState('');
   const [soloMode, setSoloMode] = useState(false);
   const [nudgeRipple, setNudgeRipple] = useState(false);
   const [nudgeConfirmed, setNudgeConfirmed] = useState(false);
@@ -842,7 +838,6 @@ export function EchoDetailPage() {
                               entry={entry}
                               isNew={newDiaryIds.has(entry.diary_id)}
                               onAnimationEnd={handleAnimationEnd}
-                              onReport={(id) => { setReportTargetId(id); setReportModal(true); }}
                             />
                           ))}
                         </div>
@@ -1124,42 +1119,6 @@ export function EchoDetailPage() {
         echoId={activeEcho.echo_id}
       />
 
-      {/* Report Content Modal */}
-      <Modal open={reportModal} onClose={() => { setReportModal(false); setReportReason(''); }} title={t('common.report')}>
-        <textarea
-          value={reportReason}
-          onChange={(e) => setReportReason(e.target.value)}
-          placeholder={t('community.reportPlaceholder')}
-          maxLength={500}
-          rows={3}
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
-        />
-        <div className="mt-3 flex justify-end gap-2">
-          <Button variant="secondary" onClick={() => { setReportModal(false); setReportReason(''); }}>
-            {t('common.cancel')}
-          </Button>
-          <Button
-            onClick={async () => {
-              if (!reportReason.trim()) return;
-              try {
-                await reports.create({
-                  target_type: 'content',
-                  target_id: reportTargetId,
-                  reason: reportReason.trim(),
-                });
-                addToast(t('community.reportSent'), 'success');
-                setReportModal(false);
-                setReportReason('');
-              } catch {
-                addToast(t('common.error'), 'danger');
-              }
-            }}
-            disabled={!reportReason.trim()}
-          >
-            {t('common.report')}
-          </Button>
-        </div>
-      </Modal>
     </div>
 
       {/* Conversation side panel — desktop only (>= 1024px) */}
@@ -1183,14 +1142,11 @@ function DiaryCard({
   entry,
   isNew,
   onAnimationEnd,
-  onReport,
 }: {
   entry: DiaryEntry;
   isNew?: boolean;
   onAnimationEnd?: (diaryId: string) => void;
-  onReport?: (diaryId: string) => void;
 }) {
-  const { t } = useTranslation();
   const mc = getMoodColor(entry.mood);
   const r = parseInt(mc.slice(1, 3), 16);
   const g = parseInt(mc.slice(3, 5), 16);
@@ -1234,15 +1190,6 @@ function DiaryCard({
             <span className="text-xs text-text-muted">
               {new Date(entry.created_at).toLocaleDateString()}
             </span>
-            {onReport && (
-              <button
-                onClick={() => onReport(entry.diary_id)}
-                className="text-text-muted hover:text-danger transition-colors"
-                title={t('common.report')}
-              >
-                <Flag size={12} />
-              </button>
-            )}
           </div>
         </div>
       </Card>

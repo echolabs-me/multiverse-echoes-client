@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Sparkles, X, Send, Trash2, ExternalLink, Flag, MessageCircle } from 'lucide-react';
-import { reports } from '../lib/api/endpoints.ts';
-import { useToastStore } from '../stores/useToastStore.ts';
+import { Sparkles, X, Send, Trash2, ExternalLink, MessageCircle } from 'lucide-react';
 import { useOracleStore } from '../stores/useOracleStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import type { OracleMessage } from '../stores/useOracleStore.ts';
@@ -34,18 +32,13 @@ export function OraclePanel() {
     ask,
     clearHistory,
     setContext,
+    startFeedback,
   } = useOracleStore();
   const user = useAuthStore((s) => s.user);
 
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleFeedbackPill = (text: string) => {
-    if (isLoading) return;
-    setInput(text);
-    inputRef.current?.focus();
-  };
 
   const tier = user?.subscription_tier ?? 'Free';
   const rateLimit = RATE_LIMITS[tier] ?? 3;
@@ -158,14 +151,6 @@ export function OraclePanel() {
             {t('oracle.rateLimit', { limit: String(rateLimit) })}
           </div>
 
-          {/* Feedback banner — bold neon red frame, closed beta */}
-          <div className="mx-3 mt-2 mb-1 rounded-md border-2 border-red-500 bg-red-500/10 px-4 py-2.5 shadow-[0_0_8px_rgba(239,68,68,0.4)]">
-            <p className="text-sm font-bold leading-relaxed text-red-400">
-              <MessageCircle size={16} className="mr-1.5 -mt-0.5 inline-block" />
-              {t('oracle.feedbackBanner')}
-            </p>
-          </div>
-
           {/* Messages */}
           <div
             className="flex-1 space-y-4 overflow-y-auto px-4 py-4"
@@ -178,28 +163,6 @@ export function OraclePanel() {
                 <p className="text-sm text-text-secondary">
                   {t('oracle.welcomeMessage')}
                 </p>
-                <div className="flex gap-2 pt-2">
-                  <button
-                    onClick={() => handleFeedbackPill(t('oracle.feedbackPillReport'))}
-                    disabled={isLoading}
-                    className="rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 text-xs font-medium text-accent transition-colors hover:border-accent hover:bg-accent/10 disabled:opacity-50"
-                  >
-                    <span className="inline-flex items-center gap-1">
-                      <MessageCircle size={12} />
-                      {t('oracle.feedbackPillReport')}
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => handleFeedbackPill(t('oracle.feedbackPillShare'))}
-                    disabled={isLoading}
-                    className="rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 text-xs font-medium text-accent transition-colors hover:border-accent hover:bg-accent/10 disabled:opacity-50"
-                  >
-                    <span className="inline-flex items-center gap-1">
-                      <MessageCircle size={12} />
-                      {t('oracle.feedbackPillShare')}
-                    </span>
-                  </button>
-                </div>
               </div>
             )}
 
@@ -225,10 +188,34 @@ export function OraclePanel() {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Persistent feedback buttons */}
+          <div className="flex gap-2 border-t border-border px-4 pt-2 pb-1">
+            <button
+              onClick={() => startFeedback('Bug')}
+              disabled={isLoading}
+              className="flex-1 rounded-md border-2 border-red-500 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-red-400 transition-colors hover:bg-red-500/20 disabled:opacity-50"
+            >
+              <span className="inline-flex items-center justify-center gap-1">
+                <MessageCircle size={12} />
+                {t('oracle.feedbackPillReport')}
+              </span>
+            </button>
+            <button
+              onClick={() => startFeedback('FeatureRequest')}
+              disabled={isLoading}
+              className="flex-1 rounded-md border-2 border-red-500 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-red-400 transition-colors hover:bg-red-500/20 disabled:opacity-50"
+            >
+              <span className="inline-flex items-center justify-center gap-1">
+                <MessageCircle size={12} />
+                {t('oracle.feedbackPillShare')}
+              </span>
+            </button>
+          </div>
+
           {/* Input */}
           <form
             onSubmit={handleSubmit}
-            className="flex gap-2 border-t border-border px-4 py-3"
+            className="flex gap-2 px-4 py-2"
           >
             <input
               ref={inputRef}
@@ -263,25 +250,10 @@ function MessageBubble({
   message: OracleMessage;
   onDeepLink: (path: string) => void;
 }) {
-  const { t } = useTranslation();
-  const addToast = useToastStore((s) => s.addToast);
   const isUser = message.role === 'user';
 
-  const handleReport = async () => {
-    try {
-      await reports.create({
-        target_type: 'content',
-        target_id: '00000000-0000-0000-0000-000000000000',
-        reason: `[Oracle] ${message.text.slice(0, 150)}`,
-      });
-      addToast(t('community.reportSent'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger');
-    }
-  };
-
   return (
-    <div className={`group flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
         className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
           isUser
@@ -303,16 +275,6 @@ function MessageBubble({
               </button>
             ))}
           </div>
-        )}
-        {!isUser && (
-          <button
-            onClick={() => void handleReport()}
-            className="mt-1 rounded p-0.5 text-text-muted opacity-0 transition-opacity hover:text-danger group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none"
-            aria-label={t('common.report')}
-            title={t('common.report')}
-          >
-            <Flag size={12} />
-          </button>
         )}
       </div>
     </div>

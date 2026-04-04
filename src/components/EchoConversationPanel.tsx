@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Send, X } from 'lucide-react';
-import { ReportButton } from './ReportButton.tsx';
 import { useAuthStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -266,9 +265,6 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
                     minute: '2-digit',
                   })}
                 </time>
-                {msg.role === 'echo' && !msg.message_id.startsWith('queued-') && !msg.message_id.startsWith('temp-') && !msg.message_id.startsWith('fallback-') && (
-                  <ReportButton targetType="content" targetId={msg.message_id} size={10} />
-                )}
               </div>
             </div>
           </div>

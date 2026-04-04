@@ -8,7 +8,7 @@ import {
   BarChart3,
   ChevronDown,
 } from 'lucide-react';
-import { Button, Spinner, ReportButton } from './index.ts';
+import { Button, Spinner } from './index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { channels as channelApi, account as accountApi } from '../lib/api/endpoints.ts';
@@ -331,7 +331,6 @@ export function CommunitySidebar() {
                         <div className="flex items-baseline gap-1.5">
                           <span className="font-medium text-accent">{displayName}</span>
                           <span className="text-[10px] text-text-muted">{timeStr}</span>
-                          <ReportButton targetType="message" targetId={msg.message_id} size={10} />
                         </div>
                         {msg.content && <p className="text-text-primary">{msg.content}</p>}
                       </div>

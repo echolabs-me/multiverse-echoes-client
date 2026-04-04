@@ -9,7 +9,6 @@ import {
   EmptyState,
   Button,
   ShareModal,
-  ReportButton,
 } from '../components/index.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
@@ -142,7 +141,6 @@ function FeedItemCard({
               >
                 <Share2 size={14} />
               </button>
-              <ReportButton targetType="content" targetId={item.item_id} />
             </div>
           </div>
         </div>

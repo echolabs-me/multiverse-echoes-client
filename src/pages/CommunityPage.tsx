@@ -6,7 +6,6 @@ import {
   MoreVertical,
   Pencil,
   Trash2,
-  Flag,
   Lock,
   ExternalLink,
   Paperclip,
@@ -18,12 +17,10 @@ import {
   Button,
   Spinner,
   EmptyState,
-  Modal,
-  Input,
 } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
-import { channels as channelApi, reports, account as accountApi } from '../lib/api/endpoints.ts';
+import { channels as channelApi, account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import type { Channel, ChannelMessage, WsEchoEvent } from '../types/api.ts';
@@ -49,9 +46,6 @@ export function CommunityPage() {
   // Edit/delete/report state
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const [editText, setEditText] = useState('');
-  const [reportModal, setReportModal] = useState(false);
-  const [reportTargetId, setReportTargetId] = useState('');
-  const [reportReason, setReportReason] = useState('');
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -290,22 +284,6 @@ export function CommunityPage() {
       addToast(t('common.error'), 'danger');
     } finally {
       setIsSending(false);
-    }
-  };
-
-  const handleReport = async () => {
-    if (!reportTargetId || !reportReason.trim()) return;
-    try {
-      await reports.create({
-        target_type: 'message',
-        target_id: reportTargetId,
-        reason: reportReason.trim(),
-      });
-      addToast(t('community.reportSent'), 'success');
-      setReportModal(false);
-      setReportReason('');
-    } catch {
-      addToast(t('common.error'), 'danger');
     }
   };
 
@@ -579,16 +557,6 @@ export function CommunityPage() {
                                       <Trash2 size={12} /> {t('common.delete')}
                                     </button>
                                   )}
-                                  <button
-                                    onClick={() => {
-                                      setReportTargetId(msg.message_id);
-                                      setReportModal(true);
-                                      setMenuOpenId(null);
-                                    }}
-                                    className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm text-text-secondary hover:bg-surface-raised"
-                                  >
-                                    <Flag size={12} /> {t('common.report')}
-                                  </button>
                                 </div>
                               )}
                             </div>
@@ -740,31 +708,6 @@ export function CommunityPage() {
           )}
         </div>
       </div>
-
-      {/* Report Modal */}
-      <Modal
-        open={reportModal}
-        onClose={() => setReportModal(false)}
-        title={t('common.report')}
-      >
-        <div className="mb-4">
-          <Input
-            multiline
-            label={t('community.reportReason')}
-            value={reportReason}
-            onChange={(e) => setReportReason(e.target.value)}
-            placeholder={t('community.reportPlaceholder')}
-          />
-        </div>
-        <div className="flex justify-end gap-2">
-          <Button variant="secondary" onClick={() => setReportModal(false)}>
-            {t('common.cancel')}
-          </Button>
-          <Button onClick={() => void handleReport()} disabled={!reportReason.trim()}>
-            {t('common.report')}
-          </Button>
-        </div>
-      </Modal>
 
       {/* Expanded Image Overlay */}
       {expandedImage && (

@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Sparkles, Send, Trash2, ChevronLeft, ExternalLink, Flag, MessageCircle } from 'lucide-react';
-import { reports } from '../lib/api/endpoints.ts';
-import { useToastStore } from '../stores/useToastStore.ts';
+import { Sparkles, Send, Trash2, ChevronLeft, ExternalLink, MessageCircle } from 'lucide-react';
 import { useOracleStore } from '../stores/useOracleStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import type { OracleMessage } from '../stores/useOracleStore.ts';
@@ -19,12 +17,6 @@ const SUGGESTED_QUESTIONS = [
   'oracle.suggestion1',
   'oracle.suggestion2',
   'oracle.suggestion3',
-];
-
-/** Feedback pills populate the input (don't auto-send) so users can add context. */
-const FEEDBACK_PILLS = [
-  'oracle.feedbackPillReport',
-  'oracle.feedbackPillShare',
 ];
 
 interface OracleSidebarProps {
@@ -44,13 +36,11 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
     ask,
     clearHistory,
     setContext,
+    startFeedback,
   } = useOracleStore();
   const user = useAuthStore((s) => s.user);
 
   const [input, setInput] = useState('');
-  const [reportOpen, setReportOpen] = useState(false);
-  const [reportReason, setReportReason] = useState('');
-  const addToast = useToastStore((s) => s.addToast);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -92,17 +82,6 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
     void ask(t(key));
   };
 
-  const handleFeedbackPill = (key: string) => {
-    if (isLoading) return;
-    const text = t(key);
-    setInput(text);
-    // Focus and place cursor at end so user can add context
-    if (inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.style.height = 'auto';
-    }
-  };
-
   const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
     e.target.style.height = 'auto';
@@ -128,14 +107,6 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
           </div>
           <div className="flex items-center gap-0.5">
             <button
-              onClick={() => setReportOpen(!reportOpen)}
-              className={`rounded-md p-1 transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${reportOpen ? 'text-danger' : 'text-text-muted hover:text-text-secondary'}`}
-              aria-label={t('oracle.reportProblem')}
-              title={t('oracle.reportProblem')}
-            >
-              <Flag size={12} />
-            </button>
-            <button
               onClick={clearHistory}
               className="rounded-md p-1 text-text-muted transition-colors hover:bg-surface hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
               aria-label={t('oracle.clearHistory')}
@@ -158,66 +129,14 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
         </p>
       </div>
 
-      {/* Feedback banner — bold neon red frame, closed beta */}
-      <div className="mx-2 mt-2 mb-1 rounded-md border-2 border-red-500 bg-red-500/10 px-3 py-2.5 shadow-[0_0_8px_rgba(239,68,68,0.4)]">
-        <p className="text-xs font-bold leading-relaxed text-red-400">
-          <MessageCircle size={14} className="mr-1.5 -mt-0.5 inline-block" />
-          {t('oracle.feedbackBanner')}
-        </p>
-      </div>
-
       {/* Messages */}
       <div
         className="flex-1 space-y-3 overflow-y-auto px-3 py-3"
         aria-live="polite"
         aria-label={t('oracle.conversation')}
       >
-        {/* Inline report form */}
-        {reportOpen && (
-          <div className="mb-3 rounded-lg border border-danger/30 bg-surface p-3">
-            <p className="mb-2 text-xs font-semibold text-danger">{t('oracle.reportProblem')}</p>
-            <textarea
-              value={reportReason}
-              onChange={(e) => setReportReason(e.target.value)}
-              placeholder={t('community.reportPlaceholder')}
-              maxLength={500}
-              rows={2}
-              className="w-full rounded-md border border-border bg-canvas px-2 py-1.5 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
-            />
-            <div className="mt-2 flex justify-end gap-1.5">
-              <button
-                onClick={() => { setReportOpen(false); setReportReason(''); }}
-                className="rounded px-2 py-1 text-[11px] text-text-muted hover:text-text-primary"
-              >
-                {t('common.cancel')}
-              </button>
-              <button
-                onClick={async () => {
-                  if (!reportReason.trim()) return;
-                  try {
-                    await reports.create({
-                      target_type: 'content',
-                      target_id: '00000000-0000-0000-0000-000000000000',
-                      reason: `[Oracle] ${reportReason.trim()}`,
-                    });
-                    addToast(t('community.reportSent'), 'success');
-                    setReportOpen(false);
-                    setReportReason('');
-                  } catch {
-                    addToast(t('common.error'), 'danger');
-                  }
-                }}
-                disabled={!reportReason.trim()}
-                className="rounded bg-danger px-2 py-1 text-[11px] font-medium text-white hover:bg-danger/80 disabled:opacity-40"
-              >
-                {t('common.report')}
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Empty state with suggested questions */}
-        {messages.length === 0 && !reportOpen && (
+        {messages.length === 0 && (
           <div className="flex flex-col items-center gap-4 pt-6 text-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
               <Sparkles size={24} className="text-accent" />
@@ -236,21 +155,6 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
                   {t(key)}
                 </button>
               ))}
-              <div className="mt-2 flex gap-1.5">
-                {FEEDBACK_PILLS.map((key) => (
-                  <button
-                    key={key}
-                    onClick={() => handleFeedbackPill(key)}
-                    disabled={isLoading}
-                    className="rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 text-[11px] font-medium text-accent transition-colors hover:border-accent hover:bg-accent/10 disabled:opacity-50"
-                  >
-                    <span className="inline-flex items-center gap-1">
-                      <MessageCircle size={10} />
-                      {t(key)}
-                    </span>
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
         )}
@@ -277,8 +181,32 @@ export function OracleSidebar({ onCollapse }: OracleSidebarProps) {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Persistent feedback buttons */}
+      <div className="flex gap-1.5 border-t border-border px-3 pt-2 pb-1">
+        <button
+          onClick={() => startFeedback('Bug')}
+          disabled={isLoading}
+          className="flex-1 rounded-md border-2 border-red-500 bg-red-500/10 px-2 py-1.5 text-[11px] font-bold text-red-400 transition-colors hover:bg-red-500/20 disabled:opacity-50"
+        >
+          <span className="inline-flex items-center justify-center gap-1">
+            <MessageCircle size={10} />
+            {t('oracle.feedbackPillReport')}
+          </span>
+        </button>
+        <button
+          onClick={() => startFeedback('FeatureRequest')}
+          disabled={isLoading}
+          className="flex-1 rounded-md border-2 border-red-500 bg-red-500/10 px-2 py-1.5 text-[11px] font-bold text-red-400 transition-colors hover:bg-red-500/20 disabled:opacity-50"
+        >
+          <span className="inline-flex items-center justify-center gap-1">
+            <MessageCircle size={10} />
+            {t('oracle.feedbackPillShare')}
+          </span>
+        </button>
+      </div>
+
       {/* Input + rate limit */}
-      <div className="border-t border-border">
+      <div>
         <form
           onSubmit={handleSubmit}
           className="flex gap-2 px-3 pt-2.5 pb-1.5"

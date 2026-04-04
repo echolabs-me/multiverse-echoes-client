@@ -47,6 +47,8 @@ interface OracleState {
   error: string | null;
   context: OracleContext;
   pendingFeedback: PendingFeedback | null;
+  /** Pre-set feedback type from button click (Bug or FeatureRequest). */
+  feedbackMode: FeedbackType | null;
 
   toggle: () => void;
   open: () => void;
@@ -54,6 +56,8 @@ interface OracleState {
   setContext: (ctx: OracleContext) => void;
   ask: (question: string) => Promise<void>;
   clearHistory: () => void;
+  /** Start feedback flow with a pre-set type (from button click). */
+  startFeedback: (type: FeedbackType) => void;
 }
 
 let nextId = 0;
@@ -71,12 +75,30 @@ export const useOracleStore = create<OracleState>()(
   error: null,
   context: {},
   pendingFeedback: null,
+  feedbackMode: null,
 
   toggle: () => set({ isOpen: !get().isOpen }),
   open: () => set({ isOpen: true }),
   close: () => set({ isOpen: false }),
 
   setContext: (ctx) => set({ context: ctx }),
+
+  startFeedback: (type) => {
+    const prompt = type === 'Bug'
+      ? 'Tell me what\'s broken \u2014 describe what you expected to happen and what actually happened.'
+      : 'What would you like to see? Describe the feature or improvement.';
+    const oracleMsg: OracleMessage = {
+      id: genId(),
+      role: 'oracle',
+      text: prompt,
+      timestamp: Date.now(),
+    };
+    set({
+      isOpen: true,
+      feedbackMode: type,
+      messages: [...get().messages, oracleMsg],
+    });
+  },
 
   ask: async (question) => {
     const state = get();
@@ -124,6 +146,45 @@ export const useOracleStore = create<OracleState>()(
     // Clear any stale pending feedback if user sent a non-confirmation message.
     if (state.pendingFeedback) {
       set({ pendingFeedback: null });
+    }
+
+    // Button-initiated feedback: user's message is the feedback content.
+    // Submit directly without going through the Oracle LLM.
+    if (state.feedbackMode) {
+      const fType = state.feedbackMode;
+      const userMsg: OracleMessage = {
+        id: genId(),
+        role: 'user',
+        text: question,
+        timestamp: Date.now(),
+      };
+      set({ messages: [...get().messages, userMsg], isLoading: true, error: null });
+
+      try {
+        const result = await feedback.submit({
+          user_message: question,
+          structured_summary: question.slice(0, 200),
+          feedback_type: fType,
+          context: { screen: state.context.screen ?? '', recent_events: [] },
+        });
+        const serverMsg = result.message ?? `Your ${fType.toLowerCase()} feedback has been submitted.`;
+        const confirmMsg: OracleMessage = {
+          id: genId(),
+          role: 'oracle',
+          text: `${serverMsg} Thank you for helping us improve Multiverse Echoes.`,
+          timestamp: Date.now(),
+        };
+        set({ messages: [...get().messages, confirmMsg], isLoading: false, feedbackMode: null });
+      } catch {
+        const errorMsg: OracleMessage = {
+          id: genId(),
+          role: 'oracle',
+          text: 'Something went wrong submitting your feedback. Please try again or email conduct@echolabs.me.',
+          timestamp: Date.now(),
+        };
+        set({ messages: [...get().messages, errorMsg], isLoading: false, feedbackMode: null });
+      }
+      return;
     }
 
     const userMsg: OracleMessage = {
@@ -208,7 +269,7 @@ export const useOracleStore = create<OracleState>()(
     }
   },
 
-  clearHistory: () => set({ messages: [], error: null, pendingFeedback: null }),
+  clearHistory: () => set({ messages: [], error: null, pendingFeedback: null, feedbackMode: null }),
 }),
     {
       name: 'oracle-conversation',

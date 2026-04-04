@@ -528,16 +528,6 @@ export const payments = {
     }),
 };
 
-// --- Reports ---
-
-export const reports = {
-  create: (data: { target_type: string; target_id: string; reason: string; details?: string }) =>
-    request<MessageResponse>('/reports', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }),
-};
-
 export const waitlist = {
   signup: (data: WaitlistSignupRequest) =>
     request<WaitlistSignupResponse>('/waitlist', {
