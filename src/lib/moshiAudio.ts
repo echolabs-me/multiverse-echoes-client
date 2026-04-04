@@ -89,7 +89,8 @@ export class MoshiAudioBridge {
     this.ws.binaryType = 'arraybuffer';
 
     await new Promise<void>((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error('WebSocket connection timeout')), 10000);
+      // Long timeout: Moshi model may still be loading even after sidecar is up
+      const timeout = setTimeout(() => reject(new Error('WebSocket connection timeout')), 120000);
 
       this.ws!.onopen = () => {
         clearTimeout(timeout);

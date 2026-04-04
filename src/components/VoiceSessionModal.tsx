@@ -11,7 +11,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Mic, MicOff, Phone, PhoneOff, Loader2 } from 'lucide-react';
+import { Mic, MicOff, Phone, PhoneOff, Loader2, X } from 'lucide-react';
 import { Button } from './index.ts';
 import { getBaseUrl } from '../lib/api/client.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
@@ -103,8 +103,9 @@ export function VoiceSessionModal({
       let ready = false;
       for (let i = 0; i < 240; i++) {
         try {
-          const resp = await fetch(`${baseUrl}/voice/`);
-          if (resp.ok) { ready = true; break; }
+          const resp = await fetch(`${baseUrl}/voice/api/chat`);
+          // Sidecar returns 400 (needs WebSocket upgrade) when ready — any non-5xx means it's up
+          if (resp.status < 500) { ready = true; break; }
         } catch { /* not ready */ }
         await new Promise((r) => setTimeout(r, 1000));
       }
@@ -162,14 +163,16 @@ export function VoiceSessionModal({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface-base/95 backdrop-blur-sm pb-safe pt-safe" style={{ touchAction: 'manipulation' }}>
-      {/* Close / hang up */}
-      <button
-        onClick={() => void endSession()}
-        className="absolute right-4 top-4 rounded-full p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
-        aria-label={t('voice.close')}
-      >
-        <PhoneOff size={24} />
-      </button>
+      {/* Close button — only visible when not in active call (active has its own end button) */}
+      {state !== 'active' && (
+        <button
+          onClick={() => void endSession()}
+          className="absolute right-4 top-4 rounded-full p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
+          aria-label={t('voice.close')}
+        >
+          <X size={24} />
+        </button>
+      )}
 
       {/* Echo name */}
       <h2 className="mb-6 text-xl font-semibold text-text-primary">{echoName}</h2>
