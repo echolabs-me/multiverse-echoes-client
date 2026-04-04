@@ -98,14 +98,13 @@ export function VoiceSessionModal({
       const { voice_ws_url } = await echoApi.startVoiceSession(echoId);
       setState('connecting');
 
-      // 2. Poll until sidecar is ready (first time: model loading ~90s + avatar prep ~30s)
+      // 2. Poll sidecar /health — returns 200 only when both sidecar AND Moshi are up
       const baseUrl = getBaseUrl();
       let ready = false;
       for (let i = 0; i < 240; i++) {
         try {
-          const resp = await fetch(`${baseUrl}/voice/api/chat`);
-          // Sidecar returns 400 (needs WebSocket upgrade) when ready — any non-5xx means it's up
-          if (resp.status < 500) { ready = true; break; }
+          const resp = await fetch(`${baseUrl}/voice/health`);
+          if (resp.ok) { ready = true; break; }
         } catch { /* not ready */ }
         await new Promise((r) => setTimeout(r, 1000));
       }
