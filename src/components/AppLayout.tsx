@@ -272,6 +272,12 @@ export function AppLayout() {
                 <div className="min-[1920px]:hidden">
                   <DesktopPulseSection />
                 </div>
+                {/* Section header for echo list — visually separates from Pulse */}
+                <div className="flex-shrink-0 border-b border-border/50 bg-canvas px-3 py-1.5">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                    {t('echoSidebar.title')}
+                  </span>
+                </div>
                 <EchoSidebar />
               </div>
             )}
@@ -376,12 +382,12 @@ function DesktopPulseSection() {
   }, []);
 
   return (
-    <div className="flex-shrink-0 border-b border-border/50">
+    <div className="flex-shrink-0 border-b-2 border-border bg-surface-raised/30">
       <button
         onClick={toggle}
         className="flex w-full items-center justify-between px-3 py-1.5 text-left hover:bg-surface-raised transition-colors"
       >
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-accent/70">
           {t('communityFeed.title')}
         </span>
         {open
