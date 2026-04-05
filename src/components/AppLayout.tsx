@@ -243,8 +243,8 @@ export function AppLayout() {
         {/* Left nav — icon-only, visible on md+ */}
         <NavSidebar />
 
-        {/* ═══ TABLET LAYOUT (md to xl) — split-view master-detail ═══ */}
-        <div className="hidden md:flex xl:hidden flex-1 min-w-0">
+        {/* ═══ TABLET LAYOUT — touch devices 768px+ ═══ */}
+        <div className="hidden tablet:flex desktop:hidden flex-1 min-w-0">
           <TabletLayout showEchoPanes={showEchoPanes} />
         </div>
 
@@ -253,8 +253,8 @@ export function AppLayout() {
           <Outlet />
         </main>
 
-        {/* ═══ DESKTOP LAYOUT (1440px+) — all panes in flex row ═══ */}
-        <div className="hidden xl:flex flex-1 overflow-hidden">
+        {/* ═══ DESKTOP LAYOUT — fine pointer 768px+ OR any device 1440px+ ═══ */}
+        <div className="hidden desktop:flex flex-1 overflow-hidden">
           <MoodAtmosphereWrapper show={showEchoPanes}>
             {/* Community Pulse — 1920px+ only */}
             {showEchoPanes && (
