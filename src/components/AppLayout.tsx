@@ -244,7 +244,7 @@ export function AppLayout() {
         <NavSidebar />
 
         {/* ═══ TABLET LAYOUT (md to xl) — split-view master-detail ═══ */}
-        <div className="hidden md:flex xl:hidden flex-1 min-w-0">
+        <div className="hidden md:flex min-[1440px]:hidden flex-1 min-w-0">
           <TabletLayout showEchoPanes={showEchoPanes} />
         </div>
 
@@ -254,7 +254,7 @@ export function AppLayout() {
         </main>
 
         {/* ═══ DESKTOP LAYOUT (1440px+) — all panes in flex row ═══ */}
-        <div className="hidden xl:flex flex-1 overflow-hidden">
+        <div className="hidden min-[1440px]:flex flex-1 overflow-hidden">
           <MoodAtmosphereWrapper show={showEchoPanes}>
             {/* Community Pulse — 1920px+ only */}
             {showEchoPanes && (
