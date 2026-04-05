@@ -13,7 +13,6 @@ import { useRef, useMemo, Suspense } from 'react';
 import * as THREE from 'three';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useGpuAvailable } from '@/hooks/useGpuAvailable';
-import { DisposeWebGL } from './DisposeWebGL';
 import {
   shardNameToTheme,
   seededRandom,
@@ -391,7 +390,6 @@ export function ShardEnvironment3D({
           style={{ pointerEvents: 'none' }}
         >
           <EnvironmentScene theme={theme} />
-          <DisposeWebGL />
         </Canvas>
       </Suspense>
     </div>
