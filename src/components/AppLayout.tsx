@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Outlet, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -33,6 +33,8 @@ import { CommunityPulseCard } from './CommunityPulseCard.tsx';
 import { TabletLayout } from './TabletLayout.tsx';
 import { MoodParticles } from './MoodParticles.tsx';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
+import { LayoutContext } from '../contexts/LayoutContext.tsx';
+import type { LayoutContextValue } from '../contexts/LayoutContext.tsx';
 
 interface NavItem {
   id: string;
@@ -165,6 +167,18 @@ export function AppLayout() {
 
   const showEchoPanes = location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/');
 
+  const noop = useCallback(() => {}, []);
+  const phoneCtx = useMemo<LayoutContextValue>(() => ({
+    mode: 'phone',
+    openConversation: noop,
+    closeConversation: noop,
+  }), [noop]);
+
+  const desktopCtx = useMemo<LayoutContextValue>(() => ({
+    mode: 'desktop',
+    openConversation: noop,
+    closeConversation: noop,
+  }), [noop]);
 
   // Auth guard
   if (!isAuthenticated) {
@@ -241,18 +255,20 @@ export function AppLayout() {
         {/* Left nav — icon-only, visible on md+ */}
         <NavSidebar />
 
-        {/* ═══ TABLET LAYOUT (md to xl) — split-view master-detail ═══ */}
-        <div className="hidden md:flex xl:hidden flex-1 min-w-0">
+        {/* ═══ TABLET LAYOUT (md to 1440px) — split-view master-detail ═══ */}
+        <div className="hidden md:flex min-[1440px]:hidden flex-1 min-w-0">
           <TabletLayout showEchoPanes={showEchoPanes} />
         </div>
 
         {/* ═══ PHONE LAYOUT (<md) — single pane, full width ═══ */}
-        <main className="flex-1 overflow-y-auto md:hidden">
-          <Outlet />
-        </main>
+        <LayoutContext.Provider value={phoneCtx}>
+          <main className="flex-1 overflow-y-auto md:hidden">
+            <Outlet />
+          </main>
+        </LayoutContext.Provider>
 
         {/* ═══ DESKTOP LAYOUT (1440px+) — all panes in flex row ═══ */}
-        <div className="hidden xl:flex flex-1 overflow-hidden">
+        <div className="hidden min-[1440px]:flex flex-1 overflow-hidden">
           <MoodAtmosphereWrapper show={showEchoPanes}>
             {/* Community Pulse — 1920px+ only */}
             {showEchoPanes && (
@@ -282,9 +298,11 @@ export function AppLayout() {
               </div>
             )}
 
-            <main id="main-content" className="flex-1 overflow-y-auto">
-              <Outlet />
-            </main>
+            <LayoutContext.Provider value={desktopCtx}>
+              <main id="main-content" className="flex-1 overflow-y-auto">
+                <Outlet />
+              </main>
+            </LayoutContext.Provider>
 
             <aside className="flex h-full w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-l border-border/50">
               <OracleSidebar />
