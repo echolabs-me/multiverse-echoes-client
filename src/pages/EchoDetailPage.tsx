@@ -45,7 +45,6 @@ import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
 import { EchoConversationPanel } from '../components/EchoConversationPanel.tsx';
-import { useLayoutMode } from '../contexts/LayoutContext.tsx';
 import { echoes as echoApi, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
@@ -75,7 +74,6 @@ export function EchoDetailPage() {
   const { shardList } = useShardStore();
   const { personalFeed, fetchPersonalFeed } = useFeedStore();
   const addToast = useToastStore((s) => s.addToast);
-  const { mode: layoutMode, openConversation } = useLayoutMode();
 
   // Local state
   const [relationships, setRelationships] = useState<EchoRelationship[]>([]);
@@ -503,14 +501,11 @@ export function EchoDetailPage() {
 
   const personaTruncated = activeEcho.persona_text.length > 200 && !showAllPersona;
 
-  const isDesktop = layoutMode === 'desktop';
-  const desktopConversationOpen = isDesktop && showConversation;
-
   return (
-    <div className={isDesktop ? 'flex h-full' : ''}>
-      {/* Main content — on desktop: shrinks when conversation panel is open. On tablet/phone: flows naturally, no h-full. */}
-      <div ref={moodContainerRef} className={isDesktop ? `relative flex h-full flex-col ${desktopConversationOpen ? 'w-[60%]' : 'w-full'} transition-[width] duration-300` : 'relative'}>
-      <div className={isDesktop ? 'relative flex-1 overflow-y-auto' : 'relative'}>
+    <div className="flex h-full">
+      {/* Main content — shrinks when conversation panel is open on desktop */}
+      <div ref={moodContainerRef} className={`relative flex h-full flex-col ${showConversation ? 'w-[60%]' : 'w-full'} transition-[width] duration-300`}>
+      <div className="relative flex-1 overflow-y-auto">
         <div className="mx-auto max-w-4xl p-6">
           {/* Mobile Echo switcher — dropdown for quick navigation */}
           <div className="relative mb-4">
@@ -590,22 +585,16 @@ export function EchoDetailPage() {
               {/* Talk — primary CTA */}
               <button
                 onClick={() => {
-                  if (layoutMode === 'phone') {
-                    navigate(`/echoes/${activeEcho.echo_id}/talk`);
-                  } else if (layoutMode === 'tablet') {
-                    openConversation({
-                      echoId: activeEcho.echo_id,
-                      echoName: activeEcho.name,
-                      echoMood: activeEcho.current_mood,
-                    });
-                  } else {
+                  if (window.innerWidth >= 768) {
                     setResumeConversationId(undefined);
                     setShowConversation((prev) => !prev);
+                  } else {
+                    navigate(`/echoes/${activeEcho.echo_id}/talk`);
                   }
                 }}
                 disabled={activeEcho.status === 'Hibernated'}
                 className={`action-btn-primary flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
-                  showConversation && layoutMode === 'desktop'
+                  showConversation
                     ? 'bg-accent text-canvas shadow-md shadow-accent/20'
                     : 'bg-accent text-canvas shadow-md shadow-accent/20 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/30'
                 }`}
@@ -708,17 +697,8 @@ export function EchoDetailPage() {
                     <button
                       key={conv.conversation_id}
                       onClick={() => {
-                        if (layoutMode === 'tablet') {
-                          openConversation({
-                            echoId: activeEcho.echo_id,
-                            echoName: activeEcho.name,
-                            echoMood: activeEcho.current_mood,
-                            resumeConversationId: conv.conversation_id,
-                          });
-                        } else {
-                          setResumeConversationId(conv.conversation_id);
-                          setShowConversation(true);
-                        }
+                        setResumeConversationId(conv.conversation_id);
+                        setShowConversation(true);
                       }}
                       className="flex w-full items-center justify-between rounded-lg border border-border/50 bg-surface/50 px-3 py-2 text-left text-xs transition-colors hover:bg-surface-raised"
                     >
@@ -1144,9 +1124,9 @@ export function EchoDetailPage() {
 
     </div>
 
-      {/* Conversation side panel — desktop only (tablet uses overlay via LayoutContext) */}
-      {desktopConversationOpen && activeEcho && (
-        <div className="h-full w-[40%]">
+      {/* Conversation side panel — tablet landscape + desktop (>= 768px) */}
+      {showConversation && activeEcho && (
+        <div className="hidden h-full w-[40%] md:block">
           <EchoConversationPanel
             key={resumeConversationId ?? 'active'}
             echoId={activeEcho.echo_id}
