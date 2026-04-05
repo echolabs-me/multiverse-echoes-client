@@ -21,8 +21,6 @@ import { useShardStore } from '../stores/useShardStore.ts';
 import { useOracleStore } from '../stores/useOracleStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
 
-const PULSE_STORAGE_KEY = 'tablet-pulse-open';
-
 const SIDEBAR_STORAGE_KEY = 'tablet-echo-sidebar-open';
 
 interface TabletLayoutProps {
@@ -221,16 +219,10 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
  */
 function SidebarPulseSection() {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(() => {
-    const stored = localStorage.getItem(PULSE_STORAGE_KEY);
-    return stored === null ? true : stored === 'true';
-  });
+  const [open, setOpen] = useState(true);
 
   const toggle = useCallback(() => {
-    setOpen((prev) => {
-      localStorage.setItem(PULSE_STORAGE_KEY, String(!prev));
-      return !prev;
-    });
+    setOpen((prev) => !prev);
   }, []);
 
   return (
@@ -248,7 +240,7 @@ function SidebarPulseSection() {
         }
       </button>
       {open && (
-        <div className="max-h-[200px] overflow-y-auto px-2 pb-2">
+        <div className="h-[180px] overflow-y-auto px-2 pb-2">
           <CommunityPulseCard />
         </div>
       )}
