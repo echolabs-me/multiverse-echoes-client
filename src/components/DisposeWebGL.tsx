@@ -21,9 +21,17 @@ export function DisposeWebGL() {
     return () => {
       try {
         gl.dispose();
-        gl.forceContextLoss();
+        // Skip forceContextLoss if the underlying context is already gone
+        // (browser reclaimed it, or it was lost via a prior dispose path).
+        // Calling loseContext twice emits a
+        //   WebGL: INVALID_OPERATION: loseContext: context already lost
+        // warning without any benefit — the context is already released.
+        const raw = gl.getContext();
+        if (!raw.isContextLost()) {
+          gl.forceContextLoss();
+        }
       } catch {
-        // Renderer may already be disposed or context already lost; ignore.
+        // Renderer may already be disposed; nothing to clean up.
       }
     };
   }, [gl]);

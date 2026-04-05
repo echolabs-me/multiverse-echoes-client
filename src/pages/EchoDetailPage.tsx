@@ -406,8 +406,9 @@ export function EchoDetailPage() {
       trackEvent('echo.deleted', { echo_id: activeEcho.echo_id });
       setDeleteModal(false);
       addToast(t('echoDetail.deleted'), 'success');
-      // Echo no longer exists — leave the detail page.
-      navigate('/');
+      // Echo no longer exists — return to the dashboard. Note: '/' is a
+      // Navigate-to-login redirect (see App.tsx), NOT the dashboard route.
+      navigate('/dashboard');
     } catch {
       setDeleteError(t('echoDetail.deleteFailed'));
     } finally {
