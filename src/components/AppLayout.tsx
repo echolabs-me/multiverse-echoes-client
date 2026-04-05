@@ -250,7 +250,6 @@ export function AppLayout() {
         {/* ═══ TABLET LAYOUT — JS touch detection ═══ */}
         {isTablet && (
           <div className="hidden md:flex flex-1 min-w-0">
-            <div style={{position:'fixed',top:'60px',left:'50%',background:'lime',zIndex:9999,padding:'4px',fontSize:'12px',color:'black'}}>TABLET</div>
             <TabletLayout showEchoPanes={showEchoPanes} />
           </div>
         )}
