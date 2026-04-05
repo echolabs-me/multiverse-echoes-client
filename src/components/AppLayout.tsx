@@ -190,7 +190,7 @@ export function AppLayout() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="flex h-screen flex-col bg-canvas">
+    <div className="flex h-full flex-col bg-canvas">
       {/* Top bar — logo + mobile hamburger */}
       <header className="relative flex h-14 flex-shrink-0 items-center border-b border-border bg-surface px-4 overflow-hidden">
         <div className="flex items-center gap-2 min-w-0 z-10">
