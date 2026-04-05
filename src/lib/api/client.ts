@@ -60,26 +60,45 @@ export class ApiRequestError extends Error {
   }
 }
 
+// Singleflight guard for token refresh. When a burst of parallel requests
+// all land on a 401 at the same time (common on page mount, where 5–6
+// fetches fire in parallel), they would otherwise each fire their own
+// /auth/refresh against the same refresh token. With rotation enabled
+// server-side, the first succeeds and the rest see the invalidated token
+// and wrongly conclude refresh has failed — triggering a spurious logout
+// even though a valid new access token was issued. De-duplicating ensures
+// only one refresh is in flight at a time.
+let refreshInFlight: Promise<boolean> | null = null;
+
 async function tryRefreshToken(): Promise<boolean> {
   if (!refreshToken) return false;
+  if (refreshInFlight) return refreshInFlight;
 
-  try {
-    const response = await fetch(`${baseUrl}/auth/refresh`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ refresh_token: refreshToken }),
-    });
+  const promise = (async (): Promise<boolean> => {
+    try {
+      const response = await fetch(`${baseUrl}/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ refresh_token: refreshToken }),
+      });
 
-    if (!response.ok) return false;
+      if (!response.ok) return false;
 
-    const data = (await response.json()) as { access_token: string; expires_in: number };
-    accessToken = data.access_token;
-    localStorage.setItem('access_token', data.access_token);
-    return true;
-  } catch {
-    return false;
-  }
+      const data = (await response.json()) as { access_token: string; expires_in: number };
+      accessToken = data.access_token;
+      localStorage.setItem('access_token', data.access_token);
+      return true;
+    } catch {
+      return false;
+    }
+  })();
+
+  refreshInFlight = promise;
+  void promise.finally(() => {
+    if (refreshInFlight === promise) refreshInFlight = null;
+  });
+  return promise;
 }
 
 export async function request<T>(
