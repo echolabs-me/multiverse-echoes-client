@@ -119,7 +119,7 @@ function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: Re
   const palette = useMoodPaletteStore((s) => s.palette);
 
   return (
-    <div className="relative flex flex-1 overflow-hidden">
+    <div className="relative flex flex-1 min-h-0 overflow-hidden">
       {show && palette && (
         <>
           <div
@@ -134,7 +134,9 @@ function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: Re
           </div>
         </>
       )}
-      {children}
+      <div className="flex flex-1 min-h-0">
+        {children}
+      </div>
     </div>
   );
 }
