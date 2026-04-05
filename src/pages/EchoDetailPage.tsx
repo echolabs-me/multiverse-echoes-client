@@ -106,6 +106,7 @@ export function EchoDetailPage() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [isPortraitExpanded, setIsPortraitExpanded] = useState(false);
   const [showConversation, setShowConversation] = useState(false);
   const [resumeConversationId, setResumeConversationId] = useState<string | undefined>();
   const [pastConversations, setPastConversations] = useState<Conversation[]>([]);
@@ -225,6 +226,17 @@ export function EchoDetailPage() {
       maxLoadedRef.current = diaryEntries.length;
     }
   }, [diaryEntries.length]);
+
+  // Escape-to-close for the expanded portrait lightbox. Only bound while open
+  // so we're not leaving a global listener attached on every Echo detail view.
+  useEffect(() => {
+    if (!isPortraitExpanded) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsPortraitExpanded(false);
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [isPortraitExpanded]);
 
   const moodFilterInitRef = useRef(true);
   useEffect(() => {
@@ -537,7 +549,18 @@ export function EchoDetailPage() {
 
           {/* Echo header */}
           <div className="mb-6 flex items-start gap-4">
-            <EchoPortrait3D name={activeEcho.name} mood={activeEcho.current_mood} size="lg" avatarUrl={activeEcho.avatar_url} />
+            {activeEcho.avatar_url ? (
+              <button
+                type="button"
+                onClick={() => setIsPortraitExpanded(true)}
+                aria-label={t('echoDetail.viewPortrait')}
+                className="shrink-0 rounded-xl transition-transform duration-[var(--duration-fast)] hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                <EchoPortrait3D name={activeEcho.name} mood={activeEcho.current_mood} size="lg" avatarUrl={activeEcho.avatar_url} />
+              </button>
+            ) : (
+              <EchoPortrait3D name={activeEcho.name} mood={activeEcho.current_mood} size="lg" avatarUrl={activeEcho.avatar_url} />
+            )}
             <div className="flex-1">
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-text-primary">{activeEcho.name}</h1>
@@ -1028,6 +1051,28 @@ export function EchoDetailPage() {
           </section>
         </div>
       </div>
+
+      {/* Portrait Lightbox — full-resolution portrait overlay */}
+      {isPortraitExpanded && activeEcho.avatar_url && (
+        <button
+          type="button"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
+          onClick={() => setIsPortraitExpanded(false)}
+          aria-label={t('echoDetail.closePortrait')}
+        >
+          <span
+            className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+            aria-hidden="true"
+          >
+            <X size={20} />
+          </span>
+          <img
+            src={activeEcho.avatar_url}
+            alt={t('echoDetail.portraitAltFull', { name: activeEcho.name })}
+            className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+          />
+        </button>
+      )}
 
       {/* Delete Echo Modal */}
       <Modal
