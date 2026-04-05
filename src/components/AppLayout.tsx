@@ -286,7 +286,7 @@ export function AppLayout() {
               <Outlet />
             </main>
 
-            <aside className="flex h-full min-h-0 w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-l border-border/50 overflow-hidden">
+            <aside className="flex w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-l border-border/50">
               <OracleSidebar />
             </aside>
 
