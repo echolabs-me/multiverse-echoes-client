@@ -59,7 +59,7 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
       {/* Oracle FAB — outside main so overflow-hidden doesn't clip it */}
       <button
         onClick={toggleOracle}
-        className="absolute bottom-4 right-4 z-30 flex items-center justify-center rounded-full bg-accent p-3 text-canvas shadow-lg hover:bg-accent-hover transition-colors"
+        className="fixed bottom-4 right-4 z-30 flex items-center justify-center rounded-full bg-accent p-3 text-canvas shadow-lg hover:bg-accent-hover transition-colors"
         aria-label={t('oracle.title')}
         title={t('oracle.title')}
       >

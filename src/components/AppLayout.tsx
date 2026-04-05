@@ -33,6 +33,7 @@ import { CommunityPulseCard } from './CommunityPulseCard.tsx';
 import { TabletLayout } from './TabletLayout.tsx';
 import { MoodParticles } from './MoodParticles.tsx';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
+import { isTabletDevice } from '../lib/deviceDetect.ts';
 
 interface NavItem {
   id: string;
@@ -150,6 +151,15 @@ export function AppLayout() {
   const [mobileOracleOpen, setMobileOracleOpen] = useState(false);
   const unreadCount = useNotificationStore((s) => s.unreadCount);
 
+  // Touch detection — JS-based since CSS pointer queries are unreliable on iPad Safari
+  const [isTablet, setIsTablet] = useState(() => isTabletDevice());
+
+  useEffect(() => {
+    const handler = () => setIsTablet(isTabletDevice());
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
   // Track page views on route changes (ME-UXF-001 §16.5)
   useEffect(() => {
     const pageName = location.pathname.split('/')[1] || 'dashboard';
@@ -243,18 +253,22 @@ export function AppLayout() {
         {/* Left nav — icon-only, visible on md+ */}
         <NavSidebar />
 
-        {/* ═══ TABLET LAYOUT — touch devices 768px+ ═══ */}
-        <div className="hidden tablet:flex desktop:hidden flex-1 min-w-0">
-          <TabletLayout showEchoPanes={showEchoPanes} />
-        </div>
+        {/* ═══ TABLET LAYOUT — JS touch detection ═══ */}
+        {isTablet && (
+          <div className="hidden md:flex flex-1 min-w-0">
+            <div style={{position:'fixed',top:'60px',left:'50%',background:'lime',zIndex:9999,padding:'4px',fontSize:'12px',color:'black'}}>TABLET</div>
+            <TabletLayout showEchoPanes={showEchoPanes} />
+          </div>
+        )}
 
         {/* ═══ PHONE LAYOUT (<md) — single pane, full width ═══ */}
         <main className="flex-1 overflow-y-auto md:hidden">
           <Outlet />
         </main>
 
-        {/* ═══ DESKTOP LAYOUT — fine pointer 768px+ OR any device 1440px+ ═══ */}
-        <div className="hidden desktop:flex flex-1 overflow-hidden">
+        {/* ═══ DESKTOP LAYOUT — non-touch 768px+ ═══ */}
+        {!isTablet && (
+          <div className="hidden md:flex flex-1 overflow-hidden">
           <MoodAtmosphereWrapper show={showEchoPanes}>
             {/* Community Pulse — 1920px+ only */}
             {showEchoPanes && (
@@ -292,7 +306,8 @@ export function AppLayout() {
             </aside>
           </MoodAtmosphereWrapper>
 
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Mobile bottom bar */}

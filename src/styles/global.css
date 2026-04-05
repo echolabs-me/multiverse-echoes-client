@@ -1,16 +1,16 @@
 @import 'tailwindcss';
 @import './tokens.css';
 
-/* Tablet: touch device at 768px+ (iPad in any orientation) */
+/* Tablet: any coarse pointer (touchscreen) between 768px and 1439px */
 @custom-variant tablet {
-  @media (min-width: 768px) and (pointer: coarse) {
+  @media (min-width: 768px) and (any-pointer: coarse) and (max-width: 1439px) {
     @slot;
   }
 }
 
-/* Desktop: fine pointer at 768px+, OR any device at 1440px+ */
+/* Desktop: no coarse pointer at 768px+, OR any device at 1440px+ */
 @custom-variant desktop {
-  @media (min-width: 1440px), (min-width: 768px) and (pointer: fine) {
+  @media (min-width: 1440px), (min-width: 768px) and (not (any-pointer: coarse)) {
     @slot;
   }
 }

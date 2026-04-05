@@ -262,12 +262,12 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
   return (
     <aside
       className={forceVisible
-        ? "flex h-full w-full flex-col bg-transparent"
+        ? "flex flex-1 min-h-0 w-full flex-col bg-transparent"
         : "hidden md:flex h-full w-[200px] lg:w-[232px] flex-col border-r border-border/50 bg-transparent"
       }
       aria-label={t('echoSidebar.title')}
     >
-      <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+      <div className="flex-shrink-0 px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
         {t('echoSidebar.title')}
       </div>
       {/* Mood Legend */}
