@@ -236,6 +236,12 @@ export type CreateEchoRequest = {
 	consent_declaration: boolean,
 	// Optional: create Echo in a specific Public Shard instead of Personal Shard.
 	shard_id?: string | null,
+	/**
+	 *  Optional free-text physical description. When present and non-empty,
+	 *  it is used directly as the FLUX.2 portrait prompt and the LLM
+	 *  descriptor extraction from `persona_text` is skipped.
+	 */
+	physical_description?: string | null,
 };
 
 export type CreateReportRequest = {
@@ -355,6 +361,14 @@ export type Echo = {
 	 *  Used as the MuseTalk reference face for voice sessions.
 	 */
 	avatar_url?: string | null,
+	/**
+	 *  Optional free-text physical description supplied at Echo creation.
+	 *  When present and non-empty, this is used DIRECTLY as the FLUX.2
+	 *  portrait prompt (with the shard's `visual_style` appended), bypassing
+	 *  the LLM extraction step from `persona_text`. Introduced 2026-04-05.
+	 *  Older Echoes deserialise with `None` via `#[serde(default)]`.
+	 */
+	physical_description?: string | null,
 };
 
 export type EchoMemory = {
@@ -406,6 +420,11 @@ export type EchoResponse = {
 	name_locked: boolean,
 	// URL of the AI-generated portrait image (face). Null if generation failed or pending.
 	avatar_url: string | null,
+	/**
+	 *  Free-text physical description supplied at creation (optional).
+	 *  Null for Echoes created before the field was introduced.
+	 */
+	physical_description: string | null,
 };
 
 export type EchoStatus = "Active" | "Travelling" | "Hibernated" | "Quarantined" | "Deleted";

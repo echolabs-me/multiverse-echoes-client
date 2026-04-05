@@ -170,6 +170,9 @@ export interface CreateEchoRequest {
   consent_declaration: boolean;
   persona_declaration?: 'inspired' | 'fictional';
   shard_id?: string;
+  /** Optional free-text description. When set, used directly as the FLUX.2
+   *  portrait prompt and the LLM bio-extraction step is skipped. Max 1000. */
+  physical_description?: string;
 }
 
 export interface UpdatePersonaRequest {
@@ -190,6 +193,9 @@ export interface EchoResponse {
   created_at: string;
   name_locked: boolean;
   avatar_url: string | null;
+  /** Optional free-text physical description supplied at creation. Null for
+   *  Echoes created before the field was introduced. */
+  physical_description: string | null;
 }
 
 // --- Shard ---

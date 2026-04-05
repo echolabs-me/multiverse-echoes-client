@@ -18,10 +18,11 @@ export function EchoCreationPage() {
 
   const [step, setStep] = useState<Step>('details');
 
-  // Details — single page: name + what-if + persona
+  // Details — single page: name + what-if + persona + physical description
   const [echoName, setEchoName] = useState('');
   const [whatIfPrompt, setWhatIfPrompt] = useState('');
   const [personaText, setPersonaText] = useState('');
+  const [physicalDescription, setPhysicalDescription] = useState('');
   const [personaDeclaration, setPersonaDeclaration] = useState<'inspired' | 'fictional'>('inspired');
 
   // Consent
@@ -60,6 +61,7 @@ export function EchoCreationPage() {
     setStep('birth');
 
     try {
+      const trimmedPhysical = physicalDescription.trim();
       const echo = await createEcho({
         name: echoName.trim(),
         persona_text: personaText || whatIfPrompt,
@@ -68,6 +70,7 @@ export function EchoCreationPage() {
         consent_declaration: true,
         persona_declaration: personaDeclaration,
         shard_id: selectedShardId ?? undefined,
+        physical_description: trimmedPhysical.length > 0 ? trimmedPhysical : undefined,
       });
 
       createdEchoId.current = echo.echo_id;
@@ -147,7 +150,7 @@ export function EchoCreationPage() {
                 setWhatIfPrompt((e.target as HTMLTextAreaElement).value)
               }
               placeholder={t('echo.whatIfPlaceholder')}
-              maxLength={500}
+              maxLength={2000}
               className="!bg-canvas border-accent/30 min-h-[120px] text-base"
             />
             <div className="mt-2 flex items-center justify-between">
@@ -155,7 +158,7 @@ export function EchoCreationPage() {
                 {t('echo.whatIfHint')}
               </p>
               <p className="text-xs text-text-muted">
-                {whatIfPrompt.length}/500
+                {whatIfPrompt.length}/2000
               </p>
             </div>
           </div>
@@ -169,11 +172,31 @@ export function EchoCreationPage() {
                 setPersonaText((e.target as HTMLTextAreaElement).value)
               }
               placeholder={t('echo.personaOptionalPlaceholder')}
-              maxLength={1000}
+              maxLength={2000}
               className="!bg-canvas border-accent/20 min-h-[100px]"
             />
             <p className="mt-1 text-right text-xs text-text-muted">
-              {personaText.length}/1000
+              {personaText.length}/2000
+            </p>
+          </div>
+
+          <div>
+            <Input
+              label={t('echo.physicalDescriptionLabel')}
+              multiline
+              value={physicalDescription}
+              onChange={(e) =>
+                setPhysicalDescription((e.target as HTMLTextAreaElement).value)
+              }
+              placeholder={t('echo.physicalDescriptionPlaceholder')}
+              maxLength={1000}
+              className="!bg-canvas border-accent/20 min-h-[100px]"
+            />
+            <p className="mt-1 text-xs text-text-secondary">
+              {t('echo.physicalDescriptionHelper')}
+            </p>
+            <p className="mt-1 text-right text-xs text-text-muted">
+              {physicalDescription.length}/1000
             </p>
           </div>
 
