@@ -44,13 +44,13 @@ interface NavItem {
  * - md: icon-only (56px)
  * - sm: hidden (bottom nav used)
  */
-function NavSidebar() {
+function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const unreadCount = useNotificationStore((s) => s.unreadCount);
 
-  const items: NavItem[] = [
+  const allItems: NavItem[] = [
     { id: 'dashboard', labelKey: 'nav.dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
     { id: 'shards', labelKey: 'nav.browseShards', icon: <Compass size={20} />, path: '/shards/browse' },
     { id: 'community', labelKey: 'communitySidebar.title', icon: <DiscordIcon size={20} />, path: '/community' },
@@ -58,6 +58,9 @@ function NavSidebar() {
     { id: 'notifications', labelKey: 'nav.notifications', icon: <Bell size={20} />, path: '/notifications', badge: unreadCount },
     { id: 'settings', labelKey: 'nav.settings', icon: <Settings size={20} />, path: '/settings' },
   ];
+
+  // On tablet, Community lives in the right tab panel — remove from nav
+  const items = isTablet ? allItems.filter((i) => i.id !== 'community') : allItems;
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -245,7 +248,7 @@ export function AppLayout() {
 
       <div className="flex flex-1 overflow-y-hidden">
         {/* Left nav — icon-only, visible on md+ */}
-        <NavSidebar />
+        <NavSidebar isTablet={isTablet} />
 
         {/* ═══ TABLET LAYOUT — JS touch detection ═══ */}
         {isTablet && (

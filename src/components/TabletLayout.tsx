@@ -16,6 +16,7 @@ import { Sparkles } from 'lucide-react';
 import { EchoSidebar } from './EchoSidebar.tsx';
 import { OracleSidebar } from './OracleSidebar.tsx';
 import { CommunitySidebar } from './CommunitySidebar.tsx';
+import { CommunityPulseCard } from './CommunityPulseCard.tsx';
 import { DiscordIcon } from './icons/DiscordIcon.tsx';
 
 interface TabletLayoutProps {
@@ -47,6 +48,18 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
         <EchoSidebar forceVisible />
       </aside>
 
+      {/* ── COMMUNITY PULSE (260px fixed) ── */}
+      <aside className="flex w-[260px] flex-shrink-0 flex-col border-r border-border/50 bg-canvas">
+        <div className="flex-shrink-0 border-b border-border/50 px-3 py-3">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+            {t('communityFeed.title')}
+          </span>
+        </div>
+        <div className="flex-1 min-h-0 overflow-y-auto px-2 py-2">
+          <CommunityPulseCard />
+        </div>
+      </aside>
+
       {/* ── CENTRE: Main content ── */}
       <main className="flex flex-1 flex-col overflow-hidden">
         <div className="flex-1 overflow-y-auto">
@@ -58,32 +71,36 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
       <aside className="flex w-[280px] flex-shrink-0 flex-col border-l border-border/50 bg-canvas">
         {/* Tab bar */}
         <div className="flex flex-shrink-0 border-b border-border/50" role="tablist">
-          <button
+          <div
             onClick={selectOracle}
-            className={`flex flex-1 items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectOracle(); } }}
+            className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
               activeTab === 'oracle'
                 ? 'border-b-2 border-accent text-accent'
                 : 'text-text-muted hover:text-text-secondary'
             }`}
             aria-selected={activeTab === 'oracle'}
             role="tab"
+            tabIndex={0}
           >
             <Sparkles size={14} />
             {t('oracle.title')}
-          </button>
-          <button
+          </div>
+          <div
             onClick={selectCommunity}
-            className={`flex flex-1 items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCommunity(); } }}
+            className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
               activeTab === 'community'
                 ? 'border-b-2 border-accent text-accent'
                 : 'text-text-muted hover:text-text-secondary'
             }`}
             aria-selected={activeTab === 'community'}
             role="tab"
+            tabIndex={0}
           >
             <DiscordIcon size={14} />
             {t('communitySidebar.title')}
-          </button>
+          </div>
         </div>
 
         {/* Tab content — one mounts at a time */}
