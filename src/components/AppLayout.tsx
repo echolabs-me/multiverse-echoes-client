@@ -119,7 +119,7 @@ function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: Re
   const palette = useMoodPaletteStore((s) => s.palette);
 
   return (
-    <div className="relative flex flex-1 min-h-0 overflow-hidden">
+    <div className="relative flex flex-1 overflow-hidden">
       {show && palette && (
         <>
           <div
@@ -237,7 +237,7 @@ export function AppLayout() {
         </div>
       )}
 
-      <div className="flex flex-1 min-h-0 overflow-y-hidden">
+      <div className="flex flex-1 overflow-y-hidden">
         {/* Left nav — icon-only, visible on md+ */}
         <NavSidebar />
 
@@ -252,7 +252,7 @@ export function AppLayout() {
         </main>
 
         {/* ═══ DESKTOP LAYOUT (1440px+) — all panes in flex row ═══ */}
-        <div className="hidden xl:flex flex-1 min-h-0 overflow-hidden">
+        <div className="hidden xl:flex flex-1 overflow-hidden">
           <MoodAtmosphereWrapper show={showEchoPanes}>
             {/* Community Pulse — 1920px+ only */}
             {showEchoPanes && (
@@ -286,7 +286,7 @@ export function AppLayout() {
               <Outlet />
             </main>
 
-            <aside className="flex h-full min-h-0 w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-l border-border/50">
+            <aside className="flex h-full min-h-0 w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-l border-border/50 overflow-hidden">
               <OracleSidebar />
             </aside>
 
