@@ -506,6 +506,15 @@ export type FeedItemResponse = {
 	tick_id: number,
 	created_at: string,
 	is_public: boolean,
+	/**
+	 *  Locale of the `title` + `body` fields. Either the requesting user's
+	 *  locale (translation found in `content_translations`) or `"en"`
+	 *  (English canonical form — translation not yet stored by the
+	 *  outbound worker). Clients render `<TranslationPending>` when
+	 *  `content_locale` is `"en"` for non-English users.
+	 *  CC TASK 3 Step 3.
+	 */
+	content_locale: string,
 };
 
 export type FeedItemType = "diary_entry" | "life_event" | "relationship_change" | "achievement" | "global_event_participation" | "user_shared";
@@ -1177,4 +1186,17 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
 { EchoAvatarReady: { echo_id: string; avatar_url: string } } | { EmergencyHibernation: { reason: string } };
 
 // Events sent over the WebSocket to clients.
-export type WsEchoEvent = { type: "DiaryEntryCreated"; echo_id: string; diary_id: string; tick_id: number } | { type: "DiaryImageReady"; echo_id: string; diary_id: string; image_url: string } | { type: "LifeEventOccurred"; echo_id: string; event_id: string; tick_id: number } | { type: "MoodChanged"; echo_id: string; mood: string; tick_id: number } | { type: "EchoMoved"; echo_id: string; from_location: string; to_location: string } | { type: "PersonaUpdated"; echo_id: string; version: number } | { type: "EchoHibernated"; echo_id: string; reason: string } | { type: "EchoWoken"; echo_id: string } | { type: "EchoWealthChanged"; echo_id: string; old_value: number; new_value: number; reason: string } | { type: "EchoDeleted"; echo_id: string } | { type: "ShardTravelCompleted"; echo_id: string; shard_id: string } | { type: "ShardCreated"; shard_id: string; shard_type: string } | { type: "CommunityMessagePosted"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageEdited"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageDeleted"; channel_id: string; message_id: string; deleted_by: string } | { type: "NotificationCreated"; notification_id: string } | { type: "EchoAvatarReady"; echo_id: string; avatar_url: string } | { type: "Connected"; echo_id: string; message: string } | { type: "Error"; message: string };
+export type WsEchoEvent = { type: "DiaryEntryCreated"; echo_id: string; diary_id: string; tick_id: number; 
+/**
+ *  Locale hint for the just-persisted content. Always `"en"` at the
+ *  moment the event fires — the outbound translation worker is
+ *  asynchronous, so translations are never ready in the microseconds
+ *  between tick persist and event broadcast. Clients treat this as
+ *  a hint only and refetch via GET for the authoritative value
+ *  (the GET response returns `content_locale` = user's locale if
+ *  the worker has since caught up, or `"en"` otherwise).
+ *  CC TASK 3 Step 4.
+ */
+content_locale: string } | { type: "DiaryImageReady"; echo_id: string; diary_id: string; image_url: string } | { type: "LifeEventOccurred"; echo_id: string; event_id: string; tick_id: number; 
+// See `DiaryEntryCreated::content_locale`. CC TASK 3 Step 4.
+content_locale: string } | { type: "MoodChanged"; echo_id: string; mood: string; tick_id: number } | { type: "EchoMoved"; echo_id: string; from_location: string; to_location: string } | { type: "PersonaUpdated"; echo_id: string; version: number } | { type: "EchoHibernated"; echo_id: string; reason: string } | { type: "EchoWoken"; echo_id: string } | { type: "EchoWealthChanged"; echo_id: string; old_value: number; new_value: number; reason: string } | { type: "EchoDeleted"; echo_id: string } | { type: "ShardTravelCompleted"; echo_id: string; shard_id: string } | { type: "ShardCreated"; shard_id: string; shard_type: string } | { type: "CommunityMessagePosted"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageEdited"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageDeleted"; channel_id: string; message_id: string; deleted_by: string } | { type: "NotificationCreated"; notification_id: string } | { type: "EchoAvatarReady"; echo_id: string; avatar_url: string } | { type: "Connected"; echo_id: string; message: string } | { type: "Error"; message: string };
