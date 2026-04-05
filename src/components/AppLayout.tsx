@@ -256,7 +256,7 @@ export function AppLayout() {
           <MoodAtmosphereWrapper show={showEchoPanes}>
             {/* Community Pulse — 1920px+ only */}
             {showEchoPanes && (
-              <aside className="hidden min-[1920px]:flex h-full w-[311px] flex-shrink-0 flex-col border-r border-border/50 overflow-y-auto">
+              <aside className="hidden min-[1920px]:flex w-[311px] flex-shrink-0 flex-col border-r border-border/50 overflow-y-auto">
                 <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
                   {t('communityFeed.title')}
                 </div>
@@ -267,7 +267,7 @@ export function AppLayout() {
             )}
 
             {showEchoPanes && (
-              <div className="flex h-full flex-shrink-0 flex-col border-r border-border/50">
+              <div className="flex flex-shrink-0 flex-col border-r border-border/50">
                 {/* Community Pulse — collapsible in sidebar for screens <1920px */}
                 <div className="min-[1920px]:hidden">
                   <DesktopPulseSection />
@@ -291,7 +291,7 @@ export function AppLayout() {
             </aside>
 
             {/* Community pane — 1920px+ */}
-            <aside className="hidden min-[1920px]:flex h-full w-[240px] flex-shrink-0 flex-col border-l border-border/50">
+            <aside className="hidden min-[1920px]:flex w-[240px] flex-shrink-0 flex-col border-l border-border/50">
               <CommunitySidebar />
             </aside>
           </MoodAtmosphereWrapper>
