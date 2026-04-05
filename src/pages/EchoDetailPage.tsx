@@ -686,7 +686,7 @@ export function EchoDetailPage() {
                   <button
                     className="fixed inset-0 z-40 cursor-default"
                     onClick={() => setShowMoreMenu(false)}
-                    aria-label="Close menu"
+                    aria-label={t('echoDetail.closeMenuAriaLabel')}
                     tabIndex={-1}
                   />
                   <div className="absolute left-0 z-50 mt-1 w-48 rounded-lg border border-border bg-surface shadow-lg py-1">

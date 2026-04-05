@@ -379,7 +379,7 @@ export function MobileEchoSwitcher() {
           <button
             className="fixed inset-0 z-40 cursor-default"
             onClick={() => setIsOpen(false)}
-            aria-label="Close echo switcher"
+            aria-label={t('echoSidebar.closeAriaLabel')}
             tabIndex={-1}
           />
           <div className="absolute left-0 right-0 z-50 mx-4 mt-1 rounded-lg border border-border bg-surface shadow-lg">

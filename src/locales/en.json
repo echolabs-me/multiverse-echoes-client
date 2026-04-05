@@ -31,7 +31,6 @@
     "continue": "Continue",
     "skip": "Skip for now",
     "or": "or",
-    "edit": "Edit",
     "send": "Send",
     "report": "Report",
     "follow": "Follow",
@@ -116,9 +115,7 @@
     "resetTokenMissing": "No reset token found. Please request a new password reset.",
     "requestNewReset": "Request a new reset",
     "newPassword": "New password",
-    "confirmPassword": "Confirm new password",
     "passwordsMismatch": "Passwords do not match",
-    "passwordTooShort": "Password must be at least 12 characters",
     "resetPassword": "Reset password",
     "redirectingToLogin": "Redirecting to login..."
   },
@@ -244,6 +241,7 @@
     "viewPortrait": "View full-size portrait",
     "closePortrait": "Close portrait",
     "portraitAltFull": "{{name}} portrait, full size",
+    "closeMenuAriaLabel": "Close menu",
     "delete": "Delete Echo",
     "deleteConfirmTitle": "Delete {{name}}?",
     "deleteConfirmBody": "This will permanently delete this Echo and all their diary entries, relationships, life events, and images. This cannot be undone.",
@@ -664,7 +662,8 @@
     "unknownShard": "Unknown Shard",
     "moodLegend": "Mood Guide",
     "arrivingAt": "Arriving at {{shard}}\u2026",
-    "createEcho": "Create Echo"
+    "createEcho": "Create Echo",
+    "closeAriaLabel": "Close echo switcher"
   },
   "payment": {
     "title": "Plans",
@@ -698,8 +697,8 @@
     "tipMessagePlaceholder": "Leave a message...",
     "tipSend": "Send Tip",
     "tipThanks": "Thank you for your support!",
-    "tipMinimum": "Minimum tip is ${{min}}",
-    "tipMaximum": "Maximum tip is ${{max}}",
+    "tipMinimum": "Minimum tip is {{currency}}{{min}}",
+    "tipMaximum": "Maximum tip is {{currency}}{{max}}",
     "provider": "Payment method",
     "cryptoUnavailable": "Crypto payments temporarily unavailable. Please try again later or use card payment.",
     "checkingStatus": "Checking payment status..."
