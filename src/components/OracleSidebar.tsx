@@ -89,7 +89,7 @@ export function OracleSidebar() {
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex flex-1 min-h-0 flex-col">
       {/* Header — premium branding with accent left border */}
       <div className="border-b border-border border-l-2 border-l-accent px-3 py-3">
         <div className="flex items-center justify-between">
