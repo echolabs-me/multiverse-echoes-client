@@ -45,19 +45,25 @@ export class MoshiAudioBridge {
 
   /**
    * Connect to Moshi WebSocket and start audio pipeline.
-   * Must be called from a user gesture (for mic permissions + AudioContext).
+   * @param wsUrl WebSocket URL for the Moshi sidecar
+   * @param preCreatedAudioCtx Optional AudioContext created earlier during user gesture.
+   *   On Safari/iOS, AudioContext must be created within a user gesture handler.
+   *   If the caller does async work (health polling) before calling connect(),
+   *   the gesture context expires. Pass a pre-created AudioContext to avoid this.
    */
-  async connect(wsUrl: string): Promise<void> {
-    // 1. Create AudioContext (user gesture context)
-    // Safari may ignore sampleRate — we check and adapt.
-    try {
-      this.audioCtx = new AudioContext({ sampleRate: SAMPLE_RATE });
-    } catch {
-      // Fallback: let browser pick its default rate
-      this.audioCtx = new AudioContext();
-    }
-    if (this.audioCtx.state === 'suspended') {
-      await this.audioCtx.resume();
+  async connect(wsUrl: string, preCreatedAudioCtx?: AudioContext): Promise<void> {
+    // 1. Use pre-created AudioContext or create a new one
+    if (preCreatedAudioCtx) {
+      this.audioCtx = preCreatedAudioCtx;
+    } else {
+      try {
+        this.audioCtx = new AudioContext({ sampleRate: SAMPLE_RATE });
+      } catch {
+        this.audioCtx = new AudioContext();
+      }
+      if (this.audioCtx.state === 'suspended') {
+        await this.audioCtx.resume();
+      }
     }
     this.gainNode = this.audioCtx.createGain();
     this.gainNode.connect(this.audioCtx.destination);

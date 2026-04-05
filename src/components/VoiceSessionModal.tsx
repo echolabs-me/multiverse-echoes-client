@@ -46,6 +46,12 @@ export function VoiceSessionModal({
   const bridgeRef = useRef<MoshiAudioBridge | null>(null);
   const sessionNonceRef = useRef<number | undefined>(undefined);
   const cleanupDoneRef = useRef(false);
+  const videoFrameRef = useRef<string | null>(null);
+
+  // Keep ref in sync with state (for cleanup without re-triggering useEffect)
+  useEffect(() => {
+    videoFrameRef.current = videoFrame;
+  }, [videoFrame]);
 
   const cleanup = useCallback(async () => {
     if (cleanupDoneRef.current) return;
@@ -63,9 +69,9 @@ export function VoiceSessionModal({
       videoWsRef.current = null;
     }
 
-    // Clean up video frame URL
-    if (videoFrame) {
-      URL.revokeObjectURL(videoFrame);
+    // Clean up video frame URL (read from ref, not state — avoids dependency)
+    if (videoFrameRef.current) {
+      URL.revokeObjectURL(videoFrameRef.current);
     }
 
     // Stop server-side Moshi (pass nonce to prevent killing a newer session)
@@ -75,11 +81,13 @@ export function VoiceSessionModal({
     sessionNonceRef.current = undefined;
 
     cleanupDoneRef.current = false;
-  }, [echoId, videoFrame]);
+  }, [echoId]);
 
+  // Only fire cleanup on unmount — NOT on every videoFrame change
   useEffect(() => {
     return () => { void cleanup(); };
-  }, [cleanup]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Fade out speaking indicator after silence
   const speakingTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -96,12 +104,21 @@ export function VoiceSessionModal({
     setVideoFrame(null);
 
     try {
-      // 1. Start server-side Moshi
+      // 1. Pre-create AudioContext NOW while user gesture is still valid.
+      //    Safari requires AudioContext to be created/resumed within a user
+      //    gesture handler. The health polling below takes 10-20s, which
+      //    expires the gesture context. Creating it here preserves it.
+      const preAudioCtx = new AudioContext({ sampleRate: 24000 });
+      if (preAudioCtx.state === 'suspended') {
+        await preAudioCtx.resume();
+      }
+
+      // 2. Start server-side Moshi
       const { voice_ws_url, session_nonce } = await echoApi.startVoiceSession(echoId);
       sessionNonceRef.current = session_nonce;
       setState('connecting');
 
-      // 2. Poll sidecar /health — returns 200 only when both sidecar AND Moshi are up
+      // 3. Poll sidecar /health — returns 200 only when both sidecar AND Moshi are up
       const baseUrl = getBaseUrl();
       let ready = false;
       for (let i = 0; i < 240; i++) {
@@ -111,9 +128,12 @@ export function VoiceSessionModal({
         } catch { /* not ready */ }
         await new Promise((r) => setTimeout(r, 1000));
       }
-      if (!ready) throw new Error('Voice server did not start in time');
+      if (!ready) {
+        preAudioCtx.close();
+        throw new Error('Voice server did not start in time');
+      }
 
-      // 3. Create audio bridge and connect
+      // 4. Create audio bridge and connect (pass pre-created AudioContext)
       const bridge = new MoshiAudioBridge({
         onHandshake: () => setState('active'),
         onText: (text) => setInnerMonologue((prev) => prev + text),
@@ -132,7 +152,7 @@ export function VoiceSessionModal({
       bridgeRef.current = bridge;
 
       const wsBase = baseUrl.replace(/^http/, 'ws');
-      await bridge.connect(`${wsBase}${voice_ws_url}`);
+      await bridge.connect(`${wsBase}${voice_ws_url}`, preAudioCtx);
 
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to start voice session';
