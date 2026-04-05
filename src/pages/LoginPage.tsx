@@ -94,7 +94,7 @@ export function LoginPage() {
             {isSubmitting ? t('common.loading') : t('auth.logIn')}
           </Button>
 
-          <p className="text-right text-sm">
+          <p className="text-end text-sm">
             <Link to="/forgot-password" className="text-accent hover:text-accent-hover">
               {t('auth.forgotPassword')}
             </Link>

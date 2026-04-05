@@ -189,7 +189,7 @@ export function VoiceSessionModal({
       {state !== 'active' && (
         <button
           onClick={() => void endSession()}
-          className="absolute right-4 top-4 rounded-full p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
+          className="absolute end-4 top-4 rounded-full p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
           aria-label={t('voice.close')}
         >
           <X size={24} />

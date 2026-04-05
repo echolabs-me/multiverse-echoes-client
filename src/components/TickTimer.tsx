@@ -104,7 +104,7 @@ export function TickTimer() {
 
       {/* Full-width ambient bar at header bottom */}
       <div
-        className="tick-bar absolute bottom-0 left-0 right-0 h-[3px] pointer-events-none"
+        className="tick-bar absolute bottom-0 start-0 end-0 h-[3px] pointer-events-none"
         aria-hidden="true"
       >
         {/* Track */}
@@ -113,7 +113,7 @@ export function TickTimer() {
         {/* Fill during countdown */}
         {!isGenerating && !isArrived && (
           <div
-            className="tick-bar-fill absolute inset-y-0 left-0"
+            className="tick-bar-fill absolute inset-y-0 start-0"
             style={{ width: `${progress * 100}%` }}
           />
         )}
@@ -135,7 +135,7 @@ export function TickTimer() {
 
         {/* Ambient upward glow — contained within the bar's overflow:hidden parent */}
         <div
-          className="absolute bottom-0 left-0 h-[3px] transition-opacity duration-1000"
+          className="absolute bottom-0 start-0 h-[3px] transition-opacity duration-1000"
           style={{
             width: isGenerating ? '100%' : `${progress * 100}%`,
             opacity: isGenerating ? 0.5 : glowOpacity,

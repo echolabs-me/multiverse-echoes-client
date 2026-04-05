@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { search } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { formatDate } from '../lib/formatDate.ts';
 import type { SearchResult } from '../types/api.ts';
 
 type ContentType = 'all' | 'Echo' | 'DiaryEntry' | 'LifeEvent' | 'Shard' | 'Message';
@@ -224,7 +225,7 @@ export function SearchPage() {
         <form onSubmit={handleSubmit} className="relative mb-6">
           <SearchIcon
             size={20}
-            className="absolute top-1/2 left-3 -translate-y-1/2 text-text-muted"
+            className="absolute top-1/2 start-3 -translate-y-1/2 text-text-muted"
             aria-hidden="true"
           />
           <input
@@ -233,10 +234,10 @@ export function SearchPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t('search.placeholder')}
-            className="w-full rounded-lg border border-border bg-surface py-3 pr-20 pl-10 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
+            className="w-full rounded-lg border border-border bg-surface py-3 pe-20 ps-10 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
             aria-label={t('search.placeholder')}
           />
-          <kbd className="absolute top-1/2 right-3 -translate-y-1/2 rounded border border-border bg-canvas px-2 py-0.5 text-xs text-text-secondary">
+          <kbd className="absolute top-1/2 end-3 -translate-y-1/2 rounded border border-border bg-canvas px-2 py-0.5 text-xs text-text-secondary">
             {t('search.shortcut')}
           </kbd>
         </form>
@@ -263,7 +264,7 @@ export function SearchPage() {
           </div>
 
           {/* Date filters */}
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ms-auto flex items-center gap-2">
             <Calendar size={14} className="text-text-muted" aria-hidden="true" />
             <input
               type="date"
@@ -359,7 +360,7 @@ export function SearchPage() {
                         <button
                           key={`${result.result_type}-${result.id}`}
                           onClick={() => handleResultClick(result)}
-                          className="w-full rounded-lg border border-border bg-surface p-3 text-left transition-colors hover:bg-surface-raised focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+                          className="w-full rounded-lg border border-border bg-surface p-3 text-start transition-colors hover:bg-surface-raised focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
                         >
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0 flex-1">
@@ -371,7 +372,7 @@ export function SearchPage() {
                               </p>
                             </div>
                             <time className="shrink-0 text-xs text-text-muted">
-                              {new Date(result.created_at).toLocaleDateString()}
+                              {formatDate(result.created_at)}
                             </time>
                           </div>
                         </button>

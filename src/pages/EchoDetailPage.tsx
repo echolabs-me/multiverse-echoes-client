@@ -50,6 +50,7 @@ import { echoes as echoApi, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { formatDate, formatDateTime } from '../lib/formatDate.ts';
 import type {
   EchoRelationship,
   InfluenceBalance,
@@ -570,7 +571,7 @@ export function EchoDetailPage() {
               </div>
               <p className="mt-1 text-sm text-text-muted">
                 {t('echoDetail.createdOn', {
-                  date: new Date(activeEcho.created_at).toLocaleDateString(),
+                  date: formatDate(activeEcho.created_at),
                 })}
               </p>
               <p className="mt-1 text-sm text-text-secondary">
@@ -656,7 +657,7 @@ export function EchoDetailPage() {
                 >
                   <Zap size={18} className="text-amber-400" /> {t('echoDetail.useInfluence')}
                   {influence && influence.daily_limit < 1000 && (
-                    <span className="ml-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+                    <span className="ms-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300">
                       {influence.remaining}
                     </span>
                   )}
@@ -689,7 +690,7 @@ export function EchoDetailPage() {
                     aria-label={t('echoDetail.closeMenuAriaLabel')}
                     tabIndex={-1}
                   />
-                  <div className="absolute left-0 z-50 mt-1 w-48 rounded-lg border border-border bg-surface shadow-lg py-1">
+                  <div className="absolute start-0 z-50 mt-1 w-48 rounded-lg border border-border bg-surface shadow-lg py-1">
                     <button
                       onClick={() => { setHibernateModal(true); setShowMoreMenu(false); }}
                       className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
@@ -738,11 +739,11 @@ export function EchoDetailPage() {
             <div className="mb-4">
               <button
                 onClick={() => setShowPastConversations((p) => !p)}
-                className="flex w-full items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-left text-xs font-medium text-text-secondary hover:bg-surface-raised transition-colors"
+                className="flex w-full items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-start text-xs font-medium text-text-secondary hover:bg-surface-raised transition-colors"
               >
                 <MessageCircle size={14} />
                 {t('conversation.pastConversations', { name: activeEcho.name, count: pastConversations.length })}
-                {showPastConversations ? <ChevronUp size={14} className="ml-auto" /> : <ChevronDown size={14} className="ml-auto" />}
+                {showPastConversations ? <ChevronUp size={14} className="ms-auto" /> : <ChevronDown size={14} className="ms-auto" />}
               </button>
               {showPastConversations && (
                 <div className="mt-2 space-y-1.5">
@@ -753,10 +754,10 @@ export function EchoDetailPage() {
                         setResumeConversationId(conv.conversation_id);
                         setShowConversation(true);
                       }}
-                      className="flex w-full items-center justify-between rounded-lg border border-border/50 bg-surface/50 px-3 py-2 text-left text-xs transition-colors hover:bg-surface-raised"
+                      className="flex w-full items-center justify-between rounded-lg border border-border/50 bg-surface/50 px-3 py-2 text-start text-xs transition-colors hover:bg-surface-raised"
                     >
                       <span className="text-text-primary">
-                        {new Date(conv.created_at).toLocaleDateString([], {
+                        {formatDateTime(conv.created_at, {
                           month: 'short',
                           day: 'numeric',
                           hour: '2-digit',
@@ -816,13 +817,13 @@ export function EchoDetailPage() {
             {(diaryEntries.length > 0 || moodFilter || diarySearch) && (
               <div className="mb-3 flex flex-wrap items-center gap-2">
                 <div className="relative flex-1 min-w-[180px]">
-                  <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-text-muted" aria-hidden="true" />
+                  <Search size={14} className="absolute start-2.5 top-1/2 -translate-y-1/2 text-text-muted" aria-hidden="true" />
                   <input
                     type="text"
                     value={diarySearch}
                     onChange={(e) => setDiarySearch(e.target.value)}
                     placeholder={t('echoDetail.searchDiary')}
-                    className="w-full rounded-lg border border-border bg-surface py-1.5 pl-8 pr-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                    className="w-full rounded-lg border border-border bg-surface py-1.5 ps-8 pe-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
                   />
                 </div>
                 <select
@@ -872,7 +873,7 @@ export function EchoDetailPage() {
                     <div key={day}>
                       <button
                         onClick={() => toggleDay(day)}
-                        className="mb-2 flex w-full items-center gap-2 border-b border-accent/20 pb-1 text-left"
+                        className="mb-2 flex w-full items-center gap-2 border-b border-accent/20 pb-1 text-start"
                       >
                         {expanded ? (
                           <ChevronDown size={16} className="text-accent" />
@@ -887,7 +888,7 @@ export function EchoDetailPage() {
                         </span>
                       </button>
                       {expanded && (
-                        <div className="mb-3 flex flex-col gap-3 pl-2">
+                        <div className="mb-3 flex flex-col gap-3 ps-2">
                           {entries.map((entry) => (
                             <DiaryCard
                               key={entry.diary_id}
@@ -939,7 +940,7 @@ export function EchoDetailPage() {
                         <p className="text-sm text-text-secondary">{event.body}</p>
                       </div>
                       <span className="shrink-0 text-xs text-text-muted">
-                        {new Date(event.created_at).toLocaleDateString()}
+                        {formatDate(event.created_at)}
                       </span>
                     </div>
                   </Card>
@@ -1061,7 +1062,7 @@ export function EchoDetailPage() {
           aria-label={t('echoDetail.closePortrait')}
         >
           <span
-            className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+            className="absolute top-4 end-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
             aria-hidden="true"
           >
             <X size={20} />
@@ -1305,9 +1306,9 @@ function DiaryCard({
             <p className="mt-1 text-sm text-text-secondary">{entry.content}</p>
             <p className="mt-1 text-xs text-text-secondary">{entry.location_name}</p>
           </div>
-          <div className="ml-3 flex shrink-0 flex-col items-end gap-1">
+          <div className="ms-3 flex shrink-0 flex-col items-end gap-1">
             <span className="text-xs text-text-muted">
-              {new Date(entry.created_at).toLocaleDateString()}
+              {formatDate(entry.created_at)}
             </span>
           </div>
         </div>

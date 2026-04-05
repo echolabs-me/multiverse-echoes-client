@@ -123,7 +123,7 @@ export function Dropdown({
         <div
           role="listbox"
           tabIndex={-1}
-          className="absolute left-0 top-full z-40 mt-1 min-w-[160px] rounded-lg border border-border bg-surface-raised py-1 shadow-lg"
+          className="absolute start-0 top-full z-40 mt-1 min-w-[160px] rounded-lg border border-border bg-surface-raised py-1 shadow-lg"
           onKeyDown={handleKeyDown}
         >
           {items.map((item, i) => (
@@ -134,7 +134,7 @@ export function Dropdown({
               aria-selected={focusIndex === i}
               aria-disabled={item.disabled}
               disabled={item.disabled}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-text-primary hover:bg-surface disabled:opacity-40"
+              className="flex w-full items-center gap-2 px-3 py-2 text-start text-sm text-text-primary hover:bg-surface disabled:opacity-40"
               onClick={() => {
                 onSelect(item.id);
                 close();

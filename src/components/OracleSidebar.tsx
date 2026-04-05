@@ -91,7 +91,7 @@ export function OracleSidebar() {
   return (
     <div className="flex flex-1 min-h-0 flex-col">
       {/* Header — premium branding with accent left border */}
-      <div className="border-b border-border border-l-2 border-l-accent px-3 py-3">
+      <div className="border-b border-border border-s-2 border-s-accent px-3 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/15">
@@ -138,7 +138,7 @@ export function OracleSidebar() {
                   key={key}
                   onClick={() => handleSuggestedQuestion(key)}
                   disabled={isLoading}
-                  className="rounded-full border border-accent/30 px-3 py-1.5 text-left text-[11px] text-text-secondary transition-colors hover:border-accent hover:bg-accent/5 hover:text-accent disabled:opacity-50"
+                  className="rounded-full border border-accent/30 px-3 py-1.5 text-start text-[11px] text-text-secondary transition-colors hover:border-accent hover:bg-accent/5 hover:text-accent disabled:opacity-50"
                 >
                   {t(key)}
                 </button>

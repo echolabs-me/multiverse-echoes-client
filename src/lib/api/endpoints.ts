@@ -270,11 +270,14 @@ export const account = {
   getProfile: () =>
     request<import('../../types/api.ts').User>('/account/me'),
 
-  updateProfile: (data: { display_name?: string }) =>
-    request<{ message: string; display_name: string }>('/account/me/profile', {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-    }),
+  updateProfile: (data: { display_name?: string; locale?: string }) =>
+    request<{ message: string; display_name: string; locale?: string }>(
+      '/account/me/profile',
+      {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+      },
+    ),
 
   getPrivacy: () =>
     request<{ solo_mode: boolean; do_not_sell: boolean; analytics_opt_out: boolean }>('/account/me/privacy'),

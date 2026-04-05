@@ -96,7 +96,7 @@ export function EchoCreationPage() {
   const cancelButton = (
     <button
       onClick={handleCancel}
-      className="absolute right-4 top-4 rounded-md p-1.5 text-text-secondary hover:bg-surface-raised hover:text-text-primary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+      className="absolute end-4 top-4 rounded-md p-1.5 text-text-secondary hover:bg-surface-raised hover:text-text-primary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
       aria-label={t('common.cancel')}
     >
       <X size={20} />
@@ -127,7 +127,7 @@ export function EchoCreationPage() {
             <p className="mt-1.5 text-xs text-text-secondary">
               {t('echo.nameHelper')}
             </p>
-            <p className="mt-1 text-right text-xs text-text-muted">
+            <p className="mt-1 text-end text-xs text-text-muted">
               {echoName.length}/24
             </p>
           </div>
@@ -148,7 +148,7 @@ export function EchoCreationPage() {
             <p className="mt-1.5 text-xs text-text-secondary">
               {t('echo.whatIfHint')}
             </p>
-            <p className="mt-1 text-right text-xs text-text-muted">
+            <p className="mt-1 text-end text-xs text-text-muted">
               {whatIfPrompt.length}/2000
             </p>
           </div>
@@ -165,7 +165,7 @@ export function EchoCreationPage() {
               maxLength={2000}
               className="min-h-[100px]"
             />
-            <p className="mt-1 text-right text-xs text-text-muted">
+            <p className="mt-1 text-end text-xs text-text-muted">
               {personaText.length}/2000
             </p>
           </div>
@@ -185,7 +185,7 @@ export function EchoCreationPage() {
             <p className="mt-1.5 text-xs text-text-secondary">
               {t('echo.physicalDescriptionHelper')}
             </p>
-            <p className="mt-1 text-right text-xs text-text-muted">
+            <p className="mt-1 text-end text-xs text-text-muted">
               {physicalDescription.length}/1000
             </p>
           </div>

@@ -9,6 +9,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { Button, Spinner } from './index.ts';
+import { formatTime } from '../lib/formatDate.ts';
 import { DiscordIcon } from './icons/DiscordIcon.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
@@ -270,12 +271,12 @@ export function CommunitySidebar() {
             </span>
           </button>
           {showChannelPicker && (
-            <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-lg border border-border bg-surface py-1 shadow-lg">
+            <div className="absolute start-0 end-0 top-full z-10 mt-1 rounded-lg border border-border bg-surface py-1 shadow-lg">
               {channelList.map((ch) => (
                 <button
                   key={ch.channel_id}
                   onClick={() => { setActiveChannel(ch); setShowChannelPicker(false); }}
-                  className={`flex w-full items-center justify-between px-3 py-1.5 text-left text-sm transition-colors ${
+                  className={`flex w-full items-center justify-between px-3 py-1.5 text-start text-sm transition-colors ${
                     activeChannel?.channel_id === ch.channel_id
                       ? 'bg-accent/10 text-accent'
                       : 'text-text-primary hover:bg-surface-raised'
@@ -283,7 +284,7 @@ export function CommunitySidebar() {
                 >
                   <span className="truncate">{ch.name}</span>
                   {unreadChannels.has(ch.channel_id) && (
-                    <span className="ml-1 rounded-full bg-accent px-1.5 py-0.5 text-[8px] font-bold uppercase leading-none text-canvas">
+                    <span className="ms-1 rounded-full bg-accent px-1.5 py-0.5 text-[8px] font-bold uppercase leading-none text-canvas">
                       {t('community.new')}
                     </span>
                   )}
@@ -311,7 +312,7 @@ export function CommunitySidebar() {
               const showHeader = !withinWindow;
               const displayName = msg.author_display_name || 'Unknown User';
               const initial = displayName[0]?.toUpperCase() ?? '?';
-              const timeStr = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              const timeStr = formatTime(msg.created_at);
 
               return (
                 <div key={msg.message_id} className={`group/msg text-xs ${showHeader && idx > 0 ? 'mt-3' : ''}`}>

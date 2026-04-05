@@ -4,7 +4,10 @@ import { ArrowLeft } from 'lucide-react';
 
 export function TermsPage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // Legal documents stay English-only until a professional translator can
+  // review locale-specific wording (CC TASK 4 Part G Step 23).
+  const showEnglishOnlyBanner = i18n.language !== 'en';
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
@@ -16,6 +19,15 @@ export function TermsPage() {
           <ArrowLeft size={16} />
           {t('common.back')}
         </button>
+
+        {showEnglishOnlyBanner && (
+          <div
+            className="mb-6 rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-text-secondary"
+            role="note"
+          >
+            {t('common.legalDocsEnglishOnly')}
+          </div>
+        )}
 
         <h1 className="mb-2 text-3xl font-bold text-text-primary">Terms of Service</h1>
         <p className="mb-8 text-sm text-text-muted">Last updated: 31 March 2026</p>
@@ -40,7 +52,7 @@ export function TermsPage() {
           {/* 2. Eligibility */}
           <section>
             <h2 className="mb-2 text-lg font-semibold text-text-primary">2. Eligibility</h2>
-            <ul className="list-disc space-y-1 pl-5">
+            <ul className="list-disc space-y-1 ps-5">
               <li>You must be at least 16 years old to use this platform.</li>
               <li>You must provide accurate registration information.</li>
               <li>You are responsible for maintaining the security of your account credentials.</li>
@@ -85,7 +97,7 @@ export function TermsPage() {
           <section>
             <h2 className="mb-2 text-lg font-semibold text-text-primary">4. Prohibited conduct</h2>
             <p className="mb-2">You must not:</p>
-            <ul className="list-disc space-y-1 pl-5">
+            <ul className="list-disc space-y-1 ps-5">
               <li>Create Echoes of real third parties without their consent.</li>
               <li>Submit persona data designed to generate harmful, illegal, or abusive content.</li>
               <li>Attempt to exploit influence points or simulation mechanics to manipulate others&apos; Echoes.</li>
@@ -104,7 +116,7 @@ export function TermsPage() {
           {/* 5. Subscriptions */}
           <section>
             <h2 className="mb-2 text-lg font-semibold text-text-primary">5. Subscriptions and payments</h2>
-            <ul className="list-disc space-y-1 pl-5">
+            <ul className="list-disc space-y-1 ps-5">
               <li>Subscriptions are billed monthly in advance.</li>
               <li>Prices may change with 30 days&apos; notice.</li>
               <li>Cancellation takes effect at the end of the current billing period. No pro-rated refunds.</li>
@@ -146,7 +158,7 @@ export function TermsPage() {
               12 months preceding the claim.
             </p>
             <p className="mt-2">We are not liable for:</p>
-            <ul className="list-disc space-y-1 pl-5">
+            <ul className="list-disc space-y-1 ps-5">
               <li>AI-generated content that is distressing, inaccurate, or offensive.</li>
               <li>Simulation outcomes or Echo behaviour.</li>
               <li>Lost simulation progress due to bugs, outages, or maintenance.</li>

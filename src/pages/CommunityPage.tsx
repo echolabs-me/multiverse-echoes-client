@@ -23,6 +23,7 @@ import { useAuthStore } from '../stores/useAuthStore.ts';
 import { channels as channelApi, account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { formatTime } from '../lib/formatDate.ts';
 import type { Channel, ChannelMessage, WsEchoEvent } from '../types/api.ts';
 
 const MAX_MESSAGE_LENGTH = 2000;
@@ -296,7 +297,7 @@ export function CommunityPage() {
     <>
     <div className="flex h-full flex-1 overflow-hidden">
         {/* Channel sidebar */}
-        <div className="w-60 shrink-0 overflow-y-auto border-r border-border bg-surface p-3">
+        <div className="w-60 shrink-0 overflow-y-auto border-e border-border bg-surface p-3">
           <h2 className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
             {t('community.channels')}
           </h2>
@@ -306,7 +307,7 @@ export function CommunityPage() {
           {discordLinked === false && (
             <button
               onClick={() => navigate('/settings?tab=account')}
-              className="mb-3 flex w-full items-center gap-2 rounded-lg bg-[#5865F2] px-3 py-2.5 text-left text-sm font-medium text-white shadow-sm hover:bg-[#4752C4] transition-colors"
+              className="mb-3 flex w-full items-center gap-2 rounded-lg bg-[#5865F2] px-3 py-2.5 text-start text-sm font-medium text-white shadow-sm hover:bg-[#4752C4] transition-colors"
             >
               <ExternalLink size={14} />
               {t('community.linkDiscord')}
@@ -329,7 +330,7 @@ export function CommunityPage() {
                 <button
                   key={ch.channel_id}
                   onClick={() => setActiveChannel(ch)}
-                  className={`rounded-lg border px-3 py-2.5 text-left transition-colors ${
+                  className={`rounded-lg border px-3 py-2.5 text-start transition-colors ${
                     activeChannel?.channel_id === ch.channel_id
                       ? 'border-accent/50 bg-accent/10 ring-2 ring-accent/25'
                       : 'border-accent/20 bg-accent/5 hover:border-accent/40 hover:bg-accent/10'
@@ -408,12 +409,12 @@ export function CommunityPage() {
                       const showHeader = !withinWindow;
                       const displayName = msg.author_display_name || 'Unknown User';
                       const initial = displayName[0]?.toUpperCase() ?? '?';
-                      const timeStr = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                      const timeStr = formatTime(msg.created_at);
 
                       return (
                       <div
                         key={msg.message_id}
-                        className={`group/msg relative rounded-lg px-3 hover:bg-surface-raised ${showHeader ? 'mt-4 pt-2 pb-1' : 'py-0.5 pl-12'}`}
+                        className={`group/msg relative rounded-lg px-3 hover:bg-surface-raised ${showHeader ? 'mt-4 pt-2 pb-1' : 'py-0.5 ps-12'}`}
                       >
                         {editingMessageId === msg.message_id ? (
                           <div className="flex gap-2">
@@ -470,7 +471,7 @@ export function CommunityPage() {
                               </div>
                             ) : (
                               <div className="group/line flex items-start">
-                                <span className="mr-3 mt-0.5 hidden w-8 shrink-0 text-center text-[10px] text-text-muted group-hover/line:inline">
+                                <span className="me-3 mt-0.5 hidden w-8 shrink-0 text-center text-[10px] text-text-muted group-hover/line:inline">
                                   {timeStr}
                                 </span>
                                 {msg.content && (
@@ -505,7 +506,7 @@ export function CommunityPage() {
                                           className="flex items-center justify-between rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary hover:border-accent hover:bg-accent/10 transition-colors"
                                         >
                                           <span>{opt.text}</span>
-                                          <span className="ml-2 text-xs text-text-muted">
+                                          <span className="ms-2 text-xs text-text-muted">
                                             {opt.votes} {t('community.votes')}
                                           </span>
                                         </button>
@@ -520,7 +521,7 @@ export function CommunityPage() {
                             })()}
 
                             {/* Message actions */}
-                            <div className="absolute right-2 top-2 hidden group-hover:flex">
+                            <div className="absolute end-2 top-2 hidden group-hover:flex">
                               <button
                                 onClick={() =>
                                   setMenuOpenId(
@@ -533,7 +534,7 @@ export function CommunityPage() {
                                 <MoreVertical size={14} />
                               </button>
                               {menuOpenId === msg.message_id && (
-                                <div className="absolute right-0 top-7 z-10 min-w-[140px] rounded-lg border border-border bg-surface py-1 shadow-lg">
+                                <div className="absolute end-0 top-7 z-10 min-w-[140px] rounded-lg border border-border bg-surface py-1 shadow-lg">
                                   {canEditMessage(msg) && (
                                     <button
                                       onClick={() => {
@@ -541,7 +542,7 @@ export function CommunityPage() {
                                         setEditText(msg.content);
                                         setMenuOpenId(null);
                                       }}
-                                      className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm text-text-secondary hover:bg-surface-raised"
+                                      className="flex w-full items-center gap-2 px-3 py-1.5 text-start text-sm text-text-secondary hover:bg-surface-raised"
                                     >
                                       <Pencil size={12} /> {t('common.edit')}
                                     </button>
@@ -552,7 +553,7 @@ export function CommunityPage() {
                                         void handleDelete(msg.message_id);
                                         setMenuOpenId(null);
                                       }}
-                                      className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm text-danger hover:bg-surface-raised"
+                                      className="flex w-full items-center gap-2 px-3 py-1.5 text-start text-sm text-danger hover:bg-surface-raised"
                                     >
                                       <Trash2 size={12} /> {t('common.delete')}
                                     </button>
@@ -609,7 +610,7 @@ export function CommunityPage() {
                           <Plus size={12} /> {t('community.addOption')}
                         </button>
                       )}
-                      <div className="ml-auto flex gap-2">
+                      <div className="ms-auto flex gap-2">
                         <Button
                           variant="secondary"
                           onClick={() => { setShowPollForm(false); setPollQuestion(''); setPollOptions(['', '']); }}
@@ -717,7 +718,7 @@ export function CommunityPage() {
           aria-label={t('community.closeImage')}
         >
           <span
-            className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+            className="absolute top-4 end-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
             aria-hidden="true"
           >
             <X size={20} />

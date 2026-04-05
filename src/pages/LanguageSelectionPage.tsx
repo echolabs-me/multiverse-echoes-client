@@ -12,18 +12,22 @@ interface Language {
   available: boolean;
 }
 
+// The `code` field must match `SUPPORTED_LOCALES` in `client/src/i18n.ts`,
+// `config.translation.supported_locales` in `config/default.toml`, and
+// `LOCALE_TO_NLLB` in `services/translation/server.py`.
+// Reference: docs/claude/i18n-multilingual-tasks.md CC TASK 4 Part G Step 7.
 const languages: Language[] = [
   { code: 'en', name: 'English', nativeName: 'English', available: true },
-  { code: 'es', name: 'Spanish', nativeName: 'Español', available: false },
-  { code: 'fr', name: 'French', nativeName: 'Français', available: false },
+  { code: 'zh-Hans', name: 'Chinese', nativeName: '简体中文', available: true },
+  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी', available: true },
+  { code: 'es', name: 'Spanish', nativeName: 'Español', available: true },
+  { code: 'ar', name: 'Arabic', nativeName: 'العربية', available: true },
+  { code: 'fr', name: 'French', nativeName: 'Français', available: true },
   { code: 'de', name: 'German', nativeName: 'Deutsch', available: false },
   { code: 'ja', name: 'Japanese', nativeName: '日本語', available: false },
   { code: 'ko', name: 'Korean', nativeName: '한국어', available: false },
-  { code: 'zh', name: 'Chinese', nativeName: '中文', available: false },
   { code: 'pt', name: 'Portuguese', nativeName: 'Português', available: false },
   { code: 'ru', name: 'Russian', nativeName: 'Русский', available: false },
-  { code: 'ar', name: 'Arabic', nativeName: 'العربية', available: false },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी', available: false },
   { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', available: false },
 ];
 

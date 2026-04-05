@@ -4,7 +4,10 @@ import { ArrowLeft } from 'lucide-react';
 
 export function AccessibilityPage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // Legal-ish documents stay English-only until reviewed by a native
+  // translator (CC TASK 4 Part G Step 23).
+  const showEnglishOnlyBanner = i18n.language !== 'en';
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
@@ -16,6 +19,15 @@ export function AccessibilityPage() {
           <ArrowLeft size={16} />
           {t('common.back')}
         </button>
+
+        {showEnglishOnlyBanner && (
+          <div
+            className="mb-6 rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-text-secondary"
+            role="note"
+          >
+            {t('common.legalDocsEnglishOnly')}
+          </div>
+        )}
 
         <h1 className="mb-2 text-3xl font-bold text-text-primary">Accessibility Statement</h1>
         <p className="mb-8 text-sm text-text-muted">Last updated: 31 March 2026</p>
@@ -37,7 +49,7 @@ export function AccessibilityPage() {
           {/* What we've done */}
           <section>
             <h2 className="mb-2 text-lg font-semibold text-text-primary">What we&apos;ve done</h2>
-            <ul className="list-disc space-y-2 pl-5">
+            <ul className="list-disc space-y-2 ps-5">
               <li>
                 <strong>Keyboard navigation</strong> &mdash; All interactive elements are reachable
                 via Tab key. Focus indicators are visible (2px accent outline). Skip links are provided
@@ -103,7 +115,7 @@ export function AccessibilityPage() {
           <section>
             <h2 className="mb-2 text-lg font-semibold text-text-primary">Known gaps</h2>
             <p className="mb-2">We are aware of the following areas where we have not yet achieved full compliance:</p>
-            <ul className="list-disc space-y-1 pl-5">
+            <ul className="list-disc space-y-1 ps-5">
               <li>
                 <strong>Manual screen reader testing</strong> &mdash; We have automated testing with
                 axe-core but have not yet completed comprehensive manual testing with NVDA, JAWS,
@@ -132,7 +144,7 @@ export function AccessibilityPage() {
               If you encounter an accessibility barrier or have suggestions for improvement, please
               contact us:
             </p>
-            <ul className="mt-2 list-disc pl-5">
+            <ul className="mt-2 list-disc ps-5">
               <li>
                 Email:{' '}
                 <a href="mailto:conduct@echolabs.me" className="text-accent hover:text-accent-hover">

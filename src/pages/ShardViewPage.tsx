@@ -16,6 +16,7 @@ import { useShardStore } from '../stores/useShardStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { shards as shardApi, echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { formatDate } from '../lib/formatDate.ts';
 import type { EchoResponse, FeedItem } from '../types/api.ts';
 
 export function ShardViewPage() {
@@ -198,7 +199,7 @@ export function ShardViewPage() {
                     <p className="text-sm font-medium text-text-primary">{item.title}</p>
                     <p className="text-sm text-text-secondary">{item.body}</p>
                     <span className="text-xs text-text-muted">
-                      {new Date(item.created_at).toLocaleDateString()}
+                      {formatDate(item.created_at)}
                     </span>
                   </Card>
                 ))}

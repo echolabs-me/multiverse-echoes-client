@@ -6,6 +6,7 @@ import { Button } from '../components/index.ts';
 import { useAuthStore, useEchoStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { formatTime } from '../lib/formatDate.ts';
 import type { ConversationMessage } from '../types/api.ts';
 
 interface TierLimits {
@@ -287,10 +288,7 @@ export function EchoConversationPage() {
               <p className="whitespace-pre-wrap">{msg.content}</p>
               <div className="mt-1 flex items-center justify-end gap-1">
                 <time className="text-[10px] opacity-60">
-                  {new Date(msg.created_at).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
+                  {formatTime(msg.created_at)}
                 </time>
               </div>
             </div>

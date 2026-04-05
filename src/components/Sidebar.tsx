@@ -13,7 +13,7 @@ export function Sidebar({ children, className = '' }: SidebarProps) {
 
   return (
     <aside
-      className={`flex h-full flex-col border-r border-border bg-surface transition-[width] duration-[var(--duration-slow)] ${
+      className={`flex h-full flex-col border-e border-border bg-surface transition-[width] duration-[var(--duration-slow)] ${
         collapsed ? 'w-16' : 'w-64'
       } ${className}`}
       aria-label={t('common.sidebar', 'Sidebar navigation')}

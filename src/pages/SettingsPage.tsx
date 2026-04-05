@@ -30,6 +30,7 @@ import {
 } from '../lib/api/endpoints.ts';
 import { request } from '../lib/api/client.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { formatDate } from '../lib/formatDate.ts';
 import type { NotificationPreferences, FeedbackEntry } from '../types/api.ts';
 
 export function SettingsPage() {
@@ -670,13 +671,90 @@ function AppearanceSection() {
         </p>
       </Card>
 
-      <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.language')}</h3>
-        <p className="text-sm text-text-secondary">
-          {t('settings.languageNote')}
-        </p>
-      </Card>
+      <LanguageSettingsCard />
     </div>
+  );
+}
+
+// --- Language Settings Card ---
+// Live locale switcher: PATCH /account/me/profile → localStorage → i18n.changeLanguage.
+// Dropdown shows every locale by its native name. Matches the 6 locales in
+// client/src/i18n.ts SUPPORTED_LOCALES and LanguageSelectionPage.
+// Reference: docs/claude/i18n-multilingual-tasks.md CC TASK 4 Part G Step 8.
+function LanguageSettingsCard() {
+  const { t, i18n } = useTranslation();
+  const addToast = useToastStore((s) => s.addToast);
+  const [saving, setSaving] = useState(false);
+
+  // Keep a local mirror of the active locale so the <select> reflects it
+  // immediately, even before i18next fires languageChanged.
+  const [activeLocale, setActiveLocale] = useState<string>(i18n.language);
+
+  // Keep in sync with external locale changes (e.g. another tab).
+  useEffect(() => {
+    const handler = (lng: string) => setActiveLocale(lng);
+    i18n.on('languageChanged', handler);
+    return () => {
+      i18n.off('languageChanged', handler);
+    };
+  }, [i18n]);
+
+  // Native names match LanguageSelectionPage. Keep in lockstep.
+  const options: Array<{ code: string; label: string }> = [
+    { code: 'en', label: 'English' },
+    { code: 'zh-Hans', label: '简体中文' },
+    { code: 'hi', label: 'हिन्दी' },
+    { code: 'es', label: 'Español' },
+    { code: 'ar', label: 'العربية' },
+    { code: 'fr', label: 'Français' },
+  ];
+
+  const handleChange = async (newLocale: string) => {
+    if (newLocale === activeLocale) return;
+    setSaving(true);
+    const previous = activeLocale;
+    try {
+      await accountApi.updateProfile({ locale: newLocale });
+      localStorage.setItem('locale', newLocale);
+      await i18n.changeLanguage(newLocale);
+      setActiveLocale(newLocale);
+      trackEvent('settings.locale_changed', {
+        old_locale: previous,
+        new_locale: newLocale,
+      });
+      addToast(t('common.saved'), 'success');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      addToast(msg || t('errors.INTERNAL_ERROR'), 'danger');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Card>
+      <h3 className="mb-4 text-sm font-semibold text-text-primary">
+        {t('settings.language')}
+      </h3>
+      <label className="flex flex-col gap-2">
+        <span className="text-xs text-text-secondary">
+          {t('onboarding.languageSelectionLabel')}
+        </span>
+        <select
+          value={activeLocale}
+          onChange={(e) => void handleChange(e.target.value)}
+          disabled={saving}
+          className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-text-primary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none disabled:opacity-50"
+          aria-label={t('settings.language')}
+        >
+          {options.map((opt) => (
+            <option key={opt.code} value={opt.code}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      </label>
+    </Card>
   );
 }
 
@@ -825,7 +903,7 @@ function MyFeedbackSection() {
                 </span>
                 <span className="text-text-muted">·</span>
                 <span className="text-text-muted">
-                  {t('settings.feedbackSubmitted')} {new Date(item.created_at).toLocaleDateString()}
+                  {t('settings.feedbackSubmitted')} {formatDate(item.created_at)}
                 </span>
               </div>
               <p className="text-sm text-text-primary">{item.user_message}</p>
@@ -878,7 +956,7 @@ function DangerZoneSection() {
           <div className="mb-4">
             <div className="mb-3 rounded-md border border-danger/30 bg-danger/10 p-3">
               <p className="text-sm font-medium text-danger">
-                {t('settings.deletionScheduled', { date: new Date(deletionScheduledAt).toLocaleDateString() })}
+                {t('settings.deletionScheduled', { date: formatDate(deletionScheduledAt) })}
               </p>
               <p className="mt-1 text-xs text-text-secondary">
                 {t('settings.deletionScheduledDesc')}

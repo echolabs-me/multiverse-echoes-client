@@ -4,7 +4,11 @@ import { ArrowLeft } from 'lucide-react';
 
 export function PrivacyPolicyPage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // Legal documents are English-only until a professional translator can
+  // review locale-specific wording (CC TASK 4 Part G Step 23). Non-English
+  // users see a banner explaining why the body below stays in English.
+  const showEnglishOnlyBanner = i18n.language !== 'en';
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
@@ -16,6 +20,15 @@ export function PrivacyPolicyPage() {
           <ArrowLeft size={16} />
           {t('common.back')}
         </button>
+
+        {showEnglishOnlyBanner && (
+          <div
+            className="mb-6 rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-text-secondary"
+            role="note"
+          >
+            {t('common.legalDocsEnglishOnly')}
+          </div>
+        )}
 
         <h1 className="mb-2 text-3xl font-bold text-text-primary">Privacy Policy</h1>
         <p className="mb-8 text-sm text-text-muted">Last updated: 31 March 2026</p>
@@ -44,20 +57,20 @@ export function PrivacyPolicyPage() {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="py-2 pr-4 font-medium text-text-primary">Category</th>
+                  <tr className="border-b border-border text-start">
+                    <th className="py-2 pe-4 font-medium text-text-primary">Category</th>
                     <th className="py-2 font-medium text-text-primary">Examples</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  <tr><td className="py-2 pr-4 font-medium">Account Data</td><td className="py-2">Email address, display name, hashed password</td></tr>
-                  <tr><td className="py-2 pr-4 font-medium">Profile Data</td><td className="py-2">Bio, avatar selection, timezone, language preference</td></tr>
-                  <tr><td className="py-2 pr-4 font-medium">Persona Data</td><td className="py-2">Echo personas, what-if prompts, age at creation</td></tr>
-                  <tr><td className="py-2 pr-4 font-medium">Simulation Data</td><td className="py-2">AI-generated diary entries, life events, relationships, memories</td></tr>
-                  <tr><td className="py-2 pr-4 font-medium">Community Data</td><td className="py-2">Channel messages, feed posts, poll votes</td></tr>
-                  <tr><td className="py-2 pr-4 font-medium">Payment Data</td><td className="py-2">Subscription tier, payment provider reference (we never store card numbers)</td></tr>
-                  <tr><td className="py-2 pr-4 font-medium">Analytics Data</td><td className="py-2">Feature usage events (anonymised, opt-out available)</td></tr>
-                  <tr><td className="py-2 pr-4 font-medium">Session Data</td><td className="py-2">Access tokens, refresh tokens, login timestamps</td></tr>
+                  <tr><td className="py-2 pe-4 font-medium">Account Data</td><td className="py-2">Email address, display name, hashed password</td></tr>
+                  <tr><td className="py-2 pe-4 font-medium">Profile Data</td><td className="py-2">Bio, avatar selection, timezone, language preference</td></tr>
+                  <tr><td className="py-2 pe-4 font-medium">Persona Data</td><td className="py-2">Echo personas, what-if prompts, age at creation</td></tr>
+                  <tr><td className="py-2 pe-4 font-medium">Simulation Data</td><td className="py-2">AI-generated diary entries, life events, relationships, memories</td></tr>
+                  <tr><td className="py-2 pe-4 font-medium">Community Data</td><td className="py-2">Channel messages, feed posts, poll votes</td></tr>
+                  <tr><td className="py-2 pe-4 font-medium">Payment Data</td><td className="py-2">Subscription tier, payment provider reference (we never store card numbers)</td></tr>
+                  <tr><td className="py-2 pe-4 font-medium">Analytics Data</td><td className="py-2">Feature usage events (anonymised, opt-out available)</td></tr>
+                  <tr><td className="py-2 pe-4 font-medium">Session Data</td><td className="py-2">Access tokens, refresh tokens, login timestamps</td></tr>
                 </tbody>
               </table>
             </div>
@@ -69,21 +82,21 @@ export function PrivacyPolicyPage() {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="py-2 pr-4 font-medium text-text-primary">Purpose</th>
-                    <th className="py-2 pr-4 font-medium text-text-primary">Lawful Basis</th>
+                  <tr className="border-b border-border text-start">
+                    <th className="py-2 pe-4 font-medium text-text-primary">Purpose</th>
+                    <th className="py-2 pe-4 font-medium text-text-primary">Lawful Basis</th>
                     <th className="py-2 font-medium text-text-primary">Your Control</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  <tr><td className="py-2 pr-4">Account creation and authentication</td><td className="py-2 pr-4">Contract</td><td className="py-2">Delete account</td></tr>
-                  <tr><td className="py-2 pr-4">Echo simulation (persona processing)</td><td className="py-2 pr-4">Consent</td><td className="py-2">Delete Echo any time</td></tr>
-                  <tr><td className="py-2 pr-4">Cross-user Echo interactions</td><td className="py-2 pr-4">Legitimate Interest</td><td className="py-2">Solo Mode toggle</td></tr>
-                  <tr><td className="py-2 pr-4">Community messaging</td><td className="py-2 pr-4">Legitimate Interest</td><td className="py-2">Community opt-out</td></tr>
-                  <tr><td className="py-2 pr-4">Content moderation and safety</td><td className="py-2 pr-4">Legitimate Interest</td><td className="py-2">&mdash;</td></tr>
-                  <tr><td className="py-2 pr-4">Subscription management</td><td className="py-2 pr-4">Contract</td><td className="py-2">Cancel subscription</td></tr>
-                  <tr><td className="py-2 pr-4">Analytics and service improvement</td><td className="py-2 pr-4">Legitimate Interest</td><td className="py-2">Analytics opt-out in Settings</td></tr>
-                  <tr><td className="py-2 pr-4">Enforcement and legal compliance</td><td className="py-2 pr-4">Legal Obligation</td><td className="py-2">&mdash;</td></tr>
+                  <tr><td className="py-2 pe-4">Account creation and authentication</td><td className="py-2 pe-4">Contract</td><td className="py-2">Delete account</td></tr>
+                  <tr><td className="py-2 pe-4">Echo simulation (persona processing)</td><td className="py-2 pe-4">Consent</td><td className="py-2">Delete Echo any time</td></tr>
+                  <tr><td className="py-2 pe-4">Cross-user Echo interactions</td><td className="py-2 pe-4">Legitimate Interest</td><td className="py-2">Solo Mode toggle</td></tr>
+                  <tr><td className="py-2 pe-4">Community messaging</td><td className="py-2 pe-4">Legitimate Interest</td><td className="py-2">Community opt-out</td></tr>
+                  <tr><td className="py-2 pe-4">Content moderation and safety</td><td className="py-2 pe-4">Legitimate Interest</td><td className="py-2">&mdash;</td></tr>
+                  <tr><td className="py-2 pe-4">Subscription management</td><td className="py-2 pe-4">Contract</td><td className="py-2">Cancel subscription</td></tr>
+                  <tr><td className="py-2 pe-4">Analytics and service improvement</td><td className="py-2 pe-4">Legitimate Interest</td><td className="py-2">Analytics opt-out in Settings</td></tr>
+                  <tr><td className="py-2 pe-4">Enforcement and legal compliance</td><td className="py-2 pe-4">Legal Obligation</td><td className="py-2">&mdash;</td></tr>
                 </tbody>
               </table>
             </div>
@@ -106,22 +119,22 @@ export function PrivacyPolicyPage() {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="py-2 pr-4 font-medium text-text-primary">Data</th>
+                  <tr className="border-b border-border text-start">
+                    <th className="py-2 pe-4 font-medium text-text-primary">Data</th>
                     <th className="py-2 font-medium text-text-primary">Retention</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  <tr><td className="py-2 pr-4">Account and profile data</td><td className="py-2">Until deletion + 30-day grace period</td></tr>
-                  <tr><td className="py-2 pr-4">Persona and simulation data</td><td className="py-2">Until Echo or account deletion</td></tr>
-                  <tr><td className="py-2 pr-4">Community messages</td><td className="py-2">1 year from posting</td></tr>
-                  <tr><td className="py-2 pr-4">Session tokens</td><td className="py-2">Access: 1 hour; Refresh: 30 days; Login logs: 90 days</td></tr>
-                  <tr><td className="py-2 pr-4">Analytics data</td><td className="py-2">6 months rolling</td></tr>
-                  <tr><td className="py-2 pr-4">Payment records</td><td className="py-2">7 years (legal requirement)</td></tr>
-                  <tr><td className="py-2 pr-4">Moderation records</td><td className="py-2">3 years</td></tr>
-                  <tr><td className="py-2 pr-4">Consent records</td><td className="py-2">Duration of account + 5 years</td></tr>
-                  <tr><td className="py-2 pr-4">Data export files</td><td className="py-2">72 hours after generation</td></tr>
-                  <tr><td className="py-2 pr-4">Encrypted backups</td><td className="py-2">90-day rolling rotation</td></tr>
+                  <tr><td className="py-2 pe-4">Account and profile data</td><td className="py-2">Until deletion + 30-day grace period</td></tr>
+                  <tr><td className="py-2 pe-4">Persona and simulation data</td><td className="py-2">Until Echo or account deletion</td></tr>
+                  <tr><td className="py-2 pe-4">Community messages</td><td className="py-2">1 year from posting</td></tr>
+                  <tr><td className="py-2 pe-4">Session tokens</td><td className="py-2">Access: 1 hour; Refresh: 30 days; Login logs: 90 days</td></tr>
+                  <tr><td className="py-2 pe-4">Analytics data</td><td className="py-2">6 months rolling</td></tr>
+                  <tr><td className="py-2 pe-4">Payment records</td><td className="py-2">7 years (legal requirement)</td></tr>
+                  <tr><td className="py-2 pe-4">Moderation records</td><td className="py-2">3 years</td></tr>
+                  <tr><td className="py-2 pe-4">Consent records</td><td className="py-2">Duration of account + 5 years</td></tr>
+                  <tr><td className="py-2 pe-4">Data export files</td><td className="py-2">72 hours after generation</td></tr>
+                  <tr><td className="py-2 pe-4">Encrypted backups</td><td className="py-2">90-day rolling rotation</td></tr>
                 </tbody>
               </table>
             </div>
@@ -131,7 +144,7 @@ export function PrivacyPolicyPage() {
           <section>
             <h2 className="mb-2 text-lg font-semibold text-text-primary">6. Your rights</h2>
             <p className="mb-3">Under GDPR and applicable privacy laws, you have the right to:</p>
-            <ul className="list-disc space-y-2 pl-5">
+            <ul className="list-disc space-y-2 ps-5">
               <li>
                 <strong>Access</strong> &mdash; Request a copy of all your personal data.
                 Available via Settings &rarr; Privacy &rarr; Export Data.
@@ -170,7 +183,7 @@ export function PrivacyPolicyPage() {
           {/* 7. Data security */}
           <section>
             <h2 className="mb-2 text-lg font-semibold text-text-primary">7. Data security</h2>
-            <ul className="list-disc space-y-1 pl-5">
+            <ul className="list-disc space-y-1 ps-5">
               <li>PII fields encrypted at rest with AES-256-GCM</li>
               <li>Database encrypted with BitLocker</li>
               <li>Backups encrypted with Cryptomator (AES-256)</li>
@@ -187,16 +200,16 @@ export function PrivacyPolicyPage() {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="py-2 pr-4 font-medium text-text-primary">Service</th>
-                    <th className="py-2 pr-4 font-medium text-text-primary">Data Shared</th>
+                  <tr className="border-b border-border text-start">
+                    <th className="py-2 pe-4 font-medium text-text-primary">Service</th>
+                    <th className="py-2 pe-4 font-medium text-text-primary">Data Shared</th>
                     <th className="py-2 font-medium text-text-primary">Purpose</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  <tr><td className="py-2 pr-4">Stripe</td><td className="py-2 pr-4">Email, billing metadata</td><td className="py-2">Card payment processing</td></tr>
-                  <tr><td className="py-2 pr-4">NOWPayments</td><td className="py-2 pr-4">Payment amount</td><td className="py-2">Cryptocurrency payments</td></tr>
-                  <tr><td className="py-2 pr-4">Xaman</td><td className="py-2 pr-4">Wallet address</td><td className="py-2">XRP payments</td></tr>
+                  <tr><td className="py-2 pe-4">Stripe</td><td className="py-2 pe-4">Email, billing metadata</td><td className="py-2">Card payment processing</td></tr>
+                  <tr><td className="py-2 pe-4">NOWPayments</td><td className="py-2 pe-4">Payment amount</td><td className="py-2">Cryptocurrency payments</td></tr>
+                  <tr><td className="py-2 pe-4">Xaman</td><td className="py-2 pe-4">Wallet address</td><td className="py-2">XRP payments</td></tr>
                 </tbody>
               </table>
             </div>

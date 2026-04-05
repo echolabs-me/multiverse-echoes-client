@@ -121,7 +121,7 @@ export function MoodHistoryStrip({
 
                 {/* Mood label — shown inside segment when wide enough or hovered */}
                 <span
-                  className="absolute bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-medium uppercase tracking-wide transition-opacity duration-200"
+                  className="absolute bottom-2 start-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-medium uppercase tracking-wide transition-opacity duration-200"
                   style={{
                     color: `${palette.accent}`,
                     opacity: isHovered ? 1 : 0.6,
@@ -133,7 +133,7 @@ export function MoodHistoryStrip({
 
                 {/* "Now" playhead on latest segment */}
                 {isLatest && (
-                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2">
+                  <div className="absolute -bottom-3 start-1/2 -translate-x-1/2">
                     <div
                       className="h-3 w-3 rotate-45 rounded-[2px]"
                       style={{

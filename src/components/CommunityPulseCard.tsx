@@ -107,7 +107,7 @@ export function CommunityPulseCard() {
           return (
             <div
               key={item.item_id}
-              className="w-full rounded-lg border-l-[3px] px-2.5 py-1.5 text-left bg-surface-raised/50"
+              className="w-full rounded-lg border-s-[3px] px-2.5 py-1.5 text-start bg-surface-raised/50"
               style={{
                 boxShadow: `0 0 10px 2px rgba(${mr},${mg},${mb},0.10)`,
                 borderLeftColor: `rgba(${mr},${mg},${mb},0.5)`,
@@ -120,9 +120,9 @@ export function CommunityPulseCard() {
                 />
                 <Icon size={11} className={`flex-shrink-0 ${iconColor} ${isLifeEvent ? 'fill-accent' : ''}`} />
                 <span className="text-xs font-medium text-text-primary truncate">{echoName}</span>
-                <span className="ml-auto text-[10px] text-text-muted whitespace-nowrap">{formatTimeAgo(item.created_at)}</span>
+                <span className="ms-auto text-[10px] text-text-muted whitespace-nowrap">{formatTimeAgo(item.created_at)}</span>
               </div>
-              <p className="text-xs leading-snug pl-[27px] text-text-secondary line-clamp-1">
+              <p className="text-xs leading-snug ps-[27px] text-text-secondary line-clamp-1">
                 {tickerText}
               </p>
             </div>

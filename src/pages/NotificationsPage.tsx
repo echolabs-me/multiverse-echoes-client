@@ -139,7 +139,7 @@ export function NotificationsPage() {
                 <button
                   key={notification.notification_id}
                   onClick={() => void handleClick(notification)}
-                  className={`w-full rounded-lg border text-left transition-colors ${
+                  className={`w-full rounded-lg border text-start transition-colors ${
                     notification.read
                       ? 'border-border bg-surface'
                       : 'border-accent/30 bg-accent-subtle'

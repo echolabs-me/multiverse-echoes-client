@@ -66,7 +66,7 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
 
   return (
     <aside
-      className="hidden md:flex h-full w-[76px] flex-shrink-0 flex-col border-r border-border bg-surface"
+      className="hidden md:flex h-full w-[76px] flex-shrink-0 flex-col border-e border-border bg-surface"
       aria-label={t('common.sidebar', 'Sidebar navigation')}
     >
       <nav className="flex-1 overflow-y-auto px-1.5 py-2">
@@ -85,7 +85,7 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
                 {item.icon}
                 <span className="text-[9px] font-medium leading-tight">{t(item.labelKey, item.id)}</span>
                 {item.badge != null && item.badge > 0 && (
-                  <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-0.5 text-[9px] font-bold text-canvas">
+                  <span className="absolute top-0.5 end-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-0.5 text-[9px] font-bold text-canvas">
                     {item.badge > 99 ? '99+' : item.badge}
                   </span>
                 )}
@@ -204,7 +204,7 @@ export function AppLayout() {
             <TickTimer />
           </div>
         </div>
-        <div className="ml-auto z-10">
+        <div className="ms-auto z-10">
           <button
             onClick={() => setMobileNavOpen(!mobileNavOpen)}
             className="rounded-md p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary md:hidden"
@@ -268,7 +268,7 @@ export function AppLayout() {
           <MoodAtmosphereWrapper show={showEchoPanes}>
             {/* Community Pulse — 1920px+ only */}
             {showEchoPanes && (
-              <aside className="hidden min-[1920px]:flex w-[311px] flex-shrink-0 flex-col border-r border-border/50 overflow-y-auto">
+              <aside className="hidden min-[1920px]:flex w-[311px] flex-shrink-0 flex-col border-e border-border/50 overflow-y-auto">
                 <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
                   {t('communityFeed.title')}
                 </div>
@@ -279,7 +279,7 @@ export function AppLayout() {
             )}
 
             {showEchoPanes && (
-              <div className="flex flex-shrink-0 flex-col border-r border-border/50">
+              <div className="flex flex-shrink-0 flex-col border-e border-border/50">
                 {/* Community Pulse — collapsible in sidebar for screens <1920px */}
                 <div className="min-[1920px]:hidden">
                   <DesktopPulseSection />
@@ -292,12 +292,12 @@ export function AppLayout() {
               <Outlet />
             </main>
 
-            <aside className="flex w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-l border-border/50">
+            <aside className="flex w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-s border-border/50">
               <OracleSidebar />
             </aside>
 
             {/* Community pane — 1920px+ */}
-            <aside className="hidden min-[1920px]:flex w-[240px] flex-shrink-0 flex-col border-l border-border/50">
+            <aside className="hidden min-[1920px]:flex w-[240px] flex-shrink-0 flex-col border-s border-border/50">
               <CommunitySidebar />
             </aside>
           </MoodAtmosphereWrapper>
@@ -333,7 +333,7 @@ export function AppLayout() {
             {item.icon}
             <span>{t(item.labelKey, item.id)}</span>
             {item.badge != null && item.badge > 0 && (
-              <span className="absolute -top-1 right-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-canvas">
+              <span className="absolute -top-1 end-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-canvas">
                 {item.badge > 99 ? '99+' : item.badge}
               </span>
             )}
@@ -392,7 +392,7 @@ function DesktopPulseSection() {
     <div className="flex-shrink-0 border-b-2 border-border bg-surface-raised/30">
       <button
         onClick={toggle}
-        className="flex w-full items-center justify-between px-3 py-1.5 text-left hover:bg-surface-raised transition-colors"
+        className="flex w-full items-center justify-between px-3 py-1.5 text-start hover:bg-surface-raised transition-colors"
       >
         <span className="text-[11px] font-semibold uppercase tracking-wider text-accent/70">
           {t('communityFeed.title')}

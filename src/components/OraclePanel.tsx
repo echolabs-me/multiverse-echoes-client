@@ -91,7 +91,7 @@ export function OraclePanel() {
   return (
     <>
       {/* Floating Action Button */}
-      <div className="fixed right-6 bottom-6 z-50 flex flex-col items-center gap-1">
+      <div className="fixed end-6 bottom-6 z-50 flex flex-col items-center gap-1">
         {!isOpen && (
           <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-medium text-text-secondary shadow-sm">
             Oracle
@@ -115,7 +115,7 @@ export function OraclePanel() {
           id="oracle-panel"
           role="dialog"
           aria-label={t('oracle.title')}
-          className="fixed top-0 right-0 z-40 flex h-full w-full flex-col border-l border-border bg-canvas shadow-lg sm:w-96"
+          className="fixed top-0 end-0 z-40 flex h-full w-full flex-col border-s border-border bg-canvas shadow-lg sm:w-96"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border px-4 py-3">

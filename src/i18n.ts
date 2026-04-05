@@ -39,6 +39,23 @@ function resolveInitialLocale(): SupportedLocale {
   return 'en';
 }
 
+/**
+ * Apply document-level direction + lang attributes for the active locale.
+ * Called at bootstrap and on every `languageChanged` event so `<html dir>`
+ * and `<html lang>` always match what i18next is serving.
+ *
+ * Arabic flips the page to RTL via `dir="rtl"`. CSS logical properties
+ * (`margin-inline-start`, etc.) + Tailwind logical variants (`ms-*`, `me-*`,
+ * `ps-*`, `pe-*`, `start-*`, `end-*`) automatically mirror for RTL without
+ * any conditional classname logic. Reference: CC TASK 4 Part D Step 10.
+ */
+function applyDocumentDirection(locale: string): void {
+  const html = document.documentElement;
+  const isRtl = (RTL_LOCALES as readonly string[]).includes(locale);
+  html.dir = isRtl ? 'rtl' : 'ltr';
+  html.lang = locale;
+}
+
 void i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
@@ -63,6 +80,16 @@ void i18n.use(initReactI18next).init({
   //   node_modules/i18next/dist/esm/i18next.js:1790
   //     if (this.options.showSupportNotice !== false && ...)
   showSupportNotice: false,
+});
+
+// Apply initial direction + lang immediately so the first paint is correct
+// (not the default `<html lang="en">` from index.html).
+applyDocumentDirection(i18n.language);
+
+// Keep <html dir/lang> in sync whenever the user switches locale via the
+// settings page, onboarding selector, or any other changeLanguage() call.
+i18n.on('languageChanged', (newLocale: string) => {
+  applyDocumentDirection(newLocale);
 });
 
 export default i18n;

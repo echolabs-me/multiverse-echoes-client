@@ -332,13 +332,13 @@ function UsersView() {
     <div className="space-y-4">
       <form onSubmit={handleSearch} className="flex gap-2">
         <div className="relative flex-1">
-          <Search size={16} className="absolute top-1/2 left-3 -translate-y-1/2 text-text-muted" />
+          <Search size={16} className="absolute top-1/2 start-3 -translate-y-1/2 text-text-muted" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t('admin.searchUsers')}
-            className="w-full rounded-md border border-border bg-surface py-2 pl-9 pr-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
+            className="w-full rounded-md border border-border bg-surface py-2 ps-9 pe-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
             aria-label={t('admin.searchUsers')}
           />
         </div>
@@ -351,7 +351,7 @@ function UsersView() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm" role="table">
             <thead>
-              <tr className="border-b border-border text-left text-text-muted">
+              <tr className="border-b border-border text-start text-text-muted">
                 <th className="px-3 py-2">{t('admin.userName')}</th>
                 <th className="px-3 py-2">{t('admin.userEmail')}</th>
                 <th className="px-3 py-2">{t('admin.userTier')}</th>
@@ -432,7 +432,7 @@ function ShardsView() {
       <div className="overflow-x-auto">
         <table className="w-full text-sm" role="table">
           <thead>
-            <tr className="border-b border-border text-left text-text-muted">
+            <tr className="border-b border-border text-start text-text-muted">
               <th className="px-3 py-2">{t('admin.shardName')}</th>
               <th className="px-3 py-2">{t('admin.shardType')}</th>
               <th className="px-3 py-2">{t('admin.shardStatus')}</th>
@@ -559,6 +559,7 @@ interface AnalyticsSummary {
 }
 
 function AnalyticsView() {
+  const { t } = useTranslation();
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -577,7 +578,7 @@ function AnalyticsView() {
   }, []);
 
   if (isLoading) return <Spinner />;
-  if (!summary) return <p className="py-8 text-center text-text-muted">Failed to load analytics</p>;
+  if (!summary) return <p className="py-8 text-center text-text-muted">{t('admin.analyticsLoadFailed')}</p>;
 
   const metrics = [
     { label: 'DAU (Daily Active Users)', value: String(summary.dau), icon: <Users size={16} /> },
@@ -607,19 +608,19 @@ function AnalyticsView() {
 
       {/* Revenue (stubs) */}
       <Card>
-        <h3 className="mb-3 text-sm font-semibold text-text-secondary">Revenue (Coming Soon)</h3>
+        <h3 className="mb-3 text-sm font-semibold text-text-secondary">{t('admin.revenueCard')}</h3>
         <div className="grid grid-cols-3 gap-4 text-sm">
           <div>
-            <p className="text-text-muted">MRR</p>
+            <p className="text-text-muted">{t('admin.revenueMrr')}</p>
             <p className="text-lg font-semibold text-text-primary">${summary.mrr}</p>
           </div>
           <div>
-            <p className="text-text-muted">Churn Rate</p>
+            <p className="text-text-muted">{t('admin.revenueChurn')}</p>
             <p className="text-lg font-semibold text-text-primary">{summary.churn_rate}%</p>
           </div>
           <div>
-            <p className="text-text-muted">Subscribers</p>
-            <p className="text-text-secondary">Pending Stripe integration</p>
+            <p className="text-text-muted">{t('admin.revenueSubscribers')}</p>
+            <p className="text-text-secondary">{t('admin.revenuePending')}</p>
           </div>
         </div>
       </Card>
@@ -682,23 +683,23 @@ function FeedbackQueueView() {
           onChange={(e) => setFilterType(e.target.value)}
           className="rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary"
         >
-          <option value="all">{t('admin.feedbackType')}: All</option>
-          <option value="Bug">Bug</option>
-          <option value="FeatureRequest">Feature Request</option>
-          <option value="Frustration">Frustration</option>
-          <option value="Praise">Praise</option>
-          <option value="General">General</option>
+          <option value="all">{t('admin.feedbackType')}: {t('admin.filterAll')}</option>
+          <option value="Bug">{t('admin.feedbackTypeBug')}</option>
+          <option value="FeatureRequest">{t('admin.feedbackTypeFeatureRequest')}</option>
+          <option value="Frustration">{t('admin.feedbackTypeFrustration')}</option>
+          <option value="Praise">{t('admin.feedbackTypePraise')}</option>
+          <option value="General">{t('admin.feedbackTypeGeneral')}</option>
         </select>
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
           className="rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary"
         >
-          <option value="all">{t('admin.feedbackStatus')}: All</option>
-          <option value="New">New</option>
-          <option value="Acknowledged">Acknowledged</option>
-          <option value="Resolved">Resolved</option>
-          <option value="Wontfix">Won't Fix</option>
+          <option value="all">{t('admin.feedbackStatus')}: {t('admin.filterAll')}</option>
+          <option value="New">{t('admin.feedbackStatusNew')}</option>
+          <option value="Acknowledged">{t('admin.feedbackStatusAcknowledged')}</option>
+          <option value="Resolved">{t('admin.feedbackStatusResolved')}</option>
+          <option value="Wontfix">{t('admin.feedbackStatusWontfix')}</option>
         </select>
       </div>
 
@@ -738,7 +739,7 @@ function FeedbackQueueView() {
                     </p>
                   )}
                   {item.resolution_notes && (
-                    <p className="mt-1 text-xs text-success">Resolution: {item.resolution_notes}</p>
+                    <p className="mt-1 text-xs text-success">{t('admin.resolutionPrefix')}: {item.resolution_notes}</p>
                   )}
                   <p className="mt-1 text-xs text-text-muted">
                     {new Date(item.created_at).toLocaleString()}

@@ -24,3 +24,4 @@ export { TickPulse } from './TickPulse.tsx';
 export { ToastContainer } from './Toast.tsx';
 export { Tooltip } from './Tooltip.tsx';
 export { TopBar } from './TopBar.tsx';
+export { TranslationPending } from './TranslationPending.tsx';

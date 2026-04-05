@@ -98,7 +98,7 @@ function EchoCard({
       </div>
       <button
         onClick={onClick}
-        className="flex flex-1 min-w-0 flex-col gap-1 py-2.5 pr-3 text-left"
+        className="flex flex-1 min-w-0 flex-col gap-1 py-2.5 pe-3 text-start"
         aria-current={isActive ? 'page' : undefined}
       >
         {/* Row 1: avatar/mood dot + name */}
@@ -122,21 +122,21 @@ function EchoCard({
           </span>
         </div>
         {/* Row 2: mood + tick */}
-        <p className="truncate text-[11px] text-text-secondary pl-[18px]">
+        <p className="truncate text-[11px] text-text-secondary ps-[18px]">
           {echo.current_mood} · {t('echoSidebar.tick', { tick: echo.current_tick })}
         </p>
         {/* Row 3: travelling indicator or diary preview */}
         {showTravelIndicator ? (
-          <p className="text-xs text-accent pl-[18px] italic leading-snug">
+          <p className="text-xs text-accent ps-[18px] italic leading-snug">
             {t('echoSidebar.arrivingAt', { shard: shardName })}
           </p>
         ) : latestDiary ? (
-          <p className="line-clamp-2 text-xs text-text-secondary pl-[18px] italic leading-snug">
+          <p className="line-clamp-2 text-xs text-text-secondary ps-[18px] italic leading-snug">
             &ldquo;{latestDiary}&rdquo;
           </p>
         ) : null}
         {/* Row 4: shard name */}
-        <p className="truncate text-[11px] text-text-muted pl-[18px]">
+        <p className="truncate text-[11px] text-text-muted ps-[18px]">
           {shardName}
         </p>
       </button>
@@ -263,7 +263,7 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
     <aside
       className={forceVisible
         ? "flex flex-1 min-h-0 w-full flex-col bg-transparent"
-        : "hidden md:flex h-full w-[200px] lg:w-[232px] flex-col border-r border-border/50 bg-transparent"
+        : "hidden md:flex h-full w-[200px] lg:w-[232px] flex-col border-e border-border/50 bg-transparent"
       }
       aria-label={t('echoSidebar.title')}
     >
@@ -382,7 +382,7 @@ export function MobileEchoSwitcher() {
             aria-label={t('echoSidebar.closeAriaLabel')}
             tabIndex={-1}
           />
-          <div className="absolute left-0 right-0 z-50 mx-4 mt-1 rounded-lg border border-border bg-surface shadow-lg">
+          <div className="absolute start-0 end-0 z-50 mx-4 mt-1 rounded-lg border border-border bg-surface shadow-lg">
             <div className="flex items-center justify-between px-3 py-2 border-b border-border">
               <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
                 {t('echoSidebar.switchEcho')}
@@ -402,7 +402,7 @@ export function MobileEchoSwitcher() {
                       navigate(`/echoes/${echo.echo_id}`);
                       setIsOpen(false);
                     }}
-                    className={`flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left transition-colors ${
+                    className={`flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-start transition-colors ${
                       echo.echo_id === echoId
                         ? 'bg-accent-subtle text-accent'
                         : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'

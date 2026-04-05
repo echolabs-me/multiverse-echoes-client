@@ -4,6 +4,7 @@ import { Send, X } from 'lucide-react';
 import { useAuthStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { formatTime } from '../lib/formatDate.ts';
 import type { ConversationMessage } from '../types/api.ts';
 
 interface TierLimits {
@@ -195,7 +196,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
   }, [input, conversationId, isSending, messages, limits.maxMessages, t, echoId, userMessageCount]);
 
   return (
-    <div className="flex h-full flex-col border-l border-border bg-canvas">
+    <div className="flex h-full flex-col border-s border-border bg-canvas">
       {/* Header */}
       <header className="flex items-center gap-3 border-b border-border bg-surface px-4 py-3">
         <div className="flex-1">
@@ -260,10 +261,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
               <p className="whitespace-pre-wrap">{msg.content}</p>
               <div className="mt-0.5 flex items-center justify-end gap-1">
                 <time className="text-[9px] opacity-60">
-                  {new Date(msg.created_at).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
+                  {formatTime(msg.created_at)}
                 </time>
               </div>
             </div>

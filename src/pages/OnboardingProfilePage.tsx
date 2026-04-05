@@ -100,7 +100,7 @@ export function OnboardingProfilePage() {
               maxLength={500}
               className="!bg-canvas border-accent/20 min-h-[100px]"
             />
-            <p className="mt-1 text-right text-xs text-text-muted">
+            <p className="mt-1 text-end text-xs text-text-muted">
               {bio.length}/500
             </p>
             <div className="mt-2 flex items-start gap-2 rounded-md bg-accent/10 px-3 py-2">
