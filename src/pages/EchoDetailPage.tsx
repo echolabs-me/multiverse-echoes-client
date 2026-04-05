@@ -1178,7 +1178,7 @@ function DiaryCard({
           <img
             src={entry.image_url}
             alt="Scene from diary entry"
-            loading="lazy"
+            loading="eager"
             className="w-full aspect-video rounded-lg mb-3 animate-fade-in object-cover"
           />
         )}

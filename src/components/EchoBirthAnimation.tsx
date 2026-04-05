@@ -18,6 +18,7 @@ import * as THREE from 'three';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useGpuAvailable } from '@/hooks/useGpuAvailable';
 import { seededRandom } from '@/lib/shardTheme';
+import { DisposeWebGL } from './DisposeWebGL';
 
 // --- Constants ---
 
@@ -262,6 +263,7 @@ export function EchoBirthAnimation({
           <ambientLight intensity={0.1} />
           <pointLight position={[-1, 1, 2]} intensity={0.5} color="#d4915c" />
           <BirthParticles onComplete={stableOnComplete} />
+          <DisposeWebGL />
         </Canvas>
       </Suspense>
     </div>

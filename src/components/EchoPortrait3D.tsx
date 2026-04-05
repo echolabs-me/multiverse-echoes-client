@@ -13,6 +13,7 @@ import { useRef, useMemo, Suspense } from 'react';
 import * as THREE from 'three';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useGpuAvailable } from '@/hooks/useGpuAvailable';
+import { DisposeWebGL } from './DisposeWebGL';
 
 // --- Mood colour mapping (mirrors Rust me-core::portrait::mood_to_colour) ---
 
@@ -289,6 +290,7 @@ export function EchoPortrait3D({
           />
           <PainterlyLighting mood={mood} />
           <SilhouetteMesh mood={mood} />
+          <DisposeWebGL />
         </Canvas>
       </Suspense>
     </div>
