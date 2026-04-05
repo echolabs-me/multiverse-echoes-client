@@ -103,19 +103,18 @@ export function EchoCreationPage() {
     </button>
   );
 
-  // Step 1: Name + What-If + Persona (merged U1/U2/U3)
+  // Step 1: Name + What-If + Persona + Physical Description (uniform layout).
+  // All text fields share the pattern: label → input → helper → counter.
+  // No wrapper boxes, no emoji decorations, no floating callouts.
   if (step === 'details') {
     return (
-      <div className="relative flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
+      <div className="relative flex min-h-screen flex-col items-center justify-center bg-canvas px-4 py-12">
         {cancelButton}
-        <h1 className="mb-2 text-2xl font-bold text-text-primary">
+        <h1 className="mb-8 text-2xl font-bold text-text-primary">
           {t('echo.createTitle')}
         </h1>
-        <p className="mb-8 text-sm text-text-secondary">
-          {t('echo.personaHint')}
-        </p>
 
-        <div className="w-full max-w-lg flex flex-col gap-4">
+        <div className="w-full max-w-lg flex flex-col gap-6">
           <div>
             <Input
               label={t('echo.nameLabel')}
@@ -124,26 +123,18 @@ export function EchoCreationPage() {
               placeholder={t('echo.namePlaceholder')}
               maxLength={24}
               required
-              className="!bg-canvas border-accent/20"
             />
+            <p className="mt-1.5 text-xs text-text-secondary">
+              {t('echo.nameHelper')}
+            </p>
             <p className="mt-1 text-right text-xs text-text-muted">
               {echoName.length}/24
             </p>
           </div>
 
-          <div className="rounded-lg border-2 border-accent/40 bg-accent/5 px-4 py-4">
-            <div className="mb-3 flex items-center gap-2">
-              <span className="text-xl" aria-hidden="true">{'\ud83c\udf0c'}</span>
-              <div>
-                <p className="text-sm font-semibold text-text-primary">
-                  {t('echo.whatIfLabel')}
-                </p>
-                <p className="text-xs text-accent">
-                  {t('echo.whatIfSubtitle')}
-                </p>
-              </div>
-            </div>
+          <div>
             <Input
+              label={t('echo.whatIfLabel')}
               multiline
               value={whatIfPrompt}
               onChange={(e) =>
@@ -151,16 +142,15 @@ export function EchoCreationPage() {
               }
               placeholder={t('echo.whatIfPlaceholder')}
               maxLength={2000}
-              className="!bg-canvas border-accent/30 min-h-[120px] text-base"
+              required
+              className="min-h-[120px]"
             />
-            <div className="mt-2 flex items-center justify-between">
-              <p className="text-xs text-text-secondary italic">
-                {t('echo.whatIfHint')}
-              </p>
-              <p className="text-xs text-text-muted">
-                {whatIfPrompt.length}/2000
-              </p>
-            </div>
+            <p className="mt-1.5 text-xs text-text-secondary">
+              {t('echo.whatIfHint')}
+            </p>
+            <p className="mt-1 text-right text-xs text-text-muted">
+              {whatIfPrompt.length}/2000
+            </p>
           </div>
 
           <div>
@@ -173,7 +163,7 @@ export function EchoCreationPage() {
               }
               placeholder={t('echo.personaOptionalPlaceholder')}
               maxLength={2000}
-              className="!bg-canvas border-accent/20 min-h-[100px]"
+              className="min-h-[100px]"
             />
             <p className="mt-1 text-right text-xs text-text-muted">
               {personaText.length}/2000
@@ -190,20 +180,13 @@ export function EchoCreationPage() {
               }
               placeholder={t('echo.physicalDescriptionPlaceholder')}
               maxLength={1000}
-              className="!bg-canvas border-accent/20 min-h-[100px]"
+              className="min-h-[100px]"
             />
-            <p className="mt-1 text-xs text-text-secondary">
+            <p className="mt-1.5 text-xs text-text-secondary">
               {t('echo.physicalDescriptionHelper')}
             </p>
             <p className="mt-1 text-right text-xs text-text-muted">
               {physicalDescription.length}/1000
-            </p>
-          </div>
-
-          <div className="flex items-start gap-2 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2.5">
-            <span className="mt-0.5 text-base leading-none" aria-hidden="true">{'\u2728'}</span>
-            <p className="text-sm text-text-secondary">
-              {t('echo.inputCareHint')}
             </p>
           </div>
 
