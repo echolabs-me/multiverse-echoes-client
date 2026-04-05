@@ -14,72 +14,67 @@ time via the relative URL imports in the CSS. No runtime CDN dependency.
 | Noto Sans Devanagari | Hindi | [Google Fonts](https://fonts.google.com/noto/specimen/Noto+Sans+Devanagari) | 400/500/600/700 | `NotoSansDevanagari-*.woff2` |
 | Noto Sans Arabic | Arabic | [Google Fonts](https://fonts.google.com/noto/specimen/Noto+Sans+Arabic) | 400/500/600/700 | `NotoSansArabic-*.woff2` |
 
-## Downloading Noto Sans subsets for multilingual launch
+## Noto Sans subsets for multilingual launch
 
 The Noto Sans families are declared in `global.css` with `font-display: swap`
 and `unicode-range` so English-only users pay zero bandwidth — a browser
 only fetches a given woff2 when a codepoint in its range is actually
-rendered on screen. Until the woff2 files are physically placed in this
-directory, the browser falls through to the system sans-serif for those
-scripts, which works but looks inconsistent across platforms.
+rendered on screen.
 
-### Expected filenames
+### Committed files (sizes per weight, 4 weights each)
 
+| Family | Per weight | Total | Subset |
+|---|---|---|---|
+| Noto Sans SC | ~1.1 MB | ~4.6 MB | chinese-simplified |
+| Noto Sans Devanagari | ~60 KB | ~250 KB | devanagari |
+| Noto Sans Arabic | ~62 KB | ~255 KB | arabic |
+
+The CJK subset dominates — inherent to the number of Chinese ideographs.
+`unicode-range` ensures English-only users never download any of them.
+
+### Reproduction (audit D11)
+
+The committed files are the pre-subsetted woff2s published by google-webfonts-helper,
+whose subsets match the CLDR coverage for each script and align with the
+`unicode-range` declarations in `global.css`.
+
+```bash
+# 1. Download the three subset zips
+curl -sL -o sc.zip  "https://gwfh.mranftl.com/api/fonts/noto-sans-sc?download=zip&subsets=chinese-simplified&variants=regular,500,600,700&formats=woff2"
+curl -sL -o dev.zip "https://gwfh.mranftl.com/api/fonts/noto-sans-devanagari?download=zip&subsets=devanagari&variants=regular,500,600,700&formats=woff2"
+curl -sL -o ar.zip  "https://gwfh.mranftl.com/api/fonts/noto-sans-arabic?download=zip&subsets=arabic&variants=regular,500,600,700&formats=woff2"
+
+# 2. Unzip and rename to the filenames referenced from global.css
+unzip sc.zip && unzip dev.zip && unzip ar.zip
+# SC
+mv noto-sans-sc-v*-chinese-simplified-regular.woff2 NotoSansSC-Regular.woff2
+mv noto-sans-sc-v*-chinese-simplified-500.woff2     NotoSansSC-Medium.woff2
+mv noto-sans-sc-v*-chinese-simplified-600.woff2     NotoSansSC-SemiBold.woff2
+mv noto-sans-sc-v*-chinese-simplified-700.woff2     NotoSansSC-Bold.woff2
+# Devanagari
+mv noto-sans-devanagari-v*-devanagari-regular.woff2 NotoSansDevanagari-Regular.woff2
+mv noto-sans-devanagari-v*-devanagari-500.woff2     NotoSansDevanagari-Medium.woff2
+mv noto-sans-devanagari-v*-devanagari-600.woff2     NotoSansDevanagari-SemiBold.woff2
+mv noto-sans-devanagari-v*-devanagari-700.woff2     NotoSansDevanagari-Bold.woff2
+# Arabic
+mv noto-sans-arabic-v*-arabic-regular.woff2         NotoSansArabic-Regular.woff2
+mv noto-sans-arabic-v*-arabic-500.woff2             NotoSansArabic-Medium.woff2
+mv noto-sans-arabic-v*-arabic-600.woff2             NotoSansArabic-SemiBold.woff2
+mv noto-sans-arabic-v*-arabic-700.woff2             NotoSansArabic-Bold.woff2
 ```
-NotoSansSC-Regular.woff2
-NotoSansSC-Medium.woff2
-NotoSansSC-SemiBold.woff2
-NotoSansSC-Bold.woff2
-NotoSansDevanagari-Regular.woff2
-NotoSansDevanagari-Medium.woff2
-NotoSansDevanagari-SemiBold.woff2
-NotoSansDevanagari-Bold.woff2
-NotoSansArabic-Regular.woff2
-NotoSansArabic-Medium.woff2
-NotoSansArabic-SemiBold.woff2
-NotoSansArabic-Bold.woff2
+
+If gwfh is ever unavailable, the same result can be produced by taking the
+OFL-licensed variable fonts from <https://github.com/notofonts> and running
+`pyftsubset` (from the `fonttools` pip package) against each weight with the
+matching unicode-range from `global.css`, e.g.:
+
+```bash
+pip install fonttools brotli zopfli
+pyftsubset NotoSansSC-VF.ttf \
+  --unicodes='U+2E80-2EFF,U+3000-303F,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE30-FE4F,U+FF00-FFEF' \
+  --flavor=woff2 \
+  --output-file=NotoSansSC-Regular.woff2
 ```
-
-### How to obtain them
-
-**Option A — google-webfonts-helper (recommended, pre-subsetted):**
-
-1. Visit <https://gwfh.mranftl.com/fonts>
-2. Search for each family (Noto Sans SC, Noto Sans Devanagari, Noto Sans Arabic)
-3. Select weights: 400, 500, 600, 700
-4. Select "Best Support" character set to match the `unicode-range`
-   declarations in `global.css`
-5. Download "Modern Browsers" (woff2 only) archive
-6. Rename files to match the expected filenames above (drop the hash and
-   `-400`/`-500`/`-600`/`-700` suffixes, use `-Regular`/`-Medium`/`-SemiBold`/`-Bold`)
-7. Drop into this directory
-
-**Option B — Google Fonts direct download:**
-
-1. Visit each family's page (see table above)
-2. "Download family" → unzip
-3. The static `.ttf` files need to be converted to `.woff2`:
-
-   ```bash
-   # Requires `woff2_compress` from https://github.com/google/woff2
-   cd client/src/assets/fonts
-   for ttf in path/to/NotoSansSC-Regular.ttf path/to/NotoSansSC-Medium.ttf ...; do
-     woff2_compress "$ttf"
-   done
-   mv *.woff2 .
-   ```
-
-Expected compressed sizes after subsetting to the `unicode-range` from
-`global.css`:
-
-| Family | Per weight | Total (4 weights) |
-|---|---|---|
-| Noto Sans SC | ~1.2 MB | ~4.8 MB |
-| Noto Sans Devanagari | ~120 KB | ~480 KB |
-| Noto Sans Arabic | ~80 KB | ~320 KB |
-
-The CJK subset dominates — this is inherent to the number of Chinese
-characters. `unicode-range` ensures English users never download it.
 
 ### Verifying the load
 

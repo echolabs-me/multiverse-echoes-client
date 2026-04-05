@@ -1188,14 +1188,12 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
 // Events sent over the WebSocket to clients.
 export type WsEchoEvent = { type: "DiaryEntryCreated"; echo_id: string; diary_id: string; tick_id: number; 
 /**
- *  Locale hint for the just-persisted content. Always `"en"` at the
- *  moment the event fires — the outbound translation worker is
- *  asynchronous, so translations are never ready in the microseconds
- *  between tick persist and event broadcast. Clients treat this as
- *  a hint only and refetch via GET for the authoritative value
- *  (the GET response returns `content_locale` = user's locale if
- *  the worker has since caught up, or `"en"` otherwise).
- *  CC TASK 3 Step 4.
+ *  Locale hint for the just-persisted content. Resolved per-event
+ *  via a non-blocking lookup against `ContentTranslationRepository`:
+ *  if a translation row already exists for the connected user's
+ *  locale (e.g. from startup catchup or backfill), this carries
+ *  that locale; otherwise `"en"`. Clients still refetch via GET for
+ *  the authoritative value. CC TASK 3 Step 4 + audit D1.
  */
 content_locale: string } | { type: "DiaryImageReady"; echo_id: string; diary_id: string; image_url: string } | { type: "LifeEventOccurred"; echo_id: string; event_id: string; tick_id: number; 
 // See `DiaryEntryCreated::content_locale`. CC TASK 3 Step 4.
