@@ -20,6 +20,7 @@ import {
   X,
   MoreHorizontal,
   Navigation,
+  Trash2,
 } from 'lucide-react';
 import {
   Card,
@@ -70,7 +71,7 @@ export function EchoDetailPage() {
   const { echoId } = useParams<{ echoId: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { activeEcho, fetchEcho, hibernateEcho, wakeEcho } = useEchoStore();
+  const { activeEcho, fetchEcho, hibernateEcho, wakeEcho, deleteEcho } = useEchoStore();
   const { shardList } = useShardStore();
   const { personalFeed, fetchPersonalFeed } = useFeedStore();
   const addToast = useToastStore((s) => s.addToast);
@@ -102,6 +103,9 @@ export function EchoDetailPage() {
   const [influenceType, setInfluenceType] = useState('nudge');
   const [influenceDetails, setInfluenceDetails] = useState('');
   const [exportModal, setExportModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [showConversation, setShowConversation] = useState(false);
   const [resumeConversationId, setResumeConversationId] = useState<string | undefined>();
   const [pastConversations, setPastConversations] = useState<Conversation[]>([]);
@@ -393,6 +397,24 @@ export function EchoDetailPage() {
     });
   }, []);
 
+  const handleDeleteEcho = async () => {
+    if (!activeEcho) return;
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      await deleteEcho(activeEcho.echo_id);
+      trackEvent('echo.deleted', { echo_id: activeEcho.echo_id });
+      setDeleteModal(false);
+      addToast(t('echoDetail.deleted'), 'success');
+      // Echo no longer exists — leave the detail page.
+      navigate('/');
+    } catch {
+      setDeleteError(t('echoDetail.deleteFailed'));
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const handleHibernateWake = async () => {
     if (!activeEcho) return;
     try {
@@ -673,6 +695,13 @@ export function EchoDetailPage() {
                       className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
                     >
                       <Download size={14} className="text-sky-400" /> {t('echoDetail.exportStory')}
+                    </button>
+                    <div className="my-1 border-t border-border" role="separator" />
+                    <button
+                      onClick={() => { setDeleteError(null); setDeleteModal(true); setShowMoreMenu(false); }}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-red-500 hover:bg-red-500/10 transition-colors"
+                    >
+                      <Trash2 size={14} /> {t('echoDetail.delete')}
                     </button>
                   </div>
                 </>
@@ -998,6 +1027,46 @@ export function EchoDetailPage() {
           </section>
         </div>
       </div>
+
+      {/* Delete Echo Modal */}
+      <Modal
+        open={deleteModal}
+        onClose={() => {
+          if (isDeleting) return;
+          setDeleteModal(false);
+          setDeleteError(null);
+        }}
+        title={t('echoDetail.deleteConfirmTitle', { name: activeEcho.name })}
+      >
+        <p className="mb-4 text-sm text-text-secondary">
+          {t('echoDetail.deleteConfirmBody')}
+        </p>
+        {deleteError && (
+          <p className="mb-3 text-sm text-red-500" role="alert">
+            {deleteError}
+          </p>
+        )}
+        <div className="flex justify-end gap-2">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setDeleteModal(false);
+              setDeleteError(null);
+            }}
+            disabled={isDeleting}
+          >
+            {t('common.cancel')}
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => void handleDeleteEcho()}
+            disabled={isDeleting}
+          >
+            {isDeleting ? <Spinner size="sm" /> : <Trash2 size={14} />}
+            {t('echoDetail.deleteConfirmAction')}
+          </Button>
+        </div>
+      </Modal>
 
       {/* Hibernate/Wake Modal */}
       <Modal

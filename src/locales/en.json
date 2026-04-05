@@ -243,7 +243,13 @@
     "clearFilters": "Clear filters",
     "noFilterMatch": "No diary entries match this filter",
     "travellingTo": "Arriving at {{shard}}\u2026",
-    "travellingDesc": "Your Echo is settling into their new world. Their first diary entry here will appear after the next tick."
+    "travellingDesc": "Your Echo is settling into their new world. Their first diary entry here will appear after the next tick.",
+    "delete": "Delete Echo",
+    "deleteConfirmTitle": "Delete {{name}}?",
+    "deleteConfirmBody": "This will permanently delete this Echo and all their diary entries, relationships, life events, and images. This cannot be undone.",
+    "deleteConfirmAction": "Delete permanently",
+    "deleted": "Echo deleted",
+    "deleteFailed": "Couldn't delete this Echo. Please try again."
   },
   "shardView": {
     "echoes": "Echoes in this Shard",
