@@ -425,6 +425,23 @@ export type EchoResponse = {
 	 *  Null for Echoes created before the field was introduced.
 	 */
 	physical_description: string | null,
+	/**
+	 *  Non-English original of `persona_text` as the user typed it. Only set
+	 *  when the Echo was created by a user with `locale != "en"`. Clients
+	 *  display this instead of the English canonical `persona_text`.
+	 *  Reference: docs/claude/i18n-multilingual-tasks.md CC TASK 2 STEP 7.
+	 */
+	persona_text_original?: string | null,
+	// Non-English original of `what_if_prompt`. See `persona_text_original`.
+	what_if_prompt_original?: string | null,
+	// Non-English original of `physical_description`. See `persona_text_original`.
+	physical_description_original?: string | null,
+	/**
+	 *  Locale tag of the `*_original` fields (e.g. `"zh-Hans"`). Set iff any
+	 *  `*_original` is set. Lets the client know which font stack / direction
+	 *  to apply.
+	 */
+	original_locale?: string | null,
 };
 
 export type EchoStatus = "Active" | "Travelling" | "Hibernated" | "Quarantined" | "Deleted";
