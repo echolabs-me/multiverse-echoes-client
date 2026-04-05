@@ -10,7 +10,7 @@
  * It does not live in the sidebar.
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
@@ -27,13 +27,16 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
   const location = useLocation();
   const oracleMessageCount = useOracleStore((s) => s.messages.length);
 
-  // Oracle overlay state — keyed by pathname so it resets on navigation
-  const [oracleState, setOracleState] = useState<{ path: string; open: boolean }>({ path: location.pathname, open: false });
-  const oracleOpen = oracleState.path === location.pathname && oracleState.open;
+  // Oracle overlay state
+  const [oracleOpen, setOracleOpen] = useState(false);
+
+  // Close overlay on route change — legitimate sync with router state
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { setOracleOpen(false); }, [location.pathname]);
 
   const toggleOracle = useCallback(() => {
-    setOracleState((prev) => ({ path: location.pathname, open: !prev.open || prev.path !== location.pathname }));
-  }, [location.pathname]);
+    setOracleOpen((prev) => !prev);
+  }, []);
 
   // Non-echo pages (settings, search, etc.) — render Outlet full width
   if (!showEchoPanes) {
@@ -77,7 +80,7 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
           <button
             className="fixed inset-0 z-40 bg-black/30 cursor-default"
             style={{ left: '76px' }}
-            onClick={() => setOracleState({ path: location.pathname, open: false })}
+            onClick={() => setOracleOpen(false)}
             aria-label={t('common.close')}
             tabIndex={-1}
           />
