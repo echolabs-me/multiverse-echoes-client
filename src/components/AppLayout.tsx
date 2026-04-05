@@ -185,7 +185,7 @@ export function AppLayout() {
   return (
     <div className="flex h-screen flex-col bg-canvas">
       {/* Top bar — logo + mobile hamburger */}
-      <header className="relative flex h-14 items-center border-b border-border bg-surface px-4 overflow-hidden">
+      <header className="relative flex h-14 flex-shrink-0 items-center border-b border-border bg-surface px-4 overflow-hidden">
         <div className="flex items-center gap-2 min-w-0 z-10">
           <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-8 flex-shrink-0 rounded" />
           <span className="hidden md:inline text-lg font-bold text-accent truncate">
@@ -273,12 +273,6 @@ export function AppLayout() {
                 {/* Community Pulse — collapsible in sidebar for screens <1920px */}
                 <div className="min-[1920px]:hidden">
                   <DesktopPulseSection />
-                </div>
-                {/* Section header for echo list — visually separates from Pulse */}
-                <div className="flex-shrink-0 border-b border-border/50 bg-canvas px-3 py-1.5">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
-                    {t('echoSidebar.title')}
-                  </span>
                 </div>
                 <EchoSidebar />
               </div>
