@@ -10,8 +10,8 @@
  * It does not live in the sidebar.
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { useState, useCallback } from 'react';
+import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { EchoSidebar } from './EchoSidebar.tsx';
@@ -24,15 +24,10 @@ interface TabletLayoutProps {
 
 export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
   const { t } = useTranslation();
-  const location = useLocation();
   const oracleMessageCount = useOracleStore((s) => s.messages.length);
 
-  // Oracle overlay state
+  // Oracle overlay state — dismissed via backdrop tap or X button
   const [oracleOpen, setOracleOpen] = useState(false);
-
-  // Close overlay on route change — legitimate sync with router state
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { setOracleOpen(false); }, [location.pathname]);
 
   const toggleOracle = useCallback(() => {
     setOracleOpen((prev) => !prev);
