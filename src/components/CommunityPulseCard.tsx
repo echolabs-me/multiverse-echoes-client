@@ -1,29 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Zap, Users, Navigation, TrendingUp } from 'lucide-react';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
 import { feeds } from '../lib/api/endpoints.ts';
 import type { FeedItem } from '../types/api.ts';
-
-/** Format a date as relative time (e.g. "2 hours ago", "3 days ago"). */
-function formatTimeAgo(dateStr: string): string {
-  const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-  if (seconds < 60) return 'just now';
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-
-/** Get a short location-based summary for diary entries. */
-function diaryTickerText(shardName: string): string {
-  if (shardName) {
-    return `Exploring ${shardName}`;
-  }
-  return 'Going about their day';
-}
 
 /**
  * Community Pulse — event ticker showing significant moments across all
@@ -31,6 +12,7 @@ function diaryTickerText(shardName: string): string {
  * mood changes — NOT diary text previews.
  */
 export function CommunityPulseCard() {
+  const { t } = useTranslation();
   const { echoList } = useEchoStore();
   const [items, setItems] = useState<FeedItem[]>([]);
   const [shardNames, setShardNames] = useState<Record<string, string>>({});
@@ -87,7 +69,9 @@ export function CommunityPulseCard() {
 
           // Event text — news ticker style
           const tickerText = isDiary
-            ? diaryTickerText(shardName)
+            ? (shardName
+                ? t('communityFeed.exploringShard', { shard: shardName })
+                : t('communityFeed.goingAboutDay'))
             : item.title || item.body;
 
           // Icon per type
@@ -120,7 +104,16 @@ export function CommunityPulseCard() {
                 />
                 <Icon size={11} className={`flex-shrink-0 ${iconColor} ${isLifeEvent ? 'fill-accent' : ''}`} />
                 <span className="text-xs font-medium text-text-primary truncate">{echoName}</span>
-                <span className="ms-auto text-[10px] text-text-muted whitespace-nowrap">{formatTimeAgo(item.created_at)}</span>
+                <span className="ms-auto text-[10px] text-text-muted whitespace-nowrap">{(() => {
+                  const seconds = Math.floor((Date.now() - new Date(item.created_at).getTime()) / 1000);
+                  if (seconds < 60) return t('communityFeed.justNow');
+                  const minutes = Math.floor(seconds / 60);
+                  if (minutes < 60) return t('communityFeed.minutesAgo', { count: minutes });
+                  const hours = Math.floor(minutes / 60);
+                  if (hours < 24) return t('communityFeed.hoursAgo', { count: hours });
+                  const days = Math.floor(hours / 24);
+                  return t('communityFeed.daysAgo', { count: days });
+                })()}</span>
               </div>
               <p className="text-xs leading-snug ps-[27px] text-text-secondary line-clamp-1">
                 {tickerText}

@@ -454,9 +454,11 @@
     "loadMore": "تحميل المزيد",
     "inShard": "في {{shard}}",
     "justNow": "الآن",
-    "minutesAgo": "قبل {{count}} د",
-    "hoursAgo": "قبل {{count}} س",
-    "daysAgo": "قبل {{count}} ي"
+    "minutesAgo": "منذ {{count}} د",
+    "hoursAgo": "منذ {{count}} س",
+    "daysAgo": "منذ {{count}} ي",
+    "exploringShard": "استكشاف {{shard}}",
+    "goingAboutDay": "يقضي يومه"
   },
   "share": {
     "title": "مشاركة",
@@ -568,7 +570,10 @@
     "suggestion3": "اشرح لي التلميحات",
     "feedbackPillReport": "الإبلاغ عن مشكلة",
     "feedbackPillShare": "مشاركة ملاحظاتك",
-    "feedbackBanner": "وجدت خللًا أو لديك ملاحظات؟ فقط أخبرني — سأرسلها مباشرةً إلى الفريق."
+    "feedbackBanner": "وجدت خللًا أو لديك ملاحظات؟ فقط أخبرني — سأرسلها مباشرةً إلى الفريق.",
+    "feedbackThanks": "شكرًا لمساعدتك في تحسين Multiverse Echoes.",
+    "feedbackError": "حدث خطأ أثناء إرسال ملاحظاتك. يرجى المحاولة مرة أخرى أو مراسلة conduct@echolabs.me.",
+    "feedbackFallback": "تم إرسال ملاحظاتك من نوع {{type}}."
   },
   "admin": {
     "title": "لوحة الإدارة",

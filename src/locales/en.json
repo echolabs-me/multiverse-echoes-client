@@ -456,7 +456,9 @@
     "justNow": "just now",
     "minutesAgo": "{{count}}m ago",
     "hoursAgo": "{{count}}h ago",
-    "daysAgo": "{{count}}d ago"
+    "daysAgo": "{{count}}d ago",
+    "exploringShard": "Exploring {{shard}}",
+    "goingAboutDay": "Going about their day"
   },
   "share": {
     "title": "Share",
@@ -568,7 +570,10 @@
     "suggestion3": "Explain nudges to me",
     "feedbackPillReport": "Report an issue",
     "feedbackPillShare": "Share feedback",
-    "feedbackBanner": "Spotted a bug or have feedback? Just tell me — I'll send it straight to the team."
+    "feedbackBanner": "Spotted a bug or have feedback? Just tell me — I'll send it straight to the team.",
+    "feedbackThanks": "Thank you for helping us improve Multiverse Echoes.",
+    "feedbackError": "Something went wrong submitting your feedback. Please try again or email conduct@echolabs.me.",
+    "feedbackFallback": "Your {{type}} feedback has been submitted."
   },
   "admin": {
     "title": "Admin Dashboard",

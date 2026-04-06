@@ -453,10 +453,12 @@
     "newActivity": "Nueva actividad",
     "loadMore": "Cargar más",
     "inShard": "en {{shard}}",
-    "justNow": "justo ahora",
-    "minutesAgo": "hace {{count}} min",
-    "hoursAgo": "hace {{count}} h",
-    "daysAgo": "hace {{count}} d"
+    "justNow": "ahora",
+    "minutesAgo": "hace {{count}}m",
+    "hoursAgo": "hace {{count}}h",
+    "daysAgo": "hace {{count}}d",
+    "exploringShard": "Explorando {{shard}}",
+    "goingAboutDay": "Ocupado con su día"
   },
   "share": {
     "title": "Compartir",
@@ -568,7 +570,10 @@
     "suggestion3": "Explícame los empujones",
     "feedbackPillReport": "Reportar un problema",
     "feedbackPillShare": "Compartir opinión",
-    "feedbackBanner": "¿Detectaste un error o tienes comentarios? Solo dímelo — los mandaré directamente al equipo."
+    "feedbackBanner": "¿Detectaste un error o tienes comentarios? Solo dímelo — los mandaré directamente al equipo.",
+    "feedbackThanks": "Gracias por ayudarnos a mejorar Multiverse Echoes.",
+    "feedbackError": "Algo salió mal al enviar tu comentario. Inténtalo de nuevo o escribe a conduct@echolabs.me.",
+    "feedbackFallback": "Tu comentario de tipo {{type}} ha sido enviado."
   },
   "admin": {
     "title": "Panel de administración",

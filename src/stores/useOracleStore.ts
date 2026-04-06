@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import i18n from '../i18n.ts';
 import type { OracleContext, OracleDeepLink, FeedbackType } from '../types/api.ts';
 import { oracle, feedback } from '../lib/api/endpoints.ts';
 
@@ -123,11 +124,11 @@ export const useOracleStore = create<OracleState>()(
         });
         // Use the server's response message — it tells the user whether the
         // GH Issue was actually created or if it failed.
-        const serverMsg = result.message ?? `Your ${pf.type.toLowerCase()} feedback has been submitted.`;
+        const serverMsg = result.message ?? i18n.t('oracle.feedbackFallback', { type: pf.type.toLowerCase() });
         const confirmMsg: OracleMessage = {
           id: genId(),
           role: 'oracle',
-          text: `${serverMsg} Thank you for helping us improve Multiverse Echoes.`,
+          text: `${serverMsg} ${i18n.t('oracle.feedbackThanks')}`,
           timestamp: Date.now(),
         };
         set({ messages: [...get().messages, confirmMsg], isLoading: false, pendingFeedback: null });
@@ -135,7 +136,7 @@ export const useOracleStore = create<OracleState>()(
         const errorMsg: OracleMessage = {
           id: genId(),
           role: 'oracle',
-          text: 'Something went wrong submitting your feedback. Please try again or email conduct@echolabs.me.',
+          text: i18n.t('oracle.feedbackError'),
           timestamp: Date.now(),
         };
         set({ messages: [...get().messages, errorMsg], isLoading: false, pendingFeedback: null });
@@ -167,11 +168,11 @@ export const useOracleStore = create<OracleState>()(
           feedback_type: fType,
           context: { screen: state.context.screen ?? '', recent_events: [] },
         });
-        const serverMsg = result.message ?? `Your ${fType.toLowerCase()} feedback has been submitted.`;
+        const serverMsg = result.message ?? i18n.t('oracle.feedbackFallback', { type: fType.toLowerCase() });
         const confirmMsg: OracleMessage = {
           id: genId(),
           role: 'oracle',
-          text: `${serverMsg} Thank you for helping us improve Multiverse Echoes.`,
+          text: `${serverMsg} ${i18n.t('oracle.feedbackThanks')}`,
           timestamp: Date.now(),
         };
         set({ messages: [...get().messages, confirmMsg], isLoading: false, feedbackMode: null });
@@ -179,7 +180,7 @@ export const useOracleStore = create<OracleState>()(
         const errorMsg: OracleMessage = {
           id: genId(),
           role: 'oracle',
-          text: 'Something went wrong submitting your feedback. Please try again or email conduct@echolabs.me.',
+          text: i18n.t('oracle.feedbackError'),
           timestamp: Date.now(),
         };
         set({ messages: [...get().messages, errorMsg], isLoading: false, feedbackMode: null });

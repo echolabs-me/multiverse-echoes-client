@@ -454,9 +454,11 @@
     "loadMore": "加载更多",
     "inShard": "在 {{shard}}",
     "justNow": "刚刚",
-    "minutesAgo": "{{count}} 分钟前",
-    "hoursAgo": "{{count}} 小时前",
-    "daysAgo": "{{count}} 天前"
+    "minutesAgo": "{{count}}分钟前",
+    "hoursAgo": "{{count}}小时前",
+    "daysAgo": "{{count}}天前",
+    "exploringShard": "探索{{shard}}",
+    "goingAboutDay": "度过日常"
   },
   "share": {
     "title": "分享",
@@ -568,7 +570,10 @@
     "suggestion3": "给我讲讲轻推",
     "feedbackPillReport": "报告问题",
     "feedbackPillShare": "分享反馈",
-    "feedbackBanner": "发现 bug 或有建议?直接告诉我 — 我会转交给团队。"
+    "feedbackBanner": "发现 bug 或有建议?直接告诉我 — 我会转交给团队。",
+    "feedbackThanks": "感谢你帮助我们改进 Multiverse Echoes。",
+    "feedbackError": "提交反馈时出了问题。请重试或发送邮件至 conduct@echolabs.me。",
+    "feedbackFallback": "你的{{type}}反馈已提交。"
   },
   "admin": {
     "title": "管理后台",

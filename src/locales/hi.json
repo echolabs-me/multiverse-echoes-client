@@ -453,10 +453,12 @@
     "newActivity": "नई गतिविधि",
     "loadMore": "और लोड करो",
     "inShard": "{{shard}} में",
-    "justNow": "अभी-अभी",
-    "minutesAgo": "{{count}} मि. पहले",
-    "hoursAgo": "{{count}} घं. पहले",
-    "daysAgo": "{{count}} दिन पहले"
+    "justNow": "अभी",
+    "minutesAgo": "{{count}} मिनट पहले",
+    "hoursAgo": "{{count}} घंटे पहले",
+    "daysAgo": "{{count}} दिन पहले",
+    "exploringShard": "{{shard}} की खोज",
+    "goingAboutDay": "दिन��र्या में व्यस्त"
   },
   "share": {
     "title": "साझा करो",
@@ -568,7 +570,10 @@
     "suggestion3": "मुझे संकेत के बारे में समझाओ",
     "feedbackPillReport": "समस्या की रिपोर्ट करो",
     "feedbackPillShare": "प्रतिक्रिया साझा करो",
-    "feedbackBanner": "कोई बग मिला या प्रतिक्रिया है? मुझे बताओ — मैं टीम तक पहुँचा दूँगा।"
+    "feedbackBanner": "कोई बग मिला या प्रतिक्रिया है? मुझे बताओ — मैं टीम तक पहुँचा दूँगा।",
+    "feedbackThanks": "Multiverse Echoes को बेहतर बनाने में मदद करने के लिए धन्यवाद।",
+    "feedbackError": "फ़ीडबैक जमा करने में कुछ गड़बड़ हुई। कृपया पुनः प्रयास करें या conduct@echolabs.me पर ईमेल करें।",
+    "feedbackFallback": "आपका {{type}} फ़ीडबैक जमा हो गया है।"
   },
   "admin": {
     "title": "एडमिन डैशबोर्ड",

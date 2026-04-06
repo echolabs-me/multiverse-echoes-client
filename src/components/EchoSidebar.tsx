@@ -19,6 +19,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
+import { getMoodLabel } from '../lib/moodLabel.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import type { EchoResponse } from '../types/api.ts';
 
@@ -123,7 +124,7 @@ function EchoCard({
         </div>
         {/* Row 2: mood + tick */}
         <p className="truncate text-[11px] text-text-secondary ps-[18px]">
-          {echo.current_mood} · {t('echoSidebar.tick', { tick: echo.current_tick })}
+          {getMoodLabel(echo.current_mood)} · {t('echoSidebar.tick', { tick: echo.current_tick })}
         </p>
         {/* Row 3: travelling indicator or diary preview */}
         {showTravelIndicator ? (
@@ -279,7 +280,7 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
           {MOOD_LEGEND.map(({ mood, color }) => (
             <div key={mood} className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full" style={{ backgroundColor: color }} />
-              <span className="text-xs text-text-secondary capitalize">{mood}</span>
+              <span className="text-xs text-text-secondary">{getMoodLabel(mood)}</span>
             </div>
           ))}
         </div>
