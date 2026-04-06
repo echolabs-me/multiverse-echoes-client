@@ -4,12 +4,12 @@
     "tagline": "自主生命模拟平台"
   },
   "tickTimer": {
-    "nextTick": "下一次 Tick 还有 {{time}}",
-    "untilNextHeartbeat": "距下一次心跳",
-    "generating": "回声们正在过着他们的生活、建立关系、书写日记。",
-    "generatingShort": "回声们正在过着他们的生活…",
-    "arrived": "有新日记!",
-    "countdown": "下一次 Tick 还有 {{seconds}} 秒"
+    "nextTick": "下次脉动还有 {{time}}",
+    "untilNextHeartbeat": "距离下次脉动",
+    "generating": "回声们正在生活、建立关系、书写日记。",
+    "generatingShort": "回声们正在生活……",
+    "arrived": "新日记到了！",
+    "countdown": "下次脉动还有 {{seconds}} 秒"
   },
   "common": {
     "loading": "加载中…",
@@ -437,9 +437,9 @@
     "noEchoesDesc": "创建你的第一个回声,看一段新的人生展开。",
     "viewDetail": "查看详情",
     "mood": "心情",
-    "tick": "Tick {{tick}}",
+    "tick": "脉动 {{tick}}",
     "latestDiaryEmpty": "你的回声的故事才刚刚开始。稍后再来看看。",
-    "nextTick": "下一次 Tick 还有 {{seconds}} 秒",
+    "nextTick": "下次脉动还有 {{seconds}} 秒",
     "echoThinking": "正在生成下一篇日记…",
     "viewAllDiary": "查看全部 {{count}} 篇日记",
     "recentEventsEmpty": "当你的回声体验世界时,人生事件会出现在这里。",
@@ -675,7 +675,7 @@
   },
   "echoSidebar": {
     "title": "回声",
-    "tick": "Tick {{tick}}",
+    "tick": "脉动 {{tick}}",
     "switchEcho": "切换回声",
     "selectEcho": "选择一个回声",
     "unknownShard": "未知位面",

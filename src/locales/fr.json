@@ -4,12 +4,12 @@
     "tagline": "Plateforme de Simulation de Vie Autonome"
   },
   "tickTimer": {
-    "nextTick": "Prochain Tick dans {{time}}",
-    "untilNextHeartbeat": "jusqu'au prochain battement",
-    "generating": "Les Échos vivent leur vie, tissent des liens et écrivent leur journal.",
-    "generatingShort": "Les Échos vivent leur vie…",
+    "nextTick": "Prochaine pulsation dans {{time}}",
+    "untilNextHeartbeat": "jusqu'à la prochaine pulsation",
+    "generating": "Les Échos vivent, tissent des liens et écrivent leurs journaux.",
+    "generatingShort": "Les Échos vivent…",
     "arrived": "Nouvelles entrées !",
-    "countdown": "Prochain Tick dans {{seconds}} secondes"
+    "countdown": "Prochaine pulsation dans {{seconds}} secondes"
   },
   "common": {
     "loading": "Chargement…",
@@ -437,9 +437,9 @@
     "noEchoesDesc": "Crée ton premier Écho et regarde une nouvelle vie se déployer.",
     "viewDetail": "Voir le détail",
     "mood": "Humeur",
-    "tick": "Tick {{tick}}",
+    "tick": "Pulsation {{tick}}",
     "latestDiaryEmpty": "L'histoire de ton Écho ne fait que commencer. Reviens bientôt.",
-    "nextTick": "Prochain Tick dans {{seconds}} s",
+    "nextTick": "Prochaine pulsation dans {{seconds}} s",
     "echoThinking": "Génération de la prochaine entrée de journal…",
     "viewAllDiary": "Voir les {{count}} entrées",
     "recentEventsEmpty": "Les événements de vie apparaîtront à mesure que ton Écho découvre le monde.",
@@ -675,7 +675,7 @@
   },
   "echoSidebar": {
     "title": "Échos",
-    "tick": "Tick {{tick}}",
+    "tick": "Pulsation {{tick}}",
     "switchEcho": "Changer d'Écho",
     "selectEcho": "Sélectionne un Écho",
     "unknownShard": "Fragment inconnu",

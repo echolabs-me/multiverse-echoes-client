@@ -4,12 +4,12 @@
     "tagline": "स्वायत्त जीवन सिमुलेशन प्लेटफ़ॉर्म"
   },
   "tickTimer": {
-    "nextTick": "अगला Tick {{time}} में",
+    "nextTick": "अगली धड़कन {{time}} में",
     "untilNextHeartbeat": "अगली धड़कन तक",
-    "generating": "गूँजें अपनी ज़िंदगी जी रही हैं, रिश्ते बना रही हैं, और अपनी डायरी लिख रही हैं।",
-    "generatingShort": "गूँजें अपनी ज़िंदगी जी रही हैं…",
+    "generating": "गूँजें जी रही हैं, रिश्ते बना रही हैं, डायरी लिख रही हैं।",
+    "generatingShort": "गूँजें जी रही हैं…",
     "arrived": "नई प्रविष्टियाँ!",
-    "countdown": "अगला Tick {{seconds}} सेकंड में"
+    "countdown": "अगली धड़कन {{seconds}} सेकंड में"
   },
   "common": {
     "loading": "लोड हो रहा है…",
@@ -437,9 +437,9 @@
     "noEchoesDesc": "अपनी पहली गूँज बनाओ और एक नई ज़िंदगी को खुलते देखो।",
     "viewDetail": "विवरण देखो",
     "mood": "मिज़ाज",
-    "tick": "Tick {{tick}}",
+    "tick": "धड़कन {{tick}}",
     "latestDiaryEmpty": "तुम्हारी गूँज की कहानी अभी-अभी शुरू हुई है। थोड़ी देर में फिर देखो।",
-    "nextTick": "अगला Tick {{seconds}} सेकंड में",
+    "nextTick": "अगली धड़कन {{seconds}} सेकंड में",
     "echoThinking": "अगली डायरी प्रविष्टि तैयार हो रही है…",
     "viewAllDiary": "सभी {{count}} प्रविष्टियाँ देखो",
     "recentEventsEmpty": "जैसे-जैसे तुम्हारी गूँज दुनिया का अनुभव करेगी, घटनाएँ यहाँ दिखेंगी।",
@@ -675,7 +675,7 @@
   },
   "echoSidebar": {
     "title": "गूँजें",
-    "tick": "Tick {{tick}}",
+    "tick": "धड़कन {{tick}}",
     "switchEcho": "गूँज बदलो",
     "selectEcho": "एक गूँज चुनो",
     "unknownShard": "अज्ञात लोक",

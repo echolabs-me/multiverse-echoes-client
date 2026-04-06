@@ -4,12 +4,12 @@
     "tagline": "Plataforma de Simulación de Vida Autónoma"
   },
   "tickTimer": {
-    "nextTick": "Próximo Tick en {{time}}",
-    "untilNextHeartbeat": "hasta el próximo latido",
-    "generating": "Los Ecos están viviendo sus vidas, formando relaciones y escribiendo sus diarios.",
-    "generatingShort": "Los Ecos están viviendo sus vidas…",
+    "nextTick": "Próximo pulso en {{time}}",
+    "untilNextHeartbeat": "hasta el próximo pulso",
+    "generating": "Los Ecos están viviendo, formando relaciones y escribiendo sus diarios.",
+    "generatingShort": "Los Ecos están viviendo…",
     "arrived": "¡Nuevas entradas!",
-    "countdown": "Próximo Tick en {{seconds}} segundos"
+    "countdown": "Próximo pulso en {{seconds}} segundos"
   },
   "common": {
     "loading": "Cargando…",
@@ -437,9 +437,9 @@
     "noEchoesDesc": "Crea tu primer Eco y observa cómo se despliega una nueva vida.",
     "viewDetail": "Ver detalle",
     "mood": "Ánimo",
-    "tick": "Tick {{tick}}",
+    "tick": "Pulso {{tick}}",
     "latestDiaryEmpty": "La historia de tu Eco apenas empieza. Vuelve pronto.",
-    "nextTick": "Próximo Tick en {{seconds}} s",
+    "nextTick": "Próximo pulso en {{seconds}} s",
     "echoThinking": "Generando la próxima entrada del diario…",
     "viewAllDiary": "Ver todas las {{count}} entradas",
     "recentEventsEmpty": "Los eventos vitales aparecerán a medida que tu Eco experimente el mundo.",
@@ -675,7 +675,7 @@
   },
   "echoSidebar": {
     "title": "Ecos",
-    "tick": "Tick {{tick}}",
+    "tick": "Pulso {{tick}}",
     "switchEcho": "Cambiar de Eco",
     "selectEcho": "Selecciona un Eco",
     "unknownShard": "Fragmento desconocido",

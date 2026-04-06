@@ -4,12 +4,12 @@
     "tagline": "منصة محاكاة الحياة المستقلة"
   },
   "tickTimer": {
-    "nextTick": "الـ Tick التالي خلال {{time}}",
+    "nextTick": "النبضة التالية خلال {{time}}",
     "untilNextHeartbeat": "حتى النبضة التالية",
-    "generating": "الأصداء تعيش حياتها، وتُكوّن العلاقات، وتكتب مذكراتها.",
+    "generating": "الأصداء تعيش حياتها، تُكوّن العلاقات، وتكتب مذكراتها.",
     "generatingShort": "الأصداء تعيش حياتها…",
-    "arrived": "إدخالات جديدة!",
-    "countdown": "الـ Tick التالي خلال {{seconds}} ثانية"
+    "arrived": "مذكرات جديدة!",
+    "countdown": "النبضة التالية خلال {{seconds}} ثانية"
   },
   "common": {
     "loading": "جارٍ التحميل…",
@@ -437,9 +437,9 @@
     "noEchoesDesc": "أنشئ أول صدى لك وشاهد حياة جديدة تتفتح.",
     "viewDetail": "عرض التفاصيل",
     "mood": "المزاج",
-    "tick": "Tick {{tick}}",
+    "tick": "نبضة {{tick}}",
     "latestDiaryEmpty": "قصة صداك في بدايتها. عُد قريبًا.",
-    "nextTick": "الـ Tick التالي خلال {{seconds}} ث",
+    "nextTick": "النبضة التالية خلال {{seconds}} ث",
     "echoThinking": "جارٍ توليد إدخال المذكرات التالي…",
     "viewAllDiary": "عرض كل الإدخالات الـ {{count}}",
     "recentEventsEmpty": "ستظهر أحداث الحياة بينما يختبر صداك العالم.",
@@ -675,7 +675,7 @@
   },
   "echoSidebar": {
     "title": "الأصداء",
-    "tick": "Tick {{tick}}",
+    "tick": "نبضة {{tick}}",
     "switchEcho": "تبديل الصدى",
     "selectEcho": "اختر صدى",
     "unknownShard": "عالم غير معروف",
