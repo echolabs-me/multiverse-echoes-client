@@ -35,6 +35,7 @@ import {
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { getMoodColor } from '../lib/moodColor.ts';
 import { getMoodLabel } from '../lib/moodLabel.ts';
+import { formatSimDate } from '../lib/formatSimDate.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
@@ -1302,7 +1303,7 @@ function DiaryCard({
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <p className="text-sm font-medium text-text-primary">
-              {entry.simulated_date} — {getMoodLabel(entry.mood)}
+              {formatSimDate(entry.simulated_date)} — {getMoodLabel(entry.mood)}
             </p>
             <p className="mt-1 text-sm text-text-secondary">{entry.content}</p>
             <p className="mt-1 text-xs text-text-secondary">{entry.location_name}</p>

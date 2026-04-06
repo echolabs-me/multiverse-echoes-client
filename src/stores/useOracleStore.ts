@@ -86,8 +86,8 @@ export const useOracleStore = create<OracleState>()(
 
   startFeedback: (type) => {
     const prompt = type === 'Bug'
-      ? 'Tell me what\'s broken \u2014 describe what you expected to happen and what actually happened.'
-      : 'What would you like to see? Describe the feature or improvement.';
+      ? i18n.t('oracle.feedbackBugPrompt')
+      : i18n.t('oracle.feedbackFeaturePrompt');
     const oracleMsg: OracleMessage = {
       id: genId(),
       role: 'oracle',
@@ -128,7 +128,7 @@ export const useOracleStore = create<OracleState>()(
         const confirmMsg: OracleMessage = {
           id: genId(),
           role: 'oracle',
-          text: `${serverMsg} ${i18n.t('oracle.feedbackThanks')}`,
+          text: serverMsg,
           timestamp: Date.now(),
         };
         set({ messages: [...get().messages, confirmMsg], isLoading: false, pendingFeedback: null });
@@ -172,7 +172,7 @@ export const useOracleStore = create<OracleState>()(
         const confirmMsg: OracleMessage = {
           id: genId(),
           role: 'oracle',
-          text: `${serverMsg} ${i18n.t('oracle.feedbackThanks')}`,
+          text: serverMsg,
           timestamp: Date.now(),
         };
         set({ messages: [...get().messages, confirmMsg], isLoading: false, feedbackMode: null });

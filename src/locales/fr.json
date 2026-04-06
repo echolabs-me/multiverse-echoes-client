@@ -270,7 +270,12 @@
     "title": "Parcourir les Fragments",
     "searchPlaceholder": "Rechercher des Fragments par nom…",
     "empty": "Pas encore de Fragments publics",
-    "emptyDesc": "Pour l'instant, ton Écho vit dans un Fragment personnel — un monde privé rien qu'à lui. Les Fragments publics avec des mondes thématiques, des cultures uniques et d'autres Échos à rencontrer arrivent bientôt. C'est là que les choses deviennent vraiment intéressantes."
+    "emptyDesc": "Pour l'instant, ton Écho vit dans un Fragment personnel — un monde privé rien qu'à lui. Les Fragments publics avec des mondes thématiques, des cultures uniques et d'autres Échos à rencontrer arrivent bientôt. C'est là que les choses deviennent vraiment intéressantes.",
+    "statusActive": "Actif",
+    "statusInactive": "Inactif",
+    "typePublic": "Public",
+    "typePersonal": "Personnel",
+    "echoCount": "{{current}} / {{max}} Échos"
   },
   "feeds": {
     "personalTitle": "Fil personnel",
@@ -573,7 +578,9 @@
     "feedbackBanner": "Tu as repéré un bug ou tu as un retour à faire ? Dis-le-moi simplement — je l'enverrai directement à l'équipe.",
     "feedbackThanks": "Merci de nous aider à améliorer Multiverse Echoes.",
     "feedbackError": "Une erreur s'est produite lors de l'envoi de ton retour. Réessaie ou écris à conduct@echolabs.me.",
-    "feedbackFallback": "Ton retour de type {{type}} a été envoyé."
+    "feedbackFallback": "Ton retour de type {{type}} a été envoyé.",
+    "feedbackBugPrompt": "Dis-moi ce qui ne fonctionne pas — décris ce que tu attendais et ce qui s'est passé.",
+    "feedbackFeaturePrompt": "Que voudrais-tu voir ? Décris la fonctionnalité ou l'amélioration."
   },
   "admin": {
     "title": "Tableau de bord admin",
@@ -845,5 +852,13 @@
     "cyber-tokyo-2045": "Une mégapole cyberpunk baignée de néon où les corporations règnent, les hackers résistent, et chacun lutte pour survivre dans l'étalement vertical d'un Tokyo hyperconnecté.",
     "nomad-australia-2030": "L'outback australien après le basculement climatique. Des convois nomades parcourent les routes entre les sources d'eau, les fermes solaires fournissent la seule énergie fiable, et la survie dépend de ceux en qui vous avez confiance.",
     "renaissance-florence-1490": "Florence à l'apogée de la Renaissance. Les Médicis maintiennent le pouvoir par le mécénat, les artistes rivalisent pour la gloire, et les intrigues politiques se jouent sur chaque piazza et dans chaque palazzo."
+  },
+  "shardNames": {
+    "cyber-tokyo-2045": "Cyber-Tokyo 2045",
+    "nomad-australia-2030": "Australie Nomade 2030",
+    "renaissance-florence-1490": "Florence Renaissance 1490"
+  },
+  "diary": {
+    "dayHour": "Jour {{day}} Heure {{hour}}"
   }
 }

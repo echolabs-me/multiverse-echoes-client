@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getMoodPalette } from '../hooks/useMoodAtmosphere.ts';
 import { getMoodLabel } from '../lib/moodLabel.ts';
+import { formatSimDate } from '../lib/formatSimDate.ts';
 import type { DiaryEntry } from '../types/api.ts';
 
 /**
@@ -66,7 +67,7 @@ export function MoodHistoryStrip({
         </p>
         {chronological.length > 1 && (
           <p className="text-[10px] tabular-nums text-text-muted">
-            {firstDate} — {lastDate}
+            {formatSimDate(firstDate)} — {formatSimDate(lastDate)}
           </p>
         )}
       </div>
@@ -204,7 +205,7 @@ export function MoodHistoryStrip({
             {getMoodLabel(chronological[hoveredIndex].mood)}
           </p>
           <p className="mt-0.5 text-text-muted">
-            {chronological[hoveredIndex].simulated_date}
+            {formatSimDate(chronological[hoveredIndex].simulated_date)}
           </p>
           {chronological[hoveredIndex].location_name && (
             <p className="text-text-muted">

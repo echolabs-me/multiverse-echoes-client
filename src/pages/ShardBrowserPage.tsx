@@ -82,12 +82,12 @@ export function ShardBrowserPage() {
                   <div className="flex flex-col gap-2">
                     <div className="flex items-start justify-between">
                       <h3 className="text-sm font-semibold text-text-primary">
-                        {shard.name}
+                        {t(`shardNames.${shard.name.toLowerCase().replace(/\s+/g, '-')}`, { defaultValue: shard.name })}
                       </h3>
                       <Badge
                         variant={shard.status === 'Active' ? 'success' : 'default'}
                       >
-                        {shard.status}
+                        {t(`shardBrowser.status${shard.status}`, { defaultValue: shard.status })}
                       </Badge>
                     </div>
                     <p className="line-clamp-2 text-xs text-text-secondary">
@@ -95,10 +95,10 @@ export function ShardBrowserPage() {
                     </p>
                     <div className="flex items-center gap-2 text-xs text-text-muted">
                       <MapPin size={12} aria-hidden="true" />
-                      <span>{shard.shard_type}</span>
+                      <span>{t(`shardBrowser.type${shard.shard_type}`, { defaultValue: shard.shard_type })}</span>
                       <span>&middot;</span>
                       <span>
-                        {shard.current_active_count} / {shard.max_active_echoes} Echoes
+                        {t('shardBrowser.echoCount', { current: shard.current_active_count, max: shard.max_active_echoes })}
                       </span>
                     </div>
                   </div>

@@ -270,7 +270,12 @@
     "title": "Explorar Fragmentos",
     "searchPlaceholder": "Buscar Fragmentos por nombre…",
     "empty": "Aún no hay Fragmentos públicos",
-    "emptyDesc": "Por ahora tu Eco vive en un Fragmento personal — un mundo privado solo para él. Los Fragmentos públicos con mundos temáticos, culturas únicas y otros Ecos que conocer llegan pronto. Aquí es donde la cosa se pone interesante."
+    "emptyDesc": "Por ahora tu Eco vive en un Fragmento personal — un mundo privado solo para él. Los Fragmentos públicos con mundos temáticos, culturas únicas y otros Ecos que conocer llegan pronto. Aquí es donde la cosa se pone interesante.",
+    "statusActive": "Activo",
+    "statusInactive": "Inactivo",
+    "typePublic": "Público",
+    "typePersonal": "Personal",
+    "echoCount": "{{current}} / {{max}} Ecos"
   },
   "feeds": {
     "personalTitle": "Feed personal",
@@ -573,7 +578,9 @@
     "feedbackBanner": "¿Detectaste un error o tienes comentarios? Solo dímelo — los mandaré directamente al equipo.",
     "feedbackThanks": "Gracias por ayudarnos a mejorar Multiverse Echoes.",
     "feedbackError": "Algo salió mal al enviar tu comentario. Inténtalo de nuevo o escribe a conduct@echolabs.me.",
-    "feedbackFallback": "Tu comentario de tipo {{type}} ha sido enviado."
+    "feedbackFallback": "Tu comentario de tipo {{type}} ha sido enviado.",
+    "feedbackBugPrompt": "Cuéntame qué está roto — describe qué esperabas que pasara y qué pasó realmente.",
+    "feedbackFeaturePrompt": "¿Qué te gustaría ver? Describe la función o mejora."
   },
   "admin": {
     "title": "Panel de administración",
@@ -845,5 +852,13 @@
     "cyber-tokyo-2045": "Una megalópolis cyberpunk bañada en neón donde las corporaciones gobiernan, los hackers resisten, y todos luchan por sobrevivir en la expansión vertical de un Tokio hiperconectado.",
     "nomad-australia-2030": "El outback australiano después del colapso climático. Convoyes nómadas recorren las rutas entre fuentes de agua, las granjas solares son la única energía fiable, y la supervivencia depende de en quién confías.",
     "renaissance-florence-1490": "Florencia en el apogeo del Renacimiento. Los Medici controlan el poder mediante el mecenazgo, los artistas compiten por la gloria, y las intrigas políticas se desarrollan en cada piazza y palazzo."
+  },
+  "shardNames": {
+    "cyber-tokyo-2045": "Cyber-Tokio 2045",
+    "nomad-australia-2030": "Australia Nómada 2030",
+    "renaissance-florence-1490": "Florencia Renacentista 1490"
+  },
+  "diary": {
+    "dayHour": "Día {{day}} Hora {{hour}}"
   }
 }

@@ -270,7 +270,12 @@
     "title": "Browse Shards",
     "searchPlaceholder": "Search shards by name...",
     "empty": "No public Shards yet",
-    "emptyDesc": "Your Echo lives in a Personal Shard for now — a private world all their own. Public Shards with themed worlds, unique cultures, and other Echoes to meet are coming soon. This is where it gets interesting."
+    "emptyDesc": "Your Echo lives in a Personal Shard for now — a private world all their own. Public Shards with themed worlds, unique cultures, and other Echoes to meet are coming soon. This is where it gets interesting.",
+    "statusActive": "Active",
+    "statusInactive": "Inactive",
+    "typePublic": "Public",
+    "typePersonal": "Personal",
+    "echoCount": "{{current}} / {{max}} Echoes"
   },
   "feeds": {
     "personalTitle": "Personal Feed",
@@ -573,7 +578,9 @@
     "feedbackBanner": "Spotted a bug or have feedback? Just tell me — I'll send it straight to the team.",
     "feedbackThanks": "Thank you for helping us improve Multiverse Echoes.",
     "feedbackError": "Something went wrong submitting your feedback. Please try again or email conduct@echolabs.me.",
-    "feedbackFallback": "Your {{type}} feedback has been submitted."
+    "feedbackFallback": "Your {{type}} feedback has been submitted.",
+    "feedbackBugPrompt": "Tell me what's broken — describe what you expected to happen and what actually happened.",
+    "feedbackFeaturePrompt": "What would you like to see? Describe the feature or improvement."
   },
   "admin": {
     "title": "Admin Dashboard",
@@ -845,5 +852,13 @@
     "cyber-tokyo-2045": "A neon-drenched cyberpunk megacity where corporations rule, hackers resist, and everyone hustles to survive in the vertical sprawl of a hyper-connected Tokyo.",
     "nomad-australia-2030": "The Australian outback after the climate tipped. Nomadic convoys roam between water sources, solar farms provide the only reliable power, and survival depends on who you trust.",
     "renaissance-florence-1490": "Florence at the height of the Renaissance. The Medici hold power through patronage, artists compete for glory, and political intrigue plays out in every piazza and palazzo. Beauty and danger walk hand in hand."
+  },
+  "shardNames": {
+    "cyber-tokyo-2045": "Cyber-Tokyo 2045",
+    "nomad-australia-2030": "Nomad Australia 2030",
+    "renaissance-florence-1490": "Renaissance Florence 1490"
+  },
+  "diary": {
+    "dayHour": "Day {{day}} Hour {{hour}}"
   }
 }
