@@ -5,19 +5,21 @@ import { trackEvent } from '../lib/analytics.ts';
 
 interface Language {
   code: string;
-  flag: string;
+  /** ISO 3166-1 alpha-2 country code for flag image lookup */
+  countryCode: string;
   nativeName: string;
 }
 
 // The 6 live languages. `code` must match i18n.ts SUPPORTED_LOCALES,
 // config.translation.supported_locales, and the sidecar's LOCALE_TO_LANGUAGE.
+// `countryCode` maps to flagcdn.com SVG flags (lowercase ISO 3166-1 alpha-2).
 const languages: Language[] = [
-  { code: 'en', flag: '🇬🇧', nativeName: 'English' },
-  { code: 'zh-Hans', flag: '🇨🇳', nativeName: '简体中文' },
-  { code: 'hi', flag: '🇮🇳', nativeName: 'हिन्दी' },
-  { code: 'es', flag: '🇪🇸', nativeName: 'Español' },
-  { code: 'ar', flag: '🇸🇦', nativeName: 'العربية' },
-  { code: 'fr', flag: '🇫🇷', nativeName: 'Français' },
+  { code: 'en', countryCode: 'gb', nativeName: 'English' },
+  { code: 'zh-Hans', countryCode: 'cn', nativeName: '简体中文' },
+  { code: 'hi', countryCode: 'in', nativeName: 'हिन्दी' },
+  { code: 'es', countryCode: 'es', nativeName: 'Español' },
+  { code: 'ar', countryCode: 'sa', nativeName: 'العربية' },
+  { code: 'fr', countryCode: 'fr', nativeName: 'Français' },
 ];
 
 export function LanguageSelectionPage() {
@@ -37,38 +39,68 @@ export function LanguageSelectionPage() {
   );
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
-      {/* Welcome greeting in multiple languages — universally understood */}
-      <h1 className="mb-2 text-center text-3xl font-bold text-text-primary">
-        Welcome to Multiverse Echoes
-      </h1>
-      <p className="mb-12 text-center text-base text-text-secondary">
-        Choose your language&ensp;·&ensp;选择语言&ensp;·&ensp;भाषा चुनें
-      </p>
-
-      {/* Language grid — large tappable cards with flags */}
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-canvas px-4">
+      {/* Radial glow behind grid — matches hero-glow from landing page */}
       <div
-        className="grid w-full max-w-xl grid-cols-2 gap-4 sm:grid-cols-3"
-        role="listbox"
-        aria-label="Language selection"
-      >
-        {languages.map((lang) => (
-          <button
-            key={lang.code}
-            role="option"
-            aria-selected={false}
-            onClick={() => selectLanguage(lang.code)}
-            className="group flex flex-col items-center gap-3 rounded-xl border border-border bg-surface px-6 py-6 text-center transition-all duration-200 hover:border-accent hover:bg-surface-raised hover:shadow-lg hover:shadow-accent/10 active:scale-[0.97]"
-          >
-            <span className="text-5xl leading-none transition-transform duration-200 group-hover:scale-110" role="img" aria-hidden="true">
-              {lang.flag}
-            </span>
-            <span className="text-lg font-semibold text-text-primary">
-              {lang.nativeName}
-            </span>
-          </button>
-        ))}
+        className="pointer-events-none fixed top-[40%] left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style={{
+          background: 'radial-gradient(circle, rgba(212,145,92,0.08) 0%, transparent 70%)',
+          animation: 'me-hero-breathe 8s ease-in-out infinite',
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center">
+        <h1
+          className="mb-2 text-center font-serif text-4xl font-light tracking-[0.14em] text-[#E8E0D8]"
+          style={{ animation: 'me-fade-up 1.2s ease-out both' }}
+        >
+          MULTIVERSE ECHOES
+        </h1>
+        <p
+          className="mb-12 text-center font-serif text-lg font-light tracking-wide text-[#9BA5AE]"
+          style={{ animation: 'me-fade-up 1.2s ease-out 0.15s both' }}
+        >
+          Choose your language&ensp;&middot;&ensp;选择语言&ensp;&middot;&ensp;भाषा चुनें
+        </p>
+
+        {/* Language grid */}
+        <div
+          className="grid w-full max-w-xl grid-cols-2 gap-4 sm:grid-cols-3"
+          role="listbox"
+          aria-label="Language selection"
+          style={{ animation: 'me-fade-up 1.2s ease-out 0.3s both' }}
+        >
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              role="option"
+              aria-selected={false}
+              onClick={() => selectLanguage(lang.code)}
+              className="group flex flex-col items-center gap-3 rounded-xl border border-[rgba(212,145,92,0.15)] bg-[rgba(212,145,92,0.08)] px-6 py-6 text-center transition-all duration-300 hover:border-[#D4915C] hover:shadow-[0_0_30px_rgba(212,145,92,0.12)] active:scale-[0.97]"
+            >
+              <img
+                src={`https://flagcdn.com/${lang.countryCode}.svg`}
+                alt=""
+                aria-hidden="true"
+                className="h-12 w-12 rounded-full object-cover transition-transform duration-200 group-hover:scale-110"
+                draggable={false}
+              />
+              <span className="font-serif text-xl font-medium text-[#E8E0D8]">
+                {lang.nativeName}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
+
+      {/* Breathe animation for the glow */}
+      <style>{`
+        @keyframes me-hero-breathe {
+          0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+          50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.08); }
+        }
+      `}</style>
     </div>
   );
 }
