@@ -28,6 +28,7 @@ export function TickTimer() {
 
   const isGenerating = state === 'generating';
   const isArrived = state === 'arrived';
+  const isWaiting = state === 'waiting';
 
   const glowOpacity = isGenerating ? 0.5 : Math.min(progress * 0.45, 0.45);
 
@@ -54,19 +55,19 @@ export function TickTimer() {
           ◆
         </span>
 
-        {isGenerating ? (
+        {isGenerating || isWaiting ? (
           <>
             <span
               className="tick-digit-breathe hidden sm:inline text-sm font-semibold text-accent leading-tight"
               style={{ textShadow: NEON_GLOW }}
             >
-              {t('tickTimer.generating')}
+              {isWaiting ? t('tickTimer.nextTick', { time: timeDisplay }) : t('tickTimer.generating')}
             </span>
             <span
               className="tick-digit-breathe sm:hidden text-sm font-semibold text-accent leading-tight"
               style={{ textShadow: NEON_GLOW }}
             >
-              {t('tickTimer.generatingShort')}
+              {isWaiting ? t('tickTimer.nextTick', { time: timeDisplay }) : t('tickTimer.generatingShort')}
             </span>
           </>
         ) : (
@@ -111,7 +112,7 @@ export function TickTimer() {
         <div className="absolute inset-0 bg-border opacity-20" />
 
         {/* Fill during countdown */}
-        {!isGenerating && !isArrived && (
+        {!isGenerating && !isArrived && !isWaiting && (
           <div
             className="tick-bar-fill absolute inset-y-0 start-0"
             style={{ width: `${progress * 100}%` }}

@@ -5,7 +5,7 @@ import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import type { WsEchoEvent } from '../types/api.ts';
 
-export type TickTimerState = 'counting_down' | 'generating' | 'arrived';
+export type TickTimerState = 'counting_down' | 'generating' | 'arrived' | 'waiting';
 
 const LS_KEY = 'me_last_tick_at';
 
@@ -121,7 +121,7 @@ export function useTickTimer(): TickTimerData {
       // Never override the arrived state — let its 2s timeout handle the transition.
       // Also skip the first tick after arrived clears to avoid a flicker frame
       // where remaining briefly shows 0 before the new countdown stabilises.
-      if (stateRef.current === 'arrived') return;
+      if (stateRef.current === 'arrived' || stateRef.current === 'waiting') return;
 
       const elapsed = (Date.now() - base) / 1000;
       const remaining = tickInterval - Math.floor(elapsed);
@@ -132,7 +132,9 @@ export function useTickTimer(): TickTimerData {
           setTimerState('generating');
           generatingStartRef.current = Date.now();
         }
-        // Safety valve: if stuck generating for >90s, force reset.
+        // Safety valve: if stuck generating for >90s, transition to
+        // 'waiting' briefly so the user sees feedback before the countdown
+        // resets. This covers WS reconnects and ticks that skipped the Echo.
         if (stateRef.current === 'generating' && generatingStartRef.current > 0) {
           const generatingFor = (Date.now() - generatingStartRef.current) / 1000;
           if (generatingFor > 90) {
@@ -140,7 +142,11 @@ export function useTickTimer(): TickTimerData {
             lastTickAtRef.current = now;
             writeLastTickAt(now);
             generatingStartRef.current = 0;
-            setTimerState('counting_down');
+            setTimerState('waiting');
+            clearTimeout(arrivedTimerRef.current);
+            arrivedTimerRef.current = setTimeout(() => {
+              setTimerState('counting_down');
+            }, 3000);
           }
         }
       } else {
