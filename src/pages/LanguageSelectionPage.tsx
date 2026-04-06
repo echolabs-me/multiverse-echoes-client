@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { trackEvent } from '../lib/analytics.ts';
 
@@ -24,6 +24,7 @@ const languages: Language[] = [
 
 export function LanguageSelectionPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { i18n } = useTranslation();
 
   const selectLanguage = useCallback(
@@ -33,9 +34,10 @@ export function LanguageSelectionPage() {
       localStorage.setItem('locale', code);
       localStorage.setItem('locale_selected', 'true');
       trackEvent('account.locale_changed', { old_locale: oldLocale, new_locale: code });
-      navigate('/register');
+      const redirect = searchParams.get('redirect') ?? '/register';
+      navigate(redirect);
     },
-    [i18n, navigate],
+    [i18n, navigate, searchParams],
   );
 
   return (

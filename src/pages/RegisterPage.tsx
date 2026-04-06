@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
@@ -28,6 +28,13 @@ export function RegisterPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [turnstileToken, setTurnstileToken] = useState('');
   const turnstileRef = useRef<TurnstileInstance>(null);
+
+  // Redirect to language selection first if the user hasn't chosen a locale yet.
+  // Preserve the current URL (with invite code) so /language can send them back.
+  if (localStorage.getItem('locale_selected') !== 'true') {
+    const returnPath = `/register${window.location.search}`;
+    return <Navigate to={`/language?redirect=${encodeURIComponent(returnPath)}`} replace />;
+  }
 
   function validate(): Record<string, string> {
     const errs: Record<string, string> = {};

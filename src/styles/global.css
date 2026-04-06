@@ -388,6 +388,7 @@ pre {
   --color-info: var(--info);
 
   --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   --radius-sm: var(--radius-sm);
@@ -405,6 +406,7 @@ pre {
 
   /* Tick pulse animation — CDS-001 §7.3 */
   --animate-tick-pulse: tick-pulse 1s ease-out forwards;
+  --animate-fade-up: me-fade-up 1.2s ease-out both;
   --animate-fade-in: me-fade-in var(--duration-normal) ease-out forwards;
   --animate-fade-out: me-fade-out var(--duration-fast) ease-in forwards;
   --animate-slide-in: me-slide-in var(--duration-normal) ease-out forwards;
@@ -440,6 +442,17 @@ pre {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes me-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
