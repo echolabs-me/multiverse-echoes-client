@@ -838,7 +838,8 @@
     "Adversary": "敌手",
     "Active": "活跃",
     "Inactive": "不活跃",
-    "Broken": "破裂"
+    "Broken": "破裂",
+    "unknownEcho": "未知回声"
   },
   "feedTypes": {
     "diary_entry": "日记",

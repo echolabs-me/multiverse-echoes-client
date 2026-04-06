@@ -838,7 +838,8 @@
     "Adversary": "Adversaire",
     "Active": "Actif",
     "Inactive": "Inactif",
-    "Broken": "Brisé"
+    "Broken": "Brisé",
+    "unknownEcho": "Écho inconnu"
   },
   "feedTypes": {
     "diary_entry": "Journal",

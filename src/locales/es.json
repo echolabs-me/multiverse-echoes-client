@@ -838,7 +838,8 @@
     "Adversary": "Adversario",
     "Active": "Activo",
     "Inactive": "Inactivo",
-    "Broken": "Roto"
+    "Broken": "Roto",
+    "unknownEcho": "Eco desconocido"
   },
   "feedTypes": {
     "diary_entry": "Diario",

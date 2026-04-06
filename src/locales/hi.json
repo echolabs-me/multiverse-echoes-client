@@ -838,7 +838,8 @@
     "Adversary": "विरोधी",
     "Active": "सक्रिय",
     "Inactive": "निष्क्रिय",
-    "Broken": "टूटा"
+    "Broken": "टूटा",
+    "unknownEcho": "अज्ञात गूँज"
   },
   "feedTypes": {
     "diary_entry": "डायरी",

@@ -996,7 +996,7 @@ export function EchoDetailPage() {
                       <div className="flex items-start justify-between">
                         <div>
                           <p className="text-sm font-medium text-text-primary">
-                            {rel.other_echo_name ?? rel.echo_b_id}
+                            {rel.other_echo_name ?? t('relationships.unknownEcho')}
                           </p>
                           <p className="text-xs text-accent">{t(`relationships.${rel.relationship_type}`, { defaultValue: rel.relationship_type })}</p>
                         </div>

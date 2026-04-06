@@ -838,7 +838,8 @@
     "Adversary": "خصم",
     "Active": "نشط",
     "Inactive": "غير نشط",
-    "Broken": "مكسور"
+    "Broken": "مكسور",
+    "unknownEcho": "صدى مجهول"
   },
   "feedTypes": {
     "diary_entry": "مذكرة",

@@ -580,7 +580,12 @@ export type LifeEvent = {
 	created_at: string,
 };
 
-export type LifeEventType = "Career" | "Relationship" | "Personal" | "Conflict" | "Achievement" | "Travel" | "Health" | "Financial" | "Social" | "GlobalEvent";
+export type LifeEventType = "Career" | "Relationship" | "Personal" | "Conflict" | "Achievement" | "Travel" | "Health" | "Financial" | "Social" | "GlobalEvent" | 
+/**
+ *  Created when an Echo is deleted and related Echoes experience the
+ *  departure as a narrative event ("X has vanished without a trace").
+ */
+"Departure";
 
 export type LocationType = "Residential" | "Commercial" | "Social" | "Workplace" | "Transit" | "Landmark" | "Wilderness";
 
