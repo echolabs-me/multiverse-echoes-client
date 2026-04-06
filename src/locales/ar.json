@@ -864,141 +864,141 @@
   },
   "activityHints": {
     "contemplative": {
-      "0": "يحدق من النافذة...",
-      "1": "غارق في أفكاره...",
-      "2": "يراقب السحب وهي تمر ببطء...",
-      "3": "يرسم أنماطاً على الطاولة...",
-      "4": "أقرأ الصفحة ذاتها للمرة الثالثة...",
-      "5": "يجلس وبيده كوب من الشاي، دون أن يشربه...",
-      "6": "يتأمل ذرات الغبار وهي تطفو في شعاع الشمس...",
-      "7": "يتساءل عن الطرق التي لم يسلكها..."
+      "0": "staring out the window...",
+      "1": "lost in thought...",
+      "2": "watching the clouds drift by...",
+      "3": "tracing patterns on the table...",
+      "4": "reading the same page for the third time...",
+      "5": "sitting with a cup of tea, not drinking it...",
+      "6": "watching dust motes float in a sunbeam...",
+      "7": "wondering about roads not taken..."
     },
     "calm": {
-      "0": "يتنفس ببطء...",
-      "1": "يصغي إلى السكون...",
-      "2": "يجلس في الضوء الدافئ...",
-      "3": "أراقب العالم وهو يمضي...",
-      "4": "يستريح وعيناه نصف مغمضتين...",
-      "5": "أشعر بنسيم الهواء ينساب من نافذة مفتوحة...",
-      "6": "أعدُّ دقات قلبي...",
-      "7": "الاستسلام لسكون الهدوء..."
+      "0": "breathing slowly...",
+      "1": "listening to the silence...",
+      "2": "sitting in the warm light...",
+      "3": "watching the world go by...",
+      "4": "resting with eyes half-closed...",
+      "5": "feeling the breeze through an open window...",
+      "6": "counting heartbeats...",
+      "7": "settling into the quiet..."
     },
     "excited": {
-      "0": "يذرع الغرفة ذهاباً وإياباً...",
-      "1": "يدوّن بعض الأفكار على منديل ورقي...",
-      "2": "لا يستطيع الجلوس ساكناً...",
-      "3": "ينقر بإيقاع على المكتب...",
-      "4": "يخطط لغدٍ...",
-      "5": "يبتسم دون سبب واضح...",
-      "6": "يتحدث بسرعة زائدة...",
-      "7": "يتنقل ذهنه بين ثلاث أفكار مختلفة..."
+      "0": "pacing around the room...",
+      "1": "scribbling ideas on a napkin...",
+      "2": "can't sit still...",
+      "3": "tapping a rhythm on the desk...",
+      "4": "making plans for tomorrow...",
+      "5": "grinning at nothing in particular...",
+      "6": "talking too fast...",
+      "7": "bouncing between three different thoughts..."
     },
     "happy": {
-      "0": "يدندن بلحنٍ يتذكره بصعوبة...",
-      "1": "يبتسم لشخص غريب يمر من أمامه...",
-      "2": "يرسم شيئاً ما في الهوامش...",
-      "3": "يضحك على ذكرى قديمة...",
-      "4": "يسير بخطوات أخف...",
-      "5": "يستمتع باللحظة...",
-      "6": "لاحظتُ كم يبدو الضوء رائعاً اليوم...",
-      "7": "أشعر بامتنان غير متوقع..."
+      "0": "humming a half-remembered tune...",
+      "1": "smiling at a passing stranger...",
+      "2": "sketching something in the margins...",
+      "3": "laughing at an old memory...",
+      "4": "walking with a lighter step...",
+      "5": "savouring the moment...",
+      "6": "noticing how good the light looks today...",
+      "7": "feeling unexpectedly grateful..."
     },
     "anxious": {
-      "0": "ينظر إلى الساعة مرة أخرى...",
-      "1": "ينقر بأصابعه على الطاولة...",
-      "2": "يلقي نظرة خاطفة على الباب...",
-      "3": "يعبث بخيط منسل...",
-      "4": "يتدرب على محادثات لم تحدث بعد.",
-      "5": "لم يستطع إكمال جملته...",
-      "6": "يراقب الظلال وهي تتحرك على الجدار...",
-      "7": "يطوي ويفتح ورقة..."
+      "0": "checking the clock again...",
+      "1": "drumming fingers on the table...",
+      "2": "glancing at the door...",
+      "3": "picking at a loose thread...",
+      "4": "rehearsing conversations that haven\\",
+      "5": "unable to finish a sentence...",
+      "6": "watching shadows move on the wall...",
+      "7": "folding and unfolding a piece of paper..."
     },
     "angry": {
-      "0": "يقبض قبضتيه ويرخيهما...",
-      "1": "يحدق في الجدار...",
-      "2": "يذرع المكان ذهاباً وإياباً في دوائر ضيقة...",
-      "3": "كتم الكلمات في صدره...",
-      "4": "أغلق الدرج بقوة...",
-      "5": "يتنفس بصعوبة من بين أسنان مطبقة...",
-      "6": "عقد ذراعيه بإحكام...",
-      "7": "يعيد شريط الذكريات أحداث الجدال..."
+      "0": "clenching and unclenching fists...",
+      "1": "staring at the wall...",
+      "2": "pacing in tight circles...",
+      "3": "biting back words...",
+      "4": "slamming a drawer shut...",
+      "5": "breathing through clenched teeth...",
+      "6": "crossing arms tightly...",
+      "7": "replaying the argument..."
     },
     "content": {
-      "0": "يدندن بصوت خافت...",
-      "1": "يعتني بالحديقة...",
-      "2": "يقرأ بجانب المدفأة...",
-      "3": "يتمدد بكسل...",
-      "4": "مشاهدة غروب الشمس من الشرفة...",
-      "5": "أقوم بتنظيم رف الكتب من باب التسلية...",
-      "6": "يطهو شيئاً تفوح منه رائحة زكية...",
-      "7": "كتابة رسالة لا تتوجه لأحد بعينه..."
+      "0": "humming softly...",
+      "1": "tending the garden...",
+      "2": "reading by the fire...",
+      "3": "stretching lazily...",
+      "4": "watching the sunset from the porch...",
+      "5": "organising the bookshelf for fun...",
+      "6": "cooking something that smells wonderful...",
+      "7": "writing a letter to no one in particular..."
     },
     "melancholy": {
-      "0": "يتصفح صوراً قديمة...",
-      "1": "يجلس بهدوء في الظلام...",
-      "2": "يستمع إلى صوت المطر...",
-      "3": "يرسم اسماً على زجاج غطاه الضباب...",
-      "4": "يحتفظ بشيء يخص شخصاً آخر...",
-      "5": "يحدق في كرسي فارغ...",
-      "6": "يقرأ رسائل قديمة...",
-      "7": "يراقب خبو آخر خيوط الضوء..."
+      "0": "flipping through old photos...",
+      "1": "sitting quietly in the dark...",
+      "2": "listening to the rain...",
+      "3": "tracing a name on foggy glass...",
+      "4": "holding something that belongs to someone else...",
+      "5": "staring at an empty chair...",
+      "6": "reading old messages...",
+      "7": "watching the last light fade..."
     },
     "sad": {
-      "0": "منكمش على نفسه، لا ينام...",
-      "1": "ينظر إلى السقف...",
-      "2": "نسوا ما كانوا على وشك قوله...",
-      "3": "ترك الهاتف يرن...",
-      "4": "واقفٌ عند النافذة، لا يرى شيئاً...",
-      "5": "يشد الغطاء حوله أكثر...",
-      "6": "يضغط بكفه على زجاج بارد...",
-      "7": "جالس على حافة السرير..."
+      "0": "curled up, not sleeping...",
+      "1": "looking at the ceiling...",
+      "2": "forgetting what they were about to say...",
+      "3": "letting the phone ring...",
+      "4": "standing at the window, not seeing anything...",
+      "5": "pulling the blanket tighter...",
+      "6": "pressing a palm against cold glass...",
+      "7": "sitting on the edge of the bed..."
     },
     "neutral": {
-      "0": "ينظر حول الغرفة...",
-      "1": "أراجع أحداث اليوم...",
-      "2": "يتكيف مع الصمت...",
-      "3": "في انتظار حدوث شيء ما...",
-      "4": "بدأ يلاحظ التفاصيل للمرة الأولى...",
-      "5": "يتنقل بين القنوات...",
-      "6": "يرسم خربشات بشرود...",
-      "7": "يتمدد قبل أن ينهض..."
+      "0": "looking around the room...",
+      "1": "sorting through the day...",
+      "2": "adjusting to the silence...",
+      "3": "waiting for something to happen...",
+      "4": "noticing details for the first time...",
+      "5": "flipping through channels...",
+      "6": "doodling absently...",
+      "7": "stretching before standing up..."
     },
     "shard": {
       "cyber": {
-        "0": "لم يحدث شيء.",
-        "1": "١",
-        "2": "٢",
-        "3": "٣"
+        "0": "watching neon reflections in a puddle...",
+        "1": "scrolling through a holographic feed...",
+        "2": "listening to the hum of the city grid...",
+        "3": "tracing circuit patterns on the wall..."
       },
       "tokyo": {
-        "0": "لم يحدث شيء.",
-        "1": "١",
-        "2": "٢",
-        "3": "٣"
+        "0": "watching neon reflections in a puddle...",
+        "1": "navigating the crowded alleyways...",
+        "2": "listening to distant karaoke...",
+        "3": "watching the trains pass below..."
       },
       "renaissance": {
-        "0": "لم يحدث شيء.",
-        "1": "١",
-        "2": "٢",
-        "3": "٣"
+        "0": "studying a fresco on the ceiling...",
+        "1": "listening to a distant lute...",
+        "2": "watching candlelight flicker on stone walls...",
+        "3": "sketching in charcoal on rough paper..."
       },
       "florence": {
-        "0": "لم يحدث شيء.",
-        "1": "١",
-        "2": "٢",
-        "3": "٣"
+        "0": "walking along the Arno at dusk...",
+        "1": "listening to church bells ring...",
+        "2": "studying a fresco on the ceiling...",
+        "3": "watching artisans at work..."
       },
       "outback": {
-        "0": "لم يحدث شيء.",
-        "1": "١",
-        "2": "٢",
-        "3": "٣"
+        "0": "watching the red dust settle...",
+        "1": "listening to the silence of the plains...",
+        "2": "counting stars in the endless sky...",
+        "3": "sitting by the campfire embers..."
       },
       "australia": {
-        "0": "لم يحدث شيء.",
-        "1": "١",
-        "2": "٢",
-        "3": "٣"
+        "0": "watching the red dust settle...",
+        "1": "listening to birds in the gum trees...",
+        "2": "squinting at the shimmering horizon...",
+        "3": "sitting by the campfire embers..."
       }
     }
   }
