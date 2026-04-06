@@ -118,7 +118,8 @@ export function StoryExportModal({
         uniqueShardIds.map(async (sid) => {
           try {
             const shard = await import('../lib/api/endpoints.ts').then((m) => m.shards.get(sid));
-            shardCache.set(sid, shard.name);
+            const slug = shard.name.toLowerCase().replace(/\s+/g, '-');
+            shardCache.set(sid, t(`shardNames.${slug}`, { defaultValue: shard.name }));
           } catch {
             // ignore
           }
@@ -137,7 +138,7 @@ export function StoryExportModal({
     } finally {
       setEchoesLoading(false);
     }
-  }, [echoId, echoName]);
+  }, [echoId, echoName, t]);
 
   // Open/close dialog
   useEffect(() => {

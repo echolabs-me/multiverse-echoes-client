@@ -861,5 +861,145 @@
   },
   "diary": {
     "dayHour": "Día {{day}} Hora {{hour}}"
+  },
+  "activityHints": {
+    "contemplative": {
+      "0": "mirando por la ventana...",
+      "1": "perdido en sus pensamientos...",
+      "2": "viendo pasar las nubes...",
+      "3": "dibujando patrones sobre la mesa...",
+      "4": "leyendo la misma página por tercera vez...",
+      "5": "Sentado con una taza de té, sin beberla...",
+      "6": "observando las motas de polvo flotar en un rayo de sol...",
+      "7": "preguntándose por los caminos no tomados..."
+    },
+    "calm": {
+      "0": "respirando lentamente...",
+      "1": "escuchando el silencio...",
+      "2": "sentado bajo la cálida luz...",
+      "3": "viendo el mundo pasar...",
+      "4": "descansando con los ojos entrecerrados...",
+      "5": "Sintiendo la brisa entrar por una ventana abierta...",
+      "6": "contando los latidos del corazón...",
+      "7": "acomodándose en la quietud..."
+    },
+    "excited": {
+      "0": "caminando de un lado a otro por la habitación...",
+      "1": "garabateando ideas en una servilleta...",
+      "2": "No puede quedarse quieto...",
+      "3": "tamborileando un ritmo sobre el escritorio...",
+      "4": "Haciendo planes para mañana...",
+      "5": "sonriendo sin motivo aparente...",
+      "6": "hablando demasiado rápido...",
+      "7": "saltando entre tres pensamientos distintos..."
+    },
+    "happy": {
+      "0": "tarareando una melodía a medio recordar...",
+      "1": "sonriendo a un desconocido que pasaba...",
+      "2": "dibujando algo en los márgenes...",
+      "3": "riendo al recordar algo de hace tiempo...",
+      "4": "caminando con un paso más ligero...",
+      "5": "saboreando el momento...",
+      "6": "notando lo bien que se ve la luz hoy...",
+      "7": "Sintiendo una gratitud inesperada..."
+    },
+    "anxious": {
+      "0": "mirando el reloj una vez más...",
+      "1": "tamborileando los dedos sobre la mesa...",
+      "2": "mirando de reojo hacia la puerta...",
+      "3": "Tirando de un hilo suelto...",
+      "4": "ensayando conversaciones que no han sucedido",
+      "5": "incapaz de terminar una frase...",
+      "6": "observando cómo se movían las sombras en la pared...",
+      "7": "doblando y desdoblando un trozo de papel..."
+    },
+    "angry": {
+      "0": "apretando y soltando los puños...",
+      "1": "Mirando fijamente a la pared...",
+      "2": "caminando en círculos cerrados...",
+      "3": "mordiéndose la lengua...",
+      "4": "cerrando un cajón de un golpe...",
+      "5": "respirando entre dientes...",
+      "6": "cruzando los brazos con fuerza...",
+      "7": "repitiendo la discusión en su cabeza..."
+    },
+    "content": {
+      "0": "tarareando suavemente...",
+      "1": "cuidando el jardín...",
+      "2": "leyendo junto al fuego...",
+      "3": "estirándose perezosamente...",
+      "4": "viendo el atardecer desde el porche...",
+      "5": "Organizando la estantería por pura diversión...",
+      "6": "cocinando algo que huele de maravilla...",
+      "7": "Escribiendo una carta a nadie en particular..."
+    },
+    "melancholy": {
+      "0": "hojeando fotos viejas...",
+      "1": "sentado en silencio en la oscuridad...",
+      "2": "escuchando la lluvia...",
+      "3": "trazando un nombre en el cristal empañado...",
+      "4": "Sosteniendo algo que pertenece a otra persona...",
+      "5": "mirando una silla vacía...",
+      "6": "leyendo mensajes antiguos...",
+      "7": "viendo cómo se apaga la última luz..."
+    },
+    "sad": {
+      "0": "acurrucado, sin dormir...",
+      "1": "mirando al techo...",
+      "2": "olvidando lo que estaban a punto de decir...",
+      "3": "dejando que el teléfono suene...",
+      "4": "de pie junto a la ventana, sin ver nada...",
+      "5": "ajustándose la manta...",
+      "6": "presionando la palma de la mano contra el cristal frío...",
+      "7": "sentado al borde de la cama..."
+    },
+    "neutral": {
+      "0": "mirando alrededor de la habitación...",
+      "1": "repasando el día...",
+      "2": "adaptándose al silencio...",
+      "3": "esperando a que pase algo...",
+      "4": "notando detalles por primera vez...",
+      "5": "cambiando de canal...",
+      "6": "garabateando distraídamente...",
+      "7": "estirándose antes de levantarse..."
+    },
+    "shard": {
+      "cyber": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "tokyo": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "renaissance": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "florence": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "outback": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "australia": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      }
+    }
   }
 }

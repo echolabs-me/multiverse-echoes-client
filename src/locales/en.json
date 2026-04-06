@@ -861,5 +861,145 @@
   },
   "diary": {
     "dayHour": "Day {{day}} Hour {{hour}}"
+  },
+  "activityHints": {
+    "contemplative": {
+      "0": "staring out the window...",
+      "1": "lost in thought...",
+      "2": "watching the clouds drift by...",
+      "3": "tracing patterns on the table...",
+      "4": "reading the same page for the third time...",
+      "5": "sitting with a cup of tea, not drinking it...",
+      "6": "watching dust motes float in a sunbeam...",
+      "7": "wondering about roads not taken..."
+    },
+    "calm": {
+      "0": "breathing slowly...",
+      "1": "listening to the silence...",
+      "2": "sitting in the warm light...",
+      "3": "watching the world go by...",
+      "4": "resting with eyes half-closed...",
+      "5": "feeling the breeze through an open window...",
+      "6": "counting heartbeats...",
+      "7": "settling into the quiet..."
+    },
+    "excited": {
+      "0": "pacing around the room...",
+      "1": "scribbling ideas on a napkin...",
+      "2": "can't sit still...",
+      "3": "tapping a rhythm on the desk...",
+      "4": "making plans for tomorrow...",
+      "5": "grinning at nothing in particular...",
+      "6": "talking too fast...",
+      "7": "bouncing between three different thoughts..."
+    },
+    "happy": {
+      "0": "humming a half-remembered tune...",
+      "1": "smiling at a passing stranger...",
+      "2": "sketching something in the margins...",
+      "3": "laughing at an old memory...",
+      "4": "walking with a lighter step...",
+      "5": "savouring the moment...",
+      "6": "noticing how good the light looks today...",
+      "7": "feeling unexpectedly grateful..."
+    },
+    "anxious": {
+      "0": "checking the clock again...",
+      "1": "drumming fingers on the table...",
+      "2": "glancing at the door...",
+      "3": "picking at a loose thread...",
+      "4": "rehearsing conversations that haven\\",
+      "5": "unable to finish a sentence...",
+      "6": "watching shadows move on the wall...",
+      "7": "folding and unfolding a piece of paper..."
+    },
+    "angry": {
+      "0": "clenching and unclenching fists...",
+      "1": "staring at the wall...",
+      "2": "pacing in tight circles...",
+      "3": "biting back words...",
+      "4": "slamming a drawer shut...",
+      "5": "breathing through clenched teeth...",
+      "6": "crossing arms tightly...",
+      "7": "replaying the argument..."
+    },
+    "content": {
+      "0": "humming softly...",
+      "1": "tending the garden...",
+      "2": "reading by the fire...",
+      "3": "stretching lazily...",
+      "4": "watching the sunset from the porch...",
+      "5": "organising the bookshelf for fun...",
+      "6": "cooking something that smells wonderful...",
+      "7": "writing a letter to no one in particular..."
+    },
+    "melancholy": {
+      "0": "flipping through old photos...",
+      "1": "sitting quietly in the dark...",
+      "2": "listening to the rain...",
+      "3": "tracing a name on foggy glass...",
+      "4": "holding something that belongs to someone else...",
+      "5": "staring at an empty chair...",
+      "6": "reading old messages...",
+      "7": "watching the last light fade..."
+    },
+    "sad": {
+      "0": "curled up, not sleeping...",
+      "1": "looking at the ceiling...",
+      "2": "forgetting what they were about to say...",
+      "3": "letting the phone ring...",
+      "4": "standing at the window, not seeing anything...",
+      "5": "pulling the blanket tighter...",
+      "6": "pressing a palm against cold glass...",
+      "7": "sitting on the edge of the bed..."
+    },
+    "neutral": {
+      "0": "looking around the room...",
+      "1": "sorting through the day...",
+      "2": "adjusting to the silence...",
+      "3": "waiting for something to happen...",
+      "4": "noticing details for the first time...",
+      "5": "flipping through channels...",
+      "6": "doodling absently...",
+      "7": "stretching before standing up..."
+    },
+    "shard": {
+      "cyber": {
+        "0": "watching neon reflections in a puddle...",
+        "1": "scrolling through a holographic feed...",
+        "2": "listening to the hum of the city grid...",
+        "3": "tracing circuit patterns on the wall..."
+      },
+      "tokyo": {
+        "0": "watching neon reflections in a puddle...",
+        "1": "navigating the crowded alleyways...",
+        "2": "listening to distant karaoke...",
+        "3": "watching the trains pass below..."
+      },
+      "renaissance": {
+        "0": "studying a fresco on the ceiling...",
+        "1": "listening to a distant lute...",
+        "2": "watching candlelight flicker on stone walls...",
+        "3": "sketching in charcoal on rough paper..."
+      },
+      "florence": {
+        "0": "walking along the Arno at dusk...",
+        "1": "listening to church bells ring...",
+        "2": "studying a fresco on the ceiling...",
+        "3": "watching artisans at work..."
+      },
+      "outback": {
+        "0": "watching the red dust settle...",
+        "1": "listening to the silence of the plains...",
+        "2": "counting stars in the endless sky...",
+        "3": "sitting by the campfire embers..."
+      },
+      "australia": {
+        "0": "watching the red dust settle...",
+        "1": "listening to birds in the gum trees...",
+        "2": "squinting at the shimmering horizon...",
+        "3": "sitting by the campfire embers..."
+      }
+    }
   }
 }

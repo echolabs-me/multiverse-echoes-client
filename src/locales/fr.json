@@ -861,5 +861,145 @@
   },
   "diary": {
     "dayHour": "Jour {{day}} Heure {{hour}}"
+  },
+  "activityHints": {
+    "contemplative": {
+      "0": "regardant par la fenêtre...",
+      "1": "perdu dans ses pensées...",
+      "2": "regarder les nuages défiler...",
+      "3": "tracant des motifs sur la table...",
+      "4": "lire la même page pour la troisième fois...",
+      "5": "Assis avec une tasse de thé, sans y toucher...",
+      "6": "regarder des grains de poussière flotter dans un rayon de soleil...",
+      "7": "S'interrogeant sur les chemins non empruntés..."
+    },
+    "calm": {
+      "0": "respirant lentement...",
+      "1": "à l'écoute du silence...",
+      "2": "Assis dans la lumière chaude...",
+      "3": "Regarder le monde défiler...",
+      "4": "se reposant, les yeux mi-clos...",
+      "5": "sentir la brise passer par une fenêtre ouverte...",
+      "6": "à compter les battements de son cœur...",
+      "7": "s'installer dans le calme..."
+    },
+    "excited": {
+      "0": "fait les cent pas dans la pièce...",
+      "1": "griffonnant des idées sur une serviette...",
+      "2": "incapable de tenir en place...",
+      "3": "tapote un rythme sur le bureau...",
+      "4": "en train de prévoir la journée de demain...",
+      "5": "Souriant sans raison particulière...",
+      "6": "parle trop vite...",
+      "7": "passant d'une idée à l'autre, sans cesse..."
+    },
+    "happy": {
+      "0": "fredonnant un air à demi oublié...",
+      "1": "Souriant à un inconnu qui passait...",
+      "2": "gribouiller quelque chose dans la marge...",
+      "3": "Rires en repensant à un vieux souvenir...",
+      "4": "marchant d'un pas plus léger...",
+      "5": "savourant l'instant...",
+      "6": "Remarquant à quel point la lumière est belle aujourd'hui...",
+      "7": "un sentiment de gratitude inattendu..."
+    },
+    "anxious": {
+      "0": "regardant encore une fois l'horloge...",
+      "1": "tambourinant des doigts sur la table...",
+      "2": "jetant un coup d'œil vers la porte...",
+      "3": "tirer sur un fil qui dépasse...",
+      "4": "répéter des conversations qui n'ont pas encore eu lieu",
+      "5": "incapable de finir sa phrase...",
+      "6": "à regarder les ombres bouger sur le mur...",
+      "7": "plier et déplier un morceau de papier..."
+    },
+    "angry": {
+      "0": "serrant et desserrant les poings...",
+      "1": "fixant le mur...",
+      "2": "fait les cent pas en tournant en rond...",
+      "3": "S'empêcher de parler...",
+      "4": "fermant brusquement un tiroir...",
+      "5": "respirant à travers des dents serrées...",
+      "6": "croisant les bras fermement...",
+      "7": "Ressassant la dispute..."
+    },
+    "content": {
+      "0": "fredonnant doucement...",
+      "1": "S'occuper du jardin...",
+      "2": "Lecture au coin du feu...",
+      "3": "s'étirant paresseusement...",
+      "4": "Regarder le coucher du soleil depuis la terrasse...",
+      "5": "Range sonicque la bibliothèque pour le plaisir...",
+      "6": "en train de cuisiner quelque chose qui sent divinement bon...",
+      "7": "écrire une lettre à personne en particulier..."
+    },
+    "melancholy": {
+      "0": "En train de feuilleter de vieilles photos...",
+      "1": "Assis(e) tranquillement dans le noir...",
+      "2": "À écouter la pluie...",
+      "3": "tracer un nom sur la buée d'une vitre...",
+      "4": "détenir un objet appartenant à quelqu'un d'autre...",
+      "5": "fixant une chaise vide...",
+      "6": "Relire de vieux messages...",
+      "7": "regardant les dernières lueurs s'effacer..."
+    },
+    "sad": {
+      "0": "Recroquevillé, sans dormir...",
+      "1": "fixant le plafond...",
+      "2": "...oubliant ce qu'ils allaient dire.",
+      "3": "laissant le téléphone sonner...",
+      "4": "Debout à la fenêtre, sans rien voir...",
+      "5": "resserrant la couverture sur elle...",
+      "6": "une main pressée contre le verre froid...",
+      "7": "Assis au bord du lit..."
+    },
+    "neutral": {
+      "0": "en regardant autour de la pièce...",
+      "1": "faire le bilan de la journée...",
+      "2": "s'habituer au silence...",
+      "3": "En attendant que quelque chose arrive...",
+      "4": "remarquant des détails pour la première fois...",
+      "5": "zappe entre les chaînes...",
+      "6": "gribouille distraitement...",
+      "7": "s'étirant avant de se lever..."
+    },
+    "shard": {
+      "cyber": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "tokyo": {
+        "0": "L'enfant est né.",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "renaissance": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "florence": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "outback": {
+        "0": "L'enfant est né.",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "australia": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      }
+    }
   }
 }

@@ -1,39 +1,28 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Globe } from 'lucide-react';
-import { Tooltip } from '../components/index.ts';
 import { trackEvent } from '../lib/analytics.ts';
 
 interface Language {
   code: string;
-  name: string;
+  flag: string;
   nativeName: string;
-  available: boolean;
 }
 
-// The `code` field must match `SUPPORTED_LOCALES` in `client/src/i18n.ts`,
-// `config.translation.supported_locales` in `config/default.toml`, and
-// `LOCALE_TO_NLLB` in `services/translation/server.py`.
-// Reference: docs/claude/i18n-multilingual-tasks.md CC TASK 4 Part G Step 7.
+// The 6 live languages. `code` must match i18n.ts SUPPORTED_LOCALES,
+// config.translation.supported_locales, and the sidecar's LOCALE_TO_LANGUAGE.
 const languages: Language[] = [
-  { code: 'en', name: 'English', nativeName: 'English', available: true },
-  { code: 'zh-Hans', name: 'Chinese', nativeName: '简体中文', available: true },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी', available: true },
-  { code: 'es', name: 'Spanish', nativeName: 'Español', available: true },
-  { code: 'ar', name: 'Arabic', nativeName: 'العربية', available: true },
-  { code: 'fr', name: 'French', nativeName: 'Français', available: true },
-  { code: 'de', name: 'German', nativeName: 'Deutsch', available: false },
-  { code: 'ja', name: 'Japanese', nativeName: '日本語', available: false },
-  { code: 'ko', name: 'Korean', nativeName: '한국어', available: false },
-  { code: 'pt', name: 'Portuguese', nativeName: 'Português', available: false },
-  { code: 'ru', name: 'Russian', nativeName: 'Русский', available: false },
-  { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', available: false },
+  { code: 'en', flag: '🇬🇧', nativeName: 'English' },
+  { code: 'zh-Hans', flag: '🇨🇳', nativeName: '简体中文' },
+  { code: 'hi', flag: '🇮🇳', nativeName: 'हिन्दी' },
+  { code: 'es', flag: '🇪🇸', nativeName: 'Español' },
+  { code: 'ar', flag: '🇸🇦', nativeName: 'العربية' },
+  { code: 'fr', flag: '🇫🇷', nativeName: 'Français' },
 ];
 
 export function LanguageSelectionPage() {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   const selectLanguage = useCallback(
     (code: string) => {
@@ -49,56 +38,36 @@ export function LanguageSelectionPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
-      {/* Globe icon */}
-      <div className="relative mb-12 flex items-center justify-center" aria-hidden="true">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent/10">
-          <Globe size={40} className="text-accent" strokeWidth={1.5} />
-        </div>
-      </div>
-
-      <h1 className="mb-2 text-2xl font-bold text-text-primary">
-        {t('onboarding.chooseLanguageTitle')}
+      {/* Welcome greeting in multiple languages — universally understood */}
+      <h1 className="mb-2 text-center text-3xl font-bold text-text-primary">
+        Welcome to Multiverse Echoes
       </h1>
-      <p className="mb-10 text-sm text-text-secondary">
-        {t('onboarding.languagesComingSoon')}
+      <p className="mb-12 text-center text-base text-text-secondary">
+        Choose your language&ensp;·&ensp;选择语言&ensp;·&ensp;भाषा चुनें
       </p>
 
-      {/* Language grid */}
+      {/* Language grid — large tappable cards with flags */}
       <div
-        className="grid w-full max-w-lg grid-cols-2 gap-3 sm:grid-cols-3"
+        className="grid w-full max-w-xl grid-cols-2 gap-4 sm:grid-cols-3"
         role="listbox"
-        aria-label={t('onboarding.languageSelectionLabel')}
+        aria-label="Language selection"
       >
-        {languages.map((lang) =>
-          lang.available ? (
-            <button
-              key={lang.code}
-              role="option"
-              aria-selected={false}
-              onClick={() => selectLanguage(lang.code)}
-              className="flex flex-col items-center gap-1 rounded-lg border border-border bg-surface px-4 py-4 text-center transition-colors hover:border-accent hover:bg-surface-raised"
-            >
-              <span className="text-base font-medium text-text-primary">
-                {lang.nativeName}
-              </span>
-              <span className="text-xs text-text-muted">{lang.name}</span>
-            </button>
-          ) : (
-            <Tooltip key={lang.code} content={t('common.comingSoon')} position="top">
-              <div
-                role="option"
-                aria-selected={false}
-                aria-disabled="true"
-                className="flex w-full flex-col items-center gap-1 rounded-lg border border-border/50 bg-surface/50 px-4 py-4 text-center opacity-40"
-              >
-                <span className="text-base font-medium text-text-primary">
-                  {lang.nativeName}
-                </span>
-                <span className="text-xs text-text-muted">{lang.name}</span>
-              </div>
-            </Tooltip>
-          ),
-        )}
+        {languages.map((lang) => (
+          <button
+            key={lang.code}
+            role="option"
+            aria-selected={false}
+            onClick={() => selectLanguage(lang.code)}
+            className="group flex flex-col items-center gap-3 rounded-xl border border-border bg-surface px-6 py-6 text-center transition-all duration-200 hover:border-accent hover:bg-surface-raised hover:shadow-lg hover:shadow-accent/10 active:scale-[0.97]"
+          >
+            <span className="text-5xl leading-none transition-transform duration-200 group-hover:scale-110" role="img" aria-hidden="true">
+              {lang.flag}
+            </span>
+            <span className="text-lg font-semibold text-text-primary">
+              {lang.nativeName}
+            </span>
+          </button>
+        ))}
       </div>
     </div>
   );
