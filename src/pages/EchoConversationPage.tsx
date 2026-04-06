@@ -7,6 +7,7 @@ import { useAuthStore, useEchoStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { formatTime } from '../lib/formatDate.ts';
+import { getMoodLabel } from '../lib/moodLabel.ts';
 import type { ConversationMessage } from '../types/api.ts';
 
 interface TierLimits {
@@ -237,7 +238,7 @@ export function EchoConversationPage() {
           <h1 className="text-lg font-semibold text-text-primary">{echoName}</h1>
           {echoMood && (
             <p className="text-xs text-text-muted">
-              {t('conversation.mood', { mood: echoMood })}
+              {t('conversation.mood', { mood: getMoodLabel(echoMood) })}
             </p>
           )}
         </div>

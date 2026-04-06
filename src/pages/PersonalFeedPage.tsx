@@ -127,7 +127,7 @@ function FeedItemCard({
               >
                 {item.title}
               </button>
-              <Badge variant="default">{item.item_type.replace('_', ' ')}</Badge>
+              <Badge variant="default">{t(`feedTypes.${item.item_type}`, { defaultValue: item.item_type.replace('_', ' ') })}</Badge>
             </div>
             <p className="mt-1 text-sm text-text-secondary">{item.body}</p>
             <div className="mt-1 flex items-center gap-2">

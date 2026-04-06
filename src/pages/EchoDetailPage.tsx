@@ -34,6 +34,7 @@ import {
 } from '../components/index.ts';
 import { EchoPortrait3D } from '../components/EchoPortrait3D.tsx';
 import { getMoodColor } from '../lib/moodColor.ts';
+import { getMoodLabel } from '../lib/moodLabel.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
@@ -575,7 +576,7 @@ export function EchoDetailPage() {
                 })}
               </p>
               <p className="mt-1 text-sm text-text-secondary">
-                {t('dashboard.mood')}: {activeEcho.current_mood} &middot; {t('dashboard.tick', { tick: activeEcho.current_tick })}
+                {t('dashboard.mood')}: {getMoodLabel(activeEcho.current_mood)} &middot; {t('dashboard.tick', { tick: activeEcho.current_tick })}
               </p>
             </div>
           </div>
@@ -996,10 +997,10 @@ export function EchoDetailPage() {
                           <p className="text-sm font-medium text-text-primary">
                             {rel.other_echo_name ?? rel.echo_b_id}
                           </p>
-                          <p className="text-xs text-accent">{rel.relationship_type}</p>
+                          <p className="text-xs text-accent">{t(`relationships.${rel.relationship_type}`, { defaultValue: rel.relationship_type })}</p>
                         </div>
                         <Badge variant={rel.status === 'Active' ? 'success' : 'default'}>
-                          {rel.status}
+                          {t(`relationships.${rel.status}`, { defaultValue: rel.status })}
                         </Badge>
                       </div>
                       <div className="mt-2">
@@ -1301,7 +1302,7 @@ function DiaryCard({
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <p className="text-sm font-medium text-text-primary">
-              {entry.simulated_date} — {entry.mood}
+              {entry.simulated_date} — {getMoodLabel(entry.mood)}
             </p>
             <p className="mt-1 text-sm text-text-secondary">{entry.content}</p>
             <p className="mt-1 text-xs text-text-secondary">{entry.location_name}</p>

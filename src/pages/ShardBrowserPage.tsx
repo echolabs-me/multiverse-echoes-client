@@ -91,7 +91,7 @@ export function ShardBrowserPage() {
                       </Badge>
                     </div>
                     <p className="line-clamp-2 text-xs text-text-secondary">
-                      {shard.description}
+                      {t(`shardDescriptions.${shard.name.toLowerCase().replace(/\s+/g, '-')}`, { defaultValue: shard.description })}
                     </p>
                     <div className="flex items-center gap-2 text-xs text-text-muted">
                       <MapPin size={12} aria-hidden="true" />

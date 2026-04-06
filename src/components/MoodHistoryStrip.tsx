@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getMoodPalette } from '../hooks/useMoodAtmosphere.ts';
+import { getMoodLabel } from '../lib/moodLabel.ts';
 import type { DiaryEntry } from '../types/api.ts';
 
 /**
@@ -128,7 +129,7 @@ export function MoodHistoryStrip({
                     textShadow: `0 1px 3px ${palette.secondary}`,
                   }}
                 >
-                  {isHovered ? entry.mood : ''}
+                  {isHovered ? getMoodLabel(entry.mood) : ''}
                 </span>
 
                 {/* "Now" playhead on latest segment */}
@@ -200,7 +201,7 @@ export function MoodHistoryStrip({
           }}
         >
           <p className="text-sm font-semibold capitalize text-text-primary">
-            {chronological[hoveredIndex].mood}
+            {getMoodLabel(chronological[hoveredIndex].mood)}
           </p>
           <p className="mt-0.5 text-text-muted">
             {chronological[hoveredIndex].simulated_date}
