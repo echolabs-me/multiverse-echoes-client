@@ -100,9 +100,7 @@ export function EchoDetailPage() {
   const [hibernateModal, setHibernateModal] = useState(false);
   const [influenceModal, setInfluenceModal] = useState(false);
   const [renameModal, setRenameModal] = useState(false);
-  const [editPersonaModal, setEditPersonaModal] = useState(false);
   const [newName, setNewName] = useState('');
-  const [newPersona, setNewPersona] = useState('');
   const [influenceType, setInfluenceType] = useState('nudge');
   const [influenceDetails, setInfluenceDetails] = useState('');
   const [exportModal, setExportModal] = useState(false);
@@ -495,18 +493,6 @@ export function EchoDetailPage() {
     }
   };
 
-  const handleEditPersona = async () => {
-    if (!activeEcho || !newPersona.trim()) return;
-    try {
-      await echoApi.updatePersona(activeEcho.echo_id, { persona_text: newPersona.trim() });
-      trackEvent('echo.persona_edited', { fields_changed_count: 1 });
-      addToast(t('common.save'), 'success');
-      setEditPersonaModal(false);
-      await fetchEcho(activeEcho.echo_id);
-    } catch {
-      addToast(t('common.error'), 'danger');
-    }
-  };
 
   const handleSoloModeToggle = async () => {
     try {
@@ -613,18 +599,6 @@ export function EchoDetailPage() {
                 {showAllPersona ? t('common.showLess') : t('common.showMore')}
               </button>
             )}
-            {activeEcho.current_tick === 0 && (
-              <p className="mt-2 flex items-center gap-1.5 text-xs text-accent">
-                <Sparkles size={12} aria-hidden="true" />
-                {t('echoDetail.personaEditableHint')}
-              </p>
-            )}
-            {activeEcho.current_tick > 0 && (
-              <p className="mt-2 flex items-center gap-1.5 text-xs text-text-secondary">
-                <Lock size={12} aria-hidden="true" />
-                {t('echoDetail.personaLocked')}
-              </p>
-            )}
           </Card>
 
           {/* Action Toolbar */}
@@ -709,13 +683,6 @@ export function EchoDetailPage() {
                     >
                       {activeEcho.name_locked ? <Lock size={14} className="text-text-muted" /> : <Pencil size={14} className="text-emerald-400" />}
                       {activeEcho.name_locked ? t('echoDetail.renameLocked') : t('echoDetail.rename')}
-                    </button>
-                    <button
-                      onClick={() => { setNewPersona(activeEcho.persona_text); setEditPersonaModal(true); setShowMoreMenu(false); }}
-                      disabled={activeEcho.current_tick > 0}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                    >
-                      <Pencil size={14} className="text-violet-400" /> {t('echoDetail.editPersona')}
                     </button>
                     <button
                       onClick={() => { setExportModal(true); setShowMoreMenu(false); }}
@@ -1212,30 +1179,6 @@ export function EchoDetailPage() {
         </div>
       </Modal>
 
-      {/* Edit Persona Modal */}
-      <Modal
-        open={editPersonaModal}
-        onClose={() => setEditPersonaModal(false)}
-        title={t('echoDetail.editPersona')}
-      >
-        <div className="mb-4">
-          <Input
-            multiline
-            label={t('echoDetail.persona')}
-            value={newPersona}
-            onChange={(e) => setNewPersona(e.target.value)}
-            maxLength={1000}
-          />
-        </div>
-        <div className="flex justify-end gap-2">
-          <Button variant="secondary" onClick={() => setEditPersonaModal(false)}>
-            {t('common.cancel')}
-          </Button>
-          <Button onClick={handleEditPersona} disabled={!newPersona.trim()}>
-            {t('common.save')}
-          </Button>
-        </div>
-      </Modal>
 
       {/* Story Export Modal */}
       <StoryExportModal

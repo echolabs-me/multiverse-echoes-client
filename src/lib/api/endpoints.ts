@@ -10,7 +10,6 @@ import type {
   EchoResponse,
   CreateEchoRequest,
   DiaryEntry,
-  UpdatePersonaRequest,
   Shard,
   FeedItem,
   Notification,
@@ -87,12 +86,6 @@ export const echoes = {
   create: (data: CreateEchoRequest) =>
     request<EchoResponse>('/echoes', {
       method: 'POST',
-      body: JSON.stringify(data),
-    }),
-
-  updatePersona: (echoId: string, data: UpdatePersonaRequest) =>
-    request<EchoResponse>(`/echoes/${echoId}/persona`, {
-      method: 'PUT',
       body: JSON.stringify(data),
     }),
 

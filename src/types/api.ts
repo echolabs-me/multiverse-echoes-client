@@ -175,10 +175,6 @@ export interface CreateEchoRequest {
   physical_description?: string;
 }
 
-export interface UpdatePersonaRequest {
-  persona_text?: string;
-}
-
 export interface EchoResponse {
   echo_id: string;
   name: string;
