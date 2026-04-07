@@ -116,6 +116,18 @@ export function ShardViewPage() {
             {t('common.back')}
           </button>
 
+          {/* Banner image */}
+          {activeShard.banner_image && (
+            <div className="mb-4 overflow-hidden rounded-xl">
+              <img
+                src={activeShard.banner_image}
+                alt={activeShard.name}
+                className="h-48 w-full object-cover sm:h-56"
+                loading="eager"
+              />
+            </div>
+          )}
+
           {/* Shard header */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-text-primary">{activeShard.name}</h1>

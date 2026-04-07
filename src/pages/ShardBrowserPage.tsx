@@ -99,7 +99,7 @@ export function ShardBrowserPage() {
                         {t(`shardBrowser.status${shard.status}`, { defaultValue: shard.status })}
                       </Badge>
                     </div>
-                    <p className="line-clamp-2 text-xs text-text-secondary">
+                    <p className="line-clamp-4 text-xs text-text-secondary">
                       {t(`shardDescriptions.${shard.name.toLowerCase().replace(/\s+/g, '-')}`, { defaultValue: shard.description })}
                     </p>
                     <div className="flex items-center gap-2 text-xs text-text-muted">
