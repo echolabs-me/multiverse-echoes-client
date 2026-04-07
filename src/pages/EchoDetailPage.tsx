@@ -18,6 +18,7 @@ import {
   X,
   MoreHorizontal,
   Navigation,
+  Phone,
   Trash2,
 } from 'lucide-react';
 import {
@@ -46,6 +47,7 @@ import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
 import { EchoConversationPanel } from '../components/EchoConversationPanel.tsx';
+import { VoiceSessionModal } from '../components/VoiceSessionModal.tsx';
 import { echoes as echoApi, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
@@ -112,6 +114,7 @@ export function EchoDetailPage() {
   const [soloMode, setSoloMode] = useState(false);
   const [nudgeRipple, setNudgeRipple] = useState(false);
   const [nudgeConfirmed, setNudgeConfirmed] = useState(false);
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
 
   // Mood atmosphere — derive from latest diary entry or echo's current_mood.
   const moodContainerRef = useRef<HTMLDivElement>(null);
@@ -587,7 +590,7 @@ export function EchoDetailPage() {
 
           {/* Action Toolbar */}
           <div className="my-4 space-y-2">
-            {/* Primary actions — Talk + Nudge */}
+            {/* Primary actions — Talk + Voice Call + Nudge */}
             <div className="flex gap-2">
               {/* Talk — primary CTA */}
               <button
@@ -607,6 +610,14 @@ export function EchoDetailPage() {
                 }`}
               >
                 <MessageCircle size={18} /> {t('echoDetail.talkToEcho')}
+              </button>
+              {/* Voice Call */}
+              <button
+                onClick={() => setShowVoiceModal(true)}
+                disabled={activeEcho.status === 'Hibernated'}
+                className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-purple-500/30 bg-purple-500/10 px-4 py-3 text-sm font-semibold text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/15 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              >
+                <Phone size={18} /> {t('echoDetail.voiceCall', 'Talk to ' + activeEcho.name)}
               </button>
               {/* Nudge */}
               <div className="relative flex-1">
@@ -1141,6 +1152,16 @@ export function EchoDetailPage() {
         echoName={activeEcho.name}
         echoId={activeEcho.echo_id}
       />
+
+      {/* Voice Session Modal */}
+      {showVoiceModal && activeEcho && (
+        <VoiceSessionModal
+          echoId={activeEcho.echo_id}
+          echoName={activeEcho.name}
+          avatarUrl={activeEcho.avatar_url}
+          onClose={() => setShowVoiceModal(false)}
+        />
+      )}
 
     </div>
 
