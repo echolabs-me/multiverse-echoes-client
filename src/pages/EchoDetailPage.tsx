@@ -10,12 +10,10 @@ import {
   MessageCircle,
   Moon,
   Sun,
-  Pencil,
   Settings,
   ChevronDown,
   ChevronUp,
   ChevronRight,
-  Lock,
   Search,
   X,
   MoreHorizontal,
@@ -99,8 +97,6 @@ export function EchoDetailPage() {
   // Modal state
   const [hibernateModal, setHibernateModal] = useState(false);
   const [influenceModal, setInfluenceModal] = useState(false);
-  const [renameModal, setRenameModal] = useState(false);
-  const [newName, setNewName] = useState('');
   const [influenceType, setInfluenceType] = useState('nudge');
   const [influenceDetails, setInfluenceDetails] = useState('');
   const [exportModal, setExportModal] = useState(false);
@@ -480,18 +476,6 @@ export function EchoDetailPage() {
     }
   };
 
-  const handleRename = async () => {
-    if (!activeEcho || !newName.trim()) return;
-    try {
-      await echoApi.rename(activeEcho.echo_id, newName.trim());
-      trackEvent('echo.renamed');
-      addToast(t('common.save'), 'success');
-      setRenameModal(false);
-      await fetchEcho(activeEcho.echo_id);
-    } catch {
-      addToast(t('common.error'), 'danger');
-    }
-  };
 
 
   const handleSoloModeToggle = async () => {
@@ -675,14 +659,6 @@ export function EchoDetailPage() {
                         ? <Moon size={14} className="text-blue-400" />
                         : <Sun size={14} className="text-amber-400" />}
                       {activeEcho.status === 'Active' ? t('echoDetail.hibernate') : t('echoDetail.wake')}
-                    </button>
-                    <button
-                      onClick={() => { setNewName(activeEcho.name); setRenameModal(true); setShowMoreMenu(false); }}
-                      disabled={activeEcho.name_locked}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                    >
-                      {activeEcho.name_locked ? <Lock size={14} className="text-text-muted" /> : <Pencil size={14} className="text-emerald-400" />}
-                      {activeEcho.name_locked ? t('echoDetail.renameLocked') : t('echoDetail.rename')}
                     </button>
                     <button
                       onClick={() => { setExportModal(true); setShowMoreMenu(false); }}
@@ -1156,28 +1132,6 @@ export function EchoDetailPage() {
         </div>
       </Modal>
 
-      {/* Rename Modal */}
-      <Modal
-        open={renameModal}
-        onClose={() => setRenameModal(false)}
-        title={t('echoDetail.rename')}
-      >
-        <div className="mb-4">
-          <Input
-            label={t('echoDetail.rename')}
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
-        </div>
-        <div className="flex justify-end gap-2">
-          <Button variant="secondary" onClick={() => setRenameModal(false)}>
-            {t('common.cancel')}
-          </Button>
-          <Button onClick={handleRename} disabled={!newName.trim()}>
-            {t('common.save')}
-          </Button>
-        </div>
-      </Modal>
 
 
       {/* Story Export Modal */}

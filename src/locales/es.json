@@ -216,8 +216,6 @@
     "wakeConfirm": "¿Despertar a este Eco? Reanudará su actividad autónoma.",
     "hibernated": "Eco hibernado",
     "woken": "Eco despierto",
-    "rename": "Renombrar",
-    "renameLocked": "Nombre bloqueado",
     "settings": "Ajustes del Eco",
     "soloMode": "Modo solo (sin interacciones entre usuarios)",
     "talkToEcho": "Hablar con el Eco",

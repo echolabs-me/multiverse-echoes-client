@@ -216,8 +216,6 @@
     "wakeConfirm": "Wake this Echo? It will resume autonomous activity.",
     "hibernated": "Echo hibernated",
     "woken": "Echo woken",
-    "rename": "Rename",
-    "renameLocked": "Name locked",
     "settings": "Echo Settings",
     "soloMode": "Solo mode (no cross-user interactions)",
     "talkToEcho": "Talk to Echo",

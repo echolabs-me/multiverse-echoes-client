@@ -216,8 +216,6 @@
     "wakeConfirm": "唤醒这个回声?他将恢复自主活动。",
     "hibernated": "回声已休眠",
     "woken": "回声已唤醒",
-    "rename": "重命名",
-    "renameLocked": "名称已锁定",
     "settings": "回声设置",
     "soloMode": "独立模式(不与其他用户的回声互动)",
     "talkToEcho": "与回声对话",

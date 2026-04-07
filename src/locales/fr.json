@@ -216,8 +216,6 @@
     "wakeConfirm": "Réveiller cet Écho ? Il reprendra son activité autonome.",
     "hibernated": "Écho en hibernation",
     "woken": "Écho réveillé",
-    "rename": "Renommer",
-    "renameLocked": "Nom verrouillé",
     "settings": "Paramètres de l'Écho",
     "soloMode": "Mode solo (pas d'interactions entre utilisateurs)",
     "talkToEcho": "Parler à l'Écho",
