@@ -195,11 +195,16 @@ export class VoiceAudioBridge {
 
     const source = this.audioCtx.createBufferSource();
     source.buffer = buffer;
+    source.playbackRate.value = 1.0;
     source.connect(this.gainNode);
 
-    const startTime = Math.max(this.audioCtx.currentTime + 0.01, this.nextPlayTime);
-    source.start(startTime);
-    this.nextPlayTime = startTime + buffer.duration;
+    // If nextPlayTime has fallen behind current time (gap between turns),
+    // reset it so we don't schedule in the past.
+    if (this.nextPlayTime < this.audioCtx.currentTime) {
+      this.nextPlayTime = this.audioCtx.currentTime + 0.005;
+    }
+    source.start(this.nextPlayTime);
+    this.nextPlayTime += buffer.duration;
   }
 
   /** Mute/unmute the microphone. */
