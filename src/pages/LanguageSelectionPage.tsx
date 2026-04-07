@@ -169,7 +169,7 @@ export function LanguageSelectionPage() {
             <img
               src="/logo.png"
               alt="Multiverse Echoes"
-              className="pointer-events-none absolute h-40 w-40 rounded-full object-contain opacity-80"
+              className="pointer-events-none absolute h-80 w-80 rounded-full object-contain opacity-80"
               style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
               draggable={false}
             />
