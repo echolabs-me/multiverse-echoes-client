@@ -1227,32 +1227,28 @@ function DiaryCard({
       return;
     }
     // Idle/error → generate + play
-    // IMPORTANT: Create and prime the Audio element synchronously within the
-    // user gesture call stack. Safari blocks autoplay if the Audio element is
-    // first played after an async gap (the fetch). By calling load() here,
-    // Safari treats the element as user-initiated and allows play() later.
-    if (!audioRef.current) {
-      audioRef.current = new Audio();
-    }
-    const audio = audioRef.current;
-    audio.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
-    audio.load(); // Prime for Safari autoplay policy
-
     setNarrationState('generating');
     try {
       const rawBlob = await echoApi.narrate(entry.echo_id, entry.diary_id);
-      // Ensure the blob has audio/wav MIME type (some browsers need it explicit)
+      // Ensure the blob has audio/wav MIME type
       const blob = new Blob([rawBlob], { type: 'audio/wav' });
       if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
       const url = URL.createObjectURL(blob);
       blobUrlRef.current = url;
 
+      // Stop any previous audio before creating new
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.onended = null;
+        audioRef.current.onerror = null;
+      }
+      const audio = new Audio(url);
+      audioRef.current = audio;
       audio.onended = () => setNarrationState('idle');
       audio.onerror = (e) => {
         console.error('Narration audio error:', e);
         setNarrationState('error');
       };
-      audio.src = url;
       await audio.play();
       setNarrationState('playing');
     } catch (e) {
