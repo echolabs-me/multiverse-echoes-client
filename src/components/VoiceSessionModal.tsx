@@ -105,7 +105,7 @@ export function VoiceSessionModal({
       // Pre-create AudioContext AND request mic during user gesture (Safari requirement).
       // Safari requires both AudioContext and getUserMedia within a user gesture handler.
       // Health polling below takes seconds, which expires the gesture context.
-      const preAudioCtx = new AudioContext({ sampleRate: 48000 });
+      const preAudioCtx = new AudioContext({ sampleRate: 24000 });
       if (preAudioCtx.state === 'suspended') {
         await preAudioCtx.resume();
       }

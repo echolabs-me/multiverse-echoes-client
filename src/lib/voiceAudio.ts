@@ -13,7 +13,7 @@
  *     \x06 + JSON               = state change (listening/thinking/speaking)
  */
 
-const SAMPLE_RATE = 48000;
+const SAMPLE_RATE = 24000;
 
 export type VoicePipelineState = 'listening' | 'thinking' | 'speaking';
 
