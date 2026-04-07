@@ -259,7 +259,13 @@
     "travelHere": "Voyager ici",
     "travelInitiated": "Voyage initié. Ton Écho est en route.",
     "travelSelectEcho": "Sélectionne un Écho pour voyager vers ce Fragment :",
-    "travelChooseEcho": "Choisis un Écho…"
+    "travelChooseEcho": "Choisis un Écho…",
+    "statusActive": "Actif",
+    "statusInactive": "Inactif",
+    "statusHibernated": "En hibernation",
+    "typePublic": "Public",
+    "typePersonal": "Personnel",
+    "typePrivate": "Privé"
   },
   "shardBrowser": {
     "title": "Parcourir les Fragments",
@@ -827,6 +833,7 @@
     "neutral": "Neutre",
     "content": "Satisfait",
     "melancholy": "Mélancolique",
+    "restless": "Agité",
     "unknown": "Inconnu"
   },
   "relationships": {

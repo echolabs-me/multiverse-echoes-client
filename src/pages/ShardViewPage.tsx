@@ -17,6 +17,7 @@ import { useEchoStore } from '../stores/useEchoStore.ts';
 import { shards as shardApi, echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { formatDate } from '../lib/formatDate.ts';
+import { getMoodLabel } from '../lib/moodLabel.ts';
 import type { EchoResponse, FeedItem } from '../types/api.ts';
 
 export function ShardViewPage() {
@@ -134,7 +135,7 @@ export function ShardViewPage() {
             <p className="mt-1 text-sm text-text-secondary">{activeShard.description}</p>
             <div className="mt-2 flex items-center gap-3 text-sm text-text-muted">
               <Badge variant={activeShard.status === 'Active' ? 'success' : 'default'}>
-                {activeShard.status}
+                {t(`shardView.status${activeShard.status}`, { defaultValue: activeShard.status })}
               </Badge>
               <span>
                 {t('shardView.capacity', {
@@ -142,7 +143,7 @@ export function ShardViewPage() {
                   max: activeShard.max_active_echoes,
                 })}
               </span>
-              <span>{activeShard.shard_type}</span>
+              <span>{t(`shardView.type${activeShard.shard_type}`, { defaultValue: activeShard.shard_type })}</span>
             </div>
           </div>
 
@@ -187,12 +188,12 @@ export function ShardViewPage() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-text-primary">{echo.name}</p>
-                        <p className="text-xs text-text-secondary">{echo.current_mood}</p>
+                        <p className="text-xs text-text-secondary">{getMoodLabel(echo.current_mood)}</p>
                       </div>
                       <Badge
                         variant={echo.status === 'Active' ? 'success' : 'default'}
                       >
-                        {echo.status}
+                        {t(`shardView.status${echo.status}`, { defaultValue: echo.status })}
                       </Badge>
                     </div>
                   </Card>

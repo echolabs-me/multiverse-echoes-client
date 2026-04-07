@@ -840,6 +840,8 @@ export type ShardDetail = {
 	tick_rate_modifier: number,
 	banner_image: string | null,
 	created_at: string,
+	// Locale of name/description fields: user's locale or "en" (pending).
+	content_locale: string,
 };
 
 export type ShardEchoSummary = {
@@ -889,6 +891,8 @@ export type ShardSummary = {
 	max_active_echoes: number,
 	banner_image: string | null,
 	created_at: string,
+	// Locale of name/description fields: user's locale or "en" (pending).
+	content_locale: string,
 };
 
 export type ShardTheme = {

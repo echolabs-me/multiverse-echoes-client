@@ -259,7 +259,13 @@
     "travelHere": "السفر إلى هنا",
     "travelInitiated": "بدأ السفر. صداك في طريقه.",
     "travelSelectEcho": "اختر صدى للسفر إلى هذا العالم:",
-    "travelChooseEcho": "اختر صدى…"
+    "travelChooseEcho": "اختر صدى…",
+    "statusActive": "نشط",
+    "statusInactive": "غير نشط",
+    "statusHibernated": "خامل",
+    "typePublic": "عام",
+    "typePersonal": "شخصي",
+    "typePrivate": "خاص"
   },
   "shardBrowser": {
     "title": "تصفُّح العوالم",
@@ -827,6 +833,7 @@
     "neutral": "محايد",
     "content": "راضٍ",
     "melancholy": "كئيب",
+    "restless": "قَلِق",
     "unknown": "غير معروف"
   },
   "relationships": {

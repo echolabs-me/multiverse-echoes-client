@@ -259,7 +259,13 @@
     "travelHere": "前往此处",
     "travelInitiated": "旅程已开始。你的回声正在路上。",
     "travelSelectEcho": "选择一个回声前往这个位面:",
-    "travelChooseEcho": "选择一个回声…"
+    "travelChooseEcho": "选择一个回声…",
+    "statusActive": "活跃",
+    "statusInactive": "不活跃",
+    "statusHibernated": "休眠",
+    "typePublic": "公开",
+    "typePersonal": "个人",
+    "typePrivate": "私密"
   },
   "shardBrowser": {
     "title": "浏览位面",
@@ -827,6 +833,7 @@
     "neutral": "中性",
     "content": "满足",
     "melancholy": "忧郁",
+    "restless": "焦躁",
     "unknown": "未知"
   },
   "relationships": {

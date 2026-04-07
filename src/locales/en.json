@@ -259,7 +259,13 @@
     "travelHere": "Travel Here",
     "travelInitiated": "Travel initiated. Your Echo is on its way.",
     "travelSelectEcho": "Select an Echo to travel to this Shard:",
-    "travelChooseEcho": "Choose an Echo..."
+    "travelChooseEcho": "Choose an Echo...",
+    "statusActive": "Active",
+    "statusInactive": "Inactive",
+    "statusHibernated": "Hibernated",
+    "typePublic": "Public",
+    "typePersonal": "Personal",
+    "typePrivate": "Private"
   },
   "shardBrowser": {
     "title": "Browse Shards",
@@ -827,6 +833,7 @@
     "neutral": "Neutral",
     "content": "Content",
     "melancholy": "Melancholy",
+    "restless": "Restless",
     "unknown": "Unknown"
   },
   "relationships": {

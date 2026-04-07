@@ -26,6 +26,7 @@ const MOOD_ALIASES: Record<string, string> = {
   anxious: 'anxious',
   nervous: 'anxious',
   worried: 'anxious',
+  restless: 'restless',
   calm: 'calm',
   peaceful: 'calm',
   serene: 'calm',

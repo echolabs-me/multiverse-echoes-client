@@ -259,7 +259,13 @@
     "travelHere": "Viajar aquí",
     "travelInitiated": "Viaje iniciado. Tu Eco está en camino.",
     "travelSelectEcho": "Selecciona un Eco para viajar a este Fragmento:",
-    "travelChooseEcho": "Elige un Eco…"
+    "travelChooseEcho": "Elige un Eco…",
+    "statusActive": "Activo",
+    "statusInactive": "Inactivo",
+    "statusHibernated": "Hibernado",
+    "typePublic": "Público",
+    "typePersonal": "Personal",
+    "typePrivate": "Privado"
   },
   "shardBrowser": {
     "title": "Explorar Fragmentos",
@@ -827,6 +833,7 @@
     "neutral": "Neutral",
     "content": "Satisfecho",
     "melancholy": "Melancólico",
+    "restless": "Inquieto",
     "unknown": "Desconocido"
   },
   "relationships": {

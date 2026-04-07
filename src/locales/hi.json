@@ -259,7 +259,13 @@
     "travelHere": "यहाँ यात्रा करो",
     "travelInitiated": "यात्रा शुरू। तुम्हारी गूँज रास्ते में है।",
     "travelSelectEcho": "इस लोक में जाने के लिए गूँज चुनो:",
-    "travelChooseEcho": "एक गूँज चुनो…"
+    "travelChooseEcho": "एक गूँज चुनो…",
+    "statusActive": "सक्रिय",
+    "statusInactive": "निष्क्रिय",
+    "statusHibernated": "सुप्त",
+    "typePublic": "सार्वजनिक",
+    "typePersonal": "व्यक्तिगत",
+    "typePrivate": "निजी"
   },
   "shardBrowser": {
     "title": "लोक देखो",
@@ -827,6 +833,7 @@
     "neutral": "तटस्थ",
     "content": "संतुष्ट",
     "melancholy": "उदासीन",
+    "restless": "बेचैन",
     "unknown": "अज्ञात"
   },
   "relationships": {
