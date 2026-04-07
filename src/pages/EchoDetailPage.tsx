@@ -590,7 +590,7 @@ export function EchoDetailPage() {
 
           {/* Action Toolbar */}
           <div className="my-4 space-y-2">
-            {/* Primary actions — Talk + Voice Call + Nudge */}
+            {/* Primary actions — Talk + Nudge (top row), Voice Call (full width bottom) */}
             <div className="flex gap-2">
               {/* Talk — primary CTA */}
               <button
@@ -611,14 +611,6 @@ export function EchoDetailPage() {
               >
                 <MessageCircle size={18} /> {t('echoDetail.talkToEcho')}
               </button>
-              {/* Voice Call */}
-              <button
-                onClick={() => setShowVoiceModal(true)}
-                disabled={activeEcho.status === 'Hibernated'}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-purple-500/30 bg-purple-500/10 px-4 py-3 text-sm font-semibold text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/15 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              >
-                <Phone size={18} /> {t('echoDetail.voiceCall', 'Talk to ' + activeEcho.name)}
-              </button>
               {/* Nudge */}
               <div className="relative flex-1">
                 <button
@@ -638,6 +630,14 @@ export function EchoDetailPage() {
                 )}
               </div>
             </div>
+            {/* Voice Call — full width */}
+            <button
+              onClick={() => setShowVoiceModal(true)}
+              disabled={activeEcho.status === 'Hibernated'}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-purple-500/30 bg-purple-500/10 px-4 py-3 text-sm font-semibold text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/15 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            >
+              <Phone size={18} /> {t('echoDetail.voiceCall', 'Talk to ' + activeEcho.name)}
+            </button>
             {/* Nudge confirmation banner */}
             {nudgeConfirmed && (
               <div className="flex items-center gap-1.5 rounded-lg border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-medium text-success animate-slide-in">
