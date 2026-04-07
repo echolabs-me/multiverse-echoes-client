@@ -115,6 +115,11 @@ export class VoiceAudioBridge {
           try {
             const json = JSON.parse(new TextDecoder().decode(data.slice(1)));
             if (json.state) {
+              // Reset playback schedule when entering speaking state to prevent
+              // stale nextPlayTime from a previous turn causing overlap.
+              if (json.state === 'speaking' && this.audioCtx) {
+                this.nextPlayTime = this.audioCtx.currentTime + 0.01;
+              }
               this.callbacks.onStateChange(json.state as VoicePipelineState);
             }
           } catch { /* ignore malformed state */ }
@@ -201,9 +206,14 @@ export class VoiceAudioBridge {
     source.buffer = buffer;
     source.connect(this.gainNode);
 
-    const startTime = Math.max(this.audioCtx.currentTime + 0.01, this.nextPlayTime);
-    source.start(startTime);
-    this.nextPlayTime = startTime + buffer.duration;
+    const now = this.audioCtx.currentTime;
+    // If nextPlayTime is in the past (e.g. gap between turns, TTS latency),
+    // reset to now so chunks don't all pile up at the same start time.
+    if (this.nextPlayTime < now) {
+      this.nextPlayTime = now + 0.01;
+    }
+    source.start(this.nextPlayTime);
+    this.nextPlayTime += buffer.duration;
   }
 
   /** Mute/unmute the microphone. */
