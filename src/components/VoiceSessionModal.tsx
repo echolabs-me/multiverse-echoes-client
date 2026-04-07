@@ -295,8 +295,11 @@ export function VoiceSessionModal({
 
       {/* Transcript / subtitles */}
       {transcript && (state === 'listening' || state === 'thinking' || state === 'speaking') && (
-        <div className="mb-4 max-h-32 max-w-md overflow-y-auto rounded-lg bg-surface-raised px-4 py-2 text-sm text-text-secondary">
-          {transcript.split('\n').filter(Boolean).slice(-6).map((line, i) => (
+        <div
+          ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}
+          className="mb-4 max-h-48 max-w-md overflow-y-auto rounded-lg bg-surface-raised px-4 py-2 text-sm text-text-secondary"
+        >
+          {transcript.split('\n').filter(Boolean).map((line, i) => (
             <p key={i} className={line.startsWith('[You]') ? 'text-text-tertiary' : 'text-accent'}>
               {line}
             </p>
