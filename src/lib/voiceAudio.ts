@@ -13,7 +13,7 @@
  *     \x06 + JSON               = state change (listening/thinking/speaking)
  */
 
-const SAMPLE_RATE = 24000;
+const SAMPLE_RATE = 48000; // VoxCPM2 generates at 48kHz
 
 export type VoicePipelineState = 'listening' | 'thinking' | 'speaking';
 
