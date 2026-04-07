@@ -13,7 +13,8 @@
  *     \x06 + JSON               = state change (listening/thinking/speaking)
  */
 
-const SAMPLE_RATE = 48000; // VoxCPM2 generates at 48kHz
+const PLAYBACK_SAMPLE_RATE = 48000; // VoxCPM2 TTS output
+const RECORD_SAMPLE_RATE = 24000;   // Opus recording for Whisper STT
 
 export type VoicePipelineState = 'listening' | 'thinking' | 'speaking';
 
@@ -56,7 +57,7 @@ export class VoiceAudioBridge {
       this.audioCtx = preCreatedAudioCtx;
     } else {
       try {
-        this.audioCtx = new AudioContext({ sampleRate: SAMPLE_RATE });
+        this.audioCtx = new AudioContext({ sampleRate: PLAYBACK_SAMPLE_RATE });
       } catch {
         this.audioCtx = new AudioContext();
       }
@@ -156,7 +157,7 @@ export class VoiceAudioBridge {
 
     this.recorder = new Recorder({
       encoderPath: '/assets/opus-recorder/encoderWorker.min.js',
-      encoderSampleRate: SAMPLE_RATE,
+      encoderSampleRate: RECORD_SAMPLE_RATE,
       encoderFrameSize: 20,
       encoderApplication: 2049, // VOIP
       streamPages: true,
@@ -190,7 +191,7 @@ export class VoiceAudioBridge {
   private schedulePlayback(pcm: Float32Array): void {
     if (!this.audioCtx || !this.gainNode) return;
 
-    const buffer = this.audioCtx.createBuffer(1, pcm.length, SAMPLE_RATE);
+    const buffer = this.audioCtx.createBuffer(1, pcm.length, PLAYBACK_SAMPLE_RATE);
     buffer.getChannelData(0).set(pcm);
 
     const source = this.audioCtx.createBufferSource();
