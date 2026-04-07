@@ -165,6 +165,14 @@ export function LanguageSelectionPage() {
             role="listbox"
             aria-label="Language selection"
           >
+            {/* Centre logo */}
+            <img
+              src="/logo.png"
+              alt="Multiverse Echoes"
+              className="pointer-events-none absolute h-24 w-24 rounded-full object-contain opacity-80"
+              style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+              draggable={false}
+            />
             {languages.map((lang, i) => {
               const angle = (angleStep * i - 90) * (Math.PI / 180);
               const x = Math.cos(angle) * radius;
