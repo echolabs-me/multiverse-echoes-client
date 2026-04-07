@@ -25,6 +25,7 @@ export interface VoiceAudioCallbacks {
   onVideoFrame: (jpegBlob: Blob) => void;
   onError: (error: string) => void;
   onClose: () => void;
+  onDebug?: (info: string) => void;
 }
 
 /**
@@ -102,7 +103,9 @@ export class VoiceAudioBridge {
           }
           if (!this._loggedFirstChunk) {
             this._loggedFirstChunk = true;
-            console.log(`[VoiceAudio] CHUNK DEBUG: ws_bytes=${rawBytes.length}, pcm_samples=${pcm.length}, buffer_rate=${SAMPLE_RATE}, ctx_rate=${this.audioCtx?.sampleRate}`);
+            const info = `ws_bytes=${rawBytes.length} pcm=${pcm.length} buf_rate=${SAMPLE_RATE} ctx_rate=${this.audioCtx?.sampleRate}`;
+            console.log(`[VoiceAudio] CHUNK DEBUG: ${info}`);
+            this.callbacks.onDebug?.(info);
           }
           this.schedulePlayback(pcm);
           this.callbacks.onAudioActivity();

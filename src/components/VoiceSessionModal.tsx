@@ -39,6 +39,7 @@ export function VoiceSessionModal({
   const [isMuted, setIsMuted] = useState(false);
   const [transcript, setTranscript] = useState('');
   const transcriptRef = useRef<HTMLDivElement>(null);
+  const [debugAudio, setDebugAudio] = useState('');
 
   // Auto-scroll transcript to bottom on every update
   useEffect(() => {
@@ -161,6 +162,7 @@ export function VoiceSessionModal({
         },
         onError: (msg) => { setError(msg); setState('error'); },
         onClose: () => {},
+        onDebug: (info) => setDebugAudio(info),
       });
 
       bridgeRef.current = bridge;
@@ -312,6 +314,13 @@ export function VoiceSessionModal({
               {line}
             </p>
           ))}
+        </div>
+      )}
+
+      {/* Debug overlay — TEMPORARY */}
+      {debugAudio && (
+        <div className="mb-2 rounded bg-black/80 px-2 py-1 font-mono text-[10px] text-green-400">
+          {debugAudio}
         </div>
       )}
 
