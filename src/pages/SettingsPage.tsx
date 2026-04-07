@@ -707,6 +707,20 @@ function LanguageSettingsCard() {
     { code: 'es', label: 'Español' },
     { code: 'ar', label: 'العربية' },
     { code: 'fr', label: 'Français' },
+    { code: 'bn', label: 'বাংলা' },
+    { code: 'pt-BR', label: 'Português' },
+    { code: 'ru', label: 'Русский' },
+    { code: 'ur', label: 'اردو' },
+    { code: 'id', label: 'Bahasa' },
+    { code: 'de', label: 'Deutsch' },
+    { code: 'ja', label: '日本語' },
+    { code: 'vi', label: 'Tiếng Việt' },
+    { code: 'tr', label: 'Türkçe' },
+    { code: 'ko', label: '한국어' },
+    { code: 'tl', label: 'Tagalog' },
+    { code: 'it', label: 'Italiano' },
+    { code: 'th', label: 'ไทย' },
+    { code: 'ms', label: 'Melayu' },
   ];
 
   const handleChange = async (newLocale: string) => {
