@@ -110,7 +110,7 @@ export class VoiceAudioBridge {
             this._chunksPlayed = 0;
           }
           this.schedulePlayback(pcm);
-          const info = `bytes=${rawBytes.length} pcm=${pcm.length} rate=${SAMPLE_RATE} ctx=${this.audioCtx?.sampleRate} recv=${this._chunksReceived} play=${this._chunksPlayed}`;
+          const info = `msg=${data.length} bytes=${rawBytes.length} pcm=${pcm.length} rate=${SAMPLE_RATE} ctx=${this.audioCtx?.sampleRate} recv=${this._chunksReceived} play=${this._chunksPlayed}`;
           this.callbacks.onDebug?.(info);
           this.callbacks.onAudioActivity();
         } else if (kind === 0x02 && data.length > 1) {
