@@ -998,6 +998,11 @@ export function EchoDetailPage() {
                           <p className="text-sm font-medium text-text-primary">
                             {rel.other_echo_name ?? t('relationships.unknownEcho')}
                           </p>
+                          {rel.other_echo_owner_name && (
+                            <p className="text-xs text-text-muted">
+                              by {rel.other_echo_owner_name}
+                            </p>
+                          )}
                           <p className="text-xs text-accent">{t(`relationships.${rel.relationship_type}`, { defaultValue: rel.relationship_type })}</p>
                         </div>
                         <Badge variant={rel.status === 'Active' ? 'success' : 'default'}>
