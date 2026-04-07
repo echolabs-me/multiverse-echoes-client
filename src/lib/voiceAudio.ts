@@ -50,7 +50,7 @@ export class VoiceAudioBridge {
   /**
    * Connect to the voice pipeline sidecar WebSocket.
    */
-  async connect(wsUrl: string, preCreatedAudioCtx?: AudioContext): Promise<void> {
+  async connect(wsUrl: string, preCreatedAudioCtx?: AudioContext, preCreatedMicStream?: MediaStream): Promise<void> {
     // 1. AudioContext setup
     if (preCreatedAudioCtx) {
       this.audioCtx = preCreatedAudioCtx;
@@ -89,8 +89,12 @@ export class VoiceAudioBridge {
         const kind = data[0];
 
         if (kind === 0x01 && data.length > 1) {
-          // Int16 LE PCM audio from TTS
-          const int16 = new Int16Array(data.buffer, 1);
+          // Int16 LE PCM audio from TTS — copy to aligned buffer
+          // (byte offset 1 is not Int16-aligned, so we must copy)
+          const rawBytes = data.slice(1);
+          const aligned = new ArrayBuffer(rawBytes.length);
+          new Uint8Array(aligned).set(rawBytes);
+          const int16 = new Int16Array(aligned);
           const pcm = new Float32Array(int16.length);
           for (let i = 0; i < int16.length; i++) {
             pcm[i] = int16[i] / 32768;
@@ -129,18 +133,22 @@ export class VoiceAudioBridge {
     });
 
     // 3. Start mic capture + Opus encoding
-    await this.startMicCapture();
+    await this.startMicCapture(preCreatedMicStream);
   }
 
-  private async startMicCapture(): Promise<void> {
-    this.mediaStream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        channelCount: 1,
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true,
-      },
-    });
+  private async startMicCapture(preCreatedStream?: MediaStream): Promise<void> {
+    if (preCreatedStream) {
+      this.mediaStream = preCreatedStream;
+    } else {
+      this.mediaStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+    }
 
     // Use opus-recorder for encoding (same as before — sidecar decodes on its end)
     // @ts-expect-error - opus-recorder has no types

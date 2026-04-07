@@ -94,11 +94,21 @@ export function VoiceSessionModal({
     setShowDurationWarning(false);
 
     try {
-      // Pre-create AudioContext during user gesture (Safari requirement)
+      // Pre-create AudioContext AND request mic during user gesture (Safari requirement).
+      // Safari requires both AudioContext and getUserMedia within a user gesture handler.
+      // Health polling below takes seconds, which expires the gesture context.
       const preAudioCtx = new AudioContext({ sampleRate: 24000 });
       if (preAudioCtx.state === 'suspended') {
         await preAudioCtx.resume();
       }
+      const preMicStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
 
       // Start server-side session
       const { voice_ws_url, session_nonce, session_duration_seconds } =
@@ -148,7 +158,7 @@ export function VoiceSessionModal({
       bridgeRef.current = bridge;
 
       const wsBase = baseUrl.replace(/^http/, 'ws');
-      await bridge.connect(`${wsBase}${voice_ws_url}`, preAudioCtx);
+      await bridge.connect(`${wsBase}${voice_ws_url}`, preAudioCtx, preMicStream);
 
       // Start duration countdown
       let elapsed = 0;
@@ -287,7 +297,7 @@ export function VoiceSessionModal({
       {transcript && (state === 'listening' || state === 'thinking' || state === 'speaking') && (
         <div className="mb-4 max-h-32 max-w-md overflow-y-auto rounded-lg bg-surface-raised px-4 py-2 text-sm text-text-secondary">
           {transcript.split('\n').filter(Boolean).slice(-6).map((line, i) => (
-            <p key={i} className={line.startsWith('[Echo]') ? 'text-accent' : 'text-text-tertiary'}>
+            <p key={i} className={line.startsWith('[You]') ? 'text-text-tertiary' : 'text-accent'}>
               {line}
             </p>
           ))}
