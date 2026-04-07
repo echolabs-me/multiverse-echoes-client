@@ -7,13 +7,13 @@
  *     \x05                   = end-of-utterance signal
  *
  *   Sidecar → Client:
- *     \x01 + int16 LE PCM bytes = TTS audio (24kHz mono)
+ *     \x01 + int16 LE PCM bytes = TTS audio (48kHz mono)
  *     \x02 + UTF-8              = text (conversation transcript)
  *     \x04 + JPEG bytes         = lip-synced video frame
  *     \x06 + JSON               = state change (listening/thinking/speaking)
  */
 
-const PLAYBACK_SAMPLE_RATE = 48000; // VoxCPM2 TTS output (also used for recording)
+const SAMPLE_RATE = 48000;
 
 export type VoicePipelineState = 'listening' | 'thinking' | 'speaking';
 
@@ -36,10 +36,9 @@ export class VoiceAudioBridge {
   private mediaStream: MediaStream | null = null;
   private recorder: unknown = null;
 
-  // Playback — accumulate chunks, play as single buffer
+  // Playback scheduling
+  private nextPlayTime = 0;
   private gainNode: GainNode | null = null;
-  private pendingChunks: Float32Array[] = [];
-  private currentSource: AudioBufferSourceNode | null = null;
 
   private callbacks: VoiceAudioCallbacks;
   private isMuted = false;
@@ -57,7 +56,7 @@ export class VoiceAudioBridge {
       this.audioCtx = preCreatedAudioCtx;
     } else {
       try {
-        this.audioCtx = new AudioContext({ sampleRate: PLAYBACK_SAMPLE_RATE });
+        this.audioCtx = new AudioContext({ sampleRate: SAMPLE_RATE });
       } catch {
         this.audioCtx = new AudioContext();
       }
@@ -67,6 +66,7 @@ export class VoiceAudioBridge {
     }
     this.gainNode = this.audioCtx.createGain();
     this.gainNode.connect(this.audioCtx.destination);
+    this.nextPlayTime = this.audioCtx.currentTime;
 
     // 2. Connect WebSocket
     this.ws = new WebSocket(wsUrl);
@@ -99,7 +99,7 @@ export class VoiceAudioBridge {
           for (let i = 0; i < int16.length; i++) {
             pcm[i] = int16[i] / 32768;
           }
-          this.pendingChunks.push(pcm);
+          this.schedulePlayback(pcm);
           this.callbacks.onAudioActivity();
         } else if (kind === 0x02 && data.length > 1) {
           // Text (conversation transcript)
@@ -115,18 +115,6 @@ export class VoiceAudioBridge {
           try {
             const json = JSON.parse(new TextDecoder().decode(data.slice(1)));
             if (json.state) {
-              // When entering speaking: clear buffer for new audio
-              if (json.state === 'speaking') {
-                if (this.currentSource) {
-                  try { this.currentSource.stop(); } catch { /* already stopped */ }
-                  this.currentSource = null;
-                }
-                this.pendingChunks = [];
-              }
-              // When leaving speaking (→ listening): play all accumulated audio at once
-              if (json.state === 'listening' && this.pendingChunks.length > 0) {
-                this.playAccumulated();
-              }
               this.callbacks.onStateChange(json.state as VoicePipelineState);
             }
           } catch { /* ignore malformed state */ }
@@ -168,11 +156,7 @@ export class VoiceAudioBridge {
 
     this.recorder = new Recorder({
       encoderPath: '/assets/opus-recorder/encoderWorker.min.js',
-      // Use the AudioContext's actual sample rate for the encoder input.
-      // Opus internally resamples to its target rate (typically 48kHz).
-      // Mismatching encoderSampleRate vs AudioContext causes silent output
-      // on Safari where the AudioContext controls the processing graph rate.
-      encoderSampleRate: this.audioCtx?.sampleRate ?? PLAYBACK_SAMPLE_RATE,
+      encoderSampleRate: SAMPLE_RATE,
       encoderFrameSize: 20,
       encoderApplication: 2049, // VOIP
       streamPages: true,
@@ -202,29 +186,20 @@ export class VoiceAudioBridge {
     }
   }
 
-  /** Concatenate all pending chunks into one buffer and play. */
-  private playAccumulated(): void {
-    if (!this.audioCtx || !this.gainNode || this.pendingChunks.length === 0) return;
+  /** Schedule PCM playback via AudioContext buffer source. */
+  private schedulePlayback(pcm: Float32Array): void {
+    if (!this.audioCtx || !this.gainNode) return;
 
-    // Concatenate all chunks into one contiguous Float32Array
-    const totalLength = this.pendingChunks.reduce((sum, c) => sum + c.length, 0);
-    const combined = new Float32Array(totalLength);
-    let offset = 0;
-    for (const chunk of this.pendingChunks) {
-      combined.set(chunk, offset);
-      offset += chunk.length;
-    }
-    this.pendingChunks = [];
-
-    // Create a single AudioBuffer and play it — no scheduling, no overlap
-    const buffer = this.audioCtx.createBuffer(1, combined.length, PLAYBACK_SAMPLE_RATE);
-    buffer.getChannelData(0).set(combined);
+    const buffer = this.audioCtx.createBuffer(1, pcm.length, SAMPLE_RATE);
+    buffer.getChannelData(0).set(pcm);
 
     const source = this.audioCtx.createBufferSource();
     source.buffer = buffer;
     source.connect(this.gainNode);
-    source.start();
-    this.currentSource = source;
+
+    const startTime = Math.max(this.audioCtx.currentTime + 0.01, this.nextPlayTime);
+    source.start(startTime);
+    this.nextPlayTime = startTime + buffer.duration;
   }
 
   /** Mute/unmute the microphone. */
