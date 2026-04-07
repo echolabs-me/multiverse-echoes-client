@@ -36,10 +36,10 @@ export class VoiceAudioBridge {
   private mediaStream: MediaStream | null = null;
   private recorder: unknown = null;
 
-  // Playback scheduling
+  // Playback — accumulate chunks, play as single buffer
   private gainNode: GainNode | null = null;
-  private playbackStartTime = 0;   // AudioContext time when speaking burst began
-  private samplesSent = 0;          // Total samples scheduled since burst start
+  private pendingChunks: Float32Array[] = [];
+  private currentSource: AudioBufferSourceNode | null = null;
 
   private callbacks: VoiceAudioCallbacks;
   private isMuted = false;
@@ -99,7 +99,7 @@ export class VoiceAudioBridge {
           for (let i = 0; i < int16.length; i++) {
             pcm[i] = int16[i] / 32768;
           }
-          this.schedulePlayback(pcm);
+          this.pendingChunks.push(pcm);
           this.callbacks.onAudioActivity();
         } else if (kind === 0x02 && data.length > 1) {
           // Text (conversation transcript)
@@ -115,10 +115,17 @@ export class VoiceAudioBridge {
           try {
             const json = JSON.parse(new TextDecoder().decode(data.slice(1)));
             if (json.state) {
-              // When entering speaking: reset playback timeline for new audio burst
-              if (json.state === 'speaking' && this.audioCtx) {
-                this.playbackStartTime = this.audioCtx.currentTime + 0.02;
-                this.samplesSent = 0;
+              // When entering speaking: clear buffer for new audio
+              if (json.state === 'speaking') {
+                if (this.currentSource) {
+                  try { this.currentSource.stop(); } catch { /* already stopped */ }
+                  this.currentSource = null;
+                }
+                this.pendingChunks = [];
+              }
+              // When leaving speaking (→ listening): play all accumulated audio at once
+              if (json.state === 'listening' && this.pendingChunks.length > 0) {
+                this.playAccumulated();
               }
               this.callbacks.onStateChange(json.state as VoicePipelineState);
             }
@@ -195,31 +202,29 @@ export class VoiceAudioBridge {
     }
   }
 
-  /** Schedule PCM playback via AudioContext buffer source. */
-  private schedulePlayback(pcm: Float32Array): void {
-    if (!this.audioCtx || !this.gainNode) return;
+  /** Concatenate all pending chunks into one buffer and play. */
+  private playAccumulated(): void {
+    if (!this.audioCtx || !this.gainNode || this.pendingChunks.length === 0) return;
 
-    const buffer = this.audioCtx.createBuffer(1, pcm.length, PLAYBACK_SAMPLE_RATE);
-    buffer.getChannelData(0).set(pcm);
+    // Concatenate all chunks into one contiguous Float32Array
+    const totalLength = this.pendingChunks.reduce((sum, c) => sum + c.length, 0);
+    const combined = new Float32Array(totalLength);
+    let offset = 0;
+    for (const chunk of this.pendingChunks) {
+      combined.set(chunk, offset);
+      offset += chunk.length;
+    }
+    this.pendingChunks = [];
+
+    // Create a single AudioBuffer and play it — no scheduling, no overlap
+    const buffer = this.audioCtx.createBuffer(1, combined.length, PLAYBACK_SAMPLE_RATE);
+    buffer.getChannelData(0).set(combined);
 
     const source = this.audioCtx.createBufferSource();
     source.buffer = buffer;
     source.connect(this.gainNode);
-
-    // Schedule using absolute sample count — no floating-point accumulation drift.
-    // Each chunk starts at playbackStartTime + (samplesSent / sampleRate).
-    const startTime = this.playbackStartTime + (this.samplesSent / PLAYBACK_SAMPLE_RATE);
-    this.samplesSent += pcm.length;
-
-    // If we've fallen behind (e.g. first speaking state not received yet),
-    // reset to now so we don't schedule in the past.
-    if (startTime < this.audioCtx.currentTime) {
-      this.playbackStartTime = this.audioCtx.currentTime + 0.02;
-      this.samplesSent = pcm.length;
-      source.start(this.playbackStartTime);
-    } else {
-      source.start(startTime);
-    }
+    source.start();
+    this.currentSource = source;
   }
 
   /** Mute/unmute the microphone. */
