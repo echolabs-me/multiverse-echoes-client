@@ -38,6 +38,14 @@ export function VoiceSessionModal({
   const [error, setError] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const [transcript, setTranscript] = useState('');
+  const transcriptRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll transcript to bottom on every update
+  useEffect(() => {
+    const el = transcriptRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [transcript]);
+
   const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null);
   const [showDurationWarning, setShowDurationWarning] = useState(false);
 
@@ -296,7 +304,7 @@ export function VoiceSessionModal({
       {/* Transcript / subtitles */}
       {transcript && (state === 'listening' || state === 'thinking' || state === 'speaking') && (
         <div
-          ref={(el) => { if (el) el.scrollTop = el.scrollHeight; }}
+          ref={transcriptRef}
           className="mb-4 max-h-48 max-w-md overflow-y-auto rounded-lg bg-surface-raised px-4 py-2 text-sm text-text-secondary"
         >
           {transcript.split('\n').filter(Boolean).map((line, i) => (
