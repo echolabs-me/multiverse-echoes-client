@@ -13,8 +13,7 @@
  *     \x06 + JSON               = state change (listening/thinking/speaking)
  */
 
-const PLAYBACK_SAMPLE_RATE = 48000; // VoxCPM2 TTS output
-const RECORD_SAMPLE_RATE = 24000;   // Opus recording for Whisper STT
+const PLAYBACK_SAMPLE_RATE = 48000; // VoxCPM2 TTS output (also used for recording)
 
 export type VoicePipelineState = 'listening' | 'thinking' | 'speaking';
 
@@ -157,7 +156,11 @@ export class VoiceAudioBridge {
 
     this.recorder = new Recorder({
       encoderPath: '/assets/opus-recorder/encoderWorker.min.js',
-      encoderSampleRate: RECORD_SAMPLE_RATE,
+      // Use the AudioContext's actual sample rate for the encoder input.
+      // Opus internally resamples to its target rate (typically 48kHz).
+      // Mismatching encoderSampleRate vs AudioContext causes silent output
+      // on Safari where the AudioContext controls the processing graph rate.
+      encoderSampleRate: this.audioCtx?.sampleRate ?? PLAYBACK_SAMPLE_RATE,
       encoderFrameSize: 20,
       encoderApplication: 2049, // VOIP
       streamPages: true,

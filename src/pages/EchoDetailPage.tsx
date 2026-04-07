@@ -1227,28 +1227,40 @@ function DiaryCard({
       return;
     }
     // Idle/error → generate + play
+    // Safari autoplay policy: an Audio element must play() within the
+    // synchronous call stack of a user gesture to be "unlocked". Once
+    // unlocked, subsequent play() calls on the SAME element succeed even
+    // after async gaps. Strategy: create element, play silent audio NOW
+    // (within the tap handler), then swap src after the fetch completes.
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.onended = null;
+      audioRef.current.onerror = null;
+    }
+    const audio = new Audio();
+    audioRef.current = audio;
+
+    // Play a tiny silent WAV synchronously to unlock the element for Safari.
+    // 1 sample of silence at 48kHz, valid WAV.
+    audio.src = 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAgLsAAAB3AQACABAAZGF0YQIAAAAAAA==';
+    const unlockPlay = audio.play();
+    if (unlockPlay) unlockPlay.catch(() => {});
+
     setNarrationState('generating');
     try {
       const rawBlob = await echoApi.narrate(entry.echo_id, entry.diary_id);
-      // Ensure the blob has audio/wav MIME type
       const blob = new Blob([rawBlob], { type: 'audio/wav' });
       if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
       const url = URL.createObjectURL(blob);
       blobUrlRef.current = url;
 
-      // Stop any previous audio before creating new
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.onended = null;
-        audioRef.current.onerror = null;
-      }
-      const audio = new Audio(url);
-      audioRef.current = audio;
+      // Swap src on the already-unlocked element and play
       audio.onended = () => setNarrationState('idle');
       audio.onerror = (e) => {
         console.error('Narration audio error:', e);
         setNarrationState('error');
       };
+      audio.src = url;
       await audio.play();
       setNarrationState('playing');
     } catch (e) {
