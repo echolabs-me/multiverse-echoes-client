@@ -806,7 +806,15 @@
     "mute": "Muet",
     "unmute": "Réactiver le son",
     "starting": "Démarrage…",
-    "connectingShort": "Connexion…"
+    "connectingShort": "Connexion…",
+    "listening": "Écoute...",
+    "thinking": "Réflexion...",
+    "send": "Envoyer",
+    "durationWarning": "L'appel se termine dans {{time}}",
+    "serverTimeout": "Serveur vocal indisponible",
+    "tierRequired": "Passez à un forfait supérieur pour les appels vocaux",
+    "concurrentSession": "Vous avez déjà une session vocale active",
+    "unexpectedEnd": "L'appel vocal s'est terminé de manière inattendue. Veuillez réessayer."
   },
   "moods": {
     "happy": "Heureux",

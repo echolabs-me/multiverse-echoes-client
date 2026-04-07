@@ -806,7 +806,15 @@
     "mute": "静音",
     "unmute": "取消静音",
     "starting": "开始中…",
-    "connectingShort": "连接中…"
+    "connectingShort": "连接中…",
+    "listening": "正在聆听...",
+    "thinking": "正在思考...",
+    "send": "发送",
+    "durationWarning": "通话将在 {{time}} 后结束",
+    "serverTimeout": "语音服务器不可用",
+    "tierRequired": "升级以使用语音通话",
+    "concurrentSession": "您已有一个活跃的语音会话",
+    "unexpectedEnd": "语音通话意外结束，请重试。"
   },
   "moods": {
     "happy": "快乐",

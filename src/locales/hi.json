@@ -806,7 +806,15 @@
     "mute": "म्यूट",
     "unmute": "अनम्यूट",
     "starting": "शुरू हो रहा है…",
-    "connectingShort": "जुड़ रहे हैं…"
+    "connectingShort": "जुड़ रहे हैं…",
+    "listening": "सुन रहा है...",
+    "thinking": "सोच रहा है...",
+    "send": "भेजें",
+    "durationWarning": "कॉल {{time}} में समाप्त होगी",
+    "serverTimeout": "वॉइस सर्वर उपलब्ध नहीं है",
+    "tierRequired": "वॉइस कॉल के लिए अपग्रेड करें",
+    "concurrentSession": "आपका पहले से एक सक्रिय वॉइस सत्र है",
+    "unexpectedEnd": "वॉइस कॉल अचानक समाप्त हो गई। कृपया पुनः प्रयास करें।"
   },
   "moods": {
     "happy": "खुश",

@@ -138,13 +138,23 @@ export const echoes = {
     request<EchoResponse>(`/echoes/${echoId}/avatar/regenerate`, { method: 'POST' }),
 
   startVoiceSession: (echoId: string) =>
-    request<{ voice_ws_url: string; echo_id: string; session_nonce: number }>(`/echoes/${echoId}/voice/start`, { method: 'POST' }),
+    request<{
+      voice_ws_url: string;
+      echo_id: string;
+      session_nonce: number;
+      conversation_id: string;
+      session_duration_seconds: number;
+    }>(`/echoes/${echoId}/voice/start`, { method: 'POST' }),
 
   stopVoiceSession: (echoId: string, nonce?: number) =>
     request<void>(`/echoes/${echoId}/voice/stop${nonce ? `?nonce=${nonce}` : ''}`, { method: 'POST' }),
 
   voiceStatus: (echoId: string) =>
-    request<{ active: boolean; voice_ws_url: string | null }>(`/echoes/${echoId}/voice/status`),
+    request<{
+      active: boolean;
+      voice_ws_url: string | null;
+      remaining_seconds?: number;
+    }>(`/echoes/${echoId}/voice/status`),
 };
 
 // --- Shards ---

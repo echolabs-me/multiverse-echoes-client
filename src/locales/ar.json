@@ -806,7 +806,15 @@
     "mute": "كتم",
     "unmute": "إلغاء الكتم",
     "starting": "جارٍ البدء…",
-    "connectingShort": "جارٍ الاتصال…"
+    "connectingShort": "جارٍ الاتصال…",
+    "listening": "...جارٍ الاستماع",
+    "thinking": "...جارٍ التفكير",
+    "send": "إرسال",
+    "durationWarning": "ستنتهي المكالمة خلال {{time}}",
+    "serverTimeout": "خادم الصوت غير متاح",
+    "tierRequired": "قم بالترقية للوصول إلى المكالمات الصوتية",
+    "concurrentSession": "لديك بالفعل جلسة صوتية نشطة",
+    "unexpectedEnd": "انتهت المكالمة الصوتية بشكل غير متوقع. يرجى المحاولة مرة أخرى."
   },
   "moods": {
     "happy": "سعيد",

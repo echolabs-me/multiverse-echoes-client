@@ -806,7 +806,15 @@
     "mute": "Silenciar",
     "unmute": "Dejar de silenciar",
     "starting": "Iniciando…",
-    "connectingShort": "Conectando…"
+    "connectingShort": "Conectando…",
+    "listening": "Escuchando...",
+    "thinking": "Pensando...",
+    "send": "Enviar",
+    "durationWarning": "La llamada termina en {{time}}",
+    "serverTimeout": "Servidor de voz no disponible",
+    "tierRequired": "Mejora tu plan para acceder a llamadas de voz",
+    "concurrentSession": "Ya tienes una sesión de voz activa",
+    "unexpectedEnd": "La llamada de voz terminó inesperadamente. Inténtalo de nuevo."
   },
   "moods": {
     "happy": "Feliz",

@@ -798,6 +798,8 @@
     "tapToStart": "Tap to start conversation",
     "requestingMic": "Requesting microphone...",
     "connecting": "Connecting to Echo...",
+    "listening": "Listening...",
+    "thinking": "Thinking...",
     "speaking": "Speaking...",
     "error": "Connection error",
     "close": "Close",
@@ -805,8 +807,14 @@
     "endCall": "End Call",
     "mute": "Mute",
     "unmute": "Unmute",
+    "send": "Send",
     "starting": "Starting...",
-    "connectingShort": "Connecting..."
+    "connectingShort": "Connecting...",
+    "durationWarning": "Call ends in {{time}}",
+    "serverTimeout": "Voice server not available",
+    "tierRequired": "Upgrade to access voice calls",
+    "concurrentSession": "You already have an active voice session",
+    "unexpectedEnd": "Voice call ended unexpectedly. Please try again."
   },
   "moods": {
     "happy": "Happy",
