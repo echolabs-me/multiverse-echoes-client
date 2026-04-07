@@ -267,6 +267,150 @@
     U+FE70-FEFF;
 }
 
+/* ── Noto Sans Bengali (bn) ── */
+@font-face {
+  font-family: 'Noto Sans Bengali';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansBengali-Regular.woff2') format('woff2');
+  unicode-range: U+0980-09FF;
+}
+@font-face {
+  font-family: 'Noto Sans Bengali';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansBengali-Medium.woff2') format('woff2');
+  unicode-range: U+0980-09FF;
+}
+@font-face {
+  font-family: 'Noto Sans Bengali';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansBengali-SemiBold.woff2') format('woff2');
+  unicode-range: U+0980-09FF;
+}
+@font-face {
+  font-family: 'Noto Sans Bengali';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansBengali-Bold.woff2') format('woff2');
+  unicode-range: U+0980-09FF;
+}
+
+/* ── Noto Sans JP (ja) ── */
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansJP-Regular.woff2') format('woff2');
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
+    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansJP-Medium.woff2') format('woff2');
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
+    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansJP-SemiBold.woff2') format('woff2');
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
+    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansJP-Bold.woff2') format('woff2');
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
+    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+
+/* ── Noto Sans KR (ko) ── */
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansKR-Regular.woff2') format('woff2');
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
+    U+D7B0-D7FF;
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansKR-Medium.woff2') format('woff2');
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
+    U+D7B0-D7FF;
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansKR-SemiBold.woff2') format('woff2');
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
+    U+D7B0-D7FF;
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansKR-Bold.woff2') format('woff2');
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
+    U+D7B0-D7FF;
+}
+
+/* ── Noto Sans Thai (th) ── */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansThai-Regular.woff2') format('woff2');
+  unicode-range: U+0E00-0E7F;
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansThai-Medium.woff2') format('woff2');
+  unicode-range: U+0E00-0E7F;
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansThai-SemiBold.woff2') format('woff2');
+  unicode-range: U+0E00-0E7F;
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansThai-Bold.woff2') format('woff2');
+  unicode-range: U+0E00-0E7F;
+}
+
 /* Base styles — prevent root-level scroll, only panels scroll internally */
 html, body {
   height: 100%;
@@ -286,8 +430,9 @@ body {
    * Noto Sans families handle CJK / Devanagari / Arabic via the @font-face
    * unicode-range declarations above, and finally the system fallbacks catch
    * anything not yet loaded (or any glyphs outside all the ranges above). */
-  font-family: 'Inter', 'Noto Sans SC', 'Noto Sans Devanagari',
-    'Noto Sans Arabic', system-ui, sans-serif;
+  font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR',
+    'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Arabic',
+    'Noto Sans Thai', system-ui, sans-serif;
   background-color: var(--canvas);
   color: var(--text-primary);
   line-height: 1.6;

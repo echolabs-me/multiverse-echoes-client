@@ -18,7 +18,7 @@ import { getComputedTokenColor } from '../lib/tokenColor.ts';
  * Reference: docs/claude/i18n-multilingual-tasks.md CC TASK 4 Part C Step 9.
  */
 const CANVAS_FONT_STACK =
-  "Inter, 'Noto Sans SC', 'Noto Sans Devanagari', 'Noto Sans Arabic', system-ui, sans-serif";
+  "Inter, 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Arabic', 'Noto Sans Thai', system-ui, sans-serif";
 
 interface ShareModalProps {
   open: boolean;

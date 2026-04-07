@@ -23,7 +23,11 @@ const ROOT = join(__dirname, '..');
 
 // Supported locale bundle filenames. Keep in sync with client/src/i18n.ts
 // SUPPORTED_LOCALES. en.json is the canonical source; others must match it.
-const NON_EN_LOCALES = ['zh-Hans', 'hi', 'es', 'ar', 'fr'];
+const NON_EN_LOCALES = [
+  'zh-Hans', 'hi', 'es', 'ar', 'fr',
+  'bn', 'pt-BR', 'ru', 'ur', 'id', 'de',
+  'ja', 'vi', 'tr', 'ko', 'tl', 'it', 'th', 'ms',
+];
 
 // 1. Parse en.json — flatten to dot-notation keys
 const enJson = JSON.parse(readFileSync(join(ROOT, 'src/locales/en.json'), 'utf8'));
