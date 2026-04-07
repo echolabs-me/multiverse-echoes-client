@@ -1203,7 +1203,7 @@ function DiaryCard({
 
   // Narration playback state
   const [narrationState, setNarrationState] = useState<
-    'idle' | 'generating' | 'playing' | 'paused'
+    'idle' | 'generating' | 'playing' | 'paused' | 'error'
   >('idle');
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const blobUrlRef = useRef<string | null>(null);
@@ -1217,24 +1217,43 @@ function DiaryCard({
     }
     // Paused → resume
     if (narrationState === 'paused' && audioRef.current) {
-      void audioRef.current.play();
-      setNarrationState('playing');
+      try {
+        await audioRef.current.play();
+        setNarrationState('playing');
+      } catch (e) {
+        console.error('Narration resume failed:', e);
+        setNarrationState('error');
+      }
       return;
     }
-    // Idle → generate + play
+    // Idle/error → generate + play
     setNarrationState('generating');
     try {
-      const blob = await echoApi.narrate(entry.echo_id, entry.diary_id);
+      const rawBlob = await echoApi.narrate(entry.echo_id, entry.diary_id);
+      // Ensure the blob has audio/wav MIME type (some browsers need it explicit)
+      const blob = new Blob([rawBlob], { type: 'audio/wav' });
+      if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
       const url = URL.createObjectURL(blob);
       blobUrlRef.current = url;
-      const audio = new Audio(url);
-      audioRef.current = audio;
+
+      // Reuse or create audio element
+      if (!audioRef.current) {
+        audioRef.current = new Audio();
+      }
+      const audio = audioRef.current;
+      audio.src = url;
       audio.onended = () => setNarrationState('idle');
-      audio.onerror = () => setNarrationState('idle');
-      void audio.play();
+      audio.onerror = (e) => {
+        console.error('Narration audio error:', e);
+        setNarrationState('error');
+      };
+
+      // await play() to catch autoplay policy errors
+      await audio.play();
       setNarrationState('playing');
-    } catch {
-      setNarrationState('idle');
+    } catch (e) {
+      console.error('Narration failed:', e);
+      setNarrationState('error');
     }
   }, [narrationState, entry.echo_id, entry.diary_id]);
 
@@ -1248,24 +1267,6 @@ function DiaryCard({
       }
     };
   }, []);
-
-  const narrationIcon =
-    narrationState === 'generating' ? (
-      <Loader2 size={14} className="animate-spin" />
-    ) : narrationState === 'playing' ? (
-      <Square size={14} />
-    ) : (
-      <Volume2 size={14} />
-    );
-
-  const narrationLabel =
-    narrationState === 'generating'
-      ? t('diary.narrating')
-      : narrationState === 'playing'
-        ? t('diary.playing')
-        : narrationState === 'paused'
-          ? t('diary.paused')
-          : t('diary.narrate');
 
   return (
     <div
@@ -1305,17 +1306,33 @@ function DiaryCard({
             <span className="text-xs text-text-muted">
               {formatDate(entry.created_at)}
             </span>
-            <button
-              onClick={handleNarrate}
-              disabled={narrationState === 'generating'}
-              className="mt-1 flex items-center gap-1 rounded-md px-2 py-1 text-xs text-accent hover:bg-surface-raised transition-colors disabled:opacity-50"
-              aria-label={narrationLabel}
-            >
-              {narrationIcon}
-              <span>{narrationLabel}</span>
-            </button>
           </div>
         </div>
+        {/* Full-width narration button below diary content */}
+        <button
+          onClick={handleNarrate}
+          disabled={narrationState === 'generating'}
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-accent/20 bg-accent/5 px-4 py-2.5 text-sm font-medium text-accent transition-colors hover:bg-accent/10 disabled:opacity-50"
+        >
+          {narrationState === 'generating' ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : narrationState === 'playing' ? (
+            <Square size={16} />
+          ) : (
+            <Volume2 size={16} />
+          )}
+          <span>
+            {narrationState === 'generating'
+              ? t('diary.narrating')
+              : narrationState === 'playing'
+                ? t('diary.playing')
+                : narrationState === 'paused'
+                  ? t('diary.paused')
+                  : narrationState === 'error'
+                    ? t('diary.narrate')
+                    : t('diary.narrate')}
+          </span>
+        </button>
       </Card>
     </div>
   );
