@@ -42,6 +42,7 @@ export class VoiceAudioBridge {
 
   private callbacks: VoiceAudioCallbacks;
   private isMuted = false;
+  private _loggedFirstChunk = false;
 
   constructor(callbacks: VoiceAudioCallbacks) {
     this.callbacks = callbacks;
@@ -98,6 +99,10 @@ export class VoiceAudioBridge {
           const pcm = new Float32Array(int16.length);
           for (let i = 0; i < int16.length; i++) {
             pcm[i] = int16[i] / 32768;
+          }
+          if (!this._loggedFirstChunk) {
+            this._loggedFirstChunk = true;
+            console.log(`[VoiceAudio] CHUNK DEBUG: ws_bytes=${rawBytes.length}, pcm_samples=${pcm.length}, buffer_rate=${SAMPLE_RATE}, ctx_rate=${this.audioCtx?.sampleRate}`);
           }
           this.schedulePlayback(pcm);
           this.callbacks.onAudioActivity();
