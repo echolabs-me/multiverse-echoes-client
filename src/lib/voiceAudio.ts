@@ -37,8 +37,9 @@ export class VoiceAudioBridge {
   private recorder: unknown = null;
 
   // Playback scheduling
-  private nextPlayTime = 0;
   private gainNode: GainNode | null = null;
+  private playbackStartTime = 0;   // AudioContext time when speaking burst began
+  private samplesSent = 0;          // Total samples scheduled since burst start
 
   private callbacks: VoiceAudioCallbacks;
   private isMuted = false;
@@ -66,7 +67,6 @@ export class VoiceAudioBridge {
     }
     this.gainNode = this.audioCtx.createGain();
     this.gainNode.connect(this.audioCtx.destination);
-    this.nextPlayTime = this.audioCtx.currentTime;
 
     // 2. Connect WebSocket
     this.ws = new WebSocket(wsUrl);
@@ -115,10 +115,10 @@ export class VoiceAudioBridge {
           try {
             const json = JSON.parse(new TextDecoder().decode(data.slice(1)));
             if (json.state) {
-              // Reset playback schedule when entering speaking state to prevent
-              // stale nextPlayTime from a previous turn causing overlap.
+              // When entering speaking: reset playback timeline for new audio burst
               if (json.state === 'speaking' && this.audioCtx) {
-                this.nextPlayTime = this.audioCtx.currentTime + 0.01;
+                this.playbackStartTime = this.audioCtx.currentTime + 0.02;
+                this.samplesSent = 0;
               }
               this.callbacks.onStateChange(json.state as VoicePipelineState);
             }
@@ -206,14 +206,20 @@ export class VoiceAudioBridge {
     source.buffer = buffer;
     source.connect(this.gainNode);
 
-    const now = this.audioCtx.currentTime;
-    // If nextPlayTime is in the past (e.g. gap between turns, TTS latency),
-    // reset to now so chunks don't all pile up at the same start time.
-    if (this.nextPlayTime < now) {
-      this.nextPlayTime = now + 0.01;
+    // Schedule using absolute sample count — no floating-point accumulation drift.
+    // Each chunk starts at playbackStartTime + (samplesSent / sampleRate).
+    const startTime = this.playbackStartTime + (this.samplesSent / PLAYBACK_SAMPLE_RATE);
+    this.samplesSent += pcm.length;
+
+    // If we've fallen behind (e.g. first speaking state not received yet),
+    // reset to now so we don't schedule in the past.
+    if (startTime < this.audioCtx.currentTime) {
+      this.playbackStartTime = this.audioCtx.currentTime + 0.02;
+      this.samplesSent = pcm.length;
+      source.start(this.playbackStartTime);
+    } else {
+      source.start(startTime);
     }
-    source.start(this.nextPlayTime);
-    this.nextPlayTime += buffer.duration;
   }
 
   /** Mute/unmute the microphone. */
