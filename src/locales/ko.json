@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "르네상스 시대의 피렌체 1490년"
   },
   "diary": {
-    "dayHour": "{{day}}일 {{hour}}시"
+    "dayHour": "{{day}}일 {{hour}}시",
+    "narrate": "듣기",
+    "narrating": "음성 생성 중…",
+    "playing": "재생 중",
+    "paused": "일시정지"
   },
   "activityHints": {
     "contemplative": {

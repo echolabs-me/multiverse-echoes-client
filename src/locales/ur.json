@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "نشاۃ الثانیہ فلورنس 1490"
   },
   "diary": {
-    "dayHour": "دن {{day}} گھنٹہ {{hour}}"
+    "dayHour": "دن {{day}} گھنٹہ {{hour}}",
+    "narrate": "سنیں",
+    "narrating": "آواز بنائی جا رہی ہے…",
+    "playing": "چل رہا ہے",
+    "paused": "موقوف"
   },
   "activityHints": {
     "contemplative": {

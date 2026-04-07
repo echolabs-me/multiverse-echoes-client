@@ -1,4 +1,4 @@
-import { request } from './client.ts';
+import { request, getBaseUrl, getAccessToken } from './client.ts';
 import type {
   RegisterRequest,
   RegisterResponse,
@@ -126,6 +126,18 @@ export const echoes = {
     const params = new URLSearchParams({ limit: String(limit), offset: String(offset) });
     if (mood) params.set('mood', mood);
     return request<DiaryEntry[]>(`/echoes/${echoId}/diary?${params.toString()}`);
+  },
+
+  narrate: async (echoId: string, entryId: string): Promise<Blob> => {
+    const token = getAccessToken();
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const resp = await fetch(`${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate`, {
+      method: 'POST',
+      headers,
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    return resp.blob();
   },
 
   rename: (echoId: string, name: string) =>

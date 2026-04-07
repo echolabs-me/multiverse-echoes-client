@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "Florence thời Phục hưng 1490"
   },
   "diary": {
-    "dayHour": "Ngày {{day}} Giờ {{hour}}"
+    "dayHour": "Ngày {{day}} Giờ {{hour}}",
+    "narrate": "Nghe",
+    "narrating": "Đang tạo giọng…",
+    "playing": "Đang phát",
+    "paused": "Tạm dừng"
   },
   "activityHints": {
     "contemplative": {

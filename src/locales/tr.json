@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "Rönesans Floransa 1490"
   },
   "diary": {
-    "dayHour": "Gün {{day}} Saat {{hour}}"
+    "dayHour": "Gün {{day}} Saat {{hour}}",
+    "narrate": "Dinle",
+    "narrating": "Ses oluşturuluyor…",
+    "playing": "Çalıyor",
+    "paused": "Duraklatıldı"
   },
   "activityHints": {
     "contemplative": {

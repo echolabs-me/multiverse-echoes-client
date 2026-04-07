@@ -20,6 +20,9 @@ import {
   Navigation,
   Phone,
   Trash2,
+  Volume2,
+  Square,
+  Loader2,
 } from 'lucide-react';
 import {
   Card,
@@ -1192,10 +1195,77 @@ function DiaryCard({
   isNew?: boolean;
   onAnimationEnd?: (diaryId: string) => void;
 }) {
+  const { t } = useTranslation();
   const mc = getMoodColor(entry.mood);
   const r = parseInt(mc.slice(1, 3), 16);
   const g = parseInt(mc.slice(3, 5), 16);
   const b = parseInt(mc.slice(5, 7), 16);
+
+  // Narration playback state
+  const [narrationState, setNarrationState] = useState<
+    'idle' | 'generating' | 'playing' | 'paused'
+  >('idle');
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const blobUrlRef = useRef<string | null>(null);
+
+  const handleNarrate = useCallback(async () => {
+    // Playing → pause
+    if (narrationState === 'playing' && audioRef.current) {
+      audioRef.current.pause();
+      setNarrationState('paused');
+      return;
+    }
+    // Paused → resume
+    if (narrationState === 'paused' && audioRef.current) {
+      void audioRef.current.play();
+      setNarrationState('playing');
+      return;
+    }
+    // Idle → generate + play
+    setNarrationState('generating');
+    try {
+      const blob = await echoApi.narrate(entry.echo_id, entry.diary_id);
+      const url = URL.createObjectURL(blob);
+      blobUrlRef.current = url;
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => setNarrationState('idle');
+      audio.onerror = () => setNarrationState('idle');
+      void audio.play();
+      setNarrationState('playing');
+    } catch {
+      setNarrationState('idle');
+    }
+  }, [narrationState, entry.echo_id, entry.diary_id]);
+
+  // Cleanup blob URL on unmount
+  useEffect(() => {
+    return () => {
+      if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const narrationIcon =
+    narrationState === 'generating' ? (
+      <Loader2 size={14} className="animate-spin" />
+    ) : narrationState === 'playing' ? (
+      <Square size={14} />
+    ) : (
+      <Volume2 size={14} />
+    );
+
+  const narrationLabel =
+    narrationState === 'generating'
+      ? t('diary.narrating')
+      : narrationState === 'playing'
+        ? t('diary.playing')
+        : narrationState === 'paused'
+          ? t('diary.paused')
+          : t('diary.narrate');
 
   return (
     <div
@@ -1235,6 +1305,15 @@ function DiaryCard({
             <span className="text-xs text-text-muted">
               {formatDate(entry.created_at)}
             </span>
+            <button
+              onClick={handleNarrate}
+              disabled={narrationState === 'generating'}
+              className="mt-1 flex items-center gap-1 rounded-md px-2 py-1 text-xs text-accent hover:bg-surface-raised transition-colors disabled:opacity-50"
+              aria-label={narrationLabel}
+            >
+              {narrationIcon}
+              <span>{narrationLabel}</span>
+            </button>
           </div>
         </div>
       </Card>

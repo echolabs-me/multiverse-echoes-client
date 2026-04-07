@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "Renaissance Florence 1490"
   },
   "diary": {
-    "dayHour": "Araw {{day}} Oras {{hour}}"
+    "dayHour": "Araw {{day}} Oras {{hour}}",
+    "narrate": "Pakinggan",
+    "narrating": "Gumagawa ng boses…",
+    "playing": "Nagpe-play",
+    "paused": "Naka-pause"
   },
   "activityHints": {
     "contemplative": {

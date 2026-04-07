@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "Firenze rinascimentale 1490"
   },
   "diary": {
-    "dayHour": "Giorno {{day}} Ora {{hour}}"
+    "dayHour": "Giorno {{day}} Ora {{hour}}",
+    "narrate": "Ascolta",
+    "narrating": "Generazione voce…",
+    "playing": "Riproduzione",
+    "paused": "In pausa"
   },
   "activityHints": {
     "contemplative": {

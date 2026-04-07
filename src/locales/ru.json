@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "Флоренция эпохи Возрождения, 1490 год"
   },
   "diary": {
-    "dayHour": "День {{day}} Час {{hour}}"
+    "dayHour": "День {{day}} Час {{hour}}",
+    "narrate": "Слушать",
+    "narrating": "Генерация голоса…",
+    "playing": "Воспроизведение",
+    "paused": "Пауза"
   },
   "activityHints": {
     "contemplative": {

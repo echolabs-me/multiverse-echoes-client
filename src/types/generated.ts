@@ -369,6 +369,13 @@ export type Echo = {
 	 *  Older Echoes deserialise with `None` via `#[serde(default)]`.
 	 */
 	physical_description?: string | null,
+	/**
+	 *  TTS voice description for VoxCPM2 diary narration. ~20 words describing
+	 *  gender, age, accent, tone, energy. Generated from `physical_description`
+	 *  via a short LLM call at Echo creation. Older Echoes deserialise with
+	 *  `None` and get a voice_description backfilled lazily on first narration.
+	 */
+	voice_description?: string | null,
 };
 
 export type EchoMemory = {

@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "Renaissance Florence 1490"
   },
   "diary": {
-    "dayHour": "Day {{day}} Hour {{hour}}"
+    "dayHour": "Day {{day}} Hour {{hour}}",
+    "narrate": "Listen",
+    "narrating": "Generating voice\u2026",
+    "playing": "Playing",
+    "paused": "Paused"
   },
   "activityHints": {
     "contemplative": {

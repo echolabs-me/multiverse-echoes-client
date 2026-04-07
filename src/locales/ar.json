@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "فلورنسا النهضة 1490"
   },
   "diary": {
-    "dayHour": "اليوم {{day}} الساعة {{hour}}"
+    "dayHour": "اليوم {{day}} الساعة {{hour}}",
+    "narrate": "استماع",
+    "narrating": "جارٍ إنشاء الصوت…",
+    "playing": "قيد التشغيل",
+    "paused": "متوقف"
   },
   "activityHints": {
     "contemplative": {

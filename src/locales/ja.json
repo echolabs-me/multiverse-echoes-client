@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "ルネサンス期のフィレンツェ 1490年"
   },
   "diary": {
-    "dayHour": "{{day}}日目 {{hour}}時間目"
+    "dayHour": "{{day}}日目 {{hour}}時間目",
+    "narrate": "聴く",
+    "narrating": "音声を生成中…",
+    "playing": "再生中",
+    "paused": "一時停止"
   },
   "activityHints": {
     "contemplative": {

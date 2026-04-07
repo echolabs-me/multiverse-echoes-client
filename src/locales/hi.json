@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "पुनर्जागरण फ्लोरेंस 1490"
   },
   "diary": {
-    "dayHour": "दिन {{day}} घंटा {{hour}}"
+    "dayHour": "दिन {{day}} घंटा {{hour}}",
+    "narrate": "सुनें",
+    "narrating": "आवाज़ बना रहा…",
+    "playing": "चल रहा",
+    "paused": "रुका हुआ"
   },
   "activityHints": {
     "contemplative": {

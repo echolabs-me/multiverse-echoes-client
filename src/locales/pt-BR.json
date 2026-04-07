@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "Florença Renascentista 1490"
   },
   "diary": {
-    "dayHour": "Dia {{day}} Hora {{hour}}"
+    "dayHour": "Dia {{day}} Hora {{hour}}",
+    "narrate": "Ouvir",
+    "narrating": "Gerando voz…",
+    "playing": "Reproduzindo",
+    "paused": "Pausado"
   },
   "activityHints": {
     "contemplative": {

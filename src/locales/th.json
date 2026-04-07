@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "ฟลอเรนซ์ยุคเรเนซองส์ ค.ศ. 1490"
   },
   "diary": {
-    "dayHour": "วันที่ {{day}} ชั่วโมงที่ {{hour}}"
+    "dayHour": "วันที่ {{day}} ชั่วโมงที่ {{hour}}",
+    "narrate": "ฟัง",
+    "narrating": "กำลังสร้างเสียง…",
+    "playing": "กำลังเล่น",
+    "paused": "หยุดชั่วคราว"
   },
   "activityHints": {
     "contemplative": {

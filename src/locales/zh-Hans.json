@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "文艺复兴佛罗伦萨 1490"
   },
   "diary": {
-    "dayHour": "第{{day}}天 第{{hour}}时"
+    "dayHour": "第{{day}}天 第{{hour}}时",
+    "narrate": "聆听",
+    "narrating": "正在生成语音…",
+    "playing": "播放中",
+    "paused": "已暂停"
   },
   "activityHints": {
     "contemplative": {

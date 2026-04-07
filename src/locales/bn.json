@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "রেনেসাঁ ফ্লোরেন্স ১৪৯০"
   },
   "diary": {
-    "dayHour": "দিন {{day}} ঘণ্টা {{hour}}"
+    "dayHour": "দিন {{day}} ঘণ্টা {{hour}}",
+    "narrate": "শুনুন",
+    "narrating": "কণ্ঠস্বর তৈরি হচ্ছে…",
+    "playing": "চলছে",
+    "paused": "বিরতি"
   },
   "activityHints": {
     "contemplative": {

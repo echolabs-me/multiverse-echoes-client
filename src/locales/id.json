@@ -869,7 +869,11 @@
     "renaissance-florence-1490": "Florence Renaisans 1490"
   },
   "diary": {
-    "dayHour": "Hari {{day}} Jam {{hour}}"
+    "dayHour": "Hari {{day}} Jam {{hour}}",
+    "narrate": "Dengarkan",
+    "narrating": "Membuat suara…",
+    "playing": "Memutar",
+    "paused": "Dijeda"
   },
   "activityHints": {
     "contemplative": {
