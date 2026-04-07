@@ -205,6 +205,7 @@ export interface ShardSummary {
   current_active_count: number;
   current_hibernated_count: number;
   max_active_echoes: number;
+  banner_image: string | null;
   created_at: string;
 }
 

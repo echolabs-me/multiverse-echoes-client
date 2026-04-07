@@ -78,8 +78,17 @@ export function ShardBrowserPage() {
                 <Card
                   key={shard.shard_id}
                   onClick={() => navigate(`/shards/${shard.shard_id}`)}
+                  className="overflow-hidden !p-0"
                 >
-                  <div className="flex flex-col gap-2">
+                  {shard.banner_image && (
+                    <img
+                      src={shard.banner_image}
+                      alt=""
+                      className="h-36 w-full object-cover sm:h-40"
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="flex flex-col gap-2 p-4">
                     <div className="flex items-start justify-between">
                       <h3 className="text-sm font-semibold text-text-primary">
                         {t(`shardNames.${shard.name.toLowerCase().replace(/\s+/g, '-')}`, { defaultValue: shard.name })}

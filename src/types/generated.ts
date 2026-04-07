@@ -818,6 +818,8 @@ export type Shard = {
 	tags: string[],
 	// Total events generated in this Shard (reputation metric, ME-SDB-001 §9.2).
 	total_events_generated?: number,
+	// URL of the AI-generated banner image (landscape). Null if generation pending/failed.
+	banner_image?: string | null,
 	updated_at: string,
 };
 
@@ -836,6 +838,7 @@ export type ShardDetail = {
 	max_hibernated_echoes: number,
 	allows_travel: boolean,
 	tick_rate_modifier: number,
+	banner_image: string | null,
 	created_at: string,
 };
 
@@ -884,6 +887,7 @@ export type ShardSummary = {
 	current_active_count: number,
 	current_hibernated_count: number,
 	max_active_echoes: number,
+	banner_image: string | null,
 	created_at: string,
 };
 
