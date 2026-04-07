@@ -44,6 +44,8 @@ export class VoiceAudioBridge {
   private callbacks: VoiceAudioCallbacks;
   private isMuted = false;
   private _loggedFirstChunk = false;
+  private _chunksReceived = 0;
+  private _chunksPlayed = 0;
 
   constructor(callbacks: VoiceAudioCallbacks) {
     this.callbacks = callbacks;
@@ -101,13 +103,15 @@ export class VoiceAudioBridge {
           for (let i = 0; i < int16.length; i++) {
             pcm[i] = int16[i] / 32768;
           }
+          this._chunksReceived++;
           if (!this._loggedFirstChunk) {
             this._loggedFirstChunk = true;
-            const info = `ws_bytes=${rawBytes.length} pcm=${pcm.length} buf_rate=${SAMPLE_RATE} ctx_rate=${this.audioCtx?.sampleRate}`;
-            console.log(`[VoiceAudio] CHUNK DEBUG: ${info}`);
-            this.callbacks.onDebug?.(info);
+            this._chunksReceived = 1;
+            this._chunksPlayed = 0;
           }
           this.schedulePlayback(pcm);
+          const info = `bytes=${rawBytes.length} pcm=${pcm.length} rate=${SAMPLE_RATE} ctx=${this.audioCtx?.sampleRate} recv=${this._chunksReceived} play=${this._chunksPlayed}`;
+          this.callbacks.onDebug?.(info);
           this.callbacks.onAudioActivity();
         } else if (kind === 0x02 && data.length > 1) {
           // Text (conversation transcript)
@@ -213,6 +217,7 @@ export class VoiceAudioBridge {
     }
     source.start(this.nextPlayTime);
     this.nextPlayTime += buffer.duration;
+    this._chunksPlayed++;
   }
 
   /** Mute/unmute the microphone. */
