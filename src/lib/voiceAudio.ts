@@ -144,8 +144,11 @@ export class VoiceAudioBridge {
     clientSessionId?: string;
     sessionDescription?: { sdp: string; type: string };
   }): Promise<void> {
+    const t0 = performance.now();
+    const ts = () => `${((performance.now() - t0) / 1000).toFixed(1)}s`;
+
     try {
-      console.log('[voice] Setting up WebRTC for TTS receive');
+      console.log(`[voice] ${ts()} webrtc_offer received`);
 
       this.pc = new RTCPeerConnection({
         iceServers: [{ urls: 'stun:stun.cloudflare.com:3478' }],
@@ -156,42 +159,39 @@ export class VoiceAudioBridge {
         console.log(`[voice] ICE: ${this.pc?.iceConnectionState}`);
       };
 
-      // Remote audio track (TTS from server via CF SFU)
       this.pc.ontrack = (event) => {
-        console.log(`[voice] Remote track: ${event.track.kind} ${event.track.id}`);
+        console.log(`[voice] ${ts()} Remote track: ${event.track.kind} id=${event.track.id} muted=${event.track.muted}`);
         if (this.remoteAudio) {
           this.remoteAudio.srcObject = event.streams?.[0]
             ? event.streams[0]
             : new MediaStream([event.track]);
-          this.remoteAudio.play().catch((e) => {
-            console.error('[voice] Audio play failed:', e);
+          console.log(`[voice] ${ts()} Audio element: srcObject=${!!this.remoteAudio.srcObject} paused=${this.remoteAudio.paused}`);
+          this.remoteAudio.play().then(() => {
+            console.log(`[voice] ${ts()} Audio play() succeeded`);
+          }).catch((e) => {
+            console.error(`[voice] ${ts()} Audio play() FAILED: ${e.message}`);
           });
         }
-        event.track.onunmute = () => console.log('[voice] Track unmuted');
+        event.track.onunmute = () => console.log(`[voice] ${ts()} Track unmuted`);
+        event.track.onmute = () => console.log(`[voice] ${ts()} Track muted`);
       };
 
-      // Receive-only (no mic track on PeerConnection — mic goes via WebSocket)
       this.pc.addTransceiver('audio', { direction: 'recvonly' });
+      console.log(`[voice] ${ts()} addTransceiver done`);
 
       if (msg.sessionDescription) {
         await this.pc.setRemoteDescription(
           new RTCSessionDescription(msg.sessionDescription as RTCSessionDescriptionInit),
         );
+        console.log(`[voice] ${ts()} setRemoteDescription done`);
       }
 
       const answer = await this.pc.createAnswer();
+      console.log(`[voice] ${ts()} createAnswer done`);
+
       await this.pc.setLocalDescription(answer);
+      console.log(`[voice] ${ts()} setLocalDescription done`);
 
-      // Wait for ICE gathering
-      await new Promise<void>((resolve) => {
-        if (this.pc?.iceGatheringState === 'complete') return resolve();
-        this.pc!.onicegatheringstatechange = () => {
-          if (this.pc?.iceGatheringState === 'complete') resolve();
-        };
-        setTimeout(resolve, 3000);
-      });
-
-      // Send answer to server
       if (this.ws?.readyState === WebSocket.OPEN) {
         this.ws.send(JSON.stringify({
           type: 'webrtc_answer',
@@ -200,10 +200,10 @@ export class VoiceAudioBridge {
             type: 'answer',
           },
         }));
-        console.log('[voice] Sent webrtc_answer');
+        console.log(`[voice] ${ts()} webrtc_answer SENT`);
       }
     } catch (e) {
-      console.error('[voice] WebRTC setup failed:', e);
+      console.error(`[voice] ${ts()} WebRTC setup FAILED: ${e}`);
     }
   }
 

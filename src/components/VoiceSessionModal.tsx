@@ -103,7 +103,6 @@ export function VoiceSessionModal({
     setShowDurationWarning(false);
 
     try {
-      // Pre-create AudioContext AND mic during user gesture (Safari requirement).
       const preAudioCtx = new AudioContext({ sampleRate: 24000 });
       if (preAudioCtx.state === 'suspended') {
         await preAudioCtx.resume();
@@ -117,16 +116,6 @@ export function VoiceSessionModal({
         },
       });
 
-      // Unlock audio playback with a silent WAV (Safari autoplay policy).
-      // Must happen within the user gesture's synchronous call stack.
-      if (remoteAudioRef.current) {
-        remoteAudioRef.current.src = 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAgLsAAAB3AQACABAAZGF0YQIAAAAAAA==';
-        await remoteAudioRef.current.play().catch(() => {});
-        remoteAudioRef.current.pause();
-        remoteAudioRef.current.src = '';
-        remoteAudioRef.current.srcObject = null;
-      }
-
       // Start server-side session
       const { voice_ws_url, session_nonce, session_duration_seconds } =
         await echoApi.startVoiceSession(echoId);
@@ -134,7 +123,7 @@ export function VoiceSessionModal({
       sessionDurationRef.current = session_duration_seconds;
       setRemainingSeconds(session_duration_seconds);
 
-      // Poll sidecar health (should be fast — persistent service)
+      // Poll sidecar health
       const baseUrl = getBaseUrl();
       let ready = false;
       for (let i = 0; i < 30; i++) {
