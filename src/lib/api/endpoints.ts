@@ -140,14 +140,33 @@ export const echoes = {
     return resp.blob();
   },
 
-  narrateVideo: async (echoId: string, entryId: string, signal?: AbortSignal): Promise<Blob> => {
+  /** Start async video narration. Returns cached video blob (200) or job_id (202). */
+  narrateVideoStart: async (echoId: string, entryId: string): Promise<{ cached: Blob } | { jobId: string }> => {
     const token = getAccessToken();
     const headers: Record<string, string> = {};
     if (token) headers['Authorization'] = `Bearer ${token}`;
     const resp = await fetch(`${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate/video`, {
       method: 'POST',
       headers,
-      signal,
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    if (resp.status === 200) return { cached: await resp.blob() };
+    const body = await resp.json();
+    return { jobId: body.job_id };
+  },
+
+  /** Poll video generation status. */
+  narrateVideoStatus: async (echoId: string, entryId: string, jobId: string): Promise<{ status: string; progress?: number; error?: string }> => {
+    return request(`/echoes/${echoId}/diary/${entryId}/narrate/video/status/${jobId}`);
+  },
+
+  /** Fetch completed video. */
+  narrateVideoResult: async (echoId: string, entryId: string, jobId: string): Promise<Blob> => {
+    const token = getAccessToken();
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const resp = await fetch(`${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate/video/result/${jobId}`, {
+      headers,
     });
     if (!resp.ok) throw new Error(await resp.text());
     return resp.blob();

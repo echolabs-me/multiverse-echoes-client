@@ -1226,33 +1226,62 @@ function DiaryCard({
       return;
     }
 
-    // Idle/error → generate + show video
+    // Idle/error → start generation + poll
     setVideoState('generating');
     setGenerateProgress(0);
 
-    // Fake progress indicator (~40s generation) — ticks every 500ms
-    const progressInterval = setInterval(() => {
-      setGenerateProgress((prev) => Math.min(prev + 1.25, 95));
-    }, 500);
-
-    // Client-side timeout: 150s (server is 120s, but add margin for network)
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 150_000);
-
     try {
-      const rawBlob = await echoApi.narrateVideo(entry.echo_id, entry.diary_id, controller.signal);
-      clearTimeout(timeoutId);
-      clearInterval(progressInterval);
-      setGenerateProgress(100);
+      // Step 1: POST to start generation (or get cached video instantly).
+      const startResult = await echoApi.narrateVideoStart(entry.echo_id, entry.diary_id);
 
-      const blob = new Blob([rawBlob], { type: 'video/mp4' });
-      if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
-      const url = URL.createObjectURL(blob);
-      blobUrlRef.current = url;
-      setVideoState('ready');
+      if ('cached' in startResult) {
+        // Cache hit — video returned immediately.
+        const blob = new Blob([startResult.cached], { type: 'video/mp4' });
+        if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = URL.createObjectURL(blob);
+        setGenerateProgress(100);
+        setVideoState('ready');
+        return;
+      }
+
+      // Step 2: Poll status every 2.5s until complete.
+      const { jobId } = startResult;
+      let attempts = 0;
+      const maxAttempts = 60; // 60 × 2.5s = 150s max
+
+      const poll = async (): Promise<void> => {
+        while (attempts < maxAttempts) {
+          await new Promise((r) => setTimeout(r, 2500));
+          attempts++;
+
+          const status = await echoApi.narrateVideoStatus(entry.echo_id, entry.diary_id, jobId);
+
+          if (status.status === 'generating') {
+            setGenerateProgress(status.progress ?? Math.min(attempts * 2, 95));
+            continue;
+          }
+
+          if (status.status === 'complete') {
+            // Step 3: Fetch the video.
+            setGenerateProgress(95);
+            const videoBlob = await echoApi.narrateVideoResult(entry.echo_id, entry.diary_id, jobId);
+            const blob = new Blob([videoBlob], { type: 'video/mp4' });
+            if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
+            blobUrlRef.current = URL.createObjectURL(blob);
+            setGenerateProgress(100);
+            setVideoState('ready');
+            return;
+          }
+
+          if (status.status === 'failed') {
+            throw new Error(status.error ?? 'Video generation failed');
+          }
+        }
+        throw new Error('Video generation timed out');
+      };
+
+      await poll();
     } catch (e) {
-      clearTimeout(timeoutId);
-      clearInterval(progressInterval);
       console.error('Video narration failed:', e);
       setVideoState('error');
     }
