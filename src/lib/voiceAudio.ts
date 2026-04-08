@@ -25,7 +25,6 @@ export interface VoiceAudioCallbacks {
   onVideoFrame: (jpegBlob: Blob) => void;
   onError: (error: string) => void;
   onClose: () => void;
-  onDebug?: (info: string) => void;
 }
 
 /** Build a WAV blob from int16 PCM bytes at the given sample rate. */
@@ -122,8 +121,6 @@ export class VoiceAudioBridge {
               this.pcmChunks.push(raw);
               this.totalPcmBytes += raw.length;
               this.chunksReceived++;
-              const dur = (this.totalPcmBytes / 2 / SAMPLE_RATE).toFixed(1);
-              this.callbacks.onDebug?.(`chunks=${this.chunksReceived} bytes=${this.totalPcmBytes} dur=${dur}s`);
               this.callbacks.onAudioActivity();
             } else if (msg.type === 'text' && msg.data) {
               this.callbacks.onText(msg.data);
@@ -186,8 +183,6 @@ export class VoiceAudioBridge {
     audio.play().catch((e) => {
       console.error('Voice playback failed:', e);
     });
-
-    this.callbacks.onDebug?.(`PLAYING: chunks=${this.chunksReceived} dur=${(this.totalPcmBytes / 2 / SAMPLE_RATE).toFixed(1)}s`);
 
     // Clear buffer so it doesn't replay on the next state cycle
     this.pcmChunks = [];
