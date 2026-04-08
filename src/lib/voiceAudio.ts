@@ -123,7 +123,9 @@ export class VoiceAudioBridge {
               this.totalPcmBytes += raw.length;
               this.chunksReceived++;
               const dur = (this.totalPcmBytes / 2 / SAMPLE_RATE).toFixed(1);
-              this.callbacks.onDebug?.(`chunks=${this.chunksReceived} bytes=${this.totalPcmBytes} dur=${dur}s`);
+              const dbg = `chunks=${this.chunksReceived} bytes=${this.totalPcmBytes} dur=${dur}s`;
+              console.warn('[VoiceAudio]', dbg);
+              this.callbacks.onDebug?.(dbg);
               this.callbacks.onAudioActivity();
             } else if (msg.type === 'text' && msg.data) {
               this.callbacks.onText(msg.data);
@@ -132,6 +134,7 @@ export class VoiceAudioBridge {
               const blob = new Blob([raw], { type: 'image/jpeg' });
               this.callbacks.onVideoFrame(blob);
             } else if (msg.type === 'state' && msg.state) {
+              console.warn('[VoiceAudio] state:', msg.state);
               if (msg.state === 'speaking') {
                 // Clear buffer for new response
                 this.stopAudio();
@@ -188,7 +191,9 @@ export class VoiceAudioBridge {
     });
 
     const dur = (this.totalPcmBytes / 2 / SAMPLE_RATE).toFixed(1);
-    this.callbacks.onDebug?.(`PLAYING: chunks=${this.chunksReceived} dur=${dur}s`);
+    const dbg = `PLAYING: chunks=${this.chunksReceived} dur=${dur}s`;
+    console.warn('[VoiceAudio]', dbg);
+    this.callbacks.onDebug?.(dbg);
   }
 
   private stopAudio(): void {
