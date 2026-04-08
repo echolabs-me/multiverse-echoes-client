@@ -28,33 +28,57 @@ export interface VoiceAudioCallbacks {
   onDebug?: (info: string) => void;
 }
 
-/**
- * VoiceAudioBridge manages the audio pipeline for a turn-based voice session.
- */
+/** Build a WAV blob from int16 PCM bytes at the given sample rate. */
+function buildWavBlob(pcmBytes: Uint8Array, sampleRate: number): Blob {
+  const dataSize = pcmBytes.length;
+  const header = new ArrayBuffer(44);
+  const view = new DataView(header);
+  // RIFF header
+  view.setUint32(0, 0x52494646, false); // "RIFF"
+  view.setUint32(4, 36 + dataSize, true);
+  view.setUint32(8, 0x57415645, false); // "WAVE"
+  // fmt chunk
+  view.setUint32(12, 0x666D7420, false); // "fmt "
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true); // PCM
+  view.setUint16(22, 1, true); // mono
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true); // byte rate
+  view.setUint16(32, 2, true); // block align
+  view.setUint16(34, 16, true); // bits per sample
+  // data chunk
+  view.setUint32(36, 0x64617461, false); // "data"
+  view.setUint32(40, dataSize, true);
+  const headerBytes = new Uint8Array(header);
+  const wavData = new Uint8Array(44 + dataSize);
+  wavData.set(headerBytes, 0);
+  wavData.set(pcmBytes, 44);
+  return new Blob([wavData.buffer as ArrayBuffer], { type: 'audio/wav' });
+}
+
 export class VoiceAudioBridge {
   private ws: WebSocket | null = null;
   private audioCtx: AudioContext | null = null;
   private mediaStream: MediaStream | null = null;
   private recorder: unknown = null;
-
-  // Playback scheduling
-  private nextPlayTime = 0;
   private gainNode: GainNode | null = null;
+
+  // Accumulate raw PCM bytes during speaking, play as single WAV when done
+  private pcmChunks: Uint8Array[] = [];
+  private totalPcmBytes = 0;
+  private chunksReceived = 0;
+  private audioElement: HTMLAudioElement | null = null;
+  private blobUrl: string | null = null;
 
   private callbacks: VoiceAudioCallbacks;
   private isMuted = false;
-  private _chunksReceived = 0;
-  private _chunksPlayed = 0;
 
   constructor(callbacks: VoiceAudioCallbacks) {
     this.callbacks = callbacks;
   }
 
-  /**
-   * Connect to the voice pipeline sidecar WebSocket.
-   */
   async connect(wsUrl: string, preCreatedAudioCtx?: AudioContext, preCreatedMicStream?: MediaStream): Promise<void> {
-    // 1. AudioContext setup
+    // AudioContext only needed for mic capture (opus-recorder uses it)
     if (preCreatedAudioCtx) {
       this.audioCtx = preCreatedAudioCtx;
     } else {
@@ -67,11 +91,10 @@ export class VoiceAudioBridge {
         await this.audioCtx.resume();
       }
     }
+    // GainNode not used for playback anymore but keep for mic level if needed
     this.gainNode = this.audioCtx.createGain();
     this.gainNode.connect(this.audioCtx.destination);
-    this.nextPlayTime = this.audioCtx.currentTime;
 
-    // 2. Connect WebSocket
     this.ws = new WebSocket(wsUrl);
     this.ws.binaryType = 'arraybuffer';
 
@@ -85,7 +108,6 @@ export class VoiceAudioBridge {
       };
 
       this.ws!.onmessage = (event: MessageEvent) => {
-        // Server sends JSON text frames (avoids Cloudflare binary fragmentation)
         if (typeof event.data === 'string') {
           try {
             const msg = JSON.parse(event.data) as {
@@ -95,19 +117,13 @@ export class VoiceAudioBridge {
             };
 
             if (msg.type === 'audio' && msg.data) {
-              // Base64 → Int16 LE PCM → Float32
+              // Decode base64 → raw int16 PCM bytes, accumulate
               const raw = Uint8Array.from(atob(msg.data), (c) => c.charCodeAt(0));
-              const aligned = new ArrayBuffer(raw.length);
-              new Uint8Array(aligned).set(raw);
-              const int16 = new Int16Array(aligned);
-              const pcm = new Float32Array(int16.length);
-              for (let i = 0; i < int16.length; i++) {
-                pcm[i] = int16[i] / 32768;
-              }
-              this._chunksReceived++;
-              this.schedulePlayback(pcm);
-              const info = `pcm=${pcm.length} rate=${SAMPLE_RATE} ctx=${this.audioCtx?.sampleRate} recv=${this._chunksReceived} play=${this._chunksPlayed}`;
-              this.callbacks.onDebug?.(info);
+              this.pcmChunks.push(raw);
+              this.totalPcmBytes += raw.length;
+              this.chunksReceived++;
+              const dur = (this.totalPcmBytes / 2 / SAMPLE_RATE).toFixed(1);
+              this.callbacks.onDebug?.(`chunks=${this.chunksReceived} bytes=${this.totalPcmBytes} dur=${dur}s`);
               this.callbacks.onAudioActivity();
             } else if (msg.type === 'text' && msg.data) {
               this.callbacks.onText(msg.data);
@@ -116,20 +132,23 @@ export class VoiceAudioBridge {
               const blob = new Blob([raw], { type: 'image/jpeg' });
               this.callbacks.onVideoFrame(blob);
             } else if (msg.type === 'state' && msg.state) {
+              if (msg.state === 'speaking') {
+                // Clear buffer for new response
+                this.stopAudio();
+                this.pcmChunks = [];
+                this.totalPcmBytes = 0;
+                this.chunksReceived = 0;
+              }
+              if (msg.state === 'listening' && this.totalPcmBytes > 0) {
+                // Speaking ended — play accumulated audio as single WAV
+                this.playAccumulatedAsWav();
+              }
               this.callbacks.onStateChange(msg.state as VoicePipelineState);
             }
           } catch {
             /* ignore malformed JSON */
           }
-          return;
         }
-
-        // Legacy binary fallback (for any remaining binary messages)
-        if (!(event.data instanceof ArrayBuffer)) return;
-        const data = new Uint8Array(event.data);
-        if (data.length === 0) return;
-        // Binary messages from client side (mic audio) are not echoed back,
-        // so we shouldn't receive binary from the server anymore.
       };
 
       this.ws!.onerror = () => {
@@ -143,8 +162,44 @@ export class VoiceAudioBridge {
       };
     });
 
-    // 3. Start mic capture + Opus encoding
     await this.startMicCapture(preCreatedMicStream);
+  }
+
+  /** Concatenate accumulated PCM chunks into a WAV and play via Audio element. */
+  private playAccumulatedAsWav(): void {
+    if (this.pcmChunks.length === 0) return;
+
+    // Concatenate all PCM byte chunks
+    const combined = new Uint8Array(this.totalPcmBytes);
+    let offset = 0;
+    for (const chunk of this.pcmChunks) {
+      combined.set(chunk, offset);
+      offset += chunk.length;
+    }
+
+    const wavBlob = buildWavBlob(combined, SAMPLE_RATE);
+    if (this.blobUrl) URL.revokeObjectURL(this.blobUrl);
+    this.blobUrl = URL.createObjectURL(wavBlob);
+
+    const audio = new Audio(this.blobUrl);
+    this.audioElement = audio;
+    audio.play().catch((e) => {
+      console.error('Voice playback failed:', e);
+    });
+
+    const dur = (this.totalPcmBytes / 2 / SAMPLE_RATE).toFixed(1);
+    this.callbacks.onDebug?.(`PLAYING: chunks=${this.chunksReceived} dur=${dur}s`);
+  }
+
+  private stopAudio(): void {
+    if (this.audioElement) {
+      this.audioElement.pause();
+      this.audioElement = null;
+    }
+    if (this.blobUrl) {
+      URL.revokeObjectURL(this.blobUrl);
+      this.blobUrl = null;
+    }
   }
 
   private async startMicCapture(preCreatedStream?: MediaStream): Promise<void> {
@@ -161,7 +216,6 @@ export class VoiceAudioBridge {
       });
     }
 
-    // Client → Server: still uses binary Opus frames (client sends, not affected by CF)
     // @ts-expect-error - opus-recorder has no types
     const Recorder = (await import('opus-recorder')).default;
 
@@ -169,7 +223,7 @@ export class VoiceAudioBridge {
       encoderPath: '/assets/opus-recorder/encoderWorker.min.js',
       encoderSampleRate: SAMPLE_RATE,
       encoderFrameSize: 20,
-      encoderApplication: 2049, // VOIP
+      encoderApplication: 2049,
       streamPages: true,
       numberOfChannels: 1,
     });
@@ -178,7 +232,7 @@ export class VoiceAudioBridge {
       (oggPage: ArrayBuffer) => {
         if (this.ws?.readyState === WebSocket.OPEN && !this.isMuted) {
           const frame = new Uint8Array(oggPage.byteLength + 1);
-          frame[0] = 0x01; // audio kind byte
+          frame[0] = 0x01;
           frame.set(new Uint8Array(oggPage), 1);
           this.ws.send(frame.buffer);
         }
@@ -189,7 +243,6 @@ export class VoiceAudioBridge {
     );
   }
 
-  /** Send end-of-utterance signal to the sidecar. */
   sendEndOfUtterance(): void {
     if (this.ws?.readyState === WebSocket.OPEN) {
       const signal = new Uint8Array([0x05]);
@@ -197,29 +250,6 @@ export class VoiceAudioBridge {
     }
   }
 
-  /** Schedule PCM playback via AudioContext buffer source. */
-  private schedulePlayback(pcm: Float32Array): void {
-    if (!this.audioCtx || !this.gainNode) return;
-
-    const buffer = this.audioCtx.createBuffer(1, pcm.length, SAMPLE_RATE);
-    buffer.getChannelData(0).set(pcm);
-
-    const source = this.audioCtx.createBufferSource();
-    source.buffer = buffer;
-    source.playbackRate.value = 1.0;
-    source.connect(this.gainNode);
-
-    // If nextPlayTime has fallen behind current time (gap between turns),
-    // reset it so we don't schedule in the past.
-    if (this.nextPlayTime < this.audioCtx.currentTime) {
-      this.nextPlayTime = this.audioCtx.currentTime + 0.005;
-    }
-    source.start(this.nextPlayTime);
-    this.nextPlayTime += buffer.duration;
-    this._chunksPlayed++;
-  }
-
-  /** Mute/unmute the microphone. */
   setMuted(muted: boolean): void {
     this.isMuted = muted;
     if (this.mediaStream) {
@@ -229,8 +259,9 @@ export class VoiceAudioBridge {
     }
   }
 
-  /** Clean up all resources. */
   async disconnect(): Promise<void> {
+    this.stopAudio();
+
     if (this.recorder) {
       try {
         await (this.recorder as { stop: () => Promise<void> }).stop();
