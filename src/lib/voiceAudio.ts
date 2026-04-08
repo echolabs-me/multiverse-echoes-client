@@ -1,16 +1,16 @@
 /**
  * Voice pipeline audio bridge — handles audio I/O for the turn-based voice pipeline.
  *
- * Protocol:
+ * Protocol (JSON text frames — avoids Cloudflare binary frame fragmentation):
  *   Client → Sidecar:
- *     \x01 + Ogg Opus bytes = user audio (mic recording)
- *     \x05                   = end-of-utterance signal
+ *     Binary: \x01 + Ogg Opus bytes = user audio (mic recording)
+ *     Binary: \x05                   = end-of-utterance signal
  *
- *   Sidecar → Client:
- *     \x01 + int16 LE PCM bytes = TTS audio (48kHz mono)
- *     \x02 + UTF-8              = text (conversation transcript)
- *     \x04 + JPEG bytes         = lip-synced video frame
- *     \x06 + JSON               = state change (listening/thinking/speaking)
+ *   Sidecar → Client (JSON text frames):
+ *     {"type":"audio","data":"<base64 int16 LE PCM>"} = TTS audio (24kHz mono)
+ *     {"type":"text","data":"<string>"}                = conversation transcript
+ *     {"type":"video","data":"<base64 JPEG>"}          = lip-synced video frame
+ *     {"type":"state","state":"<listening|thinking|speaking>"} = state change
  */
 
 const SAMPLE_RATE = 24000;
@@ -43,7 +43,6 @@ export class VoiceAudioBridge {
 
   private callbacks: VoiceAudioCallbacks;
   private isMuted = false;
-  private _loggedFirstChunk = false;
   private _chunksReceived = 0;
   private _chunksPlayed = 0;
 
@@ -86,51 +85,51 @@ export class VoiceAudioBridge {
       };
 
       this.ws!.onmessage = (event: MessageEvent) => {
+        // Server sends JSON text frames (avoids Cloudflare binary fragmentation)
+        if (typeof event.data === 'string') {
+          try {
+            const msg = JSON.parse(event.data) as {
+              type: string;
+              data?: string;
+              state?: string;
+            };
+
+            if (msg.type === 'audio' && msg.data) {
+              // Base64 → Int16 LE PCM → Float32
+              const raw = Uint8Array.from(atob(msg.data), (c) => c.charCodeAt(0));
+              const aligned = new ArrayBuffer(raw.length);
+              new Uint8Array(aligned).set(raw);
+              const int16 = new Int16Array(aligned);
+              const pcm = new Float32Array(int16.length);
+              for (let i = 0; i < int16.length; i++) {
+                pcm[i] = int16[i] / 32768;
+              }
+              this._chunksReceived++;
+              this.schedulePlayback(pcm);
+              const info = `pcm=${pcm.length} rate=${SAMPLE_RATE} ctx=${this.audioCtx?.sampleRate} recv=${this._chunksReceived} play=${this._chunksPlayed}`;
+              this.callbacks.onDebug?.(info);
+              this.callbacks.onAudioActivity();
+            } else if (msg.type === 'text' && msg.data) {
+              this.callbacks.onText(msg.data);
+            } else if (msg.type === 'video' && msg.data) {
+              const raw = Uint8Array.from(atob(msg.data), (c) => c.charCodeAt(0));
+              const blob = new Blob([raw], { type: 'image/jpeg' });
+              this.callbacks.onVideoFrame(blob);
+            } else if (msg.type === 'state' && msg.state) {
+              this.callbacks.onStateChange(msg.state as VoicePipelineState);
+            }
+          } catch {
+            /* ignore malformed JSON */
+          }
+          return;
+        }
+
+        // Legacy binary fallback (for any remaining binary messages)
         if (!(event.data instanceof ArrayBuffer)) return;
         const data = new Uint8Array(event.data);
         if (data.length === 0) return;
-
-        const kind = data[0];
-
-        if (kind === 0x01 && data.length > 1) {
-          // Int16 LE PCM audio from TTS — copy to aligned buffer
-          // (byte offset 1 is not Int16-aligned, so we must copy)
-          const rawBytes = data.slice(1);
-          const aligned = new ArrayBuffer(rawBytes.length);
-          new Uint8Array(aligned).set(rawBytes);
-          const int16 = new Int16Array(aligned);
-          const pcm = new Float32Array(int16.length);
-          for (let i = 0; i < int16.length; i++) {
-            pcm[i] = int16[i] / 32768;
-          }
-          this._chunksReceived++;
-          if (!this._loggedFirstChunk) {
-            this._loggedFirstChunk = true;
-            this._chunksReceived = 1;
-            this._chunksPlayed = 0;
-          }
-          this.schedulePlayback(pcm);
-          const info = `msg=${data.length} bytes=${rawBytes.length} pcm=${pcm.length} rate=${SAMPLE_RATE} ctx=${this.audioCtx?.sampleRate} recv=${this._chunksReceived} play=${this._chunksPlayed}`;
-          this.callbacks.onDebug?.(info);
-          this.callbacks.onAudioActivity();
-        } else if (kind === 0x02 && data.length > 1) {
-          // Text (conversation transcript)
-          const text = new TextDecoder().decode(data.slice(1));
-          this.callbacks.onText(text);
-        } else if (kind === 0x04 && data.length > 1) {
-          // JPEG video frame from LivePortrait
-          const jpegData = data.slice(1);
-          const blob = new Blob([jpegData], { type: 'image/jpeg' });
-          this.callbacks.onVideoFrame(blob);
-        } else if (kind === 0x06 && data.length > 1) {
-          // State change from pipeline
-          try {
-            const json = JSON.parse(new TextDecoder().decode(data.slice(1)));
-            if (json.state) {
-              this.callbacks.onStateChange(json.state as VoicePipelineState);
-            }
-          } catch { /* ignore malformed state */ }
-        }
+        // Binary messages from client side (mic audio) are not echoed back,
+        // so we shouldn't receive binary from the server anymore.
       };
 
       this.ws!.onerror = () => {
@@ -162,7 +161,7 @@ export class VoiceAudioBridge {
       });
     }
 
-    // Use opus-recorder for encoding (same as before — sidecar decodes on its end)
+    // Client → Server: still uses binary Opus frames (client sends, not affected by CF)
     // @ts-expect-error - opus-recorder has no types
     const Recorder = (await import('opus-recorder')).default;
 
