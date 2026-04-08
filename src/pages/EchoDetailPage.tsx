@@ -22,6 +22,7 @@ import {
   Video,
   Square,
   Loader2,
+  Phone,
 } from 'lucide-react';
 import {
   Card,
@@ -49,8 +50,7 @@ import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
 import { EchoConversationPanel } from '../components/EchoConversationPanel.tsx';
-// VoiceSessionModal temporarily hidden while audio playback is fixed
-// import { VoiceSessionModal } from '../components/VoiceSessionModal.tsx';
+import { VoiceSessionModal } from '../components/VoiceSessionModal.tsx';
 import { echoes as echoApi, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
@@ -117,8 +117,7 @@ export function EchoDetailPage() {
   const [soloMode, setSoloMode] = useState(false);
   const [nudgeRipple, setNudgeRipple] = useState(false);
   const [nudgeConfirmed, setNudgeConfirmed] = useState(false);
-  // Voice modal temporarily hidden while audio playback is fixed
-  // const [showVoiceModal, setShowVoiceModal] = useState(false);
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
 
   // Mood atmosphere — derive from latest diary entry or echo's current_mood.
   const moodContainerRef = useRef<HTMLDivElement>(null);
@@ -634,7 +633,14 @@ export function EchoDetailPage() {
                 )}
               </div>
             </div>
-            {/* Voice Call — temporarily hidden while audio playback is fixed */}
+            {/* Voice Call */}
+            <button
+              onClick={() => setShowVoiceModal(true)}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-accent/20 bg-accent/5 px-4 py-2.5 text-sm font-medium text-accent transition-colors hover:bg-accent/10"
+            >
+              <Phone size={16} />
+              {t('echoDetail.voiceCall')}
+            </button>
             {/* Nudge confirmation banner */}
             {nudgeConfirmed && (
               <div className="flex items-center gap-1.5 rounded-lg border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-medium text-success animate-slide-in">
@@ -1150,7 +1156,14 @@ export function EchoDetailPage() {
         echoId={activeEcho.echo_id}
       />
 
-      {/* Voice Session Modal — temporarily hidden while audio playback is fixed */}
+      {showVoiceModal && activeEcho && (
+        <VoiceSessionModal
+          echoId={activeEcho.echo_id}
+          echoName={activeEcho.name}
+          avatarUrl={activeEcho.avatar_url ?? null}
+          onClose={() => setShowVoiceModal(false)}
+        />
+      )}
 
     </div>
 

@@ -1,19 +1,22 @@
 /**
- * Voice pipeline audio bridge — handles audio I/O for the turn-based voice pipeline.
+ * Voice pipeline audio bridge.
  *
- * Protocol (JSON text frames — avoids Cloudflare binary frame fragmentation):
+ * Audio transport (split):
+ *   Client mic → Opus over WebSocket (tunnel) → sidecar → Whisper STT
+ *   VoxCPM2 TTS → sidecar → CF Calls ingress adapter → WebRTC → client <audio>
+ *
+ * Control transport (WebSocket through tunnel):
  *   Client → Sidecar:
- *     Binary: \x01 + Ogg Opus bytes = user audio (mic recording)
- *     Binary: \x05                   = end-of-utterance signal
+ *     Binary: \x01 + Ogg Opus = mic audio
+ *     Binary: \x05            = end-of-utterance
+ *     JSON:   {"type":"webrtc_answer","sessionDescription":{...}}
  *
- *   Sidecar → Client (JSON text frames):
- *     {"type":"audio","data":"<base64 int16 LE PCM>"} = TTS audio (24kHz mono)
- *     {"type":"text","data":"<string>"}                = conversation transcript
- *     {"type":"video","data":"<base64 JPEG>"}          = lip-synced video frame
- *     {"type":"state","state":"<listening|thinking|speaking>"} = state change
+ *   Sidecar → Client:
+ *     {"type":"text","data":"..."}       = transcript
+ *     {"type":"video","data":"..."}      = JPEG frame
+ *     {"type":"state","state":"..."}     = state change
+ *     {"type":"webrtc_offer",...}         = CF Calls SDP offer (TTS track)
  */
-
-const SAMPLE_RATE = 24000;
 
 export type VoicePipelineState = 'listening' | 'thinking' | 'speaking';
 
@@ -27,57 +30,38 @@ export interface VoiceAudioCallbacks {
   onClose: () => void;
 }
 
-/** Build a WAV blob from int16 PCM bytes at the given sample rate. */
-function buildWavBlob(pcmBytes: Uint8Array, sampleRate: number): Blob {
-  const dataSize = pcmBytes.length;
-  const header = new ArrayBuffer(44);
-  const view = new DataView(header);
-  // RIFF header
-  view.setUint32(0, 0x52494646, false); // "RIFF"
-  view.setUint32(4, 36 + dataSize, true);
-  view.setUint32(8, 0x57415645, false); // "WAVE"
-  // fmt chunk
-  view.setUint32(12, 0x666D7420, false); // "fmt "
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true); // PCM
-  view.setUint16(22, 1, true); // mono
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * 2, true); // byte rate
-  view.setUint16(32, 2, true); // block align
-  view.setUint16(34, 16, true); // bits per sample
-  // data chunk
-  view.setUint32(36, 0x64617461, false); // "data"
-  view.setUint32(40, dataSize, true);
-  const headerBytes = new Uint8Array(header);
-  const wavData = new Uint8Array(44 + dataSize);
-  wavData.set(headerBytes, 0);
-  wavData.set(pcmBytes, 44);
-  return new Blob([wavData.buffer as ArrayBuffer], { type: 'audio/wav' });
-}
+const SAMPLE_RATE = 24000;
 
 export class VoiceAudioBridge {
   private ws: WebSocket | null = null;
+  private pc: RTCPeerConnection | null = null;
   private audioCtx: AudioContext | null = null;
   private mediaStream: MediaStream | null = null;
   private recorder: unknown = null;
-  private gainNode: GainNode | null = null;
-
-  // Accumulate raw PCM bytes during speaking, play as single WAV when done
-  private pcmChunks: Uint8Array[] = [];
-  private totalPcmBytes = 0;
-  private chunksReceived = 0;
-  private audioElement: HTMLAudioElement | null = null;
-  private blobUrl: string | null = null;
+  private remoteAudio: HTMLAudioElement | null = null;
 
   private callbacks: VoiceAudioCallbacks;
-  private isMuted = false;
 
   constructor(callbacks: VoiceAudioCallbacks) {
     this.callbacks = callbacks;
   }
 
-  async connect(wsUrl: string, preCreatedAudioCtx?: AudioContext, preCreatedMicStream?: MediaStream): Promise<void> {
-    // AudioContext only needed for mic capture (opus-recorder uses it)
+  /**
+   * Connect to the voice pipeline.
+   * @param wsUrl WebSocket URL for mic audio + text/video/state
+   * @param remoteAudioEl <audio> element for WebRTC TTS playback
+   * @param preCreatedAudioCtx Pre-created AudioContext (Safari gesture)
+   * @param preCreatedMicStream Pre-created mic stream (Safari gesture)
+   */
+  async connect(
+    wsUrl: string,
+    remoteAudioEl: HTMLAudioElement,
+    preCreatedAudioCtx?: AudioContext,
+    preCreatedMicStream?: MediaStream,
+  ): Promise<void> {
+    this.remoteAudio = remoteAudioEl;
+
+    // AudioContext for Opus recorder
     if (preCreatedAudioCtx) {
       this.audioCtx = preCreatedAudioCtx;
     } else {
@@ -90,15 +74,13 @@ export class VoiceAudioBridge {
         await this.audioCtx.resume();
       }
     }
-    // GainNode not used for playback anymore but keep for mic level if needed
-    this.gainNode = this.audioCtx.createGain();
-    this.gainNode.connect(this.audioCtx.destination);
 
+    // WebSocket for mic audio + text/video/state
     this.ws = new WebSocket(wsUrl);
     this.ws.binaryType = 'arraybuffer';
 
     await new Promise<void>((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error('WebSocket connection timeout')), 30000);
+      const timeout = setTimeout(() => reject(new Error('WebSocket timeout')), 30000);
 
       this.ws!.onopen = () => {
         clearTimeout(timeout);
@@ -113,15 +95,13 @@ export class VoiceAudioBridge {
               type: string;
               data?: string;
               state?: string;
+              clientSessionId?: string;
+              sessionDescription?: { sdp: string; type: string };
+              requiresImmediateRenegotiation?: boolean;
             };
 
-            if (msg.type === 'audio' && msg.data) {
-              // Decode base64 → raw int16 PCM bytes, accumulate
-              const raw = Uint8Array.from(atob(msg.data), (c) => c.charCodeAt(0));
-              this.pcmChunks.push(raw);
-              this.totalPcmBytes += raw.length;
-              this.chunksReceived++;
-              this.callbacks.onAudioActivity();
+            if (msg.type === 'webrtc_offer') {
+              void this.handleWebRTCOffer(msg);
             } else if (msg.type === 'text' && msg.data) {
               this.callbacks.onText(msg.data);
             } else if (msg.type === 'video' && msg.data) {
@@ -129,21 +109,17 @@ export class VoiceAudioBridge {
               const blob = new Blob([raw], { type: 'image/jpeg' });
               this.callbacks.onVideoFrame(blob);
             } else if (msg.type === 'state' && msg.state) {
-              if (msg.state === 'speaking') {
-                // Clear buffer for new response
-                this.stopAudio();
-                this.pcmChunks = [];
-                this.totalPcmBytes = 0;
-                this.chunksReceived = 0;
+              if (msg.state === 'audio_error') {
+                this.callbacks.onError('Audio transport error');
+              } else {
+                this.callbacks.onStateChange(msg.state as VoicePipelineState);
+                if (msg.state === 'speaking') {
+                  this.callbacks.onAudioActivity();
+                }
               }
-              if (msg.state === 'listening' && this.totalPcmBytes > 0) {
-                // Speaking ended — play accumulated audio as single WAV
-                this.playAccumulatedAsWav();
-              }
-              this.callbacks.onStateChange(msg.state as VoicePipelineState);
             }
           } catch {
-            /* ignore malformed JSON */
+            /* ignore */
           }
         }
       };
@@ -159,48 +135,79 @@ export class VoiceAudioBridge {
       };
     });
 
+    // Start mic capture via Opus recorder (sends \x01 on WebSocket)
     await this.startMicCapture(preCreatedMicStream);
   }
 
-  /** Concatenate accumulated PCM chunks into a WAV and play via Audio element. */
-  private playAccumulatedAsWav(): void {
-    if (this.pcmChunks.length === 0) return;
+  /** Handle WebRTC offer from server — sets up receive-only PeerConnection for TTS audio. */
+  private async handleWebRTCOffer(msg: {
+    clientSessionId?: string;
+    sessionDescription?: { sdp: string; type: string };
+  }): Promise<void> {
+    try {
+      console.log('[voice] Setting up WebRTC for TTS receive');
 
-    // Concatenate all PCM byte chunks
-    const combined = new Uint8Array(this.totalPcmBytes);
-    let offset = 0;
-    for (const chunk of this.pcmChunks) {
-      combined.set(chunk, offset);
-      offset += chunk.length;
+      this.pc = new RTCPeerConnection({
+        iceServers: [{ urls: 'stun:stun.cloudflare.com:3478' }],
+        bundlePolicy: 'max-bundle',
+      });
+
+      this.pc.oniceconnectionstatechange = () => {
+        console.log(`[voice] ICE: ${this.pc?.iceConnectionState}`);
+      };
+
+      // Remote audio track (TTS from server via CF SFU)
+      this.pc.ontrack = (event) => {
+        console.log(`[voice] Remote track: ${event.track.kind} ${event.track.id}`);
+        if (this.remoteAudio) {
+          this.remoteAudio.srcObject = event.streams?.[0]
+            ? event.streams[0]
+            : new MediaStream([event.track]);
+          this.remoteAudio.play().catch((e) => {
+            console.error('[voice] Audio play failed:', e);
+          });
+        }
+        event.track.onunmute = () => console.log('[voice] Track unmuted');
+      };
+
+      // Receive-only (no mic track on PeerConnection — mic goes via WebSocket)
+      this.pc.addTransceiver('audio', { direction: 'recvonly' });
+
+      if (msg.sessionDescription) {
+        await this.pc.setRemoteDescription(
+          new RTCSessionDescription(msg.sessionDescription as RTCSessionDescriptionInit),
+        );
+      }
+
+      const answer = await this.pc.createAnswer();
+      await this.pc.setLocalDescription(answer);
+
+      // Wait for ICE gathering
+      await new Promise<void>((resolve) => {
+        if (this.pc?.iceGatheringState === 'complete') return resolve();
+        this.pc!.onicegatheringstatechange = () => {
+          if (this.pc?.iceGatheringState === 'complete') resolve();
+        };
+        setTimeout(resolve, 3000);
+      });
+
+      // Send answer to server
+      if (this.ws?.readyState === WebSocket.OPEN) {
+        this.ws.send(JSON.stringify({
+          type: 'webrtc_answer',
+          sessionDescription: {
+            sdp: this.pc.localDescription?.sdp,
+            type: 'answer',
+          },
+        }));
+        console.log('[voice] Sent webrtc_answer');
+      }
+    } catch (e) {
+      console.error('[voice] WebRTC setup failed:', e);
     }
-
-    const wavBlob = buildWavBlob(combined, SAMPLE_RATE);
-    if (this.blobUrl) URL.revokeObjectURL(this.blobUrl);
-    this.blobUrl = URL.createObjectURL(wavBlob);
-
-    const audio = new Audio(this.blobUrl);
-    this.audioElement = audio;
-    audio.play().catch((e) => {
-      console.error('Voice playback failed:', e);
-    });
-
-    // Clear buffer so it doesn't replay on the next state cycle
-    this.pcmChunks = [];
-    this.totalPcmBytes = 0;
-    this.chunksReceived = 0;
   }
 
-  private stopAudio(): void {
-    if (this.audioElement) {
-      this.audioElement.pause();
-      this.audioElement = null;
-    }
-    if (this.blobUrl) {
-      URL.revokeObjectURL(this.blobUrl);
-      this.blobUrl = null;
-    }
-  }
-
+  /** Start Opus mic recording — sends \x01 frames on WebSocket (unchanged). */
   private async startMicCapture(preCreatedStream?: MediaStream): Promise<void> {
     if (preCreatedStream) {
       this.mediaStream = preCreatedStream;
@@ -229,7 +236,7 @@ export class VoiceAudioBridge {
 
     (this.recorder as { ondataavailable: (data: ArrayBuffer) => void }).ondataavailable =
       (oggPage: ArrayBuffer) => {
-        if (this.ws?.readyState === WebSocket.OPEN && !this.isMuted) {
+        if (this.ws?.readyState === WebSocket.OPEN) {
           const frame = new Uint8Array(oggPage.byteLength + 1);
           frame[0] = 0x01;
           frame.set(new Uint8Array(oggPage), 1);
@@ -250,7 +257,6 @@ export class VoiceAudioBridge {
   }
 
   setMuted(muted: boolean): void {
-    this.isMuted = muted;
     if (this.mediaStream) {
       this.mediaStream.getAudioTracks().forEach((track) => {
         track.enabled = !muted;
@@ -259,7 +265,16 @@ export class VoiceAudioBridge {
   }
 
   async disconnect(): Promise<void> {
-    this.stopAudio();
+    if (this.pc) {
+      this.pc.close();
+      this.pc = null;
+    }
+
+    if (this.remoteAudio) {
+      this.remoteAudio.pause();
+      this.remoteAudio.srcObject = null;
+      this.remoteAudio = null;
+    }
 
     if (this.recorder) {
       try {
@@ -282,7 +297,5 @@ export class VoiceAudioBridge {
       await this.audioCtx.close().catch(() => {});
       this.audioCtx = null;
     }
-
-    this.gainNode = null;
   }
 }

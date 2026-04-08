@@ -58,6 +58,7 @@ export function VoiceSessionModal({
   const cleanupDoneRef = useRef(false);
   const durationTimerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
   const sessionDurationRef = useRef<number>(900);
+  const remoteAudioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     videoFrameRef.current = videoFrame;
@@ -102,9 +103,7 @@ export function VoiceSessionModal({
     setShowDurationWarning(false);
 
     try {
-      // Pre-create AudioContext AND request mic during user gesture (Safari requirement).
-      // Safari requires both AudioContext and getUserMedia within a user gesture handler.
-      // Health polling below takes seconds, which expires the gesture context.
+      // Pre-create AudioContext AND mic during user gesture (Safari requirement).
       const preAudioCtx = new AudioContext({ sampleRate: 24000 });
       if (preAudioCtx.state === 'suspended') {
         await preAudioCtx.resume();
@@ -117,6 +116,16 @@ export function VoiceSessionModal({
           autoGainControl: true,
         },
       });
+
+      // Unlock audio playback with a silent WAV (Safari autoplay policy).
+      // Must happen within the user gesture's synchronous call stack.
+      if (remoteAudioRef.current) {
+        remoteAudioRef.current.src = 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAgLsAAAB3AQACABAAZGF0YQIAAAAAAA==';
+        await remoteAudioRef.current.play().catch(() => {});
+        remoteAudioRef.current.pause();
+        remoteAudioRef.current.src = '';
+        remoteAudioRef.current.srcObject = null;
+      }
 
       // Start server-side session
       const { voice_ws_url, session_nonce, session_duration_seconds } =
@@ -137,6 +146,7 @@ export function VoiceSessionModal({
       }
       if (!ready) {
         preAudioCtx.close();
+        preMicStream.getTracks().forEach((tr) => tr.stop());
         throw new Error(t('voice.serverTimeout', 'Voice server not available'));
       }
 
@@ -166,7 +176,7 @@ export function VoiceSessionModal({
       bridgeRef.current = bridge;
 
       const wsBase = baseUrl.replace(/^http/, 'ws');
-      await bridge.connect(`${wsBase}${voice_ws_url}`, preAudioCtx, preMicStream);
+      await bridge.connect(`${wsBase}${voice_ws_url}`, remoteAudioRef.current!, preAudioCtx, preMicStream);
 
       // Start duration countdown
       let elapsed = 0;
@@ -233,8 +243,11 @@ export function VoiceSessionModal({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface-base/95 backdrop-blur-sm pb-safe pt-safe" style={{ touchAction: 'manipulation' }}>
-      {/* Close button */}
-      {(state === 'idle' || state === 'error') && (
+      {/* Hidden audio element for WebRTC remote audio playback */}
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+      <audio ref={remoteAudioRef} autoPlay playsInline style={{ display: 'none' }} />
+      {/* Close button — always visible so user can dismiss at any state */}
+      {(state === 'idle' || state === 'error' || state === 'connecting') && (
         <button
           onClick={() => void endSession()}
           className="absolute end-4 top-4 rounded-full p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
