@@ -873,7 +873,12 @@
     "narrate": "Listen",
     "narrating": "Generating voice\u2026",
     "playing": "Playing",
-    "paused": "Paused"
+    "paused": "Paused",
+    "watch": "Watch",
+    "generatingVideo": "Generating video\u2026",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

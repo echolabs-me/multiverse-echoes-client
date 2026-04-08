@@ -873,7 +873,12 @@
     "narrate": "Pakinggan",
     "narrating": "Gumagawa ng boses…",
     "playing": "Nagpe-play",
-    "paused": "Naka-pause"
+    "paused": "Naka-pause",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

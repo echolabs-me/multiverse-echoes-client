@@ -19,7 +19,7 @@ import {
   MoreHorizontal,
   Navigation,
   Trash2,
-  Volume2,
+  Video,
   Square,
   Loader2,
 } from 'lucide-react';
@@ -1187,81 +1187,95 @@ function DiaryCard({
   const g = parseInt(mc.slice(3, 5), 16);
   const b = parseInt(mc.slice(5, 7), 16);
 
-  // Narration playback state
-  const [narrationState, setNarrationState] = useState<
-    'idle' | 'generating' | 'playing' | 'paused' | 'error'
+  // Video narration playback state
+  const [videoState, setVideoState] = useState<
+    'idle' | 'generating' | 'ready' | 'playing' | 'paused' | 'error'
   >('idle');
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const blobUrlRef = useRef<string | null>(null);
+  const [generateProgress, setGenerateProgress] = useState(0);
 
-  const handleNarrate = useCallback(async () => {
+  const handleWatchNarration = useCallback(async () => {
     // Playing → pause
-    if (narrationState === 'playing' && audioRef.current) {
-      audioRef.current.pause();
-      setNarrationState('paused');
+    if (videoState === 'playing' && videoRef.current) {
+      videoRef.current.pause();
+      setVideoState('paused');
       return;
     }
     // Paused → resume
-    if (narrationState === 'paused' && audioRef.current) {
+    if (videoState === 'paused' && videoRef.current) {
       try {
-        await audioRef.current.play();
-        setNarrationState('playing');
+        await videoRef.current.play();
+        setVideoState('playing');
       } catch (e) {
-        console.error('Narration resume failed:', e);
-        setNarrationState('error');
+        console.error('Video resume failed:', e);
+        setVideoState('error');
       }
       return;
     }
-    // Idle/error → generate + play
-    // Safari autoplay policy: an Audio element must play() within the
-    // synchronous call stack of a user gesture to be "unlocked". Once
-    // unlocked, subsequent play() calls on the SAME element succeed even
-    // after async gaps. Strategy: create element, play silent audio NOW
-    // (within the tap handler), then swap src after the fetch completes.
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.onended = null;
-      audioRef.current.onerror = null;
+    // Ready → play again from start
+    if (videoState === 'ready' && videoRef.current) {
+      videoRef.current.currentTime = 0;
+      try {
+        await videoRef.current.play();
+        setVideoState('playing');
+      } catch (e) {
+        console.error('Video replay failed:', e);
+        setVideoState('error');
+      }
+      return;
     }
-    const audio = new Audio();
-    audioRef.current = audio;
 
-    // Play a tiny silent WAV synchronously to unlock the element for Safari.
-    // 1 sample of silence at 48kHz, valid WAV.
-    audio.src = 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEAgLsAAAB3AQACABAAZGF0YQIAAAAAAA==';
-    const unlockPlay = audio.play();
-    if (unlockPlay) unlockPlay.catch(() => {});
+    // Idle/error → generate + show video
+    setVideoState('generating');
+    setGenerateProgress(0);
 
-    setNarrationState('generating');
+    // Fake progress indicator (~40s generation) — ticks every 500ms
+    const progressInterval = setInterval(() => {
+      setGenerateProgress((prev) => Math.min(prev + 1.25, 95));
+    }, 500);
+
+    // Client-side timeout: 150s (server is 120s, but add margin for network)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 150_000);
+
     try {
-      const rawBlob = await echoApi.narrate(entry.echo_id, entry.diary_id);
-      const blob = new Blob([rawBlob], { type: 'audio/wav' });
+      const rawBlob = await echoApi.narrateVideo(entry.echo_id, entry.diary_id, controller.signal);
+      clearTimeout(timeoutId);
+      clearInterval(progressInterval);
+      setGenerateProgress(100);
+
+      const blob = new Blob([rawBlob], { type: 'video/mp4' });
       if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
       const url = URL.createObjectURL(blob);
       blobUrlRef.current = url;
-
-      // Swap src on the already-unlocked element and play
-      audio.onended = () => setNarrationState('idle');
-      audio.onerror = (e) => {
-        console.error('Narration audio error:', e);
-        setNarrationState('error');
-      };
-      audio.src = url;
-      await audio.play();
-      setNarrationState('playing');
+      setVideoState('ready');
     } catch (e) {
-      console.error('Narration failed:', e);
-      setNarrationState('error');
+      clearTimeout(timeoutId);
+      clearInterval(progressInterval);
+      console.error('Video narration failed:', e);
+      setVideoState('error');
     }
-  }, [narrationState, entry.echo_id, entry.diary_id]);
+  }, [videoState, entry.echo_id, entry.diary_id]);
+
+  // Auto-play when video becomes ready and ref is set
+  const handleVideoReady = useCallback((el: HTMLVideoElement | null) => {
+    videoRef.current = el;
+    if (el && blobUrlRef.current) {
+      el.src = blobUrlRef.current;
+      el.onended = () => setVideoState('ready');
+      el.onerror = () => setVideoState('error');
+      el.play().then(() => setVideoState('playing')).catch(() => setVideoState('error'));
+    }
+  }, []);
 
   // Cleanup blob URL on unmount
   useEffect(() => {
     return () => {
       if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current = null;
       }
     };
   }, []);
@@ -1306,30 +1320,52 @@ function DiaryCard({
             </span>
           </div>
         </div>
-        {/* Full-width narration button below diary content */}
+        {/* Video narration: button + inline player */}
+        {(videoState === 'ready' || videoState === 'playing' || videoState === 'paused') && (
+          // eslint-disable-next-line jsx-a11y/media-has-caption
+          <video
+            ref={handleVideoReady}
+            className="mt-3 w-full rounded-lg"
+            controls
+            playsInline
+          />
+        )}
         <button
-          onClick={handleNarrate}
-          disabled={narrationState === 'generating'}
+          onClick={handleWatchNarration}
+          disabled={videoState === 'generating'}
           className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-accent/20 bg-accent/5 px-4 py-2.5 text-sm font-medium text-accent transition-colors hover:bg-accent/10 disabled:opacity-50"
         >
-          {narrationState === 'generating' ? (
-            <Loader2 size={16} className="animate-spin" />
-          ) : narrationState === 'playing' ? (
-            <Square size={16} />
+          {videoState === 'generating' ? (
+            <>
+              <Loader2 size={16} className="animate-spin" />
+              <span>{t('diary.generatingVideo')} {Math.round(generateProgress)}%</span>
+            </>
+          ) : videoState === 'playing' ? (
+            <>
+              <Square size={16} />
+              <span>{t('diary.playingVideo')}</span>
+            </>
+          ) : videoState === 'ready' ? (
+            <>
+              <Video size={16} />
+              <span>{t('diary.watchAgain')}</span>
+            </>
+          ) : videoState === 'paused' ? (
+            <>
+              <Video size={16} />
+              <span>{t('diary.paused')}</span>
+            </>
+          ) : videoState === 'error' ? (
+            <>
+              <Video size={16} />
+              <span>{t('diary.videoError')}</span>
+            </>
           ) : (
-            <Volume2 size={16} />
+            <>
+              <Video size={16} />
+              <span>{t('diary.watch')}</span>
+            </>
           )}
-          <span>
-            {narrationState === 'generating'
-              ? t('diary.narrating')
-              : narrationState === 'playing'
-                ? t('diary.playing')
-                : narrationState === 'paused'
-                  ? t('diary.paused')
-                  : narrationState === 'error'
-                    ? t('diary.narrate')
-                    : t('diary.narrate')}
-          </span>
         </button>
       </Card>
     </div>

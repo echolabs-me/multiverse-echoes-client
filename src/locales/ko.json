@@ -873,7 +873,12 @@
     "narrate": "듣기",
     "narrating": "음성 생성 중…",
     "playing": "재생 중",
-    "paused": "일시정지"
+    "paused": "일시정지",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

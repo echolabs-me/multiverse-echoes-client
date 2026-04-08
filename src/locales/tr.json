@@ -873,7 +873,12 @@
     "narrate": "Dinle",
     "narrating": "Ses oluşturuluyor…",
     "playing": "Çalıyor",
-    "paused": "Duraklatıldı"
+    "paused": "Duraklatıldı",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

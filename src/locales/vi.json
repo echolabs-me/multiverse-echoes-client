@@ -873,7 +873,12 @@
     "narrate": "Nghe",
     "narrating": "Đang tạo giọng…",
     "playing": "Đang phát",
-    "paused": "Tạm dừng"
+    "paused": "Tạm dừng",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

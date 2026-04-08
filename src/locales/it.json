@@ -873,7 +873,12 @@
     "narrate": "Ascolta",
     "narrating": "Generazione voce…",
     "playing": "Riproduzione",
-    "paused": "In pausa"
+    "paused": "In pausa",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

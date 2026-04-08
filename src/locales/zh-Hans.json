@@ -873,7 +873,12 @@
     "narrate": "聆听",
     "narrating": "正在生成语音…",
     "playing": "播放中",
-    "paused": "已暂停"
+    "paused": "已暂停",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

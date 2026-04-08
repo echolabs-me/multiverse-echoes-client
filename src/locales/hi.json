@@ -873,7 +873,12 @@
     "narrate": "सुनें",
     "narrating": "आवाज़ बना रहा…",
     "playing": "चल रहा",
-    "paused": "रुका हुआ"
+    "paused": "रुका हुआ",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

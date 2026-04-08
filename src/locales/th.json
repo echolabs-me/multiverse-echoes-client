@@ -873,7 +873,12 @@
     "narrate": "ฟัง",
     "narrating": "กำลังสร้างเสียง…",
     "playing": "กำลังเล่น",
-    "paused": "หยุดชั่วคราว"
+    "paused": "หยุดชั่วคราว",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

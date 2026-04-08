@@ -873,7 +873,12 @@
     "narrate": "Dengarkan",
     "narrating": "Membuat suara…",
     "playing": "Memutar",
-    "paused": "Dijeda"
+    "paused": "Dijeda",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

@@ -873,7 +873,12 @@
     "narrate": "聴く",
     "narrating": "音声を生成中…",
     "playing": "再生中",
-    "paused": "一時停止"
+    "paused": "一時停止",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

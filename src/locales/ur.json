@@ -873,7 +873,12 @@
     "narrate": "سنیں",
     "narrating": "آواز بنائی جا رہی ہے…",
     "playing": "چل رہا ہے",
-    "paused": "موقوف"
+    "paused": "موقوف",
+    "watch": "Watch",
+    "generatingVideo": "Generating video…",
+    "playingVideo": "Playing video",
+    "watchAgain": "Watch again",
+    "videoError": "Video failed — tap to retry"
   },
   "activityHints": {
     "contemplative": {

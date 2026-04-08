@@ -140,6 +140,19 @@ export const echoes = {
     return resp.blob();
   },
 
+  narrateVideo: async (echoId: string, entryId: string, signal?: AbortSignal): Promise<Blob> => {
+    const token = getAccessToken();
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const resp = await fetch(`${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate/video`, {
+      method: 'POST',
+      headers,
+      signal,
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    return resp.blob();
+  },
+
   rename: (echoId: string, name: string) =>
     request<EchoResponse>(`/echoes/${echoId}`, {
       method: 'PATCH',
