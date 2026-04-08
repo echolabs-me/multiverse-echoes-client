@@ -18,7 +18,6 @@ import {
   X,
   MoreHorizontal,
   Navigation,
-  Phone,
   Trash2,
   Volume2,
   Square,
@@ -50,7 +49,8 @@ import { MoodHistoryStrip } from '../components/MoodHistoryStrip.tsx';
 import { EchoActivityHint } from '../components/EchoActivityHint.tsx';
 import { MobileEchoSwitcher } from '../components/EchoSidebar.tsx';
 import { EchoConversationPanel } from '../components/EchoConversationPanel.tsx';
-import { VoiceSessionModal } from '../components/VoiceSessionModal.tsx';
+// VoiceSessionModal temporarily hidden while audio playback is fixed
+// import { VoiceSessionModal } from '../components/VoiceSessionModal.tsx';
 import { echoes as echoApi, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
@@ -117,7 +117,8 @@ export function EchoDetailPage() {
   const [soloMode, setSoloMode] = useState(false);
   const [nudgeRipple, setNudgeRipple] = useState(false);
   const [nudgeConfirmed, setNudgeConfirmed] = useState(false);
-  const [showVoiceModal, setShowVoiceModal] = useState(false);
+  // Voice modal temporarily hidden while audio playback is fixed
+  // const [showVoiceModal, setShowVoiceModal] = useState(false);
 
   // Mood atmosphere — derive from latest diary entry or echo's current_mood.
   const moodContainerRef = useRef<HTMLDivElement>(null);
@@ -633,14 +634,7 @@ export function EchoDetailPage() {
                 )}
               </div>
             </div>
-            {/* Voice Call — full width */}
-            <button
-              onClick={() => setShowVoiceModal(true)}
-              disabled={activeEcho.status === 'Hibernated'}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-purple-500/30 bg-purple-500/10 px-4 py-3 text-sm font-semibold text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/15 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-            >
-              <Phone size={18} /> {t('echoDetail.voiceCall', 'Talk to ' + activeEcho.name)}
-            </button>
+            {/* Voice Call — temporarily hidden while audio playback is fixed */}
             {/* Nudge confirmation banner */}
             {nudgeConfirmed && (
               <div className="flex items-center gap-1.5 rounded-lg border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-medium text-success animate-slide-in">
@@ -1156,15 +1150,7 @@ export function EchoDetailPage() {
         echoId={activeEcho.echo_id}
       />
 
-      {/* Voice Session Modal */}
-      {showVoiceModal && activeEcho && (
-        <VoiceSessionModal
-          echoId={activeEcho.echo_id}
-          echoName={activeEcho.name}
-          avatarUrl={activeEcho.avatar_url}
-          onClose={() => setShowVoiceModal(false)}
-        />
-      )}
+      {/* Voice Session Modal — temporarily hidden while audio playback is fixed */}
 
     </div>
 
