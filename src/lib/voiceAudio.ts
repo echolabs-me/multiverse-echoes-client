@@ -194,6 +194,11 @@ export class VoiceAudioBridge {
     const dbg = `PLAYING: chunks=${this.chunksReceived} dur=${dur}s`;
     console.warn('[VoiceAudio]', dbg);
     this.callbacks.onDebug?.(dbg);
+
+    // Clear buffer so it doesn't replay on the next state cycle
+    this.pcmChunks = [];
+    this.totalPcmBytes = 0;
+    this.chunksReceived = 0;
   }
 
   private stopAudio(): void {
