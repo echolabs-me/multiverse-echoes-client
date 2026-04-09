@@ -1207,6 +1207,7 @@ function DiaryCard({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const blobUrlRef = useRef<string | null>(null);
   const [generateProgress, setGenerateProgress] = useState(0);
+  const [videoErrorMsg, setVideoErrorMsg] = useState('');
 
   const handleWatchNarration = useCallback(async () => {
     // Playing → pause
@@ -1242,6 +1243,7 @@ function DiaryCard({
     // Idle/error → start generation + poll
     setVideoState('generating');
     setGenerateProgress(0);
+    setVideoErrorMsg('');
 
     try {
       // Step 1: POST to start generation (or get cached video instantly).
@@ -1260,7 +1262,7 @@ function DiaryCard({
       // Step 2: Poll status every 2.5s until complete.
       const { jobId } = startResult;
       let attempts = 0;
-      const maxAttempts = 60; // 60 × 2.5s = 150s max
+      const maxAttempts = 120; // 120 × 2.5s = 300s max
 
       const poll = async (): Promise<void> => {
         while (attempts < maxAttempts) {
@@ -1275,9 +1277,21 @@ function DiaryCard({
           }
 
           if (status.status === 'complete') {
-            // Step 3: Fetch the video.
+            // Step 3: Fetch the video (with retry).
             setGenerateProgress(95);
-            const videoBlob = await echoApi.narrateVideoResult(entry.echo_id, entry.diary_id, jobId);
+            let videoBlob: Blob | null = null;
+            for (let fetchAttempt = 0; fetchAttempt < 3; fetchAttempt++) {
+              try {
+                if (fetchAttempt > 0) await new Promise((r) => setTimeout(r, 2000));
+                videoBlob = await echoApi.narrateVideoResult(entry.echo_id, entry.diary_id, jobId);
+                break;
+              } catch (fetchErr) {
+                const msg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+                console.error(`[video] Fetch attempt ${fetchAttempt + 1} failed: ${msg}`);
+                if (fetchAttempt === 2) throw new Error(`Video fetch failed after 3 attempts: ${msg}`);
+              }
+            }
+            if (!videoBlob) throw new Error('Video fetch returned empty');
             const blob = new Blob([videoBlob], { type: 'video/mp4' });
             if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
             blobUrlRef.current = URL.createObjectURL(blob);
@@ -1295,7 +1309,9 @@ function DiaryCard({
 
       await poll();
     } catch (e) {
-      console.error('Video narration failed:', e);
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error('Video narration failed:', msg);
+      setVideoErrorMsg(msg);
       setVideoState('error');
     }
   }, [videoState, entry.echo_id, entry.diary_id]);
@@ -1400,7 +1416,7 @@ function DiaryCard({
           ) : videoState === 'error' ? (
             <>
               <Video size={16} />
-              <span>{t('diary.videoError')}</span>
+              <span>{videoErrorMsg ? `Error: ${videoErrorMsg.slice(0, 80)}` : t('diary.videoError')}</span>
             </>
           ) : (
             <>
