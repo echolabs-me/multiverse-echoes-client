@@ -151,7 +151,8 @@ const COLOR_MAP = { check: 'text-[#4CAF7D]', x: 'text-[var(--text-muted)] opacit
 
 export function PricingSection() {
   const { t } = useTranslation();
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  // Read once — don't subscribe. Backend failures must not re-render public pages.
+  const isAuthenticated = useAuthStore.getState().isAuthenticated;
 
   return (
     <section id="pricing" className="section-reveal px-4 py-24 sm:px-6">

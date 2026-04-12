@@ -9,7 +9,8 @@ export function WebsiteNav() {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  // Read once — don't subscribe. Backend failures must not re-render public pages.
+  const isAuthenticated = useAuthStore.getState().isAuthenticated;
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);

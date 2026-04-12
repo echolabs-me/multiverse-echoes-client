@@ -11,30 +11,39 @@ function SectionDivider() {
 
 export function HomePage() {
   const { t } = useTranslation();
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  // Read auth state once at render — don't subscribe to changes so backend
+  // failures can't trigger re-renders that break scroll animations.
+  const isAuthenticated = useAuthStore.getState().isAuthenticated;
   const ctaTo = isAuthenticated ? '/dashboard' : '/register';
 
-  // Scroll-triggered reveal via IntersectionObserver
+  // Scroll-triggered reveal via IntersectionObserver.
+  // Uses requestAnimationFrame to ensure DOM is painted before observing.
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const els = document.querySelectorAll('.section-reveal');
     if (prefersReduced) {
-      els.forEach((el) => el.classList.add('revealed'));
+      document.querySelectorAll('.section-reveal').forEach((el) => el.classList.add('revealed'));
       return;
     }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            e.target.classList.add('revealed');
-            obs.unobserve(e.target);
+    let obs: IntersectionObserver | null = null;
+    const raf = requestAnimationFrame(() => {
+      const els = document.querySelectorAll('.section-reveal');
+      obs = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('revealed');
+              obs?.unobserve(e.target);
+            }
           }
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
-    );
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
+      );
+      els.forEach((el) => obs!.observe(el));
+    });
+    return () => {
+      cancelAnimationFrame(raf);
+      obs?.disconnect();
+    };
   }, []);
 
   return (
@@ -401,15 +410,22 @@ export function HomePage() {
           to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Scroll-triggered reveal */
+        /* Scroll-triggered reveal — JS adds .revealed via IntersectionObserver.
+           CSS fallback: if JS fails or observer never fires, content becomes
+           visible after 2s via animation so pages are never blank. */
         .section-reveal {
           opacity: 0;
           transform: translateY(24px);
           transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+          animation: me-reveal-fallback 0.6s ease-out 2s both;
         }
         .section-reveal.revealed {
           opacity: 1;
           transform: translateY(0);
+          animation: none;
+        }
+        @keyframes me-reveal-fallback {
+          to { opacity: 1; transform: translateY(0); }
         }
 
         /* CTA button — matches landing page style */
