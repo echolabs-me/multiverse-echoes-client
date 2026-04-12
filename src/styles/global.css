@@ -411,10 +411,18 @@
   unicode-range: U+0E00-0E7F;
 }
 
-/* Base styles — prevent root-level scroll, only panels scroll internally */
+/* Base styles */
 html, body {
   height: 100%;
   margin: 0;
+}
+
+/* App shell routes (dashboard, echo detail, etc.) use internal panel
+   scrolling — overflow:hidden on the root prevents double scrollbars.
+   Public website routes (/, /home, /about, /terms, /privacy) need
+   normal document scrolling, so this is scoped via a body class that
+   AppLayout applies instead of being set globally. */
+body.app-shell {
   overflow: hidden;
 }
 

@@ -148,6 +148,14 @@ export function AppLayout() {
   const [mobileOracleOpen, setMobileOracleOpen] = useState(false);
   const unreadCount = useNotificationStore((s) => s.unreadCount);
 
+  // App shell needs overflow:hidden on body for internal panel scrolling.
+  // Public website routes need normal document scrolling, so this is scoped
+  // to AppLayout mount/unmount rather than set globally in CSS.
+  useEffect(() => {
+    document.body.classList.add('app-shell');
+    return () => document.body.classList.remove('app-shell');
+  }, []);
+
   // Touch detection — JS-based since CSS pointer queries are unreliable on iPad Safari
   const [isTablet, setIsTablet] = useState(() => isTabletDevice());
 
