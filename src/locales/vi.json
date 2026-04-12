@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "Điều gì sẽ xảy ra nếu bạn chọn một hướng đi khác?",
+      "subheadline": "Tạo ra một phiên bản AI của chính bạn, tự do vận hành và trải nghiệm cuộc sống tại một thế giới song song.",
+      "cta": "Khởi tạo bản sắc riêng cùng Echo"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
-      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "title": "Cách thức hoạt động",
+      "step1Title": "Khởi tạo Echo của riêng bạn",
+      "step1Desc": "Hãy mở ra cho họ một viễn cảnh mới — một ngã rẽ khác, một hành trình chưa từng được khám phá.",
+      "step2Title": "Khám phá thế giới riêng bạn",
+      "step2Desc": "Tokyo tương lai 2045, Australia du mục, Florence thời Phục hưng 1490.",
+      "step3Title": "Theo dõi trực tiếp ngay",
+      "step3Desc": "Nhật ký, chuyện tình cảm, những cột mốc cuộc đời — tất cả đều tự động vận hành.",
+      "step4Title": "Nhắc khéo, kết nối nhanh",
+      "step4Desc": "Truyền cảm hứng cho cuộc sống của họ. Và để họ tự quyết định hành trình phía trước."
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "Tính năng nổi bật",
+      "diaryTitle": "Nhật ký tự động",
+      "diaryDesc": "Echo tự viết nên câu chuyện của riêng mình. Hãy quay lại để khám phá những điều bất ngờ.",
+      "imagesTitle": "Hình ảnh tạo bởi AI",
+      "imagesDesc": "Mỗi dòng nhật ký là một thước phim điện ảnh. Độ phân giải 1280×720, khởi tạo chỉ trong 654ms.",
+      "voiceTitle": "Gọi thoại",
+      "voiceDesc": "Trò chuyện cùng Echo. Trải nghiệm phản hồi tức thì với giọng nói chân thực.",
+      "videoTitle": "Thuyết minh video",
+      "videoDesc": "Chiêm ngưỡng Echo kể lại nhật ký qua những thước phim với chuyển động môi khớp từng lời nói.",
+      "languagesTitle": "Hỗ trợ 20 ngôn ngữ",
+      "languagesDesc": "Hỗ trợ 20 ngôn ngữ, tiếp cận 80% dân số toàn cầu.",
+      "relationshipsTitle": "Kết nối",
+      "relationshipsDesc": "Echoes tự tạo nên những kết nối riêng. Bạn không thể chọn bạn cho chúng."
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
+      "title": "Ba thế giới. Ba cuộc đời.",
       "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
+      "tokyoDesc": "Thành phố siêu đô thị rực rỡ ánh đèn neon. Nơi những mạng lưới hacker ngầm đối đầu trực diện với các đế chế tập đoàn quyền lực.",
       "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "australiaDesc": "Những cộng đồng tự cung tự cấp giữa vùng hoang dã khắc nghiệt. Nơi cuộc chiến với sự khan hiếm nguồn lực, bài toán quản trị cộng đồng và sự giằng xé giữa cô độc và kết nối.",
+      "florenceName": "Florence thời kỳ Phục hưng 1490",
+      "florenceDesc": "Nghệ thuật, chính trị và những mật mã ẩn giấu thời kỳ Medici. Nơi quyền lực giao thoa cùng vẻ đẹp, những cuộc đối đầu giữa các xưởng chế tác và sự bảo trợ của giới thượng lưu."
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "Đã có {{count}} người đang chờ đón",
+      "builtBy": "Phát triển bởi một founder duy nhất. Tổng chi phí đầu tư 660 USD. Quy mô 95.000 dòng code."
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "Được tạo nên bởi một người 56 tuổi, không hề biết viết code. 95.000 dòng mã Rust và TypeScript. Giá 660 USD.",
+      "readMore": "Xem chi tiết câu chuyện"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "Echo đang chờ bạn.",
+      "cta": "Khởi tạo dấu ấn riêng cùng Echo",
+      "noCreditCard": "Không cần thẻ tín dụng. Có gói miễn phí."
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "Tính năng nổi bật",
+      "pricing": "Bảng giá",
+      "about": "Giới thiệu",
+      "enter": "Khám phá ngay",
+      "dashboard": "Bảng điều khiển"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "Điều khoản sử dụng",
+      "privacy": "Bảo mật quyền riêng tư",
+      "contact": "Liên hệ",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "Hiện tại trang này chỉ hỗ trợ tiếng Anh. Chúng tôi đang hoàn thiện bản dịch chuyên nghiệp cho các ngôn ngữ khác, vui lòng quay lại sau nhé!",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "Chọn ngôn ngữ để bắt đầu"
     }
   },
   "tiers": {
-    "free": "Free",
-    "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
-    "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "free": "Phry",
+    "starter": "S-tát-tơ",
+    "core": "Co-re",
+    "creator": "Cri-ê-tơ",
+    "godMode": "Gót Mốt",
+    "enterprise": "En-tơ-prai-zơ",
+    "heartbeat": "Nhịp tim",
+    "echoes": "Vang vọng",
+    "conversations": "Cuộc trò chuyện",
+    "nudges": "Nhắc nhở",
+    "videoDiary": "Nhật ký video",
+    "voiceCalls": "Cuộc gọi thoại",
+    "perDay": "mỗi ngày",
+    "perMonth": "mỗi tháng",
+    "unlimited": "Không giới hạn",
+    "adSupported": "Có quảng cáo",
+    "adFree": "Không quảng cáo",
+    "mostPopular": "Phổ biến nhất",
+    "subscribe": "Đăng ký",
+    "contactUs": "Liên hệ với chúng tôi",
+    "twiceDaily": "2 lần/ngày",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "Tiện ích bổ sung",
+      "speedBoost": "Tăng tốc",
+      "speedBoostDesc": "Giảm nửa khoảng thời gian nhịp tim",
+      "videoVoiceBoost": "Tăng cường Video & Thoại",
+      "videoVoiceBoostDesc": "+50% giới hạn video và thoại hàng ngày",
+      "extraEcho": "Vang Thêm",
+      "extraEchoDesc": "+1 Echo vượt hạn mức gói",
+      "nudgePack": "Gói 100 Nudge",
+      "nudgePackDesc": "Thêm 100 lượt nhắc",
+      "privateShard": "Mảnh riêng tư",
+      "privateShardDesc": "Thế giới tùy chỉnh của bạn"
     }
   }
 }

@@ -1022,75 +1022,75 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "E se avessi scelto una strada diversa?",
+      "subheadline": "Crea una versione AI di te stesso che viva una vita autonoma in un mondo parallelo.",
+      "cta": "Dai vita al tuo Echo"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
-      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "title": "Come funziona",
+      "step1Title": "Dai vita al tuo Echo",
+      "step1Desc": "Offri loro un’alternativa: un nuovo orizzonte, un sentiero ancora inesplorato.",
+      "step2Title": "Scegli il tuo mondo",
+      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Firenze Rinascimentale 1490.",
+      "step3Title": "Guardali dal vivo",
+      "step3Desc": "Diari, relazioni, eventi della vita: tutto prende vita in modo autonomo.",
+      "step4Title": "Semplici gesti, grandi conversazioni",
+      "step4Desc": "Ispirali a cambiare vita. Lascia che siano loro a decidere come farlo."
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "Caratteristiche",
+      "diaryTitle": "Diario autonomo",
+      "diaryDesc": "Il tuo Echo scrive la propria storia. Torna a scoprire cosa è successo.",
+      "imagesTitle": "Immagini generate dall'IA",
+      "imagesDesc": "Ogni ricordo prende vita in una scena cinematografica. 1280×720, generata in soli 654ms.",
+      "voiceTitle": "Chiamate vocali",
+      "voiceDesc": "Parla con il tuo Echo. Ti risponderà in tempo reale con la sua voce.",
+      "videoTitle": "Narrazione video",
+      "videoDesc": "Guarda il tuo Echo raccontare il proprio diario con video perfettamente sincronizzati.",
+      "languagesTitle": "Disponibile in 20 lingue",
+      "languagesDesc": "Disponibile in 20 lingue, per raggiungere l'80% della popolazione mondiale.",
+      "relationshipsTitle": "Relazioni",
+      "relationshipsDesc": "Gli Echo creano legami autonomamente. Non puoi scegliere chi saranno i loro amici."
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
+      "title": "Tre mondi. Tre vite.",
       "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
+      "tokyoDesc": "Una megalopoli immersa nelle luci neon. Dove le reti hacker sotterranee si scontrano con i vertici del potere aziendale.",
       "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "australiaDesc": "Comunità off-grid che attraversano l'impervio cuore dell'outback. La sfida della scarsità di risorse, la governance collettiva, il fragile equilibrio tra isolamento e connessione.",
+      "florenceName": "Firenze, 1490: il cuore del Rinascimento",
+      "florenceDesc": "Arte, politica e segreti in codice nell'epoca dei Medici. Mecenatismo, botteghe rivali, bellezza e potere."
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "{{count}} persone sono già in lista d'attesa",
+      "builtBy": "Ideato da un singolo fondatore. Costo di sviluppo totale: 660$. 95.000 righe di codice."
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "Creato da un cinquantaseienne che non sa scrivere una riga di codice. 95.000 righe di Rust e TypeScript. 660$.",
+      "readMore": "Scopri tutta la storia"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "Il tuo Echo ti aspetta.",
+      "cta": "Dai vita al tuo Echo",
+      "noCreditCard": "Nessuna carta di credito richiesta. Piano gratuito disponibile."
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "Caratteristiche",
+      "pricing": "Piani e prezzi",
+      "about": "Chi siamo",
+      "enter": "Scopri di più",
+      "dashboard": "Area di controllo"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "Condizioni d'uso",
+      "privacy": "Privacy e sicurezza",
+      "contact": "Contattaci",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "Al momento questa pagina è disponibile solo in inglese. Le traduzioni professionali sono in fase di preparazione.",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "Scegli la tua lingua per continuare"
     }
   },
   "tiers": {
@@ -1099,34 +1099,34 @@
     "core": "Core",
     "creator": "Creator",
     "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "enterprise": "Enterprais",
+    "heartbeat": "Battito cardiaco",
+    "echoes": "Echi",
+    "conversations": "Conversazioni",
+    "nudges": "Suggerimenti",
+    "videoDiary": "Diario video",
+    "voiceCalls": "Chiamate vocali",
+    "perDay": "al giorno",
+    "perMonth": "al mese",
+    "unlimited": "Illimitato",
+    "adSupported": "Con pubblicità",
+    "adFree": "Senza pubblicità",
+    "mostPopular": "Più popolari",
+    "subscribe": "Iscriviti",
+    "contactUs": "Contattaci",
+    "twiceDaily": "2 volte/giorno",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "Componenti aggiuntivi",
+      "speedBoost": "Turbo",
+      "speedBoostDesc": "Dimezza l'intervallo del battito",
+      "videoVoiceBoost": "Potenziamento Video e Voce",
+      "videoVoiceBoostDesc": "+50% limiti giornalieri video e voce",
+      "extraEcho": "Eco extra",
+      "extraEchoDesc": "+1 Echo oltre il limite del piano",
+      "nudgePack": "Pacchetto 100 Nudge",
+      "nudgePackDesc": "100 nudge aggiuntivi",
+      "privateShard": "Shard privato",
+      "privateShardDesc": "Il tuo mondo personalizzato"
     }
   }
 }

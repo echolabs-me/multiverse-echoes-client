@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "Paano kaya kung ibang landas ang pinili mo?",
+      "subheadline": "Gumawa ng AI version ng iyong sarili na may sariling buhay sa isang parallel world.",
+      "cta": "Bumuo ng sariling Echo"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
+      "title": "Paano ito gumagana",
+      "step1Title": "Bumuo ng sariling Echo",
+      "step1Desc": "Bigyan sila ng pagkakataong mangarap—isang bagong landas, isang buhay na hindi pa nila nasusubukan.",
+      "step2Title": "Pumili ng iyong mundo",
       "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "step3Title": "Panoorin sila nang live",
+      "step3Desc": "Mga tala sa diary, mga relasyon, mahahalagang pangyayari sa buhay — lahat kusang nagaganap.",
+      "step4Title": "Paalalahanan at kausapin",
+      "step4Desc": "Gabayan ang kanilang buhay. Sila ang magpapasya kung paano ito itatakbo."
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
+      "title": "Mga Tampok",
+      "diaryTitle": "Kusa ang pag-tala",
+      "diaryDesc": "Kusa nang bumubuo ng sariling kwento ang iyong Echo. Balikan ito para malaman ang mga kaganapan.",
+      "imagesTitle": "Mga imaheng gawa ng AI",
+      "imagesDesc": "Bawat entry sa diary, may kasamang cinematic scene. 1280×720, generated sa loob lang ng 654ms.",
       "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "voiceDesc": "Kausapin ang iyong Echo. Sasagot sila agad gamit ang sarili nilang boses.",
+      "videoTitle": "Voiceover ng video",
+      "videoDesc": "Panoorin ang iyong Echo na magkwento ng kanilang diary sa pamamagitan ng lip-synced video.",
+      "languagesTitle": "Suportado ang 20 wika",
+      "languagesDesc": "Available sa 20 wika, abot ang 80% ng populasyon ng mundo.",
+      "relationshipsTitle": "Koneksyon",
+      "relationshipsDesc": "May sariling mundo ang mga echo. Hindi mo mapipili kung sino ang magiging koneksyon nila."
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
+      "title": "Tatlong mundo. Tatlong buhay.",
       "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
+      "tokyoDesc": "Siyudad na punong-puno ng neon. Dito nagbabanggaan ang mga underground hacker network at ang mga makapangyarihang korporasyon.",
       "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "australiaDesc": "Mga komunidad na namumuhay nang malayo sa kabihasnan, binabaybay ang masukal na kalikasan. Pagsubok sa kakulangan ng resources, pamamahala ng komunidad, at ang tunggalian ng pag-iisa at pakikipag-ugnayan.",
+      "florenceName": "Florence, Italy: Panahon ng Renaissance, 1490",
+      "florenceDesc": "Sining, politika, at mga lihim na koda sa panahon ng Medici. Pagtangkilik, tunggalian ng mga workshop, kagandahan, at kapangyarihan."
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "May {{count}} na nag-aabang na.",
+      "builtBy": "Binuo ng isang solo founder. $660 lang ang kabuuang gastos sa development. 95,000 lines of code."
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "Gawa ng isang 56-year-old na walang alam sa coding. 95,000 lines ng Rust at TypeScript. $660.",
+      "readMore": "Basahin ang buong kwento"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "Handa na ang iyong Echo.",
+      "cta": "Bumuo ng sarili mong Echo",
+      "noCreditCard": "Hindi kailangan ng credit card. May libreng tier na available."
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "Mga Tampok",
+      "pricing": "Presyo",
+      "about": "Tungkol sa Amin",
+      "enter": "Sali na",
+      "dashboard": "Control Panel"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "Mga Tuntunin",
+      "privacy": "Proteksyon sa Privacy",
+      "contact": "Makipag-ugnayan",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "Kasalukuyang available ang page na ito sa Ingles lamang. Inihahanda na namin ang professional translation nito.",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "Piliin ang iyong wika para magsimula"
     }
   },
   "tiers": {
-    "free": "Free",
+    "free": "Fri",
     "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
-    "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
+    "core": "Kor",
+    "creator": "Kri-ey-tor",
+    "godMode": "God Mod",
+    "enterprise": "Enterprayz",
+    "heartbeat": "Tibok ng puso",
+    "echoes": "Alingawngaw",
+    "conversations": "Mga Pag-uusap",
+    "nudges": "Paalala",
     "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "voiceCalls": "Voice call",
+    "perDay": "kada araw",
+    "perMonth": "kada buwan",
+    "unlimited": "Walang limitasyon",
+    "adSupported": "May mga ad",
+    "adFree": "Walang ad",
+    "mostPopular": "Pinakasikat",
+    "subscribe": "Mag-subscribe",
+    "contactUs": "Makipag-ugnayan sa amin",
+    "twiceDaily": "2×/araw",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
+      "title": "Mga Add-on",
+      "speedBoost": "Bilis-Boost",
+      "speedBoostDesc": "Bawasan ang heartbeat interval nang kalahati",
+      "videoVoiceBoost": "Boost sa Video at Voice",
+      "videoVoiceBoostDesc": "+50% limit sa video at voice araw-araw",
+      "extraEcho": "Dagdag na Alingawngaw",
+      "extraEchoDesc": "+1 Echo lampas sa tier limit",
+      "nudgePack": "100-Pack ng Nudge",
+      "nudgePackDesc": "100 karagdagang nudge",
       "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "privateShardDesc": "Sarili mong mundo"
     }
   }
 }

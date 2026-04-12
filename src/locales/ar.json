@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "ماذا لو اخترت مساراً مختلفاً؟",
+      "subheadline": "ابتكر نسخة ذكية منك تعيش حياة مستقلة في عالم موازٍ.",
+      "cta": "ابتكر بصمتك الخاصة"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
-      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "title": "كيفية العمل",
+      "step1Title": "ابتكر بصمتك الخاصة",
+      "step1Desc": "امنحهم فرصة لاستكشاف المجهول.. حياة بديلة، ومسارات لم يطرقوها من قبل.",
+      "step2Title": "اختر عالمك",
+      "step2Desc": "طوكيو السيبرانية 2045، أستراليا الرحالة، فلورنسا عصر النهضة 1490.",
+      "step3Title": "شاهدهم مباشرةً",
+      "step3Desc": "تدوينات يومية، علاقات، ومحطات حياتية — كل ذلك يحدث بتناغم وتلقائية تامة.",
+      "step4Title": "تواصل بلمسة",
+      "step4Desc": "أثِر في حياتهم، واترك لهم حرية الاختيار."
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "المزايا",
+      "diaryTitle": "مذكرات ذكية ذاتية التدوين",
+      "diaryDesc": "صدى يكتب قصته الخاصة. عُد لتكتشف ماذا حدث.",
+      "imagesTitle": "صور مُبتكرة بالذكاء الاصطناعي",
+      "imagesDesc": "كل تدوينة تتحول إلى مشهد سينمائي. دقة 1280×720، تُنفذ في 654 مللي ثانية فقط.",
+      "voiceTitle": "المكالمات الصوتية",
+      "voiceDesc": "تحدث مع Echo، واستمتع باستجابة فورية وبصوت طبيعي وواقعي.",
+      "videoTitle": "التعليق الصوتي للفيديوهات",
+      "videoDesc": "شاهد \"إيكو\" وهو يروي مذكراته بفيديو متناغم بدقة مع حركة الشفاه.",
+      "languagesTitle": "بـ 20 لغة",
+      "languagesDesc": "متوفر بـ 20 لغة، ليصل إلى 80% من سكان العالم.",
+      "relationshipsTitle": "روابط وثيقة",
+      "relationshipsDesc": "تنسج الأصداء علاقاتها الخاصة، ولا تملك أنت اختيار رفاقها."
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
-      "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
-      "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "title": "ثلاثة عوالم. ثلاث حيوات.",
+      "tokyoName": "طوكيو السيبرانية ٢٠٤٥",
+      "tokyoDesc": "مدينة عملاقة تغمرها أضواء النيون. حيث تتصادم شبكات الهكرز السرية مع مراكز القوة في الشركات الكبرى.",
+      "australiaName": "نوماد أستراليا",
+      "australiaDesc": "مجتمعات تعيش خارج النطاق، تشق طريقها في قلب الطبيعة البكر. صراع مع ندرة الموارد، وتحديات الإدارة الذاتية، وجدلية العزلة في مواجهة التواصل.",
+      "florenceName": "فلورنسا في عصر النهضة، عام ١٤٩٠",
+      "florenceDesc": "فن، وسياسة، وأسرار مشفرة في عصر مديتشي. صراع الورش الفنية، وشغف الرعاية، وتجسيد الجمال والسلطة."
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "انضم إلى {{count}} شخص في قائمة الانتظار",
+      "builtBy": "ابتكره مؤسس واحد. بتكلفة تطوير إجمالية بلغت 660 دولاراً. وبناءً على 95,000 سطر من الكود البرمجي."
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "ابتكره شخص في السادسة والخمسين من عمره، دون أن يكتب سطراً برمجياً واحداً. 95 ألف سطر من لغتي Rust وTypeScript. بقيمة 660 دولاراً.",
+      "readMore": "اقرأ القصة كاملة"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "إيكو بانتظارك.",
+      "cta": "ابتكر بصمتك الخاصة",
+      "noCreditCard": "لا حاجة لبطاقة ائتمان. تتوفر باقة مجانية."
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "المزايا",
+      "pricing": "الأسعار",
+      "about": "من نحن",
+      "enter": "ابدأ الآن",
+      "dashboard": "لوحة التحكم"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "الشروط والأحكام",
+      "privacy": "خصوصيتك أولويتنا",
+      "contact": "تواصل معنا",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "هذه الصفحة متوفرة حالياً باللغة الإنجليزية فقط، ونعمل الآن على توفير الترجمة الاحترافية قريباً.",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "اختر لغتك للمتابعة"
     }
   },
   "tiers": {
-    "free": "Free",
-    "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
-    "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "free": "فري",
+    "starter": "ستارتر",
+    "core": "كور",
+    "creator": "كرييتور",
+    "godMode": "جود مود",
+    "enterprise": "إنتربرايز",
+    "heartbeat": "نبض القلب",
+    "echoes": "أصداء",
+    "conversations": "المحادثات",
+    "nudges": "تنبيهات",
+    "videoDiary": "يوميات فيديو",
+    "voiceCalls": "مكالمات صوتية",
+    "perDay": "يومياً",
+    "perMonth": "شهرياً",
+    "unlimited": "غير محدود",
+    "adSupported": "مدعوم بالإعلانات",
+    "adFree": "بدون إعلانات",
+    "mostPopular": "الأكثر شيوعاً",
+    "subscribe": "اشترك",
+    "contactUs": "اتصل بنا",
+    "twiceDaily": "٢× يومياً",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "إضافات",
+      "speedBoost": "تعزيز السرعة",
+      "speedBoostDesc": "قلل فاصل نبضات القلب للنصف",
+      "videoVoiceBoost": "تعزيز الفيديو والصوت",
+      "videoVoiceBoostDesc": "+50% من حدود الفيديو والصوت اليومية",
+      "extraEcho": "صدى إضافي",
+      "extraEchoDesc": "+1 صدى يتجاوز حد باقتك",
+      "nudgePack": "حزمة 100 نادج",
+      "nudgePackDesc": "١٠٠ تنبيه إضافي",
+      "privateShard": "شظية خاصة",
+      "privateShardDesc": "عالمك الخاص"
     }
   }
 }

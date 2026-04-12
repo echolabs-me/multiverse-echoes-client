@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "Ya farklı bir yol seçseydiniz?",
+      "subheadline": "Paralel bir dünyada kendi başına yaşayan, yapay zeka tabanlı bir ikizinizi yaratın.",
+      "cta": "Kendi Yankını Oluştur"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
-      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "title": "Nasıl çalışır?",
+      "step1Title": "Kendi Yankını Oluştur",
+      "step1Desc": "Onlara yeni bir ihtimal sunun; farklı bir yaşam yolu, keşfedilmemiş bir rota.",
+      "step2Title": "Kendi dünyanı seç",
+      "step2Desc": "Siber-Tokyo 2045, Göçebe Avustralya, Rönesans Floransa 1490.",
+      "step3Title": "Canlı izleyin",
+      "step3Desc": "Günlük kayıtları, ilişkiler, hayatın dönüm noktaları — hepsi kendiliğinden gelişiyor.",
+      "step4Title": "Harekete geçir ve konuştur",
+      "step4Desc": "Hayatlarına dokunun. Kararı onlara bırakın."
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "Özellikler",
+      "diaryTitle": "Kendi Kendini Yöneten Günlük",
+      "diaryDesc": "Echo'nuz kendi hikayesini yazıyor. Neler olduğunu görmek için geri dönün.",
+      "imagesTitle": "Yapay zeka ile oluşturulan görseller",
+      "imagesDesc": "Her günlük girişi, sinematik bir sahneyle hayat buluyor. 1280×720 çözünürlük, sadece 654 ms'de hazır.",
+      "voiceTitle": "Sesli aramalar",
+      "voiceDesc": "Echo'nuzla konuşun; size anında kendi sesiyle yanıt versin.",
+      "videoTitle": "Videolu anlatım",
+      "videoDesc": "Echo'nun günlüğü seslendirirken dudak hareketlerinin videoyla tam uyumunu izleyin.",
+      "languagesTitle": "20 dil desteği",
+      "languagesDesc": "Dünya nüfusunun %80'ine hitap eden 20 farklı dil seçeneğiyle.",
+      "relationshipsTitle": "Bağlar",
+      "relationshipsDesc": "Yankılar kendi bağlarını kurar. Arkadaşlarını siz seçmezsiniz."
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
-      "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
-      "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "title": "Üç dünya. Üç hayat.",
+      "tokyoName": "Siber Tokyo 2045",
+      "tokyoDesc": "Neon ışıklarıyla yıkanmış bir megakent. Yeraltı hacker ağları ve kurumsal güç odaklarının çatışma noktası.",
+      "australiaName": "Nomad Avustralya",
+      "australiaDesc": "Vahşi doğanın kalbinde, şebekeden bağımsız yaşayan topluluklar. Kaynak kıtlığı, toplumsal yönetim ve izolasyon ile bağ kurma arasındaki ince çizgi.",
+      "florenceName": "Rönesans Floransa'sı 1490",
+      "florenceDesc": "Medici döneminde sanat, siyaset ve şifreli sırlar. Hamilik, rakip atölyeler, güzellik ve güç."
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "{{count}} kişi şimdiden sırada",
+      "builtBy": "Tek bir kurucunun imzası. Toplam 660 dolarlık geliştirme maliyeti. 95.000 satır kod."
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "Tek satır kod yazamayan 56 yaşındaki bir girişimci tarafından geliştirildi. 95.000 satırlık Rust ve TypeScript altyapısı. Sadece 660$.",
+      "readMore": "Hikayenin tamamını okuyun"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "Echo'nuz sizi bekliyor.",
+      "cta": "Kendi Yankını Oluştur",
+      "noCreditCard": "Kredi kartı gerekmez. Ücretsiz plan mevcut."
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "Özellikler",
+      "pricing": "Fiyatlandırma",
+      "about": "Hakkımızda",
+      "enter": "Giriş yap",
+      "dashboard": "Kontrol Paneli"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "Kullanım Koşulları",
+      "privacy": "Gizlilik",
+      "contact": "İletişime Geçin",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "Bu sayfa şu an için yalnızca İngilizce dilinde sunulmaktadır. Profesyonel çeviri çalışmaları devam ediyor.",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "Devam etmek için dilinizi seçin"
     }
   },
   "tiers": {
-    "free": "Free",
-    "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
-    "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "free": "Fri",
+    "starter": "Startır",
+    "core": "Kor",
+    "creator": "Kriyeytör",
+    "godMode": "God Mod",
+    "enterprise": "Enterprayz",
+    "heartbeat": "Kalp Atışı",
+    "echoes": "Yankılar",
+    "conversations": "Sohbetler",
+    "nudges": "Hatırlatıcılar",
+    "videoDiary": "Video günlüğü",
+    "voiceCalls": "Sesli aramalar",
+    "perDay": "günlük",
+    "perMonth": "aylık",
+    "unlimited": "Sınırsız",
+    "adSupported": "Reklam destekli",
+    "adFree": "Reklamsız",
+    "mostPopular": "En popüler",
+    "subscribe": "Abone Ol",
+    "contactUs": "Bize ulaşın",
+    "twiceDaily": "Günde 2 kez",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "Eklentiler",
+      "speedBoost": "Hız Artışı",
+      "speedBoostDesc": "Kalp atış aralığını yarıya indir",
+      "videoVoiceBoost": "Video ve Ses Güçlendirme",
+      "videoVoiceBoostDesc": "+%50 günlük video ve ses limiti",
+      "extraEcho": "Ek Yankı",
+      "extraEchoDesc": "Limit üstü +1 Echo",
+      "nudgePack": "100'lü Nudge Paketi",
+      "nudgePackDesc": "100 ek hatırlatıcı",
+      "privateShard": "Özel Parça",
+      "privateShardDesc": "Kendi özel dünyan"
     }
   }
 }

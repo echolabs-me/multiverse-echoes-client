@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "จะเป็นอย่างไร... ถ้าคุณเลือกเดินในเส้นทางที่ต่างออกไป?",
+      "subheadline": "สร้างตัวตน AI ของคุณ ให้ออกไปใช้ชีวิตอย่างอิสระในโลกคู่ขนาน",
+      "cta": "สร้างตัวตนในแบบคุณกับ Echo"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
-      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "title": "หลักการทำงาน",
+      "step1Title": "สร้างตัวตนในแบบคุณกับ Echo",
+      "step1Desc": "เปิดโลกแห่งความเป็นไปได้ ให้พวกเขาได้ลองก้าวเดินบนเส้นทางสายใหม่ที่ไม่เคยสัมผัสมาก่อน",
+      "step2Title": "เลือกโลกในแบบคุณ",
+      "step2Desc": "ไซเบอร์-โตเกียว 2045, โนแมด ออสเตรเลีย, เรเนซองส์ ฟลอเรนซ์ 1490",
+      "step3Title": "รับชมสดได้เลยตอนนี้",
+      "step3Desc": "บันทึกประจำวัน ความสัมพันธ์ และเหตุการณ์สำคัญในชีวิต — ทุกอย่างขับเคลื่อนได้เองอย่างอัตโนมัติ",
+      "step4Title": "สะกิดทัก ทักทายคุย",
+      "step4Desc": "สร้างแรงบันดาลใจให้ชีวิต ให้พวกเขาเป็นคนกำหนดเส้นทางเอง"
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "ฟีเจอร์เด่น",
+      "diaryTitle": "บันทึกอัตโนมัติที่รู้ใจคุณ",
+      "diaryDesc": "ให้ Echo บันทึกเรื่องราวในแบบของตัวเอง แล้วกลับมาติดตามว่าเกิดอะไรขึ้นบ้าง",
+      "imagesTitle": "สร้างสรรค์รูปภาพด้วย AI",
+      "imagesDesc": "เปลี่ยนทุกบันทึกให้เป็นฉากภาพยนตร์สุดตระการตา ความละเอียด 1280×720 สร้างเสร็จไวใน 654 มิลลิวินาที",
+      "voiceTitle": "โทรด้วยเสียง",
+      "voiceDesc": "พูดคุยกับ Echo ได้ทันที พร้อมการโต้ตอบด้วยน้ำเสียงที่เป็นเอกลักษณ์และสมจริงแบบเรียลไทม์",
+      "videoTitle": "บรรยายวิดีโอ",
+      "videoDesc": "ให้ Echo เล่าเรื่องราวในไดอารี่ผ่านวิดีโอที่ขยับปากได้สมจริงแบบคำต่อคำ",
+      "languagesTitle": "รองรับ 20 ภาษา",
+      "languagesDesc": "รองรับ 20 ภาษา ครอบคลุมผู้ใช้งานกว่า 80% ทั่วโลก",
+      "relationshipsTitle": "สายสัมพันธ์",
+      "relationshipsDesc": "Echoes มีสังคมเป็นของตัวเอง และคุณไม่ใช่คนกำหนดว่าพวกเขาจะคบใคร"
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
-      "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
-      "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "title": "3 โลก 3 ชีวิต",
+      "tokyoName": "ไซเบอร์-โตเกียว 2045",
+      "tokyoDesc": "มหานครแสงสีนีออนที่ไม่มีวันหลับใหล จุดบรรจบของการปะทะกันระหว่างเครือข่ายแฮกเกอร์ใต้ดินและอำนาจมืดของเหล่าคอร์ปอเรชัน",
+      "australiaName": "โนแมด ออสเตรเลีย",
+      "australiaDesc": "ชุมชนนอกเขตเมืองที่บุกเบิกดินแดนห่างไกล การต่อสู้กับความขาดแคลน การปกครองตนเอง และความย้อนแย้งระหว่างความโดดเดี่ยวกับการเชื่อมต่อถึงกัน",
+      "florenceName": "ฟลอเรนซ์ ยุคเรเนซองส์ ค.ศ. 1490",
+      "florenceDesc": "ศิลปะ การเมือง และรหัสลับแห่งยุคเมดิชี เรื่องราวของการอุปถัมภ์ การชิงดีชิงเด่นระหว่างสตูดิโอศิลป์ ความงาม และอำนาจที่ซ่อนอยู่"
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "มีผู้รอร่วมเป็นส่วนหนึ่งกับเราแล้ว {{count}} คน",
+      "builtBy": "สร้างโดยผู้ก่อตั้งเพียงคนเดียว ด้วยงบพัฒนาทั้งหมดเพียง 660 ดอลลาร์ และโค้ดกว่า 95,000 บรรทัด"
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "สร้างสรรค์โดยคนวัย 56 ที่เขียนโค้ดไม่เป็นแม้แต่บรรทัดเดียว แต่ได้ซอฟต์แวร์ที่ทรงพลังด้วย Rust และ TypeScript กว่า 95,000 บรรทัด ในราคาเพียง 660 ดอลลาร์",
+      "readMore": "อ่านเรื่องราวทั้งหมด"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "Echo ของคุณพร้อมใช้งานแล้ว",
+      "cta": "สร้างตัวตนในแบบคุณกับ Echo",
+      "noCreditCard": "ไม่ต้องใช้บัตรเครดิต เริ่มต้นใช้งานฟรี"
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "ฟีเจอร์เด่น",
+      "pricing": "ราคาและแพ็กเกจ",
+      "about": "เกี่ยวกับเรา",
+      "enter": "เริ่มต้นใช้งาน",
+      "dashboard": "แผงควบคุม"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "ข้อกำหนดและเงื่อนไข",
+      "privacy": "ความเป็นส่วนตัว",
+      "contact": "ติดต่อเรา",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "ขณะนี้หน้าเว็บนี้รองรับเฉพาะภาษาอังกฤษ โดยเรากำลังดำเนินการแปลเป็นภาษาไทยอย่างเป็นทางการเพื่อให้คุณได้รับประสบการณ์ที่ดีที่สุดเร็วๆ นี้",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "เลือกภาษาเพื่อเริ่มต้นใช้งาน"
     }
   },
   "tiers": {
-    "free": "Free",
-    "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
-    "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "free": "ฟรี",
+    "starter": "สตาร์ตเตอร์",
+    "core": "คอร์",
+    "creator": "ครีเอเตอร์",
+    "godMode": "ก็อด โหมด",
+    "enterprise": "เอนเทอร์ไพรส์",
+    "heartbeat": "อัตราการเต้นของหัวใจ",
+    "echoes": "เสียงสะท้อน",
+    "conversations": "การสนทนา",
+    "nudges": "การแจ้งเตือนแนะนำ",
+    "videoDiary": "ไดอารี่วิดีโอ",
+    "voiceCalls": "การโทรด้วยเสียง",
+    "perDay": "ต่อวัน",
+    "perMonth": "ต่อเดือน",
+    "unlimited": "ไม่จำกัด",
+    "adSupported": "มีโฆษณาคั่น",
+    "adFree": "ไม่มีโฆษณา",
+    "mostPopular": "ยอดนิยมที่สุด",
+    "subscribe": "ติดตาม",
+    "contactUs": "ติดต่อเรา",
+    "twiceDaily": "2 ครั้ง/วัน",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "ส่วนเสริม",
+      "speedBoost": "เร่งความเร็ว",
+      "speedBoostDesc": "ลดช่วงเวลาการเต้นของหัวใจลงครึ่งหนึ่ง",
+      "videoVoiceBoost": "เร่งเสียงวิดีโอและเสียงพูด",
+      "videoVoiceBoostDesc": "เพิ่มขีดจำกัดวิดีโอและเสียงรายวัน +50%",
+      "extraEcho": "เอคโค่เพิ่มเติม",
+      "extraEchoDesc": "+1 Echo เกินขีดจำกัดระดับของคุณ",
+      "nudgePack": "ชุด Nudge 100 ชิ้น",
+      "nudgePackDesc": "เพิ่มอีก 100 นัดจ์",
+      "privateShard": "ชาร์ดส่วนตัว",
+      "privateShardDesc": "โลกส่วนตัวของคุณ"
     }
   }
 }

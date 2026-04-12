@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "যদি আপনি অন্য কোনো পথ বেছে নিতেন, তবে কেমন হতো?",
+      "subheadline": "আপনার একটি এআই সংস্করণ তৈরি করুন, যা একটি সমান্তরাল পৃথিবীতে স্বাধীনভাবে জীবনযাপন করবে।",
+      "cta": "আপনার নিজস্ব ইকো তৈরি করুন"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
-      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "title": "এটি যেভাবে কাজ করে",
+      "step1Title": "আপনার নিজস্ব ইকো তৈরি করুন",
+      "step1Desc": "তাদের সামনে খুলে দিন এক নতুন সম্ভাবনার দুয়ার—এক ভিন্ন জীবনধারা, এক অনন্য পথ।",
+      "step2Title": "আপনার পছন্দের জগৎ বেছে নিন",
+      "step2Desc": "সাইবার-টোকিও ২০৪৫, নোম্যাড অস্ট্রেলিয়া, রেনেসাঁ ফ্লোরেন্স ১৪৯০।",
+      "step3Title": "সরাসরি দেখুন",
+      "step3Desc": "ডায়েরির পাতা, সম্পর্কের টানাপোড়েন কিংবা জীবনের বিশেষ মুহূর্তগুলো—সবই এখন হবে স্বয়ংক্রিয়ভাবে।",
+      "step4Title": "একটু মনে করিয়ে দিন, তারপর কথা বলুন",
+      "step4Desc": "তাদের জীবনকে প্রভাবিত করুন। আর তারা ঠিক করুক, সেই জীবনকে তারা কীভাবে সাজাবে।"
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "বৈশিষ্ট্যসমূহ",
+      "diaryTitle": "স্বয়ংক্রিয় ডায়েরি",
+      "diaryDesc": "আপনার ইকো নিজেই লিখবে তার গল্প। কী ঘটল তা জানতে ফিরে আসুন।",
+      "imagesTitle": "এআই-জেনারেটেড ছবি",
+      "imagesDesc": "প্রতিটি ডায়েরি এন্ট্রির সাথে পাবেন এক একটি সিনেমাটিক দৃশ্য। ১২৮০×৭২০ রেজোলিউশন, তৈরি হবে মাত্র ৬৫৪ মিলিসেকেন্ডে।",
+      "voiceTitle": "ভয়েস কল",
+      "voiceDesc": "আপনার ইকো-র সাথে কথা বলুন। তারা এখন নিজস্ব কণ্ঠে তাৎক্ষণিকভাবে উত্তর দেবে।",
+      "videoTitle": "ভিডিওর জন্য ভয়েস-ওভার",
+      "videoDesc": "লিপ-সিঙ্ক ভিডিওর মাধ্যমে আপনার ইকো-র মুখে শুনুন তাদের ডায়েরির গল্প।",
+      "languagesTitle": "২০টি ভাষায় উপলব্ধ",
+      "languagesDesc": "২০টি ভাষায় উপলব্ধ, যা বিশ্বের ৮০% মানুষের কাছে পৌঁছাতে সক্ষম।",
+      "relationshipsTitle": "সম্পর্ক ও সংযোগ",
+      "relationshipsDesc": "প্রতিধ্বনির নিজস্ব সম্পর্ক থাকে। তাদের বন্ধু কারা হবে, তা আপনি বেছে নিতে পারেন না।"
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
-      "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
-      "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "title": "তিন জগৎ। তিন জীবন।",
+      "tokyoName": "সাইবার-টোকিও ২০৪৫",
+      "tokyoDesc": "নিয়ন আলোয় ঝলমলে এক মেগাসিটি। যেখানে আন্ডারগ্রাউন্ড হ্যাকার নেটওয়ার্ক আর কর্পোরেট ক্ষমতার লড়াই চলে প্রতিনিয়ত।",
+      "australiaName": "নোম্যাড অস্ট্রেলিয়া",
+      "australiaDesc": "दुर्गম প্রান্তরে বিচ্ছিন্ন জনপদ, যেখানে জীবন চলে প্রকৃতির সাথে লড়াই করে। সীমিত সম্পদ, নিজস্ব শাসনব্যবস্থা আর একাকীত্ব বনাম সংযোগের এক অনন্য লড়াই।",
+      "florenceName": "রেনেসাঁ ফ্লোরেন্স ১৪৯০",
+      "florenceDesc": "মেডিচি যুগের শিল্প, রাজনীতি আর রহস্যময় সংকেত। পৃষ্ঠপোষকতা, প্রতিদ্বন্দ্বী কারুশিল্প এবং সৌন্দর্য ও ক্ষমতার এক অনন্য মেলবন্ধন।"
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "ইতিমধ্যেই {{count}} জন অপেক্ষায় আছেন",
+      "builtBy": "একজন একক উদ্যোক্তার প্রচেষ্টায় নির্মিত। মোট উন্নয়ন ব্যয় মাত্র ৬৬০ ডলার। ৯৫,০০০ লাইনের কোডিংয়ের কারুকার্য।"
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "কোডিং জানা নেই, বয়স ৫৬—তবুও তৈরি করেছেন অনন্য এক সৃষ্টি। ৯৫,০০০ লাইনের রাস্ট (Rust) এবং টাইপস্ক্রিপ্ট (TypeScript) কোডের এক অসাধারণ সংমিশ্রণ। মূল্য মাত্র ৬৬০ ডলার।",
+      "readMore": "পুরো গল্পটি পড়ুন"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "আপনার ইকো এখন প্রস্তুত।",
+      "cta": "আপনার নিজস্ব ইকো তৈরি করুন",
+      "noCreditCard": "ক্রেডিট কার্ডের প্রয়োজন নেই। ফ্রি টিয়ার উপলব্ধ।"
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "বৈশিষ্ট্যসমূহ",
+      "pricing": "মূল্য তালিকা",
+      "about": "আমাদের সম্পর্কে",
+      "enter": "শুরু করুন",
+      "dashboard": "ড্যাশবোর্ড"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "শর্তাবলী",
+      "privacy": "গোপনীয়তা",
+      "contact": "যোগাযোগ করুন",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "এই পৃষ্ঠাটি বর্তমানে শুধুমাত্র ইংরেজিতে উপলব্ধ। পেশাদার অনুবাদ প্রক্রিয়া চলছে।",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "আপনার পছন্দের ভাষাটি নির্বাচন করুন"
     }
   },
   "tiers": {
-    "free": "Free",
-    "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
-    "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "free": "ফ্রি",
+    "starter": "স্টার্টার",
+    "core": "কোর",
+    "creator": "ক্রিয়েটর",
+    "godMode": "গড মোড",
+    "enterprise": "এন্টারপ্রাইজ",
+    "heartbeat": "হার্টবিট",
+    "echoes": "প্রতিধ্বনিসমূহ",
+    "conversations": "কথোপকথন",
+    "nudges": "সতর্কবার্তা",
+    "videoDiary": "ভিডিও ডায়েরি",
+    "voiceCalls": "ভয়েস কল",
+    "perDay": "প্রতিদিন",
+    "perMonth": "প্রতি মাসে",
+    "unlimited": "আনলিমিটেড",
+    "adSupported": "বিজ্ঞাপন সমর্থিত",
+    "adFree": "বিজ্ঞাপনহীন",
+    "mostPopular": "সবচেয়ে জনপ্রিয়",
+    "subscribe": "সাবস্ক্রাইব করুন",
+    "contactUs": "যোগাযোগ করুন",
+    "twiceDaily": "দিনে ২ বার",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "অ্যাড-অনস",
+      "speedBoost": "স্পিড বুস্ট",
+      "speedBoostDesc": "হার্টবিট ইন্টারভ্যাল অর্ধেক করুন",
+      "videoVoiceBoost": "ভিডিও এবং ভয়েস বুস্ট",
+      "videoVoiceBoostDesc": "দৈনিক ভিডিও এবং ভয়েস লিমিট +৫০%",
+      "extraEcho": "অতিরিক্ত ইকো",
+      "extraEchoDesc": "আপনার স্তরের সীমার বাইরে +১ ইকো",
+      "nudgePack": "নাজ ১০০-প্যাক",
+      "nudgePackDesc": "আরও ১০০টি নাজ (nudges)",
+      "privateShard": "প্রাইভেট শার্ড",
+      "privateShardDesc": "আপনার নিজস্ব কাস্টম ওয়ার্ল্ড"
     }
   }
 }

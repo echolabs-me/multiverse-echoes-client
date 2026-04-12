@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "Bagaimana jika Anda mengambil langkah yang berbeda?",
+      "subheadline": "Ciptakan versi AI dirimu yang menjalani kehidupan mandiri di dunia paralel.",
+      "cta": "Wujudkan Echo Anda"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
+      "title": "Cara kerjanya",
+      "step1Title": "Wujudkan Echo Anda",
+      "step1Desc": "Beri mereka sebuah kemungkinan — jalan hidup yang berbeda, peluang yang selama ini terlewatkan.",
+      "step2Title": "Tentukan duniamu",
       "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "step3Title": "Saksikan secara langsung",
+      "step3Desc": "Catatan harian, dinamika hubungan, hingga peristiwa hidup — semuanya berjalan secara otomatis.",
+      "step4Title": "Sapa dan beri tahu",
+      "step4Desc": "Beri mereka inspirasi. Biarkan mereka menentukan arah hidupnya."
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "Fitur Utama",
+      "diaryTitle": "Jurnal otomatis",
+      "diaryDesc": "Echo Anda menulis kisahnya sendiri. Kembali lagi untuk melihat apa yang terjadi.",
+      "imagesTitle": "Gambar berbasis AI",
+      "imagesDesc": "Setiap catatan harian hadir dengan visual sinematik. Resolusi 1280×720, tercipta hanya dalam 654ms.",
+      "voiceTitle": "Panggilan suara",
+      "voiceDesc": "Bicara dengan Echo Anda. Mereka akan merespons secara real-time dengan suara khas mereka sendiri.",
+      "videoTitle": "Narasi Video",
+      "videoDesc": "Saksikan Echo membacakan buku harian mereka dengan video yang sinkron dengan gerakan bibir.",
+      "languagesTitle": "Tersedia dalam 20 bahasa",
+      "languagesDesc": "Hadir dalam 20 bahasa, menjangkau 80% populasi dunia.",
+      "relationshipsTitle": "Hubungan",
+      "relationshipsDesc": "Echoes membangun koneksinya sendiri. Anda tidak bisa menentukan siapa teman mereka."
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
+      "title": "Tiga dunia. Tiga kehidupan.",
       "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
+      "tokyoDesc": "Kota megapolitan yang bermandikan cahaya neon. Tempat jaringan hacker bawah tanah dan struktur kekuasaan korporat saling berbenturan.",
       "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "australiaDesc": "Komunitas off-grid yang menjelajahi alam liar yang tak terjamah. Antara keterbatasan sumber daya, tata kelola komunitas, serta pergulatan antara isolasi dan koneksi.",
+      "florenceName": "Florence Era Renaisans 1490",
+      "florenceDesc": "Seni, politik, dan rahasia tersembunyi di era Medici. Tentang dukungan bangsawan, persaingan antarstudio, serta perpaduan antara keindahan dan kekuasaan."
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "{{count}} orang sudah mengantre",
+      "builtBy": "Karya seorang solo founder. Total biaya pengembangan hanya $660. 95.000 baris kode."
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "Dibuat oleh seseorang berusia 56 tahun yang tidak bisa coding sama sekali. 95.000 baris kode Rust dan TypeScript. $660.",
+      "readMore": "Baca selengkapnya"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "Echo Anda telah menanti.",
+      "cta": "Wujudkan Echo Anda",
+      "noCreditCard": "Tanpa kartu kredit. Tersedia paket gratis."
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "Fitur Utama",
+      "pricing": "Harga",
+      "about": "Tentang Kami",
+      "enter": "Mulai",
+      "dashboard": "Panel Kontrol"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "Syarat & Ketentuan",
+      "privacy": "Privasi",
+      "contact": "Hubungi Kami",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "Halaman ini saat ini hanya tersedia dalam bahasa Inggris. Terjemahan profesional sedang dalam proses.",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "Pilih bahasa untuk memulai"
     }
   },
   "tiers": {
-    "free": "Free",
+    "free": "Fri",
     "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
+    "core": "Kore",
+    "creator": "Krieyator",
     "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "enterprise": "Enterprais",
+    "heartbeat": "Detak Jantung",
+    "echoes": "Gema",
+    "conversations": "Percakapan",
+    "nudges": "Saran",
+    "videoDiary": "Buku harian video",
+    "voiceCalls": "Panggilan suara",
+    "perDay": "per hari",
+    "perMonth": "per bulan",
+    "unlimited": "Tanpa batas",
+    "adSupported": "Didukung iklan",
+    "adFree": "Bebas iklan",
+    "mostPopular": "Terpopuler",
+    "subscribe": "Berlangganan",
+    "contactUs": "Hubungi kami",
+    "twiceDaily": "2×/hari",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "Add-on",
+      "speedBoost": "Tingkatkan Kecepatan",
+      "speedBoostDesc": "Kurangi interval detak jantung jadi setengahnya",
+      "videoVoiceBoost": "Penguat Video & Suara",
+      "videoVoiceBoostDesc": "+50% batas video & suara harian",
+      "extraEcho": "Gema Ekstra",
+      "extraEchoDesc": "+1 Echo melampaui batas tier",
+      "nudgePack": "Paket 100 Nudge",
+      "nudgePackDesc": "100 nudge tambahan",
+      "privateShard": "Shard Privat",
+      "privateShardDesc": "Dunia kustom Anda"
     }
   }
 }

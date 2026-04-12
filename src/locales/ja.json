@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "もし、別の道を選んでいたら。",
+      "subheadline": "もう一人のあなたをAIで。並行世界で自律的に生きる、デジタルツインを創り出そう。",
+      "cta": "あなただけのEchoを、形に。"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
-      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "title": "仕組みと特徴",
+      "step1Title": "あなただけのEchoを、形に。",
+      "step1Desc": "「もしも」という選択肢を。まだ見ぬ人生の可能性を、その手に。",
+      "step2Title": "世界を選ぼう",
+      "step2Desc": "サイバー東京 2045、ノマド・オーストラリア、ルネサンス・フィレンツェ 1490。",
+      "step3Title": "ライブで体験しよう",
+      "step3Desc": "日記の記録から、人間関係、人生の転機まで。すべてが自律的に動き出す。",
+      "step4Title": "そっと促し、対話を。",
+      "step4Desc": "人生に、心地よい刺激を。\nその先の選択は、彼らに委ねられています。"
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "機能と特長",
+      "diaryTitle": "自動で綴る、あなただけのダイアリー",
+      "diaryDesc": "Echoが紡ぐ、あなただけの物語。\nその結末を、確かめにきてください。",
+      "imagesTitle": "AIで生成した画像",
+      "imagesDesc": "日々の記録が、映画のようなワンシーンに。\n1280×720の高品質映像を、わずか654msで生成。",
+      "voiceTitle": "音声通話",
+      "voiceDesc": "Echoに話しかけてみてください。あなただけの声で、リアルタイムに答えてくれます。",
+      "videoTitle": "ビデオナレーション",
+      "videoDesc": "Echoが日記を読み上げ、映像と完璧に同期して語りかける。",
+      "languagesTitle": "20か国語に対応",
+      "languagesDesc": "20言語に対応し、世界人口の80%をカバー。",
+      "relationshipsTitle": "つながり",
+      "relationshipsDesc": "エコーは自律的に関係性を築きます。誰と繋がるかは、あなたではなく彼らが決めます。"
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
-      "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
+      "title": "3つの世界。3つの人生。",
+      "tokyoName": "サイバー東京 2045",
+      "tokyoDesc": "ネオンが降り注ぐ巨大都市。地下に潜むハッカーネットワークと、巨大企業の権力構造が激突する。",
       "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "australiaDesc": "未開の地を切り拓く、オフグリッド・コミュニティ。\n限られた資源、独自の自治、そして孤独と繋がりの狭間で。",
+      "florenceName": "1490年、ルネサンス期のフィレンツェ",
+      "florenceDesc": "メディチ家が支配した時代の芸術、政治、そして暗号に隠された秘密。\nパトロンの庇護、工房の抗争、そして美と権力の物語。"
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "すでに{{count}}人が待機中です",
+      "builtBy": "ソロファウンダーが開発。\n開発費はわずか660ドル。\nコード数は95,000行。"
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "コードは一行も書けない56歳が作り上げた。\nRustとTypeScript、計95,000行の結晶。\n価格は660ドル。",
+      "readMore": "詳しく見る"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "Echoが、あなたを待っています。",
+      "cta": "あなただけのEchoを、形に。",
+      "noCreditCard": "クレジットカード不要。無料で始められます。"
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "機能と特長",
+      "pricing": "料金プラン",
+      "about": "私たちについて",
+      "enter": "はじめる",
+      "dashboard": "ダッシュボード"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "利用規約",
+      "privacy": "プライバシー保護",
+      "contact": "お問い合わせ",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "現在、このページは英語のみの提供となっております。日本語版は現在準備中です。今しばらくお待ちください。",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "言語を選択してください"
     }
   },
   "tiers": {
-    "free": "Free",
-    "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
-    "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "free": "フリー",
+    "starter": "スターター",
+    "core": "コア",
+    "creator": "クリエイター",
+    "godMode": "ゴッドモード",
+    "enterprise": "エンタープライズ",
+    "heartbeat": "ハートビート",
+    "echoes": "残響",
+    "conversations": "会話",
+    "nudges": "ナッジ",
+    "videoDiary": "ビデオ日記",
+    "voiceCalls": "音声通話",
+    "perDay": "1日あたり",
+    "perMonth": "月額",
+    "unlimited": "無制限",
+    "adSupported": "広告あり",
+    "adFree": "広告なし",
+    "mostPopular": "人気順",
+    "subscribe": "購読する",
+    "contactUs": "お問い合わせ",
+    "twiceDaily": "1日2回",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "アドオン",
+      "speedBoost": "スピードブースト",
+      "speedBoostDesc": "心拍間隔を半分にする",
+      "videoVoiceBoost": "ビデオ・音声ブースト",
+      "videoVoiceBoostDesc": "ビデオ・音声の1日制限 +50%",
+      "extraEcho": "追加エコー",
+      "extraEchoDesc": "ティア制限を超えて+1エコー",
+      "nudgePack": "ナッジ100個セット",
+      "nudgePackDesc": "さらに100回のナッジ",
+      "privateShard": "プライベートシャード",
+      "privateShardDesc": "カスタムワールド"
     }
   }
 }

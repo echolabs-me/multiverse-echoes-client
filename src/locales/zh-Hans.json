@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "如果当时选择了另一条路，结果会怎样？",
+      "subheadline": "打造一个 AI 版本的自己，在平行世界中开启自主生活。",
+      "cta": "打造你的 Echo"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
-      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "title": "运作原理",
+      "step1Title": "打造你的专属回响",
+      "step1Desc": "给他们一个假设的机会——去探索另一种人生可能，去走一条从未尝试过的路。",
+      "step2Title": "开启你的专属世界",
+      "step2Desc": "赛博东京 2045，游牧澳洲，文艺复兴时期的佛罗伦萨 1490。",
+      "step3Title": "实时观看",
+      "step3Desc": "日记记录、人际关系、生活点滴 —— 这一切都将自动地在后台悄然发生。",
+      "step4Title": "轻触，即刻沟通",
+      "step4Desc": "影响他们的生活，而决定权在他们手中。"
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "核心功能",
+      "diaryTitle": "智能自动日记",
+      "diaryDesc": "让你的 Echo 续写专属故事。回来看看，惊喜在等你。",
+      "imagesTitle": "AI 赋能图像生成",
+      "imagesDesc": "每一篇日记，都配上一场电影级画面。1280×720 分辨率，仅需 654 毫秒即刻生成。",
+      "voiceTitle": "语音通话",
+      "voiceDesc": "与你的 Echo 实时对话，聆听其独具特色的原声回应。",
+      "videoTitle": "视频配音",
+      "videoDesc": "让 Echo 用同步口型视频，为你生动讲述日记故事。",
+      "languagesTitle": "支持 20 种语言",
+      "languagesDesc": "支持 20 种语言，覆盖全球 80% 的人口。",
+      "relationshipsTitle": "连接与协作",
+      "relationshipsDesc": "回响自成一派，交友无需你定。"
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
-      "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
-      "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "title": "三界，三生。",
+      "tokyoName": "赛博东京 2045",
+      "tokyoDesc": "霓虹闪烁的赛博之城。地下黑客网络与企业权力巨头在此激烈碰撞。",
+      "australiaName": "Nomad 澳大利亚",
+      "australiaDesc": "在荒野深处，离网社区正跨越原野。资源匮乏、社区治理，以及在孤绝与连接之间的博弈。",
+      "florenceName": "1490年，文艺复兴时期的佛罗伦萨",
+      "florenceDesc": "美第奇时代的艺术、政治与代码秘密。权力与美学的交织，赞助人与工坊的博弈。"
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "已有 {{count}} 人在排队候候",
+      "builtBy": "独立开发者打造。研发成本仅 660 美元。代码量达 9.5 万行。"
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "创始人 56 岁，不懂一行代码。\n却打造出 9.5 万行 Rust 与 TypeScript 核心代码。\n售价 660 美元。",
+      "readMore": "查看完整故事"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "Echo 已准备就绪，等您开启。",
+      "cta": "打造你的 Echo",
+      "noCreditCard": "无需信用卡，即可免费体验。"
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "核心功能",
+      "pricing": "价格方案",
+      "about": "关于我们",
+      "enter": "立即进入",
+      "dashboard": "控制面板"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "服务条款",
+      "privacy": "隐私保护",
+      "contact": "联系我们",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "本页目前仅提供英文版本，中文翻译正在同步制作中，敬请期待。",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "请选择语言进入"
     }
   },
   "tiers": {
-    "free": "Free",
-    "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
-    "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "free": "弗里",
+    "starter": "斯塔特",
+    "core": "科尔",
+    "creator": "克瑞特",
+    "godMode": "戈德莫德",
+    "enterprise": "恩特普莱斯",
+    "heartbeat": "心跳",
+    "echoes": "回响",
+    "conversations": "对话",
+    "nudges": "提示",
+    "videoDiary": "视频日记",
+    "voiceCalls": "语音通话",
+    "perDay": "每天",
+    "perMonth": "/月",
+    "unlimited": "无限制",
+    "adSupported": "含广告",
+    "adFree": "无广告",
+    "mostPopular": "最受欢迎",
+    "subscribe": "订阅",
+    "contactUs": "联系我们",
+    "twiceDaily": "每日2次",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "插件",
+      "speedBoost": "加速",
+      "speedBoostDesc": "心跳间隔减半",
+      "videoVoiceBoost": "视频与语音增强",
+      "videoVoiceBoostDesc": "每日视频与语音额度 +50%",
+      "extraEcho": "额外回声",
+      "extraEchoDesc": "超出层级限制 +1 Echo",
+      "nudgePack": "Nudge 100入装",
+      "nudgePackDesc": "额外 100 次提醒",
+      "privateShard": "私有分片",
+      "privateShardDesc": "自定义世界"
     }
   }
 }

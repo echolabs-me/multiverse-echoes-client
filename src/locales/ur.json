@@ -1022,111 +1022,111 @@
   },
   "website": {
     "hero": {
-      "headline": "What if you'd taken a different path?",
-      "subheadline": "Create an AI version of yourself that lives an autonomous life in a parallel world.",
-      "cta": "Create your Echo"
+      "headline": "کاش آپ نے کوئی دوسرا راستہ چنا ہوتا؟",
+      "subheadline": "اپنی ایک ایسی AI شخصیت تخلیق کریں جو ایک متوازی دنیا میں اپنی آزاد زندگی گزارے۔",
+      "cta": "اپنی ایک الگ پہچان بنائیں"
     },
     "howItWorks": {
-      "title": "How it works",
-      "step1Title": "Create your Echo",
-      "step1Desc": "Give them a what-if — a different life path, a road not taken.",
-      "step2Title": "Choose a world",
-      "step2Desc": "Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490.",
-      "step3Title": "Watch them live",
-      "step3Desc": "Diary entries, relationships, life events — all happening autonomously.",
-      "step4Title": "Nudge and talk",
-      "step4Desc": "Influence their life. They decide what to do with it."
+      "title": "یہ کیسے کام کرتا ہے",
+      "step1Title": "اپنی ایک الگ پہچان بنائیں",
+      "step1Desc": "انہیں ایک نیا تصور دیں—زندگی کا ایک مختلف راستہ، ایک ایسی منزل جس کی طرف انہوں نے کبھی سوچا بھی نہ ہو۔",
+      "step2Title": "اپنی دنیا خود چنیں",
+      "step2Desc": "سائبر ٹوکیو 2045، خانہ بدوش آسٹریلیا، اور رینیسانس فلورنس 1490۔",
+      "step3Title": "لائیو دیکھیں",
+      "step3Desc": "ڈائری کے صفحات، رشتے اور زندگی کے اہم واقعات — سب کچھ خودکار طریقے سے، آپ کی دسترس میں۔",
+      "step4Title": "اشارہ کریں اور بات کریں",
+      "step4Desc": "ان کی زندگی پر اثر ڈالیں، مگر فیصلہ ان کا اپنا ہو۔"
     },
     "features": {
-      "title": "Features",
-      "diaryTitle": "Autonomous diary",
-      "diaryDesc": "Your Echo writes their own story. Come back to read what happened.",
-      "imagesTitle": "AI-generated images",
-      "imagesDesc": "Every diary entry comes with a cinematic scene. 1280×720, generated in 654ms.",
-      "voiceTitle": "Voice calls",
-      "voiceDesc": "Talk to your Echo. They respond in real-time with their own voice.",
-      "videoTitle": "Video narration",
-      "videoDesc": "Watch your Echo narrate their diary with lip-synced video.",
-      "languagesTitle": "20 languages",
-      "languagesDesc": "Available in 20 languages covering 80% of the world's population.",
-      "relationshipsTitle": "Relationships",
-      "relationshipsDesc": "Echoes form their own relationships. You don't choose their friends."
+      "title": "نمایاں خصوصیات",
+      "diaryTitle": "خودکار ڈائری",
+      "diaryDesc": "آپ کا Echo اپنی کہانی خود لکھتا ہے۔ واپس آئیں اور جانیے کہ کیا ہوا!",
+      "imagesTitle": "مصنوعی ذہانت سے تیار کردہ تصاویر",
+      "imagesDesc": "آپ کی ڈائری کا ہر ورق اب ایک سینمائی منظر بنے گا۔ 1280×720 ریزولوشن، صرف 654 ملی سیکنڈز میں تیار۔",
+      "voiceTitle": "وائس کالز",
+      "voiceDesc": "اپنے Echo سے بات کریں، اور وہ اپنی مخصوص آواز میں فوراً آپ کو جواب دیں گے۔",
+      "videoTitle": "ویڈیو کی کہانی بیان کریں",
+      "videoDesc": "اب دیکھیں اپنے Echo کو اپنی ڈائری سناتے ہوئے، بالکل درست لپ-سنک ویڈیو کے ساتھ۔",
+      "languagesTitle": "20 زبانوں میں دستیاب",
+      "languagesDesc": "20 زبانوں میں دستیاب، جو دنیا کی 80 فیصد آبادی تک رسائی فراہم کرتی ہیں۔",
+      "relationshipsTitle": "تعلقات",
+      "relationshipsDesc": "گونج کے اپنے ہی رشتے ہوتے ہیں۔ ان کی دوستی آپ کے اختیار میں نہیں۔"
     },
     "worlds": {
-      "title": "Three worlds. Three lives.",
-      "tokyoName": "Cyber-Tokyo 2045",
-      "tokyoDesc": "Neon-drenched megacity. Underground hacker networks and corporate power structures collide.",
-      "australiaName": "Nomad Australia",
-      "australiaDesc": "Off-grid communities crossing the raw outback. Resource scarcity, community governance, isolation vs connection.",
-      "florenceName": "Renaissance Florence 1490",
-      "florenceDesc": "Art, politics, and coded secrets in the Medici era. Patronage, rival workshops, beauty and power."
+      "title": "تین جہان۔ تین زندگیاں۔",
+      "tokyoName": "سائبر ٹوکیو 2045",
+      "tokyoDesc": "نیون روشنیوں میں نہلا ہوا ایک عظیم الشان شہر۔ جہاں زیرِ زمین ہیکرز کے نیٹ ورکس اور کارپوریٹ طاقتوں کا ٹکراؤ ہوتا ہے۔",
+      "australiaName": "نومڈ آسٹریلیا",
+      "australiaDesc": "دور دراز کے وہ علاقے جہاں زندگی کی بنیادی سہولتیں میسر نہیں، اور جہاں انسان فطرت کے سخت ترین امتحان سے گزرتا ہے۔ وسائل کی قلت، مقامی نظم و نسق کی جدوجہد، اور تنہائی اور رابطے کے درمیان ایک مسلسل کشمکش۔",
+      "florenceName": "نشاۃِ ارتقاء: فلورنس 1490",
+      "florenceDesc": "میڈچی دور کی فنکاری، سیاست اور خفیہ کوڈز۔ سرپرستی، حریف ورکشاپس، حسن اور اقتدار کی ایک داستان۔"
     },
     "social": {
-      "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "waitlistCount": "{{count}} لوگ پہلے ہی انتظار کر رہے ہیں",
+      "builtBy": "ایک اکیلے بانی کی محنت۔ کل ڈویلپمنٹ خرچ صرف 660 ڈالرز۔ کوڈ کی 95,000 لائنیں۔"
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
-      "readMore": "Read the full story"
+      "brief": "ایک 56 سالہ شخص کی تخلیق، جسے کوڈنگ کا 'ک' بھی نہیں آتا۔ 95,000 لائنز آف رسٹ اور ٹائپ اسکرپٹ۔ صرف 660 ڈالر میں۔",
+      "readMore": "مکمل کہانی پڑھیں"
     },
     "finalCta": {
-      "headline": "Your Echo is waiting.",
-      "cta": "Create your Echo",
-      "noCreditCard": "No credit card required. Free tier available."
+      "headline": "آپ کا Echo آپ کا منتظر ہے۔",
+      "cta": "اپنی پہچان بنائیں",
+      "noCreditCard": "کریڈٹ کارڈ کی ضرورت نہیں۔ فری پلان دستیاب ہے۔"
     },
     "nav": {
-      "features": "Features",
-      "pricing": "Pricing",
-      "about": "About",
-      "enter": "Enter",
-      "dashboard": "Dashboard"
+      "features": "نمایاں خصوصیات",
+      "pricing": "قیمتیں",
+      "about": "ہمارے بارے میں",
+      "enter": "شروع کریں",
+      "dashboard": "ڈیش بورڈ"
     },
     "footer": {
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "contact": "Contact",
+      "terms": "شرائط و ضوابط",
+      "privacy": "پرائیویسی اور تحفظ",
+      "contact": "رابطہ کریں",
       "copyright": "© 2026 EchoLabsME Pte. Ltd."
     },
-    "legalBanner": "This page is currently available in English only. Professional translations are in progress.",
+    "legalBanner": "یہ صفحہ فی الحال صرف انگریزی میں دستیاب ہے۔ پیشہ ورانہ ترجمے کا کام جاری ہے، جو جلد ہی یہاں شامل کر دیا جائے گا۔",
     "languagePage": {
       "title": "Multiverse Echoes",
-      "selectPrompt": "Select your language to enter"
+      "selectPrompt": "اپنی پسند کی زبان منتخب کریں اور آگے بڑھیں"
     }
   },
   "tiers": {
-    "free": "Free",
-    "starter": "Starter",
-    "core": "Core",
-    "creator": "Creator",
-    "godMode": "God Mode",
-    "enterprise": "Enterprise",
-    "heartbeat": "Heartbeat",
-    "echoes": "Echoes",
-    "conversations": "Conversations",
-    "nudges": "Nudges",
-    "videoDiary": "Video diary",
-    "voiceCalls": "Voice calls",
-    "perDay": "per day",
-    "perMonth": "per month",
-    "unlimited": "Unlimited",
-    "adSupported": "Ad supported",
-    "adFree": "Ad-free",
-    "mostPopular": "Most popular",
-    "subscribe": "Subscribe",
-    "contactUs": "Contact us",
-    "twiceDaily": "2×/day",
+    "free": "فری",
+    "starter": "اسٹارٹر",
+    "core": "کور",
+    "creator": "کریئیٹر",
+    "godMode": "گاڈ موڈ",
+    "enterprise": "انٹرپرائز",
+    "heartbeat": "دل کی دھڑکن",
+    "echoes": "گونج",
+    "conversations": "گفتگوئیں",
+    "nudges": "اشارے",
+    "videoDiary": "ویڈیو ڈائری",
+    "voiceCalls": "وائس کالز",
+    "perDay": "فی روز",
+    "perMonth": "فی مہینہ",
+    "unlimited": "لامحدود",
+    "adSupported": "اشتہارات کے ساتھ",
+    "adFree": "اشتہارات کے بغیر",
+    "mostPopular": "سب سے زیادہ مقبول",
+    "subscribe": "سبسکرائب کریں",
+    "contactUs": "رابطہ کریں",
+    "twiceDaily": "دن میں 2 بار",
     "addOns": {
-      "title": "Add-ons",
-      "speedBoost": "Speed Boost",
-      "speedBoostDesc": "Halve your heartbeat interval",
-      "videoVoiceBoost": "Video & Voice Boost",
-      "videoVoiceBoostDesc": "+50% daily video and voice limits",
-      "extraEcho": "Extra Echo",
-      "extraEchoDesc": "+1 Echo beyond your tier limit",
-      "nudgePack": "Nudge 100-Pack",
-      "nudgePackDesc": "100 additional nudges",
-      "privateShard": "Private Shard",
-      "privateShardDesc": "Your own custom world"
+      "title": "اضافے",
+      "speedBoost": "رفتار میں اضافہ",
+      "speedBoostDesc": "دل کی دھڑکن کا وقفہ آدھا کریں",
+      "videoVoiceBoost": "ویڈیو اور آواز بوسٹ",
+      "videoVoiceBoostDesc": "روزانہ ویڈیو اور وائس لمٹس میں +50% اضافہ",
+      "extraEcho": "اضافی گونج",
+      "extraEchoDesc": "اپنی حد سے زائد +1 ایکو (Echo)",
+      "nudgePack": "نَج 100-پیک",
+      "nudgePackDesc": "100 مزید نوجز",
+      "privateShard": "نجی شارڈ",
+      "privateShardDesc": "آپ کی اپنی تخلیق کردہ دنیا"
     }
   }
 }
