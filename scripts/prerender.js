@@ -19,8 +19,9 @@ const DIST = join(__dirname, '..', 'dist');
 const PORT = 4175; // Vite preview default
 const BASE = `http://localhost:${PORT}`;
 
-// Routes to pre-render. The flag page (/) renders inline — no redirect.
-const ROUTES = ['/home', '/about', '/terms', '/privacy'];
+// Routes to pre-render. '/' is the flag page (no locale cookie set).
+// All other routes need locale set so they don't redirect.
+const ROUTES_WITH_LOCALE = ['/home', '/about', '/terms', '/privacy'];
 
 async function main() {
   // Verify dist exists
@@ -64,11 +65,30 @@ async function main() {
     const { chromium } = await import('playwright');
     const browser = await chromium.launch({ headless: true });
 
-    for (const route of ROUTES) {
+    // Pre-render / (flag page) WITHOUT locale — so crawlers see the language selection
+    {
+      console.log('Pre-rendering / (flag page)...');
+      const page = await browser.newPage();
+      // Do NOT set locale_selected — the flag page renders when no locale is set
+      await page.goto(`${BASE}/`, { waitUntil: 'networkidle', timeout: 30000 });
+      await page.waitForTimeout(1000);
+      const html = await page.content();
+      await page.close();
+
+      // Overwrite dist/index.html with pre-rendered flag page
+      const outFile = join(DIST, 'index.html');
+      writeFileSync(outFile, html, 'utf-8');
+      const hasContent = html.includes('MULTIVERSE ECHOES') || html.includes('language');
+      const size = Buffer.byteLength(html, 'utf-8');
+      console.log(`  Saved ${outFile} (${size} bytes, content: ${hasContent ? 'YES' : 'NO'})`);
+    }
+
+    // Pre-render other routes WITH locale set
+    for (const route of ROUTES_WITH_LOCALE) {
       console.log(`Pre-rendering ${route}...`);
       const page = await browser.newPage();
 
-      // Set localStorage so the flag page redirects work correctly
+      // Set localStorage so routes render directly without redirect
       await page.addInitScript(() => {
         localStorage.setItem('locale_selected', 'true');
         localStorage.setItem('locale', 'en');
