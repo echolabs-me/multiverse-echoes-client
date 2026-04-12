@@ -66,8 +66,9 @@ export function LanguageSelectionPage() {
       void i18n.changeLanguage(code);
       localStorage.setItem('locale', code);
       localStorage.setItem('locale_selected', 'true');
+      document.cookie = `locale=${code};path=/;max-age=31536000;SameSite=Lax`;
       trackEvent('account.locale_changed', { old_locale: oldLocale, new_locale: code });
-      const redirect = searchParams.get('redirect') ?? '/register';
+      const redirect = searchParams.get('redirect') ?? '/home';
       navigate(redirect);
     },
     [i18n, navigate, searchParams],

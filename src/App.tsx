@@ -1,9 +1,13 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { SkipLink, ToastContainer } from './components/index.ts';
 import { AppLayout } from './components/AppLayout.tsx';
+import { WebsiteLayout } from './components/website/WebsiteLayout.tsx';
 import { useAuthStore } from './stores/useAuthStore.ts';
 import { LanguageSelectionPage } from './pages/LanguageSelectionPage.tsx';
+import { HomePage } from './pages/HomePage.tsx';
+import { AboutPage } from './pages/AboutPage.tsx';
 import { RegisterPage } from './pages/RegisterPage.tsx';
 import { VerifyPendingPage } from './pages/VerifyPendingPage.tsx';
 import { VerifiedPage } from './pages/VerifiedPage.tsx';
@@ -48,61 +52,74 @@ export function App() {
   }, [initialize]);
 
   return (
-    <BrowserRouter>
-      <SkipLink />
-      <ToastContainer />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            hasSelectedLocale() ? (
-              <Navigate to="/login" replace />
-            ) : (
-              <Navigate to="/language" replace />
-            )
-          }
-        />
+    <HelmetProvider>
+      <BrowserRouter>
+        <SkipLink />
+        <ToastContainer />
+        <Routes>
+          {/* Root: flag page or redirect to /home */}
+          <Route
+            path="/"
+            element={
+              hasSelectedLocale() ? (
+                <Navigate to="/home" replace />
+              ) : (
+                <LanguageSelectionPage />
+              )
+            }
+          />
 
-        {/* Pre-auth routes — no app shell */}
-        <Route path="/language" element={<LanguageSelectionPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/verify-pending" element={<VerifyPendingPage />} />
-        <Route path="/verified" element={<VerifiedPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
-        <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
-        <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
-        <Route path="/waitlist" element={<WaitlistPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/terms-of-service" element={<TermsPage />} />
-        <Route path="/accessibility" element={<AccessibilityPage />} />
-        <Route path="/plans" element={<PlansPage />} />
-        <Route path="/payment/success" element={<PaymentSuccessPage />} />
-        <Route path="/payment/cancelled" element={<PaymentCancelledPage />} />
-        <Route path="/tip" element={<TipPage />} />
+          {/* Public website routes — with website nav + footer */}
+          <Route element={<WebsiteLayout />}>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          </Route>
 
-        {/* App shell routes — NavSidebar + Oracle sidebar */}
-        <Route element={<AppLayout />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
-          <Route path="/echoes/:echoId/talk" element={<EchoConversationPage />} />
-          <Route path="/shards/browse" element={<ShardBrowserPage />} />
-          <Route path="/shards/:shardId" element={<ShardViewPage />} />
-          <Route path="/feeds/personal" element={<PersonalFeedPage />} />
-          <Route path="/feeds/social" element={<SocialFeedPage />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/admin" element={<AdminDashboardPage />} />
-          <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
-        </Route>
+          {/* Legacy routes — redirect to new paths */}
+          <Route path="/language" element={<Navigate to="/" replace />} />
+          <Route path="/terms-of-service" element={<Navigate to="/terms" replace />} />
+          <Route path="/privacy-policy" element={<Navigate to="/privacy" replace />} />
 
-        {/* 404 catch-all */}
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Pre-auth routes — no app shell */}
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/verify-pending" element={<VerifyPendingPage />} />
+          <Route path="/verified" element={<VerifiedPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
+          <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
+          <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
+          <Route path="/waitlist" element={<WaitlistPage />} />
+          <Route path="/accessibility" element={<AccessibilityPage />} />
+          <Route path="/plans" element={<PlansPage />} />
+          <Route path="/payment/success" element={<PaymentSuccessPage />} />
+          <Route path="/payment/cancelled" element={<PaymentCancelledPage />} />
+          <Route path="/tip" element={<TipPage />} />
+
+          {/* App shell routes — NavSidebar + Oracle sidebar */}
+          <Route element={<AppLayout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
+            <Route path="/echoes/:echoId/talk" element={<EchoConversationPage />} />
+            <Route path="/shards/browse" element={<ShardBrowserPage />} />
+            <Route path="/shards/:shardId" element={<ShardViewPage />} />
+            <Route path="/feeds/personal" element={<PersonalFeedPage />} />
+            <Route path="/feeds/social" element={<SocialFeedPage />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/admin" element={<AdminDashboardPage />} />
+            <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
+          </Route>
+
+          {/* 404 catch-all */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }

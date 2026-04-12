@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /home
+Allow: /about
+Allow: /terms
+Allow: /privacy
+Disallow: /dashboard
+Disallow: /echo/
+Disallow: /settings
+Disallow: /admin
+Sitemap: https://echolabsme.com/sitemap.xml
