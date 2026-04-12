@@ -119,7 +119,9 @@
     "newPassword": "รหัสผ่านใหม่",
     "passwordsMismatch": "รหัสผ่านไม่ตรงกัน",
     "resetPassword": "รีเซ็ตรหัสผ่าน",
-    "redirectingToLogin": "กำลังเปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ..."
+    "redirectingToLogin": "กำลังเปลี่ยนเส้นทางไปยังหน้าเข้าสู่ระบบ...",
+    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
+    "joinWaitlist": "Join the Waitlist"
   },
   "onboarding": {
     "welcomeTitle": "ยินดีต้อนรับสู่ Multiverse Echoes",

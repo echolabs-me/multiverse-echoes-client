@@ -155,7 +155,7 @@ export function PricingSection() {
   const isAuthenticated = useAuthStore.getState().isAuthenticated;
 
   return (
-    <section id="pricing" className="section-reveal px-4 py-24 sm:px-6">
+    <section id="pricing" className="section-reveal px-4 pb-24 pt-28 sm:px-6">
       <div className="mx-auto max-w-[1360px]">
         {/* Header */}
         <div className="mb-14 text-center">

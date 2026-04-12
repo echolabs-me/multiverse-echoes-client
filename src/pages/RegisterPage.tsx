@@ -111,6 +111,17 @@ export function RegisterPage() {
           </h1>
         </div>
 
+        {/* Closed beta banner — explains why an invite code is needed */}
+        <div className="mb-6 rounded-lg border border-accent/30 bg-accent/5 px-4 py-4 text-center">
+          <p className="mb-3 text-sm text-text-secondary">{t('auth.closedBetaBanner')}</p>
+          <Link
+            to="/waitlist"
+            className="inline-block rounded-md bg-accent px-5 py-2 text-sm font-semibold text-canvas transition-colors hover:bg-accent-hover"
+          >
+            {t('auth.joinWaitlist')}
+          </Link>
+        </div>
+
         <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
           <div>
             <Input

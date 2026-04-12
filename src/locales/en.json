@@ -71,6 +71,8 @@
     "inviteCode": "Invite Code",
     "inviteCodeHint": "From your invitation email",
     "invalidInviteCode": "A valid invite code is required to register. Check your invitation email.",
+    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
+    "joinWaitlist": "Join the Waitlist",
     "createAccount": "Create Account",
     "alreadyHaveAccount": "Already have an account?",
     "logIn": "Log in",

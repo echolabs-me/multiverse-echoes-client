@@ -188,7 +188,7 @@ export function HomePage() {
       <SectionDivider />
 
       {/* ═══ Section 3: Features Showcase ═══ */}
-      <section id="features" className="section-reveal px-6 py-24">
+      <section id="features" className="section-reveal px-6 pb-24 pt-28">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-[var(--text-primary)]">
             {t('website.features.title')}

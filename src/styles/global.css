@@ -417,6 +417,11 @@ html, body {
   margin: 0;
 }
 
+/* Anchor scrolls land below the fixed nav bar (h-16 = 64px + 16px gap) */
+html {
+  scroll-padding-top: 80px;
+}
+
 /* App shell routes (dashboard, echo detail, etc.) use internal panel
    scrolling — overflow:hidden on the root prevents double scrollbars.
    Public website routes (/, /home, /about, /terms, /privacy) need

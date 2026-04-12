@@ -119,7 +119,9 @@
     "newPassword": "नया पासवर्ड",
     "passwordsMismatch": "पासवर्ड मेल नहीं खाते",
     "resetPassword": "पासवर्ड रीसेट करें",
-    "redirectingToLogin": "लॉगिन पर भेजा जा रहा है…"
+    "redirectingToLogin": "लॉगिन पर भेजा जा रहा है…",
+    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
+    "joinWaitlist": "Join the Waitlist"
   },
   "onboarding": {
     "welcomeTitle": "Multiverse Echoes में स्वागत है",

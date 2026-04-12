@@ -119,7 +119,9 @@
     "newPassword": "Nueva contraseña",
     "passwordsMismatch": "Las contraseñas no coinciden",
     "resetPassword": "Restablecer contraseña",
-    "redirectingToLogin": "Redirigiendo al inicio de sesión…"
+    "redirectingToLogin": "Redirigiendo al inicio de sesión…",
+    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
+    "joinWaitlist": "Join the Waitlist"
   },
   "onboarding": {
     "welcomeTitle": "Bienvenido a Multiverse Echoes",

@@ -119,7 +119,9 @@
     "newPassword": "新しいパスワード",
     "passwordsMismatch": "パスワードが一致しません",
     "resetPassword": "パスワードをリセット",
-    "redirectingToLogin": "ログイン画面へリダイレクトしています..."
+    "redirectingToLogin": "ログイン画面へリダイレクトしています...",
+    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
+    "joinWaitlist": "Join the Waitlist"
   },
   "onboarding": {
     "welcomeTitle": "マルチバース・エコーズへようこそ",

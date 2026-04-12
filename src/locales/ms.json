@@ -119,7 +119,9 @@
     "newPassword": "Kata laluan baharu",
     "passwordsMismatch": "Kata laluan tidak sepadan",
     "resetPassword": "Set semula kata laluan",
-    "redirectingToLogin": "Menghalihkan ke log masuk..."
+    "redirectingToLogin": "Menghalihkan ke log masuk...",
+    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
+    "joinWaitlist": "Join the Waitlist"
   },
   "onboarding": {
     "welcomeTitle": "Selamat datang ke Multiverse Echoes",
