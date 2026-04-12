@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "{{count}} persone sono già in lista d'attesa",
-      "builtBy": "Ideato da un singolo fondatore. Costo di sviluppo totale: 660$. 95.000 righe di codice."
+      "builtBy": "Ideato da un singolo fondatore. Costo di sviluppo totale: 66 95"
     },
     "founder": {
-      "brief": "Creato da un cinquantaseienne che non sa scrivere una riga di codice. 95.000 righe di Rust e TypeScript. 660$.",
+      "brief": "Creato da un cinquantaseienne che non sa scrivere una riga di codice. 95 66",
       "readMore": "Scopri tutta la storia"
     },
     "finalCta": {

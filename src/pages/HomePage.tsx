@@ -5,6 +5,9 @@ import { Helmet } from 'react-helmet-async';
 import { PricingSection } from '../components/website/PricingSection.tsx';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 
+// TODO: Replace with live user count or remove post-launch
+const WAITLIST_COUNT = 379;
+
 function SectionDivider() {
   return <div className="mx-auto my-0 h-px w-16 bg-[rgba(212,145,92,0.15)]" />;
 }
@@ -285,7 +288,7 @@ export function HomePage() {
             <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
               <div
                 className="h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: 'url(/screenshots/App_Page_Full_Capture.jpeg)' }}
+                style={{ backgroundImage: 'url(/images/shard-tokyo.png)' }}
               />
               <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
               <div className="relative p-6 pt-0">
@@ -302,7 +305,7 @@ export function HomePage() {
             <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
               <div
                 className="h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: 'url(/screenshots/English_Full_Page.jpeg)' }}
+                style={{ backgroundImage: 'url(/images/shard-australia.png)' }}
               />
               <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
               <div className="relative p-6 pt-0">
@@ -319,7 +322,7 @@ export function HomePage() {
             <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
               <div
                 className="h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: 'url(/screenshots/Create_Echo.jpeg)' }}
+                style={{ backgroundImage: 'url(/images/shard-florence.png)' }}
               />
               <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
               <div className="relative p-6 pt-0">
@@ -344,9 +347,10 @@ export function HomePage() {
             &ldquo;You are not playing a game. You are watching a parallel universe that started with you &mdash; and it never stops evolving, even while you sleep.&rdquo;
           </p>
           <SectionDivider />
+          {/* TODO: Replace with live user count or remove post-launch */}
           <div className="mt-12 flex flex-col items-center gap-2">
-            <p className="text-4xl font-light text-[var(--text-primary)]">379</p>
-            <p className="text-sm text-[var(--text-secondary)]">{t('website.social.waitlistCount', { count: 379 })}</p>
+            <p className="text-4xl font-light text-[var(--text-primary)]">{WAITLIST_COUNT}</p>
+            <p className="text-sm text-[var(--text-secondary)]">{t('website.social.waitlistCount', { count: WAITLIST_COUNT })}</p>
             <p className="mt-4 text-xs italic text-[var(--text-muted)]">{t('website.social.builtBy')}</p>
           </div>
         </div>

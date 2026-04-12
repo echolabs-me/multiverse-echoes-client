@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "May {{count}} na nag-aabang na.",
-      "builtBy": "Binuo ng isang solo founder. $660 lang ang kabuuang gastos sa development. 95,000 lines of code."
+      "builtBy": "Binuo ng isang solo founder. $66 95,"
     },
     "founder": {
-      "brief": "Gawa ng isang 56-year-old na walang alam sa coding. 95,000 lines ng Rust at TypeScript. $660.",
+      "brief": "Gawa ng isang 56-year-old na walang alam sa coding. 95, $66",
       "readMore": "Basahin ang buong kwento"
     },
     "finalCta": {

@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "Déjà {{count}} personnes sur la liste d'attente",
-      "builtBy": "Créé par un fondateur solo. 660 $ de frais de développement. 95 000 lignes de code."
+      "builtBy": "Créé par un fondateur solo. 66 95"
     },
     "founder": {
-      "brief": "Créé par un passionné de 56 ans, sans aucune compétence en programmation. 95 000 lignes de code Rust et TypeScript. 660 $.",
+      "brief": "Créé par un passionné de 56 ans, sans aucune compétence en programmation. 95 66",
       "readMore": "Découvrez toute l'histoire"
     },
     "finalCta": {

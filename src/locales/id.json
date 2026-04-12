@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "{{count}} orang sudah mengantre",
-      "builtBy": "Karya seorang solo founder. Total biaya pengembangan hanya $660. 95.000 baris kode."
+      "builtBy": "Karya seorang solo founder. Total biaya pengembangan hanya $66 95"
     },
     "founder": {
-      "brief": "Dibuat oleh seseorang berusia 56 tahun yang tidak bisa coding sama sekali. 95.000 baris kode Rust dan TypeScript. $660.",
+      "brief": "Dibuat oleh seseorang berusia 56 tahun yang tidak bisa coding sama sekali. 95 $66",
       "readMore": "Baca selengkapnya"
     },
     "finalCta": {

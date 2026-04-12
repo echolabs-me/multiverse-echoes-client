@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "すでに{{count}}人が待機中です",
-      "builtBy": "ソロファウンダーが開発。\n開発費はわずか660ドル。\nコード数は95,000行。"
+      "builtBy": "ソロファウンダーが開発。\n開発費はわずか66"
     },
     "founder": {
-      "brief": "コードは一行も書けない56歳が作り上げた。\nRustとTypeScript、計95,000行の結晶。\n価格は660ドル。",
+      "brief": "コードは一行も書けない56歳が作り上げた。\nRustとTypeScript、計95,",
       "readMore": "詳しく見る"
     },
     "finalCta": {

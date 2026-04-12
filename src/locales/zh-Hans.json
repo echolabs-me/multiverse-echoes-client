@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "已有 {{count}} 人在排队候候",
-      "builtBy": "独立开发者打造。研发成本仅 660 美元。代码量达 9.5 万行。"
+      "builtBy": "独立开发者打造。研发成本仅 665 万行。"
     },
     "founder": {
-      "brief": "创始人 56 岁，不懂一行代码。\n却打造出 9.5 万行 Rust 与 TypeScript 核心代码。\n售价 660 美元。",
+      "brief": "创始人 56 岁，不懂一行代码。\n却打造出 9.5 万行 Rust 与 TypeScript 核心代码。\n售价 66",
       "readMore": "查看完整故事"
     },
     "finalCta": {

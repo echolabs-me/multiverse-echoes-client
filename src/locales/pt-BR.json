@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "{{count}} pessoas já estão na fila",
-      "builtBy": "Criado por um único fundador. Custo total de desenvolvimento: US$ 660. 95.000 linhas de código."
+      "builtBy": "Criado por um único fundador. Custo total de desenvolvimento: US$ 66 95"
     },
     "founder": {
-      "brief": "Criado por alguém de 56 anos que não sabe escrever uma linha de código. 95 mil linhas de Rust e TypeScript. US$ 660.",
+      "brief": "Criado por alguém de 56 anos que não sabe escrever uma linha de código. 95 mil linhas de Rust e TypeScript. US$ 66",
       "readMore": "Saiba mais"
     },
     "finalCta": {

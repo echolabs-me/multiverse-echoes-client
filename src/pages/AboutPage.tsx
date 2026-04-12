@@ -9,9 +9,9 @@ export function AboutPage() {
     <>
       <Helmet>
         <title>About EchoLabsME — The Founder Story</title>
-        <meta name="description" content="Built by a 56-year-old non-technical founder. 95,000 lines of code. $660 total cost. The story of Multiverse Echoes." />
+        <meta name="description" content="Built by a 56-year-old non-technical founder. 95,000 lines of code. The story of Multiverse Echoes." />
         <meta property="og:title" content="About EchoLabsME — The Founder Story" />
-        <meta property="og:description" content="Built by a 56-year-old non-technical founder. 95,000 lines of code. $660 total cost. The story of Multiverse Echoes." />
+        <meta property="og:description" content="Built by a 56-year-old non-technical founder. 95,000 lines of code. The story of Multiverse Echoes." />
         <meta property="og:image" content="https://echolabsme.com/og-image.png" />
         <meta property="og:url" content="https://echolabsme.com/about" />
         <meta property="og:type" content="website" />
@@ -43,8 +43,7 @@ export function AboutPage() {
             <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">The Build</h2>
             <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
               The entire platform — 95,000 lines of Rust and TypeScript — was built in partnership with
-              Claude AI. Every line of code, every architectural decision, every deployment script. The total
-              development cost: $660 in API credits and cloud compute.
+              Claude AI. Every line of code, every architectural decision, every deployment script.
             </p>
             <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
               The engine runs on a single NVIDIA B200 GPU. It processes 500 autonomous Echo lives every
@@ -97,14 +96,11 @@ export function AboutPage() {
 
           <section className="mb-12">
             <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">The Numbers</h2>
-            <div className="grid gap-6 sm:grid-cols-3">
+            {/* TODO: Replace waitlist count with live user count or remove post-launch */}
+            <div className="grid gap-6 sm:grid-cols-2">
               <div className="text-center">
                 <p className="text-3xl font-light text-[var(--accent)]">95,000</p>
                 <p className="mt-1 text-sm text-[var(--text-muted)]">lines of code</p>
-              </div>
-              <div className="text-center">
-                <p className="text-3xl font-light text-[var(--accent)]">$660</p>
-                <p className="mt-1 text-sm text-[var(--text-muted)]">total dev cost</p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-light text-[var(--accent)]">379</p>

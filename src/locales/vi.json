@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "Đã có {{count}} người đang chờ đón",
-      "builtBy": "Phát triển bởi một founder duy nhất. Tổng chi phí đầu tư 660 USD. Quy mô 95.000 dòng code."
+      "builtBy": "Phát triển bởi một founder duy nhất. Tổng chi phí đầu tư 66 Quy mô 95"
     },
     "founder": {
-      "brief": "Được tạo nên bởi một người 56 tuổi, không hề biết viết code. 95.000 dòng mã Rust và TypeScript. Giá 660 USD.",
+      "brief": "Được tạo nên bởi một người 56 tuổi, không hề biết viết code. 95 Giá 66",
       "readMore": "Xem chi tiết câu chuyện"
     },
     "finalCta": {

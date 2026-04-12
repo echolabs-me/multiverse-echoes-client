@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "{{count}} orang sudah tidak sabar menunggu",
-      "builtBy": "Dibangunkan oleh pengasas solo. Kos pembangunan hanya $660. 95,000 baris kod."
+      "builtBy": "Dibangunkan oleh pengasas solo. Kos pembangunan hanya $66 95,"
     },
     "founder": {
-      "brief": "Dibina oleh seorang warga emas berusia 56 tahun tanpa sebarang kemahiran pengekodan. 95,000 baris kod Rust dan TypeScript. $660.",
+      "brief": "Dibina oleh seorang warga emas berusia 56 tahun tanpa sebarang kemahiran pengekodan. 95, $66",
       "readMore": "Ketahui kisah penuhnya"
     },
     "finalCta": {

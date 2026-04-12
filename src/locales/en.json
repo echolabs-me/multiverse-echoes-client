@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "{{count}} people are already waiting",
-      "builtBy": "Built by a solo founder. $660 total development cost. 95,000 lines of code."
+      "builtBy": "Built by a solo founder. 95,000 lines of code."
     },
     "founder": {
-      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript. $660.",
+      "brief": "Built by a 56-year-old who can't write a line of code. 95,000 lines of Rust and TypeScript.",
       "readMore": "Read the full story"
     },
     "finalCta": {

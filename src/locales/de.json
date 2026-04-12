@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "Bereits {{count}} Personen warten gespannt",
-      "builtBy": "Entwickelt von einem Solo-Founder. 660 $ Gesamtentwicklungskosten. 95.000 Zeilen Code."
+      "builtBy": "Entwickelt von einem Solo-Founder. 66 95"
     },
     "founder": {
-      "brief": "Entwickelt von einem 56-Jährigen ohne Programmierkenntnisse. 95.000 Zeilen Rust und TypeScript. 660 $.",
+      "brief": "Entwickelt von einem 56-Jährigen ohne Programmierkenntnisse. 95 66",
       "readMore": "Mehr erfahren"
     },
     "finalCta": {

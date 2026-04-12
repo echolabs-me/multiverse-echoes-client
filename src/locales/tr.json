@@ -1063,10 +1063,10 @@
     },
     "social": {
       "waitlistCount": "{{count}} kişi şimdiden sırada",
-      "builtBy": "Tek bir kurucunun imzası. Toplam 660 dolarlık geliştirme maliyeti. 95.000 satır kod."
+      "builtBy": "Tek bir kurucunun imzası. Toplam 66 95"
     },
     "founder": {
-      "brief": "Tek satır kod yazamayan 56 yaşındaki bir girişimci tarafından geliştirildi. 95.000 satırlık Rust ve TypeScript altyapısı. Sadece 660$.",
+      "brief": "Tek satır kod yazamayan 56 yaşındaki bir girişimci tarafından geliştirildi. 95 Sadece 66",
       "readMore": "Hikayenin tamamını okuyun"
     },
     "finalCta": {
