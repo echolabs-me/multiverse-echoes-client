@@ -87,7 +87,7 @@ export function HomePage() {
       </Helmet>
 
       {/* ═══ Section 1: Hero ═══ */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden">
+      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden pt-16">
         {/* Full-bleed background image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
