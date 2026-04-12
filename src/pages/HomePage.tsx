@@ -1,43 +1,41 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
-import { BookOpen, Image, Phone, Video, Globe, Users } from 'lucide-react';
 import { PricingSection } from '../components/website/PricingSection.tsx';
 import { useAuthStore } from '../stores/useAuthStore.ts';
-import type { ReactNode } from 'react';
 
 function SectionDivider() {
-  return <div className="mx-auto h-px w-16 bg-[rgba(212,145,92,0.15)]" />;
+  return <div className="mx-auto my-0 h-px w-16 bg-[rgba(212,145,92,0.15)]" />;
 }
-
-interface FeatureCardProps {
-  icon: ReactNode;
-  titleKey: string;
-  descKey: string;
-}
-
-function FeatureCard({ icon, titleKey, descKey }: FeatureCardProps) {
-  const { t } = useTranslation();
-  return (
-    <div className="flex gap-4">
-      <div className="mt-1 shrink-0 text-[var(--accent)]">{icon}</div>
-      <div>
-        <h3 className="mb-1 text-lg font-medium text-[var(--text-primary)]">{t(titleKey)}</h3>
-        <p className="text-sm leading-relaxed text-[var(--text-secondary)]">{t(descKey)}</p>
-      </div>
-    </div>
-  );
-}
-
-const SHARD_COLORS = {
-  tokyo: 'var(--accent-cyber-tokyo)',
-  australia: 'var(--accent-nomad-australia)',
-  florence: 'var(--accent-renaissance-florence)',
-};
 
 export function HomePage() {
   const { t } = useTranslation();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const ctaTo = isAuthenticated ? '/dashboard' : '/register';
+
+  // Scroll-triggered reveal via IntersectionObserver
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const els = document.querySelectorAll('.section-reveal');
+    if (prefersReduced) {
+      els.forEach((el) => el.classList.add('revealed'));
+      return;
+    }
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('revealed');
+            obs.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <>
@@ -76,58 +74,89 @@ export function HomePage() {
         </script>
       </Helmet>
 
-      {/* Section 1: Hero */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pt-16 text-center">
-        {/* Background glow */}
+      {/* ═══ Section 1: Hero ═══ */}
+      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden">
+        {/* Full-bleed background image */}
         <div
-          className="pointer-events-none fixed left-1/2 top-[40%] h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/screenshots/App_Page_Full_Capture.jpeg)' }}
+        />
+        {/* Dark overlay + blur for text readability */}
+        <div className="absolute inset-0 bg-[#0A0F14]/80 backdrop-blur-sm" />
+        {/* Radial glow */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-[40%] h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(212,145,92,0.08) 0%, transparent 70%)',
-            animation: 'me-hero-breathe 8s ease-in-out infinite',
+            background: 'radial-gradient(circle, rgba(212,145,92,0.1) 0%, transparent 65%)',
+            animation: 'me-breathe 8s ease-in-out infinite',
           }}
         />
 
-        <div className="relative z-10 mx-auto max-w-2xl" style={{ animation: 'me-fade-up 1.2s ease-out both' }}>
-          <h1 className="mb-4 font-serif text-4xl font-light tracking-wider text-[var(--text-primary)] sm:text-5xl lg:text-6xl">
+        <div className="section-reveal relative z-10 mx-auto max-w-2xl px-6 text-center">
+          <img
+            src="/logo.png"
+            alt="Multiverse Echoes"
+            className="mx-auto mb-8 h-24 w-24 rounded-2xl object-contain"
+            style={{ animation: 'me-fade-up 1.2s ease-out both' }}
+          />
+          <h1
+            className="mb-5 font-serif text-4xl font-light tracking-[0.12em] text-[#E8E0D8] sm:text-5xl lg:text-6xl"
+            style={{ animation: 'me-fade-up 1.2s ease-out 0.15s both' }}
+          >
             {t('website.hero.headline')}
           </h1>
           <p
-            className="mx-auto mb-8 max-w-lg text-lg text-[var(--text-secondary)]"
-            style={{ animation: 'me-fade-up 1.2s ease-out 0.15s both' }}
+            className="mx-auto mb-10 max-w-lg text-lg font-light italic leading-relaxed text-[var(--accent)]"
+            style={{ animation: 'me-fade-up 1.2s ease-out 0.3s both' }}
           >
             {t('website.hero.subheadline')}
           </p>
-          <div style={{ animation: 'me-fade-up 1.2s ease-out 0.3s both' }}>
+          <div style={{ animation: 'me-fade-up 1.2s ease-out 0.45s both' }}>
             <Link
-              to={isAuthenticated ? '/dashboard' : '/register'}
-              className="inline-block rounded-md bg-[var(--accent)] px-8 py-3 text-base font-semibold text-[var(--canvas)] transition-all hover:bg-[var(--accent-hover)] hover:shadow-[0_0_30px_rgba(212,145,92,0.2)]"
+              to={ctaTo}
+              className="me-btn-primary inline-block rounded-md px-10 py-3.5 text-base font-semibold"
             >
               {t('website.hero.cta')}
             </Link>
           </div>
+          <div
+            className="mt-6"
+            style={{ animation: 'me-fade-up 1.2s ease-out 0.6s both' }}
+          >
+            <a
+              href="https://x.com/EchoLabsME"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="me-x-link inline-flex items-center gap-2 rounded-md border border-[var(--text-muted)] px-5 py-2 text-sm tracking-wider text-[var(--text-primary)] transition-all hover:border-[var(--accent)] hover:text-[var(--accent)] hover:shadow-[0_0_20px_rgba(212,145,92,0.08)]"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              Follow the journey
+            </a>
+          </div>
         </div>
 
-        {/* Scroll hint */}
         <p
-          className="absolute bottom-8 text-xs tracking-widest text-[var(--text-muted)]"
-          style={{ animation: 'me-fade-up 1.2s ease-out 0.6s both' }}
+          className="absolute bottom-8 text-xs tracking-[0.2em] text-[var(--text-muted)]"
+          style={{ animation: 'me-fade-up 1.2s ease-out 0.9s both' }}
         >
-          ↓
+          Scroll to explore <span className="mt-1 block animate-bounce text-center">↓</span>
         </p>
       </section>
 
       <SectionDivider />
 
-      {/* Section 2: How It Works */}
-      <section className="px-4 py-24 sm:px-6">
+      {/* ═══ Section 2: How It Works ═══ */}
+      <section className="section-reveal px-6 py-24">
         <div className="mx-auto max-w-3xl">
-          <h2 className="mb-16 text-center text-3xl font-light tracking-wider text-[var(--text-primary)]">
+          <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-[var(--text-primary)]">
             {t('website.howItWorks.title')}
           </h2>
-          <div className="grid gap-12 sm:grid-cols-2">
+          <div className="flex flex-col gap-10">
             {([1, 2, 3, 4] as const).map((n) => (
-              <div key={n} className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--accent)] text-sm font-medium text-[var(--accent)]">
+              <div key={n} className="section-reveal flex gap-5">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--accent)] font-serif text-base text-[var(--accent)]">
                   {n}
                 </div>
                 <div>
@@ -146,79 +175,190 @@ export function HomePage() {
 
       <SectionDivider />
 
-      {/* Section 3: Features Showcase */}
-      <section id="features" className="px-4 py-24 sm:px-6">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="mb-16 text-center text-3xl font-light tracking-wider text-[var(--text-primary)]">
+      {/* ═══ Section 3: Features Showcase ═══ */}
+      <section id="features" className="section-reveal px-6 py-24">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-[var(--text-primary)]">
             {t('website.features.title')}
           </h2>
-          <div className="grid gap-10 sm:grid-cols-2">
-            <FeatureCard icon={<BookOpen size={24} />} titleKey="website.features.diaryTitle" descKey="website.features.diaryDesc" />
-            <FeatureCard icon={<Image size={24} />} titleKey="website.features.imagesTitle" descKey="website.features.imagesDesc" />
-            <FeatureCard icon={<Phone size={24} />} titleKey="website.features.voiceTitle" descKey="website.features.voiceDesc" />
-            <FeatureCard icon={<Video size={24} />} titleKey="website.features.videoTitle" descKey="website.features.videoDesc" />
-            <FeatureCard icon={<Globe size={24} />} titleKey="website.features.languagesTitle" descKey="website.features.languagesDesc" />
-            <FeatureCard icon={<Users size={24} />} titleKey="website.features.relationshipsTitle" descKey="website.features.relationshipsDesc" />
+
+          {/* Feature 1: Autonomous diary — image left */}
+          <div className="section-reveal mb-20 flex flex-col items-center gap-10 md:flex-row">
+            <div className="w-full overflow-hidden rounded-xl border border-[var(--border)] shadow-lg md:w-1/2">
+              <img
+                src="/screenshots/Echo_DIary_with_Avatar.jpeg"
+                alt="Echo diary with AI portrait"
+                className="w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <h3 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
+                {t('website.features.diaryTitle')}
+              </h3>
+              <p className="leading-relaxed text-[var(--text-secondary)]">
+                {t('website.features.diaryDesc')}
+              </p>
+            </div>
+          </div>
+
+          {/* Feature 2: AI images — image right */}
+          <div className="section-reveal mb-20 flex flex-col-reverse items-center gap-10 md:flex-row">
+            <div className="w-full md:w-1/2">
+              <h3 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
+                {t('website.features.imagesTitle')}
+              </h3>
+              <p className="leading-relaxed text-[var(--text-secondary)]">
+                {t('website.features.imagesDesc')}
+              </p>
+            </div>
+            <div className="w-full overflow-hidden rounded-xl border border-[var(--border)] shadow-lg md:w-1/2">
+              <img
+                src="/screenshots/App_Page_Full_Capture.jpeg"
+                alt="AI-generated diary scene"
+                className="w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          {/* Feature 3: Nudge — image left */}
+          <div className="section-reveal mb-20 flex flex-col items-center gap-10 md:flex-row">
+            <div className="w-full overflow-hidden rounded-xl border border-[var(--border)] shadow-lg md:w-1/2">
+              <img
+                src="/screenshots/Nudge_Echo.jpeg"
+                alt="Nudge your Echo"
+                className="w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <h3 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
+                {t('website.features.voiceTitle')}
+              </h3>
+              <p className="leading-relaxed text-[var(--text-secondary)]">
+                {t('website.features.voiceDesc')}
+              </p>
+            </div>
+          </div>
+
+          {/* Remaining features in a grid */}
+          <div className="section-reveal grid gap-8 sm:grid-cols-3">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
+              <div className="mb-3 text-2xl">🎥</div>
+              <h3 className="mb-1 font-medium text-[var(--text-primary)]">{t('website.features.videoTitle')}</h3>
+              <p className="text-sm text-[var(--text-secondary)]">{t('website.features.videoDesc')}</p>
+            </div>
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
+              <div className="mb-3 text-2xl">🌐</div>
+              <h3 className="mb-1 font-medium text-[var(--text-primary)]">{t('website.features.languagesTitle')}</h3>
+              <p className="text-sm text-[var(--text-secondary)]">{t('website.features.languagesDesc')}</p>
+            </div>
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
+              <div className="mb-3 text-2xl">💞</div>
+              <h3 className="mb-1 font-medium text-[var(--text-primary)]">{t('website.features.relationshipsTitle')}</h3>
+              <p className="text-sm text-[var(--text-secondary)]">{t('website.features.relationshipsDesc')}</p>
+            </div>
           </div>
         </div>
       </section>
 
       <SectionDivider />
 
-      {/* Section 4: Worlds */}
-      <section className="px-4 py-24 sm:px-6">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="mb-16 text-center text-3xl font-light tracking-wider text-[var(--text-primary)]">
+      {/* ═══ Section 4: Worlds ═══ */}
+      <section className="section-reveal px-6 py-24">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-[var(--text-primary)]">
             {t('website.worlds.title')}
           </h2>
           <div className="grid gap-6 sm:grid-cols-3">
-            {(['tokyo', 'australia', 'florence'] as const).map((shard) => (
+            {/* Cyber-Tokyo */}
+            <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
               <div
-                key={shard}
-                className="group relative overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 transition-all hover:border-current"
-                style={{ color: SHARD_COLORS[shard] }}
-              >
-                <div
-                  className="pointer-events-none absolute inset-0 opacity-5 transition-opacity group-hover:opacity-10"
-                  style={{ background: `radial-gradient(circle at 50% 0%, currentColor, transparent 70%)` }}
-                />
-                <h3 className="relative mb-2 text-lg font-semibold">{t(`website.worlds.${shard}Name`)}</h3>
-                <p className="relative text-sm leading-relaxed text-[var(--text-secondary)]">
-                  {t(`website.worlds.${shard}Desc`)}
+                className="h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                style={{ backgroundImage: 'url(/screenshots/App_Page_Full_Capture.jpeg)' }}
+              />
+              <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
+              <div className="relative p-6 pt-0">
+                <h3 className="mb-2 font-serif text-xl font-semibold text-[#00d4ff]">
+                  {t('website.worlds.tokyoName')}
+                </h3>
+                <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                  {t('website.worlds.tokyoDesc')}
                 </p>
               </div>
-            ))}
+            </div>
+
+            {/* Nomad Australia */}
+            <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
+              <div
+                className="h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                style={{ backgroundImage: 'url(/screenshots/English_Full_Page.jpeg)' }}
+              />
+              <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
+              <div className="relative p-6 pt-0">
+                <h3 className="mb-2 font-serif text-xl font-semibold text-[#c4783c]">
+                  {t('website.worlds.australiaName')}
+                </h3>
+                <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                  {t('website.worlds.australiaDesc')}
+                </p>
+              </div>
+            </div>
+
+            {/* Renaissance Florence */}
+            <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
+              <div
+                className="h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                style={{ backgroundImage: 'url(/screenshots/Create_Echo.jpeg)' }}
+              />
+              <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
+              <div className="relative p-6 pt-0">
+                <h3 className="mb-2 font-serif text-xl font-semibold text-[#8b6f47]">
+                  {t('website.worlds.florenceName')}
+                </h3>
+                <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                  {t('website.worlds.florenceDesc')}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <SectionDivider />
 
-      {/* Section 5: Social Proof */}
-      <section className="px-4 py-24 text-center sm:px-6">
-        <div className="mx-auto max-w-2xl">
-          <p className="mb-4 text-4xl font-light text-[var(--accent)]">379</p>
-          <p className="mb-8 text-lg text-[var(--text-secondary)]">{t('website.social.waitlistCount', { count: 379 })}</p>
-          <p className="text-sm italic text-[var(--text-muted)]">{t('website.social.builtBy')}</p>
+      {/* ═══ Section 5: Social Proof ═══ */}
+      <section className="section-reveal px-6 py-24">
+        <div className="mx-auto max-w-xl text-center">
+          <p className="mb-6 font-serif text-5xl font-light italic text-[var(--accent)]">
+            &ldquo;You are not playing a game. You are watching a parallel universe that started with you &mdash; and it never stops evolving, even while you sleep.&rdquo;
+          </p>
+          <SectionDivider />
+          <div className="mt-12 flex flex-col items-center gap-2">
+            <p className="text-4xl font-light text-[var(--text-primary)]">379</p>
+            <p className="text-sm text-[var(--text-secondary)]">{t('website.social.waitlistCount', { count: 379 })}</p>
+            <p className="mt-4 text-xs italic text-[var(--text-muted)]">{t('website.social.builtBy')}</p>
+          </div>
         </div>
       </section>
 
       <SectionDivider />
 
-      {/* Section 6: Pricing */}
+      {/* ═══ Section 6: Pricing ═══ */}
       <PricingSection />
 
       <SectionDivider />
 
-      {/* Section 7: The Founder (brief) */}
-      <section className="px-4 py-24 text-center sm:px-6">
-        <div className="mx-auto max-w-xl">
-          <p className="mb-6 text-lg font-light italic leading-relaxed text-[var(--accent)]">
+      {/* ═══ Section 7: The Founder (brief) ═══ */}
+      <section className="section-reveal px-6 py-24">
+        <div className="mx-auto max-w-xl text-center">
+          <p className="mb-8 font-serif text-xl font-light italic leading-relaxed text-[var(--accent)]">
             {t('website.founder.brief')}
           </p>
           <Link
             to="/about"
-            className="text-sm font-medium text-[var(--text-secondary)] underline decoration-[var(--border)] underline-offset-4 transition-colors hover:text-[var(--accent)] hover:decoration-[var(--accent)]"
+            className="text-sm tracking-wider text-[var(--text-secondary)] underline decoration-[var(--border)] underline-offset-4 transition-colors hover:text-[var(--accent)] hover:decoration-[var(--accent)]"
           >
             {t('website.founder.readMore')} →
           </Link>
@@ -227,33 +367,77 @@ export function HomePage() {
 
       <SectionDivider />
 
-      {/* Section 8: Final CTA */}
-      <section className="px-4 py-24 text-center sm:px-6">
-        <div className="mx-auto max-w-lg">
-          <h2 className="mb-6 text-3xl font-light tracking-wider text-[var(--text-primary)]">
+      {/* ═══ Section 8: Final CTA ═══ */}
+      <section className="section-reveal relative overflow-hidden px-6 py-32">
+        {/* Background glow */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(212,145,92,0.08) 0%, transparent 65%)' }}
+        />
+        <div className="relative z-10 mx-auto max-w-lg text-center">
+          <h2 className="mb-8 font-serif text-4xl font-light tracking-[0.08em] text-[var(--text-primary)]">
             {t('website.finalCta.headline')}
           </h2>
           <Link
-            to={isAuthenticated ? '/dashboard' : '/register'}
-            className="mb-4 inline-block rounded-md bg-[var(--accent)] px-8 py-3.5 text-base font-semibold text-[var(--canvas)] transition-all hover:bg-[var(--accent-hover)] hover:shadow-[0_0_30px_rgba(212,145,92,0.2)]"
+            to={ctaTo}
+            className="me-btn-primary inline-block rounded-md px-10 py-4 text-base font-semibold"
           >
             {t('website.finalCta.cta')}
           </Link>
-          <p className="mt-4 text-sm text-[var(--text-muted)]">{t('website.finalCta.noCreditCard')}</p>
+          <p className="mt-6 text-sm text-[var(--text-muted)]">{t('website.finalCta.noCreditCard')}</p>
         </div>
       </section>
 
-      {/* Keyframe animations */}
+      {/* ═══ Animations & Styles ═══ */}
       <style>{`
-        @keyframes me-hero-breathe {
+        /* Breathing glow */
+        @keyframes me-breathe {
           0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
           50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.08); }
         }
+        /* Fade up on load */
         @keyframes me-fade-up {
           from { opacity: 0; transform: translateY(18px); }
           to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Scroll-triggered reveal */
+        .section-reveal {
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .section-reveal.revealed {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* CTA button — matches landing page style */
+        .me-btn-primary {
+          color: var(--canvas);
+          background: var(--accent);
+          letter-spacing: 0.06em;
+          transition: all 0.3s ease;
+        }
+        .me-btn-primary:hover {
+          background: #e0a06a;
+          box-shadow: 0 0 30px rgba(212,145,92,0.15);
+          transform: translateY(-1px);
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .section-reveal {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+          [style*="animation"] {
+            animation: none !important;
+          }
+        }
       `}</style>
+
     </>
   );
 }
