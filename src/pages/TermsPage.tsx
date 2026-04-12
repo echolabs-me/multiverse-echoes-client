@@ -11,7 +11,7 @@ export function TermsPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
-      <div className="mx-auto w-full max-w-3xl p-6">
+      <div className="mx-auto w-full max-w-3xl px-6 pt-28 pb-6">
         <button
           onClick={() => navigate(-1)}
           className="mb-6 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"

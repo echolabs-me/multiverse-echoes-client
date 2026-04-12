@@ -19,7 +19,7 @@ export function AboutPage() {
         <meta name="twitter:site" content="@EchoLabsME" />
       </Helmet>
 
-      <div className="px-4 pt-24 pb-16 sm:px-6">
+      <div className="px-4 pt-28 pb-16 sm:px-6">
         <article className="mx-auto max-w-2xl">
           <h1 className="mb-8 font-serif text-4xl font-light tracking-wider text-[var(--text-primary)]">
             {t('website.nav.about')}

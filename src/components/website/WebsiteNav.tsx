@@ -47,7 +47,7 @@ export function WebsiteNav() {
 
   return (
     <header
-      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 right-0 left-0 z-[9999] transition-all duration-500 ${
         scrolled || menuOpen
           ? 'border-b border-[rgba(212,145,92,0.15)] bg-[#0A0F14]/95 backdrop-blur-md'
           : 'bg-transparent'
