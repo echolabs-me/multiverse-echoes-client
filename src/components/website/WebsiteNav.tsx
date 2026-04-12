@@ -47,9 +47,10 @@ export function WebsiteNav() {
 
   return (
     <header
+      style={{ isolation: 'isolate' }}
       className={`fixed top-0 right-0 left-0 z-[9999] transition-all duration-500 ${
         scrolled || menuOpen
-          ? 'border-b border-[rgba(212,145,92,0.15)] bg-[#0A0F14]/95 backdrop-blur-md'
+          ? 'border-b border-[rgba(212,145,92,0.15)] bg-[#0A0F14]'
           : 'bg-transparent'
       }`}
     >
@@ -97,7 +98,7 @@ export function WebsiteNav() {
 
       {/* Mobile slide-out menu */}
       {menuOpen && (
-        <div className="border-t border-[rgba(212,145,92,0.15)] bg-[#0A0F14]/95 px-6 pb-8 pt-6 backdrop-blur-md md:hidden">
+        <div className="border-t border-[rgba(212,145,92,0.15)] bg-[#0A0F14] px-6 pb-8 pt-6 md:hidden">
           <div className="flex flex-col gap-5">
             <button
               onClick={() => scrollToSection('features')}
