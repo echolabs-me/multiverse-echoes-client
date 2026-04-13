@@ -61,6 +61,12 @@ export class VoiceAudioBridge {
   ): Promise<void> {
     this.remoteAudio = remoteAudioEl;
 
+    // Claim ownership of pre-created resources immediately so disconnect() can
+    // release them on any later failure (WebSocket timeout, offer handling, etc.).
+    if (preCreatedMicStream) {
+      this.mediaStream = preCreatedMicStream;
+    }
+
     // AudioContext for Opus recorder
     if (preCreatedAudioCtx) {
       this.audioCtx = preCreatedAudioCtx;
@@ -209,10 +215,9 @@ export class VoiceAudioBridge {
 
   /** Start Opus mic recording — sends \x01 frames on WebSocket (unchanged). */
   private async startMicCapture(preCreatedStream?: MediaStream): Promise<void> {
-    if (preCreatedStream) {
-      this.mediaStream = preCreatedStream;
-    } else {
-      this.mediaStream = await navigator.mediaDevices.getUserMedia({
+    // connect() already claimed ownership of preCreatedStream into this.mediaStream.
+    if (!this.mediaStream) {
+      this.mediaStream = preCreatedStream ?? await navigator.mediaDevices.getUserMedia({
         audio: {
           channelCount: 1,
           echoCancellation: true,

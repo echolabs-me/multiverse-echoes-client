@@ -59,6 +59,10 @@ export function VoiceSessionModal({
   const durationTimerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
   const sessionDurationRef = useRef<number>(900);
   const remoteAudioRef = useRef<HTMLAudioElement | null>(null);
+  // Pre-bridge resources — held here so cleanup() can release the mic and
+  // AudioContext if startSession fails before the bridge adopts them.
+  const preMicStreamRef = useRef<MediaStream | null>(null);
+  const preAudioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
     videoFrameRef.current = videoFrame;
@@ -78,6 +82,20 @@ export function VoiceSessionModal({
       bridgeRef.current = null;
     }
 
+    // Release any pre-bridge resources the bridge never adopted (e.g. startup
+    // failed before connect() ran). Once the bridge takes ownership, startSession
+    // clears these refs so disconnect() is the sole releaser.
+    if (preMicStreamRef.current) {
+      preMicStreamRef.current.getTracks().forEach((track) => track.stop());
+      preMicStreamRef.current = null;
+    }
+    if (preAudioCtxRef.current) {
+      if (preAudioCtxRef.current.state !== 'closed') {
+        await preAudioCtxRef.current.close().catch(() => {});
+      }
+      preAudioCtxRef.current = null;
+    }
+
     if (videoFrameRef.current) {
       URL.revokeObjectURL(videoFrameRef.current);
     }
@@ -87,7 +105,9 @@ export function VoiceSessionModal({
     } catch { /* best effort */ }
     sessionNonceRef.current = undefined;
 
-    cleanupDoneRef.current = false;
+    // cleanupDoneRef stays true — the guard at the top of cleanup() is meant
+    // to mean "we already released resources, don't double-release". It is
+    // reset to false by startSession() when a genuinely new call begins.
   }, [echoId]);
 
   useEffect(() => {
@@ -96,6 +116,9 @@ export function VoiceSessionModal({
   }, []);
 
   const startSession = useCallback(async () => {
+    // A genuinely new call begins — arm cleanup() to run again on this session.
+    cleanupDoneRef.current = false;
+
     setState('connecting');
     setError(null);
     setTranscript('');
@@ -104,6 +127,7 @@ export function VoiceSessionModal({
 
     try {
       const preAudioCtx = new AudioContext({ sampleRate: 24000 });
+      preAudioCtxRef.current = preAudioCtx;
       if (preAudioCtx.state === 'suspended') {
         await preAudioCtx.resume();
       }
@@ -115,6 +139,7 @@ export function VoiceSessionModal({
           autoGainControl: true,
         },
       });
+      preMicStreamRef.current = preMicStream;
 
       // Start server-side session
       const { voice_ws_url, session_nonce, session_duration_seconds } =
@@ -134,8 +159,6 @@ export function VoiceSessionModal({
         await new Promise((r) => setTimeout(r, 500));
       }
       if (!ready) {
-        preAudioCtx.close();
-        preMicStream.getTracks().forEach((tr) => tr.stop());
         throw new Error(t('voice.serverTimeout', 'Voice server not available'));
       }
 
@@ -166,6 +189,10 @@ export function VoiceSessionModal({
 
       const wsBase = baseUrl.replace(/^http/, 'ws');
       await bridge.connect(`${wsBase}${voice_ws_url}`, remoteAudioRef.current!, preAudioCtx, preMicStream);
+
+      // Bridge now owns these — disconnect() will release them.
+      preMicStreamRef.current = null;
+      preAudioCtxRef.current = null;
 
       // Start duration countdown
       let elapsed = 0;
