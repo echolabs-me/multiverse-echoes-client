@@ -1,4 +1,4 @@
-import { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react';
+import { forwardRef, useId, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react';
 
 interface BaseInputProps {
   label?: string;
@@ -21,7 +21,10 @@ export const Input = forwardRef<
   InputProps | TextareaProps
 >(function Input(props, ref) {
   const { label, error, multiline, className = '', id, ...rest } = props;
-  const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-');
+  // Auto-generated unique id so two Inputs with the same label don't collide.
+  // Callers can still pass an explicit `id` when they need a stable selector.
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
 
   return (
     <div className="flex flex-col gap-1.5">

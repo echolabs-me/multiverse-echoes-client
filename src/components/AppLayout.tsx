@@ -159,10 +159,28 @@ export function AppLayout() {
   // Touch detection — JS-based since CSS pointer queries are unreliable on iPad Safari
   const [isTablet, setIsTablet] = useState(() => isTabletDevice());
 
+  // Viewport width detection. Drives which layout block renders so only
+  // ONE `<Outlet />` mounts. Previously both phone and desktop blocks
+  // rendered with CSS-only `md:hidden` / `hidden md:flex` toggling, which
+  // mounted every route component twice — doubling state, useEffect calls,
+  // and API fetches. Matches the Tailwind `md` breakpoint (768px).
+  const [isMobileViewport, setIsMobileViewport] = useState(() =>
+    typeof window !== 'undefined'
+      ? window.matchMedia('(max-width: 767px)').matches
+      : false,
+  );
+
   useEffect(() => {
     const handler = () => setIsTablet(isTabletDevice());
     window.addEventListener('resize', handler);
     return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const handler = (e: MediaQueryListEvent) => setIsMobileViewport(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
 
   // Track page views on route changes (ME-UXF-001 §16.5)
@@ -258,21 +276,26 @@ export function AppLayout() {
         {/* Left nav — icon-only, visible on md+ */}
         <NavSidebar isTablet={isTablet} />
 
-        {/* ═══ TABLET LAYOUT — JS touch detection ═══ */}
-        {isTablet && (
-          <div className="hidden md:flex flex-1 min-w-0">
+        {/* Exactly ONE of phone / tablet / desktop renders — never both —
+            so `<Outlet />` mounts a single copy of the current route. */}
+
+        {/* ═══ PHONE LAYOUT (<md) — single pane, full width ═══ */}
+        {isMobileViewport && (
+          <main className="flex-1 overflow-y-auto">
+            <Outlet />
+          </main>
+        )}
+
+        {/* ═══ TABLET LAYOUT — JS touch detection, md+ viewport ═══ */}
+        {!isMobileViewport && isTablet && (
+          <div className="flex flex-1 min-w-0">
             <TabletLayout showEchoPanes={showEchoPanes} />
           </div>
         )}
 
-        {/* ═══ PHONE LAYOUT (<md) — single pane, full width ═══ */}
-        <main className="flex-1 overflow-y-auto md:hidden">
-          <Outlet />
-        </main>
-
         {/* ═══ DESKTOP LAYOUT — non-touch 768px+ ═══ */}
-        {!isTablet && (
-          <div className="hidden md:flex flex-1 overflow-hidden">
+        {!isMobileViewport && !isTablet && (
+          <div className="flex flex-1 overflow-hidden">
           <MoodAtmosphereWrapper show={showEchoPanes}>
             {/* Community Pulse — 1920px+ only */}
             {showEchoPanes && (
