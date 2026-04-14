@@ -27,6 +27,20 @@ export default defineConfig([
         { allowConstantExport: true },
       ],
       'no-console': 'error',
+      // Inline `style={...}` attributes are forbidden: they (a) bake into
+      // pre-rendered HTML and violate strict CSP `style-src` (no
+      // 'unsafe-inline'), and (b) bypass the design-system tokens. Use
+      // Tailwind utility classes, helper classes in client/src/styles/global.css,
+      // or CSS custom properties set via callback refs for dynamic values.
+      // See the Phase 6D cleanup commit 962bde7 for the conversion patterns.
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "JSXAttribute[name.name='style']",
+          message:
+            "Inline `style={...}` is forbidden (CSP style-src: no 'unsafe-inline'). Use a Tailwind class, a helper class in global.css, or a callback ref that calls element.style.setProperty for dynamic values.",
+        },
+      ],
     },
   },
   {
