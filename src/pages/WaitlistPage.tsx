@@ -1,69 +1,82 @@
 /**
- * WaitlistPage — Public landing page for pre-launch signups.
+ * WaitlistPage — public landing page for pre-launch signups.
  *
- * No auth required. Hero + How It Works + Social Proof + Signup Form + Footer.
- * UTM tracking from URL query params.
+ * Count + signup both hit the Cloudflare Worker at api.echolabs.me (backed
+ * by the me-waitlist D1 database), NOT the Rust backend. The Rust backend
+ * only has test entries. The Worker handles the real flow: D1 insert →
+ * verification email via Resend → profile completion at /verify → status
+ * "waiting".
  *
- * Reference: ME-UXF-001 §4.1, ME-LGM-001 §3.1.
+ * Rendered inside <WebsiteLayout> so nav + footer come for free.
  */
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
-import { Eye, Sparkles, Share2, CheckCircle, Info } from 'lucide-react';
-import { Button, Input, Card } from '../components/index.ts';
-import { waitlist } from '../lib/api/endpoints.ts';
+import { useSearchParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Input } from '../components/index.ts';
+
+const WAITLIST_API = 'https://api.echolabs.me';
+
+interface CountResponse {
+  total: number;
+  unverified: number;
+  waiting: number;
+  invited: number;
+}
+
+interface WorkerErrorBody {
+  error?: string;
+}
+
+async function fetchWaitlistCount(): Promise<CountResponse> {
+  const res = await fetch(`${WAITLIST_API}/waitlist/count`, { method: 'GET' });
+  if (!res.ok) throw new Error(`count failed: ${res.status}`);
+  return (await res.json()) as CountResponse;
+}
+
+async function signupForWaitlist(email: string, source?: string): Promise<void> {
+  const res = await fetch(`${WAITLIST_API}/waitlist`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, source: source ?? 'waitlist-page' }),
+  });
+  if (res.ok) return;
+  let msg = `signup failed: ${res.status}`;
+  try {
+    const body = (await res.json()) as WorkerErrorBody;
+    if (body.error) msg = body.error;
+  } catch {
+    // non-JSON body — fall through with the status-only message
+  }
+  if (res.status === 409) throw new Error('ALREADY_REGISTERED');
+  throw new Error(msg);
+}
 
 export function WaitlistPage() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
 
-  // Form state
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-
-  // Post-signup state
-  const [signupResult, setSignupResult] = useState<{
-    position: number;
-    referralCode: string;
-    entryId: string;
-    referralCount: number;
-  } | null>(null);
-
-  // Social proof: total waitlist count
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
-  // Referral link copied feedback
-  const [copied, setCopied] = useState(false);
-
-  // UTM source from URL
   const source = searchParams.get('utm_source') ?? searchParams.get('source') ?? undefined;
-  // Referral code from URL
-  const refCode = searchParams.get('ref') ?? undefined;
 
-  // Fetch count + restore saved entry on mount.
   useEffect(() => {
-    void waitlist.count().then((r) => setTotalCount(r.count)).catch(() => {});
-
-    // Returning visitor — check saved entry_id.
-    const savedEntryId = localStorage.getItem('waitlist_entry_id');
-    if (savedEntryId) {
-      void waitlist
-        .position(savedEntryId)
-        .then((r) => {
-          setSignupResult({
-            position: r.position,
-            referralCode: r.referral_code,
-            entryId: r.entry_id,
-            referralCount: r.referral_count,
-          });
-        })
-        .catch(() => {
-          // Entry not found — clear stale data.
-          localStorage.removeItem('waitlist_entry_id');
-        });
-    }
+    let cancelled = false;
+    fetchWaitlistCount()
+      .then((r) => {
+        if (!cancelled) setTotalCount(r.total);
+      })
+      .catch(() => {
+        // Count is social proof — silent on failure, page still works.
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -78,241 +91,147 @@ export function WaitlistPage() {
 
     setIsSubmitting(true);
     try {
-      const result = await waitlist.signup({
-        email: trimmed,
-        referral_code: refCode,
-        source,
-      });
-      localStorage.setItem('waitlist_entry_id', result.entry_id);
-      setSignupResult({
-        position: result.position,
-        referralCode: result.referral_code,
-        entryId: result.entry_id,
-        referralCount: 0,
-      });
-      // Refresh count
-      void waitlist.count().then((r) => setTotalCount(r.count)).catch(() => {});
+      await signupForWaitlist(trimmed, source);
+      setSubmittedEmail(trimmed);
+      // Refresh count — don't block the success render on it.
+      fetchWaitlistCount()
+        .then((r) => setTotalCount(r.total))
+        .catch(() => {});
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : t('waitlist.signupError');
-      if (message.includes('ALREADY_REGISTERED')) {
+      const message = err instanceof Error ? err.message : t('waitlist.signupError');
+      if (message === 'ALREADY_REGISTERED') {
         setError(t('waitlist.alreadyRegistered'));
       } else {
-        setError(message);
+        setError(t('waitlist.signupError'));
       }
     } finally {
       setIsSubmitting(false);
     }
   }
 
-  function handleCopyReferral() {
-    if (!signupResult) return;
-    const link = `https://echolabs.me/waitlist?ref=${signupResult.referralCode}`;
-    void navigator.clipboard.writeText(link).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  }
-
-  function handleShare() {
-    if (!signupResult) return;
-    const link = `https://echolabs.me/waitlist?ref=${signupResult.referralCode}`;
-    if (navigator.share) {
-      void navigator.share({
-        title: t('waitlist.shareTitle'),
-        text: t('waitlist.shareText'),
-        url: link,
-      });
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-canvas text-text-primary">
-      {/* Hero Section */}
-      <section className="flex flex-col items-center px-6 pb-16 pt-20 text-center">
-        <h1 className="mb-4 max-w-2xl text-4xl font-bold leading-tight md:text-5xl">
-          {t('waitlist.heroTitle')}
-        </h1>
-        <p className="mb-8 max-w-lg text-lg text-text-secondary">
-          {t('waitlist.heroSubtitle')}
-        </p>
+    <>
+      <Helmet>
+        <title>Join the Waitlist — Multiverse Echoes</title>
+        <meta
+          name="description"
+          content="We're in closed beta. Join the waitlist and we'll email you when it's your turn."
+        />
+        <meta property="og:title" content="Join the Waitlist — Multiverse Echoes" />
+        <meta
+          property="og:description"
+          content="We're in closed beta. Join the waitlist and we'll email you when it's your turn."
+        />
+        <meta property="og:image" content="https://echolabsme.com/og-image.png" />
+        <meta property="og:url" content="https://echolabsme.com/waitlist" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
 
-        {/* Animated diary entry preview */}
-        <div className="mb-12 w-full max-w-md" aria-hidden="true">
-          <Card>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-xs text-text-muted">
-                <span className="h-2 w-2 rounded-full bg-accent" />
-                {t('waitlist.diaryPreviewLabel')}
-              </div>
-              <p className="text-sm italic text-text-secondary">
-                {t('waitlist.diaryPreviewText')}
-              </p>
-            </div>
-          </Card>
-        </div>
+      <div className="px-4 pt-28 pb-16 sm:px-6">
+        <article className="mx-auto max-w-2xl">
+          <h1 className="mb-4 font-serif text-4xl font-light tracking-wider text-[var(--text-primary)]">
+            {t('auth.joinWaitlist')}
+          </h1>
 
-        {/* Signup or confirmation */}
-        {!signupResult ? (
-          <form
-            onSubmit={(e) => void handleSubmit(e)}
-            className="flex w-full max-w-md flex-col gap-3"
-          >
-            <div className="flex gap-2">
-              <Input
-                type="email"
-                placeholder={t('waitlist.emailPlaceholder')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                aria-label={t('waitlist.emailPlaceholder')}
-                className="flex-1"
-              />
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? t('common.loading') : t('waitlist.joinButton')}
-              </Button>
-            </div>
-            {error && (
-              <p className="text-sm text-danger" role="alert">
-                {error}
-              </p>
-            )}
-            {totalCount !== null && totalCount > 0 && (
-              <p className="text-xs text-text-secondary">
-                {t('waitlist.socialProofCount', { count: totalCount })}
-              </p>
-            )}
-          </form>
-        ) : (
-          <Card>
-            <div className="flex flex-col items-center gap-4 px-4 py-2">
-              <CheckCircle size={32} className="text-success" />
-              <h2 className="text-xl font-bold">
-                {t('waitlist.confirmationTitle', {
-                  position: signupResult.position,
-                })}
-              </h2>
-              <p className="text-sm text-text-secondary">
-                {t('waitlist.confirmationDesc')}
-              </p>
-              <div className="flex w-full items-center gap-2">
-                <code className="flex-1 truncate rounded bg-surface-raised px-3 py-2 text-xs text-text-secondary">
-                  https://echolabs.me/waitlist?ref={signupResult.referralCode}
-                </code>
-                <Button variant="secondary" onClick={handleCopyReferral}>
-                  {copied ? t('common.copied') : t('common.copy')}
-                </Button>
-                {typeof navigator !== 'undefined' && 'share' in navigator && (
-                  <Button variant="secondary" onClick={handleShare}>
-                    <Share2 size={14} />
-                  </Button>
-                )}
+          <p className="mb-10 leading-relaxed text-[var(--text-secondary)]">
+            We&rsquo;re not quite ready for everyone yet. Join the list and we&rsquo;ll email you
+            when a spot opens up — beta testers get extended God Mode at launch.
+          </p>
+
+          {/* Count banner — big number, same treatment as About › The Numbers */}
+          <div className="mb-10 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 text-center">
+            <p className="text-4xl font-light text-[var(--accent)]">
+              {totalCount !== null ? totalCount.toLocaleString() : '—'}
+            </p>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">people already waiting</p>
+          </div>
+
+          {/* Signup or success */}
+          {submittedEmail === null ? (
+            <form onSubmit={(e) => void handleSubmit(e)} className="mb-16 flex flex-col gap-3">
+              <label htmlFor="waitlist-email" className="sr-only">
+                {t('waitlist.emailPlaceholder')}
+              </label>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Input
+                  id="waitlist-email"
+                  type="email"
+                  placeholder={t('waitlist.emailPlaceholder')}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  aria-label={t('waitlist.emailPlaceholder')}
+                  className="flex-1"
+                  autoComplete="email"
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="rounded-md bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--canvas)] transition-all hover:bg-[var(--accent-hover)] hover:shadow-[0_0_30px_rgba(212,145,92,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isSubmitting ? t('common.loading') : t('waitlist.joinButton')}
+                </button>
               </div>
-              {signupResult.referralCount > 0 && (
-                <p className="text-sm text-accent">
-                  {t('waitlist.referralCountLabel', {
-                    count: signupResult.referralCount,
-                  })}
+              {error && (
+                <p className="text-sm text-[var(--danger,#dc2626)]" role="alert">
+                  {error}
                 </p>
               )}
-              <p className="text-xs text-text-secondary">
-                {t('waitlist.referralHint')}
+            </form>
+          ) : (
+            <div
+              className="mb-16 rounded-xl border border-[var(--accent)]/30 bg-[var(--accent)]/5 p-6 text-center"
+              role="status"
+            >
+              <h2 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
+                Check your email
+              </h2>
+              <p className="leading-relaxed text-[var(--text-secondary)]">
+                We sent a verification link to{' '}
+                <strong className="text-[var(--text-primary)]">{submittedEmail}</strong>. Click it
+                to confirm your spot and tell us a bit about yourself.
               </p>
             </div>
-          </Card>
-        )}
-      </section>
+          )}
 
-      {/* What to Expect */}
-      <section className="px-6 py-12">
-        <div className="mx-auto max-w-lg">
-          <h3 className="mb-6 text-center text-lg font-semibold">
-            {t('waitlist.expectTitle')}
-          </h3>
-          <ul className="flex flex-col gap-4">
-            <li className="flex items-start gap-3 text-sm text-text-secondary">
-              <Info size={16} className="mt-0.5 flex-shrink-0 text-accent" />
-              {t('waitlist.expectStep1')}
-            </li>
-            <li className="flex items-start gap-3 text-sm text-text-secondary">
-              <Info size={16} className="mt-0.5 flex-shrink-0 text-accent" />
-              {t('waitlist.expectStep2')}
-            </li>
-            <li className="flex items-start gap-3 text-sm text-text-secondary">
-              <Info size={16} className="mt-0.5 flex-shrink-0 text-accent" />
-              {t('waitlist.expectStep3')}
-            </li>
-          </ul>
-        </div>
-      </section>
+          {/* What to expect — reuses existing expectStep1-3 i18n keys */}
+          <section className="mb-12">
+            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">
+              {t('waitlist.expectTitle')}
+            </h2>
+            <ol className="flex flex-col gap-4 text-[var(--text-secondary)]">
+              <li className="flex gap-4 leading-relaxed">
+                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/15 text-sm font-medium text-[var(--accent)]">
+                  1
+                </span>
+                <span>{t('waitlist.expectStep1')}</span>
+              </li>
+              <li className="flex gap-4 leading-relaxed">
+                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/15 text-sm font-medium text-[var(--accent)]">
+                  2
+                </span>
+                <span>{t('waitlist.expectStep2')}</span>
+              </li>
+              <li className="flex gap-4 leading-relaxed">
+                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/15 text-sm font-medium text-[var(--accent)]">
+                  3
+                </span>
+                <span>{t('waitlist.expectStep3')}</span>
+              </li>
+            </ol>
+          </section>
 
-      {/* How It Works */}
-      <section className="bg-surface px-6 py-16">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="mb-10 text-center text-2xl font-bold">
-            {t('waitlist.howItWorksTitle')}
-          </h2>
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
-                <Eye size={24} className="text-accent" />
-              </div>
-              <h3 className="mb-2 font-semibold">{t('waitlist.step1Title')}</h3>
-              <p className="text-sm text-text-secondary">
-                {t('waitlist.step1Desc')}
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
-                <Sparkles size={24} className="text-accent" />
-              </div>
-              <h3 className="mb-2 font-semibold">{t('waitlist.step2Title')}</h3>
-              <p className="text-sm text-text-secondary">
-                {t('waitlist.step2Desc')}
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
-                <Share2 size={24} className="text-accent" />
-              </div>
-              <h3 className="mb-2 font-semibold">{t('waitlist.step3Title')}</h3>
-              <p className="text-sm text-text-secondary">
-                {t('waitlist.step3Desc')}
-              </p>
-            </div>
+          <div className="mt-16 text-center text-sm text-[var(--text-muted)]">
+            Already have an invite code?{' '}
+            <Link to="/register" className="text-[var(--accent)] hover:underline">
+              Register here
+            </Link>
+            .
           </div>
-        </div>
-      </section>
-
-      {/* Social Proof / Indie Narrative */}
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="mb-6 text-2xl font-bold">
-            {t('waitlist.socialProofTitle')}
-          </h2>
-          <p className="mb-4 text-text-secondary">
-            {t('waitlist.socialProofDesc')}
-          </p>
-          <p className="text-sm italic text-text-secondary">
-            {t('waitlist.socialProofQuote')}
-          </p>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border bg-surface px-6 py-8">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-sm text-text-muted">
-          <div className="flex gap-6">
-            <a href="/privacy" className="hover:text-text-secondary">
-              {t('waitlist.privacyPolicy')}
-            </a>
-            <a href="/terms" className="hover:text-text-secondary">
-              {t('waitlist.termsOfService')}
-            </a>
-          </div>
-          <p>© 2026 EchoLabs. {t('waitlist.footerTagline')}</p>
-        </div>
-      </footer>
-    </div>
+        </article>
+      </div>
+    </>
   );
 }
 
