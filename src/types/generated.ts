@@ -88,6 +88,13 @@ export type BreachRecord = {
 	notified_users: boolean,
 	resolved_at: string | null,
 	created_by: string,
+	/**
+	 *  Source of the record — `Manual` means an admin filed it through
+	 *  the API; `Automated` means the runtime detector emitted it.
+	 *  Defaulted via serde for back-compat with rows written before
+	 *  this field existed.
+	 */
+	source?: BreachSource,
 };
 
 /**
@@ -95,6 +102,8 @@ export type BreachRecord = {
  *  Reference: ME-PDP-001 §6.2.
  */
 export type BreachSeverity = "Low" | "Medium" | "High" | "Critical";
+
+export type BreachSource = "Manual" | "Automated";
 
 export type Channel = {
 	channel_id: string,
