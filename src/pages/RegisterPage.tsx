@@ -129,7 +129,7 @@ export function RegisterPage() {
               value={inviteCode}
               onChange={(e) => setInviteCode((e.target as HTMLInputElement).value)}
               error={errors.inviteCode}
-              placeholder="GITEX-ABC12345"
+              placeholder="ME-ABC12345"
               required
               readOnly={!!codeFromUrl}
               autoComplete="off"
