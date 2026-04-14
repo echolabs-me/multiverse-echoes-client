@@ -37,6 +37,12 @@ export function WebsiteFooter() {
             <Link to="/about" className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
               {t('website.nav.about')}
             </Link>
+            <Link to="/contact" className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
+              Contact
+            </Link>
+            <Link to="/waitlist" className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
+              {t('auth.joinWaitlist')}
+            </Link>
           </div>
 
           {/* Legal */}
@@ -47,12 +53,6 @@ export function WebsiteFooter() {
             <Link to="/privacy" className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
               {t('website.footer.privacy')}
             </Link>
-            <a
-              href="mailto:hello@echolabs.me"
-              className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-            >
-              hello@echolabs.me
-            </a>
           </div>
 
           {/* Social + Language */}
