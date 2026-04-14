@@ -78,6 +78,7 @@
     "loginTitle": "Mag-sign in sa Multiverse Echoes",
     "loginTitleReturning": "Maligayang pagbabalik",
     "loginFailed": "Mali ang email o password. Pakisubukan muli.",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "Wala pang account?",
     "createOne": "Gumawa ng isa",
     "tosAgree": "Sumasang-ayon ako sa",

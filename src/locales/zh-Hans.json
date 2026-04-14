@@ -78,6 +78,7 @@
     "loginTitle": "登录 Multiverse Echoes",
     "loginTitleReturning": "欢迎回来",
     "loginFailed": "邮箱或密码不正确,请重试。",
+    "captchaRequired": "请先完成人机验证，然后继续。",
     "noAccount": "还没有账号?",
     "createOne": "创建一个",
     "tosAgree": "我同意",

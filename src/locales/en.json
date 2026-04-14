@@ -80,6 +80,7 @@
     "loginTitle": "Sign in to Multiverse Echoes",
     "loginTitleReturning": "Welcome back",
     "loginFailed": "Invalid email or password. Please try again.",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "Don't have an account?",
     "createOne": "Create one",
     "tosAgree": "I agree to the",

@@ -78,6 +78,7 @@
     "loginTitle": "ลงชื่อเข้าใช้ Multiverse Echoes",
     "loginTitleReturning": "ยินดีต้อนรับกลับมา",
     "loginFailed": "อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "ยังไม่มีบัญชีใช่หรือไม่?",
     "createOne": "สร้างหนึ่งอัน",
     "tosAgree": "ฉันยอมรับใน",

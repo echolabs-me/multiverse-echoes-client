@@ -78,6 +78,7 @@
     "loginTitle": "Masuk ke Multiverse Echoes",
     "loginTitleReturning": "Selamat datang kembali",
     "loginFailed": "Email atau kata sandi tidak valid. Silakan coba lagi.",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "Belum punya akun?",
     "createOne": "Buat satu",
     "tosAgree": "Saya setuju dengan",

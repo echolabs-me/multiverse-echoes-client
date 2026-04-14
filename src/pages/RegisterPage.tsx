@@ -47,10 +47,16 @@ export function RegisterPage() {
     return errs;
   }
 
-  // TODO: Add captcha (Cloudflare Turnstile preferred) before public beta — see backlog
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const validationErrors = validate();
+    // Require a Turnstile token when the widget is configured. The
+    // server rejects a missing token with 400 regardless, but failing
+    // on the client avoids an unnecessary round trip and keeps the
+    // user's form state intact.
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      validationErrors.form = t('auth.captchaRequired');
+    }
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;

@@ -78,6 +78,7 @@
     "loginTitle": "Inicia sesión en Multiverse Echoes",
     "loginTitleReturning": "Bienvenido de nuevo",
     "loginFailed": "Correo o contraseña incorrectos. Vuelve a intentarlo.",
+    "captchaRequired": "Por favor, completa el captcha antes de continuar.",
     "noAccount": "¿No tienes cuenta?",
     "createOne": "Crea una",
     "tosAgree": "Acepto los",

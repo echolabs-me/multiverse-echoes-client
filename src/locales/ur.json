@@ -78,6 +78,7 @@
     "loginTitle": "Multiverse Echoes میں سائن ان کریں",
     "loginTitleReturning": "خوش آمدید واپس",
     "loginFailed": "ای میل یا پاس ورڈ غلط ہے۔ براہ کرم دوبارہ کوشش کریں۔",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "اکاؤنٹ نہیں ہے؟",
     "createOne": "ایک بنائیں",
     "tosAgree": "میں اس سے متفق ہوں",

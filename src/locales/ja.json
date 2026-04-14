@@ -78,6 +78,7 @@
     "loginTitle": "Multiverse Echoesにサインイン",
     "loginTitleReturning": "おかえりなさい",
     "loginFailed": "メールアドレスまたはパスワードが正しくありません。もう一度お試しください。",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "アカウントをお持ちではありませんか？",
     "createOne": "一つ作成してください",
     "tosAgree": "私は〜に同意します",

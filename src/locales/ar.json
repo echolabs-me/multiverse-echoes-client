@@ -78,6 +78,7 @@
     "loginTitle": "سجّل الدخول إلى Multiverse Echoes",
     "loginTitleReturning": "مرحبًا بعودتك",
     "loginFailed": "البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.",
+    "captchaRequired": "يرجى إكمال اختبار التحقق قبل المتابعة.",
     "noAccount": "ليس لديك حساب؟",
     "createOne": "أنشئ واحدًا",
     "tosAgree": "أوافق على",

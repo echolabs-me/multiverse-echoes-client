@@ -78,6 +78,7 @@
     "loginTitle": "Войти в Multiverse Echoes",
     "loginTitleReturning": "С возвращением",
     "loginFailed": "Неверный адрес электронной почты или пароль. Пожалуйста, попробуйте снова.",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "Нет аккаунта?",
     "createOne": "Создайте один",
     "tosAgree": "Я согласен с",

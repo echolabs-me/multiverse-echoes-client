@@ -78,6 +78,7 @@
     "loginTitle": "Multiverse Echoes में साइन इन",
     "loginTitleReturning": "वापस स्वागत है",
     "loginFailed": "ईमेल या पासवर्ड ग़लत है। फिर कोशिश करें।",
+    "captchaRequired": "कृपया जारी रखने से पहले कैप्चा पूरा करें।",
     "noAccount": "खाता नहीं है?",
     "createOne": "एक बनाओ",
     "tosAgree": "मैं सहमत हूँ",

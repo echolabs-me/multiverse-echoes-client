@@ -78,6 +78,7 @@
     "loginTitle": "Đăng nhập vào Multiverse Echoes",
     "loginTitleReturning": "Chào mừng bạn quay trở lại",
     "loginFailed": "Email hoặc mật khẩu không hợp lệ. Vui lòng thử lại.",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "Bạn chưa có tài khoản?",
     "createOne": "Tạo một cái",
     "tosAgree": "Tôi đồng ý với",

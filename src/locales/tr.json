@@ -78,6 +78,7 @@
     "loginTitle": "Multiverse Echoes'a giriş yapın",
     "loginTitleReturning": "Tekrar hoş geldin",
     "loginFailed": "Geçersiz e-posta veya şifre. Lütfen tekrar deneyin.",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "Hesabınız yok mu?",
     "createOne": "Bir tane oluşturun",
     "tosAgree": "Şunları kabul ediyorum:",

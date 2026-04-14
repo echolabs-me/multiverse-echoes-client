@@ -78,6 +78,7 @@
     "loginTitle": "Log masuk ke Multiverse Echoes",
     "loginTitleReturning": "Selamat kembali",
     "loginFailed": "E-mel atau kata laluan tidak sah. Sila cuba lagi.",
+    "captchaRequired": "Please complete the captcha before continuing.",
     "noAccount": "Tidak mempunyai akaun?",
     "createOne": "Cipta satu",
     "tosAgree": "Saya bersetuju dengan",
