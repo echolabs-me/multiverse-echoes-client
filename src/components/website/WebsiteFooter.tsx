@@ -1,13 +1,23 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from './LanguageSwitcher.tsx';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Globe } from 'lucide-react';
 
 export function WebsiteFooter() {
   const { t, i18n } = useTranslation();
+  const location = useLocation();
   const [langOpen, setLangOpen] = useState(false);
   const langWrapRef = useRef<HTMLDivElement>(null);
+
+  // Same-route Link clicks don't trigger WebsiteLayout's scroll effect
+  // (pathname + hash haven't changed), so a Home click from the footer
+  // while already on /home would do nothing visible. Force the scroll.
+  const handleHomeClick = useCallback(() => {
+    if (location.pathname === '/home' && !location.hash) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location.pathname, location.hash]);
 
   const currentLangName =
     new Intl.DisplayNames([i18n.language], { type: 'language' }).of(i18n.language) ??
@@ -51,7 +61,11 @@ export function WebsiteFooter() {
 
           {/* Links */}
           <div className="flex flex-col gap-2">
-            <Link to="/home" className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
+            <Link
+              to="/home"
+              onClick={handleHomeClick}
+              className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+            >
               {t('website.nav.home')}
             </Link>
             <Link to="/home#features" className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">

@@ -49,6 +49,17 @@ export function WebsiteNav() {
     [location.pathname, navigate],
   );
 
+  // When the user is already on /home (no hash), clicking the Home link
+  // wouldn't change the route, so WebsiteLayout's pathname/hash-driven
+  // scroll-to-top effect never fires. Force the scroll here so the link
+  // always feels responsive.
+  const handleHomeClick = useCallback(() => {
+    setMenuOpen(false);
+    if (location.pathname === '/home' && !location.hash) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location.pathname, location.hash]);
+
   const enterTo = isAuthenticated ? '/dashboard' : '/login';
   const enterLabel = isAuthenticated ? t('website.nav.dashboard') : t('website.nav.enter');
   const showWaitlistCta = !isAuthenticated;
@@ -93,7 +104,7 @@ export function WebsiteNav() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-6 md:flex lg:gap-8">
-          <Link to="/home" className={linkClass}>
+          <Link to="/home" onClick={handleHomeClick} className={linkClass}>
             {t('website.nav.home')}
           </Link>
           <button onClick={() => scrollToSection('features')} className={linkClass}>
@@ -160,7 +171,7 @@ export function WebsiteNav() {
           <div className="flex flex-col gap-5">
             <Link
               to="/home"
-              onClick={() => setMenuOpen(false)}
+              onClick={handleHomeClick}
               className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
             >
               {t('website.nav.home')}
