@@ -255,7 +255,7 @@ export function EchoBirthAnimation({
           camera={{ position: [0, 0, 3], fov: 45 }}
           dpr={[1, 1.5]}
           gl={{ antialias: true, alpha: true }}
-          style={{ background: 'transparent' }}
+          className="bg-transparent"
           frameloop="always"
         >
           <color attach="background" args={['#0f1923']} />

@@ -28,6 +28,7 @@ import { SearchPage } from './pages/SearchPage.tsx';
 import { EchoConversationPage } from './pages/EchoConversationPage.tsx';
 import { AdminDashboardPage } from './pages/AdminDashboardPage.tsx';
 import { WaitlistPage } from './pages/WaitlistPage.tsx';
+import { ContactPage } from './pages/ContactPage.tsx';
 import { LoginPage } from './pages/LoginPage.tsx';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage.tsx';
 import { ResetPasswordPage } from './pages/ResetPasswordPage.tsx';
@@ -76,6 +77,7 @@ export function App() {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/waitlist" element={<WaitlistPage />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Route>
 
           {/* Legacy routes — redirect to new paths */}

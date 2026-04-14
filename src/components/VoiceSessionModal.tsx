@@ -258,10 +258,10 @@ export function VoiceSessionModal({
   }[state];
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface-base/95 backdrop-blur-sm pb-safe pt-safe" style={{ touchAction: 'manipulation' }}>
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface-base/95 backdrop-blur-sm pb-safe pt-safe touch-manipulation">
       {/* Hidden audio element for WebRTC remote audio playback */}
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <audio ref={remoteAudioRef} autoPlay playsInline style={{ display: 'none' }} />
+      <audio ref={remoteAudioRef} autoPlay playsInline className="hidden" />
       {/* Close button — always visible so user can dismiss at any state */}
       {(state === 'idle' || state === 'error' || state === 'connecting') && (
         <button
@@ -317,9 +317,9 @@ export function VoiceSessionModal({
         {state === 'thinking' && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/30">
             <div className="flex gap-1">
-              <span className="h-2 w-2 animate-bounce rounded-full bg-white" style={{ animationDelay: '0ms' }} />
-              <span className="h-2 w-2 animate-bounce rounded-full bg-white" style={{ animationDelay: '150ms' }} />
-              <span className="h-2 w-2 animate-bounce rounded-full bg-white" style={{ animationDelay: '300ms' }} />
+              <span className="me-bounce-delay-0 h-2 w-2 animate-bounce rounded-full bg-white" />
+              <span className="me-bounce-delay-150 h-2 w-2 animate-bounce rounded-full bg-white" />
+              <span className="me-bounce-delay-300 h-2 w-2 animate-bounce rounded-full bg-white" />
             </div>
           </div>
         )}

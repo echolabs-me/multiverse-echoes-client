@@ -77,22 +77,28 @@ function EchoCard({
   // Only show travelling if the echo is active (not hibernated)
   const showTravelIndicator = isTravelling && echo.status === 'Active';
 
+  // Set mood-derived CSS custom properties once the card mounts / re-renders
+  // with a new mood. Avoids inline style attributes (strict CSP style-src).
+  const setMoodVars = (el: HTMLElement | null) => {
+    if (!el) return;
+    el.style.setProperty('--me-mood-color', moodColor);
+    el.style.setProperty('--me-mood-shadow', hexToRgba(moodColor, 0.15));
+    el.style.setProperty('--me-mood-edge', hexToRgba(moodColor, 0.4));
+    el.style.setProperty('--me-mood-ring', hexToRgba(moodColor, 0.5));
+  };
+
   return (
     <div
-      className={`flex w-full items-start gap-0 rounded-lg transition-all ${
+      ref={setMoodVars}
+      className={`me-echo-card-mood-edge flex w-full items-start gap-0 rounded-lg transition-all ${
         isActive
           ? 'bg-accent-subtle border border-accent/30'
           : 'hover:bg-surface-raised border border-transparent'
       }`}
-      style={{
-        boxShadow: `0 0 14px 3px ${hexToRgba(moodColor, 0.15)}`,
-        borderLeft: `3px solid ${hexToRgba(moodColor, 0.4)}`,
-      }}
     >
       {/* Drag handle — mood-colored */}
       <div
-        className="flex-shrink-0 cursor-grab active:cursor-grabbing px-1 py-3 touch-none transition-opacity opacity-40 hover:opacity-80"
-        style={{ color: moodColor }}
+        className="me-mood-fg flex-shrink-0 cursor-grab active:cursor-grabbing px-1 py-3 touch-none transition-opacity opacity-40 hover:opacity-80"
         {...dragHandleProps}
       >
         <GripVertical size={14} />
@@ -108,13 +114,11 @@ function EchoCard({
             <img
               src={echo.avatar_url}
               alt=""
-              className="h-6 w-6 flex-shrink-0 rounded-full object-cover"
-              style={{ border: `1.5px solid ${hexToRgba(moodColor, 0.5)}` }}
+              className="me-avatar-ring h-6 w-6 flex-shrink-0 rounded-full object-cover"
             />
           ) : (
             <span
-              className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
-              style={{ backgroundColor: moodColor }}
+              className="me-mood-dot h-2.5 w-2.5 flex-shrink-0 rounded-full"
               aria-label={echo.current_mood}
             />
           )}
@@ -164,15 +168,22 @@ function SortableEchoItem({
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: echo.echo_id });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-    zIndex: isDragging ? 10 : undefined,
+  // dnd-kit gives us dynamic transform/transition strings — write them via
+  // CSSOM (ref + setProperty) rather than the React `style` prop so the page
+  // stays compatible with strict `style-src` (no 'unsafe-inline').
+  const composedRef = (el: HTMLLIElement | null) => {
+    setNodeRef(el);
+    if (el) {
+      const t = CSS.Transform.toString(transform);
+      el.style.transform = t ?? '';
+      el.style.transition = transition ?? '';
+      el.style.opacity = isDragging ? '0.5' : '1';
+      el.style.zIndex = isDragging ? '10' : '';
+    }
   };
 
   return (
-    <li ref={setNodeRef} style={style} {...attributes}>
+    <li ref={composedRef} {...attributes}>
       <EchoCard
         echo={echo}
         isActive={isActive}
@@ -279,7 +290,12 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
         <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
           {MOOD_LEGEND.map(({ mood, color }) => (
             <div key={mood} className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full" style={{ backgroundColor: color }} />
+              <span
+                ref={(el) => {
+                  if (el) el.style.setProperty('--me-mood-color', color);
+                }}
+                className="me-mood-dot h-2.5 w-2.5 flex-shrink-0 rounded-full"
+              />
               <span className="text-xs text-text-secondary">{getMoodLabel(mood)}</span>
             </div>
           ))}
@@ -360,8 +376,10 @@ export function MobileEchoSwitcher() {
         <div className="flex items-center gap-2 min-w-0">
           {activeEcho && (
             <span
-              className="h-2 w-2 flex-shrink-0 rounded-full"
-              style={{ backgroundColor: getMoodColor(activeEcho.current_mood) }}
+              ref={(el) => {
+                if (el) el.style.setProperty('--me-mood-color', getMoodColor(activeEcho.current_mood));
+              }}
+              className="me-mood-dot h-2 w-2 flex-shrink-0 rounded-full"
             />
           )}
           <span className="truncate font-medium text-text-primary">
@@ -410,8 +428,10 @@ export function MobileEchoSwitcher() {
                     }`}
                   >
                     <span
-                      className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
-                      style={{ backgroundColor: getMoodColor(echo.current_mood) }}
+                      ref={(el) => {
+                        if (el) el.style.setProperty('--me-mood-color', getMoodColor(echo.current_mood));
+                      }}
+                      className="me-mood-dot h-2.5 w-2.5 flex-shrink-0 rounded-full"
                     />
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium leading-tight">{echo.name}</p>

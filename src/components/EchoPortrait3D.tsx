@@ -194,20 +194,22 @@ function StaticFallback({
   const sizeClass = size === 'lg' ? 'h-24 w-24' : size === 'md' ? 'h-20 w-20' : 'h-14 w-14';
   const textSize = size === 'lg' ? 'text-4xl' : size === 'md' ? 'text-3xl' : 'text-xl';
 
+  const setThemeVars = (el: HTMLElement | null) => {
+    if (!el) return;
+    el.style.setProperty('--me-theme-color', theme.primary);
+    el.style.setProperty('--me-theme-grad-start', `${theme.primary}33`);
+    el.style.setProperty('--me-theme-grad-end', theme.ambient);
+    el.style.setProperty('--me-theme-border', `${theme.primary}22`);
+  };
+
   return (
     <div
-      className={`flex ${sizeClass} shrink-0 items-center justify-center rounded-xl`}
-      style={{
-        background: `linear-gradient(135deg, ${theme.primary}33, ${theme.ambient})`,
-        border: `1px solid ${theme.primary}22`,
-      }}
+      ref={setThemeVars}
+      className={`me-theme-fallback flex ${sizeClass} shrink-0 items-center justify-center rounded-xl`}
       role="img"
       aria-label={`${name} portrait, mood: ${mood}`}
     >
-      <span
-        className={`${textSize} font-bold`}
-        style={{ color: theme.primary }}
-      >
+      <span className={`me-theme-fg ${textSize} font-bold`}>
         {name[0] ?? '?'}
       </span>
     </div>
@@ -246,8 +248,10 @@ export function EchoPortrait3D({
   if (avatarUrl) {
     return (
       <div
-        className={`${sizeClass} shrink-0 overflow-hidden rounded-xl`}
-        style={{ border: `2px solid ${theme.primary}44` }}
+        ref={(el) => {
+          if (el) el.style.setProperty('--me-theme-border', `${theme.primary}44`);
+        }}
+        className={`me-portrait-ring ${sizeClass} shrink-0 overflow-hidden rounded-xl`}
         role="img"
         aria-label={`${name} portrait, mood: ${mood}`}
       >
@@ -279,7 +283,7 @@ export function EchoPortrait3D({
           camera={{ position: [0, 0.2, 2], fov: 40 }}
           dpr={[1, 1.5]}
           gl={{ antialias: true, alpha: true }}
-          style={{ background: 'transparent' }}
+          className="bg-transparent"
           frameloop="always"
         >
           <color attach="background" args={[getMoodTheme(mood).ambient]} />

@@ -840,3 +840,349 @@ pre {
   transform: translateY(0);
   box-shadow: 0 0 8px rgba(212, 145, 92, 0.2);
 }
+
+/* ═══ Phase 6D Step 1 — CSP unsafe-inline elimination ═══
+ * Helpers that replace inline style={} props so Content-Security-Policy
+ * style-src can drop 'unsafe-inline'. Dynamic values flow through CSS
+ * custom properties set via element.style.setProperty in refs/effects
+ * — CSSOM writes are not subject to style-src. */
+
+/* Staggered me-fade-up: class + optional data-delay attribute. */
+.me-fade-up { animation: me-fade-up 1.2s ease-out both; }
+.me-fade-up[data-delay="150"] { animation-delay: 150ms; }
+.me-fade-up[data-delay="300"] { animation-delay: 300ms; }
+.me-fade-up[data-delay="450"] { animation-delay: 450ms; }
+.me-fade-up[data-delay="600"] { animation-delay: 600ms; }
+.me-fade-up[data-delay="900"] { animation-delay: 900ms; }
+.me-fade-up.me-anim-none { animation: none; }
+
+/* Bounce-delay helpers (typing indicator dots). */
+.me-bounce-delay-0 { animation-delay: 0ms; }
+.me-bounce-delay-150 { animation-delay: 150ms; }
+.me-bounce-delay-300 { animation-delay: 300ms; }
+
+/* Radial glow variants used on hero / section backgrounds. */
+.me-hero-glow {
+  background: radial-gradient(circle, rgba(212, 145, 92, 0.1) 0%, transparent 65%);
+  animation: me-breathe 8s ease-in-out infinite;
+}
+.me-radial-glow-ambient {
+  background: radial-gradient(circle, rgba(212, 145, 92, 0.08) 0%, transparent 65%);
+}
+
+/* Static backgrounds for prerendered pages. */
+.me-hero-bg { background-image: url('/screenshots/App_Page_Full_Capture.jpeg'); }
+.me-shard-bg-tokyo { background-image: url('/images/shard-tokyo.png'); }
+.me-shard-bg-australia { background-image: url('/images/shard-australia.png'); }
+.me-shard-bg-florence { background-image: url('/images/shard-florence.png'); }
+
+/* Progress bar width from --me-progress (0-100%). Set via ref.setProperty. */
+.me-progress-bar { width: var(--me-progress, 0%); }
+
+/* Dynamic-color helpers that read a CSS custom property set by the component.
+ * Use with ref.current.style.setProperty('--me-mood-color', value). */
+.me-mood-bg { background-color: var(--me-mood-color, currentColor); }
+.me-mood-fg { color: var(--me-mood-color, currentColor); }
+.me-mood-border-soft { border: 1.5px solid var(--me-mood-border, currentColor); }
+
+/* Shard/Echo 3D theme color (portrait, environment). */
+.me-theme-fg { color: var(--me-theme-color, currentColor); }
+.me-theme-ring { border: 2px solid var(--me-theme-ring-color, transparent); }
+
+/* TickTimer neon text-shadow states. */
+.me-neon-glow {
+  text-shadow:
+    0 0 8px rgba(212, 145, 92, 0.5),
+    0 0 20px rgba(212, 145, 92, 0.2);
+}
+.me-neon-glow-success {
+  text-shadow:
+    0 0 8px rgba(107, 175, 122, 0.5),
+    0 0 20px rgba(107, 175, 122, 0.2);
+}
+.me-neon-glow-soft { text-shadow: 0 0 6px rgba(212, 145, 92, 0.15); }
+
+/* TickTimer ambient glow — opacity + box-shadow tint set via CSS vars. */
+.tick-bar-ambient-glow {
+  opacity: var(--me-glow-opacity, 0);
+  box-shadow: 0 0 6px 1px rgba(212, 145, 92, var(--me-glow-shadow-color, 0));
+}
+
+/* Mood-palette gradient background (AppLayout ambient). */
+.me-mood-gradient {
+  background: linear-gradient(
+    180deg,
+    var(--me-bg-gradient-from, transparent) 0%,
+    var(--me-bg-gradient-to, transparent) 100%
+  );
+}
+
+/* MoodHistoryStrip — each segment keeps its own dynamic width + colour. */
+.me-mood-segment {
+  width: var(--me-mood-width, 0%);
+  background-color: var(--me-mood-color, currentColor);
+}
+.me-mood-segment-divider {
+  left: var(--me-mood-left, 0%);
+  background-color: var(--me-mood-border, rgba(255, 255, 255, 0.12));
+}
+.me-mood-tooltip-pos {
+  left: var(--me-tooltip-left, 50%);
+  transform: translateX(-50%);
+}
+
+/* 3D portrait overlay — theme-coloured border (2px solid with colour + 44 alpha). */
+.me-portrait-ring {
+  border: 2px solid var(--me-theme-border, transparent);
+}
+/* Static 2D fallback portrait (gradient + 1px border from theme). */
+.me-theme-fallback {
+  background: linear-gradient(
+    135deg,
+    var(--me-theme-grad-start, transparent),
+    var(--me-theme-grad-end, transparent)
+  );
+  border: 1px solid var(--me-theme-border, transparent);
+}
+
+/* Dynamic soft border (1.5px). */
+.me-border-soft {
+  border: 1.5px solid var(--me-mood-border, transparent);
+}
+
+/* Selected-state shadow used on EchoCreationPage shard tiles. */
+.me-selected-shadow {
+  box-shadow: 0 0 16px 2px var(--accent-subtle);
+}
+
+/* Static life-event amber glow card. */
+.me-life-event-card {
+  box-shadow: 0 0 14px 3px rgba(243, 156, 18, 0.12);
+  border-left: 3px solid rgba(243, 156, 18, 0.4);
+}
+
+/* Diary entry pre-arrival state — starts invisible, animation reveals. */
+.me-diary-pre-arrival { opacity: 0; }
+
+/* EchoSidebar EchoCard: mood-colour glow shadow + left edge stripe. */
+.me-echo-card-mood-edge {
+  box-shadow: 0 0 14px 3px var(--me-mood-shadow, transparent);
+  border-left: 3px solid var(--me-mood-edge, transparent);
+}
+/* Avatar 1.5px ring tinted by mood. */
+.me-avatar-ring {
+  border: 1.5px solid var(--me-mood-ring, transparent);
+}
+/* Mood dot solid fill. */
+.me-mood-dot { background-color: var(--me-mood-color, currentColor); }
+
+/* Community pulse row — glow shadow + mood-coloured left border. */
+.me-community-row {
+  box-shadow: 0 0 10px 2px var(--me-mood-shadow, transparent);
+  border-left-color: var(--me-mood-edge, transparent);
+}
+
+/* ─── MoodHistoryStrip: segment bar, dots, tooltip ─── */
+.me-mh-segment {
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    var(--me-mh-primary, currentColor),
+    var(--me-mh-secondary, currentColor)
+  );
+  opacity: 1;
+  box-shadow: none;
+}
+.me-mh-segment[data-hovered="true"] {
+  height: 120px;
+  box-shadow:
+    0 0 20px var(--me-mh-primary-60, transparent),
+    0 4px 12px var(--me-mh-primary-30, transparent);
+}
+.me-mh-strip[data-any-hovered="true"] .me-mh-segment[data-hovered="false"] {
+  opacity: 0.45;
+}
+.me-mh-segment[data-pos="first"] { border-radius: 12px 2px 2px 12px; }
+.me-mh-segment[data-pos="last"]  { border-radius: 2px 12px 12px 2px; }
+.me-mh-segment[data-pos="mid"]   { border-radius: 2px; }
+
+.me-mh-inner-glow {
+  background: linear-gradient(
+    to bottom,
+    var(--me-mh-accent-30, transparent),
+    transparent 60%
+  );
+}
+
+.me-mh-label {
+  color: var(--me-mh-accent, currentColor);
+  text-shadow: 0 1px 3px var(--me-mh-secondary, transparent);
+  opacity: 0.6;
+}
+.me-mh-label[data-hovered="true"] { opacity: 1; }
+
+.me-mh-playhead {
+  background-color: var(--me-mh-accent, currentColor);
+  box-shadow: 0 0 8px var(--me-mh-accent-80, transparent);
+}
+.me-mh-playhead-ping {
+  background-color: var(--me-mh-accent, currentColor);
+  opacity: 0.3;
+}
+
+.me-mh-dot {
+  width: 5px;
+  height: 5px;
+  background-color: var(--me-mh-primary, currentColor);
+  opacity: 0.7;
+  box-shadow: none;
+}
+.me-mh-dot[data-hovered="true"] {
+  width: 10px;
+  height: 10px;
+  background-color: var(--me-mh-accent, currentColor);
+  opacity: 1;
+  box-shadow: 0 0 8px var(--me-mh-accent-80, transparent);
+}
+.me-mh-dot[data-latest="true"] {
+  width: 8px;
+  height: 8px;
+  background-color: var(--me-mh-accent, currentColor);
+  box-shadow: 0 0 6px var(--me-mh-accent-60, transparent);
+}
+
+.me-mh-tooltip {
+  top: -8px;
+  transform: translate(-50%, -100%);
+  left: var(--me-mh-tooltip-x, 50%);
+  background-color: var(--me-mh-secondary, transparent);
+  border: 1px solid var(--me-mh-primary-50, transparent);
+  backdrop-filter: blur(8px);
+}
+
+/* Modal / overlay transforms pinned to the viewport centre. */
+.me-centered-absolute {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Dynamic avatar tint — --me-avatar-bg falls back to --accent. */
+.me-avatar-tint { background-color: var(--me-avatar-bg, var(--accent)); }
+
+/* 3D overlay translate that reads --me-translate-x / --me-translate-y (px).
+ * Used by LanguageSelectionPage rotating cards. */
+.me-translate {
+  transform: translate(var(--me-translate-x, 0), var(--me-translate-y, 0));
+}
+
+/* ─── Marketing site: classes previously defined inline in HomePage.tsx ─── */
+
+@keyframes me-breathe {
+  0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.7; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+@keyframes me-reveal-fallback {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll-triggered reveal — JS adds .revealed via IntersectionObserver.
+ * CSS fallback: if JS fails or observer never fires, content becomes
+ * visible after 2s via animation so pages are never blank. */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  animation: me-reveal-fallback 0.6s ease-out 2s both;
+}
+.section-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  animation: none;
+}
+
+.me-btn-primary {
+  color: var(--canvas);
+  background: var(--accent);
+  letter-spacing: 0.06em;
+  transition: all 0.3s ease;
+}
+.me-btn-primary:hover {
+  background: #e0a06a;
+  box-shadow: 0 0 30px rgba(212, 145, 92, 0.15);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .me-fade-up,
+  .me-hero-glow {
+    animation: none;
+  }
+}
+
+/* ─── LanguageSelectionPage: dynamic-scale helpers ─── */
+
+/* Language tile — scale + border set via data-expanded / data-reduced. */
+.me-lang-tile {
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(212, 145, 92, 0.15);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.me-lang-tile[data-reduced="true"] {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.me-lang-tile[data-expanded="true"] {
+  z-index: 10;
+  border-color: #d4915c;
+  box-shadow: 0 0 24px rgba(212, 145, 92, 0.2);
+}
+.me-lang-tile[data-expanded="true"][data-reduced="false"] {
+  transform: scale(1.25);
+}
+
+/* Shared: pointer-events: none on a decorative layer. */
+.me-no-pointer { pointer-events: none; }
+
+/* Language-selection circle tiles — 20 fixed positions by data-idx.
+ * Hardcoded so the prerendered HTML (flag page at /) ships no inline
+ * style attributes — CSP style-src without unsafe-inline. */
+.me-circle-pos {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.me-circle-pos[data-idx="0"]  { left: calc(50% + 0px);        top: calc(50% + -260px); }
+.me-circle-pos[data-idx="1"]  { left: calc(50% + 80.34px);    top: calc(50% + -247.27px); }
+.me-circle-pos[data-idx="2"]  { left: calc(50% + 152.82px);   top: calc(50% + -210.34px); }
+.me-circle-pos[data-idx="3"]  { left: calc(50% + 210.34px);   top: calc(50% + -152.82px); }
+.me-circle-pos[data-idx="4"]  { left: calc(50% + 247.27px);   top: calc(50% + -80.34px); }
+.me-circle-pos[data-idx="5"]  { left: calc(50% + 260px);      top: calc(50% + 0px); }
+.me-circle-pos[data-idx="6"]  { left: calc(50% + 247.27px);   top: calc(50% + 80.34px); }
+.me-circle-pos[data-idx="7"]  { left: calc(50% + 210.34px);   top: calc(50% + 152.82px); }
+.me-circle-pos[data-idx="8"]  { left: calc(50% + 152.82px);   top: calc(50% + 210.34px); }
+.me-circle-pos[data-idx="9"]  { left: calc(50% + 80.34px);    top: calc(50% + 247.27px); }
+.me-circle-pos[data-idx="10"] { left: calc(50% + 0px);        top: calc(50% + 260px); }
+.me-circle-pos[data-idx="11"] { left: calc(50% + -80.34px);   top: calc(50% + 247.27px); }
+.me-circle-pos[data-idx="12"] { left: calc(50% + -152.82px);  top: calc(50% + 210.34px); }
+.me-circle-pos[data-idx="13"] { left: calc(50% + -210.34px);  top: calc(50% + 152.82px); }
+.me-circle-pos[data-idx="14"] { left: calc(50% + -247.27px);  top: calc(50% + 80.34px); }
+.me-circle-pos[data-idx="15"] { left: calc(50% + -260px);     top: calc(50% + 0px); }
+.me-circle-pos[data-idx="16"] { left: calc(50% + -247.27px);  top: calc(50% + -80.34px); }
+.me-circle-pos[data-idx="17"] { left: calc(50% + -210.34px);  top: calc(50% + -152.82px); }
+.me-circle-pos[data-idx="18"] { left: calc(50% + -152.82px);  top: calc(50% + -210.34px); }
+.me-circle-pos[data-idx="19"] { left: calc(50% + -80.34px);   top: calc(50% + -247.27px); }
+
+/* Softer hero glow used on the language-selection page (70% fade vs the
+ * default 65%). Animated via me-breathe, same keyframes as .me-hero-glow. */
+.me-hero-glow-soft {
+  background: radial-gradient(circle, rgba(212, 145, 92, 0.08) 0%, transparent 70%);
+  animation: me-breathe 8s ease-in-out infinite;
+}
+.me-hero-glow-soft.me-anim-none { animation: none; }

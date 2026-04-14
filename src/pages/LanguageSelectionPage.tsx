@@ -101,33 +101,26 @@ export function LanguageSelectionPage() {
   );
 
   const reduced = prefersReducedMotion();
-  const count = languages.length;
-  const angleStep = 360 / count;
-  // Circle radius — big enough that tiles don't overlap at expanded size
-  const radius = useGrid ? 0 : 260;
+
+  const animClass = reduced ? 'me-anim-none' : '';
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-canvas px-4">
       {/* Radial glow behind centre — matches hero-glow from landing page */}
       <div
-        className="pointer-events-none fixed top-[40%] left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{
-          background: 'radial-gradient(circle, rgba(212,145,92,0.08) 0%, transparent 70%)',
-          animation: reduced ? 'none' : 'me-hero-breathe 8s ease-in-out infinite',
-        }}
+        className={`me-hero-glow-soft pointer-events-none fixed top-[40%] left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full ${animClass}`}
       />
 
       <div className="relative z-10 flex flex-col items-center">
         {/* Centre text */}
         <h1
-          className="mb-2 text-center font-serif text-4xl font-light tracking-[0.14em] text-[#E8E0D8]"
-          style={{ animation: reduced ? 'none' : 'me-fade-up 1.2s ease-out both' }}
+          className={`me-fade-up mb-2 text-center font-serif text-4xl font-light tracking-[0.14em] text-[#E8E0D8] ${animClass}`}
         >
           MULTIVERSE ECHOES
         </h1>
         <p
-          className="mb-8 text-center font-serif text-lg font-light tracking-wide text-[#9BA5AE]"
-          style={{ animation: reduced ? 'none' : 'me-fade-up 1.2s ease-out 0.15s both' }}
+          className={`me-fade-up mb-8 text-center font-serif text-lg font-light tracking-wide text-[#9BA5AE] ${animClass}`}
+          data-delay="150"
         >
           Choose your language&ensp;&middot;&ensp;选择语言&ensp;&middot;&ensp;भाषा चुनें
         </p>
@@ -135,10 +128,10 @@ export function LanguageSelectionPage() {
         {/* Language tiles — circle on desktop/tablet, grid on phone */}
         {useGrid ? (
           <div
-            className="grid w-full max-w-lg grid-cols-4 gap-3"
+            className={`me-fade-up grid w-full max-w-lg grid-cols-4 gap-3 ${animClass}`}
+            data-delay="300"
             role="listbox"
             aria-label="Language selection"
-            style={{ animation: reduced ? 'none' : 'me-fade-up 1.2s ease-out 0.3s both' }}
           >
             {languages.map((lang) => (
               <LanguageTile
@@ -157,12 +150,8 @@ export function LanguageSelectionPage() {
         ) : (
           <div
             ref={containerRef}
-            className="relative"
-            style={{
-              width: radius * 2 + 120,
-              height: radius * 2 + 120,
-              animation: reduced ? 'none' : 'me-fade-up 1.2s ease-out 0.3s both',
-            }}
+            className={`me-fade-up relative h-[640px] w-[640px] ${animClass}`}
+            data-delay="300"
             role="listbox"
             aria-label="Language selection"
           >
@@ -170,23 +159,18 @@ export function LanguageSelectionPage() {
             <img
               src="/logo.png"
               alt="Multiverse Echoes"
-              className="pointer-events-none absolute h-80 w-80 rounded-full object-contain opacity-80"
-              style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+              className="me-centered-absolute pointer-events-none absolute h-80 w-80 rounded-full object-contain opacity-80"
               draggable={false}
             />
             {languages.map((lang, i) => {
-              const angle = (angleStep * i - 90) * (Math.PI / 180);
-              const x = Math.cos(angle) * radius;
-              const y = Math.sin(angle) * radius;
+              // Position comes from precomputed `.me-circle-pos[data-idx="N"]`
+              // rules in global.css — keeps the HTML free of any inline style
+              // attribute so the prerendered flag page passes strict CSP.
               return (
                 <div
                   key={lang.code}
-                  className="absolute"
-                  style={{
-                    left: `calc(50% + ${x}px)`,
-                    top: `calc(50% + ${y}px)`,
-                    transform: 'translate(-50%, -50%)',
-                  }}
+                  data-idx={i}
+                  className="me-circle-pos absolute"
                 >
                   <LanguageTile
                     lang={lang}
@@ -204,18 +188,6 @@ export function LanguageSelectionPage() {
           </div>
         )}
       </div>
-
-      {/* Breathe + fade-up keyframes */}
-      <style>{`
-        @keyframes me-hero-breathe {
-          0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-          50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.08); }
-        }
-        @keyframes me-fade-up {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </div>
   );
 }
@@ -241,10 +213,8 @@ function LanguageTile({
   onMouseEnter,
   onMouseLeave,
 }: LanguageTileProps) {
-  const scale = expanded ? (reduced ? 1 : 1.25) : 1;
-  const borderColor = expanded ? '#D4915C' : 'rgba(212,145,92,0.15)';
-  const shadow = expanded ? '0 0 24px rgba(212,145,92,0.2)' : 'none';
-
+  // Visual state (border, scale, shadow, z-index) flows via data-expanded /
+  // data-reduced attributes — see .me-lang-tile rules in global.css.
   return (
     <button
       role="option"
@@ -254,17 +224,11 @@ function LanguageTile({
       onKeyDown={onKeyDown}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`group flex flex-col items-center gap-1.5 rounded-xl bg-[rgba(212,145,92,0.06)] text-center outline-none focus-visible:ring-2 focus-visible:ring-[#D4915C] focus-visible:ring-offset-2 focus-visible:ring-offset-canvas ${
+      data-expanded={expanded}
+      data-reduced={reduced}
+      className={`me-lang-tile group flex flex-col items-center gap-1.5 rounded-xl bg-[rgba(212,145,92,0.06)] text-center outline-none focus-visible:ring-2 focus-visible:ring-[#D4915C] focus-visible:ring-offset-2 focus-visible:ring-offset-canvas ${
         isCircle ? 'px-3 py-2.5' : 'px-2 py-3'
       }`}
-      style={{
-        border: `1px solid ${borderColor}`,
-        boxShadow: shadow,
-        transform: `scale(${scale})`,
-        transition: reduced ? 'border-color 0.2s, box-shadow 0.2s' : 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-        zIndex: expanded ? 10 : 1,
-        position: 'relative',
-      }}
     >
       <img
         src={`https://flagcdn.com/${lang.countryCode}.svg`}

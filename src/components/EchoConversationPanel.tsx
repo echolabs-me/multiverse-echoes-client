@@ -313,8 +313,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
           }
           disabled={isSending || atLimit || !conversationId}
           rows={1}
-          className="flex-1 resize-none rounded-2xl border border-border bg-surface px-3 py-2 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40"
-          style={{ maxHeight: '120px' }}
+          className="flex-1 resize-none rounded-2xl border border-border bg-surface px-3 py-2 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40 max-h-[120px]"
           aria-label={t('conversation.inputPlaceholder')}
         />
         <button

@@ -52,8 +52,7 @@ export function WebsiteNav() {
 
   return (
     <header
-      style={{ isolation: 'isolate' }}
-      className={`fixed top-0 right-0 left-0 z-[9999] transition-all duration-500 ${
+      className={`isolate fixed top-0 right-0 left-0 z-[9999] transition-all duration-500 ${
         scrolled || menuOpen
           ? 'border-b border-[rgba(212,145,92,0.15)] bg-[#0A0F14]'
           : 'bg-transparent'
@@ -82,6 +81,9 @@ export function WebsiteNav() {
           </button>
           <Link to="/about" className={linkClass}>
             {t('website.nav.about')}
+          </Link>
+          <Link to="/contact" className={linkClass}>
+            Contact
           </Link>
           {showWaitlistCta ? (
             <>
@@ -137,6 +139,13 @@ export function WebsiteNav() {
               className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
             >
               {t('website.nav.about')}
+            </Link>
+            <Link
+              to="/contact"
+              onClick={() => setMenuOpen(false)}
+              className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
+            >
+              Contact
             </Link>
 
             <div className="my-1 border-t border-[rgba(212,145,92,0.1)]" />

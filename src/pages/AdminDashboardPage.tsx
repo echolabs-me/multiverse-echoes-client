@@ -458,14 +458,18 @@ function ShardsView() {
                       </span>
                       <div className="h-2 w-16 overflow-hidden rounded-full bg-surface-raised">
                         <div
-                          className={`h-full rounded-full transition-all ${
+                          ref={(el) => {
+                            if (el) {
+                              el.style.setProperty('--me-progress', `${Math.min(capacityPct, 100)}%`);
+                            }
+                          }}
+                          className={`me-progress-bar h-full rounded-full transition-all ${
                             capacityPct > 90
                               ? 'bg-danger'
                               : capacityPct > 70
                                 ? 'bg-warning'
                                 : 'bg-success'
                           }`}
-                          style={{ width: `${Math.min(capacityPct, 100)}%` }}
                         />
                       </div>
                     </div>

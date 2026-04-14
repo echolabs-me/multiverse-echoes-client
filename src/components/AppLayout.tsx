@@ -121,10 +121,13 @@ function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: Re
       {show && palette && (
         <>
           <div
-            className="pointer-events-none absolute inset-0 z-0 transition-[background] duration-300 ease-in-out"
-            style={{
-              background: `linear-gradient(180deg, ${palette.gradientFrom} 0%, ${palette.gradientTo} 100%)`,
+            ref={(el) => {
+              if (el) {
+                el.style.setProperty('--me-bg-gradient-from', palette.gradientFrom);
+                el.style.setProperty('--me-bg-gradient-to', palette.gradientTo);
+              }
             }}
+            className="me-mood-gradient pointer-events-none absolute inset-0 z-0 transition-[background] duration-300 ease-in-out"
             aria-hidden="true"
           />
           <div className="pointer-events-none absolute inset-0 z-0">

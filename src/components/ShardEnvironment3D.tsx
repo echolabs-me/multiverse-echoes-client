@@ -347,10 +347,13 @@ function StaticFallback({ theme }: { theme: ShardTheme }) {
   const config = THEME_CONFIGS[theme];
   return (
     <div
-      className="absolute inset-0"
-      style={{
-        background: `linear-gradient(180deg, ${config.bgColor} 0%, ${config.fogColor} 100%)`,
+      ref={(el) => {
+        if (el) {
+          el.style.setProperty('--me-bg-gradient-from', config.bgColor);
+          el.style.setProperty('--me-bg-gradient-to', config.fogColor);
+        }
       }}
+      className="me-mood-gradient absolute inset-0"
       aria-hidden="true"
     />
   );
@@ -387,7 +390,7 @@ export function ShardEnvironment3D({
           dpr={[1, 1.5]}
           gl={{ antialias: false, alpha: false }}
           frameloop="always"
-          style={{ pointerEvents: 'none' }}
+          className="pointer-events-none"
         >
           <EnvironmentScene theme={theme} />
         </Canvas>

@@ -89,41 +89,31 @@ export function HomePage() {
       {/* ═══ Section 1: Hero ═══ */}
       <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden pt-16">
         {/* Full-bleed background image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url(/screenshots/App_Page_Full_Capture.jpeg)' }}
-        />
+        <div className="me-hero-bg absolute inset-0 bg-cover bg-center bg-no-repeat" />
         {/* Dark overlay + blur for text readability */}
         <div className="absolute inset-0 bg-[#0A0F14]/80 backdrop-blur-sm" />
         {/* Radial glow */}
-        <div
-          className="pointer-events-none absolute left-1/2 top-[40%] h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(212,145,92,0.1) 0%, transparent 65%)',
-            animation: 'me-breathe 8s ease-in-out infinite',
-          }}
-        />
+        <div className="me-hero-glow pointer-events-none absolute left-1/2 top-[40%] h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full" />
 
         <div className="section-reveal relative z-10 mx-auto max-w-2xl px-6 text-center">
           <img
             src="/logo.png"
             alt="Multiverse Echoes"
-            className="mx-auto mb-8 h-24 w-24 rounded-2xl object-contain"
-            style={{ animation: 'me-fade-up 1.2s ease-out both' }}
+            className="me-fade-up mx-auto mb-8 h-24 w-24 rounded-2xl object-contain"
           />
           <h1
-            className="mb-5 font-serif text-4xl font-light tracking-[0.12em] text-[#E8E0D8] sm:text-5xl lg:text-6xl"
-            style={{ animation: 'me-fade-up 1.2s ease-out 0.15s both' }}
+            className="me-fade-up mb-5 font-serif text-4xl font-light tracking-[0.12em] text-[#E8E0D8] sm:text-5xl lg:text-6xl"
+            data-delay="150"
           >
             {t('website.hero.headline')}
           </h1>
           <p
-            className="mx-auto mb-10 max-w-lg text-lg font-light italic leading-relaxed text-[var(--accent)]"
-            style={{ animation: 'me-fade-up 1.2s ease-out 0.3s both' }}
+            className="me-fade-up mx-auto mb-10 max-w-lg text-lg font-light italic leading-relaxed text-[var(--accent)]"
+            data-delay="300"
           >
             {t('website.hero.subheadline')}
           </p>
-          <div style={{ animation: 'me-fade-up 1.2s ease-out 0.45s both' }}>
+          <div className="me-fade-up" data-delay="450">
             <Link
               to={ctaTo}
               className="me-btn-primary inline-block rounded-md px-10 py-3.5 text-base font-semibold"
@@ -131,10 +121,7 @@ export function HomePage() {
               {t('website.hero.cta')}
             </Link>
           </div>
-          <div
-            className="mt-6"
-            style={{ animation: 'me-fade-up 1.2s ease-out 0.6s both' }}
-          >
+          <div className="me-fade-up mt-6" data-delay="600">
             <a
               href="https://x.com/EchoLabsME"
               target="_blank"
@@ -150,8 +137,8 @@ export function HomePage() {
         </div>
 
         <p
-          className="absolute bottom-8 text-xs tracking-[0.2em] text-[var(--text-muted)]"
-          style={{ animation: 'me-fade-up 1.2s ease-out 0.9s both' }}
+          className="me-fade-up absolute bottom-8 text-xs tracking-[0.2em] text-[var(--text-muted)]"
+          data-delay="900"
         >
           Scroll to explore <span className="mt-1 block animate-bounce text-center">↓</span>
         </p>
@@ -286,10 +273,7 @@ export function HomePage() {
           <div className="grid gap-6 sm:grid-cols-3">
             {/* Cyber-Tokyo */}
             <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
-              <div
-                className="h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: 'url(/images/shard-tokyo.png)' }}
-              />
+              <div className="me-shard-bg-tokyo h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
               <div className="relative p-6 pt-0">
                 <h3 className="mb-2 font-serif text-xl font-semibold text-[#00d4ff]">
@@ -303,10 +287,7 @@ export function HomePage() {
 
             {/* Nomad Australia */}
             <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
-              <div
-                className="h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: 'url(/images/shard-australia.png)' }}
-              />
+              <div className="me-shard-bg-australia h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
               <div className="relative p-6 pt-0">
                 <h3 className="mb-2 font-serif text-xl font-semibold text-[#c4783c]">
@@ -320,10 +301,7 @@ export function HomePage() {
 
             {/* Renaissance Florence */}
             <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
-              <div
-                className="h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: 'url(/images/shard-florence.png)' }}
-              />
+              <div className="me-shard-bg-florence h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
               <div className="relative p-6 pt-0">
                 <h3 className="mb-2 font-serif text-xl font-semibold text-[#8b6f47]">
@@ -383,10 +361,7 @@ export function HomePage() {
       {/* ═══ Section 8: Final CTA ═══ */}
       <section className="section-reveal relative overflow-hidden px-6 py-32">
         {/* Background glow */}
-        <div
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(212,145,92,0.08) 0%, transparent 65%)' }}
-        />
+        <div className="me-radial-glow-ambient pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full" />
         <div className="relative z-10 mx-auto max-w-lg text-center">
           <h2 className="mb-8 font-serif text-4xl font-light tracking-[0.08em] text-[var(--text-primary)]">
             {t('website.finalCta.headline')}
@@ -400,63 +375,6 @@ export function HomePage() {
           <p className="mt-6 text-sm text-[var(--text-muted)]">{t('website.finalCta.noCreditCard')}</p>
         </div>
       </section>
-
-      {/* ═══ Animations & Styles ═══ */}
-      <style>{`
-        /* Breathing glow */
-        @keyframes me-breathe {
-          0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-          50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.08); }
-        }
-        /* Fade up on load */
-        @keyframes me-fade-up {
-          from { opacity: 0; transform: translateY(18px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Scroll-triggered reveal — JS adds .revealed via IntersectionObserver.
-           CSS fallback: if JS fails or observer never fires, content becomes
-           visible after 2s via animation so pages are never blank. */
-        .section-reveal {
-          opacity: 0;
-          transform: translateY(24px);
-          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-          animation: me-reveal-fallback 0.6s ease-out 2s both;
-        }
-        .section-reveal.revealed {
-          opacity: 1;
-          transform: translateY(0);
-          animation: none;
-        }
-        @keyframes me-reveal-fallback {
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* CTA button — matches landing page style */
-        .me-btn-primary {
-          color: var(--canvas);
-          background: var(--accent);
-          letter-spacing: 0.06em;
-          transition: all 0.3s ease;
-        }
-        .me-btn-primary:hover {
-          background: #e0a06a;
-          box-shadow: 0 0 30px rgba(212,145,92,0.15);
-          transform: translateY(-1px);
-        }
-
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-          .section-reveal {
-            opacity: 1;
-            transform: none;
-            transition: none;
-          }
-          [style*="animation"] {
-            animation: none !important;
-          }
-        }
-      `}</style>
 
     </>
   );

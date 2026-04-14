@@ -71,8 +71,12 @@ export function OnboardingProfilePage() {
                 aria-pressed={selectedAvatar === avatar.id}
               >
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-full text-base font-medium text-canvas"
-                  style={{ backgroundColor: avatar.color || 'var(--accent)' }}
+                  ref={(el) => {
+                    if (el && avatar.color) {
+                      el.style.setProperty('--me-avatar-bg', avatar.color);
+                    }
+                  }}
+                  className="me-avatar-tint flex h-12 w-12 items-center justify-center rounded-full text-base font-medium text-canvas"
                   role="img"
                   aria-label={avatar.id}
                 >

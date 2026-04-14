@@ -19,8 +19,7 @@ export function StripeLogo({ height = 20, className = '' }: IconProps) {
       src={stripeLogo}
       alt="Stripe"
       height={height}
-      className={className}
-      style={{ height, width: 'auto' }}
+      className={`w-auto ${className}`}
     />
   );
 }
@@ -32,8 +31,7 @@ export function NowPaymentsLogo({ height = 20, className = '' }: IconProps) {
       src={nowpaymentsLogo}
       alt="NOWPayments"
       height={height}
-      className={className}
-      style={{ height, width: 'auto' }}
+      className={`w-auto ${className}`}
     />
   );
 }
@@ -45,8 +43,7 @@ export function XamanLogo({ height = 20, className = '' }: IconProps) {
       src={xamanLogo}
       alt="Xaman"
       height={height}
-      className={className}
-      style={{ height, width: 'auto' }}
+      className={`w-auto ${className}`}
     />
   );
 }

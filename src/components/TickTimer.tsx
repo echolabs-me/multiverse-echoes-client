@@ -1,8 +1,6 @@
+import { useLayoutEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTickTimer } from '../hooks/useTickTimer.ts';
-
-const NEON_GLOW = '0 0 8px rgba(212, 145, 92, 0.5), 0 0 20px rgba(212, 145, 92, 0.2)';
-const NEON_GLOW_SUCCESS = '0 0 8px rgba(107, 175, 122, 0.5), 0 0 20px rgba(107, 175, 122, 0.2)';
 
 /**
  * Global tick timer — heartbeat monitor + ambient progress bar.
@@ -31,6 +29,26 @@ export function TickTimer() {
   const isWaiting = state === 'waiting';
 
   const glowOpacity = isGenerating ? 0.5 : Math.min(progress * 0.45, 0.45);
+  const glowColor = isGenerating ? 0.4 : glowOpacity;
+
+  // Dynamic values flow via CSS custom properties set through CSSOM — no
+  // inline style attribute (strict CSP style-src).
+  const fillRef = useRef<HTMLDivElement>(null);
+  const ambientRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (fillRef.current) {
+      fillRef.current.style.setProperty('--me-progress', `${progress * 100}%`);
+    }
+    if (ambientRef.current) {
+      const el = ambientRef.current;
+      el.style.setProperty('--me-progress', isGenerating ? '100%' : `${progress * 100}%`);
+      el.style.setProperty('--me-glow-opacity', String(isGenerating ? 0.5 : glowOpacity));
+      el.style.setProperty('--me-glow-shadow-color', String(glowColor));
+    }
+  }, [progress, isGenerating, glowOpacity, glowColor]);
+
+  const markerGlow = isArrived ? 'me-neon-glow-success' : 'me-neon-glow';
 
   return (
     <>
@@ -48,8 +66,7 @@ export function TickTimer() {
       >
         {/* Left marker */}
         <span
-          className={`tick-digit-breathe text-[10px] leading-none ${isArrived ? 'text-success' : 'text-accent'}`}
-          style={{ textShadow: isArrived ? NEON_GLOW_SUCCESS : NEON_GLOW }}
+          className={`tick-digit-breathe text-[10px] leading-none ${isArrived ? 'text-success' : 'text-accent'} ${markerGlow}`}
           aria-hidden="true"
         >
           ◆
@@ -58,14 +75,12 @@ export function TickTimer() {
         {isGenerating || isWaiting ? (
           <>
             <span
-              className="tick-digit-breathe hidden sm:inline text-sm font-semibold text-accent leading-tight"
-              style={{ textShadow: NEON_GLOW }}
+              className="tick-digit-breathe me-neon-glow hidden sm:inline text-sm font-semibold text-accent leading-tight"
             >
               {isWaiting ? t('tickTimer.nextTick', { time: timeDisplay }) : t('tickTimer.generating')}
             </span>
             <span
-              className="tick-digit-breathe sm:hidden text-sm font-semibold text-accent leading-tight"
-              style={{ textShadow: NEON_GLOW }}
+              className="tick-digit-breathe me-neon-glow sm:hidden text-sm font-semibold text-accent leading-tight"
             >
               {isWaiting ? t('tickTimer.nextTick', { time: timeDisplay }) : t('tickTimer.generatingShort')}
             </span>
@@ -74,17 +89,13 @@ export function TickTimer() {
           <>
             <span
               className={`tick-digit-breathe text-xl sm:text-2xl font-semibold tabular-nums leading-none tracking-wide ${
-                isArrived ? 'text-success' : 'text-text-primary'
+                isArrived ? 'text-success me-neon-glow-success' : 'text-text-primary me-neon-glow'
               }`}
-              style={{
-                textShadow: isArrived ? NEON_GLOW_SUCCESS : NEON_GLOW,
-              }}
             >
               {timeDisplay}
             </span>
             <span
-              className="hidden sm:inline text-xs text-text-secondary leading-none"
-              style={{ textShadow: '0 0 6px rgba(212, 145, 92, 0.15)' }}
+              className="me-neon-glow-soft hidden sm:inline text-xs text-text-secondary leading-none"
             >
               {isArrived
                 ? t('tickTimer.arrived')
@@ -95,8 +106,7 @@ export function TickTimer() {
 
         {/* Right marker */}
         <span
-          className={`tick-digit-breathe text-[10px] leading-none ${isArrived ? 'text-success' : 'text-accent'}`}
-          style={{ textShadow: isArrived ? NEON_GLOW_SUCCESS : NEON_GLOW }}
+          className={`tick-digit-breathe text-[10px] leading-none ${isArrived ? 'text-success' : 'text-accent'} ${markerGlow}`}
           aria-hidden="true"
         >
           ◆
@@ -114,8 +124,8 @@ export function TickTimer() {
         {/* Fill during countdown */}
         {!isGenerating && !isArrived && !isWaiting && (
           <div
-            className="tick-bar-fill absolute inset-y-0 start-0"
-            style={{ width: `${progress * 100}%` }}
+            ref={fillRef}
+            className="tick-bar-fill me-progress-bar absolute inset-y-0 start-0"
           />
         )}
 
@@ -136,12 +146,8 @@ export function TickTimer() {
 
         {/* Ambient upward glow — contained within the bar's overflow:hidden parent */}
         <div
-          className="absolute bottom-0 start-0 h-[3px] transition-opacity duration-1000"
-          style={{
-            width: isGenerating ? '100%' : `${progress * 100}%`,
-            opacity: isGenerating ? 0.5 : glowOpacity,
-            boxShadow: `0 0 6px 1px rgba(212, 145, 92, ${isGenerating ? 0.4 : glowOpacity})`,
-          }}
+          ref={ambientRef}
+          className="tick-bar-ambient-glow me-progress-bar absolute bottom-0 start-0 h-[3px] transition-opacity duration-1000"
         />
       </div>
     </>

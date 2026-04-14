@@ -887,10 +887,7 @@ export function EchoDetailPage() {
                   <Card
                     key={event.item_id}
                     variant="compact"
-                    style={{
-                      boxShadow: '0 0 14px 3px rgba(243,156,18,0.12)',
-                      borderLeft: '3px solid rgba(243,156,18,0.4)',
-                    }}
+                    className="me-life-event-card"
                   >
                     <div className="flex items-start justify-between">
                       <div>
@@ -944,9 +941,11 @@ export function EchoDetailPage() {
                     <Card
                       key={rel.relationship_id}
                       variant="compact"
-                      style={{
-                        boxShadow: `0 0 14px 3px rgba(${glowRgb},0.12)`,
-                        borderLeft: `3px solid rgba(${glowRgb},0.4)`,
+                      className="me-echo-card-mood-edge"
+                      ref={(el) => {
+                        if (!el) return;
+                        el.style.setProperty('--me-mood-shadow', `rgba(${glowRgb},0.12)`);
+                        el.style.setProperty('--me-mood-edge', `rgba(${glowRgb},0.4)`);
                       }}
                     >
                       <div className="flex items-start justify-between">
@@ -972,8 +971,10 @@ export function EchoDetailPage() {
                         </div>
                         <div className="h-1.5 w-full rounded-full bg-surface-raised">
                           <div
-                            className={`h-1.5 rounded-full ${sentimentPct >= 60 ? 'bg-emerald-500' : sentimentPct >= 30 ? 'bg-amber-500' : 'bg-red-500'}`}
-                            style={{ width: `${Math.min(100, Math.max(0, sentimentPct))}%` }}
+                            ref={(el) => {
+                              if (el) el.style.setProperty('--me-progress', `${Math.min(100, Math.max(0, sentimentPct))}%`);
+                            }}
+                            className={`me-progress-bar h-1.5 rounded-full ${sentimentPct >= 60 ? 'bg-emerald-500' : sentimentPct >= 30 ? 'bg-amber-500' : 'bg-red-500'}`}
                           />
                         </div>
                       </div>
@@ -1352,14 +1353,14 @@ function DiaryCard({
   return (
     <div
       id={`diary-${entry.diary_id}`}
-      className={isNew ? 'animate-diary-arrive' : ''}
-      style={isNew ? { opacity: 0 } : undefined}
+      className={isNew ? 'animate-diary-arrive me-diary-pre-arrival' : ''}
     >
       <Card
-        className={isNew ? 'animate-diary-glow' : ''}
-        style={{
-          boxShadow: `0 0 14px 3px rgba(${r},${g},${b},0.12)`,
-          borderLeft: `3px solid rgba(${r},${g},${b},0.35)`,
+        className={`me-echo-card-mood-edge ${isNew ? 'animate-diary-glow' : ''}`}
+        ref={(el) => {
+          if (!el) return;
+          el.style.setProperty('--me-mood-shadow', `rgba(${r},${g},${b},0.12)`);
+          el.style.setProperty('--me-mood-edge', `rgba(${r},${g},${b},0.35)`);
         }}
         onAnimationEnd={
           isNew

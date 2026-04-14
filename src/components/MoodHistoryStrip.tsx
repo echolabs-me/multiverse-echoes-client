@@ -74,7 +74,8 @@ export function MoodHistoryStrip({
 
       {/* Timeline container */}
       <div
-        className="relative"
+        className="me-mh-strip relative"
+        data-any-hovered={hoveredIndex !== null}
         role="img"
         aria-label={t('echoDetail.moodHistory', 'Mood history')}
         onMouseLeave={() => setHoveredIndex(null)}
@@ -85,26 +86,27 @@ export function MoodHistoryStrip({
             const palette = getMoodPalette(entry.mood);
             const isHovered = hoveredIndex === i;
             const isLatest = i === chronological.length - 1;
-            const anyHovered = hoveredIndex !== null;
+            const pos = i === 0 ? 'first' : i === chronological.length - 1 ? 'last' : 'mid';
+
+            const setSegmentVars = (el: HTMLElement | null) => {
+              if (!el) return;
+              el.style.setProperty('--me-mh-primary', palette.primary);
+              el.style.setProperty('--me-mh-secondary', `${palette.secondary}cc`);
+              el.style.setProperty('--me-mh-primary-60', `${palette.primary}60`);
+              el.style.setProperty('--me-mh-primary-30', `${palette.primary}30`);
+              el.style.setProperty('--me-mh-accent', palette.accent);
+              el.style.setProperty('--me-mh-accent-30', `${palette.accent}30`);
+              el.style.setProperty('--me-mh-accent-60', `${palette.accent}60`);
+              el.style.setProperty('--me-mh-accent-80', `${palette.accent}80`);
+            };
 
             return (
               <button
                 key={entry.diary_id}
-                className="group relative min-w-[4px] flex-1 cursor-pointer border-none p-0 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
-                style={{
-                  height: isHovered ? '120px' : '100px',
-                  background: `linear-gradient(to bottom, ${palette.primary}, ${palette.secondary}cc)`,
-                  opacity: anyHovered && !isHovered ? 0.45 : 1,
-                  boxShadow: isHovered
-                    ? `0 0 20px ${palette.primary}60, 0 4px 12px ${palette.primary}30`
-                    : 'none',
-                  borderRadius:
-                    i === 0
-                      ? '12px 2px 2px 12px'
-                      : i === chronological.length - 1
-                        ? '2px 12px 12px 2px'
-                        : '2px',
-                }}
+                ref={setSegmentVars}
+                data-hovered={isHovered}
+                data-pos={pos}
+                className="me-mh-segment group relative min-w-[4px] flex-1 cursor-pointer border-none p-0 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
                 onClick={() => handleClick(entry)}
                 onMouseMove={(e) => handleMouseMove(e, i)}
                 onFocus={() => setHoveredIndex(i)}
@@ -113,22 +115,13 @@ export function MoodHistoryStrip({
               >
                 {/* Inner glow overlay on hover */}
                 {isHovered && (
-                  <div
-                    className="absolute inset-0 rounded-[inherit]"
-                    style={{
-                      background: `linear-gradient(to bottom, ${palette.accent}30, transparent 60%)`,
-                    }}
-                  />
+                  <div className="me-mh-inner-glow absolute inset-0 rounded-[inherit]" />
                 )}
 
                 {/* Mood label — shown inside segment when wide enough or hovered */}
                 <span
-                  className="absolute bottom-2 start-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-medium uppercase tracking-wide transition-opacity duration-200"
-                  style={{
-                    color: `${palette.accent}`,
-                    opacity: isHovered ? 1 : 0.6,
-                    textShadow: `0 1px 3px ${palette.secondary}`,
-                  }}
+                  data-hovered={isHovered}
+                  className="me-mh-label absolute bottom-2 start-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-medium uppercase tracking-wide transition-opacity duration-200"
                 >
                   {isHovered ? getMoodLabel(entry.mood) : ''}
                 </span>
@@ -136,20 +129,8 @@ export function MoodHistoryStrip({
                 {/* "Now" playhead on latest segment */}
                 {isLatest && (
                   <div className="absolute -bottom-3 start-1/2 -translate-x-1/2">
-                    <div
-                      className="h-3 w-3 rotate-45 rounded-[2px]"
-                      style={{
-                        backgroundColor: palette.accent,
-                        boxShadow: `0 0 8px ${palette.accent}80`,
-                      }}
-                    />
-                    <div
-                      className="absolute inset-0 h-3 w-3 rotate-45 animate-ping rounded-[2px]"
-                      style={{
-                        backgroundColor: palette.accent,
-                        opacity: 0.3,
-                      }}
-                    />
+                    <div className="me-mh-playhead h-3 w-3 rotate-45 rounded-[2px]" />
+                    <div className="me-mh-playhead-ping absolute inset-0 h-3 w-3 rotate-45 animate-ping rounded-[2px]" />
                   </div>
                 )}
               </button>
@@ -164,21 +145,20 @@ export function MoodHistoryStrip({
               const palette = getMoodPalette(entry.mood);
               const isHovered = hoveredIndex === i;
               const isLatest = i === chronological.length - 1;
+              const setDotVars = (el: HTMLElement | null) => {
+                if (!el) return;
+                el.style.setProperty('--me-mh-primary', palette.primary);
+                el.style.setProperty('--me-mh-accent', palette.accent);
+                el.style.setProperty('--me-mh-accent-60', `${palette.accent}60`);
+                el.style.setProperty('--me-mh-accent-80', `${palette.accent}80`);
+              };
               return (
                 <div key={`dot-${entry.diary_id}`} className="flex flex-1 items-center justify-center">
                   <div
-                    className="rounded-full transition-all duration-200"
-                    style={{
-                      width: isHovered ? '10px' : isLatest ? '8px' : '5px',
-                      height: isHovered ? '10px' : isLatest ? '8px' : '5px',
-                      backgroundColor: isHovered || isLatest ? palette.accent : palette.primary,
-                      boxShadow: isHovered
-                        ? `0 0 8px ${palette.accent}80`
-                        : isLatest
-                          ? `0 0 6px ${palette.accent}60`
-                          : 'none',
-                      opacity: isHovered ? 1 : 0.7,
-                    }}
+                    ref={setDotVars}
+                    data-hovered={isHovered}
+                    data-latest={isLatest}
+                    className="me-mh-dot rounded-full transition-all duration-200"
                   />
                 </div>
               );
@@ -190,16 +170,14 @@ export function MoodHistoryStrip({
       {/* Tooltip */}
       {hoveredIndex !== null && chronological[hoveredIndex] && (
         <div
-          className="pointer-events-none absolute z-10 -translate-x-1/2 rounded-xl px-4 py-2.5 text-xs shadow-xl"
-          style={{
-            left: `${Math.max(50, Math.min(tooltipX, containerWidth - 50))}px`,
-            top: '-8px',
-            transform: 'translate(-50%, -100%)',
-            backgroundColor: getMoodPalette(chronological[hoveredIndex].mood)
-              .secondary,
-            border: `1px solid ${getMoodPalette(chronological[hoveredIndex].mood).primary}50`,
-            backdropFilter: 'blur(8px)',
+          ref={(el) => {
+            if (!el) return;
+            const palette = getMoodPalette(chronological[hoveredIndex].mood);
+            el.style.setProperty('--me-mh-tooltip-x', `${Math.max(50, Math.min(tooltipX, containerWidth - 50))}px`);
+            el.style.setProperty('--me-mh-secondary', palette.secondary);
+            el.style.setProperty('--me-mh-primary-50', `${palette.primary}50`);
           }}
+          className="me-mh-tooltip pointer-events-none absolute z-10 rounded-xl px-4 py-2.5 text-xs shadow-xl"
         >
           <p className="text-sm font-semibold capitalize text-text-primary">
             {getMoodLabel(chronological[hoveredIndex].mood)}

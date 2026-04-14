@@ -480,8 +480,10 @@ export function StoryExportModal({
                       : exportData?.status === 'Complete'
                         ? 'bg-success'
                         : 'bg-accent'
-                  }`}
-                  style={{ width: `${progressPercent}%` }}
+                  } me-progress-bar`}
+                  ref={(el) => {
+                    if (el) el.style.setProperty('--me-progress', `${progressPercent}%`);
+                  }}
                   role="progressbar"
                   aria-valuenow={progressPercent}
                   aria-valuemin={0}

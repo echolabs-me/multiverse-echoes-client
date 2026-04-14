@@ -315,10 +315,9 @@ export function EchoCreationPage() {
                   key={shard.shard_id}
                   className={`cursor-pointer transition-all duration-200 ${
                     selectedShardId === shard.shard_id
-                      ? 'border-accent !bg-accent/10 ring-2 ring-accent/25 scale-[1.02]'
+                      ? 'border-accent !bg-accent/10 ring-2 ring-accent/25 scale-[1.02] me-selected-shadow'
                       : 'border-border scale-100 opacity-60 hover:opacity-85 hover:border-text-muted'
                   }`}
-                  style={selectedShardId === shard.shard_id ? { boxShadow: '0 0 16px 2px var(--accent-subtle)' } : undefined}
                   onClick={() => setSelectedShardId(shard.shard_id)}
                 >
                   <div className="flex items-center gap-2">
@@ -331,10 +330,9 @@ export function EchoCreationPage() {
               <Card
                 className={`cursor-pointer transition-all duration-200 ${
                   selectedShardId === null
-                    ? 'border-accent !bg-accent/10 ring-2 ring-accent/25 scale-[1.02]'
+                    ? 'border-accent !bg-accent/10 ring-2 ring-accent/25 scale-[1.02] me-selected-shadow'
                     : 'border-border scale-100 opacity-60 hover:opacity-85 hover:border-text-muted'
                 }`}
-                style={selectedShardId === null ? { boxShadow: '0 0 16px 2px var(--accent-subtle)' } : undefined}
                 onClick={() => setSelectedShardId(null)}
               >
                 <div className="flex items-center gap-2">

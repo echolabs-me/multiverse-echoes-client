@@ -91,17 +91,16 @@ export function CommunityPulseCard() {
           return (
             <div
               key={item.item_id}
-              className="w-full rounded-lg border-s-[3px] px-2.5 py-1.5 text-start bg-surface-raised/50"
-              style={{
-                boxShadow: `0 0 10px 2px rgba(${mr},${mg},${mb},0.10)`,
-                borderLeftColor: `rgba(${mr},${mg},${mb},0.5)`,
+              ref={(el) => {
+                if (!el) return;
+                el.style.setProperty('--me-mood-color', moodColor);
+                el.style.setProperty('--me-mood-shadow', `rgba(${mr},${mg},${mb},0.10)`);
+                el.style.setProperty('--me-mood-edge', `rgba(${mr},${mg},${mb},0.5)`);
               }}
+              className="me-community-row w-full rounded-lg border-s-[3px] px-2.5 py-1.5 text-start bg-surface-raised/50"
             >
               <div className="flex items-center gap-1.5">
-                <span
-                  className="h-2 w-2 flex-shrink-0 rounded-full"
-                  style={{ backgroundColor: moodColor }}
-                />
+                <span className="me-mood-dot h-2 w-2 flex-shrink-0 rounded-full" />
                 <Icon size={11} className={`flex-shrink-0 ${iconColor} ${isLifeEvent ? 'fill-accent' : ''}`} />
                 <span className="text-xs font-medium text-text-primary truncate">{echoName}</span>
                 <span className="ms-auto text-[10px] text-text-muted whitespace-nowrap">{(() => {
