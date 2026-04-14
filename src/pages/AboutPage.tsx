@@ -1,9 +1,30 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 export function AboutPage() {
   const { t } = useTranslation();
+  // Same source of truth as /waitlist — D1 via the me-waitlist Worker.
+  // Otherwise this number drifts from the one shown on /waitlist and
+  // visitors notice the inconsistency.
+  const [waitlistTotal, setWaitlistTotal] = useState<number | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetch('https://api.echolabs.me/waitlist/count')
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((data: { total?: number }) => {
+        if (!cancelled && typeof data.total === 'number') {
+          setWaitlistTotal(data.total);
+        }
+      })
+      .catch(() => {
+        // Silent — page renders with a placeholder if D1 is unreachable.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <>
@@ -96,14 +117,15 @@ export function AboutPage() {
 
           <section className="mb-12">
             <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">The Numbers</h2>
-            {/* TODO: Replace waitlist count with live user count or remove post-launch */}
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="text-center">
                 <p className="text-3xl font-light text-[var(--accent)]">95,000</p>
                 <p className="mt-1 text-sm text-[var(--text-muted)]">lines of code</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-light text-[var(--accent)]">379</p>
+                <p className="text-3xl font-light text-[var(--accent)]">
+                  {waitlistTotal !== null ? waitlistTotal.toLocaleString() : '—'}
+                </p>
                 <p className="mt-1 text-sm text-[var(--text-muted)]">waitlist signups</p>
               </div>
             </div>
