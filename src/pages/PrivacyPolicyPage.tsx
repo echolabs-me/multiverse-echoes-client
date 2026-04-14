@@ -45,8 +45,8 @@ export function PrivacyPolicyPage() {
             </p>
             <p className="mt-2">
               For privacy enquiries, contact us at{' '}
-              <a href="mailto:conduct@echolabs.me" className="text-accent hover:text-accent-hover">
-                conduct@echolabs.me
+              <a href="mailto:conduct@echolabsme.com" className="text-accent hover:text-accent-hover">
+                conduct@echolabsme.com
               </a>.
             </p>
           </section>
@@ -173,8 +173,8 @@ export function PrivacyPolicyPage() {
             </ul>
             <p className="mt-3">
               To exercise any right, use the in-app tools above or email{' '}
-              <a href="mailto:conduct@echolabs.me" className="text-accent hover:text-accent-hover">
-                conduct@echolabs.me
+              <a href="mailto:conduct@echolabsme.com" className="text-accent hover:text-accent-hover">
+                conduct@echolabsme.com
               </a>.
               We respond within 30 days.
             </p>
@@ -256,8 +256,8 @@ export function PrivacyPolicyPage() {
             <h2 className="mb-2 text-lg font-semibold text-text-primary">12. Complaints</h2>
             <p>
               If you are unhappy with how we handle your data, please contact us first at{' '}
-              <a href="mailto:conduct@echolabs.me" className="text-accent hover:text-accent-hover">
-                conduct@echolabs.me
+              <a href="mailto:conduct@echolabsme.com" className="text-accent hover:text-accent-hover">
+                conduct@echolabsme.com
               </a>.
               You also have the right to lodge a complaint with your local data protection
               supervisory authority.

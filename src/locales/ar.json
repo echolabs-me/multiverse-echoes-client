@@ -580,7 +580,7 @@
     "feedbackPillShare": "مشاركة ملاحظاتك",
     "feedbackBanner": "وجدت خللًا أو لديك ملاحظات؟ فقط أخبرني — سأرسلها مباشرةً إلى الفريق.",
     "feedbackThanks": "شكرًا لمساعدتك في تحسين Multiverse Echoes.",
-    "feedbackError": "حدث خطأ أثناء إرسال ملاحظاتك. يرجى المحاولة مرة أخرى أو مراسلة conduct@echolabs.me.",
+    "feedbackError": "حدث خطأ أثناء إرسال ملاحظاتك. يرجى المحاولة مرة أخرى أو مراسلة conduct@echolabsme.com.",
     "feedbackFallback": "تم إرسال ملاحظاتك من نوع {{type}}.",
     "feedbackBugPrompt": "أخبرني ما الذي لا يعمل — صِف ما توقعت حدوثه وما حدث فعلاً.",
     "feedbackFeaturePrompt": "ما الذي تريد رؤيته؟ صِف الميزة أو التحسين."
@@ -1081,7 +1081,10 @@
       "pricing": "الأسعار",
       "about": "من نحن",
       "enter": "ابدأ الآن",
-      "dashboard": "لوحة التحكم"
+      "dashboard": "لوحة التحكم",
+      "home": "الرئيسية",
+      "contact": "اتصل بنا",
+      "language": "اللغة"
     },
     "footer": {
       "terms": "الشروط والأحكام",

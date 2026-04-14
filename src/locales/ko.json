@@ -580,7 +580,7 @@
     "feedbackPillShare": "피드백 공유하기",
     "feedbackBanner": "버그를 발견하셨거나 의견이 있으신가요? 말씀해 주세요. 팀에 바로 전달하겠습니다.",
     "feedbackThanks": "Multiverse Echoes의 개선을 도와주셔서 감사합니다.",
-    "feedbackError": "피드백을 제출하는 도중 오류가 발생했습니다. 다시 시도하시거나 conduct@echolabs.me로 이메일을 보내주세요.",
+    "feedbackError": "피드백을 제출하는 도중 오류가 발생했습니다. 다시 시도하시거나 conduct@echolabsme.com로 이메일을 보내주세요.",
     "feedbackFallback": "{{type}} 피드백이 제출되었습니다.",
     "feedbackBugPrompt": "무엇이 문제인지 알려주세요. 기대했던 결과와 실제로 일어난 일을 설명해 주세요.",
     "feedbackFeaturePrompt": "무엇을 보고 싶으신가요? 기능이나 개선 사항을 설명해 주세요."
@@ -1081,7 +1081,10 @@
       "pricing": "요금제",
       "about": "소개",
       "enter": "시작하기",
-      "dashboard": "대시보드"
+      "dashboard": "대시보드",
+      "home": "홈",
+      "contact": "연락처",
+      "language": "언어"
     },
     "footer": {
       "terms": "이용 약관",

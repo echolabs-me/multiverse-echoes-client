@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Globe } from 'lucide-react';
@@ -6,7 +6,7 @@ import { useAuthStore } from '../../stores/useAuthStore.ts';
 import { LanguageSwitcher } from './LanguageSwitcher.tsx';
 
 export function WebsiteNav() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   // Read once — don't subscribe. Backend failures must not re-render public pages.
@@ -14,12 +14,25 @@ export function WebsiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const langWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Click-outside closes the desktop language dropdown.
+  useEffect(() => {
+    if (!langOpen) return;
+    function onDocClick(e: MouseEvent) {
+      if (langWrapRef.current && !langWrapRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, [langOpen]);
 
   const scrollToSection = useCallback(
     (id: string) => {
@@ -38,17 +51,24 @@ export function WebsiteNav() {
 
   const enterTo = isAuthenticated ? '/dashboard' : '/login';
   const enterLabel = isAuthenticated ? t('website.nav.dashboard') : t('website.nav.enter');
-
-  // Pre-beta: primary CTA for unauthenticated visitors is the waitlist,
-  // not Log in. Log in drops to a quiet text link so existing invite-code
-  // holders can still reach it.
   const showWaitlistCta = !isAuthenticated;
+
+  const currentLangName =
+    new Intl.DisplayNames([i18n.language], { type: 'language' }).of(i18n.language) ??
+    i18n.language;
 
   const linkClass =
     'font-serif text-sm tracking-wider transition-colors ' +
     (scrolled
       ? 'text-[var(--text-secondary)] hover:text-[var(--accent)]'
       : 'text-[rgba(232,224,216,0.7)] hover:text-[#E8E0D8]');
+
+  // Accent-pill treatment so the language switcher reads as a single,
+  // distinctive affordance in both header and footer. Small globe + the
+  // current language name; tinted accent background + border that
+  // intensifies on hover without clashing with the serif nav tone.
+  const langButtonClass =
+    'flex items-center gap-1.5 rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-3 py-1 font-serif text-xs tracking-wider text-[var(--accent)] transition-all hover:border-[var(--accent)] hover:bg-[var(--accent)]/20';
 
   return (
     <header
@@ -72,7 +92,10 @@ export function WebsiteNav() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 md:flex lg:gap-8">
+          <Link to="/home" className={linkClass}>
+            {t('website.nav.home')}
+          </Link>
           <button onClick={() => scrollToSection('features')} className={linkClass}>
             {t('website.nav.features')}
           </button>
@@ -83,20 +106,15 @@ export function WebsiteNav() {
             {t('website.nav.about')}
           </Link>
           <Link to="/contact" className={linkClass}>
-            Contact
+            {t('website.nav.contact')}
           </Link>
           {showWaitlistCta ? (
-            <>
-              <Link to="/login" className={linkClass}>
-                {t('auth.logIn')}
-              </Link>
-              <Link
-                to="/waitlist"
-                className="rounded-md bg-[var(--accent)] px-5 py-2 font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a] hover:shadow-[0_0_20px_rgba(212,145,92,0.15)]"
-              >
-                {t('auth.joinWaitlist')} ▸
-              </Link>
-            </>
+            <Link
+              to="/waitlist"
+              className="rounded-md bg-[var(--accent)] px-5 py-2 font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a] hover:shadow-[0_0_20px_rgba(212,145,92,0.15)]"
+            >
+              {t('auth.joinWaitlist')} ▸
+            </Link>
           ) : (
             <Link
               to={enterTo}
@@ -105,6 +123,25 @@ export function WebsiteNav() {
               {enterLabel} ▸
             </Link>
           )}
+
+          <div ref={langWrapRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setLangOpen((v) => !v)}
+              className={langButtonClass}
+              aria-haspopup="listbox"
+              aria-expanded={langOpen}
+              aria-label={t('website.nav.language')}
+            >
+              <Globe size={13} />
+              <span>{currentLangName}</span>
+            </button>
+            {langOpen && (
+              <div className="absolute top-10 right-0 z-50">
+                <LanguageSwitcher onSelect={() => setLangOpen(false)} />
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Mobile hamburger */}
@@ -121,6 +158,13 @@ export function WebsiteNav() {
       {menuOpen && (
         <div className="border-t border-[rgba(212,145,92,0.15)] bg-[#0A0F14] px-6 pb-8 pt-6 md:hidden">
           <div className="flex flex-col gap-5">
+            <Link
+              to="/home"
+              onClick={() => setMenuOpen(false)}
+              className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
+            >
+              {t('website.nav.home')}
+            </Link>
             <button
               onClick={() => scrollToSection('features')}
               className="text-start font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
@@ -145,29 +189,25 @@ export function WebsiteNav() {
               onClick={() => setMenuOpen(false)}
               className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
             >
-              Contact
+              {t('website.nav.contact')}
             </Link>
 
             <div className="my-1 border-t border-[rgba(212,145,92,0.1)]" />
 
+            {/* Language selector — same accent-pill treatment as desktop */}
             <button
-              onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
+              type="button"
+              onClick={() => setLangOpen((v) => !v)}
+              className={`${langButtonClass} w-fit`}
+              aria-haspopup="listbox"
+              aria-expanded={langOpen}
+              aria-label={t('website.nav.language')}
             >
-              <Globe size={14} />
-              Language
+              <Globe size={13} />
+              <span>{currentLangName}</span>
             </button>
             {langOpen && <LanguageSwitcher onSelect={() => setLangOpen(false)} />}
 
-            {showWaitlistCta && (
-              <Link
-                to="/login"
-                onClick={() => setMenuOpen(false)}
-                className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
-              >
-                {t('auth.logIn')}
-              </Link>
-            )}
             <Link
               to={showWaitlistCta ? '/waitlist' : enterTo}
               onClick={() => setMenuOpen(false)}

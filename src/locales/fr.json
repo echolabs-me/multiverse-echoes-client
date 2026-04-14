@@ -580,7 +580,7 @@
     "feedbackPillShare": "Partager un retour",
     "feedbackBanner": "Tu as repéré un bug ou tu as un retour à faire ? Dis-le-moi simplement — je l'enverrai directement à l'équipe.",
     "feedbackThanks": "Merci de nous aider à améliorer Multiverse Echoes.",
-    "feedbackError": "Une erreur s'est produite lors de l'envoi de ton retour. Réessaie ou écris à conduct@echolabs.me.",
+    "feedbackError": "Une erreur s'est produite lors de l'envoi de ton retour. Réessaie ou écris à conduct@echolabsme.com.",
     "feedbackFallback": "Ton retour de type {{type}} a été envoyé.",
     "feedbackBugPrompt": "Dis-moi ce qui ne fonctionne pas — décris ce que tu attendais et ce qui s'est passé.",
     "feedbackFeaturePrompt": "Que voudrais-tu voir ? Décris la fonctionnalité ou l'amélioration."
@@ -1081,7 +1081,10 @@
       "pricing": "Tarifs",
       "about": "À propos",
       "enter": "Découvrir",
-      "dashboard": "Tableau de bord"
+      "dashboard": "Tableau de bord",
+      "home": "Accueil",
+      "contact": "Contact",
+      "language": "Langue"
     },
     "footer": {
       "terms": "Conditions générales",

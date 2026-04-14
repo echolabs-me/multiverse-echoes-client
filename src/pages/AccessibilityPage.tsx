@@ -147,8 +147,8 @@ export function AccessibilityPage() {
             <ul className="mt-2 list-disc ps-5">
               <li>
                 Email:{' '}
-                <a href="mailto:conduct@echolabs.me" className="text-accent hover:text-accent-hover">
-                  conduct@echolabs.me
+                <a href="mailto:conduct@echolabsme.com" className="text-accent hover:text-accent-hover">
+                  conduct@echolabsme.com
                 </a>
               </li>
               <li>In-app: use the Oracle assistant or the feedback form in Settings</li>

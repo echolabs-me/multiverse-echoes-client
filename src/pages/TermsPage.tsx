@@ -202,8 +202,8 @@ export function TermsPage() {
             <h2 className="mb-2 text-lg font-semibold text-text-primary">10. Dispute resolution</h2>
             <p>
               We encourage you to contact us first at{' '}
-              <a href="mailto:conduct@echolabs.me" className="text-accent hover:text-accent-hover">
-                conduct@echolabs.me
+              <a href="mailto:conduct@echolabsme.com" className="text-accent hover:text-accent-hover">
+                conduct@echolabsme.com
               </a>{' '}
               to resolve any dispute informally. If we cannot reach a resolution, disputes will be
               governed by the laws of the jurisdiction where Echo Labs is incorporated. EU consumers
@@ -226,8 +226,8 @@ export function TermsPage() {
             <h2 className="mb-2 text-lg font-semibold text-text-primary">12. Contact</h2>
             <p>
               For questions about these terms, contact{' '}
-              <a href="mailto:conduct@echolabs.me" className="text-accent hover:text-accent-hover">
-                conduct@echolabs.me
+              <a href="mailto:conduct@echolabsme.com" className="text-accent hover:text-accent-hover">
+                conduct@echolabsme.com
               </a>.
             </p>
           </section>

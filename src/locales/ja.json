@@ -580,7 +580,7 @@
     "feedbackPillShare": "フィードバックを共有する",
     "feedbackBanner": "バグを見つけたり、フィードバックがあったりしますか？私に教えてください。すぐにチームに伝えます。",
     "feedbackThanks": "Multiverse Echoesの改善にご協力いただき、ありがとうございます。",
-    "feedbackError": "フィードバックの送信中にエラーが発生しました。もう一度お試しいただくか、conduct@echolabs.me までメールでお知らせください。",
+    "feedbackError": "フィードバックの送信中にエラーが発生しました。もう一度お試しいただくか、conduct@echolabsme.com までメールでお知らせください。",
     "feedbackFallback": "{{type}}のフィードバックが送信されました。",
     "feedbackBugPrompt": "どこが壊れているか教えてください。期待していた動作と、実際に起きたことを説明してください。",
     "feedbackFeaturePrompt": "どのような機能をご希望ですか？機能の詳細や改善点について教えてください。"
@@ -1081,7 +1081,10 @@
       "pricing": "料金プラン",
       "about": "私たちについて",
       "enter": "はじめる",
-      "dashboard": "ダッシュボード"
+      "dashboard": "ダッシュボード",
+      "home": "ホーム",
+      "contact": "お問い合わせ",
+      "language": "言語"
     },
     "footer": {
       "terms": "利用規約",

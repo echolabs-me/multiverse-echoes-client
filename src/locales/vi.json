@@ -580,7 +580,7 @@
     "feedbackPillShare": "Chia sẻ phản hồi",
     "feedbackBanner": "Phát hiện lỗi hay có góp ý gì không? Cứ nói với tôi — tôi sẽ gửi trực tiếp cho đội ngũ phát triển.",
     "feedbackThanks": "Cảm ơn bạn đã giúp chúng tôi cải thiện Multiverse Echoes.",
-    "feedbackError": "Đã xảy ra lỗi khi gửi phản hồi của bạn. Vui lòng thử lại hoặc gửi email đến conduct@echolabs.me.",
+    "feedbackError": "Đã xảy ra lỗi khi gửi phản hồi của bạn. Vui lòng thử lại hoặc gửi email đến conduct@echolabsme.com.",
     "feedbackFallback": "Phản hồi {{type}} của bạn đã được gửi.",
     "feedbackBugPrompt": "Hãy cho tôi biết điều gì đang bị lỗi — mô tả những gì bạn mong đợi sẽ xảy ra và những gì thực sự đã xảy ra.",
     "feedbackFeaturePrompt": "Bạn muốn thấy điều gì? Hãy mô tả tính năng hoặc cải tiến đó."
@@ -1081,7 +1081,10 @@
       "pricing": "Bảng giá",
       "about": "Giới thiệu",
       "enter": "Khám phá ngay",
-      "dashboard": "Bảng điều khiển"
+      "dashboard": "Bảng điều khiển",
+      "home": "Trang chủ",
+      "contact": "Liên hệ",
+      "language": "Ngôn ngữ"
     },
     "footer": {
       "terms": "Điều khoản sử dụng",

@@ -580,7 +580,7 @@
     "feedbackPillShare": "Kongsi maklum balas",
     "feedbackBanner": "Jumpai pepijat atau mempunyai maklum balas? Beritahu sahaja saya — saya akan hantarkannya terus kepada pasukan.",
     "feedbackThanks": "Terima kasih kerana membantu kami menambah baik Multiverse Echoes.",
-    "feedbackError": "Terdapat ralat semasa menghantar maklum balas anda. Sila cuba lagi atau e-mel conduct@echolabs.me.",
+    "feedbackError": "Terdapat ralat semasa menghantar maklum balas anda. Sila cuba lagi atau e-mel conduct@echolabsme.com.",
     "feedbackFallback": "Maklum balas {{type}} anda telah dihantar.",
     "feedbackBugPrompt": "Beritahu saya apa yang rosak — terangkan apa yang anda jangka akan berlaku dan apa yang sebenarnya berlaku.",
     "feedbackFeaturePrompt": "Apa yang anda ingin lihat? Terangkan ciri atau penambahbaikan tersebut."
@@ -1081,7 +1081,10 @@
       "pricing": "Harga",
       "about": "Mengenai Kami",
       "enter": "Mula",
-      "dashboard": "Paparan Utama"
+      "dashboard": "Paparan Utama",
+      "home": "Laman Utama",
+      "contact": "Hubungi",
+      "language": "Bahasa"
     },
     "footer": {
       "terms": "Terma & Syarat",

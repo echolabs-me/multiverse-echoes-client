@@ -580,7 +580,7 @@
     "feedbackPillShare": "Geri bildirim paylaş",
     "feedbackBanner": "Bir hata mı fark ettiniz veya geri bildiriminiz mi var? Bana söylemeniz yeterli — doğrudan ekibe ileteceğim.",
     "feedbackThanks": "Multiverse Echoes'u geliştirmemize yardımcı olduğunuz için teşekkür ederiz.",
-    "feedbackError": "Geri bildiriminizi gönderirken bir sorun oluştu. Lütfen tekrar deneyin veya conduct@echolabs.me adresine e-posta gönderin.",
+    "feedbackError": "Geri bildiriminizi gönderirken bir sorun oluştu. Lütfen tekrar deneyin veya conduct@echolabsme.com adresine e-posta gönderin.",
     "feedbackFallback": "{{type}} geri bildiriminiz gönderildi.",
     "feedbackBugPrompt": "Neyin bozuk olduğunu bana anlatın — ne olmasını beklediğinizi ve gerçekte ne olduğunu açıklayın.",
     "feedbackFeaturePrompt": "Ne görmek istersiniz? Özelliği veya iyileştirmeyi açıklayın."
@@ -1081,7 +1081,10 @@
       "pricing": "Fiyatlandırma",
       "about": "Hakkımızda",
       "enter": "Giriş yap",
-      "dashboard": "Kontrol Paneli"
+      "dashboard": "Kontrol Paneli",
+      "home": "Ana Sayfa",
+      "contact": "İletişim",
+      "language": "Dil"
     },
     "footer": {
       "terms": "Kullanım Koşulları",

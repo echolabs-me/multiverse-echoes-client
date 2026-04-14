@@ -580,7 +580,7 @@
     "feedbackPillShare": "Magbahagi ng feedback",
     "feedbackBanner": "May nakitang bug o may feedback? Sabihin mo lang sa akin — ipapadala ko ito agad sa team.",
     "feedbackThanks": "Salamat sa pagtulong sa amin na mapabuti ang Multiverse Echoes.",
-    "feedbackError": "May nagkamali sa pagpapadala ng iyong feedback. Pakisubok muli o mag-email sa conduct@echolabs.me.",
+    "feedbackError": "May nagkamali sa pagpapadala ng iyong feedback. Pakisubok muli o mag-email sa conduct@echolabsme.com.",
     "feedbackFallback": "Naipasa na ang iyong feedback sa {{type}}.",
     "feedbackBugPrompt": "Sabihin mo sa akin kung ano ang sira — ilarawan kung ano ang inaasahan mong mangyayari at kung ano ang aktwal na nangyari.",
     "feedbackFeaturePrompt": "Ano ang gusto mong makita? Ilarawan ang feature o pagpapabuti."
@@ -1081,7 +1081,10 @@
       "pricing": "Presyo",
       "about": "Tungkol sa Amin",
       "enter": "Sali na",
-      "dashboard": "Control Panel"
+      "dashboard": "Control Panel",
+      "home": "Tahanan",
+      "contact": "Kontakin Kami",
+      "language": "Wika"
     },
     "footer": {
       "terms": "Mga Tuntunin",

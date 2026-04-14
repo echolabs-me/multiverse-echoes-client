@@ -580,7 +580,7 @@
     "feedbackPillShare": "Feedback geben",
     "feedbackBanner": "Einen Fehler gefunden oder Feedback? Sag es mir einfach – ich leite es direkt an das Team weiter.",
     "feedbackThanks": "Vielen Dank, dass Sie uns helfen, Multiverse Echoes zu verbessern.",
-    "feedbackError": "Beim Absenden Ihres Feedbacks ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder senden Sie eine E-Mail an conduct@echolabs.me.",
+    "feedbackError": "Beim Absenden Ihres Feedbacks ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder senden Sie eine E-Mail an conduct@echolabsme.com.",
     "feedbackFallback": "Ihr {{type}}-Feedback wurde übermittelt.",
     "feedbackBugPrompt": "Sagen Sie mir, was defekt ist – beschreiben Sie, was Sie erwartet haben und was tatsächlich passiert ist.",
     "feedbackFeaturePrompt": "Was würden Sie gerne sehen? Beschreiben Sie die Funktion oder Verbesserung."
@@ -1081,7 +1081,10 @@
       "pricing": "Preise",
       "about": "Über uns",
       "enter": "Los geht's",
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "home": "Startseite",
+      "contact": "Kontakt",
+      "language": "Sprache"
     },
     "footer": {
       "terms": "AGB",

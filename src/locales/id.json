@@ -580,7 +580,7 @@
     "feedbackPillShare": "Bagikan masukan",
     "feedbackBanner": "Menemukan bug atau punya masukan? Beritahu saya saja — akan saya sampaikan langsung ke tim.",
     "feedbackThanks": "Terima kasih telah membantu kami meningkatkan Multiverse Echoes.",
-    "feedbackError": "Terjadi kesalahan saat mengirimkan masukan Anda. Silakan coba lagi atau kirim email ke conduct@echolabs.me.",
+    "feedbackError": "Terjadi kesalahan saat mengirimkan masukan Anda. Silakan coba lagi atau kirim email ke conduct@echolabsme.com.",
     "feedbackFallback": "Umpan balik {{type}} Anda telah dikirimkan.",
     "feedbackBugPrompt": "Beri tahu saya apa yang rusak — jelaskan apa yang Anda harapkan terjadi dan apa yang sebenarnya terjadi.",
     "feedbackFeaturePrompt": "Apa yang ingin Anda lihat? Jelaskan fitur atau peningkatan tersebut."
@@ -1081,7 +1081,10 @@
       "pricing": "Harga",
       "about": "Tentang Kami",
       "enter": "Mulai",
-      "dashboard": "Panel Kontrol"
+      "dashboard": "Panel Kontrol",
+      "home": "Beranda",
+      "contact": "Kontak",
+      "language": "Bahasa"
     },
     "footer": {
       "terms": "Syarat & Ketentuan",
