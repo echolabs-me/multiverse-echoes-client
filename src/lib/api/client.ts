@@ -85,9 +85,18 @@ async function tryRefreshToken(): Promise<boolean> {
 
       if (!response.ok) return false;
 
-      const data = (await response.json()) as { access_token: string; expires_in: number };
+      const data = (await response.json()) as {
+        access_token: string;
+        refresh_token: string;
+        expires_in: number;
+      };
       accessToken = data.access_token;
       localStorage.setItem('access_token', data.access_token);
+      // Server rotates the refresh token on every /auth/refresh call
+      // (RFC 6819 §5.2.2.3). Persist the new one — the old one is
+      // already dead server-side.
+      refreshToken = data.refresh_token;
+      localStorage.setItem('refresh_token', data.refresh_token);
       return true;
     } catch {
       return false;
