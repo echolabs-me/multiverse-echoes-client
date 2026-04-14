@@ -39,6 +39,11 @@ export function WebsiteNav() {
   const enterTo = isAuthenticated ? '/dashboard' : '/login';
   const enterLabel = isAuthenticated ? t('website.nav.dashboard') : t('website.nav.enter');
 
+  // Pre-beta: primary CTA for unauthenticated visitors is the waitlist,
+  // not Log in. Log in drops to a quiet text link so existing invite-code
+  // holders can still reach it.
+  const showWaitlistCta = !isAuthenticated;
+
   const linkClass =
     'font-serif text-sm tracking-wider transition-colors ' +
     (scrolled
@@ -78,12 +83,26 @@ export function WebsiteNav() {
           <Link to="/about" className={linkClass}>
             {t('website.nav.about')}
           </Link>
-          <Link
-            to={enterTo}
-            className="rounded-md bg-[var(--accent)] px-5 py-2 font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a] hover:shadow-[0_0_20px_rgba(212,145,92,0.15)]"
-          >
-            {enterLabel} ▸
-          </Link>
+          {showWaitlistCta ? (
+            <>
+              <Link to="/login" className={linkClass}>
+                {t('auth.logIn')}
+              </Link>
+              <Link
+                to="/waitlist"
+                className="rounded-md bg-[var(--accent)] px-5 py-2 font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a] hover:shadow-[0_0_20px_rgba(212,145,92,0.15)]"
+              >
+                {t('auth.joinWaitlist')} ▸
+              </Link>
+            </>
+          ) : (
+            <Link
+              to={enterTo}
+              className="rounded-md bg-[var(--accent)] px-5 py-2 font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a] hover:shadow-[0_0_20px_rgba(212,145,92,0.15)]"
+            >
+              {enterLabel} ▸
+            </Link>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -131,12 +150,21 @@ export function WebsiteNav() {
             </button>
             {langOpen && <LanguageSwitcher onSelect={() => setLangOpen(false)} />}
 
+            {showWaitlistCta && (
+              <Link
+                to="/login"
+                onClick={() => setMenuOpen(false)}
+                className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
+              >
+                {t('auth.logIn')}
+              </Link>
+            )}
             <Link
-              to={enterTo}
+              to={showWaitlistCta ? '/waitlist' : enterTo}
               onClick={() => setMenuOpen(false)}
               className="mt-2 rounded-md bg-[var(--accent)] py-3 text-center font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a]"
             >
-              {enterLabel} ▸
+              {showWaitlistCta ? t('auth.joinWaitlist') : enterLabel} ▸
             </Link>
           </div>
         </div>
