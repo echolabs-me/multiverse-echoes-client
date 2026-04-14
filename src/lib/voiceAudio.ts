@@ -154,49 +154,35 @@ export class VoiceAudioBridge {
     const ts = () => `${((performance.now() - t0) / 1000).toFixed(1)}s`;
 
     try {
-      console.log(`[voice] ${ts()} webrtc_offer received`);
-
       this.pc = new RTCPeerConnection({
         iceServers: [{ urls: 'stun:stun.cloudflare.com:3478' }],
         bundlePolicy: 'max-bundle',
       });
 
-      this.pc.oniceconnectionstatechange = () => {
-        console.log(`[voice] ICE: ${this.pc?.iceConnectionState}`);
-      };
-
       this.pc.ontrack = (event) => {
-        console.log(`[voice] ${ts()} Remote track: ${event.track.kind} id=${event.track.id} muted=${event.track.muted}`);
         if (this.remoteAudio) {
           this.remoteAudio.srcObject = event.streams?.[0]
             ? event.streams[0]
             : new MediaStream([event.track]);
-          console.log(`[voice] ${ts()} Audio element: srcObject=${!!this.remoteAudio.srcObject} paused=${this.remoteAudio.paused}`);
-          this.remoteAudio.play().then(() => {
-            console.log(`[voice] ${ts()} Audio play() succeeded`);
-          }).catch((e) => {
-            console.error(`[voice] ${ts()} Audio play() FAILED: ${e.message}`);
+          this.remoteAudio.play().catch((e) => {
+            if (import.meta.env.DEV) {
+              // eslint-disable-next-line no-console -- autoplay failures are silent to the user; dev-only log helps diagnose browser policy blocks during local WebRTC testing
+              console.error(`[voice] ${ts()} Audio play() FAILED: ${e.message}`);
+            }
           });
         }
-        event.track.onunmute = () => console.log(`[voice] ${ts()} Track unmuted`);
-        event.track.onmute = () => console.log(`[voice] ${ts()} Track muted`);
       };
 
       this.pc.addTransceiver('audio', { direction: 'recvonly' });
-      console.log(`[voice] ${ts()} addTransceiver done`);
 
       if (msg.sessionDescription) {
         await this.pc.setRemoteDescription(
           new RTCSessionDescription(msg.sessionDescription as RTCSessionDescriptionInit),
         );
-        console.log(`[voice] ${ts()} setRemoteDescription done`);
       }
 
       const answer = await this.pc.createAnswer();
-      console.log(`[voice] ${ts()} createAnswer done`);
-
       await this.pc.setLocalDescription(answer);
-      console.log(`[voice] ${ts()} setLocalDescription done`);
 
       if (this.ws?.readyState === WebSocket.OPEN) {
         this.ws.send(JSON.stringify({
@@ -206,10 +192,12 @@ export class VoiceAudioBridge {
             type: 'answer',
           },
         }));
-        console.log(`[voice] ${ts()} webrtc_answer SENT`);
       }
     } catch (e) {
-      console.error(`[voice] ${ts()} WebRTC setup FAILED: ${e}`);
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console -- WebRTC setup failures are swallowed by onClose(); dev-only log surfaces the root cause during local call-setup debugging
+        console.error(`[voice] ${ts()} WebRTC setup FAILED: ${e}`);
+      }
     }
   }
 

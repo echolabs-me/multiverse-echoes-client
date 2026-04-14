@@ -26,6 +26,14 @@ export default defineConfig([
         'warn',
         { allowConstantExport: true },
       ],
+      'no-console': 'error',
+    },
+  },
+  {
+    // Playwright test harness runs under Node and uses console for test diagnostics.
+    files: ['e2e/**/*.{ts,tsx}'],
+    rules: {
+      'no-console': 'off',
     },
   },
 ]);

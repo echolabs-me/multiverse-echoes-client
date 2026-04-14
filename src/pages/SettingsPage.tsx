@@ -813,7 +813,10 @@ function DiscordLinkSection() {
       const { auth_url } = await accountApi.linkDiscord();
       window.location.href = auth_url;
     } catch (err) {
-      console.error('[DiscordLink] link failed:', err);
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console -- user sees toast; dev log surfaces OAuth link-init failures (e.g. Discord config issues)
+        console.error('[DiscordLink] link failed:', err);
+      }
       const msg =
         err instanceof Error && err.message
           ? err.message

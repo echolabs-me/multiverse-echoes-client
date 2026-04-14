@@ -468,7 +468,6 @@ export function EchoDetailPage() {
       setNudgeConfirmed(true);
       setTimeout(() => setNudgeConfirmed(false), 4000);
       // Also fire toast as backup
-      console.log('[ME] Nudge toast firing:', t('echoDetail.influenceUsed'));
       addToast(t('echoDetail.influenceUsed'), 'success');
       // Trigger ripple animation + sound
       playSound('influence');
@@ -1222,7 +1221,10 @@ function DiaryCard({
         await videoRef.current.play();
         setVideoState('playing');
       } catch (e) {
-        console.error('Video resume failed:', e);
+        if (import.meta.env.DEV) {
+          // eslint-disable-next-line no-console -- error surface is setVideoState('error'); dev-only log exposes the underlying DOMException (autoplay policy, codec, etc.)
+          console.error('Video resume failed:', e);
+        }
         setVideoState('error');
       }
       return;
@@ -1234,7 +1236,10 @@ function DiaryCard({
         await videoRef.current.play();
         setVideoState('playing');
       } catch (e) {
-        console.error('Video replay failed:', e);
+        if (import.meta.env.DEV) {
+          // eslint-disable-next-line no-console -- error surface is setVideoState('error'); dev-only log exposes the underlying DOMException
+          console.error('Video replay failed:', e);
+        }
         setVideoState('error');
       }
       return;
@@ -1287,7 +1292,10 @@ function DiaryCard({
                 break;
               } catch (fetchErr) {
                 const msg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
-                console.error(`[video] Fetch attempt ${fetchAttempt + 1} failed: ${msg}`);
+                if (import.meta.env.DEV) {
+                  // eslint-disable-next-line no-console -- retry attempts are invisible to the user; dev-only trace helps diagnose transient 502s from the narration pipeline
+                  console.error(`[video] Fetch attempt ${fetchAttempt + 1} failed: ${msg}`);
+                }
                 if (fetchAttempt === 2) throw new Error(`Video fetch failed after 3 attempts: ${msg}`);
               }
             }
@@ -1310,7 +1318,10 @@ function DiaryCard({
       await poll();
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      console.error('Video narration failed:', msg);
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console -- msg is shown to the user via setVideoErrorMsg; dev log preserves the full error for local debugging
+        console.error('Video narration failed:', msg);
+      }
       setVideoErrorMsg(msg);
       setVideoState('error');
     }
