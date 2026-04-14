@@ -12,7 +12,10 @@ interface Language {
 
 // 20 live languages. `code` must match i18n.ts SUPPORTED_LOCALES,
 // config.translation.supported_locales, and the sidecar's LOCALE_TO_LANGUAGE.
-// `countryCode` maps to flagcdn.com SVG flags (lowercase ISO 3166-1 alpha-2).
+// `countryCode` maps to a local SVG at /flags/{cc}.svg. Flag assets were
+// downloaded from flagcdn.com (CC0 Public Domain) so we ship them ourselves
+// rather than depend on a third-party host — keeps img-src tight and
+// removes a supply-chain surface.
 const languages: Language[] = [
   { code: 'en', countryCode: 'gb', nativeName: 'English' },
   { code: 'zh-Hans', countryCode: 'cn', nativeName: '简体中文' },
@@ -231,7 +234,7 @@ function LanguageTile({
       }`}
     >
       <img
-        src={`https://flagcdn.com/${lang.countryCode}.svg`}
+        src={`/flags/${lang.countryCode}.svg`}
         alt=""
         aria-hidden="true"
         className="h-9 w-9 rounded-full object-cover"
