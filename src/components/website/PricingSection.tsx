@@ -324,12 +324,12 @@ export function PricingSection() {
               </span>
             ))}
           </div>
-          <a
-            href="mailto:hello@echolabs.me"
+          <Link
+            to="/contact"
             className="inline-block rounded-[10px] border border-[#8B7EC8] px-10 py-3.5 text-sm font-semibold tracking-wider text-[#8B7EC8] transition-all hover:bg-[rgba(139,126,200,0.1)] hover:shadow-[0_4px_20px_rgba(139,126,200,0.15)]"
           >
             {t('tiers.contactUs')}
-          </a>
+          </Link>
         </div>
 
         {/* Footer note */}
