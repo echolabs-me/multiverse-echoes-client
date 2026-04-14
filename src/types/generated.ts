@@ -1049,6 +1049,15 @@ export type User = {
 	 */
 	analytics_opt_out?: boolean,
 	/**
+	 *  GDPR Art. 18 — Right to Restriction of Processing. When true, the
+	 *  tick engine MUST skip every Echo owned by this user — no diary
+	 *  generation, no relationship updates, no LLM calls. Distinct from
+	 *  `solo_mode` (which only blocks cross-user interaction) and from
+	 *  account deletion (data is preserved). Toggled via
+	 *  POST /account/me/restrict-processing  +  /unrestrict-processing.
+	 */
+	processing_restricted?: boolean,
+	/**
 	 *  When the current paid subscription expires. None = Free tier (no expiry).
 	 *  Crypto payments set this to `now + duration_days`. Extension adds to existing.
 	 */
