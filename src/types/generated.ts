@@ -592,6 +592,10 @@ export type FeedItem = {
 
 export type FeedItemResponse = {
 	item_id: string,
+	/**
+	 *  Kind of feed item — diary entry, life event, etc. Mirror of
+	 *  `me_core::models::enums::FeedItemType`.
+	 */
 	item_type: FeedItemType,
 	echo_id: string,
 	shard_id: string,
@@ -1329,7 +1333,12 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
 // Emitted when an Echo's AI-generated portrait is ready (background generation complete).
 { EchoAvatarReady: { echo_id: string; avatar_url: string } } | { EmergencyHibernation: { reason: string } };
 
-// Events sent over the WebSocket to clients.
+/**
+ *  Events sent over the WebSocket to clients.
+ * 
+ *  All frames delivered on any `/ws/*\/stream` endpoint are JSON-encoded
+ *  values of this tagged union. The `type` field is the discriminator.
+ */
 export type WsEchoEvent = { type: "DiaryEntryCreated"; echo_id: string; diary_id: string; tick_id: number; 
 /**
  *  Locale hint for the just-persisted content. Resolved per-event
