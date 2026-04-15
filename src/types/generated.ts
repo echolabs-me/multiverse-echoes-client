@@ -204,6 +204,7 @@ export type ConversationMessage = {
 
 export type ConversationMessageResponse = {
 	message_id: string,
+	// Role, lowercased (`"user"` or `"echo"`).
 	role: string,
 	content: string,
 	created_at: string,
