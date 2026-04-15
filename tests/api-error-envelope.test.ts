@@ -125,9 +125,10 @@ describe('api/client.request — error response envelope handling', () => {
 
     expect(caught?.status).toBe(403);
     expect(caught?.code).toBe('UNKNOWN');
-    // Message must mention the status — gives the UI something to
-    // show rather than a bare "UNKNOWN".
-    expect(caught?.message).toContain('403');
+    // Pin the EXACT fallback message format. A drift to e.g.
+    // "Unknown 403 response" or "fail 403 abc" would still pass a
+    // loose .toContain('403') check; this one would not.
+    expect(caught?.message).toBe('HTTP 403');
   });
 
   it('never calls .text() on the response — JSON-only by contract', async () => {
