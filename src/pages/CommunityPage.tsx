@@ -91,7 +91,8 @@ export function CommunityPage() {
         await Promise.all(
           chs.map(async (ch) => {
             try {
-              const msgs = await channelApi.messages(ch.channel_id, { limit: 1 });
+              const page = await channelApi.messages(ch.channel_id, { limit: 1 });
+              const msgs = page.data;
               if (msgs.length > 0) {
                 const lastSeen = getLastSeen(ch.channel_id);
                 if (lastSeen === null) {
@@ -122,7 +123,8 @@ export function CommunityPage() {
     if (!activeChannel) return;
     setIsLoadingMessages(true);
     try {
-      const msgs = await channelApi.messages(activeChannel.channel_id, { limit: 50 });
+      const page = await channelApi.messages(activeChannel.channel_id, { limit: 50 });
+      const msgs = page.data;
       setMessages(msgs);
       // Mark channel as read when messages are viewed.
       if (msgs.length > 0) {

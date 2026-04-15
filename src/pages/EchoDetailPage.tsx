@@ -88,7 +88,7 @@ export function EchoDetailPage() {
   // Memories are internal infrastructure — not shown in user UI.
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [diaryOffset, setDiaryOffset] = useState(0);
+  const [diaryCursor, setDiaryCursor] = useState<string | null>(null);
   const [hasMoreDiary, setHasMoreDiary] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   // Days the user has explicitly toggled from their default expand/collapse state.
@@ -158,22 +158,26 @@ export function EchoDetailPage() {
     initialLoadDoneRef.current = false;
     knownDiaryIdsRef.current.clear();
     setNewDiaryIds(new Set());
-    setDiaryOffset(0);
+    setDiaryCursor(null);
     try {
       await fetchEcho(echoId);
-      const [rels, inf, diary] = await Promise.all([
+      const [rels, inf, diaryPage] = await Promise.all([
         echoApi.relationships(echoId).catch(() => [] as EchoRelationship[]),
         echoApi.influence(echoId).catch(() => null),
-        echoApi.diary(echoId, PAGE_SIZE, 0).catch(() => [] as DiaryEntry[]),
+        echoApi.diary(echoId, PAGE_SIZE).catch(() => ({
+          data: [] as DiaryEntry[],
+          next_cursor: null,
+        })),
       ]);
+      const diary = diaryPage.data;
       setRelationships(rels);
       setInfluence(inf);
       // Initial load — mark all existing entries as known (no animation).
       knownDiaryIdsRef.current = new Set(diary.map((d) => d.diary_id));
       initialLoadDoneRef.current = true;
       setDiaryEntries(diary);
-      setDiaryOffset(diary.length);
-      setHasMoreDiary(diary.length >= PAGE_SIZE);
+      setDiaryCursor(diaryPage.next_cursor);
+      setHasMoreDiary(diaryPage.next_cursor !== null);
       await fetchPersonalFeed(echoId);
       const convList = await conversations.list(echoId).catch(() => [] as Conversation[]);
       setPastConversations(convList);
@@ -187,23 +191,24 @@ export function EchoDetailPage() {
   }, [echoId, fetchEcho, fetchPersonalFeed]);
 
   const loadMoreDiary = useCallback(async () => {
-    if (!echoId || isLoadingMore) return;
+    if (!echoId || isLoadingMore || !diaryCursor) return;
     setIsLoadingMore(true);
     try {
       const activeMood = moodFilter || undefined;
-      const more = await echoApi.diary(echoId, PAGE_SIZE, diaryOffset, activeMood);
+      const page = await echoApi.diary(echoId, PAGE_SIZE, diaryCursor, activeMood);
+      const more = page.data;
       if (more.length > 0) {
         const newEntries = more.filter(
           (m) => !diaryEntries.some((d) => d.diary_id === m.diary_id),
         );
         setDiaryEntries((prev) => [...prev, ...newEntries]);
-        setDiaryOffset((prev) => prev + more.length);
       }
-      setHasMoreDiary(more.length >= PAGE_SIZE);
+      setDiaryCursor(page.next_cursor);
+      setHasMoreDiary(page.next_cursor !== null);
     } finally {
       setIsLoadingMore(false);
     }
-  }, [echoId, diaryOffset, isLoadingMore, diaryEntries, moodFilter]);
+  }, [echoId, diaryCursor, isLoadingMore, diaryEntries, moodFilter]);
 
   useEffect(() => {
     void loadData();
@@ -252,10 +257,10 @@ export function EchoDetailPage() {
     const activeMood = moodFilter || undefined;
     // When clearing a filter, re-fetch all entries up to what was previously loaded.
     const limit = activeMood ? PAGE_SIZE : Math.max(PAGE_SIZE, maxLoadedRef.current);
-    void echoApi.diary(echoId, limit, 0, activeMood).then((diary) => {
-      setDiaryEntries(diary);
-      setDiaryOffset(diary.length);
-      setHasMoreDiary(diary.length >= PAGE_SIZE);
+    void echoApi.diary(echoId, limit, undefined, activeMood).then((page) => {
+      setDiaryEntries(page.data);
+      setDiaryCursor(page.next_cursor);
+      setHasMoreDiary(page.next_cursor !== null);
     }).catch(() => {});
   }, [echoId, moodFilter]);
 
@@ -277,13 +282,14 @@ export function EchoDetailPage() {
         // On reconnect, re-fetch diary to catch missed events.
         const id = echoIdRef.current;
         if (wsConnectedOnceRef.current && id) {
-          void echoApi.diary(id).then((d) => {
-            const arrivals = d.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
+          void echoApi.diary(id).then((page) => {
+            const entries = page.data;
+            const arrivals = entries.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
             if (arrivals.length > 0) {
               const arrivalIds = new Set(arrivals.map((e) => e.diary_id));
-              setNewDiaryIds((prev) => new Set([...prev, ...arrivalIds]));
+              setNewDiaryIds((prev) => new Set<string>([...prev, ...arrivalIds]));
             }
-            setDiaryEntries(d);
+            setDiaryEntries(entries);
           }).catch(() => {});
           void useEchoStore.getState().fetchEcho(id);
         }
@@ -298,16 +304,17 @@ export function EchoDetailPage() {
       if (event.type === 'DiaryEntryCreated') {
         void echoApi
           .diary(id)
-          .then((d) => {
+          .then((page) => {
+            const entries = page.data;
             if (initialLoadDoneRef.current) {
-              const arrivals = d.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
+              const arrivals = entries.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
               if (arrivals.length > 0) {
                 const arrivalIds = new Set(arrivals.map((e) => e.diary_id));
-                setNewDiaryIds((prev) => new Set([...prev, ...arrivalIds]));
+                setNewDiaryIds((prev) => new Set<string>([...prev, ...arrivalIds]));
                 playSound('diary_entry');
               }
             }
-            setDiaryEntries(d);
+            setDiaryEntries(entries);
           })
           .catch(() => {});
         // Re-fetch echo metadata so current_tick and current_mood stay in sync.
@@ -320,7 +327,7 @@ export function EchoDetailPage() {
         // Background image generation completed — re-fetch diary to get image_url
         void echoApi
           .diary(id)
-          .then((d) => setDiaryEntries(d))
+          .then((page) => setDiaryEntries(page.data))
           .catch(() => {});
       } else if (event.type === 'MoodChanged') {
         void useEchoStore.getState().fetchEcho(id);
@@ -342,16 +349,17 @@ export function EchoDetailPage() {
     void useEchoStore.getState().fetchEcho(id);
     void echoApi
       .diary(id)
-      .then((d) => {
+      .then((page) => {
+        const entries = page.data;
         if (initialLoadDoneRef.current) {
-          const arrivals = d.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
+          const arrivals = entries.filter((e) => !knownDiaryIdsRef.current.has(e.diary_id));
           if (arrivals.length > 0) {
             const arrivalIds = new Set(arrivals.map((e) => e.diary_id));
-            setNewDiaryIds((prev) => new Set([...prev, ...arrivalIds]));
+            setNewDiaryIds((prev) => new Set<string>([...prev, ...arrivalIds]));
             playSound('diary_entry');
           }
         }
-        setDiaryEntries(d);
+        setDiaryEntries(entries);
       })
       .catch(() => {});
     void useFeedStore.getState().fetchPersonalFeed(id);

@@ -74,7 +74,8 @@ export function CommunitySidebar() {
   const loadMessages = useCallback(async () => {
     if (!activeChannel) return;
     try {
-      const msgs = await channelApi.messages(activeChannel.channel_id, { limit: 30 });
+      const page = await channelApi.messages(activeChannel.channel_id, { limit: 30 });
+      const msgs = page.data;
       setMessages(msgs);
       // Mark as read.
       if (msgs.length > 0) {

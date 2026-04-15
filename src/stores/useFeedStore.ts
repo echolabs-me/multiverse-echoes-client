@@ -18,13 +18,13 @@ export const useFeedStore = create<FeedState>((set) => ({
 
   fetchPersonalFeed: async (echoId) => {
     set({ isLoading: true });
-    const items = await feeds.personal(echoId);
-    set({ personalFeed: items, isLoading: false });
+    const page = await feeds.personal(echoId);
+    set({ personalFeed: page.data, isLoading: false });
   },
 
   fetchSocialFeed: async () => {
     set({ isLoading: true });
-    const items = await feeds.social();
-    set({ socialFeed: items, isLoading: false });
+    const page = await feeds.social();
+    set({ socialFeed: page.data, isLoading: false });
   },
 }));

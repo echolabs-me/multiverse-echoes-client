@@ -224,8 +224,8 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
     for (const echo of echoList) {
       const cached = diaryPreviews[echo.echo_id];
       if (cached !== undefined && cached.tick === echo.current_tick) continue;
-      void echoApi.diary(echo.echo_id, 1).then((entries) => {
-        const entry = entries[0];
+      void echoApi.diary(echo.echo_id, 1).then((page) => {
+        const entry = page.data[0];
         setDiaryPreviews((prev) => ({
           ...prev,
           [echo.echo_id]: {

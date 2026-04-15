@@ -41,10 +41,12 @@ export function ShardViewPage() {
       await fetchShard(shardId);
       const [echoesResult, feedResult] = await Promise.all([
         shardApi.echoes(shardId).catch(() => [] as EchoResponse[]),
-        feeds.shard(shardId).catch(() => [] as FeedItem[]),
+        feeds
+          .shard(shardId)
+          .catch(() => ({ data: [] as FeedItem[], next_cursor: null })),
       ]);
       setShardEchoes(echoesResult);
-      setShardFeed(feedResult);
+      setShardFeed(feedResult.data);
       if (shardId) trackEvent('feed.viewed', { variant: 'shard', shard_id: shardId });
     } finally {
       setIsLoading(false);

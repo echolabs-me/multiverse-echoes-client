@@ -107,8 +107,13 @@ export const echoes = {
   relationships: (echoId: string) =>
     request<EchoRelationship[]>(`/echoes/${echoId}/relationships`),
 
-  timeline: (echoId: string, limit = 5) =>
-    request<LifeEvent[]>(`/echoes/${echoId}/timeline?limit=${limit}`),
+  timeline: (echoId: string, limit = 5, cursor?: string) => {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (cursor) params.set('cursor', cursor);
+    return request<{ data: LifeEvent[]; next_cursor: string | null }>(
+      `/echoes/${echoId}/timeline?${params.toString()}`,
+    );
+  },
 
   influence: (echoId: string) =>
     request<InfluenceBalance>(`/echoes/${echoId}/influence`),
@@ -122,10 +127,13 @@ export const echoes = {
   memories: (echoId: string) =>
     request<EchoMemory[]>(`/echoes/${echoId}/memories`),
 
-  diary: (echoId: string, limit = 20, offset = 0, mood?: string) => {
-    const params = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+  diary: (echoId: string, limit = 20, cursor?: string, mood?: string) => {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (cursor) params.set('cursor', cursor);
     if (mood) params.set('mood', mood);
-    return request<DiaryEntry[]>(`/echoes/${echoId}/diary?${params.toString()}`);
+    return request<{ data: DiaryEntry[]; next_cursor: string | null }>(
+      `/echoes/${echoId}/diary?${params.toString()}`,
+    );
   },
 
   narrate: async (echoId: string, entryId: string): Promise<Blob> => {
@@ -220,19 +228,33 @@ export const shards = {
 
 // --- Feeds ---
 
+type FeedPage = { data: FeedItem[]; next_cursor: string | null };
+
 export const feeds = {
-  personal: (echoId?: string) => {
-    const qs = echoId ? `?echo_id=${echoId}` : '';
-    return request<FeedItem[]>(`/feeds/personal${qs}`);
+  personal: (echoId?: string, cursor?: string, limit = 20) => {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (echoId) params.set('echo_id', echoId);
+    if (cursor) params.set('cursor', cursor);
+    return request<FeedPage>(`/feeds/personal?${params.toString()}`);
   },
 
-  social: () => request<FeedItem[]>('/feeds/social'),
+  social: (cursor?: string, limit = 20) => {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (cursor) params.set('cursor', cursor);
+    return request<FeedPage>(`/feeds/social?${params.toString()}`);
+  },
 
-  community: (limit = 20, offset = 0) =>
-    request<FeedItem[]>(`/feeds/community?limit=${limit}&offset=${offset}`),
+  community: (limit = 20, cursor?: string) => {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (cursor) params.set('cursor', cursor);
+    return request<FeedPage>(`/feeds/community?${params.toString()}`);
+  },
 
-  shard: (shardId: string) =>
-    request<FeedItem[]>(`/feeds/shard/${shardId}`),
+  shard: (shardId: string, cursor?: string, limit = 20) => {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (cursor) params.set('cursor', cursor);
+    return request<FeedPage>(`/feeds/shard/${shardId}?${params.toString()}`);
+  },
 };
 
 // --- Notifications ---
@@ -260,12 +282,14 @@ export const channels = {
 
   get: (channelId: string) => request<Channel>(`/channels/${channelId}`),
 
-  messages: (channelId: string, params?: { before?: string; limit?: number }) => {
+  messages: (channelId: string, params?: { cursor?: string; limit?: number }) => {
     const query = new URLSearchParams();
-    if (params?.before) query.set('before', params.before);
+    if (params?.cursor) query.set('cursor', params.cursor);
     if (params?.limit) query.set('limit', String(params.limit));
     const qs = query.toString();
-    return request<ChannelMessage[]>(`/channels/${channelId}/messages${qs ? `?${qs}` : ''}`);
+    return request<{ data: ChannelMessage[]; next_cursor: string | null }>(
+      `/channels/${channelId}/messages${qs ? `?${qs}` : ''}`,
+    );
   },
 
   sendMessage: (channelId: string, data: SendMessageRequest) =>
@@ -443,21 +467,23 @@ function buildSearchQuery(params: SearchParams): string {
   return query.toString();
 }
 
+type SearchPage = { data: SearchResult[]; next_cursor: string | null };
+
 export const search = {
   echoes: (params: SearchParams) =>
-    request<SearchResult[]>(`/search/echoes?${buildSearchQuery(params)}`),
+    request<SearchPage>(`/search/echoes?${buildSearchQuery(params)}`),
 
   diary: (params: SearchParams) =>
-    request<SearchResult[]>(`/search/diary?${buildSearchQuery(params)}`),
+    request<SearchPage>(`/search/diary?${buildSearchQuery(params)}`),
 
   events: (params: SearchParams) =>
-    request<SearchResult[]>(`/search/events?${buildSearchQuery(params)}`),
+    request<SearchPage>(`/search/events?${buildSearchQuery(params)}`),
 
   shards: (params: SearchParams) =>
-    request<SearchResult[]>(`/search/shards?${buildSearchQuery(params)}`),
+    request<SearchPage>(`/search/shards?${buildSearchQuery(params)}`),
 
   messages: (params: SearchParams) =>
-    request<SearchResult[]>(`/search/messages?${buildSearchQuery(params)}`),
+    request<SearchPage>(`/search/messages?${buildSearchQuery(params)}`),
 };
 
 // --- Oracle ---

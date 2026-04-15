@@ -136,7 +136,7 @@ export function SearchPage() {
         const responses = await Promise.allSettled(promises);
         for (const r of responses) {
           if (r.status === 'fulfilled') {
-            allResults.push(...r.value);
+            allResults.push(...r.value.data);
           }
         }
 

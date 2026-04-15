@@ -18,7 +18,7 @@ export function CommunityPulseCard() {
   const [shardNames, setShardNames] = useState<Record<string, string>>({});
 
   const fetchFeed = useCallback(() => {
-    void feeds.personal().then((data) => setItems(data.slice(0, 12))).catch(() => {});
+    void feeds.personal().then((page) => setItems(page.data.slice(0, 12))).catch(() => {});
   }, []);
 
   useEffect(() => {
