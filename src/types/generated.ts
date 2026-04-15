@@ -778,9 +778,20 @@ export type ProfileVisibility = "Public" | "FriendsOnly" | "Private";
 
 export type RelationshipStatus = "Active" | "Faded" | "Ended" | "Severed";
 
-// PATCH /echoes/:id — Rename an Echo.
+/**
+ *  PATCH /echoes/:id — Update simple Echo fields.
+ * 
+ *  Accepts partial updates. Full persona rewrites go through
+ *  `PUT /echoes/{id}/persona`; `what_if_prompt` is immutable and not accepted
+ *  here (returns 400 WHAT_IF_LOCKED).
+ * 
+ *  Reference: ME-API-001 §4.3.4.
+ */
 export type RenameEchoRequest = {
-	name: string,
+	name: string | null,
+	physical_description: string | null,
+	// Reject immutable fields with 400 WHAT_IF_LOCKED (ME-API-001 §4.3.4 rule).
+	what_if_prompt?: string | null,
 };
 
 export type ReportResponse = {
