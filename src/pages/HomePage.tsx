@@ -56,12 +56,12 @@ export function HomePage() {
         <meta name="description" content="Create an AI version of yourself that lives an autonomous life in a parallel world. Autonomous diary, AI images, voice calls, 20 languages." />
         <meta property="og:title" content="Multiverse Echoes — What if you'd taken a different path?" />
         <meta property="og:description" content="Create an AI version of yourself that lives an autonomous life in a parallel world. Autonomous diary, AI images, voice calls, 20 languages." />
-        <meta property="og:image" content="https://echolabsme.com/og-image.png" />
+        <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
         <meta property="og:url" content="https://echolabsme.com/home" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@EchoLabsME" />
-        <meta name="twitter:image" content="https://echolabsme.com/og-image.png" />
+        <meta name="twitter:image" content="https://echolabsme.com/og-image-v2.png" />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',

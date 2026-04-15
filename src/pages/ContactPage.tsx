@@ -157,7 +157,7 @@ export function ContactPage() {
           property="og:description"
           content="Get in touch with EchoLabsME. We typically reply within 48 hours."
         />
-        <meta property="og:image" content="https://echolabsme.com/og-image.png" />
+        <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
         <meta property="og:url" content="https://echolabsme.com/contact" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />

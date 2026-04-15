@@ -122,7 +122,7 @@ export function WaitlistPage() {
           property="og:description"
           content="We're in closed beta. Join the waitlist and we'll email you when it's your turn."
         />
-        <meta property="og:image" content="https://echolabsme.com/og-image.png" />
+        <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
         <meta property="og:url" content="https://echolabsme.com/waitlist" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />

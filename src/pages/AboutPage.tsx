@@ -33,7 +33,7 @@ export function AboutPage() {
         <meta name="description" content="Built by a 56-year-old non-technical founder. 95,000 lines of code. The story of Multiverse Echoes." />
         <meta property="og:title" content="About EchoLabsME — The Founder Story" />
         <meta property="og:description" content="Built by a 56-year-old non-technical founder. 95,000 lines of code. The story of Multiverse Echoes." />
-        <meta property="og:image" content="https://echolabsme.com/og-image.png" />
+        <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
         <meta property="og:url" content="https://echolabsme.com/about" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
