@@ -1193,17 +1193,6 @@ export type UserInventory = {
 	acquired_at: string,
 };
 
-export type UserProfile = {
-	user_id: string,
-	bio: string | null,
-	avatar_hash: string | null,
-	public_echo_feed: boolean,
-	profile_visibility: ProfileVisibility,
-	joined_shards: string[],
-	echo_count: number,
-	updated_at: string,
-};
-
 export type UserPurchase = {
 	purchase_id: string,
 	user_id: string,
