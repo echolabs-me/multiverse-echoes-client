@@ -1077,6 +1077,19 @@ export type User = {
 	stripe_customer_id?: string | null,
 	// Stripe subscription ID (sub_...). Populated on checkout.session.completed.
 	stripe_subscription_id?: string | null,
+	/**
+	 *  Public profile visibility — controls what other authenticated users see
+	 *  at `GET /users/{user_id}`. Default `Public` on deserialisation for
+	 *  accounts that predate this field. Reference: ME-API-001 §4.3.3.
+	 */
+	profile_visibility: ProfileVisibility,
+	// Free-text bio surfaced on the public profile (max 500 chars).
+	bio?: string | null,
+	/**
+	 *  Public avatar URL returned on profile and list endpoints. Populated by
+	 *  `POST /account/me/profile/avatar`. None = default placeholder on client.
+	 */
+	avatar_url?: string | null,
 };
 
 export type UserInventory = {
