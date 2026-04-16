@@ -620,6 +620,50 @@ export type FeedItemResponse = {
 
 export type FeedItemType = "diary_entry" | "life_event" | "relationship_change" | "achievement" | "global_event_participation" | "user_shared";
 
+// Context snapshot captured at the time of feedback submission.
+export type FeedbackContext = {
+	screen: string,
+	echo_id?: string | null,
+	shard_id?: string | null,
+	recent_events?: string[],
+};
+
+/**
+ *  Mirror of `me_core::models::feedback::FeedbackEntry` with
+ *  `utoipa::ToSchema`. Foreign enum fields use openapi_schemas mirrors.
+ *  `DateTime<Utc>` fields are kept as-is (not converted to String) so
+ *  chrono's serde serialization produces the `Z`-suffix format that
+ *  matches the original me-core wire shape byte-for-byte.
+ *  Mirror of `me_core::models::feedback::FeedbackEntry` with both
+ *  `utoipa::ToSchema` and `specta::Type`. Foreign enum fields are
+ *  serialized as their serde representation (PascalCase strings) and
+ *  declared as String in the schema — the `#[schema(value_type)]`
+ *  approach conflicts with specta's derive, so we accept the less-
+ *  precise "string" schema in exchange for correct TypeScript codegen.
+ *  `DateTime<Utc>` fields are kept as-is so chrono's serde produces
+ *  the `Z`-suffix format matching the original me-core wire shape.
+ */
+export type FeedbackEntryView = {
+	feedback_id: string,
+	user_id: string,
+	feedback_type: FeedbackType,
+	user_message: string,
+	structured_summary: string,
+	context: FeedbackContext,
+	status: FeedbackStatus,
+	priority: FeedbackPriority | null,
+	github_issue_url: string | null,
+	resolution_notes: string | null,
+	created_at: string,
+	updated_at: string,
+};
+
+export type FeedbackPriority = "P0" | "P1" | "P2" | "P3" | "P4";
+
+export type FeedbackStatus = "New" | "Acknowledged" | "Resolved" | "Wontfix";
+
+export type FeedbackType = "Bug" | "FeatureRequest" | "Frustration" | "Praise" | "General";
+
 /**
  *  A global event that affects one or more Shards.
  *  Reference: ME-SDB-001 §7.1.
@@ -811,7 +855,12 @@ export type OracleAskRequest = {
 	context_id: string | null,
 	// Client sends context as a nested object.
 	context: OracleContextPayload | null,
-	// Conversation history for session continuity (last N exchanges).
+	/**
+	 *  Conversation history for session continuity. Capped at 50
+	 *  messages to bound prompt size and prevent DoS via unbounded
+	 *  arrays. Each message's text is capped at 2000 chars via
+	 *  [`OracleHistoryMessage`]'s own validator.
+	 */
 	history?: OracleHistoryMessage[],
 };
 
