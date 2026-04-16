@@ -116,7 +116,7 @@ export function PlansPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-canvas">
+    <div className="flex flex-col">
       <Helmet>
         <title>{t('payment.title')} — Multiverse Echoes</title>
         <meta name="description" content={t('payment.subtitle')} />

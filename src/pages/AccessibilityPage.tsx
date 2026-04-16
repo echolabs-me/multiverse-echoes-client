@@ -11,7 +11,7 @@ export function AccessibilityPage() {
   const showEnglishOnlyBanner = i18n.language !== 'en';
 
   return (
-    <div className="flex min-h-screen flex-col bg-canvas">
+    <div className="flex flex-col">
       <Helmet>
         <title>Accessibility — Multiverse Echoes</title>
         <meta name="description" content="Accessibility statement for Multiverse Echoes. WCAG 2.1 Level AA commitment, keyboard navigation, screen reader support." />
