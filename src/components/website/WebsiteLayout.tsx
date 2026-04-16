@@ -31,6 +31,20 @@ export function WebsiteLayout() {
       <Helmet>
         <link rel="canonical" href={`${CANONICAL_BASE}${pathname}`} />
         <meta property="og:url" content={`${CANONICAL_BASE}${pathname}`} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: 'EchoLabsME',
+            url: 'https://echolabsme.com',
+            logo: 'https://echolabsme.com/logo.png',
+            description: 'Autonomous Life Simulation Platform. Create AI Echoes of yourself that live independent lives in themed parallel worlds.',
+            sameAs: [
+              'https://x.com/EchoLabsME',
+              'https://discord.gg/dRcB4QxUmJ',
+            ],
+          })}
+        </script>
       </Helmet>
       <HreflangTags />
       <WebsiteNav />

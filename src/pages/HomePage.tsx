@@ -88,9 +88,9 @@ export function HomePage() {
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
             name: 'Multiverse Echoes',
-            description: 'Autonomous AI Life Simulation Platform',
+            description: 'AI-powered life simulation platform where autonomous digital selves live, write diaries, and experience life events in parallel worlds.',
             url: 'https://echolabsme.com',
-            applicationCategory: 'Entertainment',
+            applicationCategory: 'Simulation',
             operatingSystem: 'Web',
             offers: {
               '@type': 'AggregateOffer',
