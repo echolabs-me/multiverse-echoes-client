@@ -78,7 +78,7 @@
     "loginTitle": "Đăng nhập vào Multiverse Echoes",
     "loginTitleReturning": "Chào mừng bạn quay trở lại",
     "loginFailed": "Email hoặc mật khẩu không hợp lệ. Vui lòng thử lại.",
-    "captchaRequired": "Please complete the captcha before continuing.",
+    "captchaRequired": "Vui lòng hoàn thành captcha trước khi tiếp tục.",
     "noAccount": "Bạn chưa có tài khoản?",
     "createOne": "Tạo một cái",
     "tosAgree": "Tôi đồng ý với",
@@ -121,8 +121,8 @@
     "passwordsMismatch": "Mật khẩu không khớp",
     "resetPassword": "Đặt lại mật khẩu",
     "redirectingToLogin": "Đang chuyển hướng đến trang đăng nhập...",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes đang trong giai đoạn beta giới hạn. Tham gia danh sách chờ để được truy cập sớm.",
+    "joinWaitlist": "Tham gia Danh sách Chờ"
   },
   "onboarding": {
     "welcomeTitle": "Chào mừng bạn đến với Multiverse Echoes",
@@ -771,7 +771,16 @@
     "socialProofQuote": "\"Những câu chuyện thú vị nhất là những câu chuyện mà bạn không viết ra.\"",
     "privacyPolicy": "Chính sách Bảo mật",
     "termsOfService": "Điều khoản Dịch vụ",
-    "footerTagline": "Bảo lưu mọi quyền."
+    "footerTagline": "Bảo lưu mọi quyền.",
+    "metaTitle": "Tham gia Danh sách Chờ — Multiverse Echoes",
+    "metaDesc": "Chúng tôi đang trong giai đoạn beta giới hạn. Tham gia danh sách chờ và chúng tôi sẽ gửi email cho bạn khi đến lượt.",
+    "ogTitle": "Tham gia Danh sách Chờ — Multiverse Echoes",
+    "ogDesc": "Chúng tôi đang trong giai đoạn beta giới hạn. Tham gia danh sách chờ và chúng tôi sẽ gửi email cho bạn khi đến lượt.",
+    "checkEmailTitle": "Kiểm tra email của bạn",
+    "checkEmailDesc": "Chúng tôi đã gửi liên kết xác minh đến {{email}}. Nhấp vào để xác nhận vị trí của bạn và cho chúng tôi biết thêm về bạn.",
+    "alreadyWaiting": "người đang chờ",
+    "haveInviteCode": "Đã có mã mời?",
+    "registerHere": "Đăng ký tại đây"
   },
   "errors": {
     "INTERNAL_ERROR": "Đã có lỗi xảy ra từ phía chúng tôi. Vui lòng thử lại.",
@@ -877,11 +886,11 @@
     "narrating": "Đang tạo giọng…",
     "playing": "Đang phát",
     "paused": "Tạm dừng",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "Xem",
+    "generatingVideo": "Đang tạo video…",
+    "playingVideo": "Đang phát video",
+    "watchAgain": "Xem lại",
+    "videoError": "Video thất bại — chạm để thử lại"
   },
   "activityHints": {
     "contemplative": {
@@ -1097,6 +1106,49 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "Chọn ngôn ngữ để bắt đầu"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "Chọn Đa Vũ Trụ của Bạn",
+      "subheadline": "Mỗi gói dịch vụ mở khóa thêm nhiều cuộc sống song song, nhịp tim nhanh hơn và kết nối sâu hơn với các Echo của bạn."
+    },
+    "about": {
+      "title": "Giới thiệu về EchoLabsME — Câu chuyện của Nhà sáng lập",
+      "metaDesc": "Được xây dựng bởi một nhà sáng lập 56 tuổi không chuyên kỹ thuật. 95.000 dòng mã nguồn. Câu chuyện của Multiverse Echoes.",
+      "originTitle": "Khởi nguồn",
+      "originP1": "Vào tháng 2 năm 2026, một chuyên gia tư vấn chiến lược 56 tuổi chưa bao giờ viết một dòng mã đã ngồi xuống với Claude và hỏi: \"Nếu bạn có thể tạo ra một phiên bản AI của chính mình, đặt nó vào một cuộc sống hoàn toàn khác, và chỉ… ngắm nhìn điều gì xảy ra thì sao?\"",
+      "originP2": "Câu hỏi đó đã trở thành Multiverse Echoes — một Nền tảng Mô phỏng Sự sống Tự trị nơi các Echo AI của những người thật sống cuộc đời độc lập trong các thế giới song song theo chủ đề, viết nhật ký, xây dựng các mối quan hệ và đưa ra những quyết định mà người tạo ra chúng không bao giờ dự đoán được.",
+      "buildTitle": "Quá trình Xây dựng",
+      "buildP1": "Toàn bộ nền tảng — 95.000 dòng Rust và TypeScript — được xây dựng với sự hợp tác của Claude AI. Mỗi dòng mã, mỗi quyết định kiến trúc, mỗi tập lệnh triển khai.",
+      "buildP2": "Động cơ chạy trên một GPU NVIDIA B200 duy nhất. Nó xử lý 500 cuộc sống Echo tự trị mỗi 9 phút — mỗi cuộc sống bao gồm nhật ký, hình ảnh điện ảnh do AI tạo, tổng hợp giọng nói và video kể chuyện đồng bộ môi. Tất cả bằng 20 ngôn ngữ.",
+      "stackTitle": "Công nghệ",
+      "stackEngine": "Động cơ",
+      "stackEngine1": "Rust (kiến trúc ECS)",
+      "stackEngine2": "Gemma 4 31B (LLM cục bộ)",
+      "stackEngine3": "FLUX.2 Klein (tạo hình ảnh)",
+      "stackEngine4": "VoxCPM2 (tổng hợp giọng nói)",
+      "stackEngine5": "MuseTalk + LivePortrait (video)",
+      "stackClient": "Ứng dụng",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "Đa ngôn ngữ 20 ngôn ngữ",
+      "stackClient4": "Nguồn cấp dữ liệu WebSocket thời gian thực",
+      "stackClient5": "Dịch vụ dịch thuật NLLB-200",
+      "visionTitle": "Tầm nhìn",
+      "visionP1": "Multiverse Echoes không phải là một trò chơi, một thế giới ảo hay một mạng xã hội. Đó là một tấm gương — phản chiếu những cuộc đời mà bạn có thể đã sống. Các Echo của bạn tự đưa ra quyết định. Chúng làm bạn bất ngờ. Chúng khiến bạn suy nghĩ về những con đường chưa từng đi.",
+      "visionP2": "Ba thế giới đang hoạt động: Cyber-Tokyo 2045, Nomad Australia và Renaissance Florence 1490. Mỗi thế giới là một mô phỏng hoàn chỉnh với văn hóa, kinh tế và động lực xã hội riêng. Echo của bạn không chỉ tồn tại trong các thế giới này — nó sống trong đó.",
+      "numbersTitle": "Những con số",
+      "numbersCode": "dòng mã nguồn",
+      "numbersWaitlist": "người đăng ký danh sách chờ"
+    },
+    "home": {
+      "metaTitle": "Nếu bạn đã chọn một con đường khác thì sao? | Multiverse Echoes",
+      "metaDesc": "Tạo một phiên bản AI của chính bạn sống cuộc đời tự trị trong một thế giới song song. Nhật ký tự trị, hình ảnh AI, cuộc gọi thoại, 20 ngôn ngữ.",
+      "ogTitle": "Multiverse Echoes — Nếu bạn đã chọn một con đường khác thì sao?",
+      "ogDesc": "Tạo một phiên bản AI của chính bạn sống cuộc đời tự trị trong một thế giới song song. Nhật ký tự trị, hình ảnh AI, cuộc gọi thoại, 20 ngôn ngữ.",
+      "socialProofQuote": "“Bạn không đang chơi một trò chơi. Bạn đang ngắm nhìn một vũ trụ song song bắt đầu từ chính bạn — và nó không bao giờ ngừng phát triển, ngay cả khi bạn đang ngủ.”",
+      "followJourney": "Theo dõi hành trình",
+      "scrollExplore": "Cuộn để khám phá ↓"
     }
   },
   "tiers": {
@@ -1134,7 +1186,77 @@
       "privateShard": "Mảnh riêng tư",
       "privateShardDesc": "Thế giới tùy chỉnh của bạn"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "Hàng ngày",
+    "echoesSingle": "Echo",
+    "taglineFree": "Một cái nhìn thoáng qua về cuộc đời khác",
+    "taglineStarter": "Những cuộc sống song song đầu tiên của bạn",
+    "taglineCore": "Trải nghiệm đầy đủ",
+    "taglineCreator": "Điều khiển đa vũ trụ của bạn",
+    "taglineGodMode": "Sức mạnh không giới hạn",
+    "forever": "mãi mãi",
+    "ultimate": "Tối thượng",
+    "getStarted": "Bắt đầu",
+    "voiceCallNote": "Mỗi cuộc gọi thoại kéo dài 5 phút. Bắt đầu bao nhiêu cuộc gọi tùy gói của bạn cho phép mỗi ngày.",
+    "enhanceTiers": "Nâng cấp bất kỳ gói nào. Không ràng buộc — thêm hoặc bỏ bất cứ lúc nào.",
+    "enterpriseDesc": "Hơn 50 Echo, hạ tầng chuyên dụng, cam kết SLA và phát triển Shard tùy chỉnh cho tổ chức của bạn.",
+    "footerNoteLine1": "Tất cả giá bằng USD. Hủy bất cứ lúc nào. Tiện ích bổ sung có thể điều chỉnh bất cứ lúc nào.",
+    "footerNoteLine2": "Gói miễn phí có quảng cáo. Tất cả gói trả phí hoàn toàn không quảng cáo.",
+    "footerNoteLine3": "Nhịp tim miễn phí: một nhật ký buổi sáng, một buổi tối — theo múi giờ của bạn.",
+    "addonLabel": "TIỆN ÍCH",
+    "showcase": "Trưng bày",
+    "features": {
+      "1echoPublic": "1 Echo trong Shard công khai",
+      "diaryAmPm": "Nhật ký sáng và tối",
+      "aiPortraits": "Chân dung do AI tạo",
+      "conversations": "Cuộc trò chuyện",
+      "nudges": "Gợi ý nhẹ",
+      "3echoes": "3 Echo trên mọi Shard",
+      "diary2hr": "Nhật ký mới mỗi 2 giờ",
+      "5conv": "5 cuộc trò chuyện / ngày",
+      "3nudges": "3 gợi ý / ngày",
+      "adFree": "Không quảng cáo",
+      "5echoes": "5 Echo trên mọi Shard",
+      "diary30m": "Nhật ký mới mỗi 30 phút",
+      "10conv": "10 cuộc trò chuyện / ngày",
+      "10nudges": "10 gợi ý / ngày",
+      "privateShard": "Shard riêng tư",
+      "8echoes": "8 Echo trên mọi Shard",
+      "diary15m": "Nhật ký mới mỗi 15 phút",
+      "20conv": "20 cuộc trò chuyện / ngày",
+      "20nudges": "20 gợi ý / ngày",
+      "1privateShard": "1 Shard riêng tư đi kèm",
+      "12echoes": "12 Echo trên mọi Shard",
+      "diary5m": "Nhật ký mới mỗi 5 phút",
+      "unlimitedConv": "Cuộc trò chuyện không giới hạn",
+      "unlimitedNudges": "Gợi ý không giới hạn",
+      "3privateShards": "3 Shard riêng tư đi kèm",
+      "priorityInference": "Xử lý ưu tiên"
+    },
+    "showcaseText": {
+      "2vid": "2 nhật ký video / ngày",
+      "2voice": "2 cuộc gọi thoại / ngày",
+      "6vid": "6 nhật ký video / ngày",
+      "6voice": "6 cuộc gọi thoại / ngày",
+      "10vid": "10 nhật ký video / ngày",
+      "10voice": "10 cuộc gọi thoại / ngày",
+      "16vid": "16 nhật ký video / ngày",
+      "16voice": "16 cuộc gọi thoại / ngày",
+      "unlimitedVid": "Nhật ký video không giới hạn",
+      "unlimitedVoice": "Cuộc gọi thoại không giới hạn"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "Giới hạn Echo tùy chỉnh",
+      "customHeartbeat": "Nhịp tim tùy chỉnh",
+      "dedicatedSupport": "Hỗ trợ chuyên dụng",
+      "slaGuarantees": "Cam kết SLA",
+      "apiAccess": "Truy cập API"
+    },
+    "showcases": {
+      "2vid2voice": "2 nhật ký video / ngày, 2 cuộc gọi thoại / ngày",
+      "6vid6voice": "6 nhật ký video / ngày, 6 cuộc gọi thoại / ngày",
+      "10vid10voice": "10 nhật ký video / ngày, 10 cuộc gọi thoại / ngày",
+      "16vid16voice": "16 nhật ký video / ngày, 16 cuộc gọi thoại / ngày",
+      "unlimitedVidVoice": "Nhật ký video không giới hạn, Cuộc gọi thoại không giới hạn"
+    }
   }
 }

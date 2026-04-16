@@ -121,8 +121,8 @@
     "passwordsMismatch": "Las contraseñas no coinciden",
     "resetPassword": "Restablecer contraseña",
     "redirectingToLogin": "Redirigiendo al inicio de sesión…",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes está en beta cerrada. Únete a la lista de espera para acceso anticipado.",
+    "joinWaitlist": "Unirse a la lista de espera"
   },
   "onboarding": {
     "welcomeTitle": "Bienvenido a Multiverse Echoes",
@@ -771,7 +771,16 @@
     "socialProofQuote": "\"Las historias más interesantes son las que no escribiste.\"",
     "privacyPolicy": "Política de privacidad",
     "termsOfService": "Términos de servicio",
-    "footerTagline": "Todos los derechos reservados."
+    "footerTagline": "Todos los derechos reservados.",
+    "metaTitle": "Únete a la lista de espera — Multiverse Echoes",
+    "metaDesc": "Estamos en beta cerrada. Únete a la lista de espera y te enviaremos un correo cuando sea tu turno.",
+    "ogTitle": "Únete a la lista de espera — Multiverse Echoes",
+    "ogDesc": "Estamos en beta cerrada. Únete a la lista de espera y te enviaremos un correo cuando sea tu turno.",
+    "checkEmailTitle": "Revisa tu correo",
+    "checkEmailDesc": "Enviamos un enlace de verificación a {{email}}. Haz clic para confirmar tu lugar y contarnos un poco sobre ti.",
+    "alreadyWaiting": "personas ya en espera",
+    "haveInviteCode": "¿Ya tienes un código de invitación?",
+    "registerHere": "Regístrate aquí"
   },
   "errors": {
     "INTERNAL_ERROR": "Algo salió mal por nuestra parte. Vuelve a intentarlo.",
@@ -877,11 +886,11 @@
     "narrating": "Generando voz…",
     "playing": "Reproduciendo",
     "paused": "Pausado",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "Ver",
+    "generatingVideo": "Generando vídeo…",
+    "playingVideo": "Reproduciendo vídeo",
+    "watchAgain": "Ver de nuevo",
+    "videoError": "El vídeo falló — toca para reintentar"
   },
   "activityHints": {
     "contemplative": {
@@ -1097,14 +1106,57 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "Elige tu idioma para comenzar"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "Elige tu multiverso",
+      "subheadline": "Cada plan desbloquea más vidas alternativas, pulsos más rápidos y conexiones más profundas con tus Ecos."
+    },
+    "about": {
+      "title": "Sobre EchoLabsME — La historia del fundador",
+      "metaDesc": "Creado por un fundador no técnico de 56 años. 95.000 líneas de código. La historia de Multiverse Echoes.",
+      "originTitle": "El origen",
+      "originP1": "En febrero de 2026, un consultor de estrategia de 56 años que nunca había escrito una línea de código se sentó con Claude y preguntó: «¿Y si pudieras crear una versión IA de ti mismo, ponerla en una vida completamente diferente y simplemente… ver qué pasa?»",
+      "originP2": "Esa pregunta se convirtió en Multiverse Echoes — una Plataforma de Simulación de Vida Autónoma donde Ecos IA de personas reales viven vidas independientes en mundos paralelos temáticos, escriben diarios, forman relaciones y toman decisiones que sus creadores nunca predijeron.",
+      "buildTitle": "La construcción",
+      "buildP1": "Toda la plataforma — 95.000 líneas de Rust y TypeScript — fue construida en colaboración con Claude AI. Cada línea de código, cada decisión arquitectónica, cada script de despliegue.",
+      "buildP2": "El motor funciona en una sola GPU NVIDIA B200. Procesa 500 vidas autónomas de Ecos cada 9 minutos — cada una con entradas de diario, imágenes cinematográficas generadas por IA, síntesis de voz y narración en vídeo con sincronización labial. Todo en 20 idiomas.",
+      "stackTitle": "La tecnología",
+      "stackEngine": "Motor",
+      "stackEngine1": "Rust (arquitectura ECS)",
+      "stackEngine2": "Gemma 4 31B (LLM local)",
+      "stackEngine3": "FLUX.2 Klein (generación de imágenes)",
+      "stackEngine4": "VoxCPM2 (síntesis de voz)",
+      "stackEngine5": "MuseTalk + LivePortrait (vídeo)",
+      "stackClient": "Cliente",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "i18n en 20 idiomas",
+      "stackClient4": "Feeds en tiempo real por WebSocket",
+      "stackClient5": "Sidecar de traducción NLLB-200",
+      "visionTitle": "La visión",
+      "visionP1": "Multiverse Echoes no es un juego, ni un mundo virtual, ni una red social. Es un espejo — uno que te muestra las vidas que podrías haber vivido. Tus Ecos toman sus propias decisiones. Te sorprenden. Te hacen pensar en los caminos no tomados.",
+      "visionP2": "Tres mundos están activos: Cyber-Tokyo 2045, Nomad Australia y Renaissance Florence 1490. Cada uno es una simulación completa con su propia cultura, economía y dinámicas sociales. Tu Eco no solo existe en estos mundos — vive en ellos.",
+      "numbersTitle": "Las cifras",
+      "numbersCode": "líneas de código",
+      "numbersWaitlist": "inscripciones en la lista de espera"
+    },
+    "home": {
+      "metaTitle": "¿Y si hubieras tomado otro camino? | Multiverse Echoes",
+      "metaDesc": "Crea una versión IA de ti mismo que vive una vida autónoma en un mundo paralelo. Diario autónomo, imágenes IA, llamadas de voz, 20 idiomas.",
+      "ogTitle": "Multiverse Echoes — ¿Y si hubieras tomado otro camino?",
+      "ogDesc": "Crea una versión IA de ti mismo que vive una vida autónoma en un mundo paralelo. Diario autónomo, imágenes IA, llamadas de voz, 20 idiomas.",
+      "socialProofQuote": "«No estás jugando un juego. Estás observando un universo paralelo que empezó contigo — y nunca deja de evolucionar, ni mientras duermes.»",
+      "followJourney": "Sigue el viaje",
+      "scrollExplore": "Desplázate para explorar ↓"
     }
   },
   "tiers": {
     "free": "Fri",
     "starter": "Stárter",
-    "core": "Core",
+    "core": "Esencial",
     "creator": "Criéitor",
-    "godMode": "God Mode",
+    "godMode": "Modo Dios",
     "enterprise": "Enterprais",
     "heartbeat": "Latido",
     "echoes": "Ecos",
@@ -1134,7 +1186,77 @@
       "privateShard": "Fragmento privado",
       "privateShardDesc": "Tu propio mundo personalizado"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "Diario",
+    "echoesSingle": "Echo",
+    "taglineFree": "Un vistazo a otra vida",
+    "taglineStarter": "Tus primeras vidas alternativas",
+    "taglineCore": "La experiencia completa",
+    "taglineCreator": "Dirige tu multiverso",
+    "taglineGodMode": "Poder ilimitado",
+    "forever": "para siempre",
+    "ultimate": "Definitivo",
+    "getStarted": "Comenzar",
+    "voiceCallNote": "Las llamadas de voz duran 5 minutos por sesión. Inicia tantas como permita tu plan cada día.",
+    "enhanceTiers": "Mejora cualquier plan. Sin compromiso — añade o quita cuando quieras.",
+    "enterpriseDesc": "50+ Ecos, infraestructura dedicada, garantías SLA y desarrollo de Fragmentos personalizados para tu organización.",
+    "footerNoteLine1": "Todos los precios en USD. Cancela cuando quieras. Los complementos se pueden ajustar en cualquier momento.",
+    "footerNoteLine2": "El plan gratuito incluye anuncios. Todos los planes de pago son completamente sin anuncios.",
+    "footerNoteLine3": "Pulso gratuito: una entrada de diario por la mañana y otra por la noche — según tu zona horaria.",
+    "addonLabel": "COMPLEMENTO",
+    "showcase": "Escaparate",
+    "features": {
+      "1echoPublic": "1 Eco en un Fragmento público",
+      "diaryAmPm": "Diario por la mañana y por la noche",
+      "aiPortraits": "Retratos generados por IA",
+      "conversations": "Conversaciones",
+      "nudges": "Empujones",
+      "3echoes": "3 Ecos en cualquier Fragmento",
+      "diary2hr": "Nuevo diario cada 2 horas",
+      "5conv": "5 conversaciones / día",
+      "3nudges": "3 empujones / día",
+      "adFree": "Experiencia sin anuncios",
+      "5echoes": "5 Ecos en cualquier Fragmento",
+      "diary30m": "Nuevo diario cada 30 minutos",
+      "10conv": "10 conversaciones / día",
+      "10nudges": "10 empujones / día",
+      "privateShard": "Fragmento privado",
+      "8echoes": "8 Ecos en cualquier Fragmento",
+      "diary15m": "Nuevo diario cada 15 minutos",
+      "20conv": "20 conversaciones / día",
+      "20nudges": "20 empujones / día",
+      "1privateShard": "1 Fragmento privado incluido",
+      "12echoes": "12 Ecos en cualquier Fragmento",
+      "diary5m": "Nuevo diario cada 5 minutos",
+      "unlimitedConv": "Conversaciones ilimitadas",
+      "unlimitedNudges": "Empujones ilimitados",
+      "3privateShards": "3 Fragmentos privados incluidos",
+      "priorityInference": "Inferencia prioritaria"
+    },
+    "showcaseText": {
+      "2vid": "2 diarios en vídeo / día",
+      "2voice": "2 llamadas de voz / día",
+      "6vid": "6 diarios en vídeo / día",
+      "6voice": "6 llamadas de voz / día",
+      "10vid": "10 diarios en vídeo / día",
+      "10voice": "10 llamadas de voz / día",
+      "16vid": "16 diarios en vídeo / día",
+      "16voice": "16 llamadas de voz / día",
+      "unlimitedVid": "Diarios en vídeo ilimitados",
+      "unlimitedVoice": "Llamadas de voz ilimitadas"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "Límites de Ecos personalizados",
+      "customHeartbeat": "Pulso personalizado",
+      "dedicatedSupport": "Soporte dedicado",
+      "slaGuarantees": "Garantías SLA",
+      "apiAccess": "Acceso a la API"
+    },
+    "showcases": {
+      "2vid2voice": "2 diarios en vídeo / día, 2 llamadas de voz / día",
+      "6vid6voice": "6 diarios en vídeo / día, 6 llamadas de voz / día",
+      "10vid10voice": "10 diarios en vídeo / día, 10 llamadas de voz / día",
+      "16vid16voice": "16 diarios en vídeo / día, 16 llamadas de voz / día",
+      "unlimitedVidVoice": "Diarios en vídeo ilimitados, llamadas de voz ilimitadas"
+    }
   }
 }

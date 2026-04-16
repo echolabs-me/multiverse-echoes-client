@@ -78,7 +78,7 @@
     "loginTitle": "Multiverse Echoes에 로그인하세요",
     "loginTitleReturning": "다시 오신 것을 환영합니다",
     "loginFailed": "이메일 또는 비밀번호가 잘못되었습니다. 다시 시도해 주세요.",
-    "captchaRequired": "Please complete the captcha before continuing.",
+    "captchaRequired": "계속하기 전에 캡차를 완료해 주세요.",
     "noAccount": "계정이 없으신가요?",
     "createOne": "하나 만드세요",
     "tosAgree": "동의합니다.",
@@ -121,8 +121,8 @@
     "passwordsMismatch": "비밀번호가 일치하지 않습니다",
     "resetPassword": "비밀번호 재설정",
     "redirectingToLogin": "로그인 페이지로 이동 중...",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes는 비공개 베타 중이에요. 대기자 명단에 등록하고 조기 액세스를 받으세요.",
+    "joinWaitlist": "대기자 명단 등록"
   },
   "onboarding": {
     "welcomeTitle": "멀티버스 에코즈에 오신 것을 환영합니다",
@@ -771,7 +771,16 @@
     "socialProofQuote": "가장 흥미로운 이야기는 당신이 쓰지 않은 이야기들입니다.",
     "privacyPolicy": "개인정보 처리방침",
     "termsOfService": "서비스 약관",
-    "footerTagline": "모든 권리 보유."
+    "footerTagline": "모든 권리 보유.",
+    "metaTitle": "대기자 명단 등록 — Multiverse Echoes",
+    "metaDesc": "비공개 베타 진행 중이에요. 대기자 명단에 등록하면 차례가 되었을 때 이메일로 알려 드릴게요.",
+    "ogTitle": "대기자 명단 등록 — Multiverse Echoes",
+    "ogDesc": "비공개 베타 진행 중이에요. 대기자 명단에 등록하면 차례가 되었을 때 이메일로 알려 드릴게요.",
+    "checkEmailTitle": "이메일을 확인해 주세요",
+    "checkEmailDesc": "{{email}}(으)로 인증 링크를 보냈어요. 링크를 클릭해서 등록을 확인하고 간단한 정보를 입력해 주세요.",
+    "alreadyWaiting": "명이 이미 대기 중",
+    "haveInviteCode": "이미 초대 코드가 있으신가요?",
+    "registerHere": "여기서 가입하세요"
   },
   "errors": {
     "INTERNAL_ERROR": "시스템에 문제가 발생했습니다. 다시 시도해 주세요.",
@@ -877,11 +886,11 @@
     "narrating": "음성 생성 중…",
     "playing": "재생 중",
     "paused": "일시정지",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "시청",
+    "generatingVideo": "영상 생성 중…",
+    "playingVideo": "영상 재생 중",
+    "watchAgain": "다시 시청",
+    "videoError": "영상 실패 — 탭하여 재시도"
   },
   "activityHints": {
     "contemplative": {
@@ -1097,6 +1106,49 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "언어를 선택해 주세요"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "나만의 멀티버스를 선택하세요",
+      "subheadline": "각 등급은 더 많은 대체 인생, 더 빠른 하트비트, 에코와의 더 깊은 연결을 제공해요."
+    },
+    "about": {
+      "title": "EchoLabsME 소개 — 창업자 이야기",
+      "metaDesc": "56세 비기술직 창업자가 만들었어요. 95,000줄의 코드. Multiverse Echoes의 이야기.",
+      "originTitle": "시작",
+      "originP1": "2026년 2월, 한 줄의 코드도 작성해 본 적 없는 56세 전략 컨설턴트가 Claude 앞에 앉아 물었어요: \"자신의 AI 버전을 만들어 완전히 다른 삶에 넣고, 그냥… 어떻게 되는지 지켜볼 수 있다면?\"",
+      "originP2": "그 질문이 Multiverse Echoes가 되었어요 — 실제 사람들의 AI 에코가 테마가 있는 평행 세계에서 독립적인 삶을 살며, 일기를 쓰고, 관계를 맺고, 창조자가 예측하지 못한 결정을 내리는 자율 생활 시뮬레이션 플랫폼이에요.",
+      "buildTitle": "개발 과정",
+      "buildP1": "95,000줄의 Rust와 TypeScript로 이루어진 전체 플랫폼은 Claude AI와 함께 구축되었어요. 모든 코드 한 줄, 모든 아키텍처 결정, 모든 배포 스크립트까지.",
+      "buildP2": "엔진은 단일 NVIDIA B200 GPU에서 구동돼요. 9분마다 500개의 자율 에코 인생을 처리해요 — 각각 일기 항목, AI 생성 시네마틱 이미지, 음성 합성, 립싱크 영상 나레이션을 포함해요. 모두 20개 언어로.",
+      "stackTitle": "기술 스택",
+      "stackEngine": "엔진",
+      "stackEngine1": "Rust (ECS 아키텍처)",
+      "stackEngine2": "Gemma 4 31B (로컬 LLM)",
+      "stackEngine3": "FLUX.2 Klein (이미지 생성)",
+      "stackEngine4": "VoxCPM2 (음성 합성)",
+      "stackEngine5": "MuseTalk + LivePortrait (영상)",
+      "stackClient": "클라이언트",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "20개 언어 i18n",
+      "stackClient4": "실시간 WebSocket 피드",
+      "stackClient5": "NLLB-200 번역 사이드카",
+      "visionTitle": "비전",
+      "visionP1": "Multiverse Echoes는 게임도, 가상 세계도, 소셜 네트워크도 아니에요. 살았을 수도 있는 삶을 보여 주는 거울이에요. 에코는 스스로 선택해요. 에코는 당신을 놀라게 하고, 가지 않은 길에 대해 생각하게 만들어요.",
+      "visionP2": "세 개의 세계가 운영 중이에요: Cyber-Tokyo 2045, Nomad Australia, Renaissance Florence 1490. 각각 고유한 문화, 경제, 사회적 역학을 갖춘 완전한 시뮬레이션이에요. 에코는 이 세계에 존재하는 것이 아니라 — 이 세계 속에서 살아가요.",
+      "numbersTitle": "숫자로 보기",
+      "numbersCode": "줄의 코드",
+      "numbersWaitlist": "대기자 명단 등록"
+    },
+    "home": {
+      "metaTitle": "다른 길을 걸었다면 어땠을까? | Multiverse Echoes",
+      "metaDesc": "평행 세계에서 자율적인 삶을 사는 AI 버전의 나를 만들어 보세요. 자율 일기, AI 이미지, 음성 통화, 20개 언어.",
+      "ogTitle": "Multiverse Echoes — 다른 길을 걸었다면 어땠을까?",
+      "ogDesc": "평행 세계에서 자율적인 삶을 사는 AI 버전의 나를 만들어 보세요. 자율 일기, AI 이미지, 음성 통화, 20개 언어.",
+      "socialProofQuote": "“게임을 하는 게 아니에요. 나로부터 시작된 평행 우주를 지켜보는 거예요 — 그리고 당신이 잠든 사이에도 계속 진화해요.”",
+      "followJourney": "여정을 함께하세요",
+      "scrollExplore": "스크롤하여 탐색하기 ↓"
     }
   },
   "tiers": {
@@ -1134,7 +1186,77 @@
       "privateShard": "개인 샤드",
       "privateShardDesc": "나만의 커스텀 월드"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "일일",
+    "echoesSingle": "Echo",
+    "taglineFree": "또 다른 삶을 엿보다",
+    "taglineStarter": "첫 번째 대체 인생",
+    "taglineCore": "완전한 경험",
+    "taglineCreator": "나만의 멀티버스를 연출하세요",
+    "taglineGodMode": "무한한 힘",
+    "forever": "영구",
+    "ultimate": "얼티밋",
+    "getStarted": "시작하기",
+    "voiceCallNote": "음성 통화는 세션당 5분이에요. 등급에서 허용하는 만큼 매일 시작할 수 있어요.",
+    "enhanceTiers": "어떤 등급이든 강화할 수 있어요. 약정 없이 언제든 추가하거나 제거하세요.",
+    "enterpriseDesc": "50개 이상의 에코, 전용 인프라, SLA 보장, 조직을 위한 맞춤 샤드 개발.",
+    "footerNoteLine1": "모든 가격은 USD 기준이에요. 언제든 취소 가능. 부가 기능은 언제든 조정할 수 있어요.",
+    "footerNoteLine2": "무료 등급에는 광고가 포함돼요. 모든 유료 등급은 완전히 광고 없이 이용할 수 있어요.",
+    "footerNoteLine3": "무료 하트비트: 시간대에 따라 아침에 하나, 저녁에 하나의 일기가 제공돼요.",
+    "addonLabel": "부가 기능",
+    "showcase": "쇼케이스",
+    "features": {
+      "1echoPublic": "공개 샤드에서 에코 1개",
+      "diaryAmPm": "아침 & 저녁 일기",
+      "aiPortraits": "AI 생성 초상화",
+      "conversations": "대화",
+      "nudges": "넛지",
+      "3echoes": "모든 샤드에서 에코 3개",
+      "diary2hr": "2시간마다 새 일기",
+      "5conv": "하루 대화 5회",
+      "3nudges": "하루 넛지 3회",
+      "adFree": "광고 없는 환경",
+      "5echoes": "모든 샤드에서 에코 5개",
+      "diary30m": "30분마다 새 일기",
+      "10conv": "하루 대화 10회",
+      "10nudges": "하루 넛지 10회",
+      "privateShard": "프라이빗 샤드",
+      "8echoes": "모든 샤드에서 에코 8개",
+      "diary15m": "15분마다 새 일기",
+      "20conv": "하루 대화 20회",
+      "20nudges": "하루 넛지 20회",
+      "1privateShard": "프라이빗 샤드 1개 포함",
+      "12echoes": "모든 샤드에서 에코 12개",
+      "diary5m": "5분마다 새 일기",
+      "unlimitedConv": "무제한 대화",
+      "unlimitedNudges": "무제한 넛지",
+      "3privateShards": "프라이빗 샤드 3개 포함",
+      "priorityInference": "우선 추론"
+    },
+    "showcaseText": {
+      "2vid": "하루 영상 일기 2회",
+      "2voice": "하루 음성 통화 2회",
+      "6vid": "하루 영상 일기 6회",
+      "6voice": "하루 음성 통화 6회",
+      "10vid": "하루 영상 일기 10회",
+      "10voice": "하루 음성 통화 10회",
+      "16vid": "하루 영상 일기 16회",
+      "16voice": "하루 음성 통화 16회",
+      "unlimitedVid": "무제한 영상 일기",
+      "unlimitedVoice": "무제한 음성 통화"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "맞춤 에코 제한",
+      "customHeartbeat": "맞춤 하트비트",
+      "dedicatedSupport": "전담 지원",
+      "slaGuarantees": "SLA 보장",
+      "apiAccess": "API 액세스"
+    },
+    "showcases": {
+      "2vid2voice": "하루 영상 일기 2회, 하루 음성 통화 2회",
+      "6vid6voice": "하루 영상 일기 6회, 하루 음성 통화 6회",
+      "10vid10voice": "하루 영상 일기 10회, 하루 음성 통화 10회",
+      "16vid16voice": "하루 영상 일기 16회, 하루 음성 통화 16회",
+      "unlimitedVidVoice": "무제한 영상 일기, 무제한 음성 통화"
+    }
   }
 }

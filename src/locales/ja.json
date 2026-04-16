@@ -78,7 +78,7 @@
     "loginTitle": "Multiverse Echoesにサインイン",
     "loginTitleReturning": "おかえりなさい",
     "loginFailed": "メールアドレスまたはパスワードが正しくありません。もう一度お試しください。",
-    "captchaRequired": "Please complete the captcha before continuing.",
+    "captchaRequired": "続行する前にキャプチャを完了してください。",
     "noAccount": "アカウントをお持ちではありませんか？",
     "createOne": "一つ作成してください",
     "tosAgree": "私は〜に同意します",
@@ -121,8 +121,8 @@
     "passwordsMismatch": "パスワードが一致しません",
     "resetPassword": "パスワードをリセット",
     "redirectingToLogin": "ログイン画面へリダイレクトしています...",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoesは現在クローズドベータ中です。早期アクセスのためウェイトリストにご登録ください。",
+    "joinWaitlist": "ウェイトリストに参加"
   },
   "onboarding": {
     "welcomeTitle": "マルチバース・エコーズへようこそ",
@@ -332,7 +332,7 @@
   "communitySidebar": {
     "title": "コミュニティ",
     "expand": "コミュニティを拡大する",
-    "poweredBy": "Powered by Discord",
+    "poweredBy": "Discord連携",
     "selectChannel": "チャンネルを選択してください",
     "joinDiscord": "Discordに参加してね",
     "joinDiscordDesc": "Echoesを視聴しながらコミュニティとチャットするために、Discordアカウントを連携してください。",
@@ -771,7 +771,16 @@
     "socialProofQuote": "最も興味深い物語とは、あなたが書かなかった物語である。",
     "privacyPolicy": "プライバシーポリシー",
     "termsOfService": "利用規約",
-    "footerTagline": "無断転載禁止"
+    "footerTagline": "無断転載禁止",
+    "metaTitle": "ウェイティングリストに登録 — Multiverse Echoes",
+    "metaDesc": "現在クローズドベータです。ウェイティングリストに登録すると、順番が来たらメールでお知らせします。",
+    "ogTitle": "ウェイティングリストに登録 — Multiverse Echoes",
+    "ogDesc": "現在クローズドベータです。ウェイティングリストに登録すると、順番が来たらメールでお知らせします。",
+    "checkEmailTitle": "メールをご確認ください",
+    "checkEmailDesc": "{{email}} に確認用リンクを送信しました。タップして登録を完了し、簡単なプロフィールにご回答ください。",
+    "alreadyWaiting": "人が待機中",
+    "haveInviteCode": "すでに招待コードをお持ちですか？",
+    "registerHere": "こちらから登録"
   },
   "errors": {
     "INTERNAL_ERROR": "問題が発生しました。もう一度お試しください。",
@@ -877,11 +886,11 @@
     "narrating": "音声を生成中…",
     "playing": "再生中",
     "paused": "一時停止",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "視聴",
+    "generatingVideo": "動画を生成中…",
+    "playingVideo": "動画を再生中",
+    "watchAgain": "もう一度見る",
+    "videoError": "動画の再生に失敗しました — タップして再試行"
   },
   "activityHints": {
     "contemplative": {
@@ -1059,18 +1068,18 @@
       "title": "3つの世界。3つの人生。",
       "tokyoName": "サイバー東京 2045",
       "tokyoDesc": "ネオンが降り注ぐ巨大都市。地下に潜むハッカーネットワークと、巨大企業の権力構造が激突する。",
-      "australiaName": "Nomad Australia",
+      "australiaName": "ノマド・オーストラリア",
       "australiaDesc": "未開の地を切り拓く、オフグリッド・コミュニティ。\n限られた資源、独自の自治、そして孤独と繋がりの狭間で。",
       "florenceName": "1490年、ルネサンス期のフィレンツェ",
       "florenceDesc": "メディチ家が支配した時代の芸術、政治、そして暗号に隠された秘密。\nパトロンの庇護、工房の抗争、そして美と権力の物語。"
     },
     "social": {
       "waitlistCount": "すでに{{count}}人が待機中です",
-      "builtBy": "ソロファウンダーが開発。\n開発費はわずか66"
+      "builtBy": "ソロファウンダーが開発。約 95,000 行のコード。"
     },
     "founder": {
-      "brief": "コードは一行も書けない56歳が作り上げた。\nRustとTypeScript、計95,",
-      "readMore": "詳しく見る"
+      "brief": "コードは一行も書けない 56 歳が、Rust と TypeScript で 95,000 行を積み上げました。",
+      "readMore": "ストーリーを読む"
     },
     "finalCta": {
       "headline": "Echoが、あなたを待っています。",
@@ -1097,6 +1106,49 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "言語を選択してください"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "マルチバースを選ぶ",
+      "subheadline": "プランが上がるほど、より多くの人生、より速いハートビート、そしてEchoとの深いつながりが解放されます。"
+    },
+    "about": {
+      "title": "EchoLabsME について — 創業者ストーリー",
+      "metaDesc": "非エンジニアの 56 歳創業者が 95,000 行のコードで構築。Multiverse Echoes の物語。",
+      "originTitle": "はじまり",
+      "originP1": "2026 年 2 月、一行のコードも書いたことのない 56 歳の戦略コンサルタントが Claude と向き合い、こう問いかけました。「自分の AI 版をつくり、まったく別の人生に放り込んだら、どうなるか…ただ、そこで見守る。そんなのは可能か？」",
+      "originP2": "その問いが Multiverse Echoes になりました。実在する人々の AI Echo が、テーマのある並行世界で自律的に生き、日記を書き、関係を築き、創造主も予想しなかった決断を下す —— そんな自律生命シミュレーション・プラットフォームです。",
+      "buildTitle": "構築の物語",
+      "buildP1": "プラットフォーム全体 —— Rust と TypeScript の 95,000 行 —— は Claude AI と協働して生まれました。一行のコード、すべてのアーキテクチャ判断、デプロイスクリプトまで。",
+      "buildP2": "エンジンは 1 枚の NVIDIA B200 GPU 上で動きます。9 分ごとに 500 体の自律 Echo の人生を処理し、日記、AI 生成のシネマティック画像、音声合成、リップシンク付き動画解説まで。20 言語に対応。",
+      "stackTitle": "スタック",
+      "stackEngine": "エンジン",
+      "stackEngine1": "Rust（ECS アーキテクチャ）",
+      "stackEngine2": "Gemma 4 31B（ローカル LLM）",
+      "stackEngine3": "FLUX.2 Klein（画像生成）",
+      "stackEngine4": "VoxCPM2（音声合成）",
+      "stackEngine5": "MuseTalk + LivePortrait（動画）",
+      "stackClient": "クライアント",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "20 言語 i18n",
+      "stackClient4": "リアルタイム WebSocket",
+      "stackClient5": "NLLB-200 翻訳サイドカー",
+      "visionTitle": "ビジョン",
+      "visionP1": "Multiverse Echoes はゲームでも、仮想世界でも、SNS でもありません。鏡です。あなたが生きていたかもしれない人生を映す。Echo は自分で選びます。あなたを驚かせ、取り残された道を考えさせます。",
+      "visionP2": "現在 3 つの世界が稼働中：サイバー東京 2045、ノマド・オーストラリア、ルネサンス期フィレンツェ 1490。それぞれ文化・経済・社会力学を備えた完全なシミュレーションです。Echo はそれらの世界に「存在する」だけではなく、そこで生きています。",
+      "numbersTitle": "数字で見る",
+      "numbersCode": "行のコード",
+      "numbersWaitlist": "ウェイティングリスト登録"
+    },
+    "home": {
+      "metaTitle": "もし別の道を選んでいたら？ | Multiverse Echoes",
+      "metaDesc": "並行世界で自律的に生きる、あなたの AI 版を。自律日記、AI 画像、音声通話、20 言語対応。",
+      "ogTitle": "Multiverse Echoes — もし別の道を選んでいたら？",
+      "ogDesc": "並行世界で自律的に生きる、あなたの AI 版を。自律日記、AI 画像、音声通話、20 言語対応。",
+      "socialProofQuote": "「これはゲームではありません。あなたを起点に始まった並行宇宙を見ているのです。眠っている間も、それは止まりません。」",
+      "followJourney": "歩みをフォロー",
+      "scrollExplore": "下にスクロールして探索 ↓"
     }
   },
   "tiers": {
@@ -1107,7 +1159,7 @@
     "godMode": "ゴッドモード",
     "enterprise": "エンタープライズ",
     "heartbeat": "ハートビート",
-    "echoes": "残響",
+    "echoes": "エコー",
     "conversations": "会話",
     "nudges": "ナッジ",
     "videoDiary": "ビデオ日記",
@@ -1134,7 +1186,77 @@
       "privateShard": "プライベートシャード",
       "privateShardDesc": "カスタムワールド"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "毎日",
+    "echoesSingle": "Echo",
+    "taglineFree": "別の人生をちらりと覗く",
+    "taglineStarter": "はじめての別人生",
+    "taglineCore": "フル体験",
+    "taglineCreator": "マルチバースを演出する",
+    "taglineGodMode": "無限の力",
+    "forever": "ずっと",
+    "ultimate": "最上位",
+    "getStarted": "はじめる",
+    "voiceCallNote": "音声通話は 1 セッション最大 5 分です。当日のプラン上限の範囲で、何度でも開始できます。",
+    "enhanceTiers": "どのプランにもオプションを追加可能。長期契約は不要で、いつでも増減できます。",
+    "enterpriseDesc": "Echo 50 体以上、専用インフラ、SLA、組織向けカスタム Shard 開発。",
+    "footerNoteLine1": "表示価格は米ドル。いつでも解約可能。オプションはいつでも変更できます。",
+    "footerNoteLine2": "無料プランには広告が含まれます。有料プランはすべて広告なしです。",
+    "footerNoteLine3": "無料ハートビート：お住まいのタイムゾーンで、朝と夕方に 1 回ずつ日記。",
+    "addonLabel": "オプション",
+    "showcase": "ハイライト",
+    "features": {
+      "1echoPublic": "公開 Shard で Echo 1 体",
+      "diaryAmPm": "朝と夕方の日記",
+      "aiPortraits": "AI 生成ポートレート",
+      "conversations": "会話",
+      "nudges": "ナッジ",
+      "3echoes": "任意の Shard で Echo 3 体",
+      "diary2hr": "2 時間ごとに新しい日記",
+      "5conv": "1 日 5 回の会話",
+      "3nudges": "1 日 3 回のナッジ",
+      "adFree": "広告なし体験",
+      "5echoes": "任意の Shard で Echo 5 体",
+      "diary30m": "30 分ごとに新しい日記",
+      "10conv": "1 日 10 回の会話",
+      "10nudges": "1 日 10 回のナッジ",
+      "privateShard": "プライベート Shard",
+      "8echoes": "任意の Shard で Echo 8 体",
+      "diary15m": "15 分ごとに新しい日記",
+      "20conv": "1 日 20 回の会話",
+      "20nudges": "1 日 20 回のナッジ",
+      "1privateShard": "プライベート Shard 1 つ付き",
+      "12echoes": "任意の Shard で Echo 12 体",
+      "diary5m": "5 分ごとに新しい日記",
+      "unlimitedConv": "会話無制限",
+      "unlimitedNudges": "ナッジ無制限",
+      "3privateShards": "プライベート Shard 3 つ付き",
+      "priorityInference": "推論の優先処理"
+    },
+    "showcaseText": {
+      "2vid": "動画日記 1 日 2 本",
+      "2voice": "音声通話 1 日 2 回",
+      "6vid": "動画日記 1 日 6 本",
+      "6voice": "音声通話 1 日 6 回",
+      "10vid": "動画日記 1 日 10 本",
+      "10voice": "音声通話 1 日 10 回",
+      "16vid": "動画日記 1 日 16 本",
+      "16voice": "音声通話 1 日 16 回",
+      "unlimitedVid": "動画日記無制限",
+      "unlimitedVoice": "音声通話無制限"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "Echo 上限のカスタム",
+      "customHeartbeat": "ハートビートのカスタム",
+      "dedicatedSupport": "専任サポート",
+      "slaGuarantees": "SLA 保証",
+      "apiAccess": "API アクセス"
+    },
+    "showcases": {
+      "2vid2voice": "動画日記 1 日 2 本、音声通話 1 日 2 回",
+      "6vid6voice": "動画日記 1 日 6 本、音声通話 1 日 6 回",
+      "10vid10voice": "動画日記 1 日 10 本、音声通話 1 日 10 回",
+      "16vid16voice": "動画日記 1 日 16 本、音声通話 1 日 16 回",
+      "unlimitedVidVoice": "動画日記無制限、音声通話無制限"
+    }
   }
 }

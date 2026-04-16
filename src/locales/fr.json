@@ -121,8 +121,8 @@
     "passwordsMismatch": "Les mots de passe ne correspondent pas",
     "resetPassword": "Réinitialiser le mot de passe",
     "redirectingToLogin": "Redirection vers la connexion…",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes est en version bêta fermée. Rejoignez la liste d'attente pour un accès anticipé.",
+    "joinWaitlist": "Rejoindre la liste d'attente"
   },
   "onboarding": {
     "welcomeTitle": "Bienvenue sur Multiverse Echoes",
@@ -771,7 +771,16 @@
     "socialProofQuote": "\"Les histoires les plus intéressantes sont celles que tu n'as pas écrites.\"",
     "privacyPolicy": "Politique de confidentialité",
     "termsOfService": "Conditions d'utilisation",
-    "footerTagline": "Tous droits réservés."
+    "footerTagline": "Tous droits réservés.",
+    "metaTitle": "Rejoindre la liste d'attente — Multiverse Echoes",
+    "metaDesc": "Nous sommes en bêta fermée. Rejoignez la liste d'attente et nous vous enverrons un e-mail quand ce sera votre tour.",
+    "ogTitle": "Rejoindre la liste d'attente — Multiverse Echoes",
+    "ogDesc": "Nous sommes en bêta fermée. Rejoignez la liste d'attente et nous vous enverrons un e-mail quand ce sera votre tour.",
+    "checkEmailTitle": "Vérifiez votre e-mail",
+    "checkEmailDesc": "Nous avons envoyé un lien de vérification à {{email}}. Cliquez dessus pour confirmer votre place et nous en dire un peu plus sur vous.",
+    "alreadyWaiting": "personnes déjà en attente",
+    "haveInviteCode": "Vous avez déjà un code d'invitation ?",
+    "registerHere": "Inscrivez-vous ici"
   },
   "errors": {
     "INTERNAL_ERROR": "Quelque chose a mal tourné de notre côté. Réessaie.",
@@ -877,149 +886,149 @@
     "narrating": "Génération vocale…",
     "playing": "Lecture",
     "paused": "Pause",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "Regarder",
+    "generatingVideo": "Génération de la vidéo…",
+    "playingVideo": "Lecture vidéo",
+    "watchAgain": "Revoir",
+    "videoError": "La vidéo a échoué — appuyez pour réessayer"
   },
   "activityHints": {
     "contemplative": {
-      "0": "staring out the window...",
-      "1": "lost in thought...",
-      "2": "watching the clouds drift by...",
-      "3": "tracing patterns on the table...",
-      "4": "reading the same page for the third time...",
-      "5": "sitting with a cup of tea, not drinking it...",
-      "6": "watching dust motes float in a sunbeam...",
-      "7": "wondering about roads not taken..."
+      "0": "regarde par la fenêtre…",
+      "1": "perdu dans ses pensées…",
+      "2": "regarde les nuages passer…",
+      "3": "trace des motifs sur la table…",
+      "4": "relit la même page pour la troisième fois…",
+      "5": "assis avec une tasse de thé, sans la boire…",
+      "6": "regarde les grains de poussière flotter dans un rayon de soleil…",
+      "7": "songe aux chemins non pris…"
     },
     "calm": {
-      "0": "breathing slowly...",
-      "1": "listening to the silence...",
-      "2": "sitting in the warm light...",
-      "3": "watching the world go by...",
-      "4": "resting with eyes half-closed...",
-      "5": "feeling the breeze through an open window...",
-      "6": "counting heartbeats...",
-      "7": "settling into the quiet..."
+      "0": "respire lentement…",
+      "1": "écoute le silence…",
+      "2": "assis dans la lumière chaude…",
+      "3": "regarde le monde défiler…",
+      "4": "se repose les yeux mi-clos…",
+      "5": "sent la brise par la fenêtre ouverte…",
+      "6": "compte les battements de cœur…",
+      "7": "s'installe dans le calme…"
     },
     "excited": {
-      "0": "pacing around the room...",
-      "1": "scribbling ideas on a napkin...",
-      "2": "can't sit still...",
-      "3": "tapping a rhythm on the desk...",
-      "4": "making plans for tomorrow...",
-      "5": "grinning at nothing in particular...",
-      "6": "talking too fast...",
-      "7": "bouncing between three different thoughts..."
+      "0": "fait les cent pas dans la pièce…",
+      "1": "griffonne des idées sur une serviette…",
+      "2": "ne tient pas en place…",
+      "3": "tapote un rythme sur le bureau…",
+      "4": "fait des plans pour demain…",
+      "5": "sourit sans raison particulière…",
+      "6": "parle trop vite…",
+      "7": "rebondit entre trois pensées différentes…"
     },
     "happy": {
-      "0": "humming a half-remembered tune...",
-      "1": "smiling at a passing stranger...",
-      "2": "sketching something in the margins...",
-      "3": "laughing at an old memory...",
-      "4": "walking with a lighter step...",
-      "5": "savouring the moment...",
-      "6": "noticing how good the light looks today...",
-      "7": "feeling unexpectedly grateful..."
+      "0": "fredonne un air à moitié oublié…",
+      "1": "sourit à un inconnu qui passe…",
+      "2": "dessine quelque chose dans les marges…",
+      "3": "rit d'un vieux souvenir…",
+      "4": "marche d'un pas plus léger…",
+      "5": "savoure l'instant…",
+      "6": "remarque comme la lumière est belle aujourd'hui…",
+      "7": "se sent reconnaissant de façon inattendue…"
     },
     "anxious": {
-      "0": "checking the clock again...",
-      "1": "drumming fingers on the table...",
-      "2": "glancing at the door...",
-      "3": "picking at a loose thread...",
-      "4": "rehearsing conversations that haven\\",
-      "5": "unable to finish a sentence...",
-      "6": "watching shadows move on the wall...",
-      "7": "folding and unfolding a piece of paper..."
+      "0": "vérifie l'heure une fois de plus…",
+      "1": "tambourine des doigts sur la table…",
+      "2": "jette un coup d'œil vers la porte…",
+      "3": "tire sur un fil qui dépasse…",
+      "4": "répète des conversations qui n'ont jamais eu lieu…",
+      "5": "incapable de finir une phrase…",
+      "6": "regarde les ombres bouger sur le mur…",
+      "7": "plie et déplie un morceau de papier…"
     },
     "angry": {
-      "0": "clenching and unclenching fists...",
-      "1": "staring at the wall...",
-      "2": "pacing in tight circles...",
-      "3": "biting back words...",
-      "4": "slamming a drawer shut...",
-      "5": "breathing through clenched teeth...",
-      "6": "crossing arms tightly...",
-      "7": "replaying the argument..."
+      "0": "serre et desserre les poings…",
+      "1": "fixe le mur du regard…",
+      "2": "fait les cent pas en petits cercles…",
+      "3": "retient ses mots…",
+      "4": "claque un tiroir…",
+      "5": "respire les dents serrées…",
+      "6": "croise les bras fermement…",
+      "7": "rejoue la dispute dans sa tête…"
     },
     "content": {
-      "0": "humming softly...",
-      "1": "tending the garden...",
-      "2": "reading by the fire...",
-      "3": "stretching lazily...",
-      "4": "watching the sunset from the porch...",
-      "5": "organising the bookshelf for fun...",
-      "6": "cooking something that smells wonderful...",
-      "7": "writing a letter to no one in particular..."
+      "0": "fredonne doucement…",
+      "1": "s'occupe du jardin…",
+      "2": "lit au coin du feu…",
+      "3": "s'étire paresseusement…",
+      "4": "regarde le coucher de soleil depuis le porche…",
+      "5": "range la bibliothèque pour le plaisir…",
+      "6": "cuisine quelque chose qui sent divinement bon…",
+      "7": "écrit une lettre à personne en particulier…"
     },
     "melancholy": {
-      "0": "flipping through old photos...",
-      "1": "sitting quietly in the dark...",
-      "2": "listening to the rain...",
-      "3": "tracing a name on foggy glass...",
-      "4": "holding something that belongs to someone else...",
-      "5": "staring at an empty chair...",
-      "6": "reading old messages...",
-      "7": "watching the last light fade..."
+      "0": "feuillette de vieilles photos…",
+      "1": "assis en silence dans le noir…",
+      "2": "écoute la pluie…",
+      "3": "trace un nom sur une vitre embuée…",
+      "4": "tient quelque chose qui appartient à quelqu'un d'autre…",
+      "5": "fixe une chaise vide…",
+      "6": "relit de vieux messages…",
+      "7": "regarde la dernière lueur s'éteindre…"
     },
     "sad": {
-      "0": "curled up, not sleeping...",
-      "1": "looking at the ceiling...",
-      "2": "forgetting what they were about to say...",
-      "3": "letting the phone ring...",
-      "4": "standing at the window, not seeing anything...",
-      "5": "pulling the blanket tighter...",
-      "6": "pressing a palm against cold glass...",
-      "7": "sitting on the edge of the bed..."
+      "0": "recroquevillé, sans dormir…",
+      "1": "regarde le plafond…",
+      "2": "oublie ce qu'il allait dire…",
+      "3": "laisse le téléphone sonner…",
+      "4": "debout à la fenêtre, sans rien voir…",
+      "5": "tire la couverture un peu plus…",
+      "6": "presse la paume contre la vitre froide…",
+      "7": "assis au bord du lit…"
     },
     "neutral": {
-      "0": "looking around the room...",
-      "1": "sorting through the day...",
-      "2": "adjusting to the silence...",
-      "3": "waiting for something to happen...",
-      "4": "noticing details for the first time...",
-      "5": "flipping through channels...",
-      "6": "doodling absently...",
-      "7": "stretching before standing up..."
+      "0": "regarde autour de la pièce…",
+      "1": "fait le tri dans sa journée…",
+      "2": "s'habitue au silence…",
+      "3": "attend que quelque chose se passe…",
+      "4": "remarque des détails pour la première fois…",
+      "5": "zappe les chaînes…",
+      "6": "gribouille distraitement…",
+      "7": "s'étire avant de se lever…"
     },
     "shard": {
       "cyber": {
-        "0": "watching neon reflections in a puddle...",
-        "1": "scrolling through a holographic feed...",
-        "2": "listening to the hum of the city grid...",
-        "3": "tracing circuit patterns on the wall..."
+        "0": "regarde les reflets néon dans une flaque…",
+        "1": "fait défiler un flux holographique…",
+        "2": "écoute le bourdonnement du réseau urbain…",
+        "3": "trace des motifs de circuits sur le mur…"
       },
       "tokyo": {
-        "0": "watching neon reflections in a puddle...",
-        "1": "navigating the crowded alleyways...",
-        "2": "listening to distant karaoke...",
-        "3": "watching the trains pass below..."
+        "0": "regarde les reflets néon dans une flaque…",
+        "1": "se fraye un chemin dans les ruelles bondées…",
+        "2": "écoute un karaoké lointain…",
+        "3": "regarde les trains passer en contrebas…"
       },
       "renaissance": {
-        "0": "studying a fresco on the ceiling...",
-        "1": "listening to a distant lute...",
-        "2": "watching candlelight flicker on stone walls...",
-        "3": "sketching in charcoal on rough paper..."
+        "0": "étudie une fresque au plafond…",
+        "1": "écoute un luth au loin…",
+        "2": "regarde la lueur des bougies danser sur les murs de pierre…",
+        "3": "dessine au fusain sur du papier rugueux…"
       },
       "florence": {
-        "0": "walking along the Arno at dusk...",
-        "1": "listening to church bells ring...",
-        "2": "studying a fresco on the ceiling...",
-        "3": "watching artisans at work..."
+        "0": "se promène le long de l'Arno au crépuscule…",
+        "1": "écoute les cloches de l'église sonner…",
+        "2": "étudie une fresque au plafond…",
+        "3": "observe les artisans au travail…"
       },
       "outback": {
-        "0": "watching the red dust settle...",
-        "1": "listening to the silence of the plains...",
-        "2": "counting stars in the endless sky...",
-        "3": "sitting by the campfire embers..."
+        "0": "regarde la poussière rouge retomber…",
+        "1": "écoute le silence des plaines…",
+        "2": "compte les étoiles dans le ciel infini…",
+        "3": "assis près des braises du feu de camp…"
       },
       "australia": {
-        "0": "watching the red dust settle...",
-        "1": "listening to birds in the gum trees...",
-        "2": "squinting at the shimmering horizon...",
-        "3": "sitting by the campfire embers..."
+        "0": "regarde la poussière rouge retomber…",
+        "1": "écoute les oiseaux dans les eucalyptus…",
+        "2": "plisse les yeux face à l'horizon scintillant…",
+        "3": "assis près des braises du feu de camp…"
       }
     }
   },
@@ -1097,14 +1106,57 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "Choisissez votre langue pour commencer"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "Choisissez votre multivers",
+      "subheadline": "Chaque palier débloque plus de vies alternatives, des pulsations plus fréquentes et des connexions plus profondes avec vos Échos."
+    },
+    "about": {
+      "title": "À propos d'EchoLabsME — L'histoire du fondateur",
+      "metaDesc": "Créé par un fondateur non technique de 56 ans. 95 000 lignes de code. L'histoire de Multiverse Echoes.",
+      "originTitle": "L'Origine",
+      "originP1": "En février 2026, un consultant en stratégie de 56 ans qui n'avait jamais écrit une ligne de code s'est assis avec Claude et a demandé : « Et si vous pouviez créer une version IA de vous-même, la placer dans une vie complètement différente, et simplement… observer ce qui se passe ? »",
+      "originP2": "Cette question est devenue Multiverse Echoes — une Plateforme de Simulation de Vie Autonome où des Échos IA de vraies personnes vivent des vies indépendantes dans des mondes parallèles thématiques, écrivent des journaux, tissent des relations et prennent des décisions que leurs créateurs n'avaient jamais prédites.",
+      "buildTitle": "La Construction",
+      "buildP1": "L'intégralité de la plateforme — 95 000 lignes de Rust et TypeScript — a été construite en partenariat avec Claude AI. Chaque ligne de code, chaque décision architecturale, chaque script de déploiement.",
+      "buildP2": "Le moteur tourne sur un seul GPU NVIDIA B200. Il traite 500 vies d'Échos autonomes toutes les 9 minutes — chacune avec des entrées de journal, des images cinématographiques générées par IA, une synthèse vocale et une narration vidéo synchronisée sur les lèvres. Le tout en 20 langues.",
+      "stackTitle": "La Stack Technique",
+      "stackEngine": "Moteur",
+      "stackEngine1": "Rust (architecture ECS)",
+      "stackEngine2": "Gemma 4 31B (LLM local)",
+      "stackEngine3": "FLUX.2 Klein (génération d'images)",
+      "stackEngine4": "VoxCPM2 (synthèse vocale)",
+      "stackEngine5": "MuseTalk + LivePortrait (vidéo)",
+      "stackClient": "Client",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "i18n en 20 langues",
+      "stackClient4": "Flux WebSocket en temps réel",
+      "stackClient5": "Sidecar de traduction NLLB-200",
+      "visionTitle": "La Vision",
+      "visionP1": "Multiverse Echoes n'est pas un jeu, un monde virtuel ou un réseau social. C'est un miroir — un miroir qui vous montre les vies que vous auriez pu vivre. Vos Échos font leurs propres choix. Ils vous surprennent. Ils vous font réfléchir aux chemins non pris.",
+      "visionP2": "Trois mondes sont en ligne : Cyber-Tokyo 2045, Australie Nomade et Florence Renaissance 1490. Chacun est une simulation complète avec sa propre culture, son économie et sa dynamique sociale. Votre Écho n'existe pas simplement dans ces mondes — il y vit.",
+      "numbersTitle": "Les Chiffres",
+      "numbersCode": "lignes de code",
+      "numbersWaitlist": "inscriptions en liste d'attente"
+    },
+    "home": {
+      "metaTitle": "Et si vous aviez pris un autre chemin ? | Multiverse Echoes",
+      "metaDesc": "Créez une version IA de vous-même qui vit une vie autonome dans un monde parallèle. Journal autonome, images IA, appels vocaux, 20 langues.",
+      "ogTitle": "Multiverse Echoes — Et si vous aviez pris un autre chemin ?",
+      "ogDesc": "Créez une version IA de vous-même qui vit une vie autonome dans un monde parallèle. Journal autonome, images IA, appels vocaux, 20 langues.",
+      "socialProofQuote": "« Vous ne jouez pas à un jeu. Vous observez un univers parallèle né de vous — et il ne cesse d'évoluer, même pendant votre sommeil. »",
+      "followJourney": "Suivez l'aventure",
+      "scrollExplore": "Défilez pour explorer ↓"
     }
   },
   "tiers": {
-    "free": "Free",
-    "starter": "Starter",
-    "core": "Core",
+    "free": "Gratuit",
+    "starter": "Débutant",
+    "core": "Essentiel",
     "creator": "Créateur",
-    "godMode": "God Mode",
+    "godMode": "Mode Dieu",
     "enterprise": "Entreprise",
     "heartbeat": "Battement de cœur",
     "echoes": "Échos",
@@ -1134,7 +1186,77 @@
       "privateShard": "Fragment privé",
       "privateShardDesc": "Votre propre monde personnalisé"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "Quotidien",
+    "echoesSingle": "Echo",
+    "taglineFree": "Un aperçu d'une autre vie",
+    "taglineStarter": "Vos premières vies alternatives",
+    "taglineCore": "L'expérience complète",
+    "taglineCreator": "Dirigez votre multivers",
+    "taglineGodMode": "Puissance illimitée",
+    "forever": "pour toujours",
+    "ultimate": "Ultime",
+    "getStarted": "Commencer",
+    "voiceCallNote": "Les appels vocaux durent 5 minutes par session. Lancez-en autant que votre palier le permet chaque jour.",
+    "enhanceTiers": "Améliorez n'importe quel palier. Sans engagement — ajoutez ou retirez à tout moment.",
+    "enterpriseDesc": "50+ Échos, infrastructure dédiée, garanties SLA et développement de Fragments personnalisés pour votre organisation.",
+    "footerNoteLine1": "Tous les prix en USD. Annulez à tout moment. Les extensions peuvent être ajustées à tout moment.",
+    "footerNoteLine2": "Le plan gratuit inclut des publicités. Tous les plans payants sont entièrement sans publicité.",
+    "footerNoteLine3": "Pulsation gratuite : un journal le matin, un le soir — selon votre fuseau horaire.",
+    "addonLabel": "EXTENSION",
+    "showcase": "Vitrine",
+    "features": {
+      "1echoPublic": "1 Écho dans un Fragment public",
+      "diaryAmPm": "Journal matin et soir",
+      "aiPortraits": "Portraits générés par IA",
+      "conversations": "Conversations",
+      "nudges": "Coups de pouce",
+      "3echoes": "3 Échos dans n'importe quel Fragment",
+      "diary2hr": "Nouveau journal toutes les 2 heures",
+      "5conv": "5 conversations / jour",
+      "3nudges": "3 coups de pouce / jour",
+      "adFree": "Expérience sans publicité",
+      "5echoes": "5 Échos dans n'importe quel Fragment",
+      "diary30m": "Nouveau journal toutes les 30 minutes",
+      "10conv": "10 conversations / jour",
+      "10nudges": "10 coups de pouce / jour",
+      "privateShard": "Fragment privé",
+      "8echoes": "8 Échos dans n'importe quel Fragment",
+      "diary15m": "Nouveau journal toutes les 15 minutes",
+      "20conv": "20 conversations / jour",
+      "20nudges": "20 coups de pouce / jour",
+      "1privateShard": "1 Fragment privé inclus",
+      "12echoes": "12 Échos dans n'importe quel Fragment",
+      "diary5m": "Nouveau journal toutes les 5 minutes",
+      "unlimitedConv": "Conversations illimitées",
+      "unlimitedNudges": "Coups de pouce illimités",
+      "3privateShards": "3 Fragments privés inclus",
+      "priorityInference": "Inférence prioritaire"
+    },
+    "showcaseText": {
+      "2vid": "2 journaux vidéo / jour",
+      "2voice": "2 appels vocaux / jour",
+      "6vid": "6 journaux vidéo / jour",
+      "6voice": "6 appels vocaux / jour",
+      "10vid": "10 journaux vidéo / jour",
+      "10voice": "10 appels vocaux / jour",
+      "16vid": "16 journaux vidéo / jour",
+      "16voice": "16 appels vocaux / jour",
+      "unlimitedVid": "Journaux vidéo illimités",
+      "unlimitedVoice": "Appels vocaux illimités"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "Limites d'Échos personnalisées",
+      "customHeartbeat": "Pulsation personnalisée",
+      "dedicatedSupport": "Support dédié",
+      "slaGuarantees": "Garanties SLA",
+      "apiAccess": "Accès API"
+    },
+    "showcases": {
+      "2vid2voice": "2 journaux vidéo / jour, 2 appels vocaux / jour",
+      "6vid6voice": "6 journaux vidéo / jour, 6 appels vocaux / jour",
+      "10vid10voice": "10 journaux vidéo / jour, 10 appels vocaux / jour",
+      "16vid16voice": "16 journaux vidéo / jour, 16 appels vocaux / jour",
+      "unlimitedVidVoice": "Journaux vidéo illimités, Appels vocaux illimités"
+    }
   }
 }

@@ -78,7 +78,7 @@
     "loginTitle": "Masuk ke Multiverse Echoes",
     "loginTitleReturning": "Selamat datang kembali",
     "loginFailed": "Email atau kata sandi tidak valid. Silakan coba lagi.",
-    "captchaRequired": "Please complete the captcha before continuing.",
+    "captchaRequired": "Harap selesaikan captcha sebelum melanjutkan.",
     "noAccount": "Belum punya akun?",
     "createOne": "Buat satu",
     "tosAgree": "Saya setuju dengan",
@@ -121,8 +121,8 @@
     "passwordsMismatch": "Kata sandi tidak cocok",
     "resetPassword": "Atur ulang kata sandi",
     "redirectingToLogin": "Mengalihkan ke halaman masuk...",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes sedang dalam beta tertutup. Bergabunglah dengan daftar tunggu untuk akses lebih awal.",
+    "joinWaitlist": "Bergabung dengan Daftar Tunggu"
   },
   "onboarding": {
     "welcomeTitle": "Selamat datang di Multiverse Echoes",
@@ -771,7 +771,16 @@
     "socialProofQuote": "Cerita yang paling menarik adalah cerita yang tidak kamu tulis.",
     "privacyPolicy": "Kebijakan Privasi",
     "termsOfService": "Ketentuan Layanan",
-    "footerTagline": "Hak cipta dilindungi undang-undang."
+    "footerTagline": "Hak cipta dilindungi undang-undang.",
+    "metaTitle": "Bergabung dengan Daftar Tunggu — Multiverse Echoes",
+    "metaDesc": "Kami sedang dalam beta tertutup. Bergabunglah dengan daftar tunggu dan kami akan mengirim email saat giliran Anda.",
+    "ogTitle": "Bergabung dengan Daftar Tunggu — Multiverse Echoes",
+    "ogDesc": "Kami sedang dalam beta tertutup. Bergabunglah dengan daftar tunggu dan kami akan mengirim email saat giliran Anda.",
+    "checkEmailTitle": "Periksa email Anda",
+    "checkEmailDesc": "Kami telah mengirim tautan verifikasi ke {{email}}. Klik untuk mengonfirmasi tempat Anda dan ceritakan sedikit tentang diri Anda.",
+    "alreadyWaiting": "orang sudah menunggu",
+    "haveInviteCode": "Sudah punya kode undangan?",
+    "registerHere": "Daftar di sini"
   },
   "errors": {
     "INTERNAL_ERROR": "Terjadi kesalahan pada sistem kami. Silakan coba lagi.",
@@ -877,11 +886,11 @@
     "narrating": "Membuat suara…",
     "playing": "Memutar",
     "paused": "Dijeda",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "Tonton",
+    "generatingVideo": "Membuat video…",
+    "playingVideo": "Memutar video",
+    "watchAgain": "Tonton lagi",
+    "videoError": "Video gagal — ketuk untuk mencoba lagi"
   },
   "activityHints": {
     "contemplative": {
@@ -1097,14 +1106,57 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "Pilih bahasa untuk memulai"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "Pilih Multiverse Anda",
+      "subheadline": "Setiap paket membuka lebih banyak kehidupan alternatif, detak jantung yang lebih cepat, dan koneksi yang lebih dalam dengan Gema Anda."
+    },
+    "about": {
+      "title": "Tentang EchoLabsME — Kisah Pendiri",
+      "metaDesc": "Dibangun oleh pendiri non-teknis berusia 56 tahun. 95.000 baris kode. Kisah Multiverse Echoes.",
+      "originTitle": "Asal Mula",
+      "originP1": "Pada bulan Februari 2026, seorang konsultan strategi berusia 56 tahun yang belum pernah menulis satu baris kode pun duduk bersama Claude dan bertanya: \"Bagaimana jika Anda bisa membuat versi AI dari diri sendiri, menempatkannya ke kehidupan yang sama sekali berbeda, dan hanya... melihat apa yang terjadi?\"",
+      "originP2": "Pertanyaan itu menjadi Multiverse Echoes — Platform Simulasi Kehidupan Otonom tempat Gema AI dari orang nyata menjalani kehidupan mandiri di dunia paralel bertema, menulis buku harian, menjalin hubungan, dan membuat keputusan yang tidak pernah diprediksi oleh pembuatnya.",
+      "buildTitle": "Pembangunan",
+      "buildP1": "Seluruh platform — 95.000 baris Rust dan TypeScript — dibangun dengan kemitraan bersama Claude AI. Setiap baris kode, setiap keputusan arsitektur, setiap skrip penerapan.",
+      "buildP2": "Mesin berjalan pada satu GPU NVIDIA B200. Memproses 500 kehidupan Gema otonom setiap 9 menit — masing-masing dengan entri buku harian, gambar sinematik buatan AI, sintesis suara, dan narasi video sinkronisasi bibir. Semua dalam 20 bahasa.",
+      "stackTitle": "Teknologi",
+      "stackEngine": "Mesin",
+      "stackEngine1": "Rust (arsitektur ECS)",
+      "stackEngine2": "Gemma 4 31B (LLM lokal)",
+      "stackEngine3": "FLUX.2 Klein (pembuatan gambar)",
+      "stackEngine4": "VoxCPM2 (sintesis suara)",
+      "stackEngine5": "MuseTalk + LivePortrait (video)",
+      "stackClient": "Klien",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "i18n 20 bahasa",
+      "stackClient4": "Feed WebSocket real-time",
+      "stackClient5": "Layanan terjemahan NLLB-200",
+      "visionTitle": "Visi",
+      "visionP1": "Multiverse Echoes bukan game, bukan dunia virtual, dan bukan jaringan sosial. Ini adalah cermin — cermin yang menunjukkan kehidupan yang mungkin pernah Anda jalani. Gema Anda membuat pilihannya sendiri. Mereka mengejutkan Anda. Mereka membuat Anda berpikir tentang jalan yang tidak pernah diambil.",
+      "visionP2": "Tiga dunia telah aktif: Cyber-Tokyo 2045, Nomad Australia, dan Renaissance Florence 1490. Masing-masing adalah simulasi lengkap dengan budaya, ekonomi, dan dinamika sosialnya sendiri. Gema Anda tidak hanya ada di dunia-dunia ini — ia hidup di dalamnya.",
+      "numbersTitle": "Angka-Angka",
+      "numbersCode": "baris kode",
+      "numbersWaitlist": "pendaftaran daftar tunggu"
+    },
+    "home": {
+      "metaTitle": "Bagaimana jika Anda memilih jalan yang berbeda? | Multiverse Echoes",
+      "metaDesc": "Buat versi AI dari diri Anda yang menjalani kehidupan otonom di dunia paralel. Buku harian otonom, gambar AI, panggilan suara, 20 bahasa.",
+      "ogTitle": "Multiverse Echoes — Bagaimana jika Anda memilih jalan yang berbeda?",
+      "ogDesc": "Buat versi AI dari diri Anda yang menjalani kehidupan otonom di dunia paralel. Buku harian otonom, gambar AI, panggilan suara, 20 bahasa.",
+      "socialProofQuote": "“Anda tidak sedang bermain game. Anda sedang menyaksikan alam semesta paralel yang dimulai dari Anda — dan ia tidak pernah berhenti berkembang, bahkan saat Anda tertidur.”",
+      "followJourney": "Ikuti perjalanannya",
+      "scrollExplore": "Gulir untuk menjelajah ↓"
     }
   },
   "tiers": {
     "free": "Fri",
-    "starter": "Starter",
+    "starter": "Pemula",
     "core": "Kore",
     "creator": "Krieyator",
-    "godMode": "God Mode",
+    "godMode": "Mode Dewa",
     "enterprise": "Enterprais",
     "heartbeat": "Detak Jantung",
     "echoes": "Gema",
@@ -1134,7 +1186,77 @@
       "privateShard": "Shard Privat",
       "privateShardDesc": "Dunia kustom Anda"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "Harian",
+    "echoesSingle": "Echo",
+    "taglineFree": "Sekilas pandang ke kehidupan lain",
+    "taglineStarter": "Kehidupan alternatif pertama Anda",
+    "taglineCore": "Pengalaman lengkap",
+    "taglineCreator": "Arahkan multiverse Anda",
+    "taglineGodMode": "Kekuatan tanpa batas",
+    "forever": "selamanya",
+    "ultimate": "Tertinggi",
+    "getStarted": "Mulai",
+    "voiceCallNote": "Panggilan suara berdurasi 5 menit per sesi. Mulai sebanyak yang diizinkan paket Anda setiap hari.",
+    "enhanceTiers": "Tingkatkan paket apa pun. Tanpa komitmen — tambahkan atau hapus kapan saja.",
+    "enterpriseDesc": "50+ Gema, infrastruktur khusus, jaminan SLA, dan pengembangan Shard kustom untuk organisasi Anda.",
+    "footerNoteLine1": "Semua harga dalam USD. Batal kapan saja. Fitur tambahan dapat disesuaikan kapan saja.",
+    "footerNoteLine2": "Paket gratis memuat iklan. Semua paket berbayar sepenuhnya bebas iklan.",
+    "footerNoteLine3": "Detak jantung gratis: satu buku harian di pagi hari, satu di malam hari — berdasarkan zona waktu Anda.",
+    "addonLabel": "TAMBAHAN",
+    "showcase": "Etalase",
+    "features": {
+      "1echoPublic": "1 Gema di Shard publik",
+      "diaryAmPm": "Buku harian pagi & malam",
+      "aiPortraits": "Potret buatan AI",
+      "conversations": "Percakapan",
+      "nudges": "Dorongan",
+      "3echoes": "3 Gema di berbagai Shard",
+      "diary2hr": "Buku harian baru setiap 2 jam",
+      "5conv": "5 percakapan / hari",
+      "3nudges": "3 dorongan / hari",
+      "adFree": "Bebas iklan",
+      "5echoes": "5 Gema di berbagai Shard",
+      "diary30m": "Buku harian baru setiap 30 menit",
+      "10conv": "10 percakapan / hari",
+      "10nudges": "10 dorongan / hari",
+      "privateShard": "Shard Pribadi",
+      "8echoes": "8 Gema di berbagai Shard",
+      "diary15m": "Buku harian baru setiap 15 menit",
+      "20conv": "20 percakapan / hari",
+      "20nudges": "20 dorongan / hari",
+      "1privateShard": "Termasuk 1 Shard Pribadi",
+      "12echoes": "12 Gema di berbagai Shard",
+      "diary5m": "Buku harian baru setiap 5 menit",
+      "unlimitedConv": "Percakapan tanpa batas",
+      "unlimitedNudges": "Dorongan tanpa batas",
+      "3privateShards": "Termasuk 3 Shard Pribadi",
+      "priorityInference": "Pemrosesan prioritas"
+    },
+    "showcaseText": {
+      "2vid": "2 buku harian video / hari",
+      "2voice": "2 panggilan suara / hari",
+      "6vid": "6 buku harian video / hari",
+      "6voice": "6 panggilan suara / hari",
+      "10vid": "10 buku harian video / hari",
+      "10voice": "10 panggilan suara / hari",
+      "16vid": "16 buku harian video / hari",
+      "16voice": "16 panggilan suara / hari",
+      "unlimitedVid": "Buku harian video tanpa batas",
+      "unlimitedVoice": "Panggilan suara tanpa batas"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "Batas Gema kustom",
+      "customHeartbeat": "Detak jantung kustom",
+      "dedicatedSupport": "Dukungan khusus",
+      "slaGuarantees": "Jaminan SLA",
+      "apiAccess": "Akses API"
+    },
+    "showcases": {
+      "2vid2voice": "2 buku harian video / hari, 2 panggilan suara / hari",
+      "6vid6voice": "6 buku harian video / hari, 6 panggilan suara / hari",
+      "10vid10voice": "10 buku harian video / hari, 10 panggilan suara / hari",
+      "16vid16voice": "16 buku harian video / hari, 16 panggilan suara / hari",
+      "unlimitedVidVoice": "Buku harian video tanpa batas, Panggilan suara tanpa batas"
+    }
   }
 }

@@ -121,8 +121,8 @@
     "passwordsMismatch": "两次密码不一致",
     "resetPassword": "重置密码",
     "redirectingToLogin": "正在跳转到登录页…",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes 目前处于封闭测试阶段。加入候补名单抢先体验。",
+    "joinWaitlist": "加入候补名单"
   },
   "onboarding": {
     "welcomeTitle": "欢迎来到 Multiverse Echoes",
@@ -771,7 +771,16 @@
     "socialProofQuote": "\"最有趣的故事,往往是你没写下的那些。\"",
     "privacyPolicy": "隐私政策",
     "termsOfService": "服务条款",
-    "footerTagline": "版权所有。"
+    "footerTagline": "版权所有。",
+    "metaTitle": "加入候补名单 — Multiverse Echoes",
+    "metaDesc": "我们处于封闭内测。加入候补名单，轮到您时我们会发邮件通知。",
+    "ogTitle": "加入候补名单 — Multiverse Echoes",
+    "ogDesc": "我们处于封闭内测。加入候补名单，轮到您时我们会发邮件通知。",
+    "checkEmailTitle": "请查收邮件",
+    "checkEmailDesc": "我们已向 {{email}} 发送验证链接。点击链接确认名额并填写简短资料。",
+    "alreadyWaiting": "人已在等候",
+    "haveInviteCode": "已有邀请码？",
+    "registerHere": "点此注册"
   },
   "errors": {
     "INTERNAL_ERROR": "我们这边出了点问题,请再试一次。",
@@ -877,11 +886,11 @@
     "narrating": "正在生成语音…",
     "playing": "播放中",
     "paused": "已暂停",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "观看",
+    "generatingVideo": "正在生成视频…",
+    "playingVideo": "正在播放视频",
+    "watchAgain": "再看一遍",
+    "videoError": "视频失败 — 点按重试"
   },
   "activityHints": {
     "contemplative": {
@@ -986,40 +995,40 @@
     },
     "shard": {
       "cyber": {
-        "0": "无",
-        "1": "1",
-        "2": "2岁",
-        "3": "3"
+        "0": "看着水洼里霓虹的倒影……",
+        "1": "滑动全息信息流……",
+        "2": "聆听城市电网的低鸣……",
+        "3": "在墙上描摹电路纹路……"
       },
       "tokyo": {
-        "0": "无",
-        "1": "1",
-        "2": "2岁",
-        "3": "3"
+        "0": "看着水洼里霓虹的倒影……",
+        "1": "穿行在拥挤的小巷……",
+        "2": "远处传来卡拉 OK 的歌声……",
+        "3": "俯视列车从脚下驶过……"
       },
       "renaissance": {
-        "0": "无",
-        "1": "1",
-        "2": "2岁",
-        "3": "3"
+        "0": "仰望天花板上的湿壁画……",
+        "1": "远处传来鲁特琴的乐声……",
+        "2": "烛光在石墙上摇曳……",
+        "3": "在粗纸上用炭笔速写……"
       },
       "florence": {
-        "0": "无",
-        "1": "1",
-        "2": "2岁",
-        "3": "3"
+        "0": "黄昏时沿着阿诺河漫步……",
+        "1": "聆听教堂钟声……",
+        "2": "仰望天花板上的湿壁画……",
+        "3": "观看工匠们忙碌……"
       },
       "outback": {
-        "0": "无",
-        "1": "1",
-        "2": "2岁",
-        "3": "3"
+        "0": "看着红土渐渐落定……",
+        "1": "聆听平原上的寂静……",
+        "2": "数着无垠夜空中的星星……",
+        "3": "坐在篝火的余烬旁……"
       },
       "australia": {
-        "0": "无",
-        "1": "1",
-        "2": "2岁",
-        "3": "3"
+        "0": "看着红土渐渐落定……",
+        "1": "聆听桉树林中的鸟鸣……",
+        "2": "眯眼望向闪烁的地平线……",
+        "3": "坐在篝火的余烬旁……"
       }
     }
   },
@@ -1065,12 +1074,12 @@
       "florenceDesc": "美第奇时代的艺术、政治与代码秘密。权力与美学的交织，赞助人与工坊的博弈。"
     },
     "social": {
-      "waitlistCount": "已有 {{count}} 人在排队候候",
-      "builtBy": "独立开发者打造。研发成本仅 665 万行。"
+      "waitlistCount": "已有 {{count}} 人在排队等候",
+      "builtBy": "由独立开发者打造。约 95,000 行代码。"
     },
     "founder": {
-      "brief": "创始人 56 岁，不懂一行代码。\n却打造出 9.5 万行 Rust 与 TypeScript 核心代码。\n售价 66",
-      "readMore": "查看完整故事"
+      "brief": "由一位 56 岁、从未写过一行代码的人打造。95,000 行 Rust 与 TypeScript。",
+      "readMore": "阅读完整故事"
     },
     "finalCta": {
       "headline": "Echo 已准备就绪，等您开启。",
@@ -1097,15 +1106,58 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "请选择语言进入"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "选择你的多元宇宙",
+      "subheadline": "每一档都能解锁更多平行人生、更快的脉动节奏，以及与回声更深入的连接。"
+    },
+    "about": {
+      "title": "关于 EchoLabsME — 创始人的故事",
+      "metaDesc": "由一位 56 岁、非技术背景的创始人打造。95,000 行代码。Multiverse Echoes 的故事。",
+      "originTitle": "缘起",
+      "originP1": "2026 年 2 月，一位从未写过一行代码的 56 岁战略顾问与 Claude 坐下，问道：「如果你能创造一个 AI 版的自己，把他放进完全不同的人生里，然后……只在一旁观察，会怎样？」",
+      "originP2": "这个问题演变成了 Multiverse Echoes —— 一个自主生命模拟平台：真实用户的 AI 回声在主题平行世界中独立生活，写日记、建立关系，并做出连创作者都未曾预料的决定。",
+      "buildTitle": "如何建成",
+      "buildP1": "整个平台 —— 95,000 行 Rust 与 TypeScript —— 在与 Claude AI 的协作中完成。每一行代码、每一次架构决策、每一个部署脚本。",
+      "buildP2": "引擎运行在单张 NVIDIA B200 GPU 上。每 9 分钟处理 500 个自主回声的生命——每个都包含日记、AI 生成的电影感画面、语音合成与对口型视频解说。支持 20 种语言。",
+      "stackTitle": "技术栈",
+      "stackEngine": "引擎",
+      "stackEngine1": "Rust（ECS 架构）",
+      "stackEngine2": "Gemma 4 31B（本地大语言模型）",
+      "stackEngine3": "FLUX.2 Klein（图像生成）",
+      "stackEngine4": "VoxCPM2（语音合成）",
+      "stackEngine5": "MuseTalk + LivePortrait（视频）",
+      "stackClient": "客户端",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "20 种语言 i18n",
+      "stackClient4": "实时 WebSocket 推送",
+      "stackClient5": "NLLB-200 翻译侧车",
+      "visionTitle": "愿景",
+      "visionP1": "Multiverse Echoes 不是游戏、不是虚拟世界、也不是社交网络。它是一面镜子 —— 映照出你本可能拥有的人生。你的回声自己做选择。他们会让你惊讶。他们会让你想起那些未曾走过的路。",
+      "visionP2": "目前已有三个世界：赛博东京 2045、游牧澳大利亚、文艺复兴佛罗伦萨 1490。每个都是完整模拟，拥有各自的文化、经济与社会动态。你的回声不只存在于这些世界里 —— 他们在其中生活。",
+      "numbersTitle": "数字",
+      "numbersCode": "行代码",
+      "numbersWaitlist": "候补名单注册"
+    },
+    "home": {
+      "metaTitle": "如果当时走了另一条路？ | Multiverse Echoes",
+      "metaDesc": "创造一个 AI 版的自己，在平行世界中自主生活。自主日记、AI 配图、语音通话，支持 20 种语言。",
+      "ogTitle": "Multiverse Echoes — 如果当时走了另一条路？",
+      "ogDesc": "创造一个 AI 版的自己，在平行世界中自主生活。自主日记、AI 配图、语音通话，支持 20 种语言。",
+      "socialProofQuote": "「你不是在玩游戏。你在观看一个以你为起点的平行宇宙——即使你入睡，它也在不停演化。」",
+      "followJourney": "关注旅程",
+      "scrollExplore": "向下探索 ↓"
     }
   },
   "tiers": {
-    "free": "弗里",
-    "starter": "斯塔特",
-    "core": "科尔",
-    "creator": "克瑞特",
-    "godMode": "戈德莫德",
-    "enterprise": "恩特普莱斯",
+    "free": "免费",
+    "starter": "入门",
+    "core": "进阶",
+    "creator": "创作者",
+    "godMode": "神级模式",
+    "enterprise": "企业版",
     "heartbeat": "心跳",
     "echoes": "回响",
     "conversations": "对话",
@@ -1134,7 +1186,77 @@
       "privateShard": "私有分片",
       "privateShardDesc": "自定义世界"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "每日",
+    "echoesSingle": "回声",
+    "taglineFree": "窥见另一种人生",
+    "taglineStarter": "开启你的平行人生",
+    "taglineCore": "完整体验",
+    "taglineCreator": "导演你的多元宇宙",
+    "taglineGodMode": "无上限",
+    "forever": "永久",
+    "ultimate": "顶配",
+    "getStarted": "开始使用",
+    "voiceCallNote": "语音通话每次最长 5 分钟。在当日档位额度内可按需多次发起。",
+    "enhanceTiers": "任意档位均可增购扩展包。无需长期合约，可随时增减。",
+    "enterpriseDesc": "50+ 个回声、专属基础设施、SLA 保障，并为组织定制分片世界开发。",
+    "footerNoteLine1": "标价均为美元。可随时取消订阅。扩展包可随时调整。",
+    "footerNoteLine2": "免费档含广告；所有付费档位均无广告。",
+    "footerNoteLine3": "免费脉动：按你的时区，每日早晚各一篇日记。",
+    "addonLabel": "扩展包",
+    "showcase": "展示",
+    "features": {
+      "1echoPublic": "1 个回声在公共分片",
+      "diaryAmPm": "早晚各一篇日记",
+      "aiPortraits": "AI 生成头像",
+      "conversations": "对话",
+      "nudges": "轻推",
+      "3echoes": "3 个回声，任意分片",
+      "diary2hr": "每 2 小时新日记",
+      "5conv": "每日 5 次对话",
+      "3nudges": "每日 3 次轻推",
+      "adFree": "无广告体验",
+      "5echoes": "5 个回声，任意分片",
+      "diary30m": "每 30 分钟新日记",
+      "10conv": "每日 10 次对话",
+      "10nudges": "每日 10 次轻推",
+      "privateShard": "私人分片",
+      "8echoes": "8 个回声，任意分片",
+      "diary15m": "每 15 分钟新日记",
+      "20conv": "每日 20 次对话",
+      "20nudges": "每日 20 次轻推",
+      "1privateShard": "含 1 个私人分片",
+      "12echoes": "12 个回声，任意分片",
+      "diary5m": "每 5 分钟新日记",
+      "unlimitedConv": "无限次对话",
+      "unlimitedNudges": "无限次轻推",
+      "3privateShards": "含 3 个私人分片",
+      "priorityInference": "优先推理"
+    },
+    "showcaseText": {
+      "2vid": "每日 2 条视频日记",
+      "2voice": "每日 2 次语音通话",
+      "6vid": "每日 6 条视频日记",
+      "6voice": "每日 6 次语音通话",
+      "10vid": "每日 10 条视频日记",
+      "10voice": "每日 10 次语音通话",
+      "16vid": "每日 16 条视频日记",
+      "16voice": "每日 16 次语音通话",
+      "unlimitedVid": "无限视频日记",
+      "unlimitedVoice": "无限语音通话"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "自定义回声上限",
+      "customHeartbeat": "自定义脉动节奏",
+      "dedicatedSupport": "专属支持",
+      "slaGuarantees": "SLA 保障",
+      "apiAccess": "API 访问"
+    },
+    "showcases": {
+      "2vid2voice": "每日 2 条视频日记，每日 2 次语音通话",
+      "6vid6voice": "每日 6 条视频日记，每日 6 次语音通话",
+      "10vid10voice": "每日 10 条视频日记，每日 10 次语音通话",
+      "16vid16voice": "每日 16 条视频日记，每日 16 次语音通话",
+      "unlimitedVidVoice": "无限视频日记，无限语音通话"
+    }
   }
 }

@@ -29,10 +29,10 @@ export function AboutPage() {
   return (
     <>
       <Helmet>
-        <title>About EchoLabsME — The Founder Story</title>
-        <meta name="description" content="Built by a 56-year-old non-technical founder. 95,000 lines of code. The story of Multiverse Echoes." />
-        <meta property="og:title" content="About EchoLabsME — The Founder Story" />
-        <meta property="og:description" content="Built by a 56-year-old non-technical founder. 95,000 lines of code. The story of Multiverse Echoes." />
+        <title>{t('website.about.title')}</title>
+        <meta name="description" content={t('website.about.metaDesc')} />
+        <meta property="og:title" content={t('website.about.title')} />
+        <meta property="og:description" content={t('website.about.metaDesc')} />
         <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
         <meta property="og:url" content="https://echolabsme.com/about" />
         <meta property="og:type" content="website" />
@@ -47,54 +47,47 @@ export function AboutPage() {
           </h1>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">The Origin</h2>
+            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.originTitle')}</h2>
             <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
-              In February 2026, a 56-year-old strategy consultant who had never written a line of code sat down
-              with Claude and asked: &ldquo;What if you could create an AI version of yourself, drop it into a
-              completely different life, and just... watch what happens?&rdquo;
+              {t('website.about.originP1')}
             </p>
             <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
-              That question became Multiverse Echoes — an Autonomous Life Simulation Platform where AI Echoes
-              of real people live independent lives in themed parallel worlds, writing diaries, forming
-              relationships, and making decisions their creators never predicted.
+              {t('website.about.originP2')}
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">The Build</h2>
+            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.buildTitle')}</h2>
             <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
-              The entire platform — 95,000 lines of Rust and TypeScript — was built in partnership with
-              Claude AI. Every line of code, every architectural decision, every deployment script.
+              {t('website.about.buildP1')}
             </p>
             <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
-              The engine runs on a single NVIDIA B200 GPU. It processes 500 autonomous Echo lives every
-              9 minutes — each with diary entries, AI-generated cinematic images, voice synthesis, and
-              lip-synced video narration. All in 20 languages.
+              {t('website.about.buildP2')}
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">The Stack</h2>
+            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.stackTitle')}</h2>
             <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-[var(--accent)]">Engine</h3>
+                  <h3 className="mb-2 text-sm font-semibold text-[var(--accent)]">{t('website.about.stackEngine')}</h3>
                   <ul className="space-y-1 text-sm text-[var(--text-secondary)]">
-                    <li>Rust (ECS architecture)</li>
-                    <li>Gemma 4 31B (local LLM)</li>
-                    <li>FLUX.2 Klein (image gen)</li>
-                    <li>VoxCPM2 (voice synthesis)</li>
-                    <li>MuseTalk + LivePortrait (video)</li>
+                    <li>{t('website.about.stackEngine1')}</li>
+                    <li>{t('website.about.stackEngine2')}</li>
+                    <li>{t('website.about.stackEngine3')}</li>
+                    <li>{t('website.about.stackEngine4')}</li>
+                    <li>{t('website.about.stackEngine5')}</li>
                   </ul>
                 </div>
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-[var(--accent)]">Client</h3>
+                  <h3 className="mb-2 text-sm font-semibold text-[var(--accent)]">{t('website.about.stackClient')}</h3>
                   <ul className="space-y-1 text-sm text-[var(--text-secondary)]">
-                    <li>React 19 + TypeScript 6</li>
-                    <li>Tailwind CSS v4</li>
-                    <li>20-language i18n</li>
-                    <li>Real-time WebSocket feeds</li>
-                    <li>NLLB-200 translation sidecar</li>
+                    <li>{t('website.about.stackClient1')}</li>
+                    <li>{t('website.about.stackClient2')}</li>
+                    <li>{t('website.about.stackClient3')}</li>
+                    <li>{t('website.about.stackClient4')}</li>
+                    <li>{t('website.about.stackClient5')}</li>
                   </ul>
                 </div>
               </div>
@@ -102,31 +95,27 @@ export function AboutPage() {
           </section>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">The Vision</h2>
+            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.visionTitle')}</h2>
             <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
-              Multiverse Echoes isn&rsquo;t a game, a virtual world, or a social network. It&rsquo;s a mirror
-              — one that shows you the lives you might have lived. Your Echoes make their own choices. They
-              surprise you. They make you think about the roads not taken.
+              {t('website.about.visionP1')}
             </p>
             <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
-              Three worlds are live: Cyber-Tokyo 2045, Nomad Australia, and Renaissance Florence 1490. Each
-              is a complete simulation with its own culture, economy, and social dynamics. Your Echo
-              doesn&rsquo;t just exist in these worlds — it lives in them.
+              {t('website.about.visionP2')}
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">The Numbers</h2>
+            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.numbersTitle')}</h2>
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="text-center">
                 <p className="text-3xl font-light text-[var(--accent)]">95,000</p>
-                <p className="mt-1 text-sm text-[var(--text-muted)]">lines of code</p>
+                <p className="mt-1 text-sm text-[var(--text-muted)]">{t('website.about.numbersCode')}</p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-light text-[var(--accent)]">
                   {waitlistTotal !== null ? waitlistTotal.toLocaleString() : '—'}
                 </p>
-                <p className="mt-1 text-sm text-[var(--text-muted)]">waitlist signups</p>
+                <p className="mt-1 text-sm text-[var(--text-muted)]">{t('website.about.numbersWaitlist')}</p>
               </div>
             </div>
           </section>

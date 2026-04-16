@@ -78,7 +78,7 @@
     "loginTitle": "Multiverse Echoes میں سائن ان کریں",
     "loginTitleReturning": "خوش آمدید واپس",
     "loginFailed": "ای میل یا پاس ورڈ غلط ہے۔ براہ کرم دوبارہ کوشش کریں۔",
-    "captchaRequired": "Please complete the captcha before continuing.",
+    "captchaRequired": "آگے بڑھنے سے پہلے براہ کرم کیپچا مکمل کریں۔",
     "noAccount": "اکاؤنٹ نہیں ہے؟",
     "createOne": "ایک بنائیں",
     "tosAgree": "میں اس سے متفق ہوں",
@@ -121,8 +121,8 @@
     "passwordsMismatch": "پاس ورڈز آپس میں نہیں ملتے",
     "resetPassword": "پاس ورڈ ری سیٹ کریں",
     "redirectingToLogin": "لاگ ان کی طرف بھیجا جا رہا ہے...",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes کلوزڈ بیٹا میں ہے۔ ارلی ایکسیس کے لیے انتظار کی فہرست میں شامل ہوں۔",
+    "joinWaitlist": "انتظار کی فہرست میں شامل ہوں"
   },
   "onboarding": {
     "welcomeTitle": "ملٹی ورس ایکوز میں خوش آمدید",
@@ -771,7 +771,16 @@
     "socialProofQuote": "سب سے دلچسپ کہانیاں وہ ہوتی ہیں جو آپ نے نہیں لکھیں۔",
     "privacyPolicy": "پرائیویسی پالیسی",
     "termsOfService": "سروس کی شرائط",
-    "footerTagline": "تمام حقوق محفوظ ہیں۔"
+    "footerTagline": "تمام حقوق محفوظ ہیں۔",
+    "metaTitle": "انتظار کی فہرست میں شامل ہوں — Multiverse Echoes",
+    "metaDesc": "ہم کلوزڈ بیٹا میں ہیں۔ انتظار کی فہرست میں شامل ہوں اور جب آپ کی باری آئے گی تو ہم ای میل کریں گے۔",
+    "ogTitle": "انتظار کی فہرست میں شامل ہوں — Multiverse Echoes",
+    "ogDesc": "ہم کلوزڈ بیٹا میں ہیں۔ انتظار کی فہرست میں شامل ہوں اور جب آپ کی باری آئے گی تو ہم ای میل کریں گے۔",
+    "checkEmailTitle": "اپنا ای میل چیک کریں",
+    "checkEmailDesc": "ہم نے {{email}} پر ایک تصدیقی لنک بھیج دیا ہے۔ اپنی جگہ پکی کرنے اور اپنے بارے میں کچھ بتانے کے لیے اس پر کلک کریں۔",
+    "alreadyWaiting": "لوگ پہلے سے انتظار کر رہے ہیں",
+    "haveInviteCode": "کیا آپ کے پاس پہلے سے دعوتی کوڈ ہے؟",
+    "registerHere": "یہاں رجسٹر کریں"
   },
   "errors": {
     "INTERNAL_ERROR": "ہماری طرف سے کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں۔",
@@ -877,11 +886,11 @@
     "narrating": "آواز بنائی جا رہی ہے…",
     "playing": "چل رہا ہے",
     "paused": "موقوف",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "دیکھیں",
+    "generatingVideo": "ویڈیو تیار ہو رہی ہے…",
+    "playingVideo": "ویڈیو چل رہی ہے",
+    "watchAgain": "دوبارہ دیکھیں",
+    "videoError": "ویڈیو ناکام — دوبارہ کوشش کے لیے ٹیپ کریں"
   },
   "activityHints": {
     "contemplative": {
@@ -1097,6 +1106,49 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "اپنی پسند کی زبان منتخب کریں اور آگے بڑھیں"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "اپنا ملٹی ورس منتخب کریں",
+      "subheadline": "ہر ٹیئر مزید متبادل زندگیاں، تیز تر دھڑکنیں، اور آپ کے ایکوز کے ساتھ گہرے تعلقات کھولتا ہے۔"
+    },
+    "about": {
+      "title": "EchoLabsME کے بارے میں — بانی کی کہانی",
+      "metaDesc": "56 سالہ غیر تکنیکی بانی کے ہاتھوں تعمیر شدہ۔ 95,000 سطریں کوڈ۔ Multiverse Echoes کی کہانی۔",
+      "originTitle": "آغاز",
+      "originP1": "فروری 2026 میں، ایک 56 سالہ حکمت عملی مشیر — جنہوں نے کبھی کوڈ کی ایک سطر بھی نہیں لکھی تھی — نے Claude کے ساتھ بیٹھ کر پوچھا: \"اگر آپ اپنا ایک AI نسخہ بنا سکیں، اسے بالکل مختلف زندگی میں ڈال دیں، اور بس… دیکھیں کہ کیا ہوتا ہے؟\"",
+      "originP2": "اس سوال سے Multiverse Echoes نے جنم لیا — ایک خود مختار زندگی کی نقل کا پلیٹ فارم جہاں حقیقی لوگوں کے AI ایکوز موضوعاتی متوازی دنیاؤں میں آزادانہ زندگیاں گزارتے ہیں، ڈائریاں لکھتے ہیں، تعلقات بناتے ہیں، اور ایسے فیصلے کرتے ہیں جن کی ان کے خالقوں نے کبھی توقع نہیں کی تھی۔",
+      "buildTitle": "تعمیر",
+      "buildP1": "پورا پلیٹ فارم — 95,000 سطریں Rust اور TypeScript — Claude AI کے ساتھ مل کر بنایا گیا۔ کوڈ کی ہر سطر، ہر فن تعمیراتی فیصلہ، ہر ڈیپلائمنٹ اسکرپٹ۔",
+      "buildP2": "انجن ایک NVIDIA B200 GPU پر چلتا ہے۔ یہ ہر 9 منٹ میں 500 خود مختار ایکوز کی زندگیاں پراسیس کرتا ہے — ہر ایک میں ڈائری کے اندراجات، AI سے بنائی گئی سنیماٹک تصاویر، آواز کی ترکیب، اور ہونٹوں کے ساتھ ہم آہنگ ویڈیو بیانیہ۔ سب کچھ 20 زبانوں میں۔",
+      "stackTitle": "ٹیکنالوجی اسٹیک",
+      "stackEngine": "انجن",
+      "stackEngine1": "Rust (ECS فن تعمیر)",
+      "stackEngine2": "Gemma 4 31B (لوکل LLM)",
+      "stackEngine3": "FLUX.2 Klein (تصویر سازی)",
+      "stackEngine4": "VoxCPM2 (آواز کی ترکیب)",
+      "stackEngine5": "MuseTalk + LivePortrait (ویڈیو)",
+      "stackClient": "کلائنٹ",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "20 زبانوں میں i18n",
+      "stackClient4": "ریئل ٹائم WebSocket فیڈز",
+      "stackClient5": "NLLB-200 ترجمہ سائیڈ کار",
+      "visionTitle": "وژن",
+      "visionP1": "Multiverse Echoes نہ کوئی کھیل ہے، نہ ورچوئل دنیا، نہ سوشل نیٹ ورک۔ یہ ایک آئینہ ہے — جو آپ کو وہ زندگیاں دکھاتا ہے جو آپ شاید جی سکتے تھے۔ آپ کے ایکوز اپنے فیصلے خود کرتے ہیں۔ وہ آپ کو حیران کرتے ہیں۔ وہ آپ کو ان راستوں کے بارے میں سوچنے پر مجبور کرتے ہیں جو آپ نے نہیں چنے۔",
+      "visionP2": "تین دنیائیں فعال ہیں: Cyber-Tokyo 2045، Nomad Australia، اور Renaissance Florence 1490۔ ہر ایک اپنی ثقافت، معیشت اور سماجی حرکیات کے ساتھ ایک مکمل سیمولیشن ہے۔ آپ کا ایکو ان دنیاؤں میں محض موجود نہیں — وہ ان میں زندگی گزارتا ہے۔",
+      "numbersTitle": "اعداد و شمار",
+      "numbersCode": "سطریں کوڈ",
+      "numbersWaitlist": "انتظار کی فہرست میں اندراجات"
+    },
+    "home": {
+      "metaTitle": "اگر آپ نے کوئی اور راستہ چنا ہوتا تو؟ | Multiverse Echoes",
+      "metaDesc": "اپنا ایک AI نسخہ بنائیں جو متوازی دنیا میں خود مختار زندگی گزارتا ہے۔ خود مختار ڈائری، AI تصاویر، وائس کالز، 20 زبانیں۔",
+      "ogTitle": "Multiverse Echoes — اگر آپ نے کوئی اور راستہ چنا ہوتا تو؟",
+      "ogDesc": "اپنا ایک AI نسخہ بنائیں جو متوازی دنیا میں خود مختار زندگی گزارتا ہے۔ خود مختار ڈائری، AI تصاویر، وائس کالز، 20 زبانیں۔",
+      "socialProofQuote": "“آپ کوئی کھیل نہیں کھیل رہے۔ آپ ایک ایسی متوازی کائنات دیکھ رہے ہیں جو آپ سے شروع ہوئی — اور یہ کبھی ارتقا پذیر ہونا نہیں رکتی، آپ کے سوتے وقت بھی نہیں۔”",
+      "followJourney": "سفر کو فالو کریں",
+      "scrollExplore": "دریافت کرنے کے لیے اسکرول کریں ↓"
     }
   },
   "tiers": {
@@ -1134,7 +1186,77 @@
       "privateShard": "نجی شارڈ",
       "privateShardDesc": "آپ کی اپنی تخلیق کردہ دنیا"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "روزانہ",
+    "echoesSingle": "Echo",
+    "taglineFree": "ایک اور زندگی کی جھلک",
+    "taglineStarter": "آپ کی پہلی متبادل زندگیاں",
+    "taglineCore": "مکمل تجربہ",
+    "taglineCreator": "اپنے ملٹی ورس کی ہدایت کاری کریں",
+    "taglineGodMode": "لامحدود طاقت",
+    "forever": "ہمیشہ کے لیے",
+    "ultimate": "الٹیمیٹ",
+    "getStarted": "شروع کریں",
+    "voiceCallNote": "وائس کال فی سیشن 5 منٹ کی ہوتی ہے۔ آپ کا ٹیئر جتنی اجازت دے روزانہ اتنی شروع کریں۔",
+    "enhanceTiers": "کسی بھی ٹیئر کو بہتر بنائیں۔ کوئی پابندی نہیں — جب چاہیں شامل کریں یا ہٹائیں۔",
+    "enterpriseDesc": "50 سے زائد ایکوز، مخصوص بنیادی ڈھانچہ، SLA ضمانتیں، اور آپ کی تنظیم کے لیے حسب ضرورت شارڈ کی تیاری۔",
+    "footerNoteLine1": "تمام قیمتیں USD میں ہیں۔ کسی بھی وقت منسوخ کریں۔ ایڈ آنز کسی بھی وقت تبدیل کیے جا سکتے ہیں۔",
+    "footerNoteLine2": "مفت ٹیئر میں اشتہارات شامل ہیں۔ تمام ادائیگی والے ٹیئرز مکمل طور پر اشتہارات سے پاک ہیں۔",
+    "footerNoteLine3": "مفت دھڑکن: صبح ایک ڈائری، شام کو ایک — آپ کے ٹائم زون کے مطابق۔",
+    "addonLabel": "ایڈ آن",
+    "showcase": "شوکیس",
+    "features": {
+      "1echoPublic": "1 عوامی شارڈ میں ایکو",
+      "diaryAmPm": "صبح اور شام کی ڈائری",
+      "aiPortraits": "AI سے بنائے گئے پورٹریٹ",
+      "conversations": "گفتگو",
+      "nudges": "نَجز",
+      "3echoes": "کسی بھی شارڈ میں 3 ایکوز",
+      "diary2hr": "ہر 2 گھنٹے میں نئی ڈائری",
+      "5conv": "5 گفتگو / دن",
+      "3nudges": "3 نَجز / دن",
+      "adFree": "اشتہارات سے پاک تجربہ",
+      "5echoes": "کسی بھی شارڈ میں 5 ایکوز",
+      "diary30m": "ہر 30 منٹ میں نئی ڈائری",
+      "10conv": "10 گفتگو / دن",
+      "10nudges": "10 نَجز / دن",
+      "privateShard": "نجی شارڈ",
+      "8echoes": "کسی بھی شارڈ میں 8 ایکوز",
+      "diary15m": "ہر 15 منٹ میں نئی ڈائری",
+      "20conv": "20 گفتگو / دن",
+      "20nudges": "20 نَجز / دن",
+      "1privateShard": "1 نجی شارڈ شامل",
+      "12echoes": "کسی بھی شارڈ میں 12 ایکوز",
+      "diary5m": "ہر 5 منٹ میں نئی ڈائری",
+      "unlimitedConv": "لامحدود گفتگو",
+      "unlimitedNudges": "لامحدود نَجز",
+      "3privateShards": "3 نجی شارڈز شامل",
+      "priorityInference": "ترجیحی انفرنس"
+    },
+    "showcaseText": {
+      "2vid": "2 ویڈیو ڈائری / دن",
+      "2voice": "2 وائس کال / دن",
+      "6vid": "6 ویڈیو ڈائری / دن",
+      "6voice": "6 وائس کال / دن",
+      "10vid": "10 ویڈیو ڈائری / دن",
+      "10voice": "10 وائس کال / دن",
+      "16vid": "16 ویڈیو ڈائری / دن",
+      "16voice": "16 وائس کال / دن",
+      "unlimitedVid": "لامحدود ویڈیو ڈائری",
+      "unlimitedVoice": "لامحدود وائس کالز"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "حسب ضرورت ایکو حدود",
+      "customHeartbeat": "حسب ضرورت دھڑکن",
+      "dedicatedSupport": "مخصوص معاونت",
+      "slaGuarantees": "SLA ضمانتیں",
+      "apiAccess": "API تک رسائی"
+    },
+    "showcases": {
+      "2vid2voice": "2 ویڈیو ڈائری / دن، 2 وائس کال / دن",
+      "6vid6voice": "6 ویڈیو ڈائری / دن، 6 وائس کال / دن",
+      "10vid10voice": "10 ویڈیو ڈائری / دن، 10 وائس کال / دن",
+      "16vid16voice": "16 ویڈیو ڈائری / دن، 16 وائس کال / دن",
+      "unlimitedVidVoice": "لامحدود ویڈیو ڈائری، لامحدود وائس کالز"
+    }
   }
 }

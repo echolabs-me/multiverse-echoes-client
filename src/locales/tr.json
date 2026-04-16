@@ -78,7 +78,7 @@
     "loginTitle": "Multiverse Echoes'a giriş yapın",
     "loginTitleReturning": "Tekrar hoş geldin",
     "loginFailed": "Geçersiz e-posta veya şifre. Lütfen tekrar deneyin.",
-    "captchaRequired": "Please complete the captcha before continuing.",
+    "captchaRequired": "Devam etmeden önce lütfen captcha'yı tamamlayın.",
     "noAccount": "Hesabınız yok mu?",
     "createOne": "Bir tane oluşturun",
     "tosAgree": "Şunları kabul ediyorum:",
@@ -121,8 +121,8 @@
     "passwordsMismatch": "Şifreler eşleşmiyor",
     "resetPassword": "Şifreyi sıfırla",
     "redirectingToLogin": "Giriş sayfasına yönlendiriliyorsunuz...",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes kapalı beta aşamasındadır. Erken erişim için bekleme listesine katılın.",
+    "joinWaitlist": "Bekleme Listesine Katıl"
   },
   "onboarding": {
     "welcomeTitle": "Multiverse Echoes'a Hoş Geldiniz",
@@ -771,7 +771,16 @@
     "socialProofQuote": "\"En ilginç hikayeler, senin yazmadıklarındır.\"",
     "privacyPolicy": "Gizlilik Politikası",
     "termsOfService": "Hizmet Şartları",
-    "footerTagline": "Tüm hakları saklıdır."
+    "footerTagline": "Tüm hakları saklıdır.",
+    "metaTitle": "Bekleme Listesine Katıl — Multiverse Echoes",
+    "metaDesc": "Kapalı beta aşamasındayız. Bekleme listesine katılın, sıranız geldiğinde size e-posta göndereceğiz.",
+    "ogTitle": "Bekleme Listesine Katıl — Multiverse Echoes",
+    "ogDesc": "Kapalı beta aşamasındayız. Bekleme listesine katılın, sıranız geldiğinde size e-posta göndereceğiz.",
+    "checkEmailTitle": "E-postanızı kontrol edin",
+    "checkEmailDesc": "{{email}} adresine bir doğrulama bağlantısı gönderdik. Yerinizi onaylamak ve kendiniz hakkında biraz bilgi vermek için bağlantıya tıklayın.",
+    "alreadyWaiting": "kişi zaten bekliyor",
+    "haveInviteCode": "Zaten bir davet kodunuz mu var?",
+    "registerHere": "Buradan kayıt olun"
   },
   "errors": {
     "INTERNAL_ERROR": "Bizim tarafımızda bir sorun oluştu. Lütfen tekrar deneyin.",
@@ -877,11 +886,11 @@
     "narrating": "Ses oluşturuluyor…",
     "playing": "Çalıyor",
     "paused": "Duraklatıldı",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "İzle",
+    "generatingVideo": "Video oluşturuluyor…",
+    "playingVideo": "Video oynatılıyor",
+    "watchAgain": "Tekrar izle",
+    "videoError": "Video başarısız — tekrar denemek için dokunun"
   },
   "activityHints": {
     "contemplative": {
@@ -1097,6 +1106,49 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "Devam etmek için dilinizi seçin"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "Çoklu Evreninizi Seçin",
+      "subheadline": "Her kademe daha fazla alternatif hayat, daha hızlı kalp atışları ve Echo'larınızla daha derin bağlar sunar."
+    },
+    "about": {
+      "title": "EchoLabsME Hakkında — Kurucu Hikayesi",
+      "metaDesc": "56 yaşında, teknik geçmişi olmayan bir kurucu tarafından geliştirildi. 95.000 satır kod. Multiverse Echoes'un hikayesi.",
+      "originTitle": "Başlangıç",
+      "originP1": "Şubat 2026'da, daha önce hiç bir satır kod yazmamış 56 yaşında bir strateji danışmanı, Claude ile oturup şunu sordu: \"Ya kendinin bir yapay zeka versiyonunu oluşturup, onu tamamen farklı bir hayatın içine bırakabilsen ve sadece... ne olduğunu izlesen?\"",
+      "originP2": "Bu soru Multiverse Echoes'a dönüştü — gerçek insanların yapay zeka Yankılarının temalı paralel dünyalarda bağımsız yaşamlar sürdüğü, günlükler yazdığı, ilişkiler kurduğu ve yaratıcılarının asla öngöremediği kararlar aldığı bir Otonom Yaşam Simülasyon Platformu.",
+      "buildTitle": "Geliştirme Süreci",
+      "buildP1": "Tüm platform — 95.000 satır Rust ve TypeScript — Claude AI ile ortaklaşa geliştirildi. Her satır kod, her mimari karar, her dağıtım betiği.",
+      "buildP2": "Motor, tek bir NVIDIA B200 GPU üzerinde çalışır. Her 9 dakikada 500 otonom Echo yaşamını işler — her biri günlük girişleri, yapay zeka ile üretilmiş sinematik görseller, ses sentezi ve dudak senkronlu video anlatımıyla. Tamamı 20 dilde.",
+      "stackTitle": "Teknoloji Yığını",
+      "stackEngine": "Motor",
+      "stackEngine1": "Rust (ECS architecture)",
+      "stackEngine2": "Gemma 4 31B (local LLM)",
+      "stackEngine3": "FLUX.2 Klein (image gen)",
+      "stackEngine4": "VoxCPM2 (voice synthesis)",
+      "stackEngine5": "MuseTalk + LivePortrait (video)",
+      "stackClient": "İstemci",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "20 dilde i18n",
+      "stackClient4": "Gerçek zamanlı WebSocket akışları",
+      "stackClient5": "NLLB-200 çeviri servisi",
+      "visionTitle": "Vizyon",
+      "visionP1": "Multiverse Echoes bir oyun, sanal dünya veya sosyal ağ değildir. Bir aynadır — yaşamış olabileceğiniz hayatları gösteren bir ayna. Echo'larınız kendi kararlarını verir. Sizi şaşırtırlar. Seçmediğiniz yolları düşündürürler.",
+      "visionP2": "Üç dünya aktif: Siber-Tokyo 2045, Nomad Avustralya ve Rönesans Floransa 1490. Her biri kendi kültürü, ekonomisi ve sosyal dinamikleriyle eksiksiz bir simülasyondur. Echo'nuz bu dünyalarda sadece var olmaz — onların içinde yaşar.",
+      "numbersTitle": "Rakamlar",
+      "numbersCode": "satır kod",
+      "numbersWaitlist": "bekleme listesi kaydı"
+    },
+    "home": {
+      "metaTitle": "Ya farklı bir yol seçseydiniz? | Multiverse Echoes",
+      "metaDesc": "Paralel bir dünyada otonom bir hayat süren yapay zeka versiyonunuzu oluşturun. Otonom günlük, yapay zeka görselleri, sesli aramalar, 20 dil.",
+      "ogTitle": "Multiverse Echoes — Ya farklı bir yol seçseydiniz?",
+      "ogDesc": "Paralel bir dünyada otonom bir hayat süren yapay zeka versiyonunuzu oluşturun. Otonom günlük, yapay zeka görselleri, sesli aramalar, 20 dil.",
+      "socialProofQuote": "\"Bir oyun oynamıyorsunuz. Sizinle başlayan bir paralel evreni izliyorsunuz — ve siz uyurken bile gelişmeyi asla bırakmıyor.\"",
+      "followJourney": "Yolculuğu takip edin",
+      "scrollExplore": "Keşfetmek için kaydırın ↓"
     }
   },
   "tiers": {
@@ -1134,7 +1186,77 @@
       "privateShard": "Özel Parça",
       "privateShardDesc": "Kendi özel dünyan"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "Günlük",
+    "echoesSingle": "Echo",
+    "taglineFree": "Başka bir hayata bir bakış",
+    "taglineStarter": "İlk alternatif hayatlarınız",
+    "taglineCore": "Eksiksiz deneyim",
+    "taglineCreator": "Çoklu evreninizi yönetin",
+    "taglineGodMode": "Sınırsız güç",
+    "forever": "sonsuza dek",
+    "ultimate": "Ultimate",
+    "getStarted": "Başlayın",
+    "voiceCallNote": "Sesli aramalar oturum başına 5 dakikadır. Kademedizin izin verdiği kadar günlük arama başlatabilirsiniz.",
+    "enhanceTiers": "Herhangi bir kademeyi geliştirin. Taahhüt yok — istediğiniz zaman ekleyin veya kaldırın.",
+    "enterpriseDesc": "50'den fazla Echo, özel altyapı, SLA garantileri ve kuruluşunuz için özel Shard geliştirme.",
+    "footerNoteLine1": "Tüm fiyatlar USD cinsindendir. İstediğiniz zaman iptal edin. Eklentiler her zaman ayarlanabilir.",
+    "footerNoteLine2": "Ücretsiz kademe reklam içerir. Tüm ücretli kademeler tamamen reklamsızdır.",
+    "footerNoteLine3": "Ücretsiz kalp atışı: sabah bir günlük, akşam bir günlük — saat diliminize göre.",
+    "addonLabel": "EKLENTİ",
+    "showcase": "Vitrin",
+    "features": {
+      "1echoPublic": "Herkese açık bir Shard'da 1 Echo",
+      "diaryAmPm": "Sabah ve akşam günlüğü",
+      "aiPortraits": "Yapay zeka ile oluşturulan portreler",
+      "conversations": "Sohbetler",
+      "nudges": "Dürtmeler",
+      "3echoes": "Herhangi bir Shard'da 3 Echo",
+      "diary2hr": "Her 2 saatte yeni günlük",
+      "5conv": "Günde 5 sohbet",
+      "3nudges": "Günde 3 dürtme",
+      "adFree": "Reklamsız deneyim",
+      "5echoes": "Herhangi bir Shard'da 5 Echo",
+      "diary30m": "Her 30 dakikada yeni günlük",
+      "10conv": "Günde 10 sohbet",
+      "10nudges": "Günde 10 dürtme",
+      "privateShard": "Özel Shard",
+      "8echoes": "Herhangi bir Shard'da 8 Echo",
+      "diary15m": "Her 15 dakikada yeni günlük",
+      "20conv": "Günde 20 sohbet",
+      "20nudges": "Günde 20 dürtme",
+      "1privateShard": "1 Özel Shard dahil",
+      "12echoes": "Herhangi bir Shard'da 12 Echo",
+      "diary5m": "Her 5 dakikada yeni günlük",
+      "unlimitedConv": "Sınırsız sohbet",
+      "unlimitedNudges": "Sınırsız dürtme",
+      "3privateShards": "3 Özel Shard dahil",
+      "priorityInference": "Öncelikli işleme"
+    },
+    "showcaseText": {
+      "2vid": "Günde 2 video günlük",
+      "2voice": "Günde 2 sesli arama",
+      "6vid": "Günde 6 video günlük",
+      "6voice": "Günde 6 sesli arama",
+      "10vid": "Günde 10 video günlük",
+      "10voice": "Günde 10 sesli arama",
+      "16vid": "Günde 16 video günlük",
+      "16voice": "Günde 16 sesli arama",
+      "unlimitedVid": "Sınırsız video günlük",
+      "unlimitedVoice": "Sınırsız sesli arama"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "Özel Echo limitleri",
+      "customHeartbeat": "Özel kalp atışı",
+      "dedicatedSupport": "Özel destek",
+      "slaGuarantees": "SLA garantileri",
+      "apiAccess": "API erişimi"
+    },
+    "showcases": {
+      "2vid2voice": "Günde 2 video günlük, Günde 2 sesli arama",
+      "6vid6voice": "Günde 6 video günlük, Günde 6 sesli arama",
+      "10vid10voice": "Günde 10 video günlük, Günde 10 sesli arama",
+      "16vid16voice": "Günde 16 video günlük, Günde 16 sesli arama",
+      "unlimitedVidVoice": "Sınırsız video günlük, Sınırsız sesli arama"
+    }
   }
 }

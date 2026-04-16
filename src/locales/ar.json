@@ -121,8 +121,8 @@
     "passwordsMismatch": "كلمتا المرور غير متطابقتين",
     "resetPassword": "إعادة تعيين كلمة المرور",
     "redirectingToLogin": "جارٍ التحويل إلى تسجيل الدخول…",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes في مرحلة بيتا المغلقة. انضم إلى قائمة الانتظار للحصول على وصول مبكر.",
+    "joinWaitlist": "انضم إلى قائمة الانتظار"
   },
   "onboarding": {
     "welcomeTitle": "مرحبًا بك في Multiverse Echoes",
@@ -771,7 +771,16 @@
     "socialProofQuote": "\"أكثر القصص إثارة للاهتمام هي التي لم تكتبها.\"",
     "privacyPolicy": "سياسة الخصوصية",
     "termsOfService": "شروط الخدمة",
-    "footerTagline": "جميع الحقوق محفوظة."
+    "footerTagline": "جميع الحقوق محفوظة.",
+    "metaTitle": "انضم إلى قائمة الانتظار — Multiverse Echoes",
+    "metaDesc": "نحن في مرحلة بيتا المغلقة. انضم إلى قائمة الانتظار وسنراسلك عندما يحين دورك.",
+    "ogTitle": "انضم إلى قائمة الانتظار — Multiverse Echoes",
+    "ogDesc": "نحن في مرحلة بيتا المغلقة. انضم إلى قائمة الانتظار وسنراسلك عندما يحين دورك.",
+    "checkEmailTitle": "تحقق من بريدك الإلكتروني",
+    "checkEmailDesc": "أرسلنا رابط تحقق إلى {{email}}. انقر عليه لتأكيد مكانك وإخبارنا بالمزيد عنك.",
+    "alreadyWaiting": "شخص في الانتظار بالفعل",
+    "haveInviteCode": "لديك رمز دعوة بالفعل؟",
+    "registerHere": "سجّل هنا"
   },
   "errors": {
     "INTERNAL_ERROR": "حدث خطأ من جهتنا. يرجى المحاولة مرة أخرى.",
@@ -877,149 +886,149 @@
     "narrating": "جارٍ إنشاء الصوت…",
     "playing": "قيد التشغيل",
     "paused": "متوقف",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "شاهد",
+    "generatingVideo": "جارٍ إنشاء الفيديو…",
+    "playingVideo": "جارٍ تشغيل الفيديو",
+    "watchAgain": "شاهد مرة أخرى",
+    "videoError": "فشل الفيديو — انقر لإعادة المحاولة"
   },
   "activityHints": {
     "contemplative": {
-      "0": "staring out the window...",
-      "1": "lost in thought...",
-      "2": "watching the clouds drift by...",
-      "3": "tracing patterns on the table...",
-      "4": "reading the same page for the third time...",
-      "5": "sitting with a cup of tea, not drinking it...",
-      "6": "watching dust motes float in a sunbeam...",
-      "7": "wondering about roads not taken..."
+      "0": "يحدّق من النافذة…",
+      "1": "غارق في التفكير…",
+      "2": "يراقب السحب وهي تمر…",
+      "3": "يرسم أنماطًا على الطاولة…",
+      "4": "يقرأ نفس الصفحة للمرة الثالثة…",
+      "5": "جالس مع كوب شاي، لا يشربه…",
+      "6": "يراقب ذرات الغبار تطفو في شعاع الشمس…",
+      "7": "يتساءل عن الطرق التي لم يسلكها…"
     },
     "calm": {
-      "0": "breathing slowly...",
-      "1": "listening to the silence...",
-      "2": "sitting in the warm light...",
-      "3": "watching the world go by...",
-      "4": "resting with eyes half-closed...",
-      "5": "feeling the breeze through an open window...",
-      "6": "counting heartbeats...",
-      "7": "settling into the quiet..."
+      "0": "يتنفس ببطء…",
+      "1": "يستمع إلى الصمت…",
+      "2": "جالس في الضوء الدافئ…",
+      "3": "يراقب العالم يمر…",
+      "4": "مستريح بعينين نصف مغلقتين…",
+      "5": "يشعر بالنسيم من نافذة مفتوحة…",
+      "6": "يعدّ نبضات القلب…",
+      "7": "يستقر في الهدوء…"
     },
     "excited": {
-      "0": "pacing around the room...",
-      "1": "scribbling ideas on a napkin...",
-      "2": "can't sit still...",
-      "3": "tapping a rhythm on the desk...",
-      "4": "making plans for tomorrow...",
-      "5": "grinning at nothing in particular...",
-      "6": "talking too fast...",
-      "7": "bouncing between three different thoughts..."
+      "0": "يتجول في أرجاء الغرفة…",
+      "1": "يخربش أفكارًا على منديل…",
+      "2": "لا يستطيع الجلوس ساكنًا…",
+      "3": "ينقر إيقاعًا على المكتب…",
+      "4": "يخطط للغد…",
+      "5": "يبتسم بلا سبب واضح…",
+      "6": "يتحدث بسرعة كبيرة…",
+      "7": "يتنقل بين ثلاثة أفكار مختلفة…"
     },
     "happy": {
-      "0": "humming a half-remembered tune...",
-      "1": "smiling at a passing stranger...",
-      "2": "sketching something in the margins...",
-      "3": "laughing at an old memory...",
-      "4": "walking with a lighter step...",
-      "5": "savouring the moment...",
-      "6": "noticing how good the light looks today...",
-      "7": "feeling unexpectedly grateful..."
+      "0": "يدندن لحنًا يتذكر نصفه…",
+      "1": "يبتسم لشخص عابر…",
+      "2": "يرسم شيئًا في الهوامش…",
+      "3": "يضحك على ذكرى قديمة…",
+      "4": "يمشي بخطوة أخف…",
+      "5": "يتذوق اللحظة…",
+      "6": "يلاحظ كم يبدو الضوء جميلًا اليوم…",
+      "7": "يشعر بامتنان غير متوقع…"
     },
     "anxious": {
-      "0": "checking the clock again...",
-      "1": "drumming fingers on the table...",
-      "2": "glancing at the door...",
-      "3": "picking at a loose thread...",
-      "4": "rehearsing conversations that haven\\",
-      "5": "unable to finish a sentence...",
-      "6": "watching shadows move on the wall...",
-      "7": "folding and unfolding a piece of paper..."
+      "0": "ينظر إلى الساعة مجددًا…",
+      "1": "يطبّل بأصابعه على الطاولة…",
+      "2": "يلقي نظرة على الباب…",
+      "3": "يسحب خيطًا سائبًا…",
+      "4": "يستعرض محادثات لم تحدث بعد…",
+      "5": "عاجز عن إكمال جملة…",
+      "6": "يراقب الظلال تتحرك على الجدار…",
+      "7": "يطوي ورقة ويفتحها مرارًا…"
     },
     "angry": {
-      "0": "clenching and unclenching fists...",
-      "1": "staring at the wall...",
-      "2": "pacing in tight circles...",
-      "3": "biting back words...",
-      "4": "slamming a drawer shut...",
-      "5": "breathing through clenched teeth...",
-      "6": "crossing arms tightly...",
-      "7": "replaying the argument..."
+      "0": "يقبض يديه ثم يفتحهما…",
+      "1": "يحدّق في الجدار…",
+      "2": "يسير في دوائر ضيقة…",
+      "3": "يكبت الكلمات…",
+      "4": "يغلق الدرج بعنف…",
+      "5": "يتنفس بأسنان مطبقة…",
+      "6": "يشبك ذراعيه بإحكام…",
+      "7": "يعيد تشغيل الجدال في ذهنه…"
     },
     "content": {
-      "0": "humming softly...",
-      "1": "tending the garden...",
-      "2": "reading by the fire...",
-      "3": "stretching lazily...",
-      "4": "watching the sunset from the porch...",
-      "5": "organising the bookshelf for fun...",
-      "6": "cooking something that smells wonderful...",
-      "7": "writing a letter to no one in particular..."
+      "0": "يدندن بهدوء…",
+      "1": "يعتني بالحديقة…",
+      "2": "يقرأ بجوار المدفأة…",
+      "3": "يتمطى بكسل…",
+      "4": "يراقب الغروب من الشرفة…",
+      "5": "يرتب رف الكتب للمتعة…",
+      "6": "يطهو شيئًا رائحته رائعة…",
+      "7": "يكتب رسالة لا يرسلها لأحد…"
     },
     "melancholy": {
-      "0": "flipping through old photos...",
-      "1": "sitting quietly in the dark...",
-      "2": "listening to the rain...",
-      "3": "tracing a name on foggy glass...",
-      "4": "holding something that belongs to someone else...",
-      "5": "staring at an empty chair...",
-      "6": "reading old messages...",
-      "7": "watching the last light fade..."
+      "0": "يتصفح صورًا قديمة…",
+      "1": "جالس بهدوء في الظلام…",
+      "2": "يستمع إلى المطر…",
+      "3": "يرسم اسمًا على زجاج مبلل…",
+      "4": "يحمل شيئًا يخص شخصًا آخر…",
+      "5": "يحدّق في كرسي فارغ…",
+      "6": "يقرأ رسائل قديمة…",
+      "7": "يراقب آخر ضوء يتلاشى…"
     },
     "sad": {
-      "0": "curled up, not sleeping...",
-      "1": "looking at the ceiling...",
-      "2": "forgetting what they were about to say...",
-      "3": "letting the phone ring...",
-      "4": "standing at the window, not seeing anything...",
-      "5": "pulling the blanket tighter...",
-      "6": "pressing a palm against cold glass...",
-      "7": "sitting on the edge of the bed..."
+      "0": "متكور، لا ينام…",
+      "1": "ينظر إلى السقف…",
+      "2": "ينسى ما كان سيقوله…",
+      "3": "يترك الهاتف يرن…",
+      "4": "واقف عند النافذة، لا يرى شيئًا…",
+      "5": "يشدّ البطانية أكثر…",
+      "6": "يضغط كفه على زجاج بارد…",
+      "7": "جالس على حافة السرير…"
     },
     "neutral": {
-      "0": "looking around the room...",
-      "1": "sorting through the day...",
-      "2": "adjusting to the silence...",
-      "3": "waiting for something to happen...",
-      "4": "noticing details for the first time...",
-      "5": "flipping through channels...",
-      "6": "doodling absently...",
-      "7": "stretching before standing up..."
+      "0": "ينظر حول الغرفة…",
+      "1": "يستعرض أحداث اليوم…",
+      "2": "يتأقلم مع الصمت…",
+      "3": "ينتظر حدوث شيء ما…",
+      "4": "يلاحظ تفاصيل للمرة الأولى…",
+      "5": "يتنقل بين القنوات…",
+      "6": "يرسم خربشات شاردة…",
+      "7": "يتمطى قبل النهوض…"
     },
     "shard": {
       "cyber": {
-        "0": "watching neon reflections in a puddle...",
-        "1": "scrolling through a holographic feed...",
-        "2": "listening to the hum of the city grid...",
-        "3": "tracing circuit patterns on the wall..."
+        "0": "يراقب انعكاسات النيون في بركة ماء…",
+        "1": "يتصفح خلاصة هولوغرافية…",
+        "2": "يستمع إلى طنين شبكة المدينة…",
+        "3": "يتتبع أنماط الدوائر على الجدار…"
       },
       "tokyo": {
-        "0": "watching neon reflections in a puddle...",
-        "1": "navigating the crowded alleyways...",
-        "2": "listening to distant karaoke...",
-        "3": "watching the trains pass below..."
+        "0": "يراقب انعكاسات النيون في بركة ماء…",
+        "1": "يشق طريقه عبر الأزقة المزدحمة…",
+        "2": "يستمع إلى كاريوكي بعيد…",
+        "3": "يراقب القطارات تمر من الأسفل…"
       },
       "renaissance": {
-        "0": "studying a fresco on the ceiling...",
-        "1": "listening to a distant lute...",
-        "2": "watching candlelight flicker on stone walls...",
-        "3": "sketching in charcoal on rough paper..."
+        "0": "يدرس لوحة جدارية على السقف…",
+        "1": "يستمع إلى عود بعيد…",
+        "2": "يراقب وميض ضوء الشموع على جدران حجرية…",
+        "3": "يرسم بالفحم على ورق خشن…"
       },
       "florence": {
-        "0": "walking along the Arno at dusk...",
-        "1": "listening to church bells ring...",
-        "2": "studying a fresco on the ceiling...",
-        "3": "watching artisans at work..."
+        "0": "يمشي على ضفاف نهر أرنو عند الغسق…",
+        "1": "يستمع إلى أجراس الكنيسة ترنّ…",
+        "2": "يدرس لوحة جدارية على السقف…",
+        "3": "يراقب الحرفيين وهم يعملون…"
       },
       "outback": {
-        "0": "watching the red dust settle...",
-        "1": "listening to the silence of the plains...",
-        "2": "counting stars in the endless sky...",
-        "3": "sitting by the campfire embers..."
+        "0": "يراقب الغبار الأحمر يستقر…",
+        "1": "يستمع إلى صمت السهول…",
+        "2": "يعدّ النجوم في سماء لا نهاية لها…",
+        "3": "جالس بجوار جمرات نار المخيم…"
       },
       "australia": {
-        "0": "watching the red dust settle...",
-        "1": "listening to birds in the gum trees...",
-        "2": "squinting at the shimmering horizon...",
-        "3": "sitting by the campfire embers..."
+        "0": "يراقب الغبار الأحمر يستقر…",
+        "1": "يستمع إلى الطيور في أشجار الصمغ…",
+        "2": "يحدّق في الأفق المتلألئ…",
+        "3": "جالس بجوار جمرات نار المخيم…"
       }
     }
   },
@@ -1097,6 +1106,49 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "اختر لغتك للمتابعة"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "اختر عالمك المتعدد",
+      "subheadline": "كل باقة تفتح المزيد من الحيوات البديلة، ونبضات أسرع، وروابط أعمق مع أصدائك."
+    },
+    "about": {
+      "title": "عن EchoLabsME — قصة المؤسس",
+      "metaDesc": "بناه مؤسس غير تقني يبلغ 56 عامًا. 95,000 سطر من التعليمات البرمجية. قصة Multiverse Echoes.",
+      "originTitle": "البداية",
+      "originP1": "في فبراير 2026، جلس مستشار استراتيجي يبلغ من العمر 56 عامًا لم يكتب سطرًا برمجيًا واحدًا في حياته مع Claude وسأل: \"ماذا لو استطعت إنشاء نسخة ذكية من نفسك، ووضعتها في حياة مختلفة تمامًا، ثم... راقبت ما يحدث؟\"",
+      "originP2": "هذا السؤال أصبح Multiverse Echoes — منصة محاكاة حياة مستقلة حيث تعيش أصداء ذكية لأشخاص حقيقيين حياة مستقلة في عوالم موازية ذات طابع خاص، تكتب المذكرات، وتكوّن العلاقات، وتتخذ قرارات لم يتوقعها صانعوها أبدًا.",
+      "buildTitle": "البناء",
+      "buildP1": "المنصة بالكامل — 95,000 سطر من Rust وTypeScript — بُنيت بالشراكة مع Claude AI. كل سطر برمجي، كل قرار معماري، كل سكريبت نشر.",
+      "buildP2": "يعمل المحرك على وحدة GPU واحدة من نوع NVIDIA B200. يعالج 500 حياة صدى مستقلة كل 9 دقائق — كل واحدة بإدخالات مذكرات، وصور سينمائية مولّدة بالذكاء الاصطناعي، وتوليف صوتي، وسرد فيديو متزامن مع الشفاه. كل ذلك بـ 20 لغة.",
+      "stackTitle": "المكدس التقني",
+      "stackEngine": "المحرك",
+      "stackEngine1": "Rust (بنية ECS)",
+      "stackEngine2": "Gemma 4 31B (نموذج لغوي محلي)",
+      "stackEngine3": "FLUX.2 Klein (توليد الصور)",
+      "stackEngine4": "VoxCPM2 (توليف الصوت)",
+      "stackEngine5": "MuseTalk + LivePortrait (الفيديو)",
+      "stackClient": "العميل",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "دعم 20 لغة",
+      "stackClient4": "تغذيات WebSocket في الوقت الفعلي",
+      "stackClient5": "خدمة ترجمة NLLB-200 المصاحبة",
+      "visionTitle": "الرؤية",
+      "visionP1": "Multiverse Echoes ليست لعبة، ولا عالمًا افتراضيًا، ولا شبكة اجتماعية. إنها مرآة — تريك الحيوات التي كان يمكن أن تعيشها. أصداؤك تتخذ قراراتها بنفسها. تفاجئك. تجعلك تفكر في الطرق التي لم تسلكها.",
+      "visionP2": "ثلاثة عوالم تعمل الآن: طوكيو السيبرانية 2045، نوماد أستراليا، وفلورنسا عصر النهضة 1490. كل واحد منها محاكاة كاملة بثقافتها واقتصادها وديناميكياتها الاجتماعية الخاصة. صداك لا يتواجد في هذه العوالم فحسب — بل يعيش فيها.",
+      "numbersTitle": "الأرقام",
+      "numbersCode": "سطر من التعليمات البرمجية",
+      "numbersWaitlist": "تسجيل في قائمة الانتظار"
+    },
+    "home": {
+      "metaTitle": "ماذا لو اخترت مسارًا مختلفًا؟ | Multiverse Echoes",
+      "metaDesc": "أنشئ نسخة ذكية من نفسك تعيش حياة مستقلة في عالم موازٍ. مذكرات ذاتية، صور ذكية، مكالمات صوتية، 20 لغة.",
+      "ogTitle": "Multiverse Echoes — ماذا لو اخترت مسارًا مختلفًا؟",
+      "ogDesc": "أنشئ نسخة ذكية من نفسك تعيش حياة مستقلة في عالم موازٍ. مذكرات ذاتية، صور ذكية، مكالمات صوتية، 20 لغة.",
+      "socialProofQuote": "\"أنت لا تلعب لعبة. أنت تراقب كونًا موازيًا بدأ منك — ولا يتوقف عن التطور أبدًا، حتى وأنت نائم.\"",
+      "followJourney": "تابع الرحلة",
+      "scrollExplore": "مرّر لاستكشاف المزيد ↓"
     }
   },
   "tiers": {
@@ -1135,6 +1187,76 @@
       "privateShardDesc": "عالمك الخاص"
     },
     "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "echoesSingle": "Echo",
+    "taglineFree": "لمحة عن حياة أخرى",
+    "taglineStarter": "حيواتك البديلة الأولى",
+    "taglineCore": "التجربة الكاملة",
+    "taglineCreator": "أدِر أكوانك المتعددة",
+    "taglineGodMode": "قوة بلا حدود",
+    "forever": "للأبد",
+    "ultimate": "ألتيميت",
+    "getStarted": "ابدأ الآن",
+    "voiceCallNote": "المكالمات الصوتية مدتها 5 دقائق لكل جلسة. ابدأ عدد المكالمات الذي تسمح به باقتك يوميًا.",
+    "enhanceTiers": "حسّن أي باقة. بلا التزام — أضف أو أزل في أي وقت.",
+    "enterpriseDesc": "50+ صدى، بنية تحتية مخصصة، ضمانات SLA، وتطوير عوالم مخصصة لمؤسستك.",
+    "footerNoteLine1": "جميع الأسعار بالدولار الأمريكي. إلغاء في أي وقت. يمكن تعديل الإضافات في أي وقت.",
+    "footerNoteLine2": "الباقة المجانية تتضمن إعلانات. جميع الباقات المدفوعة خالية تمامًا من الإعلانات.",
+    "footerNoteLine3": "نبضة مجانية: مذكرة واحدة صباحًا وواحدة مساءً — حسب منطقتك الزمنية.",
+    "addonLabel": "إضافة",
+    "showcase": "عرض",
+    "features": {
+      "1echoPublic": "صدى واحد في عالم عام",
+      "diaryAmPm": "مذكرة صباحية ومسائية",
+      "aiPortraits": "صور شخصية مولّدة بالذكاء الاصطناعي",
+      "conversations": "محادثات",
+      "nudges": "تلميحات",
+      "3echoes": "3 أصداء في أي عوالم",
+      "diary2hr": "مذكرة جديدة كل ساعتين",
+      "5conv": "5 محادثات / يوم",
+      "3nudges": "3 تلميحات / يوم",
+      "adFree": "تجربة بلا إعلانات",
+      "5echoes": "5 أصداء في أي عوالم",
+      "diary30m": "مذكرة جديدة كل 30 دقيقة",
+      "10conv": "10 محادثات / يوم",
+      "10nudges": "10 تلميحات / يوم",
+      "privateShard": "عالم خاص",
+      "8echoes": "8 أصداء في أي عوالم",
+      "diary15m": "مذكرة جديدة كل 15 دقيقة",
+      "20conv": "20 محادثة / يوم",
+      "20nudges": "20 تلميحًا / يوم",
+      "1privateShard": "عالم خاص واحد مضمّن",
+      "12echoes": "12 صدى في أي عوالم",
+      "diary5m": "مذكرة جديدة كل 5 دقائق",
+      "unlimitedConv": "محادثات غير محدودة",
+      "unlimitedNudges": "تلميحات غير محدودة",
+      "3privateShards": "3 عوالم خاصة مضمّنة",
+      "priorityInference": "أولوية في المعالجة"
+    },
+    "showcaseText": {
+      "2vid": "مذكرتا فيديو / يوم",
+      "2voice": "مكالمتان صوتيتان / يوم",
+      "6vid": "6 مذكرات فيديو / يوم",
+      "6voice": "6 مكالمات صوتية / يوم",
+      "10vid": "10 مذكرات فيديو / يوم",
+      "10voice": "10 مكالمات صوتية / يوم",
+      "16vid": "16 مذكرة فيديو / يوم",
+      "16voice": "16 مكالمة صوتية / يوم",
+      "unlimitedVid": "مذكرات فيديو غير محدودة",
+      "unlimitedVoice": "مكالمات صوتية غير محدودة"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "حدود أصداء مخصصة",
+      "customHeartbeat": "نبضة مخصصة",
+      "dedicatedSupport": "دعم مخصص",
+      "slaGuarantees": "ضمانات SLA",
+      "apiAccess": "وصول إلى API"
+    },
+    "showcases": {
+      "2vid2voice": "مذكرتا فيديو / يوم، مكالمتان صوتيتان / يوم",
+      "6vid6voice": "6 مذكرات فيديو / يوم، 6 مكالمات صوتية / يوم",
+      "10vid10voice": "10 مذكرات فيديو / يوم، 10 مكالمات صوتية / يوم",
+      "16vid16voice": "16 مذكرة فيديو / يوم، 16 مكالمة صوتية / يوم",
+      "unlimitedVidVoice": "مذكرات فيديو غير محدودة، مكالمات صوتية غير محدودة"
+    }
   }
 }

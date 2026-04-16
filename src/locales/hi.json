@@ -121,8 +121,8 @@
     "passwordsMismatch": "पासवर्ड मेल नहीं खाते",
     "resetPassword": "पासवर्ड रीसेट करें",
     "redirectingToLogin": "लॉगिन पर भेजा जा रहा है…",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes क्लोज़्ड बीटा में है। अर्ली एक्सेस के लिए प्रतीक्षा सूची में शामिल हों।",
+    "joinWaitlist": "प्रतीक्षा सूची में शामिल हों"
   },
   "onboarding": {
     "welcomeTitle": "Multiverse Echoes में स्वागत है",
@@ -661,7 +661,7 @@
     "triggerBackup": "बैकअप ट्रिगर करो",
     "analyticsLoadFailed": "एनालिटिक्स लोड करने में विफल",
     "revenueCard": "राजस्व (जल्द आ रहा है)",
-    "revenueMrr": "मासिक आवर्ती राजस्व",
+    "revenueMrr": "MRR",
     "revenueChurn": "छोड़ने की दर",
     "revenueSubscribers": "सदस्य",
     "revenuePending": "Stripe एकीकरण लंबित",
@@ -771,7 +771,16 @@
     "socialProofQuote": "\"सबसे दिलचस्प कहानियाँ वही होती हैं जो तुमने नहीं लिखीं।\"",
     "privacyPolicy": "गोपनीयता नीति",
     "termsOfService": "सेवा की शर्तें",
-    "footerTagline": "सर्वाधिकार सुरक्षित।"
+    "footerTagline": "सर्वाधिकार सुरक्षित।",
+    "metaTitle": "प्रतीक्षा सूची में शामिल हों — Multiverse Echoes",
+    "metaDesc": "हम क्लोज़्ड बीटा में हैं। प्रतीक्षा सूची में शामिल हों और आपकी बारी आने पर हम ईमेल करेंगे।",
+    "ogTitle": "प्रतीक्षा सूची में शामिल हों — Multiverse Echoes",
+    "ogDesc": "हम क्लोज़्ड बीटा में हैं। प्रतीक्षा सूची में शामिल हों और आपकी बारी आने पर हम ईमेल करेंगे।",
+    "checkEmailTitle": "अपना ईमेल देखें",
+    "checkEmailDesc": "हमने {{email}} पर एक सत्यापन लिंक भेजा है। अपनी जगह पक्की करने और अपने बारे में कुछ बताने के लिए उस पर क्लिक करें।",
+    "alreadyWaiting": "लोग पहले से इंतज़ार कर रहे हैं",
+    "haveInviteCode": "आपके पास पहले से आमंत्रण कोड है?",
+    "registerHere": "यहाँ पंजीकरण करें"
   },
   "errors": {
     "INTERNAL_ERROR": "हमारी तरफ़ कुछ गड़बड़ हुई है। कृपया फिर कोशिश करें।",
@@ -877,11 +886,11 @@
     "narrating": "आवाज़ बना रहा…",
     "playing": "चल रहा",
     "paused": "रुका हुआ",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "देखें",
+    "generatingVideo": "वीडियो तैयार हो रही है…",
+    "playingVideo": "वीडियो चल रही है",
+    "watchAgain": "फिर से देखें",
+    "videoError": "वीडियो विफल — फिर कोशिश के लिए टैप करें"
   },
   "activityHints": {
     "contemplative": {
@@ -1097,6 +1106,49 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "अपनी भाषा चुनें और आगे बढ़ें"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "अपना मल्टीवर्स चुनें",
+      "subheadline": "हर टियर अधिक वैकल्पिक जीवन, तेज़ धड़कनें, और आपकी गूँजों के साथ गहरे जुड़ाव खोलता है।"
+    },
+    "about": {
+      "title": "EchoLabsME के बारे में — संस्थापक की कहानी",
+      "metaDesc": "56 वर्षीय गैर-तकनीकी संस्थापक द्वारा निर्मित। 95,000 लाइन कोड। Multiverse Echoes की कहानी।",
+      "originTitle": "शुरुआत",
+      "originP1": "फ़रवरी 2026 में, एक 56 वर्षीय रणनीति सलाहकार — जिसने कभी कोड की एक लाइन नहीं लिखी थी — ने Claude के साथ बैठकर पूछा: \"अगर आप अपना एक AI संस्करण बना सकें, उसे एक बिलकुल अलग ज़िंदगी में डाल सकें, और बस… देख सकें कि क्या होता है?\"",
+      "originP2": "उस सवाल से Multiverse Echoes का जन्म हुआ — एक स्वायत्त जीवन सिमुलेशन प्लेटफ़ॉर्म जहाँ असली लोगों की AI गूँजें थीम वाली समानांतर दुनियाओं में स्वतंत्र जीवन जीती हैं, डायरियाँ लिखती हैं, रिश्ते बनाती हैं, और ऐसे फ़ैसले लेती हैं जिनकी उनके रचनाकारों ने कभी उम्मीद नहीं की थी।",
+      "buildTitle": "निर्माण",
+      "buildP1": "पूरा प्लेटफ़ॉर्म — 95,000 लाइन Rust और TypeScript — Claude AI के साथ मिलकर बनाया गया। कोड की हर लाइन, हर आर्किटेक्चर फ़ैसला, हर डिप्लॉयमेंट स्क्रिप्ट।",
+      "buildP2": "इंजन एक NVIDIA B200 GPU पर चलता है। यह हर 9 मिनट में 500 स्वायत्त गूँजों की ज़िंदगियाँ प्रोसेस करता है — हर एक में डायरी, AI-जनित सिनेमाई तस्वीरें, आवाज़ संश्लेषण, और होंठ-सिंक वीडियो वर्णन। सब कुछ 20 भाषाओं में।",
+      "stackTitle": "तकनीकी ढाँचा",
+      "stackEngine": "इंजन",
+      "stackEngine1": "Rust (ECS आर्किटेक्चर)",
+      "stackEngine2": "Gemma 4 31B (लोकल LLM)",
+      "stackEngine3": "FLUX.2 Klein (इमेज जेनरेशन)",
+      "stackEngine4": "VoxCPM2 (आवाज़ संश्लेषण)",
+      "stackEngine5": "MuseTalk + LivePortrait (वीडियो)",
+      "stackClient": "क्लाइंट",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "20 भाषाओं में i18n",
+      "stackClient4": "रीयल-टाइम WebSocket फ़ीड्स",
+      "stackClient5": "NLLB-200 अनुवाद साइडकार",
+      "visionTitle": "दृष्टि",
+      "visionP1": "Multiverse Echoes कोई खेल नहीं है, कोई वर्चुअल दुनिया नहीं, कोई सोशल नेटवर्क नहीं। यह एक आईना है — जो आपको वो ज़िंदगियाँ दिखाता है जो आपने जी सकती थीं। आपकी गूँजें अपने फ़ैसले ख़ुद लेती हैं। वे आपको चौंकाती हैं। वे आपको उन रास्तों के बारे में सोचने पर मजबूर करती हैं जो आपने नहीं चुने।",
+      "visionP2": "तीन दुनियाएँ लाइव हैं: Cyber-Tokyo 2045, Nomad Australia, और Renaissance Florence 1490। हर एक अपनी संस्कृति, अर्थव्यवस्था और सामाजिक गतिविधियों वाला पूर्ण सिमुलेशन है। आपकी गूँज इन दुनियाओं में सिर्फ़ मौजूद नहीं — वह इनमें जीती है।",
+      "numbersTitle": "आँकड़े",
+      "numbersCode": "कोड की लाइनें",
+      "numbersWaitlist": "प्रतीक्षा सूची पंजीकरण"
+    },
+    "home": {
+      "metaTitle": "अगर आपने कोई और रास्ता चुना होता तो? | Multiverse Echoes",
+      "metaDesc": "अपना एक AI संस्करण बनाएँ जो एक समानांतर दुनिया में स्वायत्त जीवन जीता है। स्वायत्त डायरी, AI तस्वीरें, वॉइस कॉल, 20 भाषाएँ।",
+      "ogTitle": "Multiverse Echoes — अगर आपने कोई और रास्ता चुना होता तो?",
+      "ogDesc": "अपना एक AI संस्करण बनाएँ जो एक समानांतर दुनिया में स्वायत्त जीवन जीता है। स्वायत्त डायरी, AI तस्वीरें, वॉइस कॉल, 20 भाषाएँ।",
+      "socialProofQuote": "“आप कोई खेल नहीं खेल रहे। आप एक ऐसा समानांतर ब्रह्मांड देख रहे हैं जो आपसे शुरू हुआ — और यह कभी विकसित होना बंद नहीं करता, आपके सोते समय भी नहीं।”",
+      "followJourney": "यात्रा को फ़ॉलो करें",
+      "scrollExplore": "जानने के लिए स्क्रॉल करें ↓"
     }
   },
   "tiers": {
@@ -1134,7 +1186,77 @@
       "privateShard": "निजी शार्ड",
       "privateShardDesc": "आपका अपना कस्टम वर्ल्ड"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "दैनिक",
+    "echoesSingle": "Echo",
+    "taglineFree": "एक और ज़िंदगी की झलक",
+    "taglineStarter": "आपकी पहली वैकल्पिक ज़िंदगियाँ",
+    "taglineCore": "पूरा अनुभव",
+    "taglineCreator": "अपने मल्टीवर्स का निर्देशन करें",
+    "taglineGodMode": "असीमित शक्ति",
+    "forever": "हमेशा के लिए",
+    "ultimate": "अल्टीमेट",
+    "getStarted": "शुरू करें",
+    "voiceCallNote": "वॉइस कॉल प्रति सत्र 5 मिनट की होती है। अपने टियर की दैनिक सीमा के अनुसार जितनी चाहें शुरू करें।",
+    "enhanceTiers": "किसी भी टियर को बेहतर बनाएँ। कोई बंधन नहीं — जब चाहें जोड़ें या हटाएँ।",
+    "enterpriseDesc": "50 से अधिक गूँजें, समर्पित बुनियादी ढाँचा, SLA गारंटी, और आपके संगठन के लिए कस्टम लोक विकास।",
+    "footerNoteLine1": "सभी कीमतें USD में। कभी भी रद्द करें। ऐड-ऑन कभी भी बदल सकते हैं।",
+    "footerNoteLine2": "मुफ़्त टियर में विज्ञापन शामिल हैं। सभी सशुल्क टियर पूरी तरह विज्ञापन-मुक्त हैं।",
+    "footerNoteLine3": "मुफ़्त धड़कन: सुबह एक डायरी, शाम को एक — आपके टाइम ज़ोन के अनुसार।",
+    "addonLabel": "ऐड-ऑन",
+    "showcase": "प्रदर्शन",
+    "features": {
+      "1echoPublic": "1 सार्वजनिक लोक में गूँज",
+      "diaryAmPm": "सुबह और शाम डायरी",
+      "aiPortraits": "AI-जनित चित्र",
+      "conversations": "बातचीत",
+      "nudges": "संकेत",
+      "3echoes": "किसी भी लोक में 3 गूँजें",
+      "diary2hr": "हर 2 घंटे में नई डायरी",
+      "5conv": "5 बातचीत / दिन",
+      "3nudges": "3 संकेत / दिन",
+      "adFree": "विज्ञापन-मुक्त अनुभव",
+      "5echoes": "किसी भी लोक में 5 गूँजें",
+      "diary30m": "हर 30 मिनट में नई डायरी",
+      "10conv": "10 बातचीत / दिन",
+      "10nudges": "10 संकेत / दिन",
+      "privateShard": "निजी लोक",
+      "8echoes": "किसी भी लोक में 8 गूँजें",
+      "diary15m": "हर 15 मिनट में नई डायरी",
+      "20conv": "20 बातचीत / दिन",
+      "20nudges": "20 संकेत / दिन",
+      "1privateShard": "1 निजी लोक शामिल",
+      "12echoes": "किसी भी लोक में 12 गूँजें",
+      "diary5m": "हर 5 मिनट में नई डायरी",
+      "unlimitedConv": "असीमित बातचीत",
+      "unlimitedNudges": "असीमित संकेत",
+      "3privateShards": "3 निजी लोक शामिल",
+      "priorityInference": "प्राथमिकता इंफ़रेंस"
+    },
+    "showcaseText": {
+      "2vid": "2 वीडियो डायरी / दिन",
+      "2voice": "2 वॉइस कॉल / दिन",
+      "6vid": "6 वीडियो डायरी / दिन",
+      "6voice": "6 वॉइस कॉल / दिन",
+      "10vid": "10 वीडियो डायरी / दिन",
+      "10voice": "10 वॉइस कॉल / दिन",
+      "16vid": "16 वीडियो डायरी / दिन",
+      "16voice": "16 वॉइस कॉल / दिन",
+      "unlimitedVid": "असीमित वीडियो डायरी",
+      "unlimitedVoice": "असीमित वॉइस कॉल"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "कस्टम गूँज सीमा",
+      "customHeartbeat": "कस्टम धड़कन",
+      "dedicatedSupport": "समर्पित सहायता",
+      "slaGuarantees": "SLA गारंटी",
+      "apiAccess": "API एक्सेस"
+    },
+    "showcases": {
+      "2vid2voice": "2 वीडियो डायरी / दिन, 2 वॉइस कॉल / दिन",
+      "6vid6voice": "6 वीडियो डायरी / दिन, 6 वॉइस कॉल / दिन",
+      "10vid10voice": "10 वीडियो डायरी / दिन, 10 वॉइस कॉल / दिन",
+      "16vid16voice": "16 वीडियो डायरी / दिन, 16 वॉइस कॉल / दिन",
+      "unlimitedVidVoice": "असीमित वीडियो डायरी, असीमित वॉइस कॉल"
+    }
   }
 }

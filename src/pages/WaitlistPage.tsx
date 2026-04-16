@@ -112,15 +112,15 @@ export function WaitlistPage() {
   return (
     <>
       <Helmet>
-        <title>Join the Waitlist — Multiverse Echoes</title>
+        <title>{t('waitlist.metaTitle')}</title>
         <meta
           name="description"
-          content="We're in closed beta. Join the waitlist and we'll email you when it's your turn."
+          content={t('waitlist.metaDesc')}
         />
-        <meta property="og:title" content="Join the Waitlist — Multiverse Echoes" />
+        <meta property="og:title" content={t('waitlist.ogTitle')} />
         <meta
           property="og:description"
-          content="We're in closed beta. Join the waitlist and we'll email you when it's your turn."
+          content={t('waitlist.ogDesc')}
         />
         <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
         <meta property="og:url" content="https://echolabsme.com/waitlist" />
@@ -135,8 +135,7 @@ export function WaitlistPage() {
           </h1>
 
           <p className="mb-10 leading-relaxed text-[var(--text-secondary)]">
-            We&rsquo;re not quite ready for everyone yet. Join the list and we&rsquo;ll email you
-            when a spot opens up — beta testers get extended God Mode at launch.
+            {t('waitlist.heroSubtitle')}
           </p>
 
           {/* Count banner — big number, same treatment as About › The Numbers */}
@@ -144,7 +143,7 @@ export function WaitlistPage() {
             <p className="text-4xl font-light text-[var(--accent)]">
               {totalCount !== null ? totalCount.toLocaleString() : '—'}
             </p>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">people already waiting</p>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">{t('waitlist.alreadyWaiting')}</p>
           </div>
 
           {/* Signup or success */}
@@ -185,12 +184,10 @@ export function WaitlistPage() {
               role="status"
             >
               <h2 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
-                Check your email
+                {t('waitlist.checkEmailTitle')}
               </h2>
               <p className="leading-relaxed text-[var(--text-secondary)]">
-                We sent a verification link to{' '}
-                <strong className="text-[var(--text-primary)]">{submittedEmail}</strong>. Click it
-                to confirm your spot and tell us a bit about yourself.
+                {t('waitlist.checkEmailDesc', { email: submittedEmail })}
               </p>
             </div>
           )}
@@ -223,9 +220,9 @@ export function WaitlistPage() {
           </section>
 
           <div className="mt-16 text-center text-sm text-[var(--text-muted)]">
-            Already have an invite code?{' '}
+            {t('waitlist.haveInviteCode')}{' '}
             <Link to="/register" className="text-[var(--accent)] hover:underline">
-              Register here
+              {t('waitlist.registerHere')}
             </Link>
             .
           </div>

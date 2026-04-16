@@ -78,7 +78,7 @@
     "loginTitle": "Log masuk ke Multiverse Echoes",
     "loginTitleReturning": "Selamat kembali",
     "loginFailed": "E-mel atau kata laluan tidak sah. Sila cuba lagi.",
-    "captchaRequired": "Please complete the captcha before continuing.",
+    "captchaRequired": "Sila lengkapkan captcha sebelum meneruskan.",
     "noAccount": "Tidak mempunyai akaun?",
     "createOne": "Cipta satu",
     "tosAgree": "Saya bersetuju dengan",
@@ -121,8 +121,8 @@
     "passwordsMismatch": "Kata laluan tidak sepadan",
     "resetPassword": "Set semula kata laluan",
     "redirectingToLogin": "Menghalihkan ke log masuk...",
-    "closedBetaBanner": "Multiverse Echoes is in closed beta. Join the waitlist for early access.",
-    "joinWaitlist": "Join the Waitlist"
+    "closedBetaBanner": "Multiverse Echoes sedang dalam beta tertutup. Sertai senarai menunggu untuk akses awal.",
+    "joinWaitlist": "Sertai Senarai Menunggu"
   },
   "onboarding": {
     "welcomeTitle": "Selamat datang ke Multiverse Echoes",
@@ -587,7 +587,7 @@
     "feedbackFeaturePrompt": "Apa yang anda ingin lihat? Terangkan ciri atau penambahbaikan tersebut."
   },
   "admin": {
-    "title": "Papan Pemuka Admin",
+    "title": "Papan Pemuka Pentadbir",
     "accessDenied": "Akses Dinafikan",
     "accessDeniedDesc": "Anda mestilah seorang pentadbir untuk mengakses halaman ini.",
     "tabDashboard": "Papan Pemuka",
@@ -649,7 +649,7 @@
     "shardType": "Taip",
     "shardStatus": "Status",
     "shardPopulation": "Populasi",
-    "tickControl": "Enjin Tik",
+    "tickControl": "Enjin Tick",
     "manualTick": "Tanda Manual",
     "manualTickDesc": "Cetuskan tick dengan serta-merta tanpa menunggu selang masa terjadual seterusnya. Berguna untuk demo.",
     "triggerTick": "Cetuskan Tanda Sekarang",
@@ -771,7 +771,16 @@
     "socialProofQuote": "Cerita yang paling menarik adalah cerita yang tidak anda tulis.",
     "privacyPolicy": "Dasar Privasi",
     "termsOfService": "Terma Perkhidmatan",
-    "footerTagline": "Hak cipta terpelihara."
+    "footerTagline": "Hak cipta terpelihara.",
+    "metaTitle": "Sertai Senarai Menunggu — Multiverse Echoes",
+    "metaDesc": "Kami sedang dalam beta tertutup. Sertai senarai menunggu dan kami akan menghantar emel apabila tiba giliran anda.",
+    "ogTitle": "Sertai Senarai Menunggu — Multiverse Echoes",
+    "ogDesc": "Kami sedang dalam beta tertutup. Sertai senarai menunggu dan kami akan menghantar emel apabila tiba giliran anda.",
+    "checkEmailTitle": "Semak emel anda",
+    "checkEmailDesc": "Kami telah menghantar pautan pengesahan ke {{email}}. Klik untuk mengesahkan tempat anda dan beritahu kami sedikit tentang diri anda.",
+    "alreadyWaiting": "orang sudah menunggu",
+    "haveInviteCode": "Sudah mempunyai kod jemputan?",
+    "registerHere": "Daftar di sini"
   },
   "errors": {
     "INTERNAL_ERROR": "Sesuatu telah berlaku di pihak kami. Sila cuba lagi.",
@@ -869,7 +878,7 @@
   "shardNames": {
     "cyber-tokyo-2045": "Cyber-Tokyo 2045",
     "nomad-australia-2030": "Nomad Australia 2030",
-    "renaissance-florence-1490": "Florence Zaman Renaissance 1490"
+    "renaissance-florence-1490": "Renaissance Florence 1490"
   },
   "diary": {
     "dayHour": "Hari {{day}} Jam {{hour}}",
@@ -877,11 +886,11 @@
     "narrating": "Menjana suara…",
     "playing": "Bermain",
     "paused": "Dijeda",
-    "watch": "Watch",
-    "generatingVideo": "Generating video…",
-    "playingVideo": "Playing video",
-    "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "watch": "Tonton",
+    "generatingVideo": "Menjana video…",
+    "playingVideo": "Memainkan video",
+    "watchAgain": "Tonton semula",
+    "videoError": "Video gagal — ketik untuk cuba semula"
   },
   "activityHints": {
     "contemplative": {
@@ -1097,14 +1106,57 @@
     "languagePage": {
       "title": "Multiverse Echoes",
       "selectPrompt": "Pilih bahasa anda untuk bermula"
+    },
+    "pricing": {
+      "eyebrow": "EchoLabsME",
+      "headline": "Pilih Multiverse Anda",
+      "subheadline": "Setiap peringkat membuka lebih banyak kehidupan alternatif, degupan jantung yang lebih pantas, dan hubungan yang lebih mendalam dengan Gema anda."
+    },
+    "about": {
+      "title": "Tentang EchoLabsME — Kisah Pengasas",
+      "metaDesc": "Dibina oleh pengasas bukan teknikal berumur 56 tahun. 95,000 baris kod. Kisah Multiverse Echoes.",
+      "originTitle": "Asal Usul",
+      "originP1": "Pada bulan Februari 2026, seorang perunding strategi berumur 56 tahun yang tidak pernah menulis satu baris kod pun duduk bersama Claude dan bertanya: \"Bagaimana jika anda boleh mencipta versi AI diri sendiri, meletakkannya ke dalam kehidupan yang sama sekali berbeza, dan hanya... melihat apa yang berlaku?\"",
+      "originP2": "Soalan itu menjadi Multiverse Echoes — Platform Simulasi Kehidupan Autonomi di mana Gema AI daripada orang sebenar menjalani kehidupan bebas di dunia selari bertema, menulis diari, membina hubungan, dan membuat keputusan yang tidak pernah diramalkan oleh pencipta mereka.",
+      "buildTitle": "Pembinaan",
+      "buildP1": "Seluruh platform — 95,000 baris Rust dan TypeScript — dibina dengan perkongsian bersama Claude AI. Setiap baris kod, setiap keputusan seni bina, setiap skrip penempatan.",
+      "buildP2": "Enjin berjalan pada satu GPU NVIDIA B200. Ia memproses 500 kehidupan Gema autonomi setiap 9 minit — setiap satu dengan entri diari, imej sinematik janaan AI, sintesis suara, dan naratif video segerak bibir. Semuanya dalam 20 bahasa.",
+      "stackTitle": "Teknologi",
+      "stackEngine": "Enjin",
+      "stackEngine1": "Rust (seni bina ECS)",
+      "stackEngine2": "Gemma 4 31B (LLM tempatan)",
+      "stackEngine3": "FLUX.2 Klein (penjanaan imej)",
+      "stackEngine4": "VoxCPM2 (sintesis suara)",
+      "stackEngine5": "MuseTalk + LivePortrait (video)",
+      "stackClient": "Klien",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
+      "stackClient3": "i18n 20 bahasa",
+      "stackClient4": "Suapan WebSocket masa nyata",
+      "stackClient5": "Sidecar terjemahan NLLB-200",
+      "visionTitle": "Visi",
+      "visionP1": "Multiverse Echoes bukan permainan, bukan dunia maya, dan bukan rangkaian sosial. Ia adalah cermin — cermin yang menunjukkan kehidupan yang mungkin pernah anda jalani. Gema anda membuat pilihan mereka sendiri. Mereka mengejutkan anda. Mereka membuat anda berfikir tentang jalan yang tidak pernah ditempuh.",
+      "visionP2": "Tiga dunia sedang aktif: Cyber-Tokyo 2045, Nomad Australia, dan Renaissance Florence 1490. Setiap satu adalah simulasi lengkap dengan budaya, ekonomi, dan dinamik sosialnya sendiri. Gema anda bukan sekadar wujud di dunia-dunia ini — ia hidup di dalamnya.",
+      "numbersTitle": "Angka-Angka",
+      "numbersCode": "baris kod",
+      "numbersWaitlist": "pendaftaran senarai menunggu"
+    },
+    "home": {
+      "metaTitle": "Bagaimana jika anda mengambil laluan yang berbeza? | Multiverse Echoes",
+      "metaDesc": "Cipta versi AI diri anda yang menjalani kehidupan autonomi di dunia selari. Diari autonomi, imej AI, panggilan suara, 20 bahasa.",
+      "ogTitle": "Multiverse Echoes — Bagaimana jika anda mengambil laluan yang berbeza?",
+      "ogDesc": "Cipta versi AI diri anda yang menjalani kehidupan autonomi di dunia selari. Diari autonomi, imej AI, panggilan suara, 20 bahasa.",
+      "socialProofQuote": "“Anda tidak sedang bermain permainan. Anda sedang menyaksikan alam semesta selari yang bermula daripada anda — dan ia tidak pernah berhenti berkembang, walaupun semasa anda tidur.”",
+      "followJourney": "Ikuti perjalanan",
+      "scrollExplore": "Tatal untuk meneroka ↓"
     }
   },
   "tiers": {
     "free": "Fri",
-    "starter": "Starter",
+    "starter": "Permulaan",
     "core": "Kore",
     "creator": "Krieyator",
-    "godMode": "God Mode",
+    "godMode": "Mod Tuhan",
     "enterprise": "Enterprais",
     "heartbeat": "Denyutan Jantung",
     "echoes": "Gema",
@@ -1134,7 +1186,77 @@
       "privateShard": "Serpihan Peribadi",
       "privateShardDesc": "Dunia tersuai anda"
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo"
+    "heartbeatDaily": "Harian",
+    "echoesSingle": "Echo",
+    "taglineFree": "Sepintas lalu ke kehidupan lain",
+    "taglineStarter": "Kehidupan alternatif pertama anda",
+    "taglineCore": "Pengalaman penuh",
+    "taglineCreator": "Arahkan multiverse anda",
+    "taglineGodMode": "Kuasa tanpa had",
+    "forever": "selamanya",
+    "ultimate": "Tertinggi",
+    "getStarted": "Mulakan",
+    "voiceCallNote": "Panggilan suara adalah 5 minit setiap sesi. Mulakan sebanyak yang dibenarkan peringkat anda setiap hari.",
+    "enhanceTiers": "Tingkatkan mana-mana peringkat. Tanpa komitmen — tambah atau buang bila-bila masa.",
+    "enterpriseDesc": "50+ Gema, infrastruktur khusus, jaminan SLA, dan pembangunan Shard tersuai untuk organisasi anda.",
+    "footerNoteLine1": "Semua harga dalam USD. Batal bila-bila masa. Tambahan boleh diselaraskan pada bila-bila masa.",
+    "footerNoteLine2": "Peringkat percuma termasuk iklan. Semua peringkat berbayar sepenuhnya tanpa iklan.",
+    "footerNoteLine3": "Degupan jantung percuma: satu diari pada waktu pagi, satu pada waktu malam — berdasarkan zon waktu anda.",
+    "addonLabel": "TAMBAHAN",
+    "showcase": "Pameran",
+    "features": {
+      "1echoPublic": "1 Gema dalam Shard awam",
+      "diaryAmPm": "Diari pagi & malam",
+      "aiPortraits": "Potret janaan AI",
+      "conversations": "Perbualan",
+      "nudges": "Dorongan",
+      "3echoes": "3 Gema di pelbagai Shard",
+      "diary2hr": "Diari baharu setiap 2 jam",
+      "5conv": "5 perbualan / hari",
+      "3nudges": "3 dorongan / hari",
+      "adFree": "Bebas iklan",
+      "5echoes": "5 Gema di pelbagai Shard",
+      "diary30m": "Diari baharu setiap 30 minit",
+      "10conv": "10 perbualan / hari",
+      "10nudges": "10 dorongan / hari",
+      "privateShard": "Serpihan Peribadi",
+      "8echoes": "8 Gema di pelbagai Shard",
+      "diary15m": "Diari baharu setiap 15 minit",
+      "20conv": "20 perbualan / hari",
+      "20nudges": "20 dorongan / hari",
+      "1privateShard": "Termasuk 1 Serpihan Peribadi",
+      "12echoes": "12 Gema di pelbagai Shard",
+      "diary5m": "Diari baharu setiap 5 minit",
+      "unlimitedConv": "Perbualan tanpa had",
+      "unlimitedNudges": "Dorongan tanpa had",
+      "3privateShards": "Termasuk 3 Serpihan Peribadi",
+      "priorityInference": "Pemprosesan keutamaan"
+    },
+    "showcaseText": {
+      "2vid": "2 diari video / hari",
+      "2voice": "2 panggilan suara / hari",
+      "6vid": "6 diari video / hari",
+      "6voice": "6 panggilan suara / hari",
+      "10vid": "10 diari video / hari",
+      "10voice": "10 panggilan suara / hari",
+      "16vid": "16 diari video / hari",
+      "16voice": "16 panggilan suara / hari",
+      "unlimitedVid": "Diari video tanpa had",
+      "unlimitedVoice": "Panggilan suara tanpa had"
+    },
+    "enterpriseFeatures": {
+      "customEchoLimits": "Had Gema tersuai",
+      "customHeartbeat": "Degupan jantung tersuai",
+      "dedicatedSupport": "Sokongan khusus",
+      "slaGuarantees": "Jaminan SLA",
+      "apiAccess": "Akses API"
+    },
+    "showcases": {
+      "2vid2voice": "2 diari video / hari, 2 panggilan suara / hari",
+      "6vid6voice": "6 diari video / hari, 6 panggilan suara / hari",
+      "10vid10voice": "10 diari video / hari, 10 panggilan suara / hari",
+      "16vid16voice": "16 diari video / hari, 16 panggilan suara / hari",
+      "unlimitedVidVoice": "Diari video tanpa had, Panggilan suara tanpa had"
+    }
   }
 }

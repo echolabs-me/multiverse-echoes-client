@@ -4,7 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { PricingSection } from '../components/website/PricingSection.tsx';
 import { useAuthStore } from '../stores/useAuthStore.ts';
-import { waitlist } from '../lib/api/endpoints.ts';
+
+const WAITLIST_API = 'https://api.echolabs.me';
+
+async function fetchWaitlistCount(): Promise<{ total: number }> {
+  const res = await fetch(`${WAITLIST_API}/waitlist/count`, { method: 'GET' });
+  if (!res.ok) throw new Error(`count failed: ${res.status}`);
+  return (await res.json()) as { total: number };
+}
 
 function SectionDivider() {
   return <div className="mx-auto my-0 h-px w-16 bg-[rgba(212,145,92,0.15)]" />;
@@ -21,9 +28,9 @@ export function HomePage() {
 
   useEffect(() => {
     let cancelled = false;
-    waitlist.count()
+    fetchWaitlistCount()
       .then((r) => {
-        if (!cancelled) setWaitlistCount(r.count);
+        if (!cancelled) setWaitlistCount(r.total);
       })
       .catch(() => {
         // Silent on failure, page still works.
@@ -66,10 +73,10 @@ export function HomePage() {
   return (
     <>
       <Helmet>
-        <title>{t('website.hero.headline')} | Multiverse Echoes</title>
-        <meta name="description" content="Create an AI version of yourself that lives an autonomous life in a parallel world. Autonomous diary, AI images, voice calls, 20 languages." />
-        <meta property="og:title" content="Multiverse Echoes — What if you'd taken a different path?" />
-        <meta property="og:description" content="Create an AI version of yourself that lives an autonomous life in a parallel world. Autonomous diary, AI images, voice calls, 20 languages." />
+        <title>{t('website.home.metaTitle')}</title>
+        <meta name="description" content={t('website.home.metaDesc')} />
+        <meta property="og:title" content={t('website.home.ogTitle')} />
+        <meta property="og:description" content={t('website.home.ogDesc')} />
         <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
         <meta property="og:url" content="https://echolabsme.com/home" />
         <meta property="og:type" content="website" />
@@ -145,7 +152,7 @@ export function HomePage() {
               <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
-              Follow the journey
+              {t('website.home.followJourney')}
             </a>
           </div>
         </div>
@@ -154,7 +161,7 @@ export function HomePage() {
           className="me-fade-up absolute bottom-8 text-xs tracking-[0.2em] text-[var(--text-muted)]"
           data-delay="900"
         >
-          Scroll to explore <span className="mt-1 block animate-bounce text-center">↓</span>
+          {t('website.home.scrollExplore')}
         </p>
       </section>
 
@@ -336,7 +343,7 @@ export function HomePage() {
       <section className="section-reveal px-6 py-24">
         <div className="mx-auto max-w-xl text-center">
           <p className="mb-6 font-serif text-5xl font-light italic text-[var(--accent)]">
-            &ldquo;You are not playing a game. You are watching a parallel universe that started with you &mdash; and it never stops evolving, even while you sleep.&rdquo;
+            {t('website.home.socialProofQuote')}
           </p>
           <SectionDivider />
           <div className="mt-12 flex flex-col items-center gap-2">

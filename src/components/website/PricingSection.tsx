@@ -26,61 +26,61 @@ const TIERS: Tier[] = [
   {
     nameKey: 'tiers.free',
     icon: '👁',
-    tagline: 'A glimpse into another life',
+    tagline: 'tiers.taglineFree',
     price: '0',
     cents: '',
-    period: 'forever',
-    note: 'ad-supported',
+    period: 'tiers.forever',
+    note: 'tiers.adSupported',
     echoes: '1',
     heartbeat: '2×',
     features: [
-      { text: '1 Echo in a public Shard', type: 'check' },
-      { text: 'Morning & evening diary', type: 'check' },
-      { text: 'AI-generated portraits', type: 'check' },
-      { text: 'Conversations', type: 'x' },
-      { text: 'Nudges', type: 'addon' },
+      { text: 'tiers.features.1echoPublic', type: 'check' },
+      { text: 'tiers.features.diaryAmPm', type: 'check' },
+      { text: 'tiers.features.aiPortraits', type: 'check' },
+      { text: 'tiers.features.conversations', type: 'x' },
+      { text: 'tiers.features.nudges', type: 'addon' },
     ],
-    showcase: ['2 video diaries / day', '2 voice calls / day'],
+    showcase: ['tiers.showcaseText.2vid', 'tiers.showcaseText.2voice'],
     btnStyle: 'outline',
     iconClass: 'bg-[rgba(220,80,80,0.1)]',
   },
   {
     nameKey: 'tiers.starter',
     icon: '✦',
-    tagline: 'Your first alternate lives',
+    tagline: 'tiers.taglineStarter',
     price: '9',
     cents: '.99',
-    period: 'per month',
+    period: 'tiers.perMonth',
     echoes: '3',
     heartbeat: '2hr',
     features: [
-      { text: '3 Echoes across any Shards', type: 'check' },
-      { text: 'New diary every 2 hours', type: 'check' },
-      { text: '5 conversations / day', type: 'check' },
-      { text: '3 nudges / day', type: 'check' },
-      { text: 'Ad-free experience', type: 'check' },
+      { text: 'tiers.features.3echoes', type: 'check' },
+      { text: 'tiers.features.diary2hr', type: 'check' },
+      { text: 'tiers.features.5conv', type: 'check' },
+      { text: 'tiers.features.3nudges', type: 'check' },
+      { text: 'tiers.features.adFree', type: 'check' },
     ],
-    showcase: ['6 video diaries / day', '6 voice calls / day'],
+    showcase: ['tiers.showcaseText.6vid', 'tiers.showcaseText.6voice'],
     btnStyle: 'outline',
     iconClass: 'bg-[rgba(76,175,125,0.12)]',
   },
   {
     nameKey: 'tiers.core',
     icon: '◈',
-    tagline: 'The full experience',
+    tagline: 'tiers.taglineCore',
     price: '24',
     cents: '.99',
-    period: 'per month',
+    period: 'tiers.perMonth',
     echoes: '5',
     heartbeat: '30m',
     features: [
-      { text: '5 Echoes across any Shards', type: 'check' },
-      { text: 'New diary every 30 minutes', type: 'check' },
-      { text: '10 conversations / day', type: 'check' },
-      { text: '10 nudges / day', type: 'check' },
-      { text: 'Private Shard', type: 'addon' },
+      { text: 'tiers.features.5echoes', type: 'check' },
+      { text: 'tiers.features.diary30m', type: 'check' },
+      { text: 'tiers.features.10conv', type: 'check' },
+      { text: 'tiers.features.10nudges', type: 'check' },
+      { text: 'tiers.features.privateShard', type: 'addon' },
     ],
-    showcase: ['10 video diaries / day', '10 voice calls / day'],
+    showcase: ['tiers.showcaseText.10vid', 'tiers.showcaseText.10voice'],
     btnStyle: 'primary',
     iconClass: 'bg-[rgba(212,145,92,0.08)]',
     popular: true,
@@ -88,41 +88,41 @@ const TIERS: Tier[] = [
   {
     nameKey: 'tiers.creator',
     icon: '⬡',
-    tagline: 'Direct your multiverse',
+    tagline: 'tiers.taglineCreator',
     price: '39',
     cents: '.99',
-    period: 'per month',
+    period: 'tiers.perMonth',
     echoes: '8',
     heartbeat: '15m',
     features: [
-      { text: '8 Echoes across any Shards', type: 'check' },
-      { text: 'New diary every 15 minutes', type: 'check' },
-      { text: '20 conversations / day', type: 'check' },
-      { text: '20 nudges / day', type: 'check' },
-      { text: '1 Private Shard included', type: 'check' },
+      { text: 'tiers.features.8echoes', type: 'check' },
+      { text: 'tiers.features.diary15m', type: 'check' },
+      { text: 'tiers.features.20conv', type: 'check' },
+      { text: 'tiers.features.20nudges', type: 'check' },
+      { text: 'tiers.features.1privateShard', type: 'check' },
     ],
-    showcase: ['16 video diaries / day', '16 voice calls / day'],
+    showcase: ['tiers.showcaseText.16vid', 'tiers.showcaseText.16voice'],
     btnStyle: 'outline',
     iconClass: 'bg-[rgba(139,126,200,0.1)]',
   },
   {
     nameKey: 'tiers.godMode',
     icon: '♛',
-    tagline: 'Unlimited power',
+    tagline: 'tiers.taglineGodMode',
     price: '59',
     cents: '.99',
-    period: 'per month',
+    period: 'tiers.perMonth',
     echoes: '12',
     heartbeat: '5m',
     features: [
-      { text: '12 Echoes across any Shards', type: 'star' },
-      { text: 'New diary every 5 minutes', type: 'star' },
-      { text: 'Unlimited conversations', type: 'star' },
-      { text: 'Unlimited nudges', type: 'star' },
-      { text: '3 Private Shards included', type: 'star' },
-      { text: 'Priority inference', type: 'star' },
+      { text: 'tiers.features.12echoes', type: 'star' },
+      { text: 'tiers.features.diary5m', type: 'star' },
+      { text: 'tiers.features.unlimitedConv', type: 'star' },
+      { text: 'tiers.features.unlimitedNudges', type: 'star' },
+      { text: 'tiers.features.3privateShards', type: 'star' },
+      { text: 'tiers.features.priorityInference', type: 'star' },
     ],
-    showcase: ['Unlimited video diaries', 'Unlimited voice calls'],
+    showcase: ['tiers.showcaseText.unlimitedVid', 'tiers.showcaseText.unlimitedVoice'],
     btnStyle: 'gold',
     iconClass: 'bg-[rgba(201,168,76,0.1)]',
     god: true,
@@ -159,12 +159,12 @@ export function PricingSection() {
       <div className="mx-auto max-w-[1360px]">
         {/* Header */}
         <div className="mb-14 text-center">
-          <p className="mb-6 font-serif text-xs uppercase tracking-[4px] text-[var(--accent)]">EchoLabsME</p>
+          <p className="mb-6 font-serif text-xs uppercase tracking-[4px] text-[var(--accent)]">{t('website.pricing.eyebrow')}</p>
           <h2 className="mb-4 font-serif text-4xl font-semibold text-[var(--text-primary)]">
-            Choose Your Multiverse
+            {t('website.pricing.headline')}
           </h2>
           <p className="mx-auto max-w-xl text-[var(--text-secondary)]">
-            Every tier unlocks more alternate lives, faster heartbeats, and deeper connections with your Echoes.
+            {t('website.pricing.subheadline')}
           </p>
         </div>
 
@@ -199,7 +199,7 @@ export function PricingSection() {
 
               {/* Name + tagline */}
               <h3 className="mb-1 font-serif text-2xl font-bold text-[var(--text-primary)]">{t(tier.nameKey)}</h3>
-              <p className="mb-5 min-h-[36px] text-[13px] text-[var(--text-muted)]">{tier.tagline}</p>
+              <p className="mb-5 min-h-[36px] text-[13px] text-[var(--text-muted)]">{t(tier.tagline)}</p>
 
               {/* Price */}
               <div className="mb-6 border-b border-[#1E2A36] pb-5">
@@ -208,8 +208,8 @@ export function PricingSection() {
                   {tier.price}
                   {tier.cents && <span className="text-xl">{tier.cents}</span>}
                 </div>
-                <p className="mt-1 text-[13px] text-[var(--text-muted)]">{tier.period}</p>
-                {tier.note && <p className="mt-1 text-xs font-medium text-[var(--accent)]">{tier.note}</p>}
+                <p className="mt-1 text-[13px] text-[var(--text-muted)]">{t(tier.period)}</p>
+                {tier.note && <p className="mt-1 text-xs font-medium text-[var(--accent)]">{t(tier.note)}</p>}
               </div>
 
               {/* Stats grid */}
@@ -230,10 +230,10 @@ export function PricingSection() {
                   <li key={f.text} className="flex items-start gap-2 text-[13px] leading-snug text-[var(--text-secondary)]">
                     <span className={`mt-0.5 shrink-0 text-sm ${COLOR_MAP[f.type]}`}>{ICON_MAP[f.type]}</span>
                     <span>
-                      {f.text}
+                      {t(f.text)}
                       {f.type === 'addon' && (
                         <span className="ml-1.5 rounded bg-[rgba(212,145,92,0.08)] px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-[var(--accent)]">
-                          ADD-ON
+                          {t('tiers.addonLabel')}
                         </span>
                       )}
                     </span>
@@ -243,7 +243,7 @@ export function PricingSection() {
                 {/* Showcase divider */}
                 <li className="my-1 border-t border-[#1E2A36]" />
                 <li className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-[#4CA8AF]">
-                  Showcase
+                  {t('tiers.showcase')}
                   <span className="flex-1 border-t border-[rgba(76,168,175,0.2)]" />
                 </li>
                 {tier.showcase.map((s) => (
@@ -251,7 +251,7 @@ export function PricingSection() {
                     <span className={`mt-0.5 shrink-0 text-sm ${tier.god ? 'text-[#C9A84C]' : 'text-[#4CA8AF]'}`}>
                       {tier.god ? '★' : '▶'}
                     </span>
-                    {s}
+                    {t(s)}
                   </li>
                 ))}
               </ul>
@@ -267,7 +267,7 @@ export function PricingSection() {
                       : 'border border-[#1E2A36] text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
-                {tier.price === '0' ? 'Get Started' : t('tiers.subscribe')}
+                {tier.price === '0' ? t('tiers.getStarted') : t('tiers.subscribe')}
               </Link>
             </div>
           ))}
@@ -275,7 +275,7 @@ export function PricingSection() {
 
         {/* Voice call note */}
         <p className="mb-16 text-center text-[13px] italic text-[var(--text-muted)]">
-          Voice calls are 5 minutes per session. Start as many as your tier allows each day.
+          {t('tiers.voiceCallNote')}
         </p>
 
         {/* Add-ons */}
@@ -285,7 +285,7 @@ export function PricingSection() {
               {t('tiers.addOns.title')}
             </h3>
             <p className="text-[15px] text-[var(--text-secondary)]">
-              Enhance any tier. No commitment — add or remove anytime.
+              {t('tiers.enhanceTiers')}
             </p>
           </div>
           <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-5">
@@ -315,12 +315,18 @@ export function PricingSection() {
             {t('tiers.enterprise')}
           </h3>
           <p className="mx-auto mb-6 max-w-lg text-[15px] leading-relaxed text-[var(--text-secondary)]">
-            50+ Echoes, dedicated infrastructure, SLA guarantees, and custom Shard development for your organisation.
+            {t('tiers.enterpriseDesc')}
           </p>
           <div className="mb-7 flex flex-wrap justify-center gap-6">
-            {['Custom echo limits', 'Custom heartbeat', 'Dedicated support', 'SLA guarantees', 'API access'].map((f) => (
+            {[
+              'tiers.enterpriseFeatures.customEchoLimits',
+              'tiers.enterpriseFeatures.customHeartbeat',
+              'tiers.enterpriseFeatures.dedicatedSupport',
+              'tiers.enterpriseFeatures.slaGuarantees',
+              'tiers.enterpriseFeatures.apiAccess'
+            ].map((f) => (
               <span key={f} className="flex items-center gap-1.5 text-[13px] text-[var(--text-muted)]">
-                <span className="text-[#8B7EC8]">✓</span> {f}
+                <span className="text-[#8B7EC8]">✓</span> {t(f)}
               </span>
             ))}
           </div>
@@ -334,9 +340,9 @@ export function PricingSection() {
 
         {/* Footer note */}
         <p className="mt-12 text-center text-[13px] leading-relaxed text-[var(--text-muted)]">
-          All prices in USD. Cancel anytime. Add-ons can be adjusted at any time.<br />
-          Free tier includes ads. All paid tiers are completely ad-free.<br />
-          Free heartbeat: one diary in the morning, one in the evening — based on your timezone.
+          {t('tiers.footerNoteLine1')}<br />
+          {t('tiers.footerNoteLine2')}<br />
+          {t('tiers.footerNoteLine3')}
         </p>
       </div>
     </section>
