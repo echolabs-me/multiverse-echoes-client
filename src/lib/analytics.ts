@@ -6,7 +6,7 @@
  * Silent failure — analytics must never break the UI.
  */
 
-import { request } from './api/client.ts';
+import { request, getBaseUrl, getAccessToken } from './api/client.ts';
 
 interface QueuedEvent {
   event_name: string;
@@ -32,6 +32,10 @@ export function trackEvent(name: string, properties?: Record<string, unknown>): 
   eventQueue.push({ event_name: name, properties });
 
   if (eventQueue.length >= MAX_BATCH_SIZE) {
+    if (flushTimer) {
+      clearTimeout(flushTimer);
+      flushTimer = null;
+    }
     void flush();
   } else if (!flushTimer) {
     flushTimer = setTimeout(() => void flush(), FLUSH_INTERVAL_MS);
@@ -63,9 +67,21 @@ async function flush(): Promise<void> {
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', () => {
     if (eventQueue.length > 0) {
-      // Use sendBeacon for reliable delivery on page exit
-      const body = JSON.stringify({ events: eventQueue });
-      navigator.sendBeacon('/analytics/events', body);
+      // Use fetch with keepalive for reliable delivery on page exit
+      const url = `${getBaseUrl()}/analytics/events`;
+      const token = getAccessToken();
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      void fetch(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ events: eventQueue }),
+        keepalive: true,
+      });
       eventQueue = [];
     }
   });

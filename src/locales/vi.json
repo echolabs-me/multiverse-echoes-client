@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "Thêm 100 lượt nhắc",
       "privateShard": "Mảnh riêng tư",
       "privateShardDesc": "Thế giới tùy chỉnh của bạn"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

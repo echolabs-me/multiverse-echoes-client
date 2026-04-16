@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "100 karagdagang nudge",
       "privateShard": "Private Shard",
       "privateShardDesc": "Sarili mong mundo"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

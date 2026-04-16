@@ -216,11 +216,11 @@ export function PricingSection() {
               <div className="mb-5 grid grid-cols-2 gap-2">
                 <div className="rounded-lg bg-[rgba(255,255,255,0.03)] p-2.5 text-center">
                   <div className="text-lg font-bold text-[var(--text-primary)]">{tier.echoes}</div>
-                  <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{tier.echoes === '1' ? 'Echo' : t('tiers.echoes')}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{tier.echoes === '1' ? t('tiers.echoesSingle', 'Echo') : t('tiers.echoes')}</div>
                 </div>
                 <div className="rounded-lg bg-[rgba(255,255,255,0.03)] p-2.5 text-center">
                   <div className="text-lg font-bold text-[var(--text-primary)]">{tier.heartbeat}</div>
-                  <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{tier.heartbeat === '2×' ? 'Daily' : t('tiers.heartbeat')}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{tier.heartbeat === '2×' ? t('tiers.heartbeatDaily', 'Daily') : t('tiers.heartbeat')}</div>
                 </div>
               </div>
 

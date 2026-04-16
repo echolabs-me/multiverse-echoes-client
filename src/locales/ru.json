@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "100 доп. напоминаний",
       "privateShard": "Приватный шард",
       "privateShardDesc": "Ваш собственный мир"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

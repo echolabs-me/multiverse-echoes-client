@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "넛지 100회 추가",
       "privateShard": "개인 샤드",
       "privateShardDesc": "나만의 커스텀 월드"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

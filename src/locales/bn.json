@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "আরও ১০০টি নাজ (nudges)",
       "privateShard": "প্রাইভেট শার্ড",
       "privateShardDesc": "আপনার নিজস্ব কাস্টম ওয়ার্ল্ড"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

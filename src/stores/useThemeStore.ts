@@ -60,19 +60,25 @@ const getStoredOverrideId = (): string | null => {
   return localStorage.getItem('theme-override') || null;
 };
 
+let appliedTokens: string[] = [];
+
 /** Apply CSS custom property overrides to the document root. */
 const applyTokenOverrides = (tokens: Record<string, string>) => {
   const root = document.documentElement;
   for (const [key, value] of Object.entries(tokens)) {
     root.style.setProperty(`--${key}`, value);
+    appliedTokens.push(`--${key}`);
   }
 };
 
 /** Clear all inline CSS custom property overrides. */
 const clearTokenOverrides = () => {
   const root = document.documentElement;
-  // Remove all inline style properties (they are the override layer)
-  root.removeAttribute('style');
+  // Remove only the custom properties we injected, preserving other inline styles
+  for (const key of appliedTokens) {
+    root.style.removeProperty(key);
+  }
+  appliedTokens = [];
 };
 
 const applyTheme = (base: ThemeBase, override: ThemeOverride | null) => {

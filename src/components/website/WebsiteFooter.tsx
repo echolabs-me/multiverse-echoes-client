@@ -111,7 +111,15 @@ export function WebsiteFooter() {
               </svg>
               @EchoLabsME
             </a>
-            <div ref={langWrapRef} className="relative">
+            <div 
+              ref={langWrapRef} 
+              className="relative"
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget)) {
+                  setLangOpen(false);
+                }
+              }}
+            >
               <button
                 type="button"
                 onClick={() => setLangOpen((v) => !v)}

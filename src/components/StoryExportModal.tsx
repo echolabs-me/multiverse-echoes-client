@@ -90,7 +90,7 @@ export function StoryExportModal({
   const [isRequesting, setIsRequesting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [tierGated, setTierGated] = useState(false);
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   // Echo selection state
@@ -195,23 +195,20 @@ export function StoryExportModal({
         result.status !== 'Complete' &&
         result.status !== 'Failed'
       ) {
-        pollRef.current = setInterval(async () => {
+        const pollStatus = async () => {
           try {
-            const updated = await account.getExportStatus(
-              result.export_id,
-            );
+            const updated = await account.getExportStatus(result.export_id);
             setExportData(updated);
-            if (
-              updated.status === 'Complete' ||
-              updated.status === 'Failed'
-            ) {
-              if (pollRef.current) clearInterval(pollRef.current);
+            if (updated.status === 'Complete' || updated.status === 'Failed') {
               pollRef.current = null;
+              return; // Stop polling
             }
           } catch {
             // Silently retry on next interval
           }
-        }, 3000);
+          pollRef.current = setTimeout(() => void pollStatus(), 3000);
+        };
+        pollRef.current = setTimeout(() => void pollStatus(), 3000);
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : '';
@@ -267,7 +264,7 @@ export function StoryExportModal({
 
   const handleClose = () => {
     if (pollRef.current) {
-      clearInterval(pollRef.current);
+      clearTimeout(pollRef.current);
       pollRef.current = null;
     }
     setExportData(null);

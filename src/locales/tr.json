@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "100 ek hatırlatıcı",
       "privateShard": "Özel Parça",
       "privateShardDesc": "Kendi özel dünyan"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

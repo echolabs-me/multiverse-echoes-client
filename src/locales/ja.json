@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "さらに100回のナッジ",
       "privateShard": "プライベートシャード",
       "privateShardDesc": "カスタムワールド"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

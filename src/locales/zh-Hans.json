@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "额外 100 次提醒",
       "privateShard": "私有分片",
       "privateShardDesc": "自定义世界"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

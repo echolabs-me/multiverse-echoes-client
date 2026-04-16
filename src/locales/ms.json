@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "100 nudges tambahan",
       "privateShard": "Serpihan Peribadi",
       "privateShardDesc": "Dunia tersuai anda"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

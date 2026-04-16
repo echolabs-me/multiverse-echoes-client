@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "100 lembretes adicionais",
       "privateShard": "Fragmento Privado",
       "privateShardDesc": "Seu próprio mundo customizado"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "เพิ่มอีก 100 นัดจ์",
       "privateShard": "ชาร์ดส่วนตัว",
       "privateShardDesc": "โลกส่วนตัวของคุณ"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

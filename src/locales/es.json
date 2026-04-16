@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "100 avisos adicionales",
       "privateShard": "Fragmento privado",
       "privateShardDesc": "Tu propio mundo personalizado"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

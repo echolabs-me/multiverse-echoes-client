@@ -53,7 +53,7 @@ export function useEchoWebSocket(
     let intentionalClose = false;
     let retryMs = INITIAL_RETRY_MS;
     let retryTimer: ReturnType<typeof setTimeout> | undefined;
-    let pollTimer: ReturnType<typeof setInterval> | undefined;
+    let pollTimer: ReturnType<typeof setTimeout> | undefined;
     let pollInterval = FALLBACK_POLL_MS;
 
     // Subscribe to auth state: if the user is logged out mid-session (token
@@ -74,20 +74,23 @@ export function useEchoWebSocket(
 
     function stopPolling() {
       if (pollTimer) {
-        clearInterval(pollTimer);
+        clearTimeout(pollTimer);
         pollTimer = undefined;
       }
       pollInterval = FALLBACK_POLL_MS;
     }
 
     function startPolling() {
-      stopPolling();
-      if (!onFallbackPollRef.current) return;
-      const poll = onFallbackPollRef.current;
-      pollTimer = setInterval(() => {
-        poll();
-      }, pollInterval);
-      pollInterval = Math.min(pollInterval * 2, MAX_FALLBACK_POLL_MS);
+      if (pollTimer || !onFallbackPollRef.current) return;
+      
+      const runPoll = () => {
+        if (!onFallbackPollRef.current) return;
+        onFallbackPollRef.current();
+        pollInterval = Math.min(pollInterval * 2, MAX_FALLBACK_POLL_MS);
+        pollTimer = setTimeout(runPoll, pollInterval);
+      };
+      
+      pollTimer = setTimeout(runPoll, pollInterval);
     }
 
     function connect() {

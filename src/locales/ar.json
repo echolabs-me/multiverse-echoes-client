@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "١٠٠ تنبيه إضافي",
       "privateShard": "شظية خاصة",
       "privateShardDesc": "عالمك الخاص"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

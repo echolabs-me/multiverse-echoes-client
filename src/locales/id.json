@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "100 nudge tambahan",
       "privateShard": "Shard Privat",
       "privateShardDesc": "Dunia kustom Anda"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

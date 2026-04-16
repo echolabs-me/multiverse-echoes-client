@@ -9,7 +9,7 @@ interface SystemState {
   fetchHealth: () => Promise<void>;
 }
 
-export const useSystemStore = create<SystemState>((set) => ({
+export const useSystemStore = create<SystemState>((set, get) => ({
   tickIntervalSeconds: 120, // Fallback until fetched from server (matches config/default.toml)
   lastTickAt: 0,
   isLoaded: false,
@@ -29,9 +29,16 @@ export const useSystemStore = create<SystemState>((set) => ({
             isLoaded: true,
           });
         }
+      } else {
+        throw new Error('Not ok');
       }
     } catch {
-      // Health fetch failed — keep fallback
+      // Health fetch failed — retry in 5s if not loaded
+      if (!get().isLoaded) {
+        setTimeout(() => {
+          void get().fetchHealth();
+        }, 5000);
+      }
     }
   },
 }));

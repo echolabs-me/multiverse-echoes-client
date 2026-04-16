@@ -24,7 +24,6 @@ import { CommunitySidebar } from './CommunitySidebar.tsx';
 import { TickTimer } from './TickTimer.tsx';
 import { EchoSidebar } from './EchoSidebar.tsx';
 import { CommunityPulseCard } from './CommunityPulseCard.tsx';
-import { TabletLayout } from './TabletLayout.tsx';
 import { MoodParticles } from './MoodParticles.tsx';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
 import { isTabletDevice } from '../lib/deviceDetect.ts';
@@ -196,7 +195,9 @@ export function AppLayout() {
   useEffect(() => {
     void useNotificationStore.getState().fetchNotifications();
     const interval = setInterval(() => {
-      void useNotificationStore.getState().fetchNotifications();
+      if (document.visibilityState === 'visible') {
+        void useNotificationStore.getState().fetchNotifications();
+      }
     }, 60_000);
     return () => clearInterval(interval);
   }, []);
@@ -221,19 +222,17 @@ export function AppLayout() {
   return (
     <div className="flex h-full flex-col bg-canvas">
       {/* Top bar — logo + mobile hamburger */}
-      <header className="relative flex h-14 flex-shrink-0 items-center border-b border-border bg-surface px-4 overflow-hidden">
-        <div className="flex items-center gap-2 min-w-0 z-10">
+      <header className="relative flex h-14 flex-shrink-0 items-center justify-between border-b border-border bg-surface px-4 overflow-hidden gap-2">
+        <div className="flex items-center gap-2 min-w-0 flex-shrink-0">
           <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-8 flex-shrink-0 rounded" />
           <span className="hidden md:inline text-lg font-bold text-accent truncate">
             {t('app.title')}
           </span>
         </div>
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="pointer-events-auto">
-            <TickTimer />
-          </div>
+        <div className="flex flex-1 items-center justify-center min-w-0 px-2">
+          <TickTimer />
         </div>
-        <div className="ms-auto z-10">
+        <div className="flex items-center justify-end flex-shrink-0">
           <button
             onClick={() => setMobileNavOpen(!mobileNavOpen)}
             className="rounded-md p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary md:hidden"
@@ -279,65 +278,71 @@ export function AppLayout() {
         {/* Left nav — icon-only, visible on md+ */}
         <NavSidebar isTablet={isTablet} />
 
-        {/* Exactly ONE of phone / tablet / desktop renders — never both —
-            so `<Outlet />` mounts a single copy of the current route. */}
-
-        {/* ═══ PHONE LAYOUT (<md) — single pane, full width ═══ */}
-        {isMobileViewport && (
-          <main className="flex-1 overflow-y-auto">
-            <Outlet />
-          </main>
-        )}
-
-        {/* ═══ TABLET LAYOUT — JS touch detection, md+ viewport ═══ */}
-        {!isMobileViewport && isTablet && (
-          <div className="flex flex-1 min-w-0">
-            <TabletLayout showEchoPanes={showEchoPanes} />
-          </div>
-        )}
-
-        {/* ═══ DESKTOP LAYOUT — non-touch 768px+ ═══ */}
-        {!isMobileViewport && !isTablet && (
-          <div className="flex flex-1 overflow-hidden">
-          <MoodAtmosphereWrapper show={showEchoPanes}>
-            {/* Community Pulse — 1920px+ only */}
-            {showEchoPanes && (
-              <aside className="hidden min-[1920px]:flex w-[311px] flex-shrink-0 flex-col border-e border-border/50 overflow-y-auto">
-                <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
-                  {t('communityFeed.title')}
-                </div>
-                <div className="flex-1 overflow-y-auto px-2 pb-2">
-                  <CommunityPulseCard />
-                </div>
-              </aside>
+        {/* We use a single layout tree to prevent `<Outlet />` unmounting on resize. */}
+        <div className="flex flex-1 overflow-hidden">
+          <MoodAtmosphereWrapper show={!isMobileViewport && showEchoPanes}>
+            
+            {/* ═══ TABLET LEFT PANES ═══ */}
+            {!isMobileViewport && isTablet && showEchoPanes && (
+              <>
+                <aside className="flex w-[260px] flex-shrink-0 flex-col border-e border-border/50 bg-canvas">
+                  <EchoSidebar forceVisible />
+                </aside>
+                <aside className="flex w-[260px] flex-shrink-0 flex-col border-e border-border/50 bg-canvas">
+                  <div className="flex-shrink-0 border-b border-border/50 px-3 py-3">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                      {t('communityFeed.title')}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-h-0 overflow-y-auto px-2 py-2">
+                    <CommunityPulseCard />
+                  </div>
+                </aside>
+              </>
             )}
 
-            {showEchoPanes && (
-              <div className="flex flex-shrink-0 flex-col border-e border-border/50">
-                {/* Community Pulse — collapsible in sidebar for screens <1920px */}
-                <div className="min-[1920px]:hidden">
-                  <DesktopPulseSection />
+            {/* ═══ DESKTOP LEFT PANES ═══ */}
+            {!isMobileViewport && !isTablet && showEchoPanes && (
+              <>
+                <aside className="hidden min-[1920px]:flex flex-1 min-w-[220px] max-w-[311px] flex-col border-e border-border/50 overflow-y-auto">
+                  <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                    {t('communityFeed.title')}
+                  </div>
+                  <div className="flex-1 overflow-y-auto px-2 pb-2">
+                    <CommunityPulseCard />
+                  </div>
+                </aside>
+                <div className="flex flex-shrink-0 flex-col border-e border-border/50">
+                  <div className="min-[1920px]:hidden">
+                    <DesktopPulseSection />
+                  </div>
+                  <EchoSidebar />
                 </div>
-                <EchoSidebar />
-              </div>
+              </>
             )}
 
             <main id="main-content" className="flex-1 overflow-y-auto">
               <Outlet />
             </main>
 
-            <aside className="flex w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-s border-border/50">
-              <OracleSidebar />
-            </aside>
+            {/* ═══ TABLET RIGHT PANES ═══ */}
+            {!isMobileViewport && isTablet && showEchoPanes && (
+              <TabletRightSidebar />
+            )}
 
-            {/* Community pane — 1920px+ */}
-            <aside className="hidden min-[1920px]:flex w-[240px] flex-shrink-0 flex-col border-s border-border/50">
-              <CommunitySidebar />
-            </aside>
+            {/* ═══ DESKTOP RIGHT PANES ═══ */}
+            {!isMobileViewport && !isTablet && (
+              <>
+                <aside className="flex w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-s border-border/50">
+                  <OracleSidebar />
+                </aside>
+                <aside className="hidden min-[1920px]:flex flex-1 min-w-[200px] max-w-[280px] flex-col border-s border-border/50">
+                  <CommunitySidebar />
+                </aside>
+              </>
+            )}
           </MoodAtmosphereWrapper>
-
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Mobile bottom bar */}
@@ -377,7 +382,16 @@ export function AppLayout() {
 
       {/* Oracle overlay — phone only (tablets use TabletLayout overlay, desktop has pane) */}
       {mobileOracleOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-canvas md:hidden">
+        <dialog
+          className="fixed inset-0 z-50 flex h-full w-full max-w-none flex-col bg-canvas p-0 m-0 md:hidden border-none shadow-none backdrop:bg-black/50 open:animate-modal-in"
+          open
+          aria-modal="true"
+          aria-label={t('oracle.title')}
+          ref={(el) => {
+            if (el && !el.open) el.showModal();
+          }}
+          onClose={() => setMobileOracleOpen(false)}
+        >
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <div className="flex items-center gap-2">
               <Sparkles size={16} className="text-accent" />
@@ -394,13 +408,59 @@ export function AppLayout() {
           <div className="flex-1 overflow-hidden">
             <OracleSidebar />
           </div>
-        </div>
+        </dialog>
       )}
 
 
     </div>
   );
 }
+
+function TabletRightSidebar() {
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<'oracle' | 'community'>('oracle');
+
+  return (
+    <aside className="flex w-[280px] flex-shrink-0 flex-col border-s border-border/50 bg-canvas">
+      <div className="flex flex-shrink-0 border-b border-border/50" role="tablist">
+        <div
+          onClick={() => setActiveTab('oracle')}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveTab('oracle'); } }}
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+            activeTab === 'oracle'
+              ? 'border-b-2 border-accent text-accent'
+              : 'text-text-muted hover:text-text-secondary'
+          }`}
+          aria-selected={activeTab === 'oracle'}
+          role="tab"
+          tabIndex={0}
+        >
+          <Sparkles size={14} />
+          {t('oracle.title')}
+        </div>
+        <div
+          onClick={() => setActiveTab('community')}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveTab('community'); } }}
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+            activeTab === 'community'
+              ? 'border-b-2 border-accent text-accent'
+              : 'text-text-muted hover:text-text-secondary'
+          }`}
+          aria-selected={activeTab === 'community'}
+          role="tab"
+          tabIndex={0}
+        >
+          <DiscordIcon size={14} />
+          {t('communitySidebar.title')}
+        </div>
+      </div>
+      <div className="flex flex-1 min-h-0 flex-col">
+        {activeTab === 'oracle' ? <OracleSidebar /> : <CommunitySidebar />}
+      </div>
+    </aside>
+  );
+}
+
 
 const DESKTOP_PULSE_KEY = 'desktop-pulse-open';
 

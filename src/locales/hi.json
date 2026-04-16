@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "100 अतिरिक्त नजजेस",
       "privateShard": "निजी शार्ड",
       "privateShardDesc": "आपका अपना कस्टम वर्ल्ड"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

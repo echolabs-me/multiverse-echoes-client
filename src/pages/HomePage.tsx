@@ -1,12 +1,10 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { PricingSection } from '../components/website/PricingSection.tsx';
 import { useAuthStore } from '../stores/useAuthStore.ts';
-
-// TODO: Replace with live user count or remove post-launch
-const WAITLIST_COUNT = 379;
+import { waitlist } from '../lib/api/endpoints.ts';
 
 function SectionDivider() {
   return <div className="mx-auto my-0 h-px w-16 bg-[rgba(212,145,92,0.15)]" />;
@@ -18,6 +16,22 @@ export function HomePage() {
   // failures can't trigger re-renders that break scroll animations.
   const isAuthenticated = useAuthStore.getState().isAuthenticated;
   const ctaTo = isAuthenticated ? '/dashboard' : '/register';
+  
+  const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    waitlist.count()
+      .then((r) => {
+        if (!cancelled) setWaitlistCount(r.count);
+      })
+      .catch(() => {
+        // Silent on failure, page still works.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Scroll-triggered reveal via IntersectionObserver.
   // Uses requestAnimationFrame to ensure DOM is painted before observing.
@@ -325,10 +339,15 @@ export function HomePage() {
             &ldquo;You are not playing a game. You are watching a parallel universe that started with you &mdash; and it never stops evolving, even while you sleep.&rdquo;
           </p>
           <SectionDivider />
-          {/* TODO: Replace with live user count or remove post-launch */}
           <div className="mt-12 flex flex-col items-center gap-2">
-            <p className="text-4xl font-light text-[var(--text-primary)]">{WAITLIST_COUNT}</p>
-            <p className="text-sm text-[var(--text-secondary)]">{t('website.social.waitlistCount', { count: WAITLIST_COUNT })}</p>
+            <p className="text-4xl font-light text-[var(--text-primary)]">
+              {waitlistCount !== null ? waitlistCount.toLocaleString() : '—'}
+            </p>
+            <p className="text-sm text-[var(--text-secondary)]">
+              {waitlistCount !== null 
+                ? t('website.social.waitlistCount', { count: waitlistCount.toLocaleString() })
+                : t('website.social.waitlistCount', { count: 'Many' })}
+            </p>
             <p className="mt-4 text-xs italic text-[var(--text-muted)]">{t('website.social.builtBy')}</p>
           </div>
         </div>

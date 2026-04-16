@@ -1133,6 +1133,8 @@
       "nudgePackDesc": "100 مزید نوجز",
       "privateShard": "نجی شارڈ",
       "privateShardDesc": "آپ کی اپنی تخلیق کردہ دنیا"
-    }
+    },
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo"
   }
 }

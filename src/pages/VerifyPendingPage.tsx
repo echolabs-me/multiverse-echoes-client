@@ -14,12 +14,11 @@ export function VerifyPendingPage() {
   const [cooldown, setCooldown] = useState(0);
 
   useEffect(() => {
-    if (cooldown <= 0) return;
     const timer = setInterval(() => {
-      setCooldown((prev) => prev - 1);
+      setCooldown((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
     return () => clearInterval(timer);
-  }, [cooldown]);
+  }, []);
 
   const handleResend = useCallback(() => {
     // API call would go here — rate limited to 3/hr
