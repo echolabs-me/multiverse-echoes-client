@@ -42,6 +42,7 @@ import { TipPage } from './pages/TipPage.tsx';
 import { NotFoundPage } from './pages/NotFoundPage.tsx';
 
 function hasSelectedLocale(): boolean {
+  if (typeof localStorage === 'undefined') return false;
   return localStorage.getItem('locale_selected') === 'true';
 }
 

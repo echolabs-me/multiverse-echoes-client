@@ -159,11 +159,15 @@ export function LanguageSelectionPage() {
             aria-label="Language selection"
           >
             {/* Centre logo */}
-            <img
-              src="/logo.png"
-              alt="Multiverse Echoes"
-              className="me-centered-absolute pointer-events-none absolute h-80 w-80 rounded-full object-contain opacity-80"
-              draggable={false}
+            <video
+              src="/logo-loop-seamless.mp4"
+              className="me-centered-absolute pointer-events-none absolute h-80 w-80 rounded-full object-cover opacity-80"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="none"
+              poster="/logo.png"
             />
             {languages.map((lang, i) => {
               // Position comes from precomputed `.me-circle-pos[data-idx="N"]`
@@ -175,16 +179,18 @@ export function LanguageSelectionPage() {
                   data-idx={i}
                   className="me-circle-pos absolute"
                 >
-                  <LanguageTile
-                    lang={lang}
-                    expanded={expandedCode === lang.code}
-                    reduced={reduced}
-                    isCircle
-                    onClick={() => handleClick(lang.code)}
-                    onKeyDown={(e) => handleKeyDown(e, lang.code)}
-                    onMouseEnter={() => !isTouch && setExpandedCode(lang.code)}
-                    onMouseLeave={() => !isTouch && setExpandedCode(null)}
-                  />
+                  <div className={reduced ? '' : 'me-lang-float'} data-idx={i}>
+                    <LanguageTile
+                      lang={lang}
+                      expanded={expandedCode === lang.code}
+                      reduced={reduced}
+                      isCircle
+                      onClick={() => handleClick(lang.code)}
+                      onKeyDown={(e) => handleKeyDown(e, lang.code)}
+                      onMouseEnter={() => !isTouch && setExpandedCode(lang.code)}
+                      onMouseLeave={() => !isTouch && setExpandedCode(null)}
+                    />
+                  </div>
                 </div>
               );
             })}

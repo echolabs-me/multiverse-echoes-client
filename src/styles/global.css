@@ -1179,6 +1179,36 @@ pre {
 .me-circle-pos[data-idx="18"] { left: calc(50% + -152.82px);  top: calc(50% + -210.34px); }
 .me-circle-pos[data-idx="19"] { left: calc(50% + -80.34px);   top: calc(50% + -247.27px); }
 
+/* Floating animation for language tiles */
+@keyframes me-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.me-lang-float {
+  animation: me-float 6s ease-in-out infinite;
+}
+.me-lang-float[data-idx="0"] { animation-delay: -0s; }
+.me-lang-float[data-idx="1"] { animation-delay: -0.3s; }
+.me-lang-float[data-idx="2"] { animation-delay: -0.6s; }
+.me-lang-float[data-idx="3"] { animation-delay: -0.9s; }
+.me-lang-float[data-idx="4"] { animation-delay: -1.2s; }
+.me-lang-float[data-idx="5"] { animation-delay: -1.5s; }
+.me-lang-float[data-idx="6"] { animation-delay: -1.8s; }
+.me-lang-float[data-idx="7"] { animation-delay: -2.1s; }
+.me-lang-float[data-idx="8"] { animation-delay: -2.4s; }
+.me-lang-float[data-idx="9"] { animation-delay: -2.7s; }
+.me-lang-float[data-idx="10"] { animation-delay: -3.0s; }
+.me-lang-float[data-idx="11"] { animation-delay: -3.3s; }
+.me-lang-float[data-idx="12"] { animation-delay: -3.6s; }
+.me-lang-float[data-idx="13"] { animation-delay: -3.9s; }
+.me-lang-float[data-idx="14"] { animation-delay: -4.2s; }
+.me-lang-float[data-idx="15"] { animation-delay: -4.5s; }
+.me-lang-float[data-idx="16"] { animation-delay: -4.8s; }
+.me-lang-float[data-idx="17"] { animation-delay: -5.1s; }
+.me-lang-float[data-idx="18"] { animation-delay: -5.4s; }
+.me-lang-float[data-idx="19"] { animation-delay: -5.7s; }
+
 /* Softer hero glow used on the language-selection page (70% fade vs the
  * default 65%). Animated via me-breathe, same keyframes as .me-hero-glow. */
 .me-hero-glow-soft {
