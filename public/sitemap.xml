@@ -4,77 +4,128 @@
   <url>
     <loc>https://echolabsme.com/</loc>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://echolabsme.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://echolabsme.com/home?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://echolabsme.com/home?lang=zh-Hans"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://echolabsme.com/home?lang=hi"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://echolabsme.com/home?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://echolabsme.com/home?lang=ar"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://echolabsme.com/home?lang=fr"/>
-    <xhtml:link rel="alternate" hreflang="bn" href="https://echolabsme.com/home?lang=bn"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://echolabsme.com/home?lang=pt-BR"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://echolabsme.com/home?lang=ru"/>
-    <xhtml:link rel="alternate" hreflang="ur" href="https://echolabsme.com/home?lang=ur"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://echolabsme.com/home?lang=id"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://echolabsme.com/home?lang=de"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://echolabsme.com/home?lang=ja"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://echolabsme.com/home?lang=vi"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://echolabsme.com/home?lang=tr"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://echolabsme.com/home?lang=ko"/>
-    <xhtml:link rel="alternate" hreflang="tl" href="https://echolabsme.com/home?lang=tl"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://echolabsme.com/home?lang=it"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://echolabsme.com/home?lang=th"/>
-    <xhtml:link rel="alternate" hreflang="ms" href="https://echolabsme.com/home?lang=ms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echolabsme.com/home?lng=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://echolabsme.com/home?lng=zh-Hans"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://echolabsme.com/home?lng=hi"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://echolabsme.com/home?lng=es"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echolabsme.com/home?lng=ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://echolabsme.com/home?lng=fr"/>
+    <xhtml:link rel="alternate" hreflang="bn" href="https://echolabsme.com/home?lng=bn"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://echolabsme.com/home?lng=pt-BR"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://echolabsme.com/home?lng=ru"/>
+    <xhtml:link rel="alternate" hreflang="ur" href="https://echolabsme.com/home?lng=ur"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://echolabsme.com/home?lng=id"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://echolabsme.com/home?lng=de"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://echolabsme.com/home?lng=ja"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://echolabsme.com/home?lng=vi"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://echolabsme.com/home?lng=tr"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://echolabsme.com/home?lng=ko"/>
+    <xhtml:link rel="alternate" hreflang="tl" href="https://echolabsme.com/home?lng=tl"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://echolabsme.com/home?lng=it"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://echolabsme.com/home?lng=th"/>
+    <xhtml:link rel="alternate" hreflang="ms" href="https://echolabsme.com/home?lng=ms"/>
   </url>
   <url>
     <loc>https://echolabsme.com/home</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://echolabsme.com/home?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://echolabsme.com/home?lang=zh-Hans"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://echolabsme.com/home?lang=hi"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://echolabsme.com/home?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://echolabsme.com/home?lang=ar"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://echolabsme.com/home?lang=fr"/>
-    <xhtml:link rel="alternate" hreflang="bn" href="https://echolabsme.com/home?lang=bn"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://echolabsme.com/home?lang=pt-BR"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://echolabsme.com/home?lang=ru"/>
-    <xhtml:link rel="alternate" hreflang="ur" href="https://echolabsme.com/home?lang=ur"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://echolabsme.com/home?lang=id"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://echolabsme.com/home?lang=de"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://echolabsme.com/home?lang=ja"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://echolabsme.com/home?lang=vi"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://echolabsme.com/home?lang=tr"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://echolabsme.com/home?lang=ko"/>
-    <xhtml:link rel="alternate" hreflang="tl" href="https://echolabsme.com/home?lang=tl"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://echolabsme.com/home?lang=it"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://echolabsme.com/home?lang=th"/>
-    <xhtml:link rel="alternate" hreflang="ms" href="https://echolabsme.com/home?lang=ms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echolabsme.com/home?lng=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://echolabsme.com/home?lng=zh-Hans"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://echolabsme.com/home?lng=hi"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://echolabsme.com/home?lng=es"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echolabsme.com/home?lng=ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://echolabsme.com/home?lng=fr"/>
+    <xhtml:link rel="alternate" hreflang="bn" href="https://echolabsme.com/home?lng=bn"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://echolabsme.com/home?lng=pt-BR"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://echolabsme.com/home?lng=ru"/>
+    <xhtml:link rel="alternate" hreflang="ur" href="https://echolabsme.com/home?lng=ur"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://echolabsme.com/home?lng=id"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://echolabsme.com/home?lng=de"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://echolabsme.com/home?lng=ja"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://echolabsme.com/home?lng=vi"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://echolabsme.com/home?lng=tr"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://echolabsme.com/home?lng=ko"/>
+    <xhtml:link rel="alternate" hreflang="tl" href="https://echolabsme.com/home?lng=tl"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://echolabsme.com/home?lng=it"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://echolabsme.com/home?lng=th"/>
+    <xhtml:link rel="alternate" hreflang="ms" href="https://echolabsme.com/home?lng=ms"/>
   </url>
   <url>
     <loc>https://echolabsme.com/about</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://echolabsme.com/about?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://echolabsme.com/about?lang=zh-Hans"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://echolabsme.com/about?lang=hi"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://echolabsme.com/about?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://echolabsme.com/about?lang=ar"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://echolabsme.com/about?lang=fr"/>
-    <xhtml:link rel="alternate" hreflang="bn" href="https://echolabsme.com/about?lang=bn"/>
-    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://echolabsme.com/about?lang=pt-BR"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://echolabsme.com/about?lang=ru"/>
-    <xhtml:link rel="alternate" hreflang="ur" href="https://echolabsme.com/about?lang=ur"/>
-    <xhtml:link rel="alternate" hreflang="id" href="https://echolabsme.com/about?lang=id"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://echolabsme.com/about?lang=de"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://echolabsme.com/about?lang=ja"/>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://echolabsme.com/about?lang=vi"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://echolabsme.com/about?lang=tr"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://echolabsme.com/about?lang=ko"/>
-    <xhtml:link rel="alternate" hreflang="tl" href="https://echolabsme.com/about?lang=tl"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://echolabsme.com/about?lang=it"/>
-    <xhtml:link rel="alternate" hreflang="th" href="https://echolabsme.com/about?lang=th"/>
-    <xhtml:link rel="alternate" hreflang="ms" href="https://echolabsme.com/about?lang=ms"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echolabsme.com/about?lng=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://echolabsme.com/about?lng=zh-Hans"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://echolabsme.com/about?lng=hi"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://echolabsme.com/about?lng=es"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echolabsme.com/about?lng=ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://echolabsme.com/about?lng=fr"/>
+    <xhtml:link rel="alternate" hreflang="bn" href="https://echolabsme.com/about?lng=bn"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://echolabsme.com/about?lng=pt-BR"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://echolabsme.com/about?lng=ru"/>
+    <xhtml:link rel="alternate" hreflang="ur" href="https://echolabsme.com/about?lng=ur"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://echolabsme.com/about?lng=id"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://echolabsme.com/about?lng=de"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://echolabsme.com/about?lng=ja"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://echolabsme.com/about?lng=vi"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://echolabsme.com/about?lng=tr"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://echolabsme.com/about?lng=ko"/>
+    <xhtml:link rel="alternate" hreflang="tl" href="https://echolabsme.com/about?lng=tl"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://echolabsme.com/about?lng=it"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://echolabsme.com/about?lng=th"/>
+    <xhtml:link rel="alternate" hreflang="ms" href="https://echolabsme.com/about?lng=ms"/>
+  </url>
+  <url>
+    <loc>https://echolabsme.com/waitlist</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echolabsme.com/waitlist"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echolabsme.com/waitlist?lng=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://echolabsme.com/waitlist?lng=zh-Hans"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://echolabsme.com/waitlist?lng=hi"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://echolabsme.com/waitlist?lng=es"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echolabsme.com/waitlist?lng=ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://echolabsme.com/waitlist?lng=fr"/>
+    <xhtml:link rel="alternate" hreflang="bn" href="https://echolabsme.com/waitlist?lng=bn"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://echolabsme.com/waitlist?lng=pt-BR"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://echolabsme.com/waitlist?lng=ru"/>
+    <xhtml:link rel="alternate" hreflang="ur" href="https://echolabsme.com/waitlist?lng=ur"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://echolabsme.com/waitlist?lng=id"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://echolabsme.com/waitlist?lng=de"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://echolabsme.com/waitlist?lng=ja"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://echolabsme.com/waitlist?lng=vi"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://echolabsme.com/waitlist?lng=tr"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://echolabsme.com/waitlist?lng=ko"/>
+    <xhtml:link rel="alternate" hreflang="tl" href="https://echolabsme.com/waitlist?lng=tl"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://echolabsme.com/waitlist?lng=it"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://echolabsme.com/waitlist?lng=th"/>
+    <xhtml:link rel="alternate" hreflang="ms" href="https://echolabsme.com/waitlist?lng=ms"/>
+  </url>
+  <url>
+    <loc>https://echolabsme.com/contact</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://echolabsme.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://echolabsme.com/contact?lng=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://echolabsme.com/contact?lng=zh-Hans"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://echolabsme.com/contact?lng=hi"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://echolabsme.com/contact?lng=es"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://echolabsme.com/contact?lng=ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://echolabsme.com/contact?lng=fr"/>
+    <xhtml:link rel="alternate" hreflang="bn" href="https://echolabsme.com/contact?lng=bn"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://echolabsme.com/contact?lng=pt-BR"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://echolabsme.com/contact?lng=ru"/>
+    <xhtml:link rel="alternate" hreflang="ur" href="https://echolabsme.com/contact?lng=ur"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://echolabsme.com/contact?lng=id"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://echolabsme.com/contact?lng=de"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://echolabsme.com/contact?lng=ja"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://echolabsme.com/contact?lng=vi"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://echolabsme.com/contact?lng=tr"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://echolabsme.com/contact?lng=ko"/>
+    <xhtml:link rel="alternate" hreflang="tl" href="https://echolabsme.com/contact?lng=tl"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://echolabsme.com/contact?lng=it"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://echolabsme.com/contact?lng=th"/>
+    <xhtml:link rel="alternate" hreflang="ms" href="https://echolabsme.com/contact?lng=ms"/>
   </url>
   <url>
     <loc>https://echolabsme.com/terms</loc>
   </url>
   <url>
     <loc>https://echolabsme.com/privacy</loc>
+  </url>
+  <url>
+    <loc>https://echolabsme.com/accessibility</loc>
   </url>
 </urlset>

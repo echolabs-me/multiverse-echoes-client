@@ -21,7 +21,7 @@ const BASE = `http://localhost:${PORT}`;
 
 // Routes to pre-render. '/' is the flag page (no locale cookie set).
 // All other routes need locale set so they don't redirect.
-const ROUTES_WITH_LOCALE = ['/home', '/about', '/terms', '/privacy'];
+const ROUTES_WITH_LOCALE = ['/home', '/about', '/terms', '/privacy', '/waitlist', '/contact', '/accessibility', '/plans'];
 
 async function main() {
   // Verify dist exists

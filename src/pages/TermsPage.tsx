@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 import { ArrowLeft } from 'lucide-react';
 
 export function TermsPage() {
@@ -11,6 +12,10 @@ export function TermsPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
+      <Helmet>
+        <title>Terms of Service — Multiverse Echoes</title>
+        <meta name="description" content="Terms of Service for Multiverse Echoes. Governs use of the platform, Echo creation, and community guidelines." />
+      </Helmet>
       <div className="mx-auto w-full max-w-3xl px-6 pt-28 pb-6">
         <button
           onClick={() => navigate(-1)}

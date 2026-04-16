@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 import { ArrowLeft } from 'lucide-react';
 
 export function AccessibilityPage() {
@@ -11,6 +12,10 @@ export function AccessibilityPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
+      <Helmet>
+        <title>Accessibility — Multiverse Echoes</title>
+        <meta name="description" content="Accessibility statement for Multiverse Echoes. WCAG 2.1 Level AA commitment, keyboard navigation, screen reader support." />
+      </Helmet>
       <div className="mx-auto w-full max-w-3xl p-6">
         <button
           onClick={() => navigate(-1)}

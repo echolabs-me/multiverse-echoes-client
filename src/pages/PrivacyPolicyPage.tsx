@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 import { ArrowLeft } from 'lucide-react';
 
 export function PrivacyPolicyPage() {
@@ -12,6 +13,10 @@ export function PrivacyPolicyPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
+      <Helmet>
+        <title>Privacy Policy — Multiverse Echoes</title>
+        <meta name="description" content="Privacy Policy for Multiverse Echoes. How we collect, use, and protect your data. GDPR and CCPA compliant." />
+      </Helmet>
       <div className="mx-auto w-full max-w-3xl px-6 pt-28 pb-6">
         <button
           onClick={() => navigate(-1)}

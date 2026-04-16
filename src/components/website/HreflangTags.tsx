@@ -18,7 +18,7 @@ export function HreflangTags() {
           key={locale}
           rel="alternate"
           hrefLang={locale}
-          href={`${BASE_URL}${pathname}?lang=${locale}`}
+          href={`${BASE_URL}${pathname}?lng=${locale}`}
         />
       ))}
       <link rel="alternate" hrefLang="x-default" href={`${BASE_URL}/`} />
