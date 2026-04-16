@@ -94,7 +94,7 @@ export function WebsiteFooter() {
               {t('website.footer.privacy')}
             </Link>
             <Link to="/accessibility" className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
-              Accessibility
+              {t('website.footer.accessibility')}
             </Link>
           </div>
 
