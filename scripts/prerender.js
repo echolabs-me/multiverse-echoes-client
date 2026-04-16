@@ -121,7 +121,13 @@ async function main() {
             return t && t !== 'Multiverse Echoes' && t.length > 0;
           },
           { timeout: 5000 },
-        ).catch(() => { /* some pages may not override title — proceed anyway */ });
+        ).catch(async () => {
+          // Helmet didn't fire — extract <h1> and set title as fallback.
+          const h1 = await page.$eval('h1', (el) => el.textContent?.trim() ?? '').catch(() => '');
+          if (h1) {
+            await page.evaluate((title) => { document.title = title; }, `${h1} — Multiverse Echoes`);
+          }
+        });
         const html = await page.content();
         await page.close();
 

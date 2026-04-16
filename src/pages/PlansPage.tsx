@@ -68,6 +68,8 @@ const TIERS = [
 export function PlansPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const pageTitle = `${t('payment.title')} — Multiverse Echoes`;
+  const pageDesc = t('payment.subtitle');
   const user = useAuthStore((s) => s.user);
   const addToast = useToastStore((s) => s.addToast);
   const [loading, setLoading] = useState<string | null>(null);
@@ -118,8 +120,8 @@ export function PlansPage() {
   return (
     <div className="flex flex-col">
       <Helmet>
-        <title>{t('payment.title')} — Multiverse Echoes</title>
-        <meta name="description" content={t('payment.subtitle')} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
       </Helmet>
       <div className="mx-auto w-full max-w-5xl p-6">
         <button
