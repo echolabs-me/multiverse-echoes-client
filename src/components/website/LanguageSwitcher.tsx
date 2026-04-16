@@ -50,7 +50,7 @@ export function LanguageSwitcher({ onSelect }: LanguageSwitcherProps) {
       {LANGUAGES.map((lang) => (
         <button
           key={lang.code}
-          onClick={() => selectLanguage(lang.code)}
+          onPointerDown={(e) => { e.preventDefault(); selectLanguage(lang.code); }}
           className={`w-full rounded-md px-3 py-1.5 text-start text-xs transition-colors ${
             i18n.language === lang.code
               ? 'bg-[var(--accent-subtle)] text-[var(--accent)]'
