@@ -1255,6 +1255,42 @@ export type UserSubscription = {
 	updated_at: string,
 };
 
+/**
+ *  One turn of a persisted voice conversation. Mirrors
+ *  `me_core::models::voice::VoiceConversationTurn` with `utoipa::ToSchema`
+ *  AND `specta::Type` so both the OpenAPI spec and the generated
+ *  TypeScript client types carry a concrete type instead of a generic
+ *  `Object`.
+ */
+export type VoiceConversationTurnView = {
+	// `"user"` or `"echo"`.
+	speaker: string,
+	text: string,
+	// ISO 8601 / RFC 3339 timestamp.
+	timestamp: string,
+};
+
+/**
+ *  One row returned by `GET /echoes/{id}/voice/history`. Mirrors
+ *  `me_core::models::voice::VoiceConversation`, converting the
+ *  `DateTime<Utc>` columns to RFC 3339 strings for wire stability.
+ */
+export type VoiceConversationView = {
+	id: string,
+	echo_id: string,
+	user_id: string,
+	transcript: VoiceConversationTurnView[],
+	// RFC 3339 start timestamp.
+	started_at: string,
+	// RFC 3339 end timestamp; `None` for sessions that haven't ended yet.
+	ended_at: string | null,
+	/**
+	 *  LLM-generated summary when the session ended. `None` while the
+	 *  session is still in progress or the summariser hasn't caught up.
+	 */
+	summary: string | null,
+};
+
 export type WaitlistCountResponse = {
 	count: number,
 };
@@ -1336,8 +1372,10 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
 /**
  *  Events sent over the WebSocket to clients.
  * 
- *  All frames delivered on any `/ws/*\/stream` endpoint are JSON-encoded
- *  values of this tagged union. The `type` field is the discriminator.
+ *  All frames delivered on any `/ws/*\/stream` endpoint — EXCEPT the
+ *  initial handshake frame and (for the shard stream) the raw
+ *  [`WsShardWorldEventFrame`] envelope — are JSON-encoded values of
+ *  this tagged union. The `type` field is the discriminator.
  */
 export type WsEchoEvent = { type: "DiaryEntryCreated"; echo_id: string; diary_id: string; tick_id: number; 
 /**
