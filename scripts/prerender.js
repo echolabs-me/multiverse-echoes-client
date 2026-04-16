@@ -70,7 +70,7 @@ async function main() {
       console.log('Pre-rendering / (flag page)...');
       const page = await browser.newPage();
       // Do NOT set locale_selected — the flag page renders when no locale is set
-      await page.goto(`${BASE}/`, { waitUntil: 'load', timeout: 30000 });
+      await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForTimeout(2000);
       const html = await page.content();
       await page.close();
@@ -97,7 +97,7 @@ async function main() {
       });
 
       try {
-        await page.goto(`${BASE}${route}`, { waitUntil: 'load', timeout: 15000 });
+        await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded', timeout: 15000 });
         await page.waitForTimeout(2000);
 
         const html = await page.content();
