@@ -20,6 +20,19 @@ const BASE = `http://localhost:${PORT}`;
 
 const ROUTES_WITH_LOCALE = ['/home', '/about', '/terms', '/privacy', '/waitlist', '/contact', '/accessibility', '/plans'];
 
+// Fallback titles for pages where Helmet may not fire during prerender.
+// Used as a post-processing string-replace on the captured HTML.
+const TITLE_MAP = {
+  '/home': 'What if you\u2019d taken a different path? | Multiverse Echoes',
+  '/about': 'About EchoLabsME \u2014 The Founder Story',
+  '/terms': 'Terms of Service \u2014 Multiverse Echoes',
+  '/privacy': 'Privacy Policy \u2014 Multiverse Echoes',
+  '/waitlist': 'Join the Waitlist \u2014 Multiverse Echoes',
+  '/contact': 'Contact \u2014 Multiverse Echoes',
+  '/accessibility': 'Accessibility \u2014 Multiverse Echoes',
+  '/plans': 'Plans & Pricing \u2014 Multiverse Echoes',
+};
+
 const MIME = {
   '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css',
   '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg',
@@ -112,24 +125,18 @@ async function main() {
       try {
         await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded', timeout: 10000 });
         await page.waitForSelector('#root > *', { timeout: 5000 });
-        // Wait for Helmet to inject a real <title> (not the default from index.html).
-        // Helmet updates <head> asynchronously after React render — poll until
-        // the title changes from the generic default or is non-empty.
-        await page.waitForFunction(
-          () => {
-            const t = document.title;
-            return t && t !== 'Multiverse Echoes' && t.length > 0;
-          },
-          { timeout: 5000 },
-        ).catch(async () => {
-          // Helmet didn't fire — extract <h1> and set title as fallback.
-          const h1 = await page.$eval('h1', (el) => el.textContent?.trim() ?? '').catch(() => '');
-          if (h1) {
-            await page.evaluate((title) => { document.title = title; }, `${h1} — Multiverse Echoes`);
-          }
-        });
-        const html = await page.content();
+        await page.waitForTimeout(1000);
+        let html = await page.content();
         await page.close();
+
+        // Fallback: if Helmet didn't inject a proper <title>, replace it
+        // with the known title for this route. Guarantees correct SEO
+        // metadata regardless of Helmet render timing.
+        if (TITLE_MAP[route] && (html.includes('<title></title>') || !html.includes('<title>' + TITLE_MAP[route]))) {
+          html = html
+            .replace('<title></title>', `<title>${TITLE_MAP[route]}</title>`)
+            .replace('<title>Multiverse Echoes</title>', `<title>${TITLE_MAP[route]}</title>`);
+        }
 
         const outDir = join(DIST, route);
         mkdirSync(outDir, { recursive: true });
