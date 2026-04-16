@@ -50,6 +50,11 @@ export const RTL_LOCALES: readonly SupportedLocale[] = ['ar', 'ur'];
  * Guards against stale/invalid values left over from an earlier schema.
  */
 function resolveInitialLocale(): SupportedLocale {
+  const param = new URLSearchParams(window.location.search).get('lng');
+  if (param && (SUPPORTED_LOCALES as readonly string[]).includes(param)) {
+    localStorage.setItem('locale', param);
+    return param as SupportedLocale;
+  }
   const stored = localStorage.getItem('locale');
   if (stored && (SUPPORTED_LOCALES as readonly string[]).includes(stored)) {
     return stored as SupportedLocale;
