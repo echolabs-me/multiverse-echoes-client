@@ -133,17 +133,18 @@ interface AddOn {
   emoji: string;
   nameKey: string;
   price: string;
+  recurring?: boolean;
   descKey: string;
   highlight?: boolean;
   showcaseHl?: boolean;
 }
 
 const ADD_ONS: AddOn[] = [
-  { emoji: '⚡', nameKey: 'tiers.addOns.speedBoost', price: '$4.99/mo', descKey: 'tiers.addOns.speedBoostDesc', highlight: true },
-  { emoji: '🎬', nameKey: 'tiers.addOns.videoVoiceBoost', price: '$3.99/mo', descKey: 'tiers.addOns.videoVoiceBoostDesc', showcaseHl: true },
-  { emoji: '🎭', nameKey: 'tiers.addOns.extraEcho', price: '$5/mo', descKey: 'tiers.addOns.extraEchoDesc' },
+  { emoji: '⚡', nameKey: 'tiers.addOns.speedBoost', price: '$4.99', recurring: true, descKey: 'tiers.addOns.speedBoostDesc', highlight: true },
+  { emoji: '🎬', nameKey: 'tiers.addOns.videoVoiceBoost', price: '$3.99', recurring: true, descKey: 'tiers.addOns.videoVoiceBoostDesc', showcaseHl: true },
+  { emoji: '🎭', nameKey: 'tiers.addOns.extraEcho', price: '$5', recurring: true, descKey: 'tiers.addOns.extraEchoDesc' },
   { emoji: '💬', nameKey: 'tiers.addOns.nudgePack', price: '$2.99', descKey: 'tiers.addOns.nudgePackDesc' },
-  { emoji: '🌐', nameKey: 'tiers.addOns.privateShard', price: '$4.99/mo', descKey: 'tiers.addOns.privateShardDesc' },
+  { emoji: '🌐', nameKey: 'tiers.addOns.privateShard', price: '$4.99', recurring: true, descKey: 'tiers.addOns.privateShardDesc' },
 ];
 
 const ICON_MAP = { check: '✓', x: '✗', star: '★', addon: '✓' };
@@ -302,7 +303,7 @@ export function PricingSection() {
               >
                 <div className="mb-3 text-2xl">{addon.emoji}</div>
                 <h4 className="mb-1 text-[15px] font-semibold text-[var(--text-primary)]">{t(addon.nameKey)}</h4>
-                <p className="mb-2 text-lg font-bold text-[var(--accent)]">{addon.price}</p>
+                <p className="mb-2 text-lg font-bold text-[var(--accent)]">{addon.price}{addon.recurring ? t('payment.perMonth') : ''}</p>
                 <p className="text-xs leading-relaxed text-[var(--text-muted)]">{t(addon.descKey)}</p>
               </div>
             ))}
