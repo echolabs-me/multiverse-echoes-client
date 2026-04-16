@@ -112,7 +112,16 @@ async function main() {
       try {
         await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded', timeout: 10000 });
         await page.waitForSelector('#root > *', { timeout: 5000 });
-        await page.waitForTimeout(1000);
+        // Wait for Helmet to inject a real <title> (not the default from index.html).
+        // Helmet updates <head> asynchronously after React render — poll until
+        // the title changes from the generic default or is non-empty.
+        await page.waitForFunction(
+          () => {
+            const t = document.title;
+            return t && t !== 'Multiverse Echoes' && t.length > 0;
+          },
+          { timeout: 5000 },
+        ).catch(() => { /* some pages may not override title — proceed anyway */ });
         const html = await page.content();
         await page.close();
 
