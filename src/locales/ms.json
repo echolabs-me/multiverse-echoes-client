@@ -270,7 +270,10 @@
     "statusHibernated": "Hibernasi",
     "typePublic": "Awam",
     "typePersonal": "Peribadi",
-    "typePrivate": "Peribadi"
+    "typePrivate": "Peribadi",
+    "statusPaused": "Dijeda",
+    "statusArchived": "Diarkibkan",
+    "statusPendingDeletion": "Menunggu pemadaman"
   },
   "shardBrowser": {
     "title": "Semak Shards",
@@ -281,7 +284,11 @@
     "statusInactive": "Tidak aktif",
     "typePublic": "Awam",
     "typePersonal": "Peribadi",
-    "echoCount": "{{current}} / {{max}} Gema"
+    "echoCount": "{{current}} / {{max}} Gema",
+    "statusPaused": "Dijeda",
+    "statusArchived": "Diarkibkan",
+    "statusPendingDeletion": "Menunggu pemadaman",
+    "typePrivate": "Peribadi"
   },
   "feeds": {
     "personalTitle": "Suapan Peribadi",
@@ -862,7 +869,10 @@
     "Active": "Aktif",
     "Inactive": "Tidak aktif",
     "Broken": "Rosak",
-    "unknownEcho": "Gema Tidak Diketahui"
+    "unknownEcho": "Gema Tidak Diketahui",
+    "Faded": "Pudar",
+    "Ended": "Tamat",
+    "Severed": "Terputus"
   },
   "feedTypes": {
     "diary_entry": "Catatan Diari",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30m",
     "heartbeat15m": "15m",
     "heartbeat5m": "5m"
+  },
+  "contact": {
+    "metaTitle": "Hubungi — Multiverse Echoes",
+    "metaDesc": "Hubungi EchoLabsME. Balasan dalam 48 jam.",
+    "title": "Hubungi",
+    "description": "Soalan, akhbar, bug, atau apa sahaja — hantar di sini, balasan dalam 48 jam.",
+    "labelName": "Nama",
+    "labelEmail": "E-mel",
+    "labelSubject": "Subjek",
+    "labelMessage": "Mesej",
+    "subjectGeneral": "Pertanyaan Umum",
+    "subjectBug": "Laporan Pepijat",
+    "subjectPress": "Pers/Media",
+    "subjectPartnership": "Perkongsian",
+    "subjectOther": "Lain-lain",
+    "charsRemaining": "{{count}} aksara lagi",
+    "sending": "Menghantar…",
+    "sendMessage": "Hantar mesej",
+    "successTitle": "Terima kasih — mesej sedang dihantar",
+    "successDesc": "Balasan dalam 48 jam.",
+    "cooldown": "Hantar lagi dalam {{seconds}} saat.",
+    "lookingElse": "Mencari sesuatu yang lain?",
+    "errorNameRequired": "Nama diperlukan.",
+    "errorNameTooLong": "Nama terlalu panjang (maks 100).",
+    "errorInvalidEmail": "Masukkan e-mel yang sah.",
+    "errorSelectSubject": "Pilih subjek.",
+    "errorMessageRequired": "Mesej diperlukan.",
+    "errorMessageTooLong": "Mesej terlalu panjang (maks {{max}}).",
+    "errorCaptcha": "Lengkapkan captcha.",
+    "errorRateLimit": "Terlalu banyak. Cuba dalam satu jam.",
+    "errorBadRequest": "Semak dan cuba lagi.",
+    "errorGeneric": "Sesuatu tidak kena. Cuba lagi.",
+    "errorNetwork": "Tidak dapat menghubungi. Semak sambungan."
   }
 }

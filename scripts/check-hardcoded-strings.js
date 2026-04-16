@@ -47,7 +47,6 @@ const ALLOWED_STRINGS = new Set([
   'Scene from diary entry',
   'Echo diary with AI portrait',
   'Nudge your Echo',
-  'Language selection',
   'Account creation and authentication',
   'Delete Echo any time',
   'Solo Mode toggle',
@@ -77,7 +76,11 @@ const warnings = [];
 
 const pages = collectFiles(join(ROOT, 'src/pages'), ['.tsx']);
 const components = collectFiles(join(ROOT, 'src/components'), ['.tsx']);
-const files = [...pages, ...components];
+const lib = collectFiles(join(ROOT, 'src/lib'), ['.ts', '.tsx']);
+const stores = collectFiles(join(ROOT, 'src/stores'), ['.ts', '.tsx']);
+const appFile = join(ROOT, 'src/App.tsx');
+const files = [...pages, ...components, ...lib, ...stores];
+try { statSync(appFile); files.push(appFile); } catch { /* App.tsx not found — skip */ }
 
 for (const file of files) {
   const content = readFileSync(file, 'utf8');

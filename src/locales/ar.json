@@ -270,7 +270,10 @@
     "statusHibernated": "خامل",
     "typePublic": "عام",
     "typePersonal": "شخصي",
-    "typePrivate": "خاص"
+    "typePrivate": "خاص",
+    "statusPaused": "متوقف",
+    "statusArchived": "مؤرشف",
+    "statusPendingDeletion": "في انتظار الحذف"
   },
   "shardBrowser": {
     "title": "تصفُّح العوالم",
@@ -281,7 +284,11 @@
     "statusInactive": "غير نشط",
     "typePublic": "عام",
     "typePersonal": "شخصي",
-    "echoCount": "{{current}} / {{max}} أصداء"
+    "echoCount": "{{current}} / {{max}} أصداء",
+    "statusPaused": "متوقف",
+    "statusArchived": "مؤرشف",
+    "statusPendingDeletion": "في انتظار الحذف",
+    "typePrivate": "خاص"
   },
   "feeds": {
     "personalTitle": "الخلاصة الشخصية",
@@ -862,7 +869,10 @@
     "Active": "نشط",
     "Inactive": "غير نشط",
     "Broken": "مكسور",
-    "unknownEcho": "صدى مجهول"
+    "unknownEcho": "صدى مجهول",
+    "Faded": "تلاشت",
+    "Ended": "انتهت",
+    "Severed": "انقطعت"
   },
   "feedTypes": {
     "diary_entry": "مذكرة",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30د",
     "heartbeat15m": "15د",
     "heartbeat5m": "5د"
+  },
+  "contact": {
+    "metaTitle": "اتصل بنا — Multiverse Echoes",
+    "metaDesc": "تواصل مع EchoLabsME. نرد خلال 48 ساعة.",
+    "title": "اتصل بنا",
+    "description": "أسئلة، صحافة، أخطاء أو غيره — أرسل هنا وسنرد خلال 48 ساعة.",
+    "labelName": "الاسم",
+    "labelEmail": "البريد",
+    "labelSubject": "الموضوع",
+    "labelMessage": "الرسالة",
+    "subjectGeneral": "استفسار عام",
+    "subjectBug": "تقرير خطأ",
+    "subjectPress": "صحافة/إعلام",
+    "subjectPartnership": "شراكة",
+    "subjectOther": "أخرى",
+    "charsRemaining": "{{count}} حرف متبقي",
+    "sending": "جارٍ الإرسال…",
+    "sendMessage": "إرسال",
+    "successTitle": "شكراً — رسالتك في الطريق",
+    "successDesc": "سنرد خلال 48 ساعة.",
+    "cooldown": "إرسال آخر خلال {{seconds}} ثانية.",
+    "lookingElse": "تبحث عن شيء آخر؟",
+    "errorNameRequired": "الاسم مطلوب.",
+    "errorNameTooLong": "الاسم طويل (100 حرف كحد أقصى).",
+    "errorInvalidEmail": "أدخل بريداً صالحاً.",
+    "errorSelectSubject": "اختر الموضوع.",
+    "errorMessageRequired": "الرسالة مطلوبة.",
+    "errorMessageTooLong": "الرسالة طويلة ({{max}} حرف).",
+    "errorCaptcha": "أكمل التحقق.",
+    "errorRateLimit": "إرسالات كثيرة. حاول بعد ساعة.",
+    "errorBadRequest": "تحقق وحاول مجدداً.",
+    "errorGeneric": "حدث خطأ. حاول مجدداً.",
+    "errorNetwork": "تعذر الاتصال. تحقق من الاتصال."
   }
 }

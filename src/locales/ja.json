@@ -270,7 +270,10 @@
     "statusHibernated": "休止状態",
     "typePublic": "公開",
     "typePersonal": "個人用",
-    "typePrivate": "プライベート"
+    "typePrivate": "プライベート",
+    "statusPaused": "一時停止",
+    "statusArchived": "アーカイブ済",
+    "statusPendingDeletion": "削除待ち"
   },
   "shardBrowser": {
     "title": "シャードを閲覧する",
@@ -281,7 +284,11 @@
     "statusInactive": "非アクティブ",
     "typePublic": "公開",
     "typePersonal": "個人用",
-    "echoCount": "{{current}} / {{max}} エコー"
+    "echoCount": "{{current}} / {{max}} エコー",
+    "statusPaused": "一時停止",
+    "statusArchived": "アーカイブ済",
+    "statusPendingDeletion": "削除待ち",
+    "typePrivate": "プライベート"
   },
   "feeds": {
     "personalTitle": "パーソナルフィード",
@@ -862,7 +869,10 @@
     "Active": "アクティブ",
     "Inactive": "非アクティブ",
     "Broken": "壊れた",
-    "unknownEcho": "未知のエコー"
+    "unknownEcho": "未知のエコー",
+    "Faded": "薄れた",
+    "Ended": "終了",
+    "Severed": "断絶"
   },
   "feedTypes": {
     "diary_entry": "日記",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30分",
     "heartbeat15m": "15分",
     "heartbeat5m": "5分"
+  },
+  "contact": {
+    "metaTitle": "お問い合わせ — Multiverse Echoes",
+    "metaDesc": "EchoLabsMEへのお問い合わせ。48時間以内にご返信。",
+    "title": "お問い合わせ",
+    "description": "質問、メディア問合せ、バグ報告など — こちらからお送りください。48時間以内に返信。",
+    "labelName": "お名前",
+    "labelEmail": "メール",
+    "labelSubject": "件名",
+    "labelMessage": "メッセージ",
+    "subjectGeneral": "一般問合せ",
+    "subjectBug": "バグ報告",
+    "subjectPress": "報道/メディア",
+    "subjectPartnership": "パートナーシップ",
+    "subjectOther": "その他",
+    "charsRemaining": "残り {{count}} 文字",
+    "sending": "送信中…",
+    "sendMessage": "メッセージ送信",
+    "successTitle": "ありがとうございます — メッセージが送信されました",
+    "successDesc": "48時間以内に返信いたします。",
+    "cooldown": "{{seconds}}秒後に再送信できます。",
+    "lookingElse": "他にお探し？",
+    "errorNameRequired": "名前は必須です。",
+    "errorNameTooLong": "名前が長すぎます（最大100文字）。",
+    "errorInvalidEmail": "有効なメールアドレスを入力。",
+    "errorSelectSubject": "件名を選択。",
+    "errorMessageRequired": "メッセージは必須。",
+    "errorMessageTooLong": "メッセージが長すぎます（最大 {{max}} 文字）。",
+    "errorCaptcha": "キャプチャを完了してください。",
+    "errorRateLimit": "送信回数超過。1時間後にお試しください。",
+    "errorBadRequest": "入力内容を確認して再試行。",
+    "errorGeneric": "問題が発生。再試行してください。",
+    "errorNetwork": "サービスに接続できません。接続を確認して再試行。"
   }
 }

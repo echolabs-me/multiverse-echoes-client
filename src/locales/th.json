@@ -270,7 +270,10 @@
     "statusHibernated": "จำศีล",
     "typePublic": "สาธารณะ",
     "typePersonal": "ส่วนตัว",
-    "typePrivate": "ส่วนตัว"
+    "typePrivate": "ส่วนตัว",
+    "statusPaused": "หยุดชั่วคราว",
+    "statusArchived": "เก็บถาวร",
+    "statusPendingDeletion": "รอการลบ"
   },
   "shardBrowser": {
     "title": "เรียกดูชิ้นส่วน",
@@ -281,7 +284,11 @@
     "statusInactive": "ไม่ใช้งาน",
     "typePublic": "สาธารณะ",
     "typePersonal": "ส่วนตัว",
-    "echoCount": "{{current}} / {{max}} เอคโค่"
+    "echoCount": "{{current}} / {{max}} เอคโค่",
+    "statusPaused": "หยุดชั่วคราว",
+    "statusArchived": "เก็บถาวร",
+    "statusPendingDeletion": "รอการลบ",
+    "typePrivate": "ส่วนตัว"
   },
   "feeds": {
     "personalTitle": "ฟีดส่วนตัว",
@@ -862,7 +869,10 @@
     "Active": "ใช้งานอยู่",
     "Inactive": "ไม่ใช้งาน",
     "Broken": "เสีย",
-    "unknownEcho": "เสียงสะท้อนที่ไม่รู้จัก"
+    "unknownEcho": "เสียงสะท้อนที่ไม่รู้จัก",
+    "Faded": "จางลง",
+    "Ended": "สิ้นสุด",
+    "Severed": "ขาดสะบั้น"
   },
   "feedTypes": {
     "diary_entry": "บันทึกไดอารี่",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30น.",
     "heartbeat15m": "15น.",
     "heartbeat5m": "5น."
+  },
+  "contact": {
+    "metaTitle": "ติดต่อ — Multiverse Echoes",
+    "metaDesc": "ติดต่อ EchoLabsME ตอบกลับภายใน 48 ชั่วโมง",
+    "title": "ติดต่อ",
+    "description": "คำถาม สื่อ บัก หรืออะไรก็ตาม — ส่งมาที่นี่ ตอบกลับใน 48 ชั่วโมง",
+    "labelName": "ชื่อ",
+    "labelEmail": "อีเมล",
+    "labelSubject": "หัวข้อ",
+    "labelMessage": "ข้อความ",
+    "subjectGeneral": "สอบถามทั่วไป",
+    "subjectBug": "รายงานบัก",
+    "subjectPress": "สื่อ/มีเดีย",
+    "subjectPartnership": "พาร์ทเนอร์ชิป",
+    "subjectOther": "อื่นๆ",
+    "charsRemaining": "เหลือ {{count}} ตัวอักษร",
+    "sending": "กำลังส่ง…",
+    "sendMessage": "ส่งข้อความ",
+    "successTitle": "ขอบคุณ — ข้อความกำลังถูกส่ง",
+    "successDesc": "ตอบกลับภายใน 48 ชั่วโมง",
+    "cooldown": "ส่งอีกครั้งใน {{seconds}} วินาที",
+    "lookingElse": "มองหาอย่างอื่น?",
+    "errorNameRequired": "กรุณาระบุชื่อ",
+    "errorNameTooLong": "ชื่อยาวเกิน (100 ตัว)",
+    "errorInvalidEmail": "กรอกอีเมลที่ถูกต้อง",
+    "errorSelectSubject": "เลือกหัวข้อ",
+    "errorMessageRequired": "กรอกข้อความ",
+    "errorMessageTooLong": "ข้อความยาวเกิน ({{max}} ตัว)",
+    "errorCaptcha": "กรุณาทำ captcha",
+    "errorRateLimit": "ส่งมากเกินไป ลองอีกครั้งในหนึ่งชั่วโมง",
+    "errorBadRequest": "ตรวจสอบและลองอีกครั้ง",
+    "errorGeneric": "เกิดข้อผิดพลาด ลองอีกครั้ง",
+    "errorNetwork": "เชื่อมต่อไม่ได้ ตรวจสอบการเชื่อมต่อ"
   }
 }

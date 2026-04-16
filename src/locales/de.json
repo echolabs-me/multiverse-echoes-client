@@ -270,7 +270,10 @@
     "statusHibernated": "Winterschlaf",
     "typePublic": "Öffentlich",
     "typePersonal": "Persönlich",
-    "typePrivate": "Privat"
+    "typePrivate": "Privat",
+    "statusPaused": "Pausiert",
+    "statusArchived": "Archiviert",
+    "statusPendingDeletion": "Löschung ausstehend"
   },
   "shardBrowser": {
     "title": "Splitter durchsuchen",
@@ -281,7 +284,11 @@
     "statusInactive": "Inaktiv",
     "typePublic": "Öffentlich",
     "typePersonal": "Persönlich",
-    "echoCount": "{{current}} / {{max}} Echos"
+    "echoCount": "{{current}} / {{max}} Echos",
+    "statusPaused": "Pausiert",
+    "statusArchived": "Archiviert",
+    "statusPendingDeletion": "Löschung ausstehend",
+    "typePrivate": "Privat"
   },
   "feeds": {
     "personalTitle": "Persönlicher Feed",
@@ -862,7 +869,10 @@
     "Active": "Aktiv",
     "Inactive": "Inaktiv",
     "Broken": "Kaputt",
-    "unknownEcho": "Unbekanntes Echo"
+    "unknownEcho": "Unbekanntes Echo",
+    "Faded": "Verblasst",
+    "Ended": "Beendet",
+    "Severed": "Abgebrochen"
   },
   "feedTypes": {
     "diary_entry": "Tagebucheintrag",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30Min",
     "heartbeat15m": "15Min",
     "heartbeat5m": "5Min"
+  },
+  "contact": {
+    "metaTitle": "Kontakt — Multiverse Echoes",
+    "metaDesc": "Kontaktieren Sie EchoLabsME. Antwort innerhalb von 48 Stunden.",
+    "title": "Kontakt",
+    "description": "Fragen, Presse, Fehler oder anderes — senden Sie es hier, Antwort innerhalb von 48 Stunden.",
+    "labelName": "Name",
+    "labelEmail": "E-Mail",
+    "labelSubject": "Betreff",
+    "labelMessage": "Nachricht",
+    "subjectGeneral": "Allgemeine Anfrage",
+    "subjectBug": "Fehlerbericht",
+    "subjectPress": "Presse/Medien",
+    "subjectPartnership": "Partnerschaft",
+    "subjectOther": "Sonstiges",
+    "charsRemaining": "{{count}} Zeichen übrig",
+    "sending": "Senden…",
+    "sendMessage": "Nachricht senden",
+    "successTitle": "Danke — Ihre Nachricht ist unterwegs",
+    "successDesc": "Antwort innerhalb von 48 Stunden.",
+    "cooldown": "Erneut senden in {{seconds}}s.",
+    "lookingElse": "Etwas anderes gesucht?",
+    "errorNameRequired": "Name erforderlich.",
+    "errorNameTooLong": "Name zu lang (max. 100).",
+    "errorInvalidEmail": "Gültige E-Mail eingeben.",
+    "errorSelectSubject": "Betreff wählen.",
+    "errorMessageRequired": "Nachricht erforderlich.",
+    "errorMessageTooLong": "Nachricht zu lang (max. {{max}}).",
+    "errorCaptcha": "Captcha lösen.",
+    "errorRateLimit": "Zu viele Einsendungen. In einer Stunde erneut versuchen.",
+    "errorBadRequest": "Überprüfen und erneut versuchen.",
+    "errorGeneric": "Etwas ging schief. Erneut versuchen.",
+    "errorNetwork": "Dienst nicht erreichbar. Verbindung prüfen."
   }
 }

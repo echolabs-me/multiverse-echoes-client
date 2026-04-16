@@ -270,7 +270,10 @@
     "statusHibernated": "최면 상태의",
     "typePublic": "공공의",
     "typePersonal": "개인적인",
-    "typePrivate": "개인용"
+    "typePrivate": "개인용",
+    "statusPaused": "일시정지",
+    "statusArchived": "보관됨",
+    "statusPendingDeletion": "삭제 대기"
   },
   "shardBrowser": {
     "title": "샤드 둘러보기",
@@ -281,7 +284,11 @@
     "statusInactive": "비활성",
     "typePublic": "공공의",
     "typePersonal": "개인적인",
-    "echoCount": "{{current}} / {{max}} 메아리"
+    "echoCount": "{{current}} / {{max}} 메아리",
+    "statusPaused": "일시정지",
+    "statusArchived": "보관됨",
+    "statusPendingDeletion": "삭제 대기",
+    "typePrivate": "비공개"
   },
   "feeds": {
     "personalTitle": "개인 피드",
@@ -862,7 +869,10 @@
     "Active": "활성",
     "Inactive": "비활성",
     "Broken": "고장 난",
-    "unknownEcho": "알 수 없는 메아리"
+    "unknownEcho": "알 수 없는 메아리",
+    "Faded": "희미해진",
+    "Ended": "종료됨",
+    "Severed": "단절됨"
   },
   "feedTypes": {
     "diary_entry": "일기 항목",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30분",
     "heartbeat15m": "15분",
     "heartbeat5m": "5분"
+  },
+  "contact": {
+    "metaTitle": "문의하기 — Multiverse Echoes",
+    "metaDesc": "EchoLabsME에 문의하세요. 48시간 이내 답변.",
+    "title": "문의하기",
+    "description": "질문, 언론 문의, 버그 리포트 등 — 여기로 보내주시면 48시간 이내 답변.",
+    "labelName": "이름",
+    "labelEmail": "이메일",
+    "labelSubject": "제목",
+    "labelMessage": "메시지",
+    "subjectGeneral": "일반 문의",
+    "subjectBug": "버그 신고",
+    "subjectPress": "보도/미디어",
+    "subjectPartnership": "파트너십",
+    "subjectOther": "기타",
+    "charsRemaining": "{{count}}자 남음",
+    "sending": "전송 중…",
+    "sendMessage": "메시지 보내기",
+    "successTitle": "감사합니다 — 메시지가 전송되었습니다",
+    "successDesc": "48시간 이내에 답변드리겠습니다.",
+    "cooldown": "{{seconds}}초 후 다시 보낼 수 있습니다.",
+    "lookingElse": "다른 것을 찾고 계신가요?",
+    "errorNameRequired": "이름은 필수입니다.",
+    "errorNameTooLong": "이름이 너무 깁니다 (최대 100자).",
+    "errorInvalidEmail": "유효한 이메일을 입력해 주세요.",
+    "errorSelectSubject": "제목을 선택해 주세요.",
+    "errorMessageRequired": "메시지는 필수입니다.",
+    "errorMessageTooLong": "메시지가 너무 깁니다 (최대 {{max}}자).",
+    "errorCaptcha": "캡차를 완료해 주세요.",
+    "errorRateLimit": "제출 횟수 초과. 1시간 후 다시 시도.",
+    "errorBadRequest": "제출 내용 확인 후 다시 시도.",
+    "errorGeneric": "문제 발생. 다시 시도해 주세요.",
+    "errorNetwork": "서비스 연결 불가. 연결 확인 후 다시 시도."
   }
 }

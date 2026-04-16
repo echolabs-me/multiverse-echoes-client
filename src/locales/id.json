@@ -270,7 +270,10 @@
     "statusHibernated": "Hibernasi",
     "typePublic": "Publik",
     "typePersonal": "Pribadi",
-    "typePrivate": "Privat"
+    "typePrivate": "Privat",
+    "statusPaused": "Dijeda",
+    "statusArchived": "Diarsipkan",
+    "statusPendingDeletion": "Menunggu penghapusan"
   },
   "shardBrowser": {
     "title": "Telusuri Shards",
@@ -281,7 +284,11 @@
     "statusInactive": "Tidak aktif",
     "typePublic": "Publik",
     "typePersonal": "Pribadi",
-    "echoCount": "{{current}} / {{max}} Gema"
+    "echoCount": "{{current}} / {{max}} Gema",
+    "statusPaused": "Dijeda",
+    "statusArchived": "Diarsipkan",
+    "statusPendingDeletion": "Menunggu penghapusan",
+    "typePrivate": "Pribadi"
   },
   "feeds": {
     "personalTitle": "Beranda Pribadi",
@@ -862,7 +869,10 @@
     "Active": "Aktif",
     "Inactive": "Tidak aktif",
     "Broken": "Rusak",
-    "unknownEcho": "Gema Tak Dikenal"
+    "unknownEcho": "Gema Tak Dikenal",
+    "Faded": "Memudar",
+    "Ended": "Berakhir",
+    "Severed": "Terputus"
   },
   "feedTypes": {
     "diary_entry": "Catatan Buku Harian",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30m",
     "heartbeat15m": "15m",
     "heartbeat5m": "5m"
+  },
+  "contact": {
+    "metaTitle": "Kontak — Multiverse Echoes",
+    "metaDesc": "Hubungi EchoLabsME. Balasan dalam 48 jam.",
+    "title": "Kontak",
+    "description": "Pertanyaan, pers, bug, atau apa pun — kirim di sini, balasan dalam 48 jam.",
+    "labelName": "Nama",
+    "labelEmail": "Email",
+    "labelSubject": "Subjek",
+    "labelMessage": "Pesan",
+    "subjectGeneral": "Pertanyaan Umum",
+    "subjectBug": "Laporan Bug",
+    "subjectPress": "Pers/Media",
+    "subjectPartnership": "Kemitraan",
+    "subjectOther": "Lainnya",
+    "charsRemaining": "{{count}} karakter tersisa",
+    "sending": "Mengirim…",
+    "sendMessage": "Kirim pesan",
+    "successTitle": "Terima kasih — pesan Anda sedang dikirim",
+    "successDesc": "Balasan dalam 48 jam.",
+    "cooldown": "Kirim lagi dalam {{seconds}} detik.",
+    "lookingElse": "Mencari hal lain?",
+    "errorNameRequired": "Nama wajib diisi.",
+    "errorNameTooLong": "Nama terlalu panjang (maks 100).",
+    "errorInvalidEmail": "Masukkan email yang valid.",
+    "errorSelectSubject": "Pilih subjek.",
+    "errorMessageRequired": "Pesan wajib diisi.",
+    "errorMessageTooLong": "Pesan terlalu panjang (maks {{max}}).",
+    "errorCaptcha": "Selesaikan captcha.",
+    "errorRateLimit": "Terlalu banyak pengiriman. Coba dalam satu jam.",
+    "errorBadRequest": "Periksa dan coba lagi.",
+    "errorGeneric": "Terjadi kesalahan. Coba lagi.",
+    "errorNetwork": "Tidak bisa menghubungi layanan. Periksa koneksi."
   }
 }

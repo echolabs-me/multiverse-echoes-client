@@ -47,7 +47,7 @@ function prefersReducedMotion(): boolean {
 export function LanguageSelectionPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [expandedCode, setExpandedCode] = useState<string | null>(null);
   const [isTouch, setIsTouch] = useState(false);
   const [useGrid, setUseGrid] = useState(false);
@@ -134,7 +134,7 @@ export function LanguageSelectionPage() {
             className={`me-fade-up grid w-full max-w-lg grid-cols-4 gap-3 ${animClass}`}
             data-delay="300"
             role="listbox"
-            aria-label="Language selection"
+            aria-label={t('onboarding.languageSelectionLabel')}
           >
             {languages.map((lang) => (
               <LanguageTile
@@ -156,7 +156,7 @@ export function LanguageSelectionPage() {
             className={`me-fade-up relative h-[640px] w-[640px] ${animClass}`}
             data-delay="300"
             role="listbox"
-            aria-label="Language selection"
+            aria-label={t('onboarding.languageSelectionLabel')}
           >
             {/* Centre logo */}
             <video

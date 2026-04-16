@@ -270,7 +270,10 @@
     "statusHibernated": "Kış uykusuna yatmış",
     "typePublic": "Kamu",
     "typePersonal": "Kişisel",
-    "typePrivate": "Özel"
+    "typePrivate": "Özel",
+    "statusPaused": "Duraklatıldı",
+    "statusArchived": "Arşivlendi",
+    "statusPendingDeletion": "Silinmeyi bekliyor"
   },
   "shardBrowser": {
     "title": "Parçaları Gözat",
@@ -281,7 +284,11 @@
     "statusInactive": "Pasif",
     "typePublic": "Kamu",
     "typePersonal": "Kişisel",
-    "echoCount": "{{current}} / {{max}} Yankı"
+    "echoCount": "{{current}} / {{max}} Yankı",
+    "statusPaused": "Duraklatıldı",
+    "statusArchived": "Arşivlendi",
+    "statusPendingDeletion": "Silinmeyi bekliyor",
+    "typePrivate": "Özel"
   },
   "feeds": {
     "personalTitle": "Kişisel Akış",
@@ -862,7 +869,10 @@
     "Active": "Aktif",
     "Inactive": "Pasif",
     "Broken": "Kırık",
-    "unknownEcho": "Bilinmeyen Yankı"
+    "unknownEcho": "Bilinmeyen Yankı",
+    "Faded": "Solmuş",
+    "Ended": "Sona erdi",
+    "Severed": "Kopmuş"
   },
   "feedTypes": {
     "diary_entry": "Günlük Yazısı",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30dk",
     "heartbeat15m": "15dk",
     "heartbeat5m": "5dk"
+  },
+  "contact": {
+    "metaTitle": "İletişim — Multiverse Echoes",
+    "metaDesc": "EchoLabsME ile iletişime geçin. 48 saat içinde yanıt.",
+    "title": "İletişim",
+    "description": "Sorular, basın, hatalar veya başka — buradan gönderin, 48 saat içinde yanıt.",
+    "labelName": "Ad",
+    "labelEmail": "E-posta",
+    "labelSubject": "Konu",
+    "labelMessage": "Mesaj",
+    "subjectGeneral": "Genel Soru",
+    "subjectBug": "Hata Raporu",
+    "subjectPress": "Basın/Medya",
+    "subjectPartnership": "Ortaklık",
+    "subjectOther": "Diğer",
+    "charsRemaining": "{{count}} karakter kaldı",
+    "sending": "Gönderiliyor…",
+    "sendMessage": "Mesaj gönder",
+    "successTitle": "Teşekkürler — mesajınız yolda",
+    "successDesc": "48 saat içinde yanıt vereceğiz.",
+    "cooldown": "{{seconds}} saniye sonra tekrar gönderebilirsiniz.",
+    "lookingElse": "Başka bir şey mi arıyorsunuz?",
+    "errorNameRequired": "Ad gereklidir.",
+    "errorNameTooLong": "Ad çok uzun (maks. 100).",
+    "errorInvalidEmail": "Geçerli e-posta girin.",
+    "errorSelectSubject": "Konu seçin.",
+    "errorMessageRequired": "Mesaj gereklidir.",
+    "errorMessageTooLong": "Mesaj çok uzun (maks. {{max}}).",
+    "errorCaptcha": "Captcha’yı tamamlayın.",
+    "errorRateLimit": "Çok fazla gönderim. Bir saat sonra deneyin.",
+    "errorBadRequest": "Kontrol edip tekrar deneyin.",
+    "errorGeneric": "Bir hata oluştu. Tekrar deneyin.",
+    "errorNetwork": "Servise ulaşılamadı. Bağlantıyı kontrol edin."
   }
 }

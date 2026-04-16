@@ -270,7 +270,10 @@
     "statusHibernated": "Hibernated",
     "typePublic": "Public",
     "typePersonal": "Personal",
-    "typePrivate": "Private"
+    "typePrivate": "Private",
+    "statusPaused": "Paused",
+    "statusArchived": "Archived",
+    "statusPendingDeletion": "Pending Deletion"
   },
   "shardBrowser": {
     "title": "Browse Shards",
@@ -281,7 +284,11 @@
     "statusInactive": "Inactive",
     "typePublic": "Public",
     "typePersonal": "Personal",
-    "echoCount": "{{current}} / {{max}} Echoes"
+    "echoCount": "{{current}} / {{max}} Echoes",
+    "statusPaused": "Paused",
+    "statusArchived": "Archived",
+    "statusPendingDeletion": "Pending Deletion",
+    "typePrivate": "Private"
   },
   "feeds": {
     "personalTitle": "Personal Feed",
@@ -862,7 +869,10 @@
     "Active": "Active",
     "Inactive": "Inactive",
     "Broken": "Broken",
-    "unknownEcho": "Unknown Echo"
+    "unknownEcho": "Unknown Echo",
+    "Faded": "Faded",
+    "Ended": "Ended",
+    "Severed": "Severed"
   },
   "feedTypes": {
     "diary_entry": "Diary Entry",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30m",
     "heartbeat15m": "15m",
     "heartbeat5m": "5m"
+  },
+  "contact": {
+    "metaTitle": "Contact — Multiverse Echoes",
+    "metaDesc": "Get in touch with EchoLabsME. We typically reply within 48 hours.",
+    "title": "Contact",
+    "description": "Questions, press enquiries, bug reports, or anything else — send them here and we’ll get back to you within 48 hours.",
+    "labelName": "Name",
+    "labelEmail": "Email",
+    "labelSubject": "Subject",
+    "labelMessage": "Message",
+    "subjectGeneral": "General Inquiry",
+    "subjectBug": "Bug Report",
+    "subjectPress": "Press/Media",
+    "subjectPartnership": "Partnership",
+    "subjectOther": "Other",
+    "charsRemaining": "{{count}} characters remaining",
+    "sending": "Sending…",
+    "sendMessage": "Send message",
+    "successTitle": "Thanks — your message is on its way",
+    "successDesc": "We’ll get back to you within 48 hours.",
+    "cooldown": "You can send another message in {{seconds}}s.",
+    "lookingElse": "Looking for something else?",
+    "errorNameRequired": "Name is required.",
+    "errorNameTooLong": "Name is too long (max 100 characters).",
+    "errorInvalidEmail": "Please enter a valid email address.",
+    "errorSelectSubject": "Please select a subject.",
+    "errorMessageRequired": "Message is required.",
+    "errorMessageTooLong": "Message is too long (max {{max}} characters).",
+    "errorCaptcha": "Please complete the captcha.",
+    "errorRateLimit": "Too many submissions. Please try again in an hour.",
+    "errorBadRequest": "Please check your submission and try again.",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "errorNetwork": "Couldn’t reach the contact service. Check your connection and try again."
   }
 }

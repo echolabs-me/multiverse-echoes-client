@@ -270,7 +270,10 @@
     "statusHibernated": "En hibernation",
     "typePublic": "Public",
     "typePersonal": "Personnel",
-    "typePrivate": "Privé"
+    "typePrivate": "Privé",
+    "statusPaused": "En pause",
+    "statusArchived": "Archivé",
+    "statusPendingDeletion": "Suppression en attente"
   },
   "shardBrowser": {
     "title": "Parcourir les Fragments",
@@ -281,7 +284,11 @@
     "statusInactive": "Inactif",
     "typePublic": "Public",
     "typePersonal": "Personnel",
-    "echoCount": "{{current}} / {{max}} Échos"
+    "echoCount": "{{current}} / {{max}} Échos",
+    "statusPaused": "En pause",
+    "statusArchived": "Archivé",
+    "statusPendingDeletion": "Suppression en attente",
+    "typePrivate": "Privé"
   },
   "feeds": {
     "personalTitle": "Fil personnel",
@@ -862,7 +869,10 @@
     "Active": "Actif",
     "Inactive": "Inactif",
     "Broken": "Brisé",
-    "unknownEcho": "Écho inconnu"
+    "unknownEcho": "Écho inconnu",
+    "Faded": "Estompé",
+    "Ended": "Terminé",
+    "Severed": "Rompu"
   },
   "feedTypes": {
     "diary_entry": "Journal",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30min",
     "heartbeat15m": "15min",
     "heartbeat5m": "5min"
+  },
+  "contact": {
+    "metaTitle": "Contact — Multiverse Echoes",
+    "metaDesc": "Contactez EchoLabsME. Réponse sous 48 heures.",
+    "title": "Contact",
+    "description": "Questions, presse, bugs ou autre — envoyez-les ici, réponse sous 48 heures.",
+    "labelName": "Nom",
+    "labelEmail": "E-mail",
+    "labelSubject": "Objet",
+    "labelMessage": "Message",
+    "subjectGeneral": "Demande générale",
+    "subjectBug": "Rapport de bug",
+    "subjectPress": "Presse/Médias",
+    "subjectPartnership": "Partenariat",
+    "subjectOther": "Autre",
+    "charsRemaining": "{{count}} caractères restants",
+    "sending": "Envoi…",
+    "sendMessage": "Envoyer",
+    "successTitle": "Merci — votre message est en route",
+    "successDesc": "Réponse sous 48 heures.",
+    "cooldown": "Réenvoi possible dans {{seconds}}s.",
+    "lookingElse": "Autre chose ?",
+    "errorNameRequired": "Nom requis.",
+    "errorNameTooLong": "Nom trop long (100 max).",
+    "errorInvalidEmail": "Entrez un e-mail valide.",
+    "errorSelectSubject": "Choisissez un objet.",
+    "errorMessageRequired": "Message requis.",
+    "errorMessageTooLong": "Message trop long ({{max}} max).",
+    "errorCaptcha": "Complétez le captcha.",
+    "errorRateLimit": "Trop de soumissions. Réessayez dans une heure.",
+    "errorBadRequest": "Vérifiez et réessayez.",
+    "errorGeneric": "Erreur. Réessayez.",
+    "errorNetwork": "Service injoignable. Vérifiez votre connexion."
   }
 }

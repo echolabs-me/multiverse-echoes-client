@@ -270,7 +270,10 @@
     "statusHibernated": "Nakatulog nang mahaba",
     "typePublic": "Publiko",
     "typePersonal": "Personal",
-    "typePrivate": "Pribado"
+    "typePrivate": "Pribado",
+    "statusPaused": "Naka-pause",
+    "statusArchived": "Na-archive",
+    "statusPendingDeletion": "Naghihintay ng pagbura"
   },
   "shardBrowser": {
     "title": "Mag-browse ng mga Shard",
@@ -281,7 +284,11 @@
     "statusInactive": "Hindi aktibo",
     "typePublic": "Publiko",
     "typePersonal": "Personal",
-    "echoCount": "{{current}} / {{max}} na Echoes"
+    "echoCount": "{{current}} / {{max}} na Echoes",
+    "statusPaused": "Naka-pause",
+    "statusArchived": "Na-archive",
+    "statusPendingDeletion": "Naghihintay ng pagbura",
+    "typePrivate": "Pribado"
   },
   "feeds": {
     "personalTitle": "Personal na Feed",
@@ -862,7 +869,10 @@
     "Active": "Aktibo",
     "Inactive": "Hindi aktibo",
     "Broken": "Sira",
-    "unknownEcho": "Hindi Kilalang Alingawngaw"
+    "unknownEcho": "Hindi Kilalang Alingawngaw",
+    "Faded": "Kumupas",
+    "Ended": "Natapos",
+    "Severed": "Naputol"
   },
   "feedTypes": {
     "diary_entry": "Talaarawan",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30m",
     "heartbeat15m": "15m",
     "heartbeat5m": "5m"
+  },
+  "contact": {
+    "metaTitle": "Makipag-ugnayan — Multiverse Echoes",
+    "metaDesc": "Makipag-ugnayan sa EchoLabsME. Sagot sa loob ng 48 oras.",
+    "title": "Makipag-ugnayan",
+    "description": "Tanong, press, bug, o kahit ano — ipadala dito, sagot sa loob ng 48 oras.",
+    "labelName": "Pangalan",
+    "labelEmail": "Email",
+    "labelSubject": "Paksa",
+    "labelMessage": "Mensahe",
+    "subjectGeneral": "Pangkalahatang Tanong",
+    "subjectBug": "Ulat ng Bug",
+    "subjectPress": "Press/Media",
+    "subjectPartnership": "Pakikipagtulungan",
+    "subjectOther": "Iba pa",
+    "charsRemaining": "{{count}} karakter natitira",
+    "sending": "Ipinapadala…",
+    "sendMessage": "Ipadala",
+    "successTitle": "Salamat — ipinapadala na ang mensahe",
+    "successDesc": "Sagot sa loob ng 48 oras.",
+    "cooldown": "Magpadala muli sa {{seconds}}s.",
+    "lookingElse": "Naghahanap ng iba?",
+    "errorNameRequired": "Kinakailangan ang pangalan.",
+    "errorNameTooLong": "Pangalan masyadong mahaba (max 100).",
+    "errorInvalidEmail": "Maglagay ng wastong email.",
+    "errorSelectSubject": "Pumili ng paksa.",
+    "errorMessageRequired": "Kinakailangan ang mensahe.",
+    "errorMessageTooLong": "Mensahe masyadong mahaba (max {{max}}).",
+    "errorCaptcha": "Kumpletuhin ang captcha.",
+    "errorRateLimit": "Maraming isinumite. Subukan pagkalipas ng isang oras.",
+    "errorBadRequest": "Suriin at subukan muli.",
+    "errorGeneric": "May mali. Subukan muli.",
+    "errorNetwork": "Hindi maabot ang serbisyo. Suriin ang koneksyon."
   }
 }

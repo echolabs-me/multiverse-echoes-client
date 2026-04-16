@@ -270,7 +270,10 @@
     "statusHibernated": "В спячке",
     "typePublic": "Общественный",
     "typePersonal": "Личный",
-    "typePrivate": "Частный"
+    "typePrivate": "Частный",
+    "statusPaused": "Приостановлено",
+    "statusArchived": "В архиве",
+    "statusPendingDeletion": "Ожидает удаления"
   },
   "shardBrowser": {
     "title": "Просмотр осколков",
@@ -281,7 +284,11 @@
     "statusInactive": "Неактивен",
     "typePublic": "Общественный",
     "typePersonal": "Личный",
-    "echoCount": "{{current}} / {{max}} Эхо"
+    "echoCount": "{{current}} / {{max}} Эхо",
+    "statusPaused": "Приостановлено",
+    "statusArchived": "В архиве",
+    "statusPendingDeletion": "Ожидает удаления",
+    "typePrivate": "Приватный"
   },
   "feeds": {
     "personalTitle": "Личная лента",
@@ -862,7 +869,10 @@
     "Active": "Активный",
     "Inactive": "Неактивен",
     "Broken": "Сломанный",
-    "unknownEcho": "Неизвестное эхо"
+    "unknownEcho": "Неизвестное эхо",
+    "Faded": "Угасшие",
+    "Ended": "Завершено",
+    "Severed": "Разорвано"
   },
   "feedTypes": {
     "diary_entry": "Запись в дневнике",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30мин",
     "heartbeat15m": "15мин",
     "heartbeat5m": "5мин"
+  },
+  "contact": {
+    "metaTitle": "Контакты — Multiverse Echoes",
+    "metaDesc": "Свяжитесь с EchoLabsME. Ответ в течение 48 часов.",
+    "title": "Контакты",
+    "description": "Вопросы, пресса, ошибки или другое — отправьте здесь, ответим за 48 часов.",
+    "labelName": "Имя",
+    "labelEmail": "Эл. почта",
+    "labelSubject": "Тема",
+    "labelMessage": "Сообщение",
+    "subjectGeneral": "Общий вопрос",
+    "subjectBug": "Отчёт об ошибке",
+    "subjectPress": "Пресса/СМИ",
+    "subjectPartnership": "Партнёрство",
+    "subjectOther": "Другое",
+    "charsRemaining": "Осталось {{count}} символов",
+    "sending": "Отправка…",
+    "sendMessage": "Отправить",
+    "successTitle": "Спасибо — сообщение отправлено",
+    "successDesc": "Ответим в течение 48 часов.",
+    "cooldown": "Повтор через {{seconds}}с.",
+    "lookingElse": "Ищете другое?",
+    "errorNameRequired": "Имя обязательно.",
+    "errorNameTooLong": "Имя слишком длинное (макс. 100).",
+    "errorInvalidEmail": "Введите корректный адрес.",
+    "errorSelectSubject": "Выберите тему.",
+    "errorMessageRequired": "Сообщение обязательно.",
+    "errorMessageTooLong": "Сообщение слишком длинное (макс. {{max}}).",
+    "errorCaptcha": "Пройдите капчу.",
+    "errorRateLimit": "Слишком много отправок. Попробуйте через час.",
+    "errorBadRequest": "Проверьте и попробуйте снова.",
+    "errorGeneric": "Что-то пошло не так. Попробуйте снова.",
+    "errorNetwork": "Не удалось связаться. Проверьте подключение."
   }
 }

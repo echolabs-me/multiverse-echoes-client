@@ -270,7 +270,10 @@
     "statusHibernated": "শীতনিদ্রায় মগ্ন",
     "typePublic": "জনসাধারণ",
     "typePersonal": "ব্যক্তিগত",
-    "typePrivate": "ব্যক্তিগত"
+    "typePrivate": "ব্যক্তিগত",
+    "statusPaused": "বিরতি",
+    "statusArchived": "আর্কাইভ",
+    "statusPendingDeletion": "মুছে ফেলা মুলতুবি"
   },
   "shardBrowser": {
     "title": "শার্ডস ব্রাউজ করুন",
@@ -281,7 +284,11 @@
     "statusInactive": "নিষ্ক্রিয়",
     "typePublic": "জনসাধারণ",
     "typePersonal": "ব্যক্তিগত",
-    "echoCount": "{{current}} / {{max}} প্রতিধ্বনি"
+    "echoCount": "{{current}} / {{max}} প্রতিধ্বনি",
+    "statusPaused": "বিরতি",
+    "statusArchived": "আর্কাইভ",
+    "statusPendingDeletion": "মুছে ফেলা মুলতুবি",
+    "typePrivate": "ব্যক্তিগত"
   },
   "feeds": {
     "personalTitle": "ব্যক্তিগত ফিড",
@@ -862,7 +869,10 @@
     "Active": "সক্রিয়",
     "Inactive": "নিষ্ক্রিয়",
     "Broken": "ভাঙ্গা",
-    "unknownEcho": "অজানা প্রতিধ্বনি"
+    "unknownEcho": "অজানা প্রতিধ্বনি",
+    "Faded": "বিবর্ণ",
+    "Ended": "শেষ",
+    "Severed": "বিচ্ছিন্ন"
   },
   "feedTypes": {
     "diary_entry": "ডায়েরি লেখা",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30মি",
     "heartbeat15m": "15মি",
     "heartbeat5m": "5মি"
+  },
+  "contact": {
+    "metaTitle": "যোগাযোগ — Multiverse Echoes",
+    "metaDesc": "EchoLabsME-এর সাথে যোগাযোগ। ৪৮ ঘণ্টার মধ্যে উত্তর।",
+    "title": "যোগাযোগ",
+    "description": "প্রশ্ন, প্রেস, বাগ বা অন্য কিছু — এখানে পাঠান, ৪৮ ঘণ্টার মধ্যে উত্তর।",
+    "labelName": "নাম",
+    "labelEmail": "ইমেইল",
+    "labelSubject": "বিষয়",
+    "labelMessage": "বার্তা",
+    "subjectGeneral": "সাধারণ অনুসন্ধান",
+    "subjectBug": "বাগ রিপোর্ট",
+    "subjectPress": "প্রেস/মিডিয়া",
+    "subjectPartnership": "অংশীদারিত্ব",
+    "subjectOther": "অন্যান্য",
+    "charsRemaining": "{{count}} অক্ষর বাকি",
+    "sending": "পাঠানো হচ্ছে…",
+    "sendMessage": "বার্তা পাঠান",
+    "successTitle": "ধন্যবাদ — বার্তা পাঠানো হয়েছে",
+    "successDesc": "৪৮ ঘণ্টার মধ্যে উত্তর দেব।",
+    "cooldown": "{{seconds}} সেকেন্ডে আবার পাঠাতে পারবেন।",
+    "lookingElse": "অন্য কিছু খুঁজছেন?",
+    "errorNameRequired": "নাম আবশ্যক।",
+    "errorNameTooLong": "নাম খুব দীর্ঘ (সর্বোচ্চ ১০০)।",
+    "errorInvalidEmail": "বৈধ ইমেইল লিখুন।",
+    "errorSelectSubject": "বিষয় নির্বাচন করুন।",
+    "errorMessageRequired": "বার্তা আবশ্যক।",
+    "errorMessageTooLong": "বার্তা খুব দীর্ঘ ({{max}} অক্ষর)।",
+    "errorCaptcha": "ক্যাপচা সম্পূর্ণ করুন।",
+    "errorRateLimit": "অনেক জমা। এক ঘণ্টা পর চেষ্টা করুন।",
+    "errorBadRequest": "পরীক্ষা করে আবার চেষ্টা করুন।",
+    "errorGeneric": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।",
+    "errorNetwork": "সেবায় পৌঁছানো যায়নি। সংযোগ পরীক্ষা করুন।"
   }
 }

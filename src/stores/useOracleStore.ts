@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import i18n from '../i18n.ts';
 import type { OracleContext, OracleDeepLink, FeedbackType } from '../types/api.ts';
 import { oracle, feedback } from '../lib/api/endpoints.ts';
+import { detectConfirmationIntent } from '../lib/confirmationIntent.ts';
 
 export interface OracleMessage {
   id: string;
@@ -36,9 +37,7 @@ function parseFeedbackMarker(text: string): PendingFeedback | null {
 
 /** Check if a user message is confirming a pending feedback submission. */
 function isConfirmation(text: string): boolean {
-  const lower = text.toLowerCase().trim();
-  const patterns = ['yes', 'yep', 'yeah', 'correct', 'looks good', 'send it', 'submit', 'confirm', 'go ahead', 'do it'];
-  return patterns.some((p) => lower === p || lower.startsWith(p));
+  return detectConfirmationIntent(text) === true;
 }
 
 interface OracleState {
@@ -104,7 +103,12 @@ export const useOracleStore = create<OracleState>()(
   ask: async (question) => {
     const state = get();
 
-    // If there's a pending feedback and the user confirms, auto-submit it.
+    // If there's a pending feedback, check for locale-aware confirmation/denial.
+    if (state.pendingFeedback && detectConfirmationIntent(question) === false) {
+      // Explicit denial — cancel the pending feedback, don't send to Oracle.
+      set({ pendingFeedback: null });
+      return;
+    }
     if (state.pendingFeedback && isConfirmation(question)) {
       const pf = state.pendingFeedback;
       const userMsg: OracleMessage = {

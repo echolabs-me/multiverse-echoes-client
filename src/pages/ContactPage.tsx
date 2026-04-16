@@ -14,6 +14,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
+import { useTranslation } from 'react-i18next';
 import { Input } from '../components/index.ts';
 
 const CONTACT_API = 'https://api.echolabs.me/contact';
@@ -21,12 +22,12 @@ const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
   | string
   | undefined;
 
-const SUBJECTS = [
-  'General Inquiry',
-  'Bug Report',
-  'Press/Media',
-  'Partnership',
-  'Other',
+const SUBJECT_KEYS = [
+  { value: 'General Inquiry', key: 'contact.subjectGeneral' },
+  { value: 'Bug Report', key: 'contact.subjectBug' },
+  { value: 'Press/Media', key: 'contact.subjectPress' },
+  { value: 'Partnership', key: 'contact.subjectPartnership' },
+  { value: 'Other', key: 'contact.subjectOther' },
 ] as const;
 
 const MESSAGE_MAX = 2000;
@@ -38,9 +39,10 @@ interface WorkerError {
 }
 
 export function ContactPage() {
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [subject, setSubject] = useState<string>(SUBJECTS[0]);
+  const [subject, setSubject] = useState<string>(SUBJECT_KEYS[0].value);
   const [message, setMessage] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,22 +60,22 @@ export function ContactPage() {
   }, [cooldown]);
 
   function validate(): string | null {
-    if (name.trim().length < 1) return 'Name is required.';
-    if (name.trim().length > 100) return 'Name is too long (max 100 characters).';
+    if (name.trim().length < 1) return t('contact.errorNameRequired');
+    if (name.trim().length > 100) return t('contact.errorNameTooLong');
     const e = email.trim();
     if (e.length < 5 || !e.includes('@') || !e.includes('.')) {
-      return 'Please enter a valid email address.';
+      return t('contact.errorInvalidEmail');
     }
-    if (!SUBJECTS.includes(subject as (typeof SUBJECTS)[number])) {
-      return 'Please select a subject.';
+    if (!SUBJECT_KEYS.some((s) => s.value === subject)) {
+      return t('contact.errorSelectSubject');
     }
     const m = message.trim();
-    if (m.length < 1) return 'Message is required.';
+    if (m.length < 1) return t('contact.errorMessageRequired');
     if (m.length > MESSAGE_MAX) {
-      return `Message is too long (max ${MESSAGE_MAX} characters).`;
+      return t('contact.errorMessageTooLong', { max: MESSAGE_MAX });
     }
     if (TURNSTILE_SITE_KEY && !turnstileToken) {
-      return 'Please complete the captcha.';
+      return t('contact.errorCaptcha');
     }
     return null;
   }
@@ -117,23 +119,16 @@ export function ContactPage() {
       }
 
       if (res.status === 429) {
-        setError(
-          body.error ??
-            'Too many submissions from your IP. Please try again in an hour.',
-        );
+        setError(body.error ?? t('contact.errorRateLimit'));
       } else if (res.status === 400) {
-        setError(body.error ?? 'Please check your submission and try again.');
+        setError(body.error ?? t('contact.errorBadRequest'));
       } else {
-        setError(
-          body.error ?? 'Something went wrong. Please try again in a moment.',
-        );
+        setError(body.error ?? t('contact.errorGeneric'));
       }
       turnstileRef.current?.reset();
       setTurnstileToken('');
     } catch {
-      setError(
-        "Couldn't reach the contact service. Please check your connection and try again.",
-      );
+      setError(t('contact.errorNetwork'));
       turnstileRef.current?.reset();
       setTurnstileToken('');
     } finally {
@@ -147,16 +142,10 @@ export function ContactPage() {
   return (
     <>
       <Helmet>
-        <title>Contact — Multiverse Echoes</title>
-        <meta
-          name="description"
-          content="Get in touch with EchoLabsME. We typically reply within 48 hours."
-        />
-        <meta property="og:title" content="Contact — Multiverse Echoes" />
-        <meta
-          property="og:description"
-          content="Get in touch with EchoLabsME. We typically reply within 48 hours."
-        />
+        <title>{t('contact.metaTitle')}</title>
+        <meta name="description" content={t('contact.metaDesc')} />
+        <meta property="og:title" content={t('contact.metaTitle')} />
+        <meta property="og:description" content={t('contact.metaDesc')} />
         <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
         <meta property="og:url" content="https://echolabsme.com/contact" />
         <meta property="og:type" content="website" />
@@ -166,11 +155,10 @@ export function ContactPage() {
       <div className="px-4 pt-28 pb-16 sm:px-6">
         <article className="mx-auto max-w-2xl">
           <h1 className="mb-4 font-serif text-4xl font-light tracking-wider text-[var(--text-primary)]">
-            Contact
+            {t('contact.title')}
           </h1>
           <p className="mb-10 leading-relaxed text-[var(--text-secondary)]">
-            Questions, press enquiries, bug reports, or anything else — send
-            them here and we&rsquo;ll get back to you within 48 hours.
+            {t('contact.description')}
           </p>
 
           {submitted ? (
@@ -179,15 +167,15 @@ export function ContactPage() {
               role="status"
             >
               <h2 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
-                Thanks — your message is on its way
+                {t('contact.successTitle')}
               </h2>
               <p className="leading-relaxed text-[var(--text-secondary)]">
-                We&rsquo;ll get back to you within 48 hours.
+                {t('contact.successDesc')}
                 {cooldown > 0 && (
                   <>
                     {' '}
                     <span className="text-[var(--text-muted)]">
-                      You can send another message in {cooldown}s.
+                      {t('contact.cooldown', { seconds: cooldown })}
                     </span>
                   </>
                 )}
@@ -200,7 +188,7 @@ export function ContactPage() {
               noValidate
             >
               <Input
-                label="Name"
+                label={t('contact.labelName')}
                 type="text"
                 value={name}
                 onChange={(e) =>
@@ -213,7 +201,7 @@ export function ContactPage() {
               />
 
               <Input
-                label="Email"
+                label={t('contact.labelEmail')}
                 type="email"
                 value={email}
                 onChange={(e) =>
@@ -230,7 +218,7 @@ export function ContactPage() {
                   htmlFor="contact-subject"
                   className="text-sm font-medium text-[var(--text-primary)]"
                 >
-                  Subject
+                  {t('contact.labelSubject')}
                 </label>
                 <select
                   id="contact-subject"
@@ -240,9 +228,9 @@ export function ContactPage() {
                   disabled={!canSubmit}
                   className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-[var(--text-primary)] transition-colors focus:border-[var(--accent)] focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {SUBJECTS.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
+                  {SUBJECT_KEYS.map((s) => (
+                    <option key={s.value} value={s.value}>
+                      {t(s.key)}
                     </option>
                   ))}
                 </select>
@@ -250,7 +238,7 @@ export function ContactPage() {
 
               <div className="flex flex-col gap-1">
                 <Input
-                  label="Message"
+                  label={t('contact.labelMessage')}
                   multiline
                   value={message}
                   onChange={(e) =>
@@ -269,7 +257,7 @@ export function ContactPage() {
                   }`}
                   aria-live="polite"
                 >
-                  {messageRemaining} characters remaining
+                  {t('contact.charsRemaining', { count: messageRemaining })}
                 </p>
               </div>
 
@@ -298,22 +286,22 @@ export function ContactPage() {
                 disabled={!canSubmit}
                 className="rounded-md bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--canvas)] transition-all hover:bg-[var(--accent-hover)] hover:shadow-[0_0_30px_rgba(212,145,92,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {isSubmitting ? 'Sending…' : 'Send message'}
+                {isSubmitting ? t('contact.sending') : t('contact.sendMessage')}
               </button>
             </form>
           )}
 
           <div className="text-center text-sm text-[var(--text-muted)]">
-            Looking for something else?{' '}
+            {t('contact.lookingElse')}{' '}
             <Link to="/about" className="text-[var(--accent)] hover:underline">
-              About
+              {t('website.nav.about')}
             </Link>
             {' · '}
             <Link
               to="/waitlist"
               className="text-[var(--accent)] hover:underline"
             >
-              Join the waitlist
+              {t('auth.joinWaitlist')}
             </Link>
           </div>
         </article>

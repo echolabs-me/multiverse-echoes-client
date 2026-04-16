@@ -270,7 +270,10 @@
     "statusHibernated": "Hibernado",
     "typePublic": "Público",
     "typePersonal": "Pessoal",
-    "typePrivate": "Privado"
+    "typePrivate": "Privado",
+    "statusPaused": "Pausado",
+    "statusArchived": "Arquivado",
+    "statusPendingDeletion": "Exclusão pendente"
   },
   "shardBrowser": {
     "title": "Navegar pelos Fragmentos",
@@ -281,7 +284,11 @@
     "statusInactive": "Inativo",
     "typePublic": "Público",
     "typePersonal": "Pessoal",
-    "echoCount": "{{current}} / {{max}} Ecos"
+    "echoCount": "{{current}} / {{max}} Ecos",
+    "statusPaused": "Pausado",
+    "statusArchived": "Arquivado",
+    "statusPendingDeletion": "Exclusão pendente",
+    "typePrivate": "Privado"
   },
   "feeds": {
     "personalTitle": "Feed Pessoal",
@@ -862,7 +869,10 @@
     "Active": "Ativo",
     "Inactive": "Inativo",
     "Broken": "Quebrado",
-    "unknownEcho": "Eco Desconhecido"
+    "unknownEcho": "Eco Desconhecido",
+    "Faded": "Enfraquecido",
+    "Ended": "Encerrado",
+    "Severed": "Rompido"
   },
   "feedTypes": {
     "diary_entry": "Entrada de Diário",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30min",
     "heartbeat15m": "15min",
     "heartbeat5m": "5min"
+  },
+  "contact": {
+    "metaTitle": "Contato — Multiverse Echoes",
+    "metaDesc": "Entre em contato com a EchoLabsME. Respondemos em 48 horas.",
+    "title": "Contato",
+    "description": "Dúvidas, imprensa, bugs ou qualquer coisa — envie aqui e respondemos em 48 horas.",
+    "labelName": "Nome",
+    "labelEmail": "E-mail",
+    "labelSubject": "Assunto",
+    "labelMessage": "Mensagem",
+    "subjectGeneral": "Consulta geral",
+    "subjectBug": "Relato de bug",
+    "subjectPress": "Imprensa/Mídia",
+    "subjectPartnership": "Parceria",
+    "subjectOther": "Outro",
+    "charsRemaining": "{{count}} caracteres restantes",
+    "sending": "Enviando…",
+    "sendMessage": "Enviar mensagem",
+    "successTitle": "Obrigado — sua mensagem foi enviada",
+    "successDesc": "Responderemos em 48 horas.",
+    "cooldown": "Reenviar em {{seconds}}s.",
+    "lookingElse": "Procurando outra coisa?",
+    "errorNameRequired": "Nome obrigatório.",
+    "errorNameTooLong": "Nome muito longo (máx. 100).",
+    "errorInvalidEmail": "Insira um e-mail válido.",
+    "errorSelectSubject": "Selecione um assunto.",
+    "errorMessageRequired": "Mensagem obrigatória.",
+    "errorMessageTooLong": "Mensagem muito longa (máx. {{max}}).",
+    "errorCaptcha": "Complete o captcha.",
+    "errorRateLimit": "Muitos envios. Tente em uma hora.",
+    "errorBadRequest": "Verifique e tente novamente.",
+    "errorGeneric": "Algo deu errado. Tente novamente.",
+    "errorNetwork": "Sem conexão ao serviço. Verifique e tente novamente."
   }
 }

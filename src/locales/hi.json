@@ -270,7 +270,10 @@
     "statusHibernated": "सुप्त",
     "typePublic": "सार्वजनिक",
     "typePersonal": "व्यक्तिगत",
-    "typePrivate": "निजी"
+    "typePrivate": "निजी",
+    "statusPaused": "रुका",
+    "statusArchived": "संग्रहीत",
+    "statusPendingDeletion": "हटाने की प्रतीक्षा"
   },
   "shardBrowser": {
     "title": "लोक देखो",
@@ -281,7 +284,11 @@
     "statusInactive": "निष्क्रिय",
     "typePublic": "सार्वजनिक",
     "typePersonal": "व्यक्तिगत",
-    "echoCount": "{{current}} / {{max}} गूँजें"
+    "echoCount": "{{current}} / {{max}} गूँजें",
+    "statusPaused": "रुका",
+    "statusArchived": "संग्रहीत",
+    "statusPendingDeletion": "हटाने की प्रतीक्षा",
+    "typePrivate": "निजी"
   },
   "feeds": {
     "personalTitle": "निजी फ़ीड",
@@ -862,7 +869,10 @@
     "Active": "सक्रिय",
     "Inactive": "निष्क्रिय",
     "Broken": "टूटा",
-    "unknownEcho": "अज्ञात गूँज"
+    "unknownEcho": "अज्ञात गूँज",
+    "Faded": "धूमिल",
+    "Ended": "समाप्त",
+    "Severed": "टूटा"
   },
   "feedTypes": {
     "diary_entry": "डायरी",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30मि",
     "heartbeat15m": "15मि",
     "heartbeat5m": "5मि"
+  },
+  "contact": {
+    "metaTitle": "संपर्क — Multiverse Echoes",
+    "metaDesc": "EchoLabsME से संपर्क करें। 48 घंटों में जवाब।",
+    "title": "संपर्क",
+    "description": "प्रश्न, प्रेस, बग रिपोर्ट या कुछ भी — यहाँ भेजें, 48 घंटों में जवाब।",
+    "labelName": "नाम",
+    "labelEmail": "ईमेल",
+    "labelSubject": "विषय",
+    "labelMessage": "संदेश",
+    "subjectGeneral": "सामान्य पूछताछ",
+    "subjectBug": "बग रिपोर्ट",
+    "subjectPress": "प्रेस/मीडिया",
+    "subjectPartnership": "साझेदारी",
+    "subjectOther": "अन्य",
+    "charsRemaining": "{{count}} अक्षर शेष",
+    "sending": "भेजा जा रहा है…",
+    "sendMessage": "संदेश भेजें",
+    "successTitle": "धन्यवाद — आपका संदेश भेजा जा रहा है",
+    "successDesc": "48 घंटों में जवाब देंगे।",
+    "cooldown": "{{seconds}} सेकंड में फिर भेज सकते हैं।",
+    "lookingElse": "कुछ और खोज रहे हैं?",
+    "errorNameRequired": "नाम आवश्यक।",
+    "errorNameTooLong": "नाम बहुत लंबा (अधिकतम 100)।",
+    "errorInvalidEmail": "वैध ईमेल दर्ज करें।",
+    "errorSelectSubject": "विषय चुनें।",
+    "errorMessageRequired": "संदेश आवश्यक।",
+    "errorMessageTooLong": "संदेश बहुत लंबा (अधिकतम {{max}})।",
+    "errorCaptcha": "कैप्चा पूरा करें।",
+    "errorRateLimit": "बहुत सबमिशन। एक घंटे बाद प्रयास करें।",
+    "errorBadRequest": "जांचें और पुनः प्रयास करें।",
+    "errorGeneric": "कुछ गलत हुआ। पुनः प्रयास करें।",
+    "errorNetwork": "सेवा तक नहीं पहुँचा। कनेक्शन जांचें।"
   }
 }

@@ -270,7 +270,10 @@
     "statusHibernated": "Letargico",
     "typePublic": "Pubblico",
     "typePersonal": "Personale",
-    "typePrivate": "Privato"
+    "typePrivate": "Privato",
+    "statusPaused": "In pausa",
+    "statusArchived": "Archiviato",
+    "statusPendingDeletion": "Eliminazione in attesa"
   },
   "shardBrowser": {
     "title": "Sfoglia Frammenti",
@@ -281,7 +284,11 @@
     "statusInactive": "Inattivo",
     "typePublic": "Pubblico",
     "typePersonal": "Personale",
-    "echoCount": "{{current}} / {{max}} Echi"
+    "echoCount": "{{current}} / {{max}} Echi",
+    "statusPaused": "In pausa",
+    "statusArchived": "Archiviato",
+    "statusPendingDeletion": "In attesa di eliminazione",
+    "typePrivate": "Privato"
   },
   "feeds": {
     "personalTitle": "Feed personale",
@@ -862,7 +869,10 @@
     "Active": "Attivo",
     "Inactive": "Inattivo",
     "Broken": "Rotto",
-    "unknownEcho": "Eco Sconosciuto"
+    "unknownEcho": "Eco Sconosciuto",
+    "Faded": "Sbiadito",
+    "Ended": "Terminato",
+    "Severed": "Spezzato"
   },
   "feedTypes": {
     "diary_entry": "Pagina di diario",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30min",
     "heartbeat15m": "15min",
     "heartbeat5m": "5min"
+  },
+  "contact": {
+    "metaTitle": "Contatti — Multiverse Echoes",
+    "metaDesc": "Contatta EchoLabsME. Rispondiamo entro 48 ore.",
+    "title": "Contatti",
+    "description": "Domande, stampa, bug o altro — invia qui, rispondiamo entro 48 ore.",
+    "labelName": "Nome",
+    "labelEmail": "Email",
+    "labelSubject": "Oggetto",
+    "labelMessage": "Messaggio",
+    "subjectGeneral": "Richiesta generale",
+    "subjectBug": "Segnalazione bug",
+    "subjectPress": "Stampa/Media",
+    "subjectPartnership": "Partnership",
+    "subjectOther": "Altro",
+    "charsRemaining": "{{count}} caratteri rimanenti",
+    "sending": "Invio…",
+    "sendMessage": "Invia messaggio",
+    "successTitle": "Grazie — il tuo messaggio è in arrivo",
+    "successDesc": "Risponderemo entro 48 ore.",
+    "cooldown": "Reinvio tra {{seconds}}s.",
+    "lookingElse": "Cerchi altro?",
+    "errorNameRequired": "Nome obbligatorio.",
+    "errorNameTooLong": "Nome troppo lungo (max 100).",
+    "errorInvalidEmail": "Inserisci un email valido.",
+    "errorSelectSubject": "Seleziona un oggetto.",
+    "errorMessageRequired": "Messaggio obbligatorio.",
+    "errorMessageTooLong": "Messaggio troppo lungo (max {{max}}).",
+    "errorCaptcha": "Completa il captcha.",
+    "errorRateLimit": "Troppe richieste. Riprova tra un’ora.",
+    "errorBadRequest": "Controlla e riprova.",
+    "errorGeneric": "Errore. Riprova.",
+    "errorNetwork": "Servizio non raggiungibile. Controlla la connessione."
   }
 }

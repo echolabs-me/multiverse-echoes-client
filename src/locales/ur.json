@@ -270,7 +270,10 @@
     "statusHibernated": "سرمئی نیند میں</p>",
     "typePublic": "عوام",
     "typePersonal": "ذاتی",
-    "typePrivate": "نجی"
+    "typePrivate": "نجی",
+    "statusPaused": "روکا ہوا",
+    "statusArchived": "محفوظ",
+    "statusPendingDeletion": "حذف زیر التوا"
   },
   "shardBrowser": {
     "title": "شارڈز دیکھیں",
@@ -281,7 +284,11 @@
     "statusInactive": "غیر فعال",
     "typePublic": "عوام",
     "typePersonal": "ذاتی",
-    "echoCount": "{{current}} / {{max}} گونجیں"
+    "echoCount": "{{current}} / {{max}} گونجیں",
+    "statusPaused": "روکا ہوا",
+    "statusArchived": "محفوظ",
+    "statusPendingDeletion": "حذف زیر التوا",
+    "typePrivate": "نجی"
   },
   "feeds": {
     "personalTitle": "ذاتی فیڈ",
@@ -862,7 +869,10 @@
     "Active": "فعال",
     "Inactive": "غیر فعال",
     "Broken": "ٹوٹا ہوا",
-    "unknownEcho": "نامعلوم گونج"
+    "unknownEcho": "نامعلوم گونج",
+    "Faded": "دھندلا",
+    "Ended": "ختم",
+    "Severed": "ٹوٹا"
   },
   "feedTypes": {
     "diary_entry": "ڈائری کا اندراج",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30م",
     "heartbeat15m": "15م",
     "heartbeat5m": "5م"
+  },
+  "contact": {
+    "metaTitle": "رابطہ — Multiverse Echoes",
+    "metaDesc": "EchoLabsME سے رابطہ۔ 48 گھنٹوں میں جواب۔",
+    "title": "رابطہ",
+    "description": "سوالات، پریس، بگ یا کچھ بھی — یہاں بھیجیں، 48 گھنٹوں میں جواب۔",
+    "labelName": "نام",
+    "labelEmail": "ای میل",
+    "labelSubject": "موضوع",
+    "labelMessage": "پیغام",
+    "subjectGeneral": "عمومی استفسار",
+    "subjectBug": "بگ رپورٹ",
+    "subjectPress": "پریس/میڈیا",
+    "subjectPartnership": "شراکت داری",
+    "subjectOther": "دیگر",
+    "charsRemaining": "{{count}} حروف باقی",
+    "sending": "بھیجا جا رہا ہے…",
+    "sendMessage": "پیغام بھیجیں",
+    "successTitle": "شکریہ — پیغام بھیج دیا گیا",
+    "successDesc": "48 گھنٹوں میں جواب دیں گے۔",
+    "cooldown": "{{seconds}} سیکنڈ میں دوبارہ بھیج سکتے ہیں۔",
+    "lookingElse": "کچھ اور تلاش کر رہے ہیں؟",
+    "errorNameRequired": "نام ضروری ہے۔",
+    "errorNameTooLong": "نام بہت لمبا (100 حروف)۔",
+    "errorInvalidEmail": "درست ای میل درج کریں۔",
+    "errorSelectSubject": "موضوع منتخب کریں۔",
+    "errorMessageRequired": "پیغام ضروری۔",
+    "errorMessageTooLong": "پیغام بہت لمبا ({{max}} حروف)۔",
+    "errorCaptcha": "کیپچا مکمل کریں۔",
+    "errorRateLimit": "بہت زیادہ جمع۔ ایک گھنٹے بعد کوشش کریں۔",
+    "errorBadRequest": "چیک کریں اور دوبارہ کوشش کریں۔",
+    "errorGeneric": "کچک غلط ہوا۔ دوبارہ کوشش کریں۔",
+    "errorNetwork": "سروس تک نہیں پہنچا۔ کنکشن چیک کریں۔"
   }
 }

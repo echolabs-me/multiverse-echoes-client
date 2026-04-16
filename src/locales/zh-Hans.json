@@ -270,7 +270,10 @@
     "statusHibernated": "休眠",
     "typePublic": "公开",
     "typePersonal": "个人",
-    "typePrivate": "私密"
+    "typePrivate": "私密",
+    "statusPaused": "已暂停",
+    "statusArchived": "已归档",
+    "statusPendingDeletion": "待删除"
   },
   "shardBrowser": {
     "title": "浏览位面",
@@ -281,7 +284,11 @@
     "statusInactive": "不活跃",
     "typePublic": "公开",
     "typePersonal": "个人",
-    "echoCount": "{{current}} / {{max}} 回声"
+    "echoCount": "{{current}} / {{max}} 回声",
+    "statusPaused": "已暂停",
+    "statusArchived": "已归档",
+    "statusPendingDeletion": "待删除",
+    "typePrivate": "私有"
   },
   "feeds": {
     "personalTitle": "个人动态",
@@ -862,7 +869,10 @@
     "Active": "活跃",
     "Inactive": "不活跃",
     "Broken": "破裂",
-    "unknownEcho": "未知回声"
+    "unknownEcho": "未知回声",
+    "Faded": "渐淡",
+    "Ended": "已结束",
+    "Severed": "断绝"
   },
   "feedTypes": {
     "diary_entry": "日记",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30分",
     "heartbeat15m": "15分",
     "heartbeat5m": "5分"
+  },
+  "contact": {
+    "metaTitle": "联系我们 — Multiverse Echoes",
+    "metaDesc": "联系 EchoLabsME。我们通常在48小时内回复。",
+    "title": "联系我们",
+    "description": "问题、媒体咨询、缺陷报告或其他 — 发送到这里，48小时内回复。",
+    "labelName": "姓名",
+    "labelEmail": "邮箱",
+    "labelSubject": "主题",
+    "labelMessage": "消息",
+    "subjectGeneral": "一般咨询",
+    "subjectBug": "缺陷报告",
+    "subjectPress": "媒体/新闻",
+    "subjectPartnership": "合作",
+    "subjectOther": "其他",
+    "charsRemaining": "还可输入 {{count}} 字符",
+    "sending": "发送中…",
+    "sendMessage": "发送消息",
+    "successTitle": "谢谢 — 您的消息已发送",
+    "successDesc": "我们将在48小时内回复。",
+    "cooldown": "{{seconds}} 秒后可再次发送。",
+    "lookingElse": "找其他内容？",
+    "errorNameRequired": "请输入姓名。",
+    "errorNameTooLong": "姓名过长（最多100字符）。",
+    "errorInvalidEmail": "请输入有效邮箱。",
+    "errorSelectSubject": "请选择主题。",
+    "errorMessageRequired": "请输入消息。",
+    "errorMessageTooLong": "消息过长（最多 {{max}} 字符）。",
+    "errorCaptcha": "请完成验证。",
+    "errorRateLimit": "提交过多。请一小时后再试。",
+    "errorBadRequest": "请检查提交内容并重试。",
+    "errorGeneric": "出了点问题。请重试。",
+    "errorNetwork": "无法连接服务。检查网络并重试。"
   }
 }

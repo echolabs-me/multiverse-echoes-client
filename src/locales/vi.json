@@ -270,7 +270,10 @@
     "statusHibernated": "Ngủ đông",
     "typePublic": "Công cộng",
     "typePersonal": "Cá nhân",
-    "typePrivate": "Riêng tư"
+    "typePrivate": "Riêng tư",
+    "statusPaused": "Tạm dừng",
+    "statusArchived": "Đã lưu trữ",
+    "statusPendingDeletion": "Chờ xóa"
   },
   "shardBrowser": {
     "title": "Xem các Mảnh",
@@ -281,7 +284,11 @@
     "statusInactive": "Không hoạt động",
     "typePublic": "Công cộng",
     "typePersonal": "Cá nhân",
-    "echoCount": "{{current}} / {{max}} Tiếng Vọng"
+    "echoCount": "{{current}} / {{max}} Tiếng Vọng",
+    "statusPaused": "Tạm dừng",
+    "statusArchived": "Đã lưu trữ",
+    "statusPendingDeletion": "Chờ xóa",
+    "typePrivate": "Riêng tư"
   },
   "feeds": {
     "personalTitle": "Bảng tin cá nhân",
@@ -862,7 +869,10 @@
     "Active": "Hoạt động",
     "Inactive": "Không hoạt động",
     "Broken": "Bị hỏng",
-    "unknownEcho": "Tiếng Vang Vô Danh"
+    "unknownEcho": "Tiếng Vang Vô Danh",
+    "Faded": "Phai nhạt",
+    "Ended": "Đã kết thúc",
+    "Severed": "Đứt gãy"
   },
   "feedTypes": {
     "diary_entry": "Nhật ký",
@@ -1266,5 +1276,38 @@
     "heartbeat30m": "30p",
     "heartbeat15m": "15p",
     "heartbeat5m": "5p"
+  },
+  "contact": {
+    "metaTitle": "Liên hệ — Multiverse Echoes",
+    "metaDesc": "Liên hệ EchoLabsME. Phản hồi trong 48 giờ.",
+    "title": "Liên hệ",
+    "description": "Câu hỏi, báo chí, lỗi hoặc gì khác — gửi tại đây, phản hồi trong 48 giờ.",
+    "labelName": "Tên",
+    "labelEmail": "Email",
+    "labelSubject": "Chủ đề",
+    "labelMessage": "Tin nhắn",
+    "subjectGeneral": "Câu hỏi chung",
+    "subjectBug": "Báo lỗi",
+    "subjectPress": "Báo chí",
+    "subjectPartnership": "Hợp tác",
+    "subjectOther": "Khác",
+    "charsRemaining": "Còn {{count}} ký tự",
+    "sending": "Đang gửi…",
+    "sendMessage": "Gửi tin nhắn",
+    "successTitle": "Cảm ơn — tin nhắn đang được gửi",
+    "successDesc": "Phản hồi trong 48 giờ.",
+    "cooldown": "Gửi lại sau {{seconds}} giây.",
+    "lookingElse": "Tìm kiếm thứ khác?",
+    "errorNameRequired": "Vui lòng nhập tên.",
+    "errorNameTooLong": "Tên quá dài (tối đa 100).",
+    "errorInvalidEmail": "Nhập email hợp lệ.",
+    "errorSelectSubject": "Chọn chủ đề.",
+    "errorMessageRequired": "Vui lòng nhập tin nhắn.",
+    "errorMessageTooLong": "Tin nhắn quá dài (tối đa {{max}}).",
+    "errorCaptcha": "Vui lòng hoàn thành captcha.",
+    "errorRateLimit": "Gửi quá nhiều. Thử lại sau một giờ.",
+    "errorBadRequest": "Kiểm tra và thử lại.",
+    "errorGeneric": "Lỗi xảy ra. Thử lại.",
+    "errorNetwork": "Không thể kết nối. Kiểm tra mạng và thử lại."
   }
 }
