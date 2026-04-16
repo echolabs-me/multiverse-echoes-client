@@ -83,7 +83,9 @@ async function main() {
       console.log(`  Saved ${outFile} (${size} bytes, content: ${hasContent ? 'YES' : 'NO'})`);
     }
 
-    // Pre-render other routes WITH locale set
+    // Pre-render other routes WITH locale set.
+    // Each page is wrapped in try/catch so a single page timeout
+    // doesn't abort the entire prerender run.
     for (const route of ROUTES_WITH_LOCALE) {
       console.log(`Pre-rendering ${route}...`);
       const page = await browser.newPage();
@@ -94,26 +96,25 @@ async function main() {
         localStorage.setItem('locale', 'en');
       });
 
-      await page.goto(`${BASE}${route}`, { waitUntil: 'load', timeout: 30000 });
+      try {
+        await page.goto(`${BASE}${route}`, { waitUntil: 'load', timeout: 15000 });
+        await page.waitForTimeout(2000);
 
-      // Wait for React to hydrate and render content.
-      // 'load' fires earlier than 'networkidle' but avoids timeouts
-      // on pages with third-party widgets (e.g. Turnstile on /contact).
-      await page.waitForTimeout(2000);
+        const html = await page.content();
+        await page.close();
 
-      const html = await page.content();
-      await page.close();
+        const outDir = join(DIST, route);
+        mkdirSync(outDir, { recursive: true });
+        const outFile = join(outDir, 'index.html');
+        writeFileSync(outFile, html, 'utf-8');
 
-      // Write the HTML to the appropriate path in dist/
-      const outDir = join(DIST, route);
-      mkdirSync(outDir, { recursive: true });
-      const outFile = join(outDir, 'index.html');
-      writeFileSync(outFile, html, 'utf-8');
-
-      // Verify it has content (not just empty root div)
-      const hasContent = html.includes('Multiverse Echoes') || html.includes('website.hero');
-      const size = Buffer.byteLength(html, 'utf-8');
-      console.log(`  Saved ${outFile} (${size} bytes, content: ${hasContent ? 'YES' : 'NO'})`);
+        const hasContent = html.includes('Multiverse Echoes') || html.includes('website.hero');
+        const size = Buffer.byteLength(html, 'utf-8');
+        console.log(`  Saved ${outFile} (${size} bytes, content: ${hasContent ? 'YES' : 'NO'})`);
+      } catch (err) {
+        await page.close();
+        console.warn(`  WARN: ${route} failed (${err.name}), skipping — page will use client-side rendering`);
+      }
     }
 
     await browser.close();
