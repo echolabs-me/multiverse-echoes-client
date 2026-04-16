@@ -62,7 +62,9 @@
     "comingSoon": "Demnächst",
     "messageActions": "Nachrichtenaktionen",
     "translationPending": "Übersetzung…",
-    "legalDocsEnglishOnly": "Diese Seite ist nur auf Englisch verfügbar. Eine übersetzte Version wird in Kürze veröffentlicht."
+    "legalDocsEnglishOnly": "Diese Seite ist nur auf Englisch verfügbar. Eine übersetzte Version wird in Kürze veröffentlicht.",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen"
   },
   "auth": {
     "email": "E-Mail",

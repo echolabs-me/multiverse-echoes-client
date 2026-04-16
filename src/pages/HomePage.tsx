@@ -157,12 +157,17 @@ export function HomePage() {
           </div>
         </div>
 
-        <p
-          className="me-fade-up absolute bottom-8 text-xs tracking-[0.2em] text-[var(--text-muted)]"
+        <div
+          className="me-fade-up absolute bottom-8 flex flex-col items-center gap-1"
           data-delay="900"
         >
-          {t('website.home.scrollExplore')}
-        </p>
+          <p className="text-xs tracking-[0.2em] text-[var(--text-muted)]">
+            {t('website.home.scrollExplore')}
+          </p>
+          <svg className="h-4 w-4 animate-bounce text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
       </section>
 
       <SectionDivider />

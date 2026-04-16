@@ -167,7 +167,7 @@ export function WebsiteNav() {
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="text-[#E8E0D8] md:hidden"
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-label={menuOpen ? t('common.closeMenu') : t('common.openMenu')}
         >
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

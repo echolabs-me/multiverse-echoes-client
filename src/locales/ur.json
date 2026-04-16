@@ -62,7 +62,9 @@
     "comingSoon": "جلد آ رہا ہے",
     "messageActions": "پیغام کے اقدامات",
     "translationPending": "ترجمہ ہو رہا ہے…",
-    "legalDocsEnglishOnly": "یہ صفحہ صرف انگریزی میں دستیاب ہے۔ ترجمہ شدہ ورژن جلد شائع کیا جائے گا۔"
+    "legalDocsEnglishOnly": "یہ صفحہ صرف انگریزی میں دستیاب ہے۔ ترجمہ شدہ ورژن جلد شائع کیا جائے گا۔",
+    "openMenu": "مینو کھولیں",
+    "closeMenu": "مینو بند کریں"
   },
   "auth": {
     "email": "ای میل",

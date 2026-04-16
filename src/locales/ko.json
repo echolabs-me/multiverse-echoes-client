@@ -62,7 +62,9 @@
     "comingSoon": "곧 출시됩니다",
     "messageActions": "메시지 작업",
     "translationPending": "번역 중…",
-    "legalDocsEnglishOnly": "이 페이지는 영어로만 제공됩니다. 번역본은 곧 게시될 예정입니다."
+    "legalDocsEnglishOnly": "이 페이지는 영어로만 제공됩니다. 번역본은 곧 게시될 예정입니다.",
+    "openMenu": "메뉴 열기",
+    "closeMenu": "메뉴 닫기"
   },
   "auth": {
     "email": "이메일",

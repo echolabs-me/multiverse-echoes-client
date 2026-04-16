@@ -62,7 +62,9 @@
     "comingSoon": "近日公開",
     "messageActions": "メッセージアクション",
     "translationPending": "翻訳中…",
-    "legalDocsEnglishOnly": "このページは英語のみでご利用いただけます。翻訳版は近日中に公開予定です。"
+    "legalDocsEnglishOnly": "このページは英語のみでご利用いただけます。翻訳版は近日中に公開予定です。",
+    "openMenu": "メニューを開く",
+    "closeMenu": "メニューを閉じる"
   },
   "auth": {
     "email": "メール",

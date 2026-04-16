@@ -62,7 +62,9 @@
     "comingSoon": "Akan datang",
     "messageActions": "Tindakan mesej",
     "translationPending": "Menterjemah…",
-    "legalDocsEnglishOnly": "Halaman ini hanya tersedia dalam bahasa Inggeris. Versi terjemahan akan diterbitkan tidak lama lagi."
+    "legalDocsEnglishOnly": "Halaman ini hanya tersedia dalam bahasa Inggeris. Versi terjemahan akan diterbitkan tidak lama lagi.",
+    "openMenu": "Buka menu",
+    "closeMenu": "Tutup menu"
   },
   "auth": {
     "email": "Emel",

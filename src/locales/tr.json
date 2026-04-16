@@ -62,7 +62,9 @@
     "comingSoon": "Yakında",
     "messageActions": "Mesaj işlemleri",
     "translationPending": "Çevriliyor…",
-    "legalDocsEnglishOnly": "Bu sayfa yalnızca İngilizce dilinde mevcuttur. Çevirisi yakında yayınlanacaktır."
+    "legalDocsEnglishOnly": "Bu sayfa yalnızca İngilizce dilinde mevcuttur. Çevirisi yakında yayınlanacaktır.",
+    "openMenu": "Menüyü aç",
+    "closeMenu": "Menüyü kapat"
   },
   "auth": {
     "email": "E-posta",

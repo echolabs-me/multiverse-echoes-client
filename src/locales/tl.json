@@ -62,7 +62,9 @@
     "comingSoon": "Malapit na",
     "messageActions": "Mga aksyon sa mensahe",
     "translationPending": "Isinasalin…",
-    "legalDocsEnglishOnly": "Ang pahinang ito ay available lamang sa Ingles. Ang translated na bersyon ay ilalathala sa lalong madaling panahon."
+    "legalDocsEnglishOnly": "Ang pahinang ito ay available lamang sa Ingles. Ang translated na bersyon ay ilalathala sa lalong madaling panahon.",
+    "openMenu": "Buksan ang menu",
+    "closeMenu": "Isara ang menu"
   },
   "auth": {
     "email": "Email",

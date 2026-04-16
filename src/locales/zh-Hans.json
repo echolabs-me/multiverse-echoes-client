@@ -62,7 +62,9 @@
     "comingSoon": "即将推出",
     "messageActions": "消息操作",
     "translationPending": "翻译中…",
-    "legalDocsEnglishOnly": "此页面目前仅提供英文版本。翻译版本即将发布。"
+    "legalDocsEnglishOnly": "此页面目前仅提供英文版本。翻译版本即将发布。",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单"
   },
   "auth": {
     "email": "邮箱",

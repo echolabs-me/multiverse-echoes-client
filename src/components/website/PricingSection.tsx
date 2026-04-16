@@ -170,7 +170,7 @@ export function PricingSection() {
         </div>
 
         {/* Tier cards */}
-        <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mb-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {TIERS.map((tier) => (
             <div
               key={tier.nameKey}
@@ -189,7 +189,7 @@ export function PricingSection() {
               )}
               {tier.god && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gradient-to-r from-[#C9A84C] to-[#E0C060] px-4 py-1 text-[11px] font-bold uppercase tracking-[1.5px] text-[#0A0F14]">
-                  Ultimate
+                  {t('tiers.ultimate')}
                 </span>
               )}
 
@@ -289,7 +289,7 @@ export function PricingSection() {
               {t('tiers.enhanceTiers')}
             </p>
           </div>
-          <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {ADD_ONS.map((addon) => (
               <div
                 key={addon.nameKey}
