@@ -86,7 +86,9 @@ async function main() {
     {
       console.log('Pre-rendering / (flag page)...');
       const page = await browser.newPage();
-      await page.goto(`${BASE}/`, { waitUntil: 'networkidle', timeout: 15000 });
+      await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded', timeout: 10000 });
+      await page.waitForSelector('#root > *', { timeout: 5000 });
+      await page.waitForTimeout(1000);
       const html = await page.content();
       await page.close();
 
@@ -108,7 +110,9 @@ async function main() {
       });
 
       try {
-        await page.goto(`${BASE}${route}`, { waitUntil: 'networkidle', timeout: 10000 });
+        await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded', timeout: 10000 });
+        await page.waitForSelector('#root > *', { timeout: 5000 });
+        await page.waitForTimeout(1000);
         const html = await page.content();
         await page.close();
 
