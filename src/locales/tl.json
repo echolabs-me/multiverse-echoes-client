@@ -1258,6 +1258,11 @@
       "10vid10voice": "10 video diary / araw, 10 voice call / araw",
       "16vid16voice": "16 video diary / araw, 16 voice call / araw",
       "unlimitedVidVoice": "Walang limitasyong video diary, Walang limitasyong voice call"
-    }
+    },
+    "heartbeatTwiceDaily": "2×",
+    "heartbeat2hr": "2or",
+    "heartbeat30m": "30m",
+    "heartbeat15m": "15m",
+    "heartbeat5m": "5m"
   }
 }

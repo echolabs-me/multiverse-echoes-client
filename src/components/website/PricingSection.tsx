@@ -32,7 +32,7 @@ const TIERS: Tier[] = [
     period: 'tiers.forever',
     note: 'tiers.adSupported',
     echoes: '1',
-    heartbeat: '2×',
+    heartbeat: 'tiers.heartbeatTwiceDaily',
     features: [
       { text: 'tiers.features.1echoPublic', type: 'check' },
       { text: 'tiers.features.diaryAmPm', type: 'check' },
@@ -52,7 +52,7 @@ const TIERS: Tier[] = [
     cents: '.99',
     period: 'tiers.perMonth',
     echoes: '3',
-    heartbeat: '2hr',
+    heartbeat: 'tiers.heartbeat2hr',
     features: [
       { text: 'tiers.features.3echoes', type: 'check' },
       { text: 'tiers.features.diary2hr', type: 'check' },
@@ -72,7 +72,7 @@ const TIERS: Tier[] = [
     cents: '.99',
     period: 'tiers.perMonth',
     echoes: '5',
-    heartbeat: '30m',
+    heartbeat: 'tiers.heartbeat30m',
     features: [
       { text: 'tiers.features.5echoes', type: 'check' },
       { text: 'tiers.features.diary30m', type: 'check' },
@@ -93,7 +93,7 @@ const TIERS: Tier[] = [
     cents: '.99',
     period: 'tiers.perMonth',
     echoes: '8',
-    heartbeat: '15m',
+    heartbeat: 'tiers.heartbeat15m',
     features: [
       { text: 'tiers.features.8echoes', type: 'check' },
       { text: 'tiers.features.diary15m', type: 'check' },
@@ -113,7 +113,7 @@ const TIERS: Tier[] = [
     cents: '.99',
     period: 'tiers.perMonth',
     echoes: '12',
-    heartbeat: '5m',
+    heartbeat: 'tiers.heartbeat5m',
     features: [
       { text: 'tiers.features.12echoes', type: 'star' },
       { text: 'tiers.features.diary5m', type: 'star' },
@@ -220,8 +220,8 @@ export function PricingSection() {
                   <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{tier.echoes === '1' ? t('tiers.echoesSingle', 'Echo') : t('tiers.echoes')}</div>
                 </div>
                 <div className="rounded-lg bg-[rgba(255,255,255,0.03)] p-2.5 text-center">
-                  <div className="text-lg font-bold text-[var(--text-primary)]">{tier.heartbeat}</div>
-                  <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{tier.heartbeat === '2×' ? t('tiers.heartbeatDaily', 'Daily') : t('tiers.heartbeat')}</div>
+                  <div className="text-lg font-bold text-[var(--text-primary)]">{t(tier.heartbeat)}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{tier.heartbeat === 'tiers.heartbeatTwiceDaily' ? t('tiers.heartbeatDaily') : t('tiers.heartbeat')}</div>
                 </div>
               </div>
 

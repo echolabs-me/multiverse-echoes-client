@@ -1258,6 +1258,11 @@
       "10vid10voice": "১০টি ভিডিও ডায়েরি / দিন, ১০টি ভয়েস কল / দিন",
       "16vid16voice": "১৬টি ভিডিও ডায়েরি / দিন, ১৬টি ভয়েস কল / দিন",
       "unlimitedVidVoice": "সীমাহীন ভিডিও ডায়েরি, সীমাহীন ভয়েস কল"
-    }
+    },
+    "heartbeatTwiceDaily": "2×",
+    "heartbeat2hr": "2ঘ",
+    "heartbeat30m": "30মি",
+    "heartbeat15m": "15মি",
+    "heartbeat5m": "5মি"
   }
 }

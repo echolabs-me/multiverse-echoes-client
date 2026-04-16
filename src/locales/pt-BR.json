@@ -1258,6 +1258,11 @@
       "10vid10voice": "10 diários em vídeo / dia, 10 chamadas de voz / dia",
       "16vid16voice": "16 diários em vídeo / dia, 16 chamadas de voz / dia",
       "unlimitedVidVoice": "Diários em vídeo ilimitados, chamadas de voz ilimitadas"
-    }
+    },
+    "heartbeatTwiceDaily": "2×",
+    "heartbeat2hr": "2h",
+    "heartbeat30m": "30min",
+    "heartbeat15m": "15min",
+    "heartbeat5m": "5min"
   }
 }

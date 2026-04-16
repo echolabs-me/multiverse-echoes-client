@@ -1258,6 +1258,11 @@
       "10vid10voice": "10 nhật ký video / ngày, 10 cuộc gọi thoại / ngày",
       "16vid16voice": "16 nhật ký video / ngày, 16 cuộc gọi thoại / ngày",
       "unlimitedVidVoice": "Nhật ký video không giới hạn, Cuộc gọi thoại không giới hạn"
-    }
+    },
+    "heartbeatTwiceDaily": "2×",
+    "heartbeat2hr": "2g",
+    "heartbeat30m": "30p",
+    "heartbeat15m": "15p",
+    "heartbeat5m": "5p"
   }
 }

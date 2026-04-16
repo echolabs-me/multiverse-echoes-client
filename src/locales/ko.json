@@ -1258,6 +1258,11 @@
       "10vid10voice": "하루 영상 일기 10회, 하루 음성 통화 10회",
       "16vid16voice": "하루 영상 일기 16회, 하루 음성 통화 16회",
       "unlimitedVidVoice": "무제한 영상 일기, 무제한 음성 통화"
-    }
+    },
+    "heartbeatTwiceDaily": "2×",
+    "heartbeat2hr": "2시간",
+    "heartbeat30m": "30분",
+    "heartbeat15m": "15분",
+    "heartbeat5m": "5분"
   }
 }

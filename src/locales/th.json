@@ -1258,6 +1258,11 @@
       "10vid10voice": "10 บันทึกวิดีโอ / วัน, 10 สายสนทนา / วัน",
       "16vid16voice": "16 บันทึกวิดีโอ / วัน, 16 สายสนทนา / วัน",
       "unlimitedVidVoice": "บันทึกวิดีโอไม่จำกัด, สายสนทนาไม่จำกัด"
-    }
+    },
+    "heartbeatTwiceDaily": "2×",
+    "heartbeat2hr": "2ชม.",
+    "heartbeat30m": "30น.",
+    "heartbeat15m": "15น.",
+    "heartbeat5m": "5น."
   }
 }

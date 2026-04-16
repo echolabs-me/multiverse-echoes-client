@@ -1258,6 +1258,11 @@
       "10vid10voice": "每日 10 条视频日记，每日 10 次语音通话",
       "16vid16voice": "每日 16 条视频日记，每日 16 次语音通话",
       "unlimitedVidVoice": "无限视频日记，无限语音通话"
-    }
+    },
+    "heartbeatTwiceDaily": "2×",
+    "heartbeat2hr": "2小时",
+    "heartbeat30m": "30分",
+    "heartbeat15m": "15分",
+    "heartbeat5m": "5分"
   }
 }
