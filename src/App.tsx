@@ -79,6 +79,8 @@ export function App() {
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="/waitlist" element={<WaitlistPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/accessibility" element={<AccessibilityPage />} />
+            <Route path="/plans" element={<PlansPage />} />
           </Route>
 
           {/* Legacy routes — redirect to new paths */}
@@ -96,8 +98,6 @@ export function App() {
           <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
           <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
           <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
-          <Route path="/accessibility" element={<AccessibilityPage />} />
-          <Route path="/plans" element={<PlansPage />} />
           <Route path="/payment/success" element={<PaymentSuccessPage />} />
           <Route path="/payment/cancelled" element={<PaymentCancelledPage />} />
           <Route path="/tip" element={<TipPage />} />

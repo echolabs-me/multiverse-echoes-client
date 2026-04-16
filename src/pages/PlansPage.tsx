@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Check, Settings } from 'lucide-react';
 import { Card, Badge, Tooltip } from '../components/index.ts';
 import { StripeLogo, NowPaymentsLogo, XamanLogo } from '../components/PaymentIcons.tsx';
@@ -116,6 +117,10 @@ export function PlansPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-canvas">
+      <Helmet>
+        <title>{t('payment.title')} — Multiverse Echoes</title>
+        <meta name="description" content={t('payment.subtitle')} />
+      </Helmet>
       <div className="mx-auto w-full max-w-5xl p-6">
         <button
           onClick={() => navigate(-1)}
