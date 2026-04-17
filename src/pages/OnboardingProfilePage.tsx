@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useId } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Input } from '../components/index.ts';
@@ -29,6 +29,9 @@ export function OnboardingProfilePage() {
   const avatars = getAvatarColors();
   const [selectedAvatar, setSelectedAvatar] = useState<string>(AVATAR_TOKENS[0].id);
   const [bio, setBio] = useState('');
+  // Stable id for the Bio label -> textarea association (WCAG 2.1 Level A,
+  // ME-ACC-001). Mirrors the useId pattern used inside Input.tsx itself.
+  const bioLabelId = useId();
   const [timezone] = useState(
     Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
@@ -92,12 +95,13 @@ export function OnboardingProfilePage() {
           <div className="rounded-lg border border-accent/30 bg-accent/5 px-4 py-4">
             <div className="mb-3 flex items-center gap-2">
               <span className="text-base" aria-hidden="true">{'\ud83d\udc64'}</span>
-              <p className="text-sm font-medium text-text-primary">
+              <p id={bioLabelId} className="text-sm font-medium text-text-primary">
                 {t('onboarding.bio')}
               </p>
             </div>
             <Input
               multiline
+              aria-labelledby={bioLabelId}
               value={bio}
               onChange={(e) => setBio((e.target as HTMLTextAreaElement).value)}
               placeholder={t('onboarding.bioHint')}
