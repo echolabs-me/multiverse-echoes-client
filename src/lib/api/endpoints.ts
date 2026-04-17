@@ -181,12 +181,6 @@ export const echoes = {
     return resp.blob();
   },
 
-  rename: (echoId: string, name: string) =>
-    request<EchoResponse>(`/echoes/${echoId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ name }),
-    }),
-
   regenerateAvatar: (echoId: string) =>
     request<EchoResponse>(`/echoes/${echoId}/avatar/regenerate`, { method: 'POST' }),
 

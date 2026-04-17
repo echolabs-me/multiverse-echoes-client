@@ -60,15 +60,12 @@ describe('Analytics Event Instrumentation — ME-UXF-001 §16', () => {
       expect(source.default).toContain("trackEvent('echo.created'");
     });
 
-    it('echo.persona_edited event exists in EchoDetailPage', async () => {
-      const source = await import('../src/pages/EchoDetailPage.tsx?raw');
-      expect(source.default).toContain("trackEvent('echo.persona_edited'");
-    });
-
-    it('echo.renamed event exists in EchoDetailPage', async () => {
-      const source = await import('../src/pages/EchoDetailPage.tsx?raw');
-      expect(source.default).toContain("trackEvent('echo.renamed'");
-    });
+    // NOTE: 'echo.persona_edited' and 'echo.renamed' assertions deleted
+    // per ME-UXF-001 §16.2 v1.1 amendment. Product decision: Echo
+    // persona_text and name are IMMUTABLE after creation (birth_hash
+    // integrity). There is no edit-path, so no edit-event. The two
+    // tests previously here were the last client-side fossils of the
+    // old editable-persona spec — removed together with the spec rows.
 
     it('echo.hibernated event exists in EchoDetailPage', async () => {
       const source = await import('../src/pages/EchoDetailPage.tsx?raw');
