@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "รับทราบ",
     "feedbackStatusResolved": "แก้ไขแล้ว",
     "feedbackStatusWontfix": "จะไม่แก้ไข",
-    "resolutionPrefix": "ความละเอียด"
+    "resolutionPrefix": "ความละเอียด",
+    "tabModerators": "ผู้ดูแล",
+    "moderators": {
+      "heading": "ผู้ดูแลปัจจุบัน",
+      "promote": "เลื่อนตำแหน่ง",
+      "promotePlaceholder": "รหัสผู้ใช้เพื่อเลื่อนเป็นผู้ดูแล",
+      "demote": "ลดตำแหน่ง",
+      "empty": "ยังไม่มีผู้ดูแล โปรดเลื่อนตำแหน่งผู้ใช้มาตรฐานโดยใช้รหัสผู้ใช้",
+      "updatedAt": "อัปเดตเมื่อ"
+    }
   },
   "nav": {
     "dashboard": "แผงควบคุม",

@@ -49,6 +49,7 @@ import type {
   FeedbackEntry,
   SubmitFeedbackRequest,
   SubmitFeedbackResponse,
+  ModeratorUserItem,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -549,6 +550,18 @@ export const admin = {
   tickPause: () => request<{ paused: boolean }>('/admin/tick/pause', { method: 'POST' }),
   tickResume: () => request<{ paused: boolean }>('/admin/tick/resume', { method: 'POST' }),
   triggerTick: () => request<{ message: string; tick_id: number }>('/system/tick', { method: 'POST' }),
+
+  listModerators: () => request<ModeratorUserItem[]>('/admin/moderators'),
+
+  promoteModerator: (userId: string) =>
+    request<ModeratorUserItem>(`/admin/moderators/${userId}/promote`, {
+      method: 'POST',
+    }),
+
+  demoteModerator: (userId: string) =>
+    request<ModeratorUserItem>(`/admin/moderators/${userId}`, {
+      method: 'DELETE',
+    }),
 };
 
 export const feedback = {

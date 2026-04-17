@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "Anlaşıldı",
     "feedbackStatusResolved": "Çözüldü",
     "feedbackStatusWontfix": "Düzeltilmeyecek",
-    "resolutionPrefix": "Çözünürlük"
+    "resolutionPrefix": "Çözünürlük",
+    "tabModerators": "Moderatörler",
+    "moderators": {
+      "heading": "Mevcut Moderatörler",
+      "promote": "Yükselt",
+      "promotePlaceholder": "Moderatörlüğe yükseltilecek Kullanıcı Kimliği",
+      "demote": "İndir",
+      "empty": "Henüz moderatör yok. Standart bir kullanıcıyı Kullanıcı Kimliği ile yükseltin.",
+      "updatedAt": "Güncellendi"
+    }
   },
   "nav": {
     "dashboard": "Kontrol Paneli",

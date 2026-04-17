@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "了解しました",
     "feedbackStatusResolved": "解決済み",
     "feedbackStatusWontfix": "修正しない",
-    "resolutionPrefix": "解像度"
+    "resolutionPrefix": "解像度",
+    "tabModerators": "モデレーター",
+    "moderators": {
+      "heading": "現在のモデレーター",
+      "promote": "昇格",
+      "promotePlaceholder": "モデレーターに昇格するユーザー ID",
+      "demote": "降格",
+      "empty": "モデレーターはまだいません。ユーザー ID で標準ユーザーを昇格させてください。",
+      "updatedAt": "更新日時"
+    }
   },
   "nav": {
     "dashboard": "ダッシュボード",

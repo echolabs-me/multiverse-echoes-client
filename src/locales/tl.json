@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "Nabatid",
     "feedbackStatusResolved": "Naresolba",
     "feedbackStatusWontfix": "Hindi aayusin",
-    "resolutionPrefix": "Resolusyon"
+    "resolutionPrefix": "Resolusyon",
+    "tabModerators": "Mga Tagapamagitan",
+    "moderators": {
+      "heading": "Kasalukuyang Mga Tagapamagitan",
+      "promote": "Itaas",
+      "promotePlaceholder": "User ID para itaas sa Tagapamagitan",
+      "demote": "Ibaba",
+      "empty": "Wala pang Tagapamagitan. Itaas ang isang Standard na user sa pamamagitan ng User ID.",
+      "updatedAt": "Na-update"
+    }
   },
   "nav": {
     "dashboard": "Dashboard",

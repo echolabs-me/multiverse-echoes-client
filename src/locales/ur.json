@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "تسلیم کیا گیا",
     "feedbackStatusResolved": "حل شدہ",
     "feedbackStatusWontfix": "ٹھیک نہیں کیا جائے گا",
-    "resolutionPrefix": "قرار نامہ"
+    "resolutionPrefix": "قرار نامہ",
+    "tabModerators": "ماڈریٹرز",
+    "moderators": {
+      "heading": "موجودہ ماڈریٹرز",
+      "promote": "ترقی دیں",
+      "promotePlaceholder": "ماڈریٹر تک ترقی دینے کے لیے صارف ID",
+      "demote": "تنزیل کریں",
+      "empty": "ابھی تک کوئی ماڈریٹر نہیں۔ صارف ID کے ذریعے ایک معیاری صارف کو ترقی دیں۔",
+      "updatedAt": "اپ ڈیٹ ہوا"
+    }
   },
   "nav": {
     "dashboard": "ڈیش بورڈ",

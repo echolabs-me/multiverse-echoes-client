@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "تم الإقرار",
     "feedbackStatusResolved": "تم الحل",
     "feedbackStatusWontfix": "لن يُصلَح",
-    "resolutionPrefix": "الحل"
+    "resolutionPrefix": "الحل",
+    "tabModerators": "المشرفون",
+    "moderators": {
+      "heading": "المشرفون الحاليون",
+      "promote": "ترقية",
+      "promotePlaceholder": "معرّف المستخدم للترقية إلى مشرف",
+      "demote": "تخفيض الرتبة",
+      "empty": "لا يوجد مشرفون بعد. قم بترقية مستخدم قياسي عن طريق معرّف المستخدم.",
+      "updatedAt": "تم التحديث"
+    }
   },
   "nav": {
     "dashboard": "لوحة التحكم",

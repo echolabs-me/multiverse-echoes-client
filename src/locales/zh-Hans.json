@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "已知悉",
     "feedbackStatusResolved": "已解决",
     "feedbackStatusWontfix": "不予修复",
-    "resolutionPrefix": "解决方案"
+    "resolutionPrefix": "解决方案",
+    "tabModerators": "版主",
+    "moderators": {
+      "heading": "当前版主",
+      "promote": "提升",
+      "promotePlaceholder": "要提升为版主的用户 ID",
+      "demote": "降级",
+      "empty": "尚无版主。按用户 ID 提升一名标准用户。",
+      "updatedAt": "更新时间"
+    }
   },
   "nav": {
     "dashboard": "仪表盘",

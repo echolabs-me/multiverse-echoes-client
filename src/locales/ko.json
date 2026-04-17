@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "확인했습니다",
     "feedbackStatusResolved": "해결됨",
     "feedbackStatusWontfix": "수정하지 않음",
-    "resolutionPrefix": "해상도"
+    "resolutionPrefix": "해상도",
+    "tabModerators": "중재자",
+    "moderators": {
+      "heading": "현재 중재자",
+      "promote": "승격",
+      "promotePlaceholder": "중재자로 승격할 사용자 ID",
+      "demote": "강등",
+      "empty": "아직 중재자가 없습니다. 사용자 ID로 표준 사용자를 승격하세요.",
+      "updatedAt": "업데이트됨"
+    }
   },
   "nav": {
     "dashboard": "대시보드",

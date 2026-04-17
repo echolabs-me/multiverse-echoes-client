@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "Diterima",
     "feedbackStatusResolved": "Selesai",
     "feedbackStatusWontfix": "Tidak Akan Diperbaiki",
-    "resolutionPrefix": "Resolusi"
+    "resolutionPrefix": "Resolusi",
+    "tabModerators": "Moderator",
+    "moderators": {
+      "heading": "Moderator Semasa",
+      "promote": "Naik Pangkat",
+      "promotePlaceholder": "ID Pengguna untuk dinaikkan pangkat ke Moderator",
+      "demote": "Turun Pangkat",
+      "empty": "Tiada Moderator lagi. Naikkan pangkat pengguna Standard dengan ID Pengguna.",
+      "updatedAt": "Dikemas kini"
+    }
   },
   "nav": {
     "dashboard": "Papan Pemuka",

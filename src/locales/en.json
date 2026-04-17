@@ -606,6 +606,15 @@
     "tabControls": "Controls",
     "tabAnalytics": "Analytics",
     "tabFeedback": "Feedback",
+    "tabModerators": "Moderators",
+    "moderators": {
+      "heading": "Current Moderators",
+      "promote": "Promote",
+      "promotePlaceholder": "User ID to promote to Moderator",
+      "demote": "Demote",
+      "empty": "No Moderators yet. Promote a Standard user by their User ID.",
+      "updatedAt": "Updated"
+    },
     "feedbackQueue": "Feedback Queue",
     "noFeedback": "No feedback submitted yet.",
     "feedbackType": "Type",

@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "स्वीकार किया गया",
     "feedbackStatusResolved": "हल हो गया",
     "feedbackStatusWontfix": "ठीक नहीं करेंगे",
-    "resolutionPrefix": "समाधान"
+    "resolutionPrefix": "समाधान",
+    "tabModerators": "मॉडरेटर",
+    "moderators": {
+      "heading": "वर्तमान मॉडरेटर",
+      "promote": "पदोन्नत करें",
+      "promotePlaceholder": "मॉडरेटर के रूप में पदोन्नत करने के लिए उपयोगकर्ता आईडी",
+      "demote": "पदावनत करें",
+      "empty": "अभी तक कोई मॉडरेटर नहीं है। उपयोगकर्ता आईडी द्वारा एक मानक उपयोगकर्ता को पदोन्नत करें।",
+      "updatedAt": "अपडेट किया गया"
+    }
   },
   "nav": {
     "dashboard": "डैशबोर्ड",

@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "Confirmado",
     "feedbackStatusResolved": "Resolvido",
     "feedbackStatusWontfix": "Não será corrigido",
-    "resolutionPrefix": "Resolução"
+    "resolutionPrefix": "Resolução",
+    "tabModerators": "Moderadores",
+    "moderators": {
+      "heading": "Moderadores atuais",
+      "promote": "Promover",
+      "promotePlaceholder": "ID do usuário para promover a Moderador",
+      "demote": "Rebaixar",
+      "empty": "Ainda não há moderadores. Promova um usuário Padrão pelo ID.",
+      "updatedAt": "Atualizado"
+    }
   },
   "nav": {
     "dashboard": "Painel de Controle",

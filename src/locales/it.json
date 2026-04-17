@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "Ricevuto",
     "feedbackStatusResolved": "Risolto",
     "feedbackStatusWontfix": "Non verrà risolto",
-    "resolutionPrefix": "Risoluzione"
+    "resolutionPrefix": "Risoluzione",
+    "tabModerators": "Moderatori",
+    "moderators": {
+      "heading": "Moderatori attuali",
+      "promote": "Promuovi",
+      "promotePlaceholder": "ID utente da promuovere a Moderatore",
+      "demote": "Degrada",
+      "empty": "Nessun moderatore ancora. Promuovi un utente Standard tramite ID utente.",
+      "updatedAt": "Aggiornato"
+    }
   },
   "nav": {
     "dashboard": "Cruscotto",

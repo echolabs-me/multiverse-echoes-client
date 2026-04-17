@@ -23,9 +23,18 @@ import type {
   FeedbackEntry,
   FeedbackStatus,
   FeedbackPriority,
+  ModeratorUserItem,
 } from '../types/api.ts';
 
-type AdminTab = 'dashboard' | 'reports' | 'users' | 'shards' | 'controls' | 'analytics' | 'feedback';
+type AdminTab =
+  | 'dashboard'
+  | 'reports'
+  | 'users'
+  | 'shards'
+  | 'controls'
+  | 'analytics'
+  | 'feedback'
+  | 'moderators';
 
 export function AdminDashboardPage() {
   const { t } = useTranslation();
@@ -54,6 +63,7 @@ export function AdminDashboardPage() {
     { id: 'dashboard', label: t('admin.tabDashboard') },
     { id: 'reports', label: t('admin.tabReports') },
     { id: 'users', label: t('admin.tabUsers') },
+    { id: 'moderators', label: t('admin.tabModerators') },
     { id: 'shards', label: t('admin.tabShards') },
     { id: 'controls', label: t('admin.tabControls') },
     { id: 'analytics', label: t('admin.tabAnalytics') },
@@ -84,6 +94,7 @@ export function AdminDashboardPage() {
         {activeTab === 'dashboard' && <DashboardView />}
         {activeTab === 'reports' && <ReportsView />}
         {activeTab === 'users' && <UsersView />}
+        {activeTab === 'moderators' && <ModeratorsView />}
         {activeTab === 'shards' && <ShardsView />}
         {activeTab === 'controls' && <ControlsView />}
         {activeTab === 'analytics' && <AnalyticsView />}
@@ -805,6 +816,139 @@ function FeedbackQueueView() {
               </div>
             </Card>
           ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// --- Moderators View ---
+function ModeratorsView() {
+  const { t } = useTranslation();
+  const [moderators, setModerators] = useState<ModeratorUserItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [promoteUserId, setPromoteUserId] = useState('');
+  const [confirmDemoteId, setConfirmDemoteId] = useState<string | null>(null);
+
+  const loadModerators = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const m = await admin.listModerators();
+      m.sort((a, b) => a.display_name.localeCompare(b.display_name));
+      setModerators(m);
+    } catch {
+      // Will show empty
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadModerators();
+  }, [loadModerators]);
+
+  const handlePromote = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = promoteUserId.trim();
+    if (!trimmed) return;
+    try {
+      await admin.promoteModerator(trimmed);
+      setPromoteUserId('');
+      void loadModerators();
+    } catch {
+      // Will show empty
+    }
+  };
+
+  const handleDemote = async (userId: string) => {
+    try {
+      await admin.demoteModerator(userId);
+      setConfirmDemoteId(null);
+      void loadModerators();
+    } catch {
+      // Will show empty
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <form onSubmit={(e) => void handlePromote(e)} className="flex gap-2">
+        <div className="relative flex-1">
+          <Users size={16} className="absolute top-1/2 start-3 -translate-y-1/2 text-text-muted" />
+          <input
+            type="text"
+            value={promoteUserId}
+            onChange={(e) => setPromoteUserId(e.target.value)}
+            placeholder={t('admin.moderators.promotePlaceholder')}
+            className="w-full rounded-md border border-border bg-surface py-2 ps-9 pe-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
+            aria-label={t('admin.moderators.promotePlaceholder')}
+          />
+        </div>
+        <Button type="submit" disabled={!promoteUserId.trim()}>
+          {t('admin.moderators.promote')}
+        </Button>
+      </form>
+
+      <h3 className="text-sm font-semibold text-text-secondary">
+        {t('admin.moderators.heading')} ({moderators.length})
+      </h3>
+
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm" role="table">
+            <thead>
+              <tr className="border-b border-border text-start text-text-muted">
+                <th className="px-3 py-2">{t('admin.userName')}</th>
+                <th className="px-3 py-2">{t('admin.userEmail')}</th>
+                <th className="px-3 py-2">{t('admin.moderators.updatedAt')}</th>
+                <th className="px-3 py-2">{t('admin.actions')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {moderators.map((m) => (
+                <tr key={m.user_id} className="border-b border-border">
+                  <td className="px-3 py-2 text-text-primary">{m.display_name}</td>
+                  <td className="px-3 py-2 text-text-secondary">{m.email}</td>
+                  <td className="px-3 py-2 text-text-secondary">
+                    {new Date(m.updated_at).toLocaleString()}
+                  </td>
+                  <td className="px-3 py-2">
+                    {confirmDemoteId === m.user_id ? (
+                      <div className="flex gap-1">
+                        <Button
+                          variant="danger"
+                          className="text-xs"
+                          onClick={() => void handleDemote(m.user_id)}
+                        >
+                          {t('common.confirm')}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          className="text-xs"
+                          onClick={() => setConfirmDemoteId(null)}
+                        >
+                          {t('common.cancel')}
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="danger"
+                        className="text-xs"
+                        onClick={() => setConfirmDemoteId(m.user_id)}
+                      >
+                        {t('admin.moderators.demote')}
+                      </Button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {moderators.length === 0 && (
+            <p className="py-8 text-center text-text-muted">{t('admin.moderators.empty')}</p>
+          )}
         </div>
       )}
     </div>

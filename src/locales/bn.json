@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "স্বীকৃত",
     "feedbackStatusResolved": "নিষ্পত্তি করা হয়েছে",
     "feedbackStatusWontfix": "ঠিক করা হবে না",
-    "resolutionPrefix": "প্রস্তাবনা"
+    "resolutionPrefix": "প্রস্তাবনা",
+    "tabModerators": "মডারেটর",
+    "moderators": {
+      "heading": "বর্তমান মডারেটর",
+      "promote": "প্রমোট করুন",
+      "promotePlaceholder": "মডারেটরে প্রমোট করার জন্য ব্যবহারকারী আইডি",
+      "demote": "ডিমোট করুন",
+      "empty": "এখনও কোনো মডারেটর নেই। ব্যবহারকারী আইডি দিয়ে একজন স্ট্যান্ডার্ড ব্যবহারকারীকে প্রমোট করুন।",
+      "updatedAt": "আপডেট হয়েছে"
+    }
   },
   "nav": {
     "dashboard": "ড্যাশবোর্ড",

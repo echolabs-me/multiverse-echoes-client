@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "Bestätigt",
     "feedbackStatusResolved": "Gelöst",
     "feedbackStatusWontfix": "Wird nicht behoben",
-    "resolutionPrefix": "Auflösung"
+    "resolutionPrefix": "Auflösung",
+    "tabModerators": "Moderatoren",
+    "moderators": {
+      "heading": "Aktuelle Moderatoren",
+      "promote": "Befördern",
+      "promotePlaceholder": "Benutzer-ID zum Befördern zum Moderator",
+      "demote": "Herabstufen",
+      "empty": "Noch keine Moderatoren. Befördern Sie einen Standard-Benutzer per Benutzer-ID.",
+      "updatedAt": "Aktualisiert"
+    }
   },
   "nav": {
     "dashboard": "Dashboard",

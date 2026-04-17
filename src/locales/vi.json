@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "Đã ghi nhận",
     "feedbackStatusResolved": "Đã giải quyết",
     "feedbackStatusWontfix": "Sẽ không sửa",
-    "resolutionPrefix": "Độ phân giải"
+    "resolutionPrefix": "Độ phân giải",
+    "tabModerators": "Quản trị viên",
+    "moderators": {
+      "heading": "Quản trị viên hiện tại",
+      "promote": "Thăng chức",
+      "promotePlaceholder": "ID người dùng để thăng chức Quản trị viên",
+      "demote": "Giáng chức",
+      "empty": "Chưa có Quản trị viên. Thăng chức một người dùng Tiêu chuẩn bằng ID.",
+      "updatedAt": "Đã cập nhật"
+    }
   },
   "nav": {
     "dashboard": "Bảng điều khiển",

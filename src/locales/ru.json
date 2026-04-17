@@ -684,7 +684,16 @@
     "feedbackStatusAcknowledged": "Принято",
     "feedbackStatusResolved": "Решено",
     "feedbackStatusWontfix": "Не будет исправлено",
-    "resolutionPrefix": "Разрешение"
+    "resolutionPrefix": "Разрешение",
+    "tabModerators": "Модераторы",
+    "moderators": {
+      "heading": "Текущие модераторы",
+      "promote": "Повысить",
+      "promotePlaceholder": "ID пользователя для повышения до модератора",
+      "demote": "Понизить",
+      "empty": "Модераторов пока нет. Повысьте обычного пользователя по его ID.",
+      "updatedAt": "Обновлено"
+    }
   },
   "nav": {
     "dashboard": "Панель управления",

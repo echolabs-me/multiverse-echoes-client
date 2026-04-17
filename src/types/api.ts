@@ -464,6 +464,14 @@ export interface ResolveReportRequest {
   notes: string;
 }
 
+export interface ModeratorUserItem {
+  user_id: string;
+  email: string;
+  display_name: string;
+  account_type: AccountType;
+  updated_at: string;
+}
+
 // --- Feedback ---
 
 export type FeedbackType = 'Bug' | 'FeatureRequest' | 'Frustration' | 'Praise' | 'General';
