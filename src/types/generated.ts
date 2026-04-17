@@ -363,17 +363,17 @@ export type Echo = {
 	name: string,
 	persona_text: string,
 	what_if_prompt: string,
-	persona_version: number,
 	persona_mode: PersonaMode,
 	/**
 	 *  Orpheus-TTS preset voice assigned to this Echo by the persona→voice
 	 *  classifier. `None` for Echoes predating Stage 4 backfill; populated
-	 *  at Echo creation and re-computed on persona_version bumps.
+	 *  once at Echo creation (persona is immutable per ME-UAD-001 §2.4, so
+	 *  the voice assignment never needs to be re-computed).
 	 */
 	voice_preset?: OrpheusVoice | null,
 	/**
-	 *  UTC timestamp of the most recent classifier assignment for `voice_preset`.
-	 *  Audit trail for reclassifications driven by persona edits.
+	 *  UTC timestamp of the classifier assignment for `voice_preset`.
+	 *  Set once at creation; never re-assigned (persona is immutable).
 	 */
 	voice_assigned_at?: string | null,
 	status: EchoStatus,
@@ -459,15 +459,12 @@ export type EchoResponse = {
 	name: string,
 	persona_text: string,
 	what_if_prompt: string,
-	persona_version: number,
 	status: string,
 	current_mood: string,
 	current_tick: number,
 	current_shard_id: string,
 	birth_hash: string,
 	created_at: string,
-	// True if the Echo has ticked at least once — name cannot be changed.
-	name_locked: boolean,
 	// URL of the AI-generated portrait image (face). Null if generation failed or pending.
 	avatar_url: string | null,
 	/**
@@ -982,22 +979,6 @@ export type ProfileVisibility = "Public" | "FriendsOnly" | "Private";
 
 export type RelationshipStatus = "Active" | "Faded" | "Ended" | "Severed";
 
-/**
- *  PATCH /echoes/:id — Update simple Echo fields.
- * 
- *  Accepts partial updates. Full persona rewrites go through
- *  `PUT /echoes/{id}/persona`; `what_if_prompt` is immutable and not accepted
- *  here (returns 400 WHAT_IF_LOCKED).
- * 
- *  Reference: ME-API-001 §4.3.4.
- */
-export type RenameEchoRequest = {
-	name: string | null,
-	physical_description: string | null,
-	// Reject immutable fields with 400 WHAT_IF_LOCKED (ME-API-001 §4.3.4 rule).
-	what_if_prompt?: string | null,
-};
-
 export type ReportResponse = {
 	report_id: string,
 	reporter_user_id: string,
@@ -1210,12 +1191,6 @@ export type TravelResponse = {
 };
 
 export type TravelState = "Stationary" | "Travelling";
-
-// PUT /echoes/:id/persona — Edit persona text.
-export type UpdatePersonaRequest = {
-	persona_text: string | null,
-	what_if_prompt?: string | null,
-};
 
 export type User = {
 	user_id: string,

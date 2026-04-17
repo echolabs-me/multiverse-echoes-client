@@ -181,17 +181,16 @@ export interface EchoResponse {
   name: string;
   persona_text: string;
   what_if_prompt: string;
-  persona_version: number;
   status: string;
   current_mood: string;
   current_tick: number;
   current_shard_id: string;
   birth_hash: string;
   created_at: string;
-  name_locked: boolean;
   avatar_url: string | null;
   /** Optional free-text physical description supplied at creation. Null for
-   *  Echoes created before the field was introduced. */
+   *  Echoes created before the field was introduced. Immutable after
+   *  creation per ME-UAD-001 §2.4 v1.1. */
   physical_description: string | null;
 }
 
