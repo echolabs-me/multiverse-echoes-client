@@ -16,11 +16,30 @@ vi.mock('../src/stores/useAuthStore.ts', () => ({
   }),
 }));
 
+// CommunityPage.tsx:24 imports useEchoWebSocket, which internally calls
+// useAuthStore.subscribe (useEchoWebSocket.ts:63). The useAuthStore mock
+// above is a bare function with no subscribe property — mocking out the
+// hook avoids the chain entirely. Same approach used in dashboard-feed.test.tsx.
+vi.mock('../src/hooks/useEchoWebSocket.ts', () => ({
+  useEchoWebSocket: vi.fn(),
+}));
+
 vi.mock('../src/lib/api/endpoints.ts', () => ({
   channels: {
     list: vi.fn().mockResolvedValue([]),
     messages: vi.fn().mockResolvedValue([]),
     sendMessage: vi.fn(),
+  },
+  // CommunityPage.tsx:23 imports `account as accountApi` and line 79 calls
+  // accountApi.discordStatus() in the initial-render useEffect. Return
+  // shape matches endpoints.ts:408-410:
+  //   { linked: boolean; discord_user_id?: string; discord_username?: string }
+  // Line 80 destructures `s.linked` and `s.discord_username`.
+  account: {
+    discordStatus: vi.fn().mockResolvedValue({
+      linked: false,
+      discord_username: undefined,
+    }),
   },
   reports: { create: vi.fn() },
 }));
@@ -31,7 +50,10 @@ void testI18n.use(initReactI18next).init({
     en: {
       translation: {
         'community.channels': 'Channels',
-        'community.noChannels': 'No channels yet',
+        // Source renamed the empty-state key to 'noChannelsDesc'
+        // (CommunityPage.tsx:327). Asserting the empty-state contract
+        // under the new key.
+        'community.noChannelsDesc': 'No channels yet',
         'community.selectChannel': 'Select a channel',
         'community.noMessagesYet': 'No messages yet',
         'community.messagePlaceholder': 'Type a message...',
