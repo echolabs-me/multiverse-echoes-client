@@ -8,7 +8,21 @@ export type AcceptRequest = {
 
 export type AccountStatus = "Active" | "Suspended" | "PendingDeletion" | "Deleted";
 
-export type AccountType = "Standard" | "Admin";
+/**
+ *  Account role in the trust & safety hierarchy. Per ME-CSS-001 §9.1
+ *  the three roles are:
+ *  - **Standard** — ordinary user with no moderation powers.
+ *  - **Moderator** — appointed by an Admin. Can mute users in channels
+ *    (1hr–7 days), delete individual messages, and escalate items to
+ *    an Admin. Cannot ban users, lock channels, or manage moderators.
+ *  - **Admin** — full moderation powers. Seeded by the Founder (see
+ *    `godmode seed-admin`); cannot be created or demoted via the API.
+ * 
+ *  Private Shard Owners get per-shard moderation powers through a
+ *  separate shard-ownership check (ME-SDB-001), not through this
+ *  enum, because ownership is scoped rather than account-global.
+ */
+export type AccountType = "Standard" | "Moderator" | "Admin";
 
 export type ActiveConversationResponse = {
 	conversation_id: string,
@@ -814,7 +828,14 @@ export type ModerationActionType =
 // Delete a message globally.
 "MessageDelete" | 
 // Lock a channel (no new messages).
-"ChannelLock";
+"ChannelLock" | 
+/**
+ *  Moderator or Private Shard Owner hands an item off to an Admin
+ *  for review. The `target_*` fields identify what is being
+ *  escalated; the admin resolves via
+ *  `POST /admin/escalations/:action_id/resolve`.
+ */
+"EscalatedToAdmin";
 
 export type Notification = {
 	notification_id: string,
