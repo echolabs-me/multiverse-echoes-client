@@ -48,8 +48,8 @@ void testI18n.use(initReactI18next).init({
         'payment.perMonth': '/month',
         'payment.payWithCrypto': 'Pay with Crypto',
         'payment.payWithXRP': 'Pay with XRP',
+        'payment.payWithCard': 'Pay with Card',
         'payment.cardComingSoon': 'Available after company incorporation',
-        'common.comingSoon': 'Coming soon',
         'payment.subscribing': 'Creating payment...',
         'payment.successTitle': 'Payment confirmed!',
         'payment.successDesc': 'Your tier has been upgraded.',
@@ -121,26 +121,24 @@ describe('PlansPage', () => {
     expect(xrpButtons).toHaveLength(3);
   });
 
-  it('renders Stripe coming-soon buttons for paid tiers', async () => {
+  it('renders disabled Pay with Card buttons', async () => {
     await act(async () => {
       renderPage();
     });
-    // PlansPage replaced the "Pay with Card" text with a StripeLogo button
-    // that fires a "coming soon" toast — see client/src/pages/PlansPage.tsx.
-    // One Stripe button per paid tier (Core, Creator, God Mode).
-    const comingSoonBadges = screen.getAllByText('Coming soon');
-    expect(comingSoonBadges).toHaveLength(3);
+    const cardButtons = screen.getAllByText('Pay with Card');
+    expect(cardButtons).toHaveLength(3);
+    cardButtons.forEach((btn) => {
+      expect(btn.closest('button')).toBeDisabled();
+    });
   });
 
   it('shows tier prices', async () => {
     await act(async () => {
       renderPage();
     });
-    // Prices render as `$<dollars>/month` via `(tier.price / 100).toFixed(0)`
-    // on integer dollar prices 900 / 2900 / 9900 cents = $9 / $29 / $99.
-    expect(screen.getByText('$9/month')).toBeInTheDocument();
-    expect(screen.getByText('$29/month')).toBeInTheDocument();
-    expect(screen.getByText('$99/month')).toBeInTheDocument();
+    expect(screen.getByText('$9.99/month')).toBeInTheDocument();
+    expect(screen.getByText('$24.99/month')).toBeInTheDocument();
+    expect(screen.getByText('$49.99/month')).toBeInTheDocument();
   });
 });
 
