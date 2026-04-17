@@ -799,7 +799,7 @@ export type MessageResponse = {
 export type MessageType = "UserMessage" | "SystemMessage" | "EchoHighlight";
 
 /**
- *  A moderation action taken by an admin in a channel.
+ *  A moderation action taken by a Moderator or Admin in a channel.
  *  Reference: ME-CSS-001 §9.2.
  */
 export type ModerationAction = {
@@ -814,6 +814,22 @@ export type ModerationAction = {
 	duration_seconds: number | null,
 	created_at: string,
 	expires_at: string | null,
+	/**
+	 *  For `EscalatedToAdmin` actions only: timestamp when an Admin
+	 *  marked the escalation resolved. `None` = still pending admin
+	 *  review. Always `None` for non-escalation action types.
+	 */
+	resolved_at?: string | null,
+	/**
+	 *  Admin user id that resolved the escalation. Paired with
+	 *  `resolved_at`.
+	 */
+	resolved_by?: string | null,
+	/**
+	 *  Admin's resolution notes — what action was taken (ban, no-op,
+	 *  etc.). Free-text, sanitised at ingress.
+	 */
+	resolution_notes?: string | null,
 };
 
 /**
