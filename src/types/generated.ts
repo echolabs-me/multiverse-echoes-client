@@ -365,6 +365,17 @@ export type Echo = {
 	what_if_prompt: string,
 	persona_version: number,
 	persona_mode: PersonaMode,
+	/**
+	 *  Orpheus-TTS preset voice assigned to this Echo by the persona→voice
+	 *  classifier. `None` for Echoes predating Stage 4 backfill; populated
+	 *  at Echo creation and re-computed on persona_version bumps.
+	 */
+	voice_preset?: OrpheusVoice | null,
+	/**
+	 *  UTC timestamp of the most recent classifier assignment for `voice_preset`.
+	 *  Audit trail for reclassifications driven by persona edits.
+	 */
+	voice_assigned_at?: string | null,
 	status: EchoStatus,
 	age_at_creation: number,
 	current_mood: string,
@@ -918,6 +929,16 @@ export type OracleHistoryMessage = {
 	role: string,
 	text: string,
 };
+
+/**
+ *  Orpheus-TTS preset voice identifier. The 8 voices ship in the
+ *  canopyai/Orpheus-TTS 3B model. Wire format is snake_case to match
+ *  the prompt prefix the model was trained on (e.g. `tara: <text>`).
+ * 
+ *  See `docs/observations/orpheus-voice-characterization-2026-04-17.md`
+ *  for archetype mappings used by the persona→voice classifier.
+ */
+export type OrpheusVoice = "tara" | "leah" | "jess" | "leo" | "dan" | "mia" | "zac" | "zoe";
 
 export type PaymentRecord = {
 	payment_id: string,
