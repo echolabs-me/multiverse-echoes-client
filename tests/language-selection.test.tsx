@@ -15,10 +15,7 @@ void testI18n.use(initReactI18next).init({
   resources: {
     en: {
       translation: {
-        'onboarding.chooseLanguageTitle': 'Choose your language',
-        'onboarding.languagesComingSoon': 'More languages coming soon',
         'onboarding.languageSelectionLabel': 'Language selection',
-        'common.comingSoon': 'Coming soon',
       },
     },
   },
@@ -37,25 +34,33 @@ function renderPage() {
 }
 
 describe('LanguageSelectionPage', () => {
-  it('renders language selection heading', async () => {
+  it('renders multilingual welcome subtitle', async () => {
     await act(async () => {
       renderPage();
     });
-    expect(screen.getByText('Choose your language')).toBeInTheDocument();
+    // Subtitle is hardcoded multilingual: "Choose your language · 选择语言 · भाषा चुनें"
+    // See LanguageSelectionPage.tsx — intentional so visitors recognise their
+    // language before a locale is chosen.
+    const matches = screen.getAllByText(/Choose your language/);
+    expect(matches.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders English option', async () => {
+  it('renders the full grid of 20 live language tiles', async () => {
     await act(async () => {
       renderPage();
     });
-    const englishElements = screen.getAllByText('English');
-    expect(englishElements.length).toBeGreaterThanOrEqual(1);
+    // Each tile is a role="option" button. The page was redesigned in
+    // commit 7770536 to show only live languages (no "coming soon"
+    // placeholders). The live-language list has since grown to 20 — see
+    // LanguageSelectionPage.tsx `languages` array.
+    const tiles = screen.getAllByRole('option');
+    expect(tiles).toHaveLength(20);
   });
 
-  it('shows coming soon for unavailable languages', async () => {
+  it('English tile is present with aria-label Select English', async () => {
     await act(async () => {
       renderPage();
     });
-    expect(screen.getByText('More languages coming soon')).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Select English' })).toBeInTheDocument();
   });
 });

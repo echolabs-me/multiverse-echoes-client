@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
@@ -77,6 +77,12 @@ function renderPage() {
 }
 
 describe('RegisterPage', () => {
+  beforeEach(() => {
+    // RegisterPage redirects to /language when locale_selected is not set.
+    // See RegisterPage.tsx early return around the locale gate.
+    localStorage.setItem('locale_selected', 'true');
+  });
+
   it('renders registration form', async () => {
     await act(async () => {
       renderPage();
