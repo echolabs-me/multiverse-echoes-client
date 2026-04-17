@@ -57,6 +57,10 @@ void testI18n.use(initReactI18next).init({
         'conversation.errorSending': 'Message could not be sent.',
         'conversation.errorSaving': 'Could not save conversation.',
         'conversation.messageLimitReached': "You've reached the message limit.",
+        // Header shows t('conversation.mood', { mood: getMoodLabel(...) }).
+        // moodLabel.ts:37 aliases 'curious' → 'contemplative' then resolves
+        // i18n.t('moods.contemplative'). Isolated test i18n needs the key.
+        'moods.contemplative': 'Contemplative',
       },
     },
   },
@@ -90,7 +94,11 @@ describe('EchoConversationPage', () => {
 
   it('shows mood in header', () => {
     renderConversation();
-    expect(screen.getByText('Feeling curious')).toBeInTheDocument();
+    // EchoConversationPage.tsx:241 renders
+    //   t('conversation.mood', { mood: getMoodLabel(echoMood) })
+    // where echoMood='curious' is aliased to 'contemplative' by moodLabel.ts
+    // and then i18n-resolved → 'Contemplative'.
+    expect(screen.getByText('Feeling Contemplative')).toBeInTheDocument();
   });
 
   it('shows message limit for Free tier', () => {

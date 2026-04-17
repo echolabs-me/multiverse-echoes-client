@@ -94,8 +94,9 @@ describe('Initialization ordering', () => {
     // fetchHealth should not throw.
     await expect(useSystemStore.getState().fetchHealth()).resolves.not.toThrow();
 
-    // Fallback value should remain.
-    expect(useSystemStore.getState().tickIntervalSeconds).toBe(60);
+    // Fallback value: useSystemStore.ts:13 defaults tickIntervalSeconds
+    // to 120, which matches config/default.toml tick_interval_seconds = 120.
+    expect(useSystemStore.getState().tickIntervalSeconds).toBe(120);
     expect(useSystemStore.getState().isLoaded).toBe(false);
 
     globalThis.fetch = originalFetch;
@@ -112,7 +113,8 @@ describe('Initialization ordering', () => {
     const { useSystemStore } = await import('../src/stores/useSystemStore.ts');
 
     await expect(useSystemStore.getState().fetchHealth()).resolves.not.toThrow();
-    expect(useSystemStore.getState().tickIntervalSeconds).toBe(60);
+    // Same fallback-default source as above: useSystemStore.ts:13 / config/default.toml.
+    expect(useSystemStore.getState().tickIntervalSeconds).toBe(120);
 
     globalThis.fetch = originalFetch;
   });
