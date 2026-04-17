@@ -14,7 +14,13 @@ vi.mock('../src/stores/useShardStore.ts', () => ({
 }));
 
 vi.mock('../src/stores/useEchoStore.ts', () => ({
-  useEchoStore: () => ({ echoList: [] }),
+  // ShardViewPage.tsx:28 destructures { echoList, fetchEchoes } from the
+  // store. useEchoStore.fetchEchoes has signature () => Promise<void>
+  // (useEchoStore.ts:10), so the mock resolves to undefined.
+  useEchoStore: () => ({
+    echoList: [],
+    fetchEchoes: vi.fn().mockResolvedValue(undefined),
+  }),
 }));
 
 vi.mock('../src/stores/useToastStore.ts', () => ({

@@ -1,12 +1,22 @@
 import { describe, it, expect } from 'vitest';
-import { getRandomHint, getHintPoolSize } from '../src/lib/activityHints.ts';
+import { getRandomHint } from '../src/lib/activityHints.ts';
+import en from '../src/locales/en.json';
 
 /**
  * Phase 6B Testing — Activity Hints Logic
  *
  * Tests getRandomHint, hint pool sizes, shard-keyword matching,
  * and edge cases.
+ *
+ * The JS-level getHintPoolSize function was removed in commit 7770536
+ * when hints migrated to i18n (activityHints.* keys in locale bundles).
+ * Pool-size assertions now read the en.json bundle directly — the
+ * bundle is the source of truth for per-mood hint variety.
  */
+const activityHints = en.activityHints as Record<
+  string,
+  Record<string, string>
+>;
 
 const ALL_MOODS = [
   'contemplative',
@@ -56,23 +66,35 @@ describe('getRandomHint', () => {
   });
 });
 
-describe('getHintPoolSize', () => {
+describe('hint pool size (en.json activityHints.*)', () => {
   describe('all 10 moods have at least 6 hints', () => {
     for (const mood of ALL_MOODS) {
       it(`"${mood}" has >= 6 hints`, () => {
-        expect(getHintPoolSize(mood)).toBeGreaterThanOrEqual(6);
+        expect(Object.keys(activityHints[mood]).length).toBeGreaterThanOrEqual(6);
       });
     }
   });
 
   it('all moods have exactly 8 hints', () => {
+    // Matches HINTS_PER_MOOD = 8 in activityHints.ts:12 — the source
+    // loop builds activityHints.<mood>.0 through .7. Locale bundle
+    // structure and source constant must stay in sync; this asserts the
+    // locale side of the invariant.
     for (const mood of ALL_MOODS) {
-      expect(getHintPoolSize(mood)).toBe(8);
+      expect(Object.keys(activityHints[mood]).length).toBe(8);
     }
   });
 
-  it('unknown mood falls back to neutral pool size', () => {
-    expect(getHintPoolSize('nonsense')).toBe(getHintPoolSize('neutral'));
+  it('unknown mood resolves to the neutral pool', () => {
+    // normaliseMoodKey in activityHints.ts:37 falls unknown moods back
+    // to 'neutral'. Calling getRandomHint('nonsense') many times must
+    // produce only strings that exist in the neutral pool (not any
+    // other mood's pool, not the defaultValue).
+    const neutralPool = new Set(Object.values(activityHints.neutral));
+    for (let i = 0; i < 50; i++) {
+      const hint = getRandomHint('nonsense');
+      expect(neutralPool.has(hint)).toBe(true);
+    }
   });
 });
 
