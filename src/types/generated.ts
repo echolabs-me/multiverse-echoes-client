@@ -1470,7 +1470,15 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
 // Emitted by purge_user() after full data cascade. Requires EventBus in PurgeContext (Phase 7).
 { UserDeleted: { user_id: string } } | { PersonaUpdated: { echo_id: string; version: number } } | { ConversationSaved: { echo_id: string; user_id: string } } | 
 // Phase 7 — user feedback system.
-{ FeedbackSubmitted: { user_id: string; feedback_id: string } } | { CommunityMessagePosted: { channel_id: string; message_id: string; author_id: string } } | { MessageDeleted: { channel_id: string; message_id: string; deleted_by: string } } | { MessageEdited: { channel_id: string; message_id: string; author_id: string } } | { FeedItemGenerated: { feed_item_id: string; echo_id: string; shard_id: string } } | { UserFollowed: { source_user_id: string; target_user_id: string } } | { UserBlocked: { source_user_id: string; target_user_id: string } } | { UserMuted: { source_user_id: string; target_user_id: string } } | { NotificationCreated: { user_id: string; notification_id: string } } | 
+{ FeedbackSubmitted: { user_id: string; feedback_id: string } } | { CommunityMessagePosted: { channel_id: string; message_id: string; author_id: string } } | { MessageDeleted: { channel_id: string; message_id: string; deleted_by: string } } | { MessageEdited: { channel_id: string; message_id: string; author_id: string } } | { FeedItemGenerated: { feed_item_id: string; echo_id: string; shard_id: string } } | { UserFollowed: { source_user_id: string; target_user_id: string } } | { UserBlocked: { source_user_id: string; target_user_id: string } } | { UserMuted: { source_user_id: string; target_user_id: string } } | 
+/**
+ *  An Admin changed a user's `AccountType` (ME-CSS-001 §9.1
+ *  Moderator role management). Emitted by
+ *  `POST /admin/moderators/:id/promote` and
+ *  `DELETE /admin/moderators/:id`. `actor_id` is the admin who
+ *  performed the change; `user_id` is the target.
+ */
+{ UserAccountTypeChanged: { user_id: string; from: AccountType; to: AccountType; actor_id: string } } | { NotificationCreated: { user_id: string; notification_id: string } } | 
 // Emitted when the daily digest notification is generated. Phase 7 digest system.
 { DailyDigestGenerated: { user_id: string; notification_id: string } } | 
 // Emitted when an Echo's AI-generated portrait is ready (background generation complete).
