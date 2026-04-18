@@ -55,14 +55,19 @@ void testI18n.use(initReactI18next).init({
     en: {
       translation: {
         'common.back': 'Back',
+        'common.loading': 'Loading...',
+        'common.errorGeneric': 'Something went wrong.',
         'payment.title': 'Plans',
         'payment.subtitle': 'Choose the right plan for your multiverse.',
         'payment.free': 'Free',
         'payment.current': 'Current',
+        'payment.currentPlan': 'Current plan',
+        'payment.manageSubscription': 'Manage subscription',
         'payment.perMonth': '/month',
         'payment.payWithCrypto': 'Pay with Crypto',
         'payment.payWithXRP': 'Pay with XRP',
         'payment.cardComingSoon': 'Available after company incorporation',
+        'payment.cryptoUnavailable': 'Crypto payments temporarily unavailable.',
         'common.comingSoon': 'Coming soon',
         'payment.subscribing': 'Creating payment...',
         'payment.successTitle': 'Payment confirmed!',
@@ -81,6 +86,63 @@ void testI18n.use(initReactI18next).init({
         'payment.tipMessage': 'Message (optional)',
         'payment.tipMessagePlaceholder': 'Leave a message...',
         'payment.tipSend': 'Send Tip',
+        'tiers.free': 'Free',
+        'tiers.starter': 'Starter',
+        'tiers.core': 'Core',
+        'tiers.creator': 'Creator',
+        'tiers.godMode': 'God Mode',
+        'tiers.mostPopular': 'Popular',
+        'tiers.enterprise': 'Enterprise',
+        'tiers.enterpriseDesc': 'Custom solutions for organisations.',
+        'tiers.contactUs': 'Contact us',
+        'tiers.enhanceTiers': 'Enhance your experience. No commitment — add or remove anytime.',
+        'tiers.features.1echoPublic': '1 Echo (public)',
+        'tiers.features.diaryAmPm': 'Diary entries twice daily',
+        'tiers.features.1conv': '1 conversation/day',
+        'tiers.features.1nudge': '1 nudge/day',
+        'tiers.features.2ip': '2 Influence Points/day',
+        'tiers.features.3echoes': '3 Echoes',
+        'tiers.features.diary2hr': 'Diary every 2 hours',
+        'tiers.features.5conv': '5 conversations/day',
+        'tiers.features.3nudges': '3 nudges/day',
+        'tiers.features.4ip': '4 Influence Points/day',
+        'tiers.features.adFree': 'Ad-free',
+        'tiers.features.5echoes': '5 Echoes',
+        'tiers.features.diary30m': 'Diary every 30 minutes',
+        'tiers.features.10conv': '10 conversations/day',
+        'tiers.features.10nudges': '10 nudges/day',
+        'tiers.features.6ip': '6 Influence Points/day',
+        'tiers.features.8echoes': '8 Echoes',
+        'tiers.features.diary15m': 'Diary every 15 minutes',
+        'tiers.features.20conv': '20 conversations/day',
+        'tiers.features.20nudges': '20 nudges/day',
+        'tiers.features.12ip': '12 Influence Points/day',
+        'tiers.features.1privateShard': '1 Private Shard included',
+        'tiers.features.12echoes': '12 Echoes',
+        'tiers.features.diary5m': 'Diary every 5 minutes',
+        'tiers.features.unlimitedConv': 'Unlimited conversations',
+        'tiers.features.unlimitedNudges': 'Unlimited nudges',
+        'tiers.features.unlimitedIp': 'Unlimited Influence Points',
+        'tiers.features.3privateShards': '3 Private Shards included',
+        'tiers.features.priorityInference': 'Priority inference',
+        'tiers.influencePoints.explainer':
+          'Premium actions: suggest activities or hint at relationships — your Echo decides whether to act.',
+        'tiers.addOns.title': 'Add-ons',
+        'tiers.addOns.buyAddon': 'Buy',
+        'tiers.addOns.included': 'Included ({{count}})',
+        'tiers.addOns.notAvailableOnPlan': 'Not available on your plan',
+        'tiers.addOns.nudgePack': 'Nudge 100-Pack',
+        'tiers.addOns.nudgePackDesc': '100 extra nudges.',
+        'tiers.addOns.premiumActionsPack': 'Premium Actions 20-Pack',
+        'tiers.addOns.premiumActionsPackDesc': '20 Influence Points for your Echo to act on.',
+        'tiers.addOns.speedBoost': 'Speed Boost',
+        'tiers.addOns.speedBoostDesc': 'Halve the heartbeat interval.',
+        'tiers.addOns.videoVoiceBoost': 'Video & Voice Boost',
+        'tiers.addOns.videoVoiceBoostDesc': 'Extra daily video and voice.',
+        'tiers.addOns.extraEcho': 'Extra Echo',
+        'tiers.addOns.extraEchoDesc': 'One additional Echo slot.',
+        'tiers.addOns.privateShard': 'Private Shard',
+        'tiers.addOns.privateShardDesc': 'One private Shard for your Echoes.',
       },
     },
   },
@@ -101,12 +163,13 @@ describe('PlansPage', () => {
     );
   }
 
-  it('renders all 4 tier cards', async () => {
+  it('renders all 5 tier cards', async () => {
     await act(async () => {
       renderPage();
     });
-    // "Free" appears as both tier name and price text; check heading role
+    // "Free" appears as both tier name and price text; check presence with getAllByText.
     expect(screen.getAllByText('Free').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('Starter')).toBeInTheDocument();
     expect(screen.getByText('Core')).toBeInTheDocument();
     expect(screen.getByText('Creator')).toBeInTheDocument();
     expect(screen.getByText('God Mode')).toBeInTheDocument();
@@ -119,12 +182,20 @@ describe('PlansPage', () => {
     expect(screen.getByText('Current')).toBeInTheDocument();
   });
 
+  it('renders Enterprise contact-us card', async () => {
+    await act(async () => {
+      renderPage();
+    });
+    expect(screen.getByText('Enterprise')).toBeInTheDocument();
+    expect(screen.getByText('Contact us')).toBeInTheDocument();
+  });
+
   it('renders Pay with Crypto buttons for paid tiers', async () => {
     await act(async () => {
       renderPage();
     });
     const cryptoButtons = screen.getAllByText('Pay with Crypto');
-    expect(cryptoButtons).toHaveLength(3); // Core, Creator, God Mode
+    expect(cryptoButtons).toHaveLength(4); // Starter, Core, Creator, God Mode
   });
 
   it('renders Pay with XRP buttons for paid tiers', async () => {
@@ -132,16 +203,14 @@ describe('PlansPage', () => {
       renderPage();
     });
     const xrpButtons = screen.getAllByText('Pay with XRP');
-    expect(xrpButtons).toHaveLength(3);
+    expect(xrpButtons).toHaveLength(4);
   });
 
-  // The previous "renders disabled Pay with Card buttons" test was deleted.
-  // Product-decision rationale: during closed beta, PlansPage.tsx:178-186
-  // replaces the card-payment button with a clickable Stripe-logo button that
-  // fires a "coming soon" toast. The button is NOT disabled at the HTML level
-  // (it has an active onClick); the "disabled" contract the old test asserted
-  // no longer exists. The new test below covers the actual beta contract.
-
+  // Beta contract: Stripe is feature-gated pending Singapore incorporation
+  // (~2026-04-23). Each paid tier card AND each available-to-Free add-on
+  // renders a Stripe button with "Coming soon" badge. Free tier has access to
+  // 2 add-ons (nudge_100_pack, premium_actions_20_pack) per ADDON_AVAILABILITY.
+  // Total Coming Soon surfaces = 4 tier cards + 2 add-ons = 6.
   it('Stripe button fires coming-soon toast on click and does not start a payment', async () => {
     mockAddToast.mockClear();
     mockCreateNowpayments.mockClear();
@@ -151,11 +220,9 @@ describe('PlansPage', () => {
       renderPage();
     });
 
-    // Each paid-tier card renders a Stripe button containing a "Coming soon"
-    // badge (PlansPage.tsx:184 — span with t('common.comingSoon')). Find the
-    // 3 badges, walk up to the button element, click each.
     const badges = screen.getAllByText('Coming soon');
-    expect(badges).toHaveLength(3);
+    // 4 paid tier cards + 2 Free-available add-ons = 6 Coming-Soon surfaces.
+    expect(badges).toHaveLength(6);
 
     for (const badge of badges) {
       const button = badge.closest('button');
@@ -163,30 +230,34 @@ describe('PlansPage', () => {
       fireEvent.click(button as HTMLButtonElement);
     }
 
-    // Contract: 3 clicks → 3 addToast calls with payment.cardComingSoon text
-    // (i18n-resolved via the test bundle to 'Available after company incorporation').
-    expect(mockAddToast).toHaveBeenCalledTimes(3);
+    expect(mockAddToast).toHaveBeenCalledTimes(6);
     for (const call of mockAddToast.mock.calls) {
       expect(call[0]).toBe('Available after company incorporation');
       expect(call[1]).toBe('info');
     }
 
-    // Regression guard: if Stripe ever gets wired up without removing this
-    // coming-soon mechanism, handlePayment (nowpayments/xaman) must not fire
-    // as a side-effect of the Stripe click.
+    // Regression guard: the Coming-Soon click must not start a crypto payment.
     expect(mockCreateNowpayments).not.toHaveBeenCalled();
     expect(mockCreateXaman).not.toHaveBeenCalled();
   });
 
-  it('shows tier prices', async () => {
+  it('shows canonical tier prices', async () => {
     await act(async () => {
       renderPage();
     });
-    // Prices render as `$<dollars>/month` via `(tier.price / 100).toFixed(0)`
-    // on the integer-cent TIERS literal in PlansPage.tsx: 900 / 2900 / 9900.
-    expect(screen.getByText('$9/month')).toBeInTheDocument();
-    expect(screen.getByText('$29/month')).toBeInTheDocument();
-    expect(screen.getByText('$99/month')).toBeInTheDocument();
+    expect(screen.getByText('$9.99/month')).toBeInTheDocument();
+    expect(screen.getByText('$24.99/month')).toBeInTheDocument();
+    expect(screen.getByText('$39.99/month')).toBeInTheDocument();
+    expect(screen.getByText('$59.99/month')).toBeInTheDocument();
+  });
+
+  it('shows Private Shard availability on Creator and God Mode tier cards', async () => {
+    await act(async () => {
+      renderPage();
+    });
+    // Free user sees Private Shard listed as "Not available on your plan"
+    // (Free ADDON_AVAILABILITY = unavailable).
+    expect(screen.getByText('Private Shard')).toBeInTheDocument();
   });
 });
 

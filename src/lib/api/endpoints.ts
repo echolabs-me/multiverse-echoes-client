@@ -617,6 +617,12 @@ export const payments = {
       body: JSON.stringify({ tier }),
     }),
 
+  stripeAddonCheckout: (addon: string) =>
+    request<{ checkout_url: string }>('/payments/stripe/addon/checkout', {
+      method: 'POST',
+      body: JSON.stringify({ addon }),
+    }),
+
   stripePortal: () =>
     request<{ portal_url: string }>('/payments/stripe/portal', {
       method: 'POST',

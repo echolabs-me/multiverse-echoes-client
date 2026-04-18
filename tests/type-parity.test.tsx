@@ -28,6 +28,78 @@ void testI18n.use(initReactI18next).init({
         'plans.title': 'Plans',
         'plans.backToDashboard': 'Back to Dashboard',
         'plans.currentPlan': 'Current Plan',
+        'common.back': 'Back',
+        'common.loading': 'Loading...',
+        'common.errorGeneric': 'Something went wrong.',
+        'common.comingSoon': 'Coming soon',
+        'payment.title': 'Plans',
+        'payment.subtitle': 'Choose a plan.',
+        'payment.free': 'Free',
+        'payment.current': 'Current',
+        'payment.currentPlan': 'Current plan',
+        'payment.manageSubscription': 'Manage subscription',
+        'payment.perMonth': '/month',
+        'payment.payWithCrypto': 'Pay with Crypto',
+        'payment.payWithXRP': 'Pay with XRP',
+        'payment.cardComingSoon': 'Available after company incorporation',
+        'payment.cryptoUnavailable': 'Crypto payments temporarily unavailable.',
+        'payment.subscribing': 'Creating payment...',
+        'tiers.free': 'Free',
+        'tiers.starter': 'Starter',
+        'tiers.core': 'Core',
+        'tiers.creator': 'Creator',
+        'tiers.godMode': 'God Mode',
+        'tiers.mostPopular': 'Popular',
+        'tiers.enterprise': 'Enterprise',
+        'tiers.enterpriseDesc': 'Custom solutions.',
+        'tiers.contactUs': 'Contact us',
+        'tiers.enhanceTiers': 'Enhance your experience.',
+        'tiers.features.1echoPublic': '1 Echo',
+        'tiers.features.diaryAmPm': 'Twice-daily diary',
+        'tiers.features.1conv': '1 conversation / day',
+        'tiers.features.1nudge': '1 nudge / day',
+        'tiers.features.2ip': '2 IP / day',
+        'tiers.features.3echoes': '3 Echoes',
+        'tiers.features.diary2hr': 'Diary every 2h',
+        'tiers.features.5conv': '5 conv / day',
+        'tiers.features.3nudges': '3 nudges / day',
+        'tiers.features.4ip': '4 IP / day',
+        'tiers.features.adFree': 'Ad-free',
+        'tiers.features.5echoes': '5 Echoes',
+        'tiers.features.diary30m': 'Diary every 30m',
+        'tiers.features.10conv': '10 conv / day',
+        'tiers.features.10nudges': '10 nudges / day',
+        'tiers.features.6ip': '6 IP / day',
+        'tiers.features.8echoes': '8 Echoes',
+        'tiers.features.diary15m': 'Diary every 15m',
+        'tiers.features.20conv': '20 conv / day',
+        'tiers.features.20nudges': '20 nudges / day',
+        'tiers.features.12ip': '12 IP / day',
+        'tiers.features.1privateShard': '1 Private Shard',
+        'tiers.features.12echoes': '12 Echoes',
+        'tiers.features.diary5m': 'Diary every 5m',
+        'tiers.features.unlimitedConv': 'Unlimited conversations',
+        'tiers.features.unlimitedNudges': 'Unlimited nudges',
+        'tiers.features.unlimitedIp': 'Unlimited IP',
+        'tiers.features.3privateShards': '3 Private Shards',
+        'tiers.features.priorityInference': 'Priority inference',
+        'tiers.influencePoints.explainer': 'Premium actions.',
+        'tiers.addOns.title': 'Add-ons',
+        'tiers.addOns.buyAddon': 'Buy',
+        'tiers.addOns.included': 'Included ({{count}})',
+        'tiers.addOns.notAvailableOnPlan': 'Not available',
+        'tiers.addOns.nudgePack': 'Nudge 100-Pack',
+        'tiers.addOns.nudgePackDesc': '100 extra nudges.',
+        'tiers.addOns.premiumActionsPack': 'Premium Actions 20-Pack',
+        'tiers.addOns.premiumActionsPackDesc': '20 IP.',
+        'tiers.addOns.speedBoost': 'Speed Boost',
+        'tiers.addOns.speedBoostDesc': 'Halve heartbeat.',
+        'tiers.addOns.videoVoiceBoost': 'Video & Voice Boost',
+        'tiers.addOns.videoVoiceBoostDesc': 'Extra video/voice.',
+        'tiers.addOns.extraEcho': 'Extra Echo',
+        'tiers.addOns.extraEchoDesc': 'One more Echo.',
+        'tiers.addOns.privateShard': 'Private Shard',
+        'tiers.addOns.privateShardDesc': 'Your own Shard.',
       },
     },
   },
@@ -45,25 +117,22 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 
 describe('SubscriptionTier type parity', () => {
   it('accepts all Rust SubscriptionTier variants', () => {
-    const tiers: SubscriptionTier[] = ['Free', 'Core', 'Creator', 'GodMode'];
-    expect(tiers).toHaveLength(4);
-    // These should NOT be valid — old names removed
+    const tiers: SubscriptionTier[] = ['Free', 'Starter', 'Core', 'Creator', 'GodMode'];
+    expect(tiers).toHaveLength(5);
     const invalidCheck = (t: string): t is SubscriptionTier =>
-      ['Free', 'Core', 'Creator', 'GodMode'].includes(t);
+      ['Free', 'Starter', 'Core', 'Creator', 'GodMode'].includes(t);
     expect(invalidCheck('Basic')).toBe(false);
     expect(invalidCheck('Pro')).toBe(false);
-    expect(invalidCheck('Enterprise')).toBe(false);
   });
 
-  it('PlansPage renders Core/Creator/GodMode tier names', () => {
+  it('PlansPage renders Starter/Core/Creator/GodMode tier names', () => {
     render(<PlansPage />, { wrapper: Wrapper });
+    expect(screen.getByText('Starter')).toBeInTheDocument();
     expect(screen.getByText('Core')).toBeInTheDocument();
     expect(screen.getByText('Creator')).toBeInTheDocument();
     expect(screen.getByText('God Mode')).toBeInTheDocument();
-    // Old names should not appear
     expect(screen.queryByText('Basic')).not.toBeInTheDocument();
     expect(screen.queryByText('Pro')).not.toBeInTheDocument();
-    expect(screen.queryByText('Enterprise')).not.toBeInTheDocument();
   });
 });
 

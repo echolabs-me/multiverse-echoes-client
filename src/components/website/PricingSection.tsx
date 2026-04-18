@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../../stores/useAuthStore.ts';
+import { Tooltip } from '../index.ts';
 
 /* ── Tier data matching echolabsme-pricing-v5.html ── */
 
+type TierKey = 'free' | 'starter' | 'core' | 'creator' | 'godMode';
+
 interface Tier {
+  key: TierKey;
   nameKey: string;
   icon: string;
   tagline: string;
@@ -24,6 +28,7 @@ interface Tier {
 
 const TIERS: Tier[] = [
   {
+    key: 'free',
     nameKey: 'tiers.free',
     icon: '👁',
     tagline: 'tiers.taglineFree',
@@ -37,14 +42,16 @@ const TIERS: Tier[] = [
       { text: 'tiers.features.1echoPublic', type: 'check' },
       { text: 'tiers.features.diaryAmPm', type: 'check' },
       { text: 'tiers.features.aiPortraits', type: 'check' },
-      { text: 'tiers.features.conversations', type: 'x' },
-      { text: 'tiers.features.nudges', type: 'addon' },
+      { text: 'tiers.features.1conv', type: 'check' },
+      { text: 'tiers.features.1nudge', type: 'check' },
+      { text: 'tiers.features.2ip', type: 'check' },
     ],
     showcase: ['tiers.showcaseText.2vid', 'tiers.showcaseText.2voice'],
     btnStyle: 'outline',
     iconClass: 'bg-[rgba(220,80,80,0.1)]',
   },
   {
+    key: 'starter',
     nameKey: 'tiers.starter',
     icon: '✦',
     tagline: 'tiers.taglineStarter',
@@ -58,6 +65,7 @@ const TIERS: Tier[] = [
       { text: 'tiers.features.diary2hr', type: 'check' },
       { text: 'tiers.features.5conv', type: 'check' },
       { text: 'tiers.features.3nudges', type: 'check' },
+      { text: 'tiers.features.4ip', type: 'check' },
       { text: 'tiers.features.adFree', type: 'check' },
     ],
     showcase: ['tiers.showcaseText.6vid', 'tiers.showcaseText.6voice'],
@@ -65,6 +73,7 @@ const TIERS: Tier[] = [
     iconClass: 'bg-[rgba(76,175,125,0.12)]',
   },
   {
+    key: 'core',
     nameKey: 'tiers.core',
     icon: '◈',
     tagline: 'tiers.taglineCore',
@@ -78,6 +87,7 @@ const TIERS: Tier[] = [
       { text: 'tiers.features.diary30m', type: 'check' },
       { text: 'tiers.features.10conv', type: 'check' },
       { text: 'tiers.features.10nudges', type: 'check' },
+      { text: 'tiers.features.6ip', type: 'check' },
       { text: 'tiers.features.privateShard', type: 'addon' },
     ],
     showcase: ['tiers.showcaseText.10vid', 'tiers.showcaseText.10voice'],
@@ -86,6 +96,7 @@ const TIERS: Tier[] = [
     popular: true,
   },
   {
+    key: 'creator',
     nameKey: 'tiers.creator',
     icon: '⬡',
     tagline: 'tiers.taglineCreator',
@@ -99,6 +110,7 @@ const TIERS: Tier[] = [
       { text: 'tiers.features.diary15m', type: 'check' },
       { text: 'tiers.features.20conv', type: 'check' },
       { text: 'tiers.features.20nudges', type: 'check' },
+      { text: 'tiers.features.12ip', type: 'check' },
       { text: 'tiers.features.1privateShard', type: 'check' },
     ],
     showcase: ['tiers.showcaseText.16vid', 'tiers.showcaseText.16voice'],
@@ -106,6 +118,7 @@ const TIERS: Tier[] = [
     iconClass: 'bg-[rgba(139,126,200,0.1)]',
   },
   {
+    key: 'godMode',
     nameKey: 'tiers.godMode',
     icon: '♛',
     tagline: 'tiers.taglineGodMode',
@@ -119,6 +132,7 @@ const TIERS: Tier[] = [
       { text: 'tiers.features.diary5m', type: 'star' },
       { text: 'tiers.features.unlimitedConv', type: 'star' },
       { text: 'tiers.features.unlimitedNudges', type: 'star' },
+      { text: 'tiers.features.unlimitedIp', type: 'star' },
       { text: 'tiers.features.3privateShards', type: 'star' },
       { text: 'tiers.features.priorityInference', type: 'star' },
     ],
@@ -130,6 +144,7 @@ const TIERS: Tier[] = [
 ];
 
 interface AddOn {
+  key: AddOnKey;
   emoji: string;
   nameKey: string;
   price: string;
@@ -139,12 +154,73 @@ interface AddOn {
   showcaseHl?: boolean;
 }
 
+type AddOnKey =
+  | 'nudge_100_pack'
+  | 'premium_actions_20_pack'
+  | 'speed_boost'
+  | 'video_voice_boost'
+  | 'extra_echo'
+  | 'private_shard';
+
+/** ME-MIS-001 canonical add-on matrix.
+ *  'available' = purchasable as an add-on.
+ *  'unavailable' = not applicable at this tier.
+ *  { included: N } = tier includes N of this item at no extra cost.
+ *  Order of tiers in this record is irrelevant — lookups are keyed. */
+type AddOnAvailability = 'available' | 'unavailable' | { included: number };
+
+const ADDON_MATRIX: Record<AddOnKey, Record<TierKey, AddOnAvailability>> = {
+  nudge_100_pack: {
+    free: 'available',
+    starter: 'available',
+    core: 'available',
+    creator: 'available',
+    godMode: 'unavailable',
+  },
+  premium_actions_20_pack: {
+    free: 'available',
+    starter: 'available',
+    core: 'available',
+    creator: 'available',
+    godMode: 'unavailable',
+  },
+  speed_boost: {
+    free: 'unavailable',
+    starter: 'available',
+    core: 'available',
+    creator: 'available',
+    godMode: 'unavailable',
+  },
+  video_voice_boost: {
+    free: 'unavailable',
+    starter: 'available',
+    core: 'available',
+    creator: 'available',
+    godMode: 'unavailable',
+  },
+  extra_echo: {
+    free: 'unavailable',
+    starter: 'available',
+    core: 'available',
+    creator: 'available',
+    godMode: 'available',
+  },
+  private_shard: {
+    free: 'unavailable',
+    starter: 'unavailable',
+    core: 'available',
+    creator: { included: 1 },
+    godMode: { included: 3 },
+  },
+};
+
 const ADD_ONS: AddOn[] = [
-  { emoji: '⚡', nameKey: 'tiers.addOns.speedBoost', price: '$4.99', recurring: true, descKey: 'tiers.addOns.speedBoostDesc', highlight: true },
-  { emoji: '🎬', nameKey: 'tiers.addOns.videoVoiceBoost', price: '$3.99', recurring: true, descKey: 'tiers.addOns.videoVoiceBoostDesc', showcaseHl: true },
-  { emoji: '🎭', nameKey: 'tiers.addOns.extraEcho', price: '$5', recurring: true, descKey: 'tiers.addOns.extraEchoDesc' },
-  { emoji: '💬', nameKey: 'tiers.addOns.nudgePack', price: '$2.99', descKey: 'tiers.addOns.nudgePackDesc' },
-  { emoji: '🌐', nameKey: 'tiers.addOns.privateShard', price: '$4.99', recurring: true, descKey: 'tiers.addOns.privateShardDesc' },
+  { key: 'speed_boost', emoji: '⚡', nameKey: 'tiers.addOns.speedBoost', price: '$4.99', recurring: true, descKey: 'tiers.addOns.speedBoostDesc', highlight: true },
+  { key: 'video_voice_boost', emoji: '🎬', nameKey: 'tiers.addOns.videoVoiceBoost', price: '$3.99', recurring: true, descKey: 'tiers.addOns.videoVoiceBoostDesc', showcaseHl: true },
+  { key: 'extra_echo', emoji: '🎭', nameKey: 'tiers.addOns.extraEcho', price: '$5', recurring: true, descKey: 'tiers.addOns.extraEchoDesc' },
+  { key: 'nudge_100_pack', emoji: '💬', nameKey: 'tiers.addOns.nudgePack', price: '$2.99', descKey: 'tiers.addOns.nudgePackDesc' },
+  { key: 'premium_actions_20_pack', emoji: '✨', nameKey: 'tiers.addOns.premiumActionsPack', price: '$3.99', descKey: 'tiers.addOns.premiumActionsPackDesc' },
+  { key: 'private_shard', emoji: '🌐', nameKey: 'tiers.addOns.privateShard', price: '$4.99', recurring: true, descKey: 'tiers.addOns.privateShardDesc' },
 ];
 
 const ICON_MAP = { check: '✓', x: '✗', star: '★', addon: '✓' };
@@ -227,19 +303,27 @@ export function PricingSection() {
 
               {/* Features */}
               <ul className="mb-6 flex flex-1 flex-col gap-1">
-                {tier.features.map((f) => (
-                  <li key={f.text} className="flex items-start gap-2 text-[13px] leading-snug text-[var(--text-secondary)]">
-                    <span className={`mt-0.5 shrink-0 text-sm ${COLOR_MAP[f.type]}`}>{ICON_MAP[f.type]}</span>
-                    <span>
-                      {t(f.text)}
-                      {f.type === 'addon' && (
-                        <span className="ml-1.5 rounded bg-[rgba(212,145,92,0.08)] px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-[var(--accent)]">
-                          {t('tiers.addonLabel')}
-                        </span>
-                      )}
-                    </span>
-                  </li>
-                ))}
+                {tier.features.map((f) => {
+                  const isIpRow = f.text.endsWith('ip') || f.text === 'tiers.features.unlimitedIp';
+                  return (
+                    <li key={f.text} className="flex items-start gap-2 text-[13px] leading-snug text-[var(--text-secondary)]">
+                      <span className={`mt-0.5 shrink-0 text-sm ${COLOR_MAP[f.type]}`}>{ICON_MAP[f.type]}</span>
+                      <span>
+                        {t(f.text)}
+                        {f.type === 'addon' && (
+                          <span className="ml-1.5 rounded bg-[rgba(212,145,92,0.08)] px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-[var(--accent)]">
+                            {t('tiers.addonLabel')}
+                          </span>
+                        )}
+                        {isIpRow && (
+                          <Tooltip content={t('tiers.influencePoints.explainer')} position="top">
+                            <span className="ml-1 cursor-help text-[10px] text-[var(--text-muted)]">ⓘ</span>
+                          </Tooltip>
+                        )}
+                      </span>
+                    </li>
+                  );
+                })}
 
                 {/* Showcase divider */}
                 <li className="my-1 border-t border-[#1E2A36]" />
@@ -255,6 +339,45 @@ export function PricingSection() {
                     {t(s)}
                   </li>
                 ))}
+
+                {/* Add-on availability strip */}
+                <li className="my-1 border-t border-[#1E2A36]" />
+                <li className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+                  {t('tiers.addOns.title')}
+                  <span className="flex-1 border-t border-[rgba(255,255,255,0.08)]" />
+                </li>
+                <li className="flex flex-wrap gap-1.5">
+                  {ADD_ONS.map((addon) => {
+                    const availability = ADDON_MATRIX[addon.key][tier.key];
+                    let label: string;
+                    let chipClass: string;
+                    if (availability === 'available') {
+                      label = t('tiers.addOns.availabilityAddon');
+                      chipClass = 'bg-[rgba(212,145,92,0.12)] text-[var(--accent)]';
+                    } else if (availability === 'unavailable') {
+                      label = t('tiers.addOns.availabilityUnavailable');
+                      chipClass = 'bg-[rgba(255,255,255,0.04)] text-[var(--text-muted)] opacity-60';
+                    } else {
+                      label = t('tiers.addOns.included', { count: availability.included });
+                      chipClass = 'bg-[rgba(76,175,125,0.14)] text-[#4CAF7D]';
+                    }
+                    return (
+                      <Tooltip
+                        key={addon.key}
+                        content={`${t(addon.nameKey)} — ${label}`}
+                        position="top"
+                      >
+                        <span
+                          className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium ${chipClass}`}
+                        >
+                          <span>{addon.emoji}</span>
+                          <span className="sr-only">{t(addon.nameKey)}: </span>
+                          <span>{label}</span>
+                        </span>
+                      </Tooltip>
+                    );
+                  })}
+                </li>
               </ul>
 
               {/* Button */}
@@ -289,7 +412,7 @@ export function PricingSection() {
               {t('tiers.enhanceTiers')}
             </p>
           </div>
-          <div className="grid gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div className="grid gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
             {ADD_ONS.map((addon) => (
               <div
                 key={addon.nameKey}
