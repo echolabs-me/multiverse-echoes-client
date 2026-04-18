@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2घं",
     "heartbeat30m": "30मि",
     "heartbeat15m": "15मि",
-    "heartbeat5m": "5मि"
+    "heartbeat5m": "5मि",
+    "downgrade": {
+      "title": "निजी Shard निर्णय",
+      "loadingPending": "लंबित डाउनग्रेड की जाँच हो रही है…",
+      "sessionExpired": "कोई लंबित डाउनग्रेड निर्णय नहीं है।",
+      "errorGeneric": "आपके डाउनग्रेड सत्र को लोड करने में त्रुटि हुई।",
+      "pickIncludedTitle": "आप {{oldTier}} से {{newTier}} पर जा रहे हैं।",
+      "pickIncludedSubtitle": "एक निजी Shard चुनें जो शामिल रहेगा। बाकी के लिए अगले चरण में निर्णय लेना होगा।",
+      "shardDecisionTitle": "आप {{oldTier}} से {{newTier}} पर जा रहे हैं। प्रत्येक निजी Shard के लिए निर्णय लें जिसने अपनी शामिल जगह खो दी है।",
+      "timeoutWarning": "निर्णय लेने के लिए आपके पास लगभग {{hours}} घंटे हैं। समय समाप्त होने पर अनिर्णीत Shard स्वतः संग्रहीत कर दिए जाएंगे।",
+      "keepingIncluded": "{{shard}} शामिल बना रहेगा।",
+      "keepIncluded": "शामिल के रूप में रखें",
+      "buyAddon": "ऐड-ऑन खरीदें ($4.99/माह)",
+      "upgradeBack": "पुनः अपग्रेड करें",
+      "archive": "संग्रहित करें (30-दिन प्रतिधारण)",
+      "archiveWarning": "Shard तुरंत चलना बंद कर देगा और 30 दिनों बाद हटा दिया जाएगा, जब तक कि आप पुनः अपग्रेड करके या ऐड-ऑन खरीदकर उसे पुनर्स्थापित न करें।",
+      "commit": "निर्णय सबमिट करें",
+      "cancel": "रद्द करें — बाद में निर्णय लें",
+      "successMessage": "आपके डाउनग्रेड निर्णय लागू कर दिए गए हैं।"
+    }
   },
   "contact": {
     "metaTitle": "संपर्क — Multiverse Echoes",

@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2時間",
     "heartbeat30m": "30分",
     "heartbeat15m": "15分",
-    "heartbeat5m": "5分"
+    "heartbeat5m": "5分",
+    "downgrade": {
+      "title": "プライベートシャードの決定",
+      "loadingPending": "保留中のダウングレードを確認しています…",
+      "sessionExpired": "保留中のダウングレード決定はありません。",
+      "errorGeneric": "ダウングレードセッションの読み込みに失敗しました。",
+      "pickIncludedTitle": "{{oldTier}} から {{newTier}} に変更されます。",
+      "pickIncludedSubtitle": "含まれるシャードとして維持する 1 つを選択してください。他のシャードは次の画面で決定します。",
+      "shardDecisionTitle": "{{oldTier}} から {{newTier}} に変更されます。含まれる枠を失った各プライベートシャードの扱いを決定してください。",
+      "timeoutWarning": "決定までおよそ {{hours}} 時間あります。この期間が終了すると、未決定のシャードは自動的にアーカイブされます。",
+      "keepingIncluded": "{{shard}} は含まれた状態で維持されます。",
+      "keepIncluded": "含まれる枠として維持",
+      "buyAddon": "アドオンを購入($4.99/月)",
+      "upgradeBack": "アップグレードして戻す",
+      "archive": "アーカイブ(30 日間保持)",
+      "archiveWarning": "シャードは直ちにティックを停止し、再アップグレードまたはアドオン購入で復元しない限り 30 日後に削除されます。",
+      "commit": "決定を確定",
+      "cancel": "キャンセル — 後で決定",
+      "successMessage": "ダウングレードの決定が適用されました。"
+    }
   },
   "contact": {
     "metaTitle": "お問い合わせ — Multiverse Echoes",

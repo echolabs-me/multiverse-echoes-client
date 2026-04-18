@@ -50,6 +50,7 @@ import type {
   SubmitFeedbackRequest,
   SubmitFeedbackResponse,
   ModeratorUserItem,
+  DowngradeSessionView,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -626,6 +627,49 @@ export const payments = {
   stripePortal: () =>
     request<{ portal_url: string }>('/payments/stripe/portal', {
       method: 'POST',
+    }),
+};
+
+// --- Subscription downgrade choice flow (ME-TIER-001 v6 §2, Commit 7B backend + 7C UI) ---
+//
+// The Stripe webhook stages a DowngradeSession when a subscription
+// downgrade reduces the user's included-shard count. The user has 24
+// hours to decide per-shard: BuyAddon, UpgradeBack, or Archive. These
+// 5 endpoints drive the DowngradeChoicePage state machine.
+//
+// Endpoint paths mirror the Rust router in
+// crates/api/src/routes/subscription.rs (mounted at /subscription in
+// crates/api/src/lib.rs:415).
+export const subscription = {
+  downgradePending: () =>
+    request<DowngradeSessionView>('/subscription/downgrade/pending'),
+
+  pickIncludedShard: (sessionId: string, shardId: string) =>
+    request<DowngradeSessionView>('/subscription/downgrade/pick-included-shard', {
+      method: 'POST',
+      body: JSON.stringify({ session_id: sessionId, shard_id: shardId }),
+    }),
+
+  shardDecision: (sessionId: string, shardId: string, decision: string) =>
+    request<DowngradeSessionView>('/subscription/downgrade/shard-decision', {
+      method: 'POST',
+      body: JSON.stringify({
+        session_id: sessionId,
+        shard_id: shardId,
+        decision,
+      }),
+    }),
+
+  commit: (sessionId: string) =>
+    request<DowngradeSessionView>('/subscription/downgrade/commit', {
+      method: 'POST',
+      body: JSON.stringify({ session_id: sessionId }),
+    }),
+
+  cancel: (sessionId: string) =>
+    request<DowngradeSessionView>('/subscription/downgrade/cancel', {
+      method: 'POST',
+      body: JSON.stringify({ session_id: sessionId }),
     }),
 };
 

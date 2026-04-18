@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2or",
     "heartbeat30m": "30m",
     "heartbeat15m": "15m",
-    "heartbeat5m": "5m"
+    "heartbeat5m": "5m",
+    "downgrade": {
+      "title": "Mga desisyon sa Private Shard",
+      "loadingPending": "Tinitingnan ang nakabinbing pag-downgrade…",
+      "sessionExpired": "Walang nakabinbing desisyon sa pag-downgrade.",
+      "errorGeneric": "May problema sa pag-load ng iyong downgrade session.",
+      "pickIncludedTitle": "Lilipat ka mula {{oldTier}} papuntang {{newTier}}.",
+      "pickIncludedSubtitle": "Pumili ng isang Private Shard na mananatiling Kasama. Ang iba ay papagdedesisyunan sa susunod na screen.",
+      "shardDecisionTitle": "Lilipat ka mula {{oldTier}} papuntang {{newTier}}. Magdesisyon kung ano ang gagawin sa bawat Private Shard na nawalan ng Kasama slot.",
+      "timeoutWarning": "May humigit-kumulang {{hours}} oras ka para magdesisyon. Ang mga walang desisyong Shard ay kusang ia-archive pagkatapos ng panahong ito.",
+      "keepingIncluded": "Mananatiling Kasama ang {{shard}}.",
+      "keepIncluded": "Panatilihin bilang Kasama",
+      "buyAddon": "Bumili ng add-on ($4.99/buwan)",
+      "upgradeBack": "Mag-upgrade muli",
+      "archive": "I-archive (30-araw na pagpapanatili)",
+      "archiveWarning": "Ang Shard ay titigil agad at buburahin pagkalipas ng 30 araw maliban kung ibabalik mo ito sa pamamagitan ng pag-upgrade muli o pagbili ng add-on.",
+      "commit": "Kumpirmahin ang mga desisyon",
+      "cancel": "Kanselahin — magpasya mamaya",
+      "successMessage": "Naisagawa na ang iyong mga desisyon sa pag-downgrade."
+    }
   },
   "contact": {
     "metaTitle": "Makipag-ugnayan — Multiverse Echoes",

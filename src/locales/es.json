@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2h",
     "heartbeat30m": "30min",
     "heartbeat15m": "15min",
-    "heartbeat5m": "5min"
+    "heartbeat5m": "5min",
+    "downgrade": {
+      "title": "Decisiones sobre Shards privados",
+      "loadingPending": "Comprobando bajas pendientes…",
+      "sessionExpired": "No hay decisiones de baja pendientes.",
+      "errorGeneric": "Se produjo un error al cargar tu sesión de baja.",
+      "pickIncludedTitle": "Estás pasando de {{oldTier}} a {{newTier}}.",
+      "pickIncludedSubtitle": "Elige un Shard privado para mantener como incluido. Los demás requerirán una decisión en la siguiente pantalla.",
+      "shardDecisionTitle": "Estás pasando de {{oldTier}} a {{newTier}}. Decide qué pasa con cada Shard privado que ha perdido su plaza incluida.",
+      "timeoutWarning": "Tienes unas {{hours}} horas para decidir. Los Shards sin decisión se archivarán automáticamente cuando termine este plazo.",
+      "keepingIncluded": "{{shard}} seguirá incluido.",
+      "keepIncluded": "Mantener incluido",
+      "buyAddon": "Comprar complemento (4,99 $/mes)",
+      "upgradeBack": "Volver a subir de plan",
+      "archive": "Archivar (30 días de retención)",
+      "archiveWarning": "El Shard dejará de avanzar de inmediato y se eliminará en 30 días salvo que lo restaures volviendo a subir de plan o comprando el complemento.",
+      "commit": "Confirmar decisiones",
+      "cancel": "Cancelar — decidir más tarde",
+      "successMessage": "Tus decisiones de baja se han aplicado."
+    }
   },
   "contact": {
     "metaTitle": "Contacto — Multiverse Echoes",

@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2س",
     "heartbeat30m": "30د",
     "heartbeat15m": "15د",
-    "heartbeat5m": "5د"
+    "heartbeat5m": "5د",
+    "downgrade": {
+      "title": "قرارات الشاردات الخاصة",
+      "loadingPending": "جارٍ التحقق من عمليات خفض المستوى المعلّقة…",
+      "sessionExpired": "لا توجد قرارات خفض مستوى معلّقة.",
+      "errorGeneric": "حدث خطأ أثناء تحميل جلسة خفض المستوى.",
+      "pickIncludedTitle": "أنت تنتقل من {{oldTier}} إلى {{newTier}}.",
+      "pickIncludedSubtitle": "اختر شاردًا خاصًا واحدًا ليبقى ضمن المتضمنة. ستقرر بشأن الباقي في الشاشة التالية.",
+      "shardDecisionTitle": "أنت تنتقل من {{oldTier}} إلى {{newTier}}. حدد ما سيحدث لكل شارد خاص فقد مكانه المتضمن.",
+      "timeoutWarning": "لديك نحو {{hours}} ساعة لاتخاذ القرار. تُؤرشَف الشاردات غير المحددة تلقائيًا عند انتهاء هذه المهلة.",
+      "keepingIncluded": "{{shard}} سيبقى ضمن المتضمنة.",
+      "keepIncluded": "الإبقاء ضمن المتضمنة",
+      "buyAddon": "شراء الإضافة (4.99 $/شهر)",
+      "upgradeBack": "الترقية مجددًا",
+      "archive": "الأرشفة (مدة الاحتفاظ 30 يومًا)",
+      "archiveWarning": "يتوقف الشارد فورًا ويُحذف بعد 30 يومًا ما لم تستعده بالترقية من جديد أو شراء الإضافة.",
+      "commit": "تأكيد القرارات",
+      "cancel": "إلغاء — القرار لاحقًا",
+      "successMessage": "تم تطبيق قرارات خفض المستوى."
+    }
   },
   "contact": {
     "metaTitle": "اتصل بنا — Multiverse Echoes",

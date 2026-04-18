@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2g",
     "heartbeat30m": "30p",
     "heartbeat15m": "15p",
-    "heartbeat5m": "5p"
+    "heartbeat5m": "5p",
+    "downgrade": {
+      "title": "Quyết định về Shard riêng tư",
+      "loadingPending": "Đang kiểm tra hạ cấp đang chờ xử lý…",
+      "sessionExpired": "Không có quyết định hạ cấp đang chờ.",
+      "errorGeneric": "Đã xảy ra lỗi khi tải phiên hạ cấp của bạn.",
+      "pickIncludedTitle": "Bạn đang chuyển từ {{oldTier}} sang {{newTier}}.",
+      "pickIncludedSubtitle": "Chọn một Shard riêng tư để giữ ở trạng thái Đi kèm. Các Shard còn lại sẽ được quyết định ở màn hình tiếp theo.",
+      "shardDecisionTitle": "Bạn đang chuyển từ {{oldTier}} sang {{newTier}}. Hãy quyết định cho từng Shard riêng tư đã mất suất Đi kèm.",
+      "timeoutWarning": "Bạn còn khoảng {{hours}} giờ để quyết định. Các Shard chưa quyết định sẽ được tự động lưu trữ khi hết hạn.",
+      "keepingIncluded": "{{shard}} sẽ tiếp tục Đi kèm.",
+      "keepIncluded": "Giữ làm Đi kèm",
+      "buyAddon": "Mua gói bổ sung (4,99 $/tháng)",
+      "upgradeBack": "Nâng cấp trở lại",
+      "archive": "Lưu trữ (giữ 30 ngày)",
+      "archiveWarning": "Shard sẽ ngừng hoạt động ngay lập tức và bị xóa sau 30 ngày, trừ khi bạn khôi phục bằng cách nâng cấp trở lại hoặc mua gói bổ sung.",
+      "commit": "Xác nhận quyết định",
+      "cancel": "Hủy — quyết định sau",
+      "successMessage": "Các quyết định hạ cấp của bạn đã được áp dụng."
+    }
   },
   "contact": {
     "metaTitle": "Liên hệ — Multiverse Echoes",

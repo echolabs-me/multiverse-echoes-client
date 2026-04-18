@@ -39,6 +39,7 @@ import { PlansPage } from './pages/PlansPage.tsx';
 import { PaymentSuccessPage } from './pages/PaymentSuccessPage.tsx';
 import { PaymentCancelledPage } from './pages/PaymentCancelledPage.tsx';
 import { TipPage } from './pages/TipPage.tsx';
+import { DowngradeChoicePage } from './pages/DowngradeChoicePage.tsx';
 import { NotFoundPage } from './pages/NotFoundPage.tsx';
 
 function hasSelectedLocale(): boolean {
@@ -117,6 +118,10 @@ export function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/admin" element={<AdminDashboardPage />} />
             <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
+            <Route
+              path="/subscription/downgrade-choice"
+              element={<DowngradeChoicePage />}
+            />
           </Route>
 
           {/* 404 catch-all */}

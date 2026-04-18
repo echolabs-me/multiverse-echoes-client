@@ -13,10 +13,15 @@
 import type {
   AccountStatus as _AccountStatus,
   AccountType as _AccountType,
+  CancelRequest as _CancelRequest,
   ChannelType as _ChannelType,
+  CommitRequest as _CommitRequest,
   ConflictStyle as _ConflictStyle,
   ConsentType as _ConsentType,
   ConversationRole as _ConversationRole,
+  DowngradeSession as _DowngradeSession,
+  DowngradeSessionState as _DowngradeSessionState,
+  DowngradeSessionView as _DowngradeSessionView,
   EconomicModel as _EconomicModel,
   EchoRelationshipType as _EchoRelationshipType,
   EchoStatus as _EchoStatus,
@@ -31,9 +36,13 @@ import type {
   NotificationDelivery as _NotificationDelivery,
   PaymentStatus as _PaymentStatus,
   PaymentType as _PaymentType,
+  PendingDecision as _PendingDecision,
+  PendingDecisionEntry as _PendingDecisionEntry,
   PersonaMode as _PersonaMode,
+  PickIncludedShardRequest as _PickIncludedShardRequest,
   ReportStatus as _ReportStatus,
   ReportTargetType as _ReportTargetType,
+  ShardDecisionRequest as _ShardDecisionRequest,
   ShardType as _ShardType,
   SubscriptionTier as _SubscriptionTier,
   TechnologyLevel as _TechnologyLevel,
@@ -45,10 +54,15 @@ import type {
 // Re-export for consumers
 export type AccountStatus = _AccountStatus;
 export type AccountType = _AccountType;
+export type CancelRequest = _CancelRequest;
 export type ChannelType = _ChannelType;
+export type CommitRequest = _CommitRequest;
 export type ConflictStyle = _ConflictStyle;
 export type ConsentType = _ConsentType;
 export type ConversationRole = _ConversationRole;
+export type DowngradeSession = _DowngradeSession;
+export type DowngradeSessionState = _DowngradeSessionState;
+export type DowngradeSessionView = _DowngradeSessionView;
 export type EconomicModel = _EconomicModel;
 export type EchoRelationshipType = _EchoRelationshipType;
 export type EchoStatus = _EchoStatus;
@@ -63,9 +77,13 @@ export type ModerationActionType = _ModerationActionType;
 export type NotificationDelivery = _NotificationDelivery;
 export type PaymentStatus = _PaymentStatus;
 export type PaymentType = _PaymentType;
+export type PendingDecision = _PendingDecision;
+export type PendingDecisionEntry = _PendingDecisionEntry;
 export type PersonaMode = _PersonaMode;
+export type PickIncludedShardRequest = _PickIncludedShardRequest;
 export type ReportStatus = _ReportStatus;
 export type ReportTargetType = _ReportTargetType;
+export type ShardDecisionRequest = _ShardDecisionRequest;
 export type ShardType = _ShardType;
 export type SubscriptionTier = _SubscriptionTier;
 export type TechnologyLevel = _TechnologyLevel;

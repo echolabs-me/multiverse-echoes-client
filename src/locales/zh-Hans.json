@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2小时",
     "heartbeat30m": "30分",
     "heartbeat15m": "15分",
-    "heartbeat5m": "5分"
+    "heartbeat5m": "5分",
+    "downgrade": {
+      "title": "私有 Shard 处置决定",
+      "loadingPending": "正在检查待处理的降级…",
+      "sessionExpired": "暂无待处理的降级决定。",
+      "errorGeneric": "加载降级会话时出错。",
+      "pickIncludedTitle": "您正从 {{oldTier}} 降至 {{newTier}}。",
+      "pickIncludedSubtitle": "选择一个私有 Shard 作为包含项保留,其余将在下一步中决定处置方式。",
+      "shardDecisionTitle": "您正从 {{oldTier}} 降至 {{newTier}}。请为每个失去包含席位的私有 Shard 选择处置方式。",
+      "timeoutWarning": "您大约有 {{hours}} 小时作出决定。此窗口关闭后,未决定的 Shard 将自动归档。",
+      "keepingIncluded": "{{shard}} 将继续作为包含项保留。",
+      "keepIncluded": "作为包含项保留",
+      "buyAddon": "购买附加包($4.99/月)",
+      "upgradeBack": "恢复升级",
+      "archive": "归档(保留 30 天)",
+      "archiveWarning": "Shard 将立即停止运行,30 天后删除,除非您在此期间重新升级或购买附加包以恢复。",
+      "commit": "提交决定",
+      "cancel": "取消 — 稍后决定",
+      "successMessage": "您的降级决定已生效。"
+    }
   },
   "contact": {
     "metaTitle": "联系我们 — Multiverse Echoes",

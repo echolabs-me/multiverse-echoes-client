@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2Std",
     "heartbeat30m": "30Min",
     "heartbeat15m": "15Min",
-    "heartbeat5m": "5Min"
+    "heartbeat5m": "5Min",
+    "downgrade": {
+      "title": "Entscheidungen zu privaten Shards",
+      "loadingPending": "Anstehende Herabstufungen werden geprüft…",
+      "sessionExpired": "Keine anstehenden Herabstufungsentscheidungen.",
+      "errorGeneric": "Beim Laden deiner Herabstufungssitzung ist ein Fehler aufgetreten.",
+      "pickIncludedTitle": "Du wechselst von {{oldTier}} zu {{newTier}}.",
+      "pickIncludedSubtitle": "Wähle einen privaten Shard, der im Paket enthalten bleibt. Über die anderen wird im nächsten Schritt entschieden.",
+      "shardDecisionTitle": "Du wechselst von {{oldTier}} zu {{newTier}}. Entscheide für jeden privaten Shard, der seinen Inklusivplatz verloren hat.",
+      "timeoutWarning": "Du hast noch etwa {{hours}} Stunden Zeit. Nicht entschiedene Shards werden nach Ablauf automatisch archiviert.",
+      "keepingIncluded": "{{shard}} bleibt enthalten.",
+      "keepIncluded": "Als enthalten behalten",
+      "buyAddon": "Add-on kaufen (4,99 $/Monat)",
+      "upgradeBack": "Erneut upgraden",
+      "archive": "Archivieren (30 Tage Aufbewahrung)",
+      "archiveWarning": "Der Shard hört sofort auf zu ticken und wird nach 30 Tagen gelöscht, sofern du ihn nicht durch ein erneutes Upgrade oder den Kauf des Add-ons wiederherstellst.",
+      "commit": "Entscheidungen bestätigen",
+      "cancel": "Abbrechen — später entscheiden",
+      "successMessage": "Deine Herabstufungsentscheidungen wurden übernommen."
+    }
   },
   "contact": {
     "metaTitle": "Kontakt — Multiverse Echoes",

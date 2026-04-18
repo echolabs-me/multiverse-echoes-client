@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2h",
     "heartbeat30m": "30min",
     "heartbeat15m": "15min",
-    "heartbeat5m": "5min"
+    "heartbeat5m": "5min",
+    "downgrade": {
+      "title": "Décisions sur les Shards privés",
+      "loadingPending": "Vérification des rétrogradations en attente…",
+      "sessionExpired": "Aucune décision de rétrogradation en attente.",
+      "errorGeneric": "Une erreur est survenue lors du chargement de votre session.",
+      "pickIncludedTitle": "Vous passez de {{oldTier}} à {{newTier}}.",
+      "pickIncludedSubtitle": "Choisissez un Shard privé à conserver comme inclus. Les autres feront l'objet d'une décision à l'écran suivant.",
+      "shardDecisionTitle": "Vous passez de {{oldTier}} à {{newTier}}. Décidez du sort de chaque Shard privé ayant perdu sa place incluse.",
+      "timeoutWarning": "Il vous reste environ {{hours}} heures pour décider. Les Shards sans décision seront archivés automatiquement à la fin de ce délai.",
+      "keepingIncluded": "{{shard}} reste inclus.",
+      "keepIncluded": "Conserver comme inclus",
+      "buyAddon": "Acheter l'option (4,99 $/mois)",
+      "upgradeBack": "Remonter de niveau",
+      "archive": "Archiver (conservation 30 jours)",
+      "archiveWarning": "Le Shard cesse de progresser immédiatement et sera supprimé dans 30 jours, sauf si vous le restaurez en remontant de niveau ou en achetant l'option.",
+      "commit": "Valider les décisions",
+      "cancel": "Annuler — décider plus tard",
+      "successMessage": "Vos décisions de rétrogradation ont été appliquées."
+    }
   },
   "contact": {
     "metaTitle": "Contact — Multiverse Echoes",

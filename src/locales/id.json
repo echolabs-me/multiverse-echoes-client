@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2j",
     "heartbeat30m": "30m",
     "heartbeat15m": "15m",
-    "heartbeat5m": "5m"
+    "heartbeat5m": "5m",
+    "downgrade": {
+      "title": "Keputusan Shard privat",
+      "loadingPending": "Memeriksa penurunan paket yang tertunda…",
+      "sessionExpired": "Tidak ada keputusan penurunan paket yang tertunda.",
+      "errorGeneric": "Terjadi kesalahan saat memuat sesi penurunan paket.",
+      "pickIncludedTitle": "Anda beralih dari {{oldTier}} ke {{newTier}}.",
+      "pickIncludedSubtitle": "Pilih satu Shard privat untuk tetap menjadi Termasuk. Sisanya akan diputuskan di layar berikutnya.",
+      "shardDecisionTitle": "Anda beralih dari {{oldTier}} ke {{newTier}}. Putuskan nasib setiap Shard privat yang kehilangan slot Termasuknya.",
+      "timeoutWarning": "Anda punya sekitar {{hours}} jam untuk memutuskan. Shard yang belum diputuskan akan diarsipkan otomatis saat tenggat berakhir.",
+      "keepingIncluded": "{{shard}} tetap Termasuk.",
+      "keepIncluded": "Pertahankan sebagai Termasuk",
+      "buyAddon": "Beli add-on ($4,99/bln)",
+      "upgradeBack": "Naikkan kembali paket",
+      "archive": "Arsipkan (retensi 30 hari)",
+      "archiveWarning": "Shard akan berhenti berjalan seketika dan dihapus setelah 30 hari, kecuali Anda memulihkannya dengan menaikkan paket atau membeli add-on.",
+      "commit": "Konfirmasi keputusan",
+      "cancel": "Batal — putuskan nanti",
+      "successMessage": "Keputusan penurunan paket Anda telah diterapkan."
+    }
   },
   "contact": {
     "metaTitle": "Kontak — Multiverse Echoes",

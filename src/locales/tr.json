@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2sa",
     "heartbeat30m": "30dk",
     "heartbeat15m": "15dk",
-    "heartbeat5m": "5dk"
+    "heartbeat5m": "5dk",
+    "downgrade": {
+      "title": "Özel Shard kararları",
+      "loadingPending": "Bekleyen düşüşler kontrol ediliyor…",
+      "sessionExpired": "Bekleyen düşüş kararı yok.",
+      "errorGeneric": "Düşüş oturumu yüklenirken bir hata oluştu.",
+      "pickIncludedTitle": "{{oldTier}} kademesinden {{newTier}} kademesine geçiyorsunuz.",
+      "pickIncludedSubtitle": "Dahil olarak kalmasını istediğiniz bir özel Shard seçin. Diğerleri için bir sonraki ekranda karar vereceksiniz.",
+      "shardDecisionTitle": "{{oldTier}} kademesinden {{newTier}} kademesine geçiyorsunuz. Dahil yerini kaybeden her özel Shard için ne yapılacağına karar verin.",
+      "timeoutWarning": "Karar vermek için yaklaşık {{hours}} saatiniz var. Süre dolduğunda karar verilmeyen Shard'lar otomatik olarak arşivlenir.",
+      "keepingIncluded": "{{shard}} dahil kalmaya devam edecek.",
+      "keepIncluded": "Dahil olarak tut",
+      "buyAddon": "Eklenti satın al (4,99 $/ay)",
+      "upgradeBack": "Tekrar yükselt",
+      "archive": "Arşivle (30 günlük saklama)",
+      "archiveWarning": "Shard hemen ilerlemeyi durdurur ve yeniden yükseltme yapmadığınız veya eklentiyi satın almadığınız sürece 30 gün sonra silinir.",
+      "commit": "Kararları onayla",
+      "cancel": "İptal — sonra karar ver",
+      "successMessage": "Düşüş kararlarınız uygulandı."
+    }
   },
   "contact": {
     "metaTitle": "İletişim — Multiverse Echoes",

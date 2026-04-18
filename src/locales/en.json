@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2hr",
     "heartbeat30m": "30m",
     "heartbeat15m": "15m",
-    "heartbeat5m": "5m"
+    "heartbeat5m": "5m",
+    "downgrade": {
+      "title": "Private Shard decisions",
+      "loadingPending": "Checking for pending downgrade…",
+      "sessionExpired": "No pending downgrade decisions.",
+      "errorGeneric": "Something went wrong loading your downgrade session.",
+      "pickIncludedTitle": "You're moving from {{oldTier}} to {{newTier}}.",
+      "pickIncludedSubtitle": "Choose one Private Shard to keep as Included. The others need a decision on the next screen.",
+      "shardDecisionTitle": "You're moving from {{oldTier}} to {{newTier}}. Decide what happens to each Private Shard that lost its Included slot.",
+      "timeoutWarning": "You have about {{hours}} hours to decide. Undecided shards are archived automatically when this window closes.",
+      "keepingIncluded": "{{shard}} stays Included.",
+      "keepIncluded": "Keep as Included",
+      "buyAddon": "Buy add-on ($4.99/mo)",
+      "upgradeBack": "Upgrade back",
+      "archive": "Archive (30-day retention)",
+      "archiveWarning": "The shard stops ticking immediately and is deleted after 30 days unless you restore it by re-upgrading or buying the add-on.",
+      "commit": "Commit decisions",
+      "cancel": "Cancel — decide later",
+      "successMessage": "Your downgrade decisions have been applied."
+    }
   },
   "contact": {
     "metaTitle": "Contact — Multiverse Echoes",

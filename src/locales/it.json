@@ -1301,7 +1301,26 @@
     "heartbeat2hr": "2h",
     "heartbeat30m": "30min",
     "heartbeat15m": "15min",
-    "heartbeat5m": "5min"
+    "heartbeat5m": "5min",
+    "downgrade": {
+      "title": "Decisioni sugli Shard privati",
+      "loadingPending": "Verifica dei declassamenti in sospeso…",
+      "sessionExpired": "Nessuna decisione di declassamento in sospeso.",
+      "errorGeneric": "Si è verificato un errore durante il caricamento della sessione.",
+      "pickIncludedTitle": "Stai passando da {{oldTier}} a {{newTier}}.",
+      "pickIncludedSubtitle": "Scegli uno Shard privato da mantenere come incluso. Sugli altri deciderai nella schermata successiva.",
+      "shardDecisionTitle": "Stai passando da {{oldTier}} a {{newTier}}. Decidi cosa fare di ogni Shard privato che ha perso il suo posto incluso.",
+      "timeoutWarning": "Hai circa {{hours}} ore per decidere. Gli Shard senza decisione verranno archiviati automaticamente alla scadenza.",
+      "keepingIncluded": "{{shard}} resta incluso.",
+      "keepIncluded": "Mantieni come incluso",
+      "buyAddon": "Acquista componente aggiuntivo (4,99 $/mese)",
+      "upgradeBack": "Torna al piano superiore",
+      "archive": "Archivia (conservazione 30 giorni)",
+      "archiveWarning": "Lo Shard smette immediatamente di avanzare e verrà eliminato dopo 30 giorni se non lo ripristini aggiornando di nuovo il piano o acquistando il componente aggiuntivo.",
+      "commit": "Conferma decisioni",
+      "cancel": "Annulla — decidi dopo",
+      "successMessage": "Le tue decisioni di declassamento sono state applicate."
+    }
   },
   "contact": {
     "metaTitle": "Contatti — Multiverse Echoes",

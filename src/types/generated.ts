@@ -123,6 +123,10 @@ export type BreachSeverity = "Low" | "Medium" | "High" | "Critical";
 
 export type BreachSource = "Manual" | "Automated";
 
+export type CancelRequest = {
+	session_id: string,
+};
+
 export type Channel = {
 	channel_id: string,
 	name: string,
@@ -168,6 +172,10 @@ export type ChannelResponse = {
 export type ChannelStatus = "Active" | "Archived" | "Locked";
 
 export type ChannelType = "Shard" | "Global" | "Topic" | "PrivateShard" | "Event";
+
+export type CommitRequest = {
+	session_id: string,
+};
 
 export type ConflictStyle = "Peaceful" | "Political" | "Economic" | "Military" | "Survival";
 
@@ -355,6 +363,84 @@ export type DiscordLink = {
 	access_token?: string | null,
 	// Discord OAuth refresh token (stored encrypted at rest in production).
 	refresh_token?: string | null,
+};
+
+/**
+ *  A staged downgrade awaiting per-shard decisions.
+ * 
+ *  Schema notes:
+ *  - `stripe_event_id` is the idempotency key. A replay of the same
+ *    Stripe webhook event (network retry, test double-fire) looks up
+ *    by this key and returns the existing session — never creates a
+ *    duplicate.
+ *  - `picked_included_shard_id` is `Some` only for God Mode → Creator
+ *    sessions after the user's `pick-included-shard` call. Other
+ *    downgrades never set it.
+ *  - `pending_decisions` is keyed by `shard_id`. Every shard that
+ *    lost an Included slot on this downgrade has an entry. For God
+ *    Mode → Creator, the shard the user picks to keep Included is
+ *    REMOVED from `pending_decisions` (only the 2 that still need a
+ *    decision remain).
+ */
+export type DowngradeSession = {
+	session_id: string,
+	user_id: string,
+	created_at: string,
+	expires_at: string,
+	old_tier: SubscriptionTier,
+	new_tier: SubscriptionTier,
+	stripe_event_id: string,
+	state: DowngradeSessionState,
+	/**
+	 *  God Mode → Creator only: the shard the user selected to keep
+	 *  Included. `None` for every other downgrade or before the user
+	 *  calls `pick-included-shard`.
+	 */
+	picked_included_shard_id: string | null,
+	pending_decisions: { [key in string]: PendingDecision },
+};
+
+/**
+ *  DowngradeSession lifecycle state.
+ * 
+ *  Non-terminal: `PickingIncluded` / `AwaitingShardDecisions`.
+ *  Terminal: `Committed` / `Expired` / `Cancelled`.
+ */
+export type DowngradeSessionState = 
+/**
+ *  God Mode → Creator only. User must select 1 of 3 shards that
+ *  retains Included status before per-shard decisions begin.
+ */
+"PickingIncluded" | 
+// Normal state: user makes per-shard decisions.
+"AwaitingShardDecisions" | 
+// Terminal: all decisions applied.
+"Committed" | 
+/**
+ *  Terminal: 24h window elapsed without commit; Undecided and
+ *  UpgradeBack shards defaulted to Archive.
+ */
+"Expired" | 
+/**
+ *  Terminal: user explicitly abandoned the session (no shard
+ *  changes applied; tier change remains in effect per the soft-
+ *  staging resolution for Flag A).
+ */
+"Cancelled";
+
+/**
+ *  Public-facing view of a [DowngradeSession] for the choice-flow
+ *  client. Excludes the Stripe event id (internal idempotency only).
+ */
+export type DowngradeSessionView = {
+	session_id: string,
+	created_at: string,
+	expires_at: string,
+	old_tier: string,
+	new_tier: string,
+	state: string,
+	picked_included_shard_id: string | null,
+	pending_decisions: PendingDecisionEntry[],
 };
 
 export type Echo = {
@@ -960,6 +1046,33 @@ export type PaymentStatus = "Pending" | "Confirming" | "Confirmed" | "Finished" 
 
 export type PaymentType = "Subscription" | "MarketplacePurchase" | "Tip";
 
+/**
+ *  Per-shard decision in a DowngradeSession.
+ * 
+ *  `Undecided` is the initial state for every shard that loses its
+ *  Included slot — the user must transition each to a terminal
+ *  decision before the session can commit. On timeout, all remaining
+ *  `Undecided` + `UpgradeBack` shards fall to `Archive` (conservative
+ *  default that preserves content for 30 days).
+ * 
+ *  `UpgradeBack` per Flag B resolution (Session 100 dispatch): the
+ *  shard stays `Included` in the DB during the 24-hour grace window
+ *  so the user can complete a Stripe re-upgrade to restore their
+ *  entitlement. If they don't re-upgrade in time, the timeout
+ *  enforcer downgrades it to `Archive`.
+ */
+export type PendingDecision = "Undecided" | "BuyAddon" | "UpgradeBack" | "Archive";
+
+/**
+ *  View of a single shard's pending decision inside a DowngradeSession
+ *  response. `Undecided` initial state; transitions via
+ *  `POST /shard-decision`.
+ */
+export type PendingDecisionEntry = {
+	shard_id: string,
+	decision: string,
+};
+
 export type PersonaConsent = {
 	consent_id: string,
 	user_id: string,
@@ -970,6 +1083,11 @@ export type PersonaConsent = {
 };
 
 export type PersonaMode = "Quick" | "Detailed";
+
+export type PickIncludedShardRequest = {
+	session_id: string,
+	shard_id: string,
+};
 
 export type PostMessageRequest = {
 	content: string,
@@ -1078,6 +1196,17 @@ export type Shard = {
 	 */
 	archive_expires_at?: string | null,
 	updated_at: string,
+};
+
+export type ShardDecisionRequest = {
+	session_id: string,
+	shard_id: string,
+	/**
+	 *  `"BuyAddon"` / `"UpgradeBack"` / `"Archive"`. `"Undecided"` is
+	 *  the initial state and is rejected here — user must pick one
+	 *  of the three terminal decisions.
+	 */
+	decision: string,
 };
 
 export type ShardDetail = {
