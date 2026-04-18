@@ -64,7 +64,8 @@
     "translationPending": "Çevriliyor…",
     "legalDocsEnglishOnly": "Bu sayfa yalnızca İngilizce dilinde mevcuttur. Çevirisi yakında yayınlanacaktır.",
     "openMenu": "Menüyü aç",
-    "closeMenu": "Menüyü kapat"
+    "closeMenu": "Menüyü kapat",
+    "fieldRequired": "Lütfen bu alanı doldurun."
   },
   "auth": {
     "email": "E-posta",

@@ -64,7 +64,8 @@
     "translationPending": "Isinasalin…",
     "legalDocsEnglishOnly": "Ang pahinang ito ay available lamang sa Ingles. Ang translated na bersyon ay ilalathala sa lalong madaling panahon.",
     "openMenu": "Buksan ang menu",
-    "closeMenu": "Isara ang menu"
+    "closeMenu": "Isara ang menu",
+    "fieldRequired": "Pakipuno ang patlang na ito."
   },
   "auth": {
     "email": "Email",

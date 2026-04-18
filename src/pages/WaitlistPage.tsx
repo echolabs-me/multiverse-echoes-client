@@ -148,7 +148,11 @@ export function WaitlistPage() {
 
           {/* Signup or success */}
           {submittedEmail === null ? (
-            <form onSubmit={(e) => void handleSubmit(e)} className="mb-16 flex flex-col gap-3">
+            <form
+              onSubmit={(e) => void handleSubmit(e)}
+              className="mb-16 flex flex-col gap-3"
+              noValidate
+            >
               <label htmlFor="waitlist-email" className="sr-only">
                 {t('waitlist.emailPlaceholder')}
               </label>

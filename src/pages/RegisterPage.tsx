@@ -38,6 +38,8 @@ export function RegisterPage() {
 
   function validate(): Record<string, string> {
     const errs: Record<string, string> = {};
+    if (!inviteCode.trim()) errs.inviteCode = t('common.fieldRequired');
+    if (!email.trim()) errs.email = t('common.fieldRequired');
     if (password.length < 12) errs.password = t('auth.passwordTooShort');
     if (password !== confirmPassword) errs.confirmPassword = t('auth.passwordMismatch');
     if (displayName.length < 3 || displayName.length > 30)
@@ -128,7 +130,11 @@ export function RegisterPage() {
           </Link>
         </div>
 
-        <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
+        <form
+          onSubmit={(e) => void handleSubmit(e)}
+          className="flex flex-col gap-4"
+          noValidate
+        >
           <div>
             <Input
               label={t('auth.inviteCode')}

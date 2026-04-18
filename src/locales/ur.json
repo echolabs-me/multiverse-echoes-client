@@ -64,7 +64,8 @@
     "translationPending": "ترجمہ ہو رہا ہے…",
     "legalDocsEnglishOnly": "یہ صفحہ صرف انگریزی میں دستیاب ہے۔ ترجمہ شدہ ورژن جلد شائع کیا جائے گا۔",
     "openMenu": "مینو کھولیں",
-    "closeMenu": "مینو بند کریں"
+    "closeMenu": "مینو بند کریں",
+    "fieldRequired": "براہ کرم یہ خانہ پُر کریں۔"
   },
   "auth": {
     "email": "ای میل",

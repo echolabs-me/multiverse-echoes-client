@@ -14,7 +14,10 @@ export function ForgotPasswordPage() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!email) return;
+    if (!email) {
+      setError(t('common.fieldRequired'));
+      return;
+    }
     setError('');
     setIsSubmitting(true);
 
@@ -54,7 +57,11 @@ export function ForgotPasswordPage() {
               {t('auth.forgotPasswordDesc')}
             </p>
 
-            <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
+            <form
+              onSubmit={(e) => void handleSubmit(e)}
+              className="flex flex-col gap-4"
+              noValidate
+            >
               <Input
                 label={t('auth.email')}
                 type="email"

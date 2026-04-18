@@ -73,7 +73,11 @@ export function ResetPasswordPage() {
             <p className="mt-2 text-sm text-text-secondary">{t('auth.redirectingToLogin')}</p>
           </div>
         ) : (
-          <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
+          <form
+            onSubmit={(e) => void handleSubmit(e)}
+            className="flex flex-col gap-4"
+            noValidate
+          >
             <Input
               label={t('auth.newPassword')}
               type="password"

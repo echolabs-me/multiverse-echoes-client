@@ -64,7 +64,8 @@
     "translationPending": "Menterjemah…",
     "legalDocsEnglishOnly": "Halaman ini hanya tersedia dalam bahasa Inggeris. Versi terjemahan akan diterbitkan tidak lama lagi.",
     "openMenu": "Buka menu",
-    "closeMenu": "Tutup menu"
+    "closeMenu": "Tutup menu",
+    "fieldRequired": "Sila isi medan ini."
   },
   "auth": {
     "email": "Emel",

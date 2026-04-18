@@ -23,7 +23,10 @@ export function LoginPage() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!email || !password) return;
+    if (!email || !password) {
+      setError(t('common.fieldRequired'));
+      return;
+    }
     setError('');
     setIsSubmitting(true);
 
@@ -56,7 +59,11 @@ export function LoginPage() {
           </h1>
         </div>
 
-        <form onSubmit={(e) => void handleSubmit(e)} className="flex flex-col gap-4">
+        <form
+          onSubmit={(e) => void handleSubmit(e)}
+          className="flex flex-col gap-4"
+          noValidate
+        >
           <Input
             label={t('auth.email')}
             type="email"

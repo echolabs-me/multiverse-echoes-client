@@ -64,7 +64,8 @@
     "translationPending": "Traduzione in corso…",
     "legalDocsEnglishOnly": "Questa pagina è disponibile solo in inglese. Una versione tradotta sarà pubblicata a breve.",
     "openMenu": "Apri menu",
-    "closeMenu": "Chiudi menu"
+    "closeMenu": "Chiudi menu",
+    "fieldRequired": "Compila questo campo."
   },
   "auth": {
     "email": "Email",

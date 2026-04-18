@@ -64,7 +64,8 @@
     "translationPending": "翻訳中…",
     "legalDocsEnglishOnly": "このページは英語のみでご利用いただけます。翻訳版は近日中に公開予定です。",
     "openMenu": "メニューを開く",
-    "closeMenu": "メニューを閉じる"
+    "closeMenu": "メニューを閉じる",
+    "fieldRequired": "この項目を入力してください。"
   },
   "auth": {
     "email": "メール",

@@ -64,7 +64,8 @@
     "translationPending": "Đang dịch…",
     "legalDocsEnglishOnly": "Trang này hiện chỉ có tiếng Anh. Bản dịch sẽ sớm được cập nhật.",
     "openMenu": "Mở menu",
-    "closeMenu": "Đóng menu"
+    "closeMenu": "Đóng menu",
+    "fieldRequired": "Vui lòng điền vào trường này."
   },
   "auth": {
     "email": "Thư điện tử",
