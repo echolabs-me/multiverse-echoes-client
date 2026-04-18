@@ -977,6 +977,28 @@ export type PostMessageRequest = {
 
 export type ProfileVisibility = "Public" | "FriendsOnly" | "Private";
 
+/**
+ *  How a Private Shard was provisioned to its owner (ME-TIER-001 v6 §2).
+ * 
+ *  - `Included` — granted by tier (Creator=1, GodMode=3).
+ *  - `PaidAddon` — purchased via the Private Shard add-on ($4.99/mo).
+ *  - `Archived` — lost its Included slot on downgrade; 30-day retention
+ *    window gated by `Shard.archive_expires_at`, then swept. During the
+ *    window auto-restores on re-upgrade or add-on purchase (Commit 7B).
+ * 
+ *  For non-Private shards the field is a legacy no-op carrier — it is
+ *  always populated (default `PaidAddon`) but ignored by business logic.
+ */
+export type ProvisioningType = "Included" | 
+/**
+ *  Migration default for pre-Commit-7 shards deserialised with no
+ *  `provisioning_type`: treat as PaidAddon (they were manually
+ *  created before included-shard semantics existed). The next
+ *  subscription webhook re-classifies them to Included if the
+ *  owner's tier entitles it.
+ */
+"PaidAddon" | "Archived";
+
 export type RelationshipStatus = "Active" | "Faded" | "Ended" | "Severed";
 
 export type ReportResponse = {
@@ -1032,6 +1054,29 @@ export type Shard = {
 	total_events_generated?: number,
 	// URL of the AI-generated banner image (landscape). Null if generation pending/failed.
 	banner_image?: string | null,
+	/**
+	 *  How this Private Shard was provisioned (ME-TIER-001 v6 §2).
+	 *  Non-Private shards carry this field as `PaidAddon` by default and
+	 *  ignore it. Pre-Commit-7 records deserialise with `PaidAddon` via
+	 *  Default::default — see [`ProvisioningType::default`].
+	 */
+	provisioning_type?: ProvisioningType,
+	/**
+	 *  UTC instant the shard entered the Archived provisioning state.
+	 *  `None` for every shard whose `provisioning_type != Archived`.
+	 *  Set at the moment a downgrade choice selects Archive for this
+	 *  shard (Commit 7B).
+	 */
+	archived_at?: string | null,
+	/**
+	 *  UTC instant at which the archive sweep deletes this shard.
+	 *  Convention: `archived_at + 30 days`. The sweep
+	 *  (`spawn_shard_archive_enforcer`) runs hourly and deletes shards
+	 *  whose `archive_expires_at` is in the past. If the user upgrades
+	 *  or purchases the Private Shard add-on during the window, both
+	 *  `archived_at` and `archive_expires_at` are cleared (Commit 7B).
+	 */
+	archive_expires_at?: string | null,
 	updated_at: string,
 };
 
