@@ -8,6 +8,7 @@ import type { OracleMessage } from '../stores/useOracleStore.ts';
 
 const RATE_LIMITS: Record<string, number> = {
   Free: 3,
+  Starter: 6,
   Core: 10,
   Creator: 10,
   GodMode: 10,

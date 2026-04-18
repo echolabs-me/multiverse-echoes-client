@@ -1333,7 +1333,14 @@ export type UserSubscription = {
 	current_period_end: string,
 	payment_provider_id: string | null,
 	echo_count_limit: number,
-	influence_points_daily: number,
+	/**
+	 *  Daily Influence Points cap. `None` for uncapped tiers (GodMode);
+	 *  `Some(n)` for finite caps. Session 099 Commit 3.5 aligned this
+	 *  field with `AppConfig::influence_daily_limit` to retire the
+	 *  `u32::MAX` unlimited sentinel end-to-end across every type
+	 *  specta exports.
+	 */
+	influence_points_daily: number | null,
 	updated_at: string,
 };
 

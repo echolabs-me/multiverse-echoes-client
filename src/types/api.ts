@@ -297,9 +297,12 @@ export interface EchoRelationship {
 
 export interface InfluenceBalance {
   echo_id: string;
-  daily_limit: number;
-  used_today: number;
-  remaining: number;
+  /** `null` when the tier is uncapped (GodMode), `number` for finite caps. */
+  daily_limit: number | null;
+  /** `null` when daily_limit is null; `number` otherwise. */
+  used_today: number | null;
+  /** `null` when daily_limit is null; `number` otherwise. */
+  remaining: number | null;
 }
 
 export interface UseInfluenceRequest {

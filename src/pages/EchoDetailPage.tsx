@@ -649,7 +649,7 @@ export function EchoDetailPage() {
                   className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm font-semibold text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/15 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                 >
                   <Zap size={18} className="text-amber-400" /> {t('echoDetail.useInfluence')}
-                  {influence && influence.daily_limit < 1000 && (
+                  {influence && influence.daily_limit !== null && influence.remaining !== null && (
                     <span className="ms-1 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-300">
                       {influence.remaining}
                     </span>
@@ -1135,7 +1135,7 @@ export function EchoDetailPage() {
         <p className="mb-2 text-xs text-text-secondary">
           {t('echoDetail.influenceHelperText')}
         </p>
-        {influence && influence.daily_limit < 1000 && (
+        {influence && influence.daily_limit !== null && influence.remaining !== null && (
           <p className="mb-3 text-xs text-text-secondary">
             {t('echoDetail.influenceBudgetInfo', {
               remaining: influence.remaining,
@@ -1167,7 +1167,7 @@ export function EchoDetailPage() {
           </Button>
           <Button
             onClick={() => void handleUseInfluence()}
-            disabled={influence !== null && influence.remaining <= 0}
+            disabled={influence !== null && influence.remaining !== null && influence.remaining <= 0}
           >
             {t('echoDetail.useInfluence')}
           </Button>

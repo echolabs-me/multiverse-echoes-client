@@ -15,8 +15,8 @@ import { describe, it, expect } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Canonical tier values — must match SubscriptionTier type in types/api.ts.
-const SUBSCRIPTION_TIERS = ['Free', 'Core', 'Creator', 'GodMode'] as const;
+// Canonical tier values — must match SubscriptionTier type in generated.ts.
+const SUBSCRIPTION_TIERS = ['Free', 'Starter', 'Core', 'Creator', 'GodMode'] as const;
 
 /**
  * Extract top-level Record keys from a source file for a given variable name.
