@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "Prompt What-If tidak dapat diubah setelah Echo dibuat.",
     "EMPTY_MESSAGE": "Pesan Anda tidak boleh kosong.",
     "EMPTY_QUESTION": "Pertanyaan Anda tidak boleh kosong.",
-    "INFLUENCE_LIMIT": "Anda telah menggunakan semua pengaruh Anda untuk hari ini. Pengaruh akan diatur ulang pada tengah malam UTC.",
+    "INFLUENCE_LIMIT": "Anda telah menggunakan semua Poin Pengaruh Anda untuk hari ini. Poin akan diatur ulang pada tengah malam UTC.",
+    "NUDGE_LIMIT": "Anda telah menggunakan semua dorongan Anda untuk hari ini. Dorongan akan diatur ulang pada tengah malam UTC.",
     "INVALID_SUGGESTION": "Saran Anda terlalu panjang atau kosong.",
     "FILE_TOO_LARGE": "Berkas tersebut terlalu besar. Ukuran maksimum adalah 5MB.",
     "ONLY_IMAGES": "Hanya file gambar yang diperbolehkan."

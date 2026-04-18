@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "Bir Echo oluşturulduktan sonra \"What-If\" istemi değiştirilemez.",
     "EMPTY_MESSAGE": "Mesajınız boş olamaz.",
     "EMPTY_QUESTION": "Sorunuz boş olamaz.",
-    "INFLUENCE_LIMIT": "Bugün için tüm nüfuzunuzu kullandınız. UTC gece yarısında sıfırlanacaktır.",
+    "INFLUENCE_LIMIT": "Bugün için tüm Nüfuz Puanlarınızı kullandınız. UTC gece yarısında sıfırlanacaklar.",
+    "NUDGE_LIMIT": "Bugün için tüm dürtmelerinizi kullandınız. UTC gece yarısında sıfırlanacaklar.",
     "INVALID_SUGGESTION": "Öneriniz çok uzun veya boş.",
     "FILE_TOO_LARGE": "Bu dosya çok büyük. Maksimum boyut 5MB'dır.",
     "ONLY_IMAGES": "Sadece resim dosyalarına izin verilir."

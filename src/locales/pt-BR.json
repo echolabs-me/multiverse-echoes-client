@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "O prompt \"What-If\" não pode ser alterado após a criação de um Echo.",
     "EMPTY_MESSAGE": "Sua mensagem não pode estar vazia.",
     "EMPTY_QUESTION": "Sua pergunta não pode estar vazia.",
-    "INFLUENCE_LIMIT": "Você usou toda a sua influência de hoje. Ela será resetada à meia-noite UTC.",
+    "INFLUENCE_LIMIT": "Você usou todos os seus Pontos de Influência de hoje. Eles serão resetados à meia-noite UTC.",
+    "NUDGE_LIMIT": "Você usou todas as suas cutucadas de hoje. Elas serão resetadas à meia-noite UTC.",
     "INVALID_SUGGESTION": "Sua sugestão é muito longa ou está vazia.",
     "FILE_TOO_LARGE": "Esse arquivo é muito grande. O tamanho máximo é 5MB.",
     "ONLY_IMAGES": "Apenas arquivos de imagem são permitidos."

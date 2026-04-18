@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "Le \"Et si\" ne peut pas être modifié après la création d'un Écho.",
     "EMPTY_MESSAGE": "Ton message ne peut pas être vide.",
     "EMPTY_QUESTION": "Ta question ne peut pas être vide.",
-    "INFLUENCE_LIMIT": "Tu as utilisé toute ton influence pour aujourd'hui. Elle se réinitialise à minuit UTC.",
+    "INFLUENCE_LIMIT": "Tu as utilisé tous tes Points d'Influence pour aujourd'hui. Ils se réinitialisent à minuit UTC.",
+    "NUDGE_LIMIT": "Tu as utilisé tous tes coups de pouce pour aujourd'hui. Ils se réinitialisent à minuit UTC.",
     "INVALID_SUGGESTION": "Ta suggestion est trop longue ou vide.",
     "FILE_TOO_LARGE": "Ce fichier est trop volumineux. Taille maximale : 5 Mo.",
     "ONLY_IMAGES": "Seuls les fichiers image sont autorisés."

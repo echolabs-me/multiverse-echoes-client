@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "에코가 생성된 후에는 What-If 프롬프트를 변경할 수 없습니다.",
     "EMPTY_MESSAGE": "메시지 내용을 입력해 주세요.",
     "EMPTY_QUESTION": "질문 내용을 입력해 주세요.",
-    "INFLUENCE_LIMIT": "오늘 사용할 수 있는 영향력을 모두 소진했습니다. UTC 기준 자정에 초기화됩니다.",
+    "INFLUENCE_LIMIT": "오늘 사용할 수 있는 영향력 포인트를 모두 소진했습니다. UTC 기준 자정에 초기화됩니다.",
+    "NUDGE_LIMIT": "오늘 사용할 수 있는 넛지를 모두 소진했습니다. UTC 기준 자정에 초기화됩니다.",
     "INVALID_SUGGESTION": "제안 내용이 너무 길거나 비어 있습니다.",
     "FILE_TOO_LARGE": "파일 용량이 너무 큽니다. 최대 크기는 5MB입니다.",
     "ONLY_IMAGES": "이미지 파일만 허용됩니다."

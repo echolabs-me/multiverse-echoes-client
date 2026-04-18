@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "Der What-If-Prompt kann nach der Erstellung eines Echos nicht mehr geändert werden.",
     "EMPTY_MESSAGE": "Deine Nachricht darf nicht leer sein.",
     "EMPTY_QUESTION": "Ihre Frage darf nicht leer sein.",
-    "INFLUENCE_LIMIT": "Du hast heute deinen gesamten Einfluss verbraucht. Er wird um Mitternacht UTC zurückgesetzt.",
+    "INFLUENCE_LIMIT": "Du hast heute alle deine Einflusspunkte verbraucht. Sie werden um Mitternacht UTC zurückgesetzt.",
+    "NUDGE_LIMIT": "Du hast heute alle deine Stupser verbraucht. Sie werden um Mitternacht UTC zurückgesetzt.",
     "INVALID_SUGGESTION": "Ihr Vorschlag ist zu lang oder leer.",
     "FILE_TOO_LARGE": "Diese Datei ist zu groß. Die maximale Größe beträgt 5 MB.",
     "ONLY_IMAGES": "Nur Bilddateien sind erlaubt."

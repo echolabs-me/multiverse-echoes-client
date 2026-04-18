@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "The What-If prompt can't be changed after an Echo is created.",
     "EMPTY_MESSAGE": "Your message can't be empty.",
     "EMPTY_QUESTION": "Your question can't be empty.",
-    "INFLUENCE_LIMIT": "You've used all your influence for today. It resets at midnight UTC.",
+    "INFLUENCE_LIMIT": "You've used all your Influence Points for today. They reset at midnight UTC.",
+    "NUDGE_LIMIT": "You've used all your nudges for today. They reset at midnight UTC.",
     "INVALID_SUGGESTION": "Your suggestion is too long or empty.",
     "FILE_TOO_LARGE": "That file is too large. Maximum size is 5MB.",
     "ONLY_IMAGES": "Only image files are allowed."

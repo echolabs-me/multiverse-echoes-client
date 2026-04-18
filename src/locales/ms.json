@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "Gesaan What-If tidak boleh diubah selepas Echo dicipta.",
     "EMPTY_MESSAGE": "Mesej anda tidak boleh dikosongkan.",
     "EMPTY_QUESTION": "Soalan anda tidak boleh dikosongkan.",
-    "INFLUENCE_LIMIT": "Anda telah menggunakan semua pengaruh anda untuk hari ini. Ia akan ditetapkan semula pada tengah malam UTC.",
+    "INFLUENCE_LIMIT": "Anda telah menggunakan semua Mata Pengaruh anda untuk hari ini. Ia akan ditetapkan semula pada tengah malam UTC.",
+    "NUDGE_LIMIT": "Anda telah menggunakan semua sentuhan anda untuk hari ini. Ia akan ditetapkan semula pada tengah malam UTC.",
     "INVALID_SUGGESTION": "Cadangan anda terlalu panjang atau kosong.",
     "FILE_TOO_LARGE": "Fail itu terlalu besar. Saiz maksimum ialah 5MB.",
     "ONLY_IMAGES": "Hanya fail imej sahaja yang dibenarkan."

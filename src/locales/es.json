@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "El \"Y si\" no se puede cambiar después de crear un Eco.",
     "EMPTY_MESSAGE": "Tu mensaje no puede estar vacío.",
     "EMPTY_QUESTION": "Tu pregunta no puede estar vacía.",
-    "INFLUENCE_LIMIT": "Has usado toda tu influencia de hoy. Se restablece a medianoche UTC.",
+    "INFLUENCE_LIMIT": "Has usado todos tus Puntos de Influencia de hoy. Se restablecen a medianoche UTC.",
+    "NUDGE_LIMIT": "Has usado todos tus toques de hoy. Se restablecen a medianoche UTC.",
     "INVALID_SUGGESTION": "Tu sugerencia es demasiado larga o está vacía.",
     "FILE_TOO_LARGE": "Ese archivo es demasiado grande. El tamaño máximo es 5 MB.",
     "ONLY_IMAGES": "Solo se permiten archivos de imagen."

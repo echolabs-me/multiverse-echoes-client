@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "回声创建后 \"如果\" 问题无法修改。",
     "EMPTY_MESSAGE": "消息不能为空。",
     "EMPTY_QUESTION": "问题不能为空。",
-    "INFLUENCE_LIMIT": "今日影响力已用尽,UTC 零点重置。",
+    "INFLUENCE_LIMIT": "今日的影响力点数已用尽,UTC 零点重置。",
+    "NUDGE_LIMIT": "今日的推动次数已用尽,UTC 零点重置。",
     "INVALID_SUGGESTION": "你的建议过长或为空。",
     "FILE_TOO_LARGE": "文件过大,最大尺寸为 5MB。",
     "ONLY_IMAGES": "仅允许图片文件。"

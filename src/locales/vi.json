@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "Câu lệnh What-If không thể thay đổi sau khi một Echo được tạo.",
     "EMPTY_MESSAGE": "Tin nhắn của bạn không được để trống.",
     "EMPTY_QUESTION": "Câu hỏi của bạn không được để trống.",
-    "INFLUENCE_LIMIT": "Bạn đã sử dụng hết tất cả tầm ảnh hưởng cho ngày hôm nay. Lượng này sẽ được đặt lại vào lúc nửa đêm UTC.",
+    "INFLUENCE_LIMIT": "Bạn đã sử dụng hết tất cả Điểm Ảnh hưởng cho ngày hôm nay. Chúng sẽ được đặt lại vào lúc nửa đêm UTC.",
+    "NUDGE_LIMIT": "Bạn đã sử dụng hết tất cả các lần nhắc khéo cho ngày hôm nay. Chúng sẽ được đặt lại vào lúc nửa đêm UTC.",
     "INVALID_SUGGESTION": "Gợi ý của bạn quá dài hoặc để trống.",
     "FILE_TOO_LARGE": "Tệp này quá lớn. Kích thước tối đa là 5MB.",
     "ONLY_IMAGES": "Chỉ cho phép các tệp hình ảnh."

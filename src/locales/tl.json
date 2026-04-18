@@ -825,7 +825,8 @@
     "WHAT_IF_LOCKED": "Hindi na maaaring baguhin ang What-If prompt pagkatapos magawa ang isang Echo.",
     "EMPTY_MESSAGE": "Hindi maaaring walang laman ang iyong mensahe.",
     "EMPTY_QUESTION": "Hindi maaaring walang laman ang iyong tanong.",
-    "INFLUENCE_LIMIT": "Naubos mo na ang lahat ng iyong influence para sa araw na ito. Magre-reset ito sa hatinggabi UTC.",
+    "INFLUENCE_LIMIT": "Naubos mo na ang lahat ng iyong Influence Points para sa araw na ito. Magre-reset sila sa hatinggabi UTC.",
+    "NUDGE_LIMIT": "Naubos mo na ang lahat ng iyong mga nudge para sa araw na ito. Magre-reset sila sa hatinggabi UTC.",
     "INVALID_SUGGESTION": "Masyadong mahaba o walang laman ang iyong mungkahi.",
     "FILE_TOO_LARGE": "Masyadong malaki ang file na iyan. Ang maximum na laki ay 5MB.",
     "ONLY_IMAGES": "Mga image file lamang ang pinapayagan."

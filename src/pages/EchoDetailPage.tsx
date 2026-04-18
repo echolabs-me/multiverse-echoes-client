@@ -53,6 +53,8 @@ import { EchoConversationPanel } from '../components/EchoConversationPanel.tsx';
 import { VoiceSessionModal } from '../components/VoiceSessionModal.tsx';
 import { echoes as echoApi, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
+import { ApiRequestError } from '../lib/api/client.ts';
+import { translateError } from '../lib/translateError.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { formatDate, formatDateTime } from '../lib/formatDate.ts';
@@ -484,8 +486,26 @@ export function EchoDetailPage() {
       // Refresh influence balance
       const inf = await echoApi.influence(activeEcho.echo_id).catch(() => null);
       setInfluence(inf);
-    } catch {
-      addToast(t('common.error'), 'danger');
+    } catch (err) {
+      // Session 099 Commit 2 split the nudge and Influence Points
+      // counters server-side, so the two error codes need
+      // differentiated toasts + CTAs. Add-on purchase flow lands in
+      // Commit 5; for now the toast text steers the user toward the
+      // eventual CTA copy by naming the right currency.
+      if (err instanceof ApiRequestError) {
+        if (err.code === 'NUDGE_LIMIT') {
+          addToast(t('errors.NUDGE_LIMIT'), 'warning');
+        } else if (err.code === 'INFLUENCE_LIMIT') {
+          addToast(t('errors.INFLUENCE_LIMIT'), 'warning');
+        } else {
+          addToast(
+            translateError({ code: err.code, message: err.message }),
+            'danger',
+          );
+        }
+      } else {
+        addToast(t('common.error'), 'danger');
+      }
     }
   };
 
