@@ -1175,7 +1175,7 @@ export type StoryExportResponse = {
 
 export type SubscriptionStatus = "Active" | "PastDue" | "Cancelled" | "Expired";
 
-export type SubscriptionTier = "Free" | "Core" | "Creator" | "GodMode";
+export type SubscriptionTier = "Free" | "Starter" | "Core" | "Creator" | "GodMode";
 
 export type TechnologyLevel = "Primitive" | "Industrial" | "Modern" | "NearFuture" | "FarFuture" | "Fantasy";
 
