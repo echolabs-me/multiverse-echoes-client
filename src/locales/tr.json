@@ -1213,6 +1213,9 @@
       "privateShardDesc": "Kendi özel dünyan",
       "availabilityAddon": "Eklenti",
       "availabilityUnavailable": "—",
+      "availableOn": "{{tiers}} için mevcut",
+      "includedPrefix": "Dahil:",
+      "includedOnTier": "{{tier}} planında {{count}}",
       "included": "{{count}} dahil",
       "buyAddon": "Satın al",
       "notAvailableOnPlan": "Mevcut planınızda kullanılamıyor"

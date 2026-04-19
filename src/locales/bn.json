@@ -1213,6 +1213,9 @@
       "privateShardDesc": "আপনার নিজস্ব কাস্টম ওয়ার্ল্ড",
       "availabilityAddon": "অ্যাড-অন",
       "availabilityUnavailable": "—",
+      "availableOn": "{{tiers}}-এ উপলব্ধ",
+      "includedPrefix": "অন্তর্ভুক্ত:",
+      "includedOnTier": "{{tier}}-এ {{count}}টি",
       "included": "{{count}}টি অন্তর্ভুক্ত",
       "buyAddon": "কিনুন",
       "notAvailableOnPlan": "আপনার প্ল্যানে উপলব্ধ নয়"

@@ -1213,6 +1213,9 @@
       "privateShardDesc": "Deine eigene Welt",
       "availabilityAddon": "Zusatz",
       "availabilityUnavailable": "—",
+      "availableOn": "Verfügbar bei {{tiers}}",
+      "includedPrefix": "Enthalten:",
+      "includedOnTier": "{{count}} bei {{tier}}",
       "included": "Enthalten ({{count}})",
       "buyAddon": "Kaufen",
       "notAvailableOnPlan": "In deinem Tarif nicht verfügbar"

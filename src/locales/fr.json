@@ -1213,6 +1213,9 @@
       "privateShardDesc": "Votre propre monde personnalisé",
       "availabilityAddon": "Extension",
       "availabilityUnavailable": "—",
+      "availableOn": "Disponible sur {{tiers}}",
+      "includedPrefix": "Inclus :",
+      "includedOnTier": "{{count}} sur {{tier}}",
       "included": "Inclus ({{count}})",
       "buyAddon": "Acheter",
       "notAvailableOnPlan": "Non disponible sur votre palier"

@@ -1213,6 +1213,9 @@
       "privateShardDesc": "आपका अपना कस्टम वर्ल्ड",
       "availabilityAddon": "ऐड-ऑन",
       "availabilityUnavailable": "—",
+      "availableOn": "{{tiers}} पर उपलब्ध",
+      "includedPrefix": "शामिल है:",
+      "includedOnTier": "{{tier}} पर {{count}}",
       "included": "{{count}} शामिल",
       "buyAddon": "ख़रीदें",
       "notAvailableOnPlan": "आपके प्लान में उपलब्ध नहीं"

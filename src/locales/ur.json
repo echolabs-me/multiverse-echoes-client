@@ -1213,6 +1213,9 @@
       "privateShardDesc": "آپ کی اپنی تخلیق کردہ دنیا",
       "availabilityAddon": "ایڈ آن",
       "availabilityUnavailable": "—",
+      "availableOn": "{{tiers}} پر دستیاب",
+      "includedPrefix": "شامل:",
+      "includedOnTier": "{{tier}} پر {{count}}",
       "included": "{{count}} شامل",
       "buyAddon": "خریدیں",
       "notAvailableOnPlan": "آپ کے پلان میں دستیاب نہیں"

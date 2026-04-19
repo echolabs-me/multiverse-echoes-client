@@ -1213,6 +1213,9 @@
       "privateShardDesc": "Thế giới tùy chỉnh của bạn",
       "availabilityAddon": "Tiện ích",
       "availabilityUnavailable": "—",
+      "availableOn": "Có sẵn trên {{tiers}}",
+      "includedPrefix": "Đã bao gồm:",
+      "includedOnTier": "{{count}} trong {{tier}}",
       "included": "Đã bao gồm ({{count}})",
       "buyAddon": "Mua",
       "notAvailableOnPlan": "Không khả dụng với gói của bạn"

@@ -1213,6 +1213,9 @@
       "privateShardDesc": "カスタムワールド",
       "availabilityAddon": "オプション",
       "availabilityUnavailable": "—",
+      "availableOn": "{{tiers}} でご利用可能",
+      "includedPrefix": "含まれています：",
+      "includedOnTier": "{{tier}} に {{count}} 個",
       "included": "{{count}} 個含まれる",
       "buyAddon": "購入",
       "notAvailableOnPlan": "このプランでは利用できません"

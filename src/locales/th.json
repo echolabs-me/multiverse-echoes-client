@@ -1213,6 +1213,9 @@
       "privateShardDesc": "โลกส่วนตัวของคุณ",
       "availabilityAddon": "ส่วนเสริม",
       "availabilityUnavailable": "—",
+      "availableOn": "ใช้ได้ใน {{tiers}}",
+      "includedPrefix": "รวม:",
+      "includedOnTier": "{{count}} ใน {{tier}}",
       "included": "รวมอยู่แล้ว ({{count}})",
       "buyAddon": "ซื้อ",
       "notAvailableOnPlan": "ไม่มีให้ในแพ็กเกจของคุณ"

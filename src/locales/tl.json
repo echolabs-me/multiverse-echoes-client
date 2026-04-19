@@ -1213,6 +1213,9 @@
       "privateShardDesc": "Sarili mong mundo",
       "availabilityAddon": "Add-on",
       "availabilityUnavailable": "—",
+      "availableOn": "Magagamit sa {{tiers}}",
+      "includedPrefix": "Kasama:",
+      "includedOnTier": "{{count}} sa {{tier}}",
       "included": "Kasama ({{count}})",
       "buyAddon": "Bumili",
       "notAvailableOnPlan": "Hindi available sa iyong plano"

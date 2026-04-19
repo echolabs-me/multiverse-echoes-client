@@ -1213,6 +1213,9 @@
       "privateShardDesc": "Ваш собственный мир",
       "availabilityAddon": "Дополнение",
       "availabilityUnavailable": "—",
+      "availableOn": "Доступно в {{tiers}}",
+      "includedPrefix": "Включено:",
+      "includedOnTier": "{{count}} в {{tier}}",
       "included": "Включено ({{count}})",
       "buyAddon": "Купить",
       "notAvailableOnPlan": "Недоступно на вашем тарифе"

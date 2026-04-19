@@ -1213,6 +1213,9 @@
       "privateShardDesc": "Dunia tersuai anda",
       "availabilityAddon": "Tambahan",
       "availabilityUnavailable": "—",
+      "availableOn": "Tersedia di {{tiers}}",
+      "includedPrefix": "Termasuk:",
+      "includedOnTier": "{{count}} di {{tier}}",
       "included": "Disertakan ({{count}})",
       "buyAddon": "Beli",
       "notAvailableOnPlan": "Tidak tersedia pada pelan anda"

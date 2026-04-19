@@ -289,24 +289,20 @@ export function PricingSection() {
                 {tier.note && <p className="mt-1 text-xs font-medium text-[var(--accent)]">{t(tier.note)}</p>}
               </div>
 
-              {/* Stats grid */}
-              <div className="mb-5 grid grid-cols-2 gap-2">
-                <div className="rounded-lg bg-[rgba(255,255,255,0.03)] p-2.5 text-center">
-                  <div className="text-lg font-bold text-[var(--text-primary)]">{tier.echoes}</div>
-                  <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{tier.echoes === '1' ? t('tiers.echoesSingle', 'Echo') : t('tiers.echoes')}</div>
-                </div>
-                <div className="rounded-lg bg-[rgba(255,255,255,0.03)] p-2.5 text-center">
-                  <div className="text-lg font-bold text-[var(--text-primary)]">{t(tier.heartbeat)}</div>
-                  <div className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{tier.heartbeat === 'tiers.heartbeatTwiceDaily' ? t('tiers.heartbeatDaily') : t('tiers.heartbeat')}</div>
-                </div>
-              </div>
-
-              {/* Features */}
+              {/* Features — first 2 rows are headline specs (bolder, larger) */}
               <ul className="mb-6 flex flex-1 flex-col gap-1">
-                {tier.features.map((f) => {
+                {tier.features.map((f, idx) => {
+                  const isHeadlineSpec = idx < 2;
                   const isIpRow = f.text.endsWith('ip') || f.text === 'tiers.features.unlimitedIp';
                   return (
-                    <li key={f.text} className="flex items-start gap-2 text-[13px] leading-snug text-[var(--text-secondary)]">
+                    <li
+                      key={f.text}
+                      className={`flex items-start gap-2 leading-snug ${
+                        isHeadlineSpec
+                          ? 'text-[14px] font-semibold text-[var(--text-primary)]'
+                          : 'text-[13px] text-[var(--text-secondary)]'
+                      }`}
+                    >
                       <span className={`mt-0.5 shrink-0 text-sm ${COLOR_MAP[f.type]}`}>{ICON_MAP[f.type]}</span>
                       <span>
                         {t(f.text)}
@@ -324,60 +320,14 @@ export function PricingSection() {
                     </li>
                   );
                 })}
-
-                {/* Showcase divider */}
-                <li className="my-1 border-t border-[#1E2A36]" />
-                <li className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-[#4CA8AF]">
-                  {t('tiers.showcase')}
-                  <span className="flex-1 border-t border-[rgba(76,168,175,0.2)]" />
-                </li>
                 {tier.showcase.map((s) => (
                   <li key={s} className="flex items-start gap-2 text-[13px] leading-snug text-[var(--text-secondary)]">
-                    <span className={`mt-0.5 shrink-0 text-sm ${tier.god ? 'text-[#C9A84C]' : 'text-[#4CA8AF]'}`}>
-                      {tier.god ? '★' : '▶'}
+                    <span className={`mt-0.5 shrink-0 text-sm ${tier.god ? 'text-[#C9A84C]' : 'text-[#4CAF7D]'}`}>
+                      {tier.god ? '★' : '✓'}
                     </span>
-                    {t(s)}
+                    <span>{t(s)}</span>
                   </li>
                 ))}
-
-                {/* Add-on availability strip */}
-                <li className="my-1 border-t border-[#1E2A36]" />
-                <li className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
-                  {t('tiers.addOns.title')}
-                  <span className="flex-1 border-t border-[rgba(255,255,255,0.08)]" />
-                </li>
-                <li className="flex flex-wrap gap-1.5">
-                  {ADD_ONS.map((addon) => {
-                    const availability = ADDON_MATRIX[addon.key][tier.key];
-                    let label: string;
-                    let chipClass: string;
-                    if (availability === 'available') {
-                      label = t('tiers.addOns.availabilityAddon');
-                      chipClass = 'bg-[rgba(212,145,92,0.12)] text-[var(--accent)]';
-                    } else if (availability === 'unavailable') {
-                      label = t('tiers.addOns.availabilityUnavailable');
-                      chipClass = 'bg-[rgba(255,255,255,0.04)] text-[var(--text-muted)] opacity-60';
-                    } else {
-                      label = t('tiers.addOns.included', { count: availability.included });
-                      chipClass = 'bg-[rgba(76,175,125,0.14)] text-[#4CAF7D]';
-                    }
-                    return (
-                      <Tooltip
-                        key={addon.key}
-                        content={`${t(addon.nameKey)} — ${label}`}
-                        position="top"
-                      >
-                        <span
-                          className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium ${chipClass}`}
-                        >
-                          <span>{addon.emoji}</span>
-                          <span className="sr-only">{t(addon.nameKey)}: </span>
-                          <span>{label}</span>
-                        </span>
-                      </Tooltip>
-                    );
-                  })}
-                </li>
               </ul>
 
               {/* Button */}
@@ -413,23 +363,50 @@ export function PricingSection() {
             </p>
           </div>
           <div className="grid gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-            {ADD_ONS.map((addon) => (
-              <div
-                key={addon.nameKey}
-                className={`rounded-xl border p-5 transition-all duration-300 hover:bg-[#161E27] ${
-                  addon.highlight
-                    ? 'border-[rgba(212,145,92,0.3)] bg-gradient-to-br from-[#111920] to-[rgba(212,145,92,0.04)]'
-                    : addon.showcaseHl
-                      ? 'border-[rgba(76,168,175,0.3)] bg-gradient-to-br from-[#111920] to-[rgba(76,168,175,0.04)]'
-                      : 'border-[#1E2A36] bg-[#111920]'
-                }`}
-              >
-                <div className="mb-3 text-2xl">{addon.emoji}</div>
-                <h4 className="mb-1 text-[15px] font-semibold text-[var(--text-primary)]">{t(addon.nameKey)}</h4>
-                <p className="mb-2 text-lg font-bold text-[var(--accent)]">{addon.price}{addon.recurring ? t('payment.perMonth') : ''}</p>
-                <p className="text-xs leading-relaxed text-[var(--text-muted)]">{t(addon.descKey)}</p>
-              </div>
-            ))}
+            {ADD_ONS.map((addon) => {
+              const availableTiers: string[] = [];
+              const includedEntries: { tierName: string; count: number }[] = [];
+              TIERS.forEach((tier) => {
+                const availability = ADDON_MATRIX[addon.key][tier.key];
+                if (availability === 'available') {
+                  availableTiers.push(t(tier.nameKey));
+                } else if (typeof availability === 'object' && 'included' in availability) {
+                  includedEntries.push({ tierName: t(tier.nameKey), count: availability.included });
+                }
+              });
+              return (
+                <div
+                  key={addon.nameKey}
+                  className={`rounded-xl border p-5 transition-all duration-300 hover:bg-[#161E27] ${
+                    addon.highlight
+                      ? 'border-[rgba(212,145,92,0.3)] bg-gradient-to-br from-[#111920] to-[rgba(212,145,92,0.04)]'
+                      : addon.showcaseHl
+                        ? 'border-[rgba(76,168,175,0.3)] bg-gradient-to-br from-[#111920] to-[rgba(76,168,175,0.04)]'
+                        : 'border-[#1E2A36] bg-[#111920]'
+                  }`}
+                >
+                  <div className="mb-3 text-2xl">{addon.emoji}</div>
+                  <h4 className="mb-1 text-[15px] font-semibold text-[var(--text-primary)]">{t(addon.nameKey)}</h4>
+                  <p className="mb-2 text-lg font-bold text-[var(--accent)]">{addon.price}{addon.recurring ? t('payment.perMonth') : ''}</p>
+                  <p className="mb-3 text-xs leading-relaxed text-[var(--text-muted)]">{t(addon.descKey)}</p>
+                  {(availableTiers.length > 0 || includedEntries.length > 0) && (
+                    <div className="border-t border-[var(--border)] pt-2.5 text-[11px] leading-snug text-[var(--text-muted)]">
+                      {availableTiers.length > 0 && (
+                        <div>{t('tiers.addOns.availableOn', { tiers: availableTiers.join(', ') })}</div>
+                      )}
+                      {includedEntries.length > 0 && (
+                        <div className={availableTiers.length > 0 ? 'mt-0.5' : ''}>
+                          {t('tiers.addOns.includedPrefix')}{' '}
+                          {includedEntries
+                            .map((e) => t('tiers.addOns.includedOnTier', { count: e.count, tier: e.tierName }))
+                            .join(', ')}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 

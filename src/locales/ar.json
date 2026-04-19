@@ -1213,6 +1213,9 @@
       "privateShardDesc": "عالمك الخاص",
       "availabilityAddon": "إضافة",
       "availabilityUnavailable": "—",
+      "availableOn": "متاح في {{tiers}}",
+      "includedPrefix": "مُضمَّن:",
+      "includedOnTier": "{{count}} في {{tier}}",
       "included": "مضمّن ({{count}})",
       "buyAddon": "شراء",
       "notAvailableOnPlan": "غير متاح في باقتك"

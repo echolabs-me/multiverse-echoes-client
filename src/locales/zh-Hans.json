@@ -1213,6 +1213,9 @@
       "privateShardDesc": "自定义世界",
       "availabilityAddon": "扩展包",
       "availabilityUnavailable": "—",
+      "availableOn": "适用于 {{tiers}}",
+      "includedPrefix": "已包含：",
+      "includedOnTier": "{{tier}} 含 {{count}} 个",
       "included": "已包含 {{count}} 个",
       "buyAddon": "购买",
       "notAvailableOnPlan": "当前档位不支持"
