@@ -1158,26 +1158,32 @@ pre {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+/* 21 positions on a 260 px radius circle (360° / 21 ≈ 17.14° per slot).
+   idx=0 at 12 o'clock, walking clockwise. Regenerated when zh-Hant was
+   added as the 21st locale — the old 20-slot layout left the last flag
+   (Malay after the zh-Hant insert shifted it to idx=20) with no position
+   rule and it defaulted to the container centre. */
 .me-circle-pos[data-idx="0"]  { left: calc(50% + 0px);        top: calc(50% + -260px); }
-.me-circle-pos[data-idx="1"]  { left: calc(50% + 80.34px);    top: calc(50% + -247.27px); }
-.me-circle-pos[data-idx="2"]  { left: calc(50% + 152.82px);   top: calc(50% + -210.34px); }
-.me-circle-pos[data-idx="3"]  { left: calc(50% + 210.34px);   top: calc(50% + -152.82px); }
-.me-circle-pos[data-idx="4"]  { left: calc(50% + 247.27px);   top: calc(50% + -80.34px); }
-.me-circle-pos[data-idx="5"]  { left: calc(50% + 260px);      top: calc(50% + 0px); }
-.me-circle-pos[data-idx="6"]  { left: calc(50% + 247.27px);   top: calc(50% + 80.34px); }
-.me-circle-pos[data-idx="7"]  { left: calc(50% + 210.34px);   top: calc(50% + 152.82px); }
-.me-circle-pos[data-idx="8"]  { left: calc(50% + 152.82px);   top: calc(50% + 210.34px); }
-.me-circle-pos[data-idx="9"]  { left: calc(50% + 80.34px);    top: calc(50% + 247.27px); }
-.me-circle-pos[data-idx="10"] { left: calc(50% + 0px);        top: calc(50% + 260px); }
-.me-circle-pos[data-idx="11"] { left: calc(50% + -80.34px);   top: calc(50% + 247.27px); }
-.me-circle-pos[data-idx="12"] { left: calc(50% + -152.82px);  top: calc(50% + 210.34px); }
-.me-circle-pos[data-idx="13"] { left: calc(50% + -210.34px);  top: calc(50% + 152.82px); }
-.me-circle-pos[data-idx="14"] { left: calc(50% + -247.27px);  top: calc(50% + 80.34px); }
-.me-circle-pos[data-idx="15"] { left: calc(50% + -260px);     top: calc(50% + 0px); }
-.me-circle-pos[data-idx="16"] { left: calc(50% + -247.27px);  top: calc(50% + -80.34px); }
-.me-circle-pos[data-idx="17"] { left: calc(50% + -210.34px);  top: calc(50% + -152.82px); }
-.me-circle-pos[data-idx="18"] { left: calc(50% + -152.82px);  top: calc(50% + -210.34px); }
-.me-circle-pos[data-idx="19"] { left: calc(50% + -80.34px);   top: calc(50% + -247.27px); }
+.me-circle-pos[data-idx="1"]  { left: calc(50% + 76.64px);    top: calc(50% + -248.45px); }
+.me-circle-pos[data-idx="2"]  { left: calc(50% + 146.46px);   top: calc(50% + -214.82px); }
+.me-circle-pos[data-idx="3"]  { left: calc(50% + 203.28px);   top: calc(50% + -162.11px); }
+.me-circle-pos[data-idx="4"]  { left: calc(50% + 242.03px);   top: calc(50% + -94.99px); }
+.me-circle-pos[data-idx="5"]  { left: calc(50% + 259.27px);   top: calc(50% + -19.43px); }
+.me-circle-pos[data-idx="6"]  { left: calc(50% + 253.48px);   top: calc(50% + 57.86px); }
+.me-circle-pos[data-idx="7"]  { left: calc(50% + 225.17px);   top: calc(50% + 130.00px); }
+.me-circle-pos[data-idx="8"]  { left: calc(50% + 176.84px);   top: calc(50% + 190.59px); }
+.me-circle-pos[data-idx="9"]  { left: calc(50% + 112.81px);   top: calc(50% + 234.25px); }
+.me-circle-pos[data-idx="10"] { left: calc(50% + 38.75px);    top: calc(50% + 257.10px); }
+.me-circle-pos[data-idx="11"] { left: calc(50% + -38.75px);   top: calc(50% + 257.10px); }
+.me-circle-pos[data-idx="12"] { left: calc(50% + -112.81px);  top: calc(50% + 234.25px); }
+.me-circle-pos[data-idx="13"] { left: calc(50% + -176.84px);  top: calc(50% + 190.59px); }
+.me-circle-pos[data-idx="14"] { left: calc(50% + -225.17px);  top: calc(50% + 130.00px); }
+.me-circle-pos[data-idx="15"] { left: calc(50% + -253.48px);  top: calc(50% + 57.86px); }
+.me-circle-pos[data-idx="16"] { left: calc(50% + -259.27px);  top: calc(50% + -19.43px); }
+.me-circle-pos[data-idx="17"] { left: calc(50% + -242.03px);  top: calc(50% + -94.99px); }
+.me-circle-pos[data-idx="18"] { left: calc(50% + -203.28px);  top: calc(50% + -162.11px); }
+.me-circle-pos[data-idx="19"] { left: calc(50% + -146.46px);  top: calc(50% + -214.82px); }
+.me-circle-pos[data-idx="20"] { left: calc(50% + -76.64px);   top: calc(50% + -248.45px); }
 
 /* Floating animation for language tiles */
 @keyframes me-float {
@@ -1208,6 +1214,7 @@ pre {
 .me-lang-float[data-idx="17"] { animation-delay: -5.1s; }
 .me-lang-float[data-idx="18"] { animation-delay: -5.4s; }
 .me-lang-float[data-idx="19"] { animation-delay: -5.7s; }
+.me-lang-float[data-idx="20"] { animation-delay: -5.85s; } /* phase between idx 19 and 0 on the cycle, matching circle order */
 
 /* Softer hero glow used on the language-selection page (70% fade vs the
  * default 65%). Animated via me-breathe, same keyframes as .me-hero-glow. */
