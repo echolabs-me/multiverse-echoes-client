@@ -2,6 +2,17 @@ import { useCallback, useState, useRef, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { trackEvent } from '../lib/analytics.ts';
+import type { SupportedLocale } from '../i18n.ts';
+
+/**
+ * Apply the user's locale choice to a desired destination path.
+ * English stays unprefixed (`/home`); every other supported locale gets a
+ * leading `/{locale}` prefix (`/es/home`, `/zh-Hant/plans`, …).
+ */
+function applyLocalePrefix(path: string, locale: SupportedLocale): string {
+  if (locale === 'en') return path;
+  return `/${locale}${path.startsWith('/') ? path : `/${path}`}`;
+}
 
 interface Language {
   code: string;
@@ -19,6 +30,7 @@ interface Language {
 const languages: Language[] = [
   { code: 'en', countryCode: 'gb', nativeName: 'English' },
   { code: 'zh-Hans', countryCode: 'cn', nativeName: '简体中文' },
+  { code: 'zh-Hant', countryCode: 'hk', nativeName: '繁體中文' },
   { code: 'hi', countryCode: 'in', nativeName: 'हिन्दी' },
   { code: 'es', countryCode: 'es', nativeName: 'Español' },
   { code: 'ar', countryCode: 'sa', nativeName: 'العربية' },
@@ -71,8 +83,12 @@ export function LanguageSelectionPage() {
       localStorage.setItem('locale_selected', 'true');
       document.cookie = `locale=${code};path=/;max-age=31536000;SameSite=Lax`;
       trackEvent('account.locale_changed', { old_locale: oldLocale, new_locale: code });
-      const redirect = searchParams.get('redirect') ?? '/home';
-      navigate(redirect);
+      // Respect an explicit `?redirect=` (used by pass-through sign-in flows)
+      // otherwise default to the locale-prefixed home: English stays at
+      // `/home`, every other supported locale lives at `/{locale}/home`.
+      const redirectParam = searchParams.get('redirect');
+      const target = redirectParam ?? applyLocalePrefix('/home', code as SupportedLocale);
+      navigate(target);
     },
     [i18n, navigate, searchParams],
   );

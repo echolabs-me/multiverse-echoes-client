@@ -63,6 +63,7 @@
     "messageActions": "إجراءات الرسالة",
     "translationPending": "جارٍ الترجمة…",
     "legalDocsEnglishOnly": "هذه الصفحة متاحة باللغة الإنجليزية فقط حاليًا. سيتم نشر نسخة مترجمة قريبًا.",
+    "legalMachineTranslationDisclaimer": "تم توفير هذه الترجمة للتسهيل فقط. وتعتبر النسخة الإنجليزية هي النص المعتمد قانوناً.",
     "openMenu": "فتح القائمة",
     "closeMenu": "إغلاق القائمة",
     "fieldRequired": "يرجى تعبئة هذا الحقل."

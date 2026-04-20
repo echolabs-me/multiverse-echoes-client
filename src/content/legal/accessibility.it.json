@@ -1,0 +1,98 @@
+{
+  "title": "Dichiarazione di accessibilità",
+  "lastUpdated": "31 marzo 2026",
+  "sections": [
+    {
+      "heading": "Il nostro impegno",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes si impegna a rendere la propria piattaforma accessibile a tutti. Il nostro obiettivo è la conformità allo standard **Web Content Accessibility Guidelines (WCAG) 2.1 Livello AA**. L'accessibilità non è un elemento aggiunto a posteriori, ma è integrata nel nostro sistema di design, nella libreria dei componenti e nel processo di testing fin dall'inizio."
+        }
+      ]
+    },
+    {
+      "heading": "Cosa abbiamo fatto",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "**Navigazione da tastiera** — Tutti gli elementi interattivi sono raggiungibili tramite il tasto Tab. Gli indicatori di focus sono visibili (contorno accentuato di 2px). Sono presenti i collegamenti di salto per saltare la navigazione. L'ordine logico della tabulazione è mantenuto in ogni sezione.",
+            "**Supporto per i lettori di schermo** — L'HTML semantico (intestazioni, elenchi, tabelle, landmark) è utilizzato ovunque. Tutte le immagini hanno testi alternativi descrittivi. Gli elementi interattivi hanno etichette ARIA. Gli aggiornamenti dei contenuti dinamici sono annunciati tramite regioni `aria-live`.",
+            "**Contrasto cromatico** — Tutti i testi e gli elementi interattivi rispettano i rapporti di contrasto WCAG 2.1 AA (4,5:1 per il testo normale, 3:1 per il testo grande). Le informazioni non sono mai trasmesse esclusivamente tramite il colore.",
+            "**Movimento ridotto** — Tutte le animazioni rispettano l'impostazione del sistema operativo `prefers-reduced-motion`. Quando è attiva, le animazioni vengono disabilitate o sostituite da alternative statiche. L'animazione di nascita di Echo mostra una schermata statica. Il battito del tick è completamente disabilitato.",
+            "**Target di tocco** — Tutti gli elementi interattivi rispettano la dimensione minima del target di tocco di 44x44px.",
+            "**Ridimensionamento del testo** — L'interfaccia rimane utilizzabile con uno zoom del browser al 200% senza scorrimento orizzontale o interruzioni dei contenuti.",
+            "**Modalità scura e chiara** — Entrambi gli schemi di colori sono progettati con palette testate per il contrasto. Gli utenti possono scegliere la propria preferenza nelle Impostazioni.",
+            "**Test automatizzati** — Eseguiamo audit di accessibilità axe-core su tutte le pagine come parte della nostra suite di test end-to-end. Non sono ammesse violazioni critiche o gravi."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Contenuti 3D e alternative",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Alcune funzionalità includono visualizzazioni 3D (ritratti Echo, ambienti Shard). Queste sono sempre accompagnate da alternative 2D per i dispositivi che non supportano WebGL o quando è attivata l'opzione per ridurre il movimento. Nessuna informazione è trasmessa esclusivamente tramite contenuti 3D."
+        }
+      ]
+    },
+    {
+      "heading": "Audio",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Gli effetti sonori sono opzionali e disabilitati per impostazione predefinita. Nessuna informazione viene trasmessa esclusivamente tramite l'audio: tutte le notifiche hanno indicatori visivi. Il suono può essere attivato o disattivato e il volume regolato nelle Impostazioni."
+        }
+      ]
+    },
+    {
+      "heading": "Lacune note",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Siamo a conoscenza delle seguenti aree in cui non abbiamo ancora raggiunto la piena conformità:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Test manuali con screen reader** — Abbiamo implementato test automatizzati con axe-core, ma non abbiamo ancora completato test manuali approfonditi con NVDA, JAWS o VoiceOver. Ciò è pianificato prima del lancio pubblico.",
+            "**Didascalie dei video** — Le funzioni di esportazione video (reel dei momenti salienti) non includono ancora le didascalie. Questo verrà risolto al momento del lancio delle funzioni video.",
+            "**Lingue da destra a sinistra (RTL)** — L'interfaccia utilizza proprietà logiche CSS in preparazione al supporto RTL, ma il layout RTL non è stato ancora completamente testato.",
+            "**Lingue oltre l'inglese** — Attualmente è supportato solo l'inglese. Ulteriori lingue sono previste dopo il lancio. L'architettura di internazionalizzazione è già implementata (632 stringhe esternalizzate)."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Feedback e contatti",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Se riscontri una barriera all'accessibilità o hai suggerimenti per migliorare, contattaci:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Email: [conduct@echolabsme.com](mailto:conduct@echolabsme.com)",
+            "Nell'app: usa l'assistente Oracle o il modulo di feedback nelle Impostazioni"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Prendiamo seriamente i feedback sull'accessibilità e miriamo a rispondere entro 5 giorni lavorativi."
+        }
+      ]
+    },
+    {
+      "heading": "Stato di conformità",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes è **parzialmente conforme** alle WCAG 2.1 Livello AA. \"Parzialmente conforme\" significa che alcune parti dei contenuti non sono pienamente conformi allo standard di accessibilità, come descritto nella sezione Lacune Note sopra riportata. Stiamo lavorando attivamente per risolvere tali lacune."
+        }
+      ]
+    }
+  ]
+}

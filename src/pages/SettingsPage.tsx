@@ -703,6 +703,7 @@ function LanguageSettingsCard() {
   const options: Array<{ code: string; label: string }> = [
     { code: 'en', label: 'English' },
     { code: 'zh-Hans', label: '简体中文' },
+    { code: 'zh-Hant', label: '繁體中文' },
     { code: 'hi', label: 'हिन्दी' },
     { code: 'es', label: 'Español' },
     { code: 'ar', label: 'العربية' },

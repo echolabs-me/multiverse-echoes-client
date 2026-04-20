@@ -1,0 +1,98 @@
+{
+  "title": "Pahayag ng Accessibility",
+  "lastUpdated": "ika-31 ng Marso 2026",
+  "sections": [
+    {
+      "heading": "Ang aming komitment",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ang Multiverse Echoes ay nakatuon sa paggawa ng aming platform na accessible para sa lahat. Target namin ang pagsunod sa pamantayan ng **Web Content Accessibility Guidelines (WCAG) 2.1 Level AA**. Ang accessibility ay hindi isang huling konsiderasyon — ito ay nakapaloob na sa aming design system, component library, at testing pipeline mula pa sa simula."
+        }
+      ]
+    },
+    {
+      "heading": "Ang mga nagawa namin",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "**Keyboard navigation** — Lahat ng interactive element ay naaabot gamit ang Tab key. Nakikita ang mga focus indicator (2px accent outline). May mga skip link para malampasan ang navigation. Pinapanatili ang lohikal na pagkakasunod-sunod ng tab sa kabuuan.",
+            "**Suporta sa screen reader** — Ginagamit ang Semantic HTML (mga heading, listahan, talahanayan, landmark) sa kabuuan. Lahat ng mga imahe ay may deskriptibong alt text. Ang mga interactive element ay may mga ARIA label. Ang mga dynamic content update ay inanunsyo sa pamamagitan ng mga `aria-live` region.",
+            "**Kontras ng kulay** — Ang lahat ng teksto at interactive na elemento ay sumusunod sa mga contrast ratio ng WCAG 2.1 AA (4.5:1 para sa normal na teksto, 3:1 para sa malalaking teksto). Ang impormasyon ay hindi kailanman ipinaparating sa pamamagitan ng kulay lamang.",
+            "**Bawas na paggalaw** — Lahat ng animation ay sumusunod sa `prefers-reduced-motion` na setting ng operating system. Kapag naka-enable, ang mga animation ay ididisable o papalitan ng mga static na alternatibo. Ang Echo birth animation ay magpapakita ng static na screen. Ang tick pulse ay ganap na ididisable.",
+            "**Mga touch target** — Lahat ng interactive element ay sumusunod sa minimum na 44x44px na laki ng touch target.",
+            "**Pag-scale ng teksto** — Nanatiling magagamit ang interface sa 200% browser zoom nang walang horizontal scrolling o pagkaputol ng nilalaman.",
+            "**Dark at light mode** — Ang parehong colour scheme ay dinisenyo gamit ang mga palette na sumailalim sa contrast-testing. Maaaring piliin ng mga user ang kanilang kagustuhan sa Settings.",
+            "**Automated testing** — Nagpapatakbo kami ng mga axe-core accessibility audit sa lahat ng pahina bilang bahagi ng aming end-to-end test suite. Walang pinahihintulutang critical o serious violation."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Mga nilalamang 3D at mga alternatibo",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ang ilang mga feature ay kinabibilangan ng mga 3D visualization (Echo portraits, Shard environments). Ang mga ito ay laging may kasamang mga 2D fallback para sa mga device na hindi sumusuporta sa WebGL, o kapag naka-enable ang reduced motion. Walang impormasyon na ipinaparating nang eksklusibo sa pamamagitan ng 3D content."
+        }
+      ]
+    },
+    {
+      "heading": "Audio",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ang mga sound effect ay optional at naka-disable nang default. Walang impormasyong ipinaparating sa pamamagitan lamang ng audio — lahat ng mga notification ay may mga visual indicator. Ang tunog ay maaaring i-toggle at ang volume ay maaaring i-adjust sa Settings."
+        }
+      ]
+    },
+    {
+      "heading": "Mga kilalang puwang",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Batid namin ang mga sumusunod na bahagi kung saan hindi pa namin nakakamit ang ganap na pagsunod:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Manwal na pag-test ng screen reader** — Mayroon kaming automated testing gamit ang axe-core ngunit hindi pa namin natatapos ang komprehensibong manwal na pag-test gamit ang NVDA, JAWS, o VoiceOver. Nakaplano ito bago ang pampublikong paglulunsad.",
+            "**Mga caption ng video** — Ang mga feature sa pag-export ng video (highlight reels) ay wala pang kasamang mga caption. Matutugunan ito kapag inilunsad na ang mga feature ng video.",
+            "**Mga wikang Right-to-left (RTL)** — Gumagamit ang interface ng mga CSS logical property bilang paghahanda para sa suporta sa RTL, ngunit ang RTL layout ay hindi pa lubos na nasusuri.",
+            "**Mga wikang higit pa sa Ingles** — Sa kasalukuyan, Ingles lamang ang suportado. Ang mga karagdagang wika ay nakaplano pagkatapos ng paglulunsad. Nakahanda na ang arkitektura para sa internationalisation (632 externalised strings)."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Feedback at pakikipag-ugnayan",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kung mayroon kang nakitang hadlang sa accessibility o may mga mungkahi para sa pagpapabuti, mangyaring makipag-ugnayan sa amin:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Email: [conduct@echolabsme.com](mailto:conduct@echolabsme.com)",
+            "Sa loob ng app: gamitin ang Oracle assistant o ang feedback form sa Settings"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Sineseryoso namin ang mga feedback tungkol sa accessibility at layunin naming tumugon sa loob ng 5 business days."
+        }
+      ]
+    },
+    {
+      "heading": "Katayuan ng pagsunod",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ang Multiverse Echoes ay **bahagyang sumusunod** (partially conformant) sa WCAG 2.1 Level AA. Ang “bahagyang sumusunod” ay nangangahulugang may ilang bahagi ng nilalaman na hindi ganap na sumusunod sa pamantayan ng accessibility, gaya ng nakasaad sa seksyon ng Known Gaps sa itaas. Aktibo naming ginagawa ang mga hakbang upang ayusin ang mga pagkukulang na ito."
+        }
+      ]
+    }
+  ]
+}

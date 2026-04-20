@@ -123,7 +123,7 @@ export function WaitlistPage() {
           content={t('waitlist.ogDesc')}
         />
         <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
-        <meta property="og:url" content="https://echolabsme.com/waitlist" />
+        {/* og:url is emitted path-aware by WebsiteLayout. */}
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>

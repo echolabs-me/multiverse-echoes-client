@@ -63,6 +63,7 @@
     "messageActions": "Actions du message",
     "translationPending": "Traduction en cours…",
     "legalDocsEnglishOnly": "Cette page n'est disponible qu'en anglais pour le moment. Une version traduite sera publiée bientôt.",
+    "legalMachineTranslationDisclaimer": "Cette traduction est fournie à titre de commodité. La version anglaise est le texte légalement faisant autorité.",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "fieldRequired": "Veuillez remplir ce champ."

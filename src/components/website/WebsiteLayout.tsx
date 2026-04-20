@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import { WebsiteNav } from './WebsiteNav.tsx';
 import { WebsiteFooter } from './WebsiteFooter.tsx';
 import { HreflangTags } from './HreflangTags.tsx';
@@ -9,6 +10,7 @@ const CANONICAL_BASE = 'https://echolabsme.com';
 
 export function WebsiteLayout() {
   const { pathname, hash } = useLocation();
+  const { t, i18n } = useTranslation();
 
   // Scroll to hash on navigation, or to top on route change
   useEffect(() => {
@@ -38,7 +40,12 @@ export function WebsiteLayout() {
             name: 'EchoLabsME',
             url: 'https://echolabsme.com',
             logo: 'https://echolabsme.com/logo.png',
-            description: 'Autonomous Life Simulation Platform. Create AI Echoes of yourself that live independent lives in themed parallel worlds.',
+            // Localised description + inLanguage so the JSON-LD on /es/home
+            // advertises Spanish, /ja/home advertises Japanese, etc. Reuses
+            // the already-translated website.hero.subheadline key instead of
+            // adding a new SEO-description key across 20 locales.
+            description: t('website.hero.subheadline'),
+            inLanguage: i18n.language,
             sameAs: [
               'https://x.com/EchoLabsME',
               'https://discord.gg/dRcB4QxUmJ',

@@ -1,0 +1,303 @@
+{
+  "title": "Datenschutzerklärung",
+  "lastUpdated": "31. März 2026",
+  "sections": [
+    {
+      "heading": "1. Wer wir sind",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes ist eine autonome Lebenssimulationsplattform, die von Echo Labs („wir“, „uns“, „die Plattform“) betrieben wird. Wir fungieren als Verantwortliche für alle personenbezogenen Daten, die über die Plattform verarbeitet werden."
+        },
+        {
+          "type": "p",
+          "text": "Für Datenschutzanfragen kontaktieren Sie uns unter [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    },
+    {
+      "heading": "2. Daten, die wir erheben",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Kategorie",
+            "Beispiele"
+          ],
+          "rows": [
+            [
+              "Kontodaten",
+              "E-Mail-Adresse, Anzeigename, gehashtes Passwort"
+            ],
+            [
+              "Profildaten",
+              "Bio, Avatar-Auswahl, Zeitzone, Spracheinstellung"
+            ],
+            [
+              "Persona-Daten",
+              "Echo-Personas, What-if-Prompts, Alter bei der Erstellung"
+            ],
+            [
+              "Simulationsdaten",
+              "KI-generierte Tagebucheinträge, Lebensereignisse, Beziehungen, Erinnerungen"
+            ],
+            [
+              "Community-Daten",
+              "Kanalnachrichten, Feed-Beiträge, Umfragestimmen"
+            ],
+            [
+              "Zahlungsdaten",
+              "Abonnement-Stufe, Referenz des Zahlungsanbieters (wir speichern niemals Kartennummern)"
+            ],
+            [
+              "Analysedaten",
+              "Funktionsnutzungsereignisse (anonymisiert, Opt-out möglich)"
+            ],
+            [
+              "Sitzungsdaten",
+              "Zugriffstoken, Refresh-Token, Login-Zeitstempel"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Wie und warum wir Ihre Daten verwenden",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Zweck",
+            "Rechtsgrundlage",
+            "Deine Kontrolle"
+          ],
+          "rows": [
+            [
+              "Kontoerstellung und Authentifizierung",
+              "Vertrag",
+              "Konto löschen"
+            ],
+            [
+              "Echo-Simulation (Persona-Verarbeitung)",
+              "Einwilligung",
+              "Echo jederzeit löschen"
+            ],
+            [
+              "Nutzerübergreifende Echo-Interaktionen",
+              "Berechtigtes Interesse",
+              "Solo-Modus-Umschalter"
+            ],
+            [
+              "Community-Messaging",
+              "Berechtigtes Interesse",
+              "Community-Opt-out"
+            ],
+            [
+              "Inhaltsmoderation und Sicherheit",
+              "Berechtigtes Interesse",
+              "—"
+            ],
+            [
+              "Abonnementverwaltung",
+              "Vertrag",
+              "Abonnement kündigen"
+            ],
+            [
+              "Analysen und Serviceverbesserung",
+              "Berechtigtes Interesse",
+              "Analytics-Opt-out in den Einstellungen"
+            ],
+            [
+              "Durchsetzung und Rechtskonformität",
+              "Rechtliche Verpflichtung",
+              "—"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "4. KI-Verarbeitung und lokale Inferenz",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Alle KI-Inferenzen laufen lokal auf unserer eigenen Hardware über Open-Source-Modelle. Ihre Personendaten und Simulations-Prompts werden **niemals an einen Drittanbieter für KI übermittelt**. Dies ist ein zentrales Datenschutzversprechen – es verlassen keine personenbezogenen Daten unsere Infrastruktur zur KI-Verarbeitung."
+        }
+      ]
+    },
+    {
+      "heading": "5. Wie lange wir Ihre Daten speichern",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Daten",
+            "Einbehaltung"
+          ],
+          "rows": [
+            [
+              "Konto- und Profildaten",
+              "Bis zur Löschung + 30-tägige Kulanzfrist"
+            ],
+            [
+              "Persona- und Simulationsdaten",
+              "Bis zum Echo oder zur Kontolöschung"
+            ],
+            [
+              "Community-Nachrichten",
+              "1 Jahr nach der Veröffentlichung"
+            ],
+            [
+              "Sitzungs-Token",
+              "Zugriff: 1 Stunde; Aktualisierung: 30 Tage; Login-Protokolle: 90 Tage"
+            ],
+            [
+              "Analysedaten",
+              "6 Monate rollierend"
+            ],
+            [
+              "Zahlungsbelege",
+              "7 Jahre (gesetzliche Anforderung)"
+            ],
+            [
+              "Moderationsprotokolle",
+              "3 Jahre"
+            ],
+            [
+              "Einwilligungsnachweise",
+              "Laufzeit des Kontos + 5 Jahre"
+            ],
+            [
+              "Datenexportdateien",
+              "72 Stunden nach der Generierung"
+            ],
+            [
+              "Verschlüsselte Backups",
+              "rollierende 90-Tage-Rotation"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "6. Ihre Rechte",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Gemäß der DSGVO und den geltenden Datenschutzgesetzen haben Sie das Recht auf:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Zugriff** — Fordern Sie eine Kopie all Ihrer personenbezogenen Daten an. Verfügbar unter Einstellungen → Datenschutz → Daten exportieren.",
+            "**Löschung** — Löschen Sie Ihr Konto und alle damit verbundenen Daten. Verfügbar unter Einstellungen → Datenschutz → Konto löschen. Eine 30-tägige Frist ermöglicht die Stornierung.",
+            "**Portabilität** — Exportieren Sie Ihre Daten in einem strukturierten, maschinenlesbaren Format (JSON). Verfügbar unter Einstellungen → Datenschutz → Daten exportieren.",
+            "**Berichtigung** — Korrigieren Sie ungenaue Profil- oder Personendaten über Ihre Kontoeinstellungen.",
+            "**Einspruch** — Deaktivieren Sie Interaktionen zwischen Nutzern (Solo-Modus), Community-Funktionen oder Analysen unter Einstellungen → Datenschutz.",
+            "**Einwilligung widerrufen** — Löschen Sie ein Echo, um die Einwilligung zur Verarbeitung der Persona zu widerrufen. Löschen Sie Ihr Konto, um alle Einwilligungen zu widerrufen."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Um ein Recht auszuüben, nutzen Sie bitte die oben stehenden Tools in der App oder senden Sie eine E-Mail an [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Wir antworten innerhalb von 30 Tagen."
+        }
+      ]
+    },
+    {
+      "heading": "7. Datensicherheit",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "PII-Felder im Ruhezustand mit AES-256-GCM verschlüsselt",
+            "Datenbank mit BitLocker verschlüsselt",
+            "Mit Cryptomator (AES-256) verschlüsselte Backups",
+            "Alle übertragenen Daten sind mit TLS 1.3 verschlüsselt",
+            "Passwörter mit Argon2id gehasht (niemals im Klartext gespeichert)",
+            "Sitzungen verwenden Ed25519-signierte JWTs",
+            "Alle Admin-Datenzugriffe werden in Append-only-Audit-Logs protokolliert."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Drittauftragsverarbeiter",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Service",
+            "Geteilte Daten",
+            "Zweck"
+          ],
+          "rows": [
+            [
+              "Stripe",
+              "E-Mail, Abrechnungsmetadaten",
+              "Kartenzahlungsabwicklung"
+            ],
+            [
+              "NOWPayments",
+              "Zahlungsbetrag",
+              "Kryptowährungszahlungen"
+            ],
+            [
+              "Xaman",
+              "Wallet-Adresse",
+              "XRP-Zahlungen"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Wir geben Ihre Daten niemals zu Werbezwecken an Dritte weiter. Die KI-Inferenz läuft vollständig auf unserer eigenen Hardware."
+        }
+      ]
+    },
+    {
+      "heading": "9. Daten von Kindern",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes ist für Nutzer ab 16 Jahren gedacht. Wir sammeln nicht wissentlich personenbezogene Daten von Personen unter 16 Jahren. Wenn wir erfahren, dass ein Nutzer unter 16 Jahre alt ist, wird sein Konto bis zur Überprüfung gesperrt."
+        }
+      ]
+    },
+    {
+      "heading": "10. Internationale Datenübermittlungen",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Derzeit werden alle Daten auf einer Infrastruktur in einer einzigen Gerichtsbarkeit verarbeitet und gespeichert. Es finden keine internationalen Datentransfers statt. Sollte sich dies in Zukunft ändern, werden wir diese Richtlinie aktualisieren und sicherstellen, dass angemessene Schutzmaßnahmen (Standardvertragsklauseln oder Angemessenheitsbeschlüsse) vorhanden sind."
+        }
+      ]
+    },
+    {
+      "heading": "11. Benachrichtigung über Datenschutzverletzungen",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Im Falle einer Verletzung des Schutzes personenbezogener Daten, die ein Risiko für Ihre Rechte und Freiheiten darstellt, werden wir die zuständige Aufsichtsbehörde gemäß Artikel 33 DSGVO innerhalb von 72 Stunden benachrichtigen. Wenn die Verletzung ein hohes Risiko für Sie darstellt, werden wir Sie gemäß Artikel 34 DSGVO unverzüglich direkt benachrichtigen."
+        }
+      ]
+    },
+    {
+      "heading": "12. Beschwerden",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Wenn Sie mit der Art und Weise, wie wir Ihre Daten handhaben, unzufrieden sind, wenden Sie sich bitte zuerst an uns unter [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Sie haben außerdem das Recht, eine Beschwerde bei Ihrer zuständigen Datenschutzaufsichtsbehörde einzureichen."
+        }
+      ]
+    },
+    {
+      "heading": "13. Änderungen dieser Richtlinie",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Wir aktualisieren diese Richtlinie möglicherweise von Zeit zu Zeit. Wesentliche Änderungen werden mindestens 30 Tage vor ihrem Inkrafttreten per E-Mail oder per In-App-Benachrichtigung mitgeteilt."
+        }
+      ]
+    }
+  ]
+}

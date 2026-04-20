@@ -63,6 +63,7 @@
     "messageActions": "Mesaj işlemleri",
     "translationPending": "Çevriliyor…",
     "legalDocsEnglishOnly": "Bu sayfa yalnızca İngilizce dilinde mevcuttur. Çevirisi yakında yayınlanacaktır.",
+    "legalMachineTranslationDisclaimer": "Bu çeviri kolaylık sağlamak amacıyla sunulmuştur. İngilizce metin, yasal olarak yetkili metindir.",
     "openMenu": "Menüyü aç",
     "closeMenu": "Menüyü kapat",
     "fieldRequired": "Lütfen bu alanı doldurun."

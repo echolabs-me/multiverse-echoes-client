@@ -1,0 +1,303 @@
+{
+  "title": "Kebijakan Privasi",
+  "lastUpdated": "31 Maret 2026",
+  "sections": [
+    {
+      "heading": "1. Siapa kami",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes adalah Platform Simulasi Kehidupan Otonom yang dioperasikan oleh Echo Labs (“kami”, “platform”). Kami bertindak sebagai pengendali data untuk semua data pribadi yang diproses melalui platform tersebut."
+        },
+        {
+          "type": "p",
+          "text": "Untuk pertanyaan privasi, hubungi kami di [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    },
+    {
+      "heading": "2. Data yang kami kumpulkan",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Kategori",
+            "Contoh"
+          ],
+          "rows": [
+            [
+              "Data Akun",
+              "Alamat email, nama tampilan, kata sandi terenkripsi"
+            ],
+            [
+              "Data Profil",
+              "Bio, pemilihan avatar, zona waktu, preferensi bahasa"
+            ],
+            [
+              "Data Persona",
+              "Persona gema, prompt pengandaian, usia saat pembuatan"
+            ],
+            [
+              "Data Simulasi",
+              "Entri buku harian, peristiwa kehidupan, hubungan, kenangan yang dihasilkan AI"
+            ],
+            [
+              "Data Komunitas",
+              "Pesan saluran, postingan feed, suara jajak pendapat"
+            ],
+            [
+              "Data Pembayaran",
+              "Tingkat langganan, referensi penyedia pembayaran (kami tidak pernah menyimpan nomor kartu)"
+            ],
+            [
+              "Data Analitik",
+              "Peristiwa penggunaan fitur (anonim, tersedia opsi untuk keluar)"
+            ],
+            [
+              "Data Sesi",
+              "Token akses, token penyegaran, stempel waktu login"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Bagaimana dan mengapa kami menggunakan data Anda",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Tujuan",
+            "Dasar Hukum",
+            "Kontrol Anda"
+          ],
+          "rows": [
+            [
+              "Pembuatan akun dan autentikasi",
+              "Kontrak",
+              "Hapus akun"
+            ],
+            [
+              "Simulasi gema (pemrosesan persona)",
+              "Persetujuan",
+              "Hapus Echo kapan saja"
+            ],
+            [
+              "Interaksi Echo antar-pengguna",
+              "Kepentingan Sah",
+              "Alihkan Mode Solo"
+            ],
+            [
+              "Pesan komunitas",
+              "Kepentingan Sah",
+              "Pengunduran diri komunitas"
+            ],
+            [
+              "Moderasi konten dan keamanan",
+              "Kepentingan Sah",
+              "—"
+            ],
+            [
+              "Manajemen langganan",
+              "Kontrak",
+              "Batalkan langganan"
+            ],
+            [
+              "Analitik dan peningkatan layanan",
+              "Kepentingan Sah",
+              "Penarikan opsi analitik di Pengaturan"
+            ],
+            [
+              "Penegakan dan kepatuhan hukum",
+              "Kewajiban Hukum",
+              "—"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "4. Pemrosesan AI dan inferensi lokal",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Semua inferensi AI berjalan secara lokal pada perangkat keras kami sendiri melalui model sumber terbuka. Data persona dan prompt simulasi Anda **tidak pernah dikirim ke penyedia AI pihak ketiga**. Ini adalah komitmen privasi utama kami — tidak ada data pribadi yang meninggalkan infrastruktur kami untuk pemrosesan AI."
+        }
+      ]
+    },
+    {
+      "heading": "5. Berapa lama kami menyimpan data Anda",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Data",
+            "Retensi"
+          ],
+          "rows": [
+            [
+              "Data akun dan profil",
+              "Hingga penghapusan + masa tenggang 30 hari"
+            ],
+            [
+              "Persona dan data simulasi",
+              "Hingga Echo atau penghapusan akun"
+            ],
+            [
+              "Pesan komunitas",
+              "1 tahun sejak diposting"
+            ],
+            [
+              "Token sesi",
+              "Akses: 1 jam; Penyegaran: 30 hari; Log masuk: 90 hari"
+            ],
+            [
+              "Data analitik",
+              "6 bulan berjalan"
+            ],
+            [
+              "Catatan pembayaran",
+              "7 tahun (persyaratan hukum)"
+            ],
+            [
+              "Catatan moderasi",
+              "3 tahun"
+            ],
+            [
+              "Catatan persetujuan",
+              "Durasi akun + 5 tahun"
+            ],
+            [
+              "Berkas ekspor data",
+              "72 jam setelah pembuatan"
+            ],
+            [
+              "Cadangan terenkripsi",
+              "rotasi bergulir 90 hari"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "6. Hak-hak Anda",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Berdasarkan GDPR dan undang-undang privasi yang berlaku, Anda memiliki hak untuk:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Akses** — Minta salinan semua data pribadi Anda. Tersedia melalui Pengaturan → Privasi → Ekspor Data.",
+            "**Penghapusan** — Hapus akun Anda dan semua data terkait. Tersedia melalui Pengaturan → Privasi → Hapus Akun. Masa tenggang 30 hari memungkinkan pembatalan.",
+            "**Portabilitas** — Ekspor data Anda dalam format terstruktur yang dapat dibaca mesin (JSON). Tersedia melalui Pengaturan → Privasi → Ekspor Data.",
+            "**Rektifikasi** — Perbaiki data profil atau persona yang tidak akurat melalui pengaturan akun Anda.",
+            "**Objek** — Keluar dari interaksi antar-pengguna (Mode Solo), fitur komunitas, atau analitik di Pengaturan → Privasi.",
+            "**Tarik persetujuan** — Hapus Echo untuk mencabut persetujuan pemrosesan persona. Hapus akun Anda untuk mencabut semua persetujuan."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Untuk menggunakan hak apa pun, gunakan alat dalam aplikasi di atas atau kirim email ke [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Kami akan merespons dalam waktu 30 hari."
+        }
+      ]
+    },
+    {
+      "heading": "7. Keamanan data",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Bidang PII dienkripsi saat istirahat dengan AES-256-GCM",
+            "Basis data dienkripsi dengan BitLocker",
+            "Cadangan terenkripsi dengan Cryptomator (AES-256)",
+            "Semua data dalam transit dienkripsi dengan TLS 1.3",
+            "Kata sandi di-hash dengan Argon2id (tidak pernah disimpan dalam teks biasa)",
+            "Sesi menggunakan JWT yang ditandatangani Ed25519",
+            "Semua akses data admin dicatat dalam log audit append-only"
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Pemroses pihak ketiga",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Layanan",
+            "Data yang Dibagikan",
+            "Tujuan"
+          ],
+          "rows": [
+            [
+              "Stripe",
+              "Email, metadata penagihan",
+              "Pemrosesan pembayaran kartu"
+            ],
+            [
+              "NOWPayments",
+              "Jumlah pembayaran",
+              "Pembayaran mata uang kripto"
+            ],
+            [
+              "Xaman",
+              "Alamat dompet",
+              "Pembayaran XRP"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Kami tidak pernah membagikan data Anda kepada pihak ketiga untuk periklanan. Inferensi AI berjalan sepenuhnya pada perangkat keras kami sendiri."
+        }
+      ]
+    },
+    {
+      "heading": "9. Data anak-anak",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes diperuntukkan bagi pengguna berusia 16 tahun ke atas. Kami tidak secara sengaja mengumpulkan data pribadi dari siapa pun yang berusia di bawah 16 tahun. Jika kami mengetahui bahwa seorang pengguna berusia di bawah 16 tahun, akun mereka akan ditangguhkan hingga proses verifikasi selesai."
+        }
+      ]
+    },
+    {
+      "heading": "10. Transfer data internasional",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Saat ini, semua data diproses dan disimpan pada infrastruktur di satu yurisdiksi tunggal. Tidak ada transfer data internasional yang terjadi. Jika hal ini berubah di masa mendatang, kami akan memperbarui kebijakan ini dan memastikan perlindungan yang tepat (Klausul Kontrak Standar atau keputusan kecukupan) telah tersedia."
+        }
+      ]
+    },
+    {
+      "heading": "11. Pemberitahuan pelanggaran data",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Dalam hal terjadi pelanggaran data pribadi yang menimbulkan risiko terhadap hak dan kebebasan Anda, kami akan memberitahu otoritas pengawas terkait dalam waktu 72 jam sesuai dengan Pasal 33 GDPR. Jika pelanggaran tersebut menimbulkan risiko tinggi bagi Anda, kami akan memberitahu Anda secara langsung tanpa penundaan yang tidak semestinya sesuai dengan Pasal 34 GDPR."
+        }
+      ]
+    },
+    {
+      "heading": "12. Keluhan",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Jika Anda tidak puas dengan cara kami menangani data Anda, silakan hubungi kami terlebih dahulu di [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Anda juga memiliki hak untuk mengajukan keluhan kepada otoritas pengawas perlindungan data setempat."
+        }
+      ]
+    },
+    {
+      "heading": "13. Perubahan pada kebijakan ini",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kami mungkin memperbarui kebijakan ini dari waktu ke waktu. Perubahan penting akan dikomunikasikan melalui email atau notifikasi dalam aplikasi setidaknya 30 hari sebelum berlaku."
+        }
+      ]
+    }
+  ]
+}

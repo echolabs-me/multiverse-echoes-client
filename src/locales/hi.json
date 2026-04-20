@@ -63,6 +63,7 @@
     "messageActions": "संदेश क्रियाएँ",
     "translationPending": "अनुवाद हो रहा है…",
     "legalDocsEnglishOnly": "यह पेज अभी केवल अंग्रेज़ी में उपलब्ध है। अनुवादित संस्करण जल्द प्रकाशित किया जाएगा।",
+    "legalMachineTranslationDisclaimer": "यह अनुवाद सुविधा के लिए प्रदान किया गया है। अंग्रेजी संस्करण कानूनी रूप से आधिकारिक पाठ है।",
     "openMenu": "मेनू खोलें",
     "closeMenu": "मेनू बंद करें",
     "fieldRequired": "कृपया यह फ़ील्ड भरें।"

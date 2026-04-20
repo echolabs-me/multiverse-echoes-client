@@ -20,6 +20,7 @@ const LOCALE_PATTERNS: ReadonlyArray<
 > = [
   ['en', ['yes', 'yep', 'yeah', 'correct', 'looks good', 'send it', 'submit', 'confirm', 'go ahead', 'do it', 'sure', 'ok', 'okay', 'right', 'absolutely'], ['no', 'nope', 'nah', 'cancel', 'stop', 'never mind', 'forget it', 'don\'t', 'wait']],
   ['zh-Hans', ['是', '是的', '好', '好的', '确认', '对', '对的', '提交', '发送', '没问题', '可以', '行', '嗯', '确定'], ['不', '不是', '不要', '取消', '算了', '不用', '别']],
+  ['zh-Hant', ['是', '是的', '好', '好的', '確認', '對', '對的', '提交', '發送', '沒問題', '可以', '行', '嗯', '確定'], ['不', '不是', '不要', '取消', '算了', '不用', '別']],
   ['ja', ['はい', 'うん', 'そうです', 'いいです', 'オッケー', '送信', '確認', '大丈夫', 'そう', 'いいよ', '了解'], ['いいえ', 'いや', 'やめて', 'キャンセル', '違う', 'だめ', 'やめる']],
   ['ko', ['네', '예', '맞아', '좋아', '확인', '보내', '맞아요', '그래', '응', '좋아요', '알겠어', '오케이'], ['아니', '아니요', '취소', '안돼', '싫어', '그만']],
   ['es', ['sí', 'si', 'correcto', 'enviar', 'confirmar', 'dale', 'ok', 'vale', 'claro', 'por supuesto', 'adelante'], ['no', 'cancelar', 'para', 'olvídalo', 'ni hablar']],

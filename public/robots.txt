@@ -1,11 +1,38 @@
+# https://echolabsme.com/robots.txt
+# Public marketing surface (/home, /about, /plans, /waitlist, /contact,
+# /terms, /privacy, /accessibility) plus all 20 locale-prefixed variants
+# of each are crawlable by default. Auth, onboarding, payment, and app
+# routes are disallowed — they're behind auth, not useful to index, and
+# indexing them wastes crawl budget.
+
 User-agent: *
 Allow: /
-Allow: /home
-Allow: /about
-Allow: /terms
-Allow: /privacy
+
+# Auth + account recovery
+Disallow: /register
+Disallow: /login
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-pending
+Disallow: /verified
+
+# Onboarding
+Disallow: /onboarding/
+
+# App shell (behind auth)
 Disallow: /dashboard
-Disallow: /echo/
+Disallow: /echoes/
+Disallow: /shards/
+Disallow: /feeds/
+Disallow: /community
+Disallow: /notifications
 Disallow: /settings
+Disallow: /search
 Disallow: /admin
+
+# Payment, tipping, subscription management
+Disallow: /payment/
+Disallow: /tip
+Disallow: /subscription/
+
 Sitemap: https://echolabsme.com/sitemap.xml

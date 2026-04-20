@@ -63,6 +63,7 @@
     "messageActions": "Message actions",
     "translationPending": "Translating…",
     "legalDocsEnglishOnly": "This page is available in English only. A translated version will be published soon.",
+    "legalMachineTranslationDisclaimer": "This translation is provided for convenience. The English version is the legally authoritative text.",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "fieldRequired": "Please fill in this field."

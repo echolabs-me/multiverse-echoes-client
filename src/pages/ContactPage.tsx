@@ -147,7 +147,7 @@ export function ContactPage() {
         <meta property="og:title" content={t('contact.metaTitle')} />
         <meta property="og:description" content={t('contact.metaDesc')} />
         <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
-        <meta property="og:url" content="https://echolabsme.com/contact" />
+        {/* og:url is emitted path-aware by WebsiteLayout. */}
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>

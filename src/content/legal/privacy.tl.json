@@ -1,0 +1,303 @@
+{
+  "title": "Patakaran sa Pagkapribado",
+  "lastUpdated": "ika-31 ng Marso 2026",
+  "sections": [
+    {
+      "heading": "1. Kung sino kami",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ang Multiverse Echoes ay isang Autonomous Life Simulation Platform na pinapatakbo ng Echo Labs (“kami”, “amin”, “ang platform”). Kami ang nagsisilbing data controller para sa lahat ng personal na data na pinoproseso sa pamamagitan ng platform."
+        },
+        {
+          "type": "p",
+          "text": "Para sa mga katanungan tungkol sa privacy, makipag-ugnayan sa amin sa [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    },
+    {
+      "heading": "2. Mga datos na aming kinokolekta",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Kategorya",
+            "Mga Halimbawa"
+          ],
+          "rows": [
+            [
+              "Datos ng Account",
+              "Email address, display name, hashed password"
+            ],
+            [
+              "Datos ng Profile",
+              "Bio, pagpili ng avatar, timezone, kagustuhang wika"
+            ],
+            [
+              "Datos ng Persona",
+              "Mga echo persona, mga what-if prompt, edad sa paglikha"
+            ],
+            [
+              "Datos ng Simulasyon",
+              "Mga entry sa diary na gawa ng AI, mga kaganapan sa buhay, mga relasyon, mga alaala"
+            ],
+            [
+              "Datos ng Komunidad",
+              "Mga mensahe sa channel, mga post sa feed, mga boto sa poll"
+            ],
+            [
+              "Datos ng Pagbabayad",
+              "Antas ng subscription, sanggunian ng payment provider (hindi namin kailanman iniimbak ang mga numero ng card)"
+            ],
+            [
+              "Datos ng Analytics",
+              "Mga event sa paggamit ng feature (anonymised, maaaring i-opt-out)"
+            ],
+            [
+              "Datos ng Sesyon",
+              "Mga access token, mga refresh token, mga timestamp ng pag-login"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Paano at bakit namin ginagamit ang iyong data",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Layunin",
+            "Legal na Batayan",
+            "Iyong Kontrol"
+          ],
+          "rows": [
+            [
+              "Paglikha ng account at pagpapatunay",
+              "Kontrata",
+              "Burahin ang account"
+            ],
+            [
+              "Simulasyon ng echo (pagproseso ng persona)",
+              "Pahintulot",
+              "Burahin ang Echo anumang oras"
+            ],
+            [
+              "Mga interaksyong Echo sa pagitan ng mga user",
+              "Ligal na Interes",
+              "Toggle ng Solo Mode"
+            ],
+            [
+              "Mensahe ng komunidad",
+              "Ligal na Interes",
+              "Pag-alis sa komunidad"
+            ],
+            [
+              "Moderasyon ng nilalaman at kaligtasan",
+              "Ligal na Interes",
+              "—"
+            ],
+            [
+              "Pamamahala ng subscription",
+              "Kontrata",
+              "Kanselahin ang subscription"
+            ],
+            [
+              "Analitika at pagpapabuti ng serbisyo",
+              "Ligal na Interes",
+              "Opt-out ng Analytics sa Settings"
+            ],
+            [
+              "Pagpapatupad at pagsunod sa batas",
+              "Legal na Obligasyon",
+              "—"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "4. Pagproseso ng AI at lokal na inference",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Lahat ng AI inference ay tumatakbo nang lokal sa sarili naming hardware gamit ang mga open-source model. Ang iyong persona data at simulation prompts ay **hindi kailanman ipinapadala sa isang third-party AI provider**. Ito ay isang pangunahing pangako sa privacy — walang personal na data ang lumalabas sa aming infrastructure para sa AI processing."
+        }
+      ]
+    },
+    {
+      "heading": "5. Gaano katagal namin itatago ang iyong data",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Datos",
+            "Pagpapanatili"
+          ],
+          "rows": [
+            [
+              "Datos ng account at profile",
+              "Hanggang sa pagbura + 30-araw na grace period"
+            ],
+            [
+              "Persona at data ng simulasyon",
+              "Hanggang sa Echo o pagbura ng account"
+            ],
+            [
+              "Mga mensahe ng komunidad",
+              "1 taon mula nang i-post"
+            ],
+            [
+              "Mga session token",
+              "Akses: 1 oras; Refresh: 30 araw; Mga log ng login: 90 araw"
+            ],
+            [
+              "Datos ng analytics",
+              "6 na buwang rolling"
+            ],
+            [
+              "Mga rekord ng pagbabayad",
+              "7 taon (legal na kinakailangan)"
+            ],
+            [
+              "Mga rekord ng moderasyon",
+              "3 taon"
+            ],
+            [
+              "Mga rekord ng pahintulot",
+              "Tagal ng account + 5 taon"
+            ],
+            [
+              "Mga file ng export ng data",
+              "72 oras matapos mabuo"
+            ],
+            [
+              "Mga encrypted na backup",
+              "90-araw na rolling rotation"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "6. Ang iyong mga karapatan",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Sa ilalim ng GDPR at mga naaangkop na batas sa privacy, mayroon kang karapatang:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Access** — Humiling ng kopya ng lahat ng iyong personal na data. Magagamit sa pamamagitan ng Settings → Privacy → Export Data.",
+            "**Pagbura** — Burahin ang iyong account at lahat ng kaugnay na data. Magagamit sa pamamagitan ng Settings → Privacy → Delete Account. Mayroong 30-araw na grace period para sa pagkansela.",
+            "**Portability** — I-export ang iyong data sa isang structured at machine-readable na format (JSON). Available sa Settings → Privacy → Export Data.",
+            "**Pagwawasto** — Itama ang mga maling datos ng profile o persona sa pamamagitan ng iyong account settings.",
+            "**Layunin** — Mag-opt out sa mga cross-user interaction (Solo Mode), mga feature ng komunidad, o analytics sa Settings → Privacy.",
+            "**Bawiin ang pahintulot** — Magbura ng Echo upang bawiin ang pahintulot sa pagproseso ng persona. Burahin ang iyong account upang bawiin ang lahat ng pahintulot."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Upang gamitin ang anumang karapatan, gamitin ang mga tool sa loob ng app sa itaas o mag-email sa [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Kami ay tutugon sa loob ng 30 araw."
+        }
+      ]
+    },
+    {
+      "heading": "7. Seguridad ng data",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Ang mga PII field ay naka-encrypt at rest gamit ang AES-256-GCM",
+            "Database na naka-encrypt gamit ang BitLocker",
+            "Mga backup na naka-encrypt gamit ang Cryptomator (AES-256)",
+            "Lahat ng data na ipinapadala ay encrypted gamit ang TLS 1.3",
+            "Ang mga password ay naka-hash gamit ang Argon2id (hindi kailanman iniimbak sa plaintext)",
+            "Gumagamit ang mga session ng mga Ed25519-signed JWT.",
+            "Lahat ng access sa data ng admin ay nakatala sa mga append-only audit log"
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Mga third-party processor",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Serbisyo",
+            "Ibinahaging Datos",
+            "Layunin"
+          ],
+          "rows": [
+            [
+              "Stripe",
+              "Email, metadata sa pagsingil",
+              "Pagproseso ng pagbabayad gamit ang card"
+            ],
+            [
+              "NOWPayments",
+              "Halaga ng bayad",
+              "Mga pagbabayad gamit ang cryptocurrency"
+            ],
+            [
+              "Xaman",
+              "Address ng wallet",
+              "Mga pagbabayad gamit ang XRP"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Hindi namin kailanman ibinabahagi ang iyong data sa mga ikatlong partido para sa advertising. Ang AI inference ay tumatakbo nang buo sa sarili naming hardware."
+        }
+      ]
+    },
+    {
+      "heading": "9. Datos ng mga bata",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ang Multiverse Echoes ay para sa mga gumagamit na may edad 16 pataas. Hindi namin sadyang nangongolekta ng personal na data mula sa sinumang wala pang 16 anyos. Kung malaman namin na ang isang gumagamit ay wala pang 16, ang kanilang account ay sususpindihin habang naghihintay ng beripikasyon."
+        }
+      ]
+    },
+    {
+      "heading": "10. Pandaigdigang paglilipat ng data",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Sa kasalukuyan, lahat ng data ay pinoproseso at iniimbak sa imprastraktura sa iisang hurisdiksyon. Walang nagaganap na mga internasyonal na paglilipat ng data. Kung magbago ito sa hinaharap, ia-update namin ang patakarang ito at titiyaking may mga naaangkop na pananggalang (Standard Contractual Clauses o mga desisyon sa pagiging sapat) na nakalatag."
+        }
+      ]
+    },
+    {
+      "heading": "11. Abiso ng paglabag sa data",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Sa kaganapan ng paglabag sa personal na data na nagdudulot ng panganib sa iyong mga karapatan at kalayaan, ipapabatid namin ito sa kaukulang supervisory authority sa loob ng 72 oras alinsunod sa Artikulo 33 ng GDPR. Kung ang paglabag ay nagdudulot ng mataas na panganib sa iyo, direktang ipapabatid namin ito sa iyo nang walang hindi nararapat na pagkaantala alinsunod sa Artikulo 34 ng GDPR."
+        }
+      ]
+    },
+    {
+      "heading": "12. Mga Reklamo",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kung hindi ka masaya sa kung paano namin pinamamahalaan ang iyong data, mangyaring makipag-ugnayan muna sa amin sa [conduct@echolabsme.com](mailto:conduct@echolabsme.com). May karapatan ka rin na maghain ng reklamo sa iyong lokal na awtoridad sa superbisyon ng proteksyon ng data."
+        }
+      ]
+    },
+    {
+      "heading": "13. Mga pagbabago sa patakarang ito",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Maaari naming i-update ang patakarang ito paminsan-minsan. Ang mga mahahalagang pagbabago ay ipapabatid sa pamamagitan ng email o notification sa app nang hindi bababa sa 30 araw bago ito magkabisa."
+        }
+      ]
+    }
+  ]
+}

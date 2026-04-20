@@ -34,7 +34,7 @@ export function AboutPage() {
         <meta property="og:title" content={t('website.about.title')} />
         <meta property="og:description" content={t('website.about.metaDesc')} />
         <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
-        <meta property="og:url" content="https://echolabsme.com/about" />
+        {/* og:url is emitted path-aware by WebsiteLayout. */}
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@EchoLabsME" />

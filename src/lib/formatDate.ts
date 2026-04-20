@@ -18,12 +18,15 @@ import i18n from '../i18n';
  * Map an i18next locale code to the BCP-47 tag the Intl API expects.
  *
  * Most of our locales are already valid BCP-47 (`en`, `hi`, `es`, `ar`, `fr`),
- * but `zh-Hans` needs to be mapped to `zh-Hans-CN` or `zh-CN` for Intl to
- * produce Simplified-Chinese-specific formatting. We use `zh-CN` which is the
- * most widely supported CLDR locale for Simplified Chinese.
+ * but `zh-Hans` / `zh-Hant` need to be mapped to region-qualified tags for
+ * Intl to produce script-specific formatting. We use `zh-CN` for Simplified
+ * (mainland-style CLDR) and `zh-HK` for Traditional (Hong Kong-style CLDR,
+ * matching the flag we use for the locale). Both are well-supported by
+ * modern browsers' Intl implementations.
  */
 function intlLocale(appLocale: string): string {
   if (appLocale === 'zh-Hans') return 'zh-CN';
+  if (appLocale === 'zh-Hant') return 'zh-HK';
   return appLocale;
 }
 

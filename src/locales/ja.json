@@ -63,6 +63,7 @@
     "messageActions": "メッセージアクション",
     "translationPending": "翻訳中…",
     "legalDocsEnglishOnly": "このページは英語のみでご利用いただけます。翻訳版は近日中に公開予定です。",
+    "legalMachineTranslationDisclaimer": "この翻訳は便宜のために提供されるものです。法的権限を持つ正文は英語版です。",
     "openMenu": "メニューを開く",
     "closeMenu": "メニューを閉じる",
     "fieldRequired": "この項目を入力してください。"

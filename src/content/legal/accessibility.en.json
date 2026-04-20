@@ -1,0 +1,68 @@
+{
+  "title": "Accessibility Statement",
+  "lastUpdated": "31 March 2026",
+  "sections": [
+    {
+      "heading": "Our commitment",
+      "blocks": [
+        { "type": "p", "text": "Multiverse Echoes is committed to making our platform accessible to everyone. We target conformance with the **Web Content Accessibility Guidelines (WCAG) 2.1 Level AA** standard. Accessibility is not an afterthought \u2014 it is integrated into our design system, component library, and testing pipeline from the start." }
+      ]
+    },
+    {
+      "heading": "What we\u2019ve done",
+      "blocks": [
+        { "type": "ul", "items": [
+          "**Keyboard navigation** \u2014 All interactive elements are reachable via Tab key. Focus indicators are visible (2px accent outline). Skip links are provided to bypass navigation. Logical tab order is maintained throughout.",
+          "**Screen reader support** \u2014 Semantic HTML (headings, lists, tables, landmarks) is used throughout. All images have descriptive alt text. Interactive elements have ARIA labels. Dynamic content updates are announced via `aria-live` regions.",
+          "**Colour contrast** \u2014 All text and interactive elements meet WCAG 2.1 AA contrast ratios (4.5:1 for normal text, 3:1 for large text). Information is never conveyed by colour alone.",
+          "**Reduced motion** \u2014 All animations respect the `prefers-reduced-motion` operating system setting. When enabled, animations are disabled or replaced with static alternatives. The Echo birth animation shows a static screen. The tick pulse is disabled entirely.",
+          "**Touch targets** \u2014 All interactive elements meet the minimum 44x44px touch target size.",
+          "**Text scaling** \u2014 The interface remains usable at 200% browser zoom without horizontal scrolling or content cutoff.",
+          "**Dark and light modes** \u2014 Both colour schemes are designed with contrast-tested palettes. Users can choose their preference in Settings.",
+          "**Automated testing** \u2014 We run axe-core accessibility audits on all pages as part of our end-to-end test suite. Zero critical or serious violations are permitted."
+        ]}
+      ]
+    },
+    {
+      "heading": "3D content and alternatives",
+      "blocks": [
+        { "type": "p", "text": "Some features include 3D visualisations (Echo portraits, Shard environments). These are always accompanied by 2D fallbacks for devices that do not support WebGL, or when reduced motion is enabled. No information is conveyed exclusively through 3D content." }
+      ]
+    },
+    {
+      "heading": "Audio",
+      "blocks": [
+        { "type": "p", "text": "Sound effects are optional and disabled by default. No information is conveyed through audio alone \u2014 all notifications have visual indicators. Sound can be toggled and volume adjusted in Settings." }
+      ]
+    },
+    {
+      "heading": "Known gaps",
+      "blocks": [
+        { "type": "p", "text": "We are aware of the following areas where we have not yet achieved full compliance:" },
+        { "type": "ul", "items": [
+          "**Manual screen reader testing** \u2014 We have automated testing with axe-core but have not yet completed comprehensive manual testing with NVDA, JAWS, or VoiceOver. This is planned before public launch.",
+          "**Video captions** \u2014 Video export features (highlight reels) do not yet include captions. This will be addressed when video features launch.",
+          "**Right-to-left (RTL) languages** \u2014 The interface uses CSS logical properties in preparation for RTL support, but RTL layout has not yet been fully tested.",
+          "**Languages beyond English** \u2014 Currently only English is supported. Additional languages are planned post-launch. The internationalisation architecture is in place (632 externalised strings)."
+        ]}
+      ]
+    },
+    {
+      "heading": "Feedback and contact",
+      "blocks": [
+        { "type": "p", "text": "If you encounter an accessibility barrier or have suggestions for improvement, please contact us:" },
+        { "type": "ul", "items": [
+          "Email: [conduct@echolabsme.com](mailto:conduct@echolabsme.com)",
+          "In-app: use the Oracle assistant or the feedback form in Settings"
+        ]},
+        { "type": "p", "text": "We take accessibility feedback seriously and aim to respond within 5 business days." }
+      ]
+    },
+    {
+      "heading": "Conformance status",
+      "blocks": [
+        { "type": "p", "text": "Multiverse Echoes is **partially conformant** with WCAG 2.1 Level AA. \u201cPartially conformant\u201d means that some parts of the content do not fully conform to the accessibility standard, as outlined in the Known Gaps section above. We are actively working to resolve these gaps." }
+      ]
+    }
+  ]
+}

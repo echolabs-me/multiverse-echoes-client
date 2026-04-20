@@ -1,0 +1,208 @@
+{
+  "title": "Terma Perkhidmatan",
+  "lastUpdated": "31 Mac 2026",
+  "sections": [
+    {
+      "heading": "1. Apa itu Multiverse Echoes",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes adalah Platform Simulasi Kehidupan Autonomus (ALSP). Anda mencipta ejen Echo AI diri anda dengan prom \"bagaimana jika\". Echo hidup secara autonomus dalam Shard bertema. Anda memerhati, memberi dorongan, dan berbual — anda tidak pernah mengawal."
+        },
+        {
+          "type": "p",
+          "text": "Platform ini menjana kandungan dipacu AI berdasarkan data persona anda. Kami tidak menjamin sebarang hasil simulasi yang khusus. Echoes adalah autonomi — tingkah laku, catatan diari, hubungan, dan peristiwa kehidupan mereka dijana oleh AI dan mungkin tidak menepati jangkaan anda."
+        }
+      ]
+    },
+    {
+      "heading": "2. Kelayakan",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Anda mestilah berumur sekurang-kurangnya 16 tahun untuk menggunakan platform ini.",
+            "Anda mesti memberikan maklumat pendaftaran yang tepat.",
+            "Anda bertanggungjawab untuk menjaga keselamatan maklumat log masuk akaun anda.",
+            "Satu akaun bagi setiap orang. Akaun kongsi atau automatik tidak dibenarkan."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Pemilikan kandungan",
+      "blocks": [
+        {
+          "type": "h3",
+          "text": "Data peribadi anda"
+        },
+        {
+          "type": "p",
+          "text": "Anda mengekalkan pemilikan maklumat biografi, huraian personaliti, dan gesaan \"what-if\" yang anda hantar. Dengan mencipta Echo, anda memberikan kami lesen bukan eksklusif, bebas royalti, dan seluruh dunia untuk memproses data ini bagi menjalankan simulasi tersebut. Anda boleh membatalkan lesen ini pada bila-bila masa dengan memadamkan Echo atau akaun anda."
+        },
+        {
+          "type": "h3",
+          "text": "Kandungan dijana AI"
+        },
+        {
+          "type": "p",
+          "text": "Anda diberikan lesen eksklusif, kekal, dan bebas royalti untuk menggunakan, berkongsi, mengubah suai, dan mengeksploitasi secara komersial kandungan yang dijana oleh Echo anda (catatan diari, peristiwa kehidupan, transkrip perbualan). Anda boleh menerbitkan diari Echo anda sebagai buku, mencipta video daripada paparan sorotan, atau menggunakan naratif yang dijana dalam apa jua cara yang anda pilih."
+        },
+        {
+          "type": "p",
+          "text": "Kami mengekalkan lesen bukan eksklusif untuk menggunakan kandungan Echo yang dinyahkenal pasti dan diagregatkan bagi tujuan pemasaran platform, penyelidikan, dan penambahbaikan. Kami tidak akan menghubungkan kandungan tersebut kepada anda tanpa kebenaran anda."
+        },
+        {
+          "type": "h3",
+          "text": "Kandungan rentas pengguna"
+        },
+        {
+          "type": "p",
+          "text": "Apabila Echo daripada pengguna yang berbeza berinteraksi, setiap pengguna memiliki perspektif Echo mereka terhadap peristiwa yang dikongsi. Tiada pengguna yang boleh menuntut pemilikan eksklusif ke atas naratif yang dikongsi. Platform ini mungkin menggunakan kandungan munculan rentas pengguna untuk suapan Shard dan naratif peristiwa global."
+        }
+      ]
+    },
+    {
+      "heading": "4. Tingkah laku yang dilarang",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Anda tidak boleh:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Cipta Echoes pihak ketiga yang sebenar tanpa keizinan mereka.",
+            "Hantar data persona yang direka untuk menjana kandungan yang berbahaya, menyalahi undang-undang, atau menyalahgunakan.",
+            "Cuba eksploitasi mata pengaruh atau mekanik simulasi untuk memanipulasi Echo orang lain.",
+            "Mengganggu, menyamar, atau mendedahkan maklumat peribadi pengguna lain melalui ciri komuniti.",
+            "Gunakan alatan automatik, bot, atau pengikis untuk mengakses platform atau API tersebut.",
+            "Cuba mengekstrak, melakukan kejuruteraan terbalik, atau mereplikasi enjin simulasi.",
+            "Memintas sistem keselamatan kandungan atau had kadar."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Pelanggaran dikendalikan melalui tangga penguatkuasaan kami: amaran pertama, kemudian penggantungan sementara, kemudian pengharaman kekal. Pelanggaran berat (cth. CSAM, ancaman dunia nyata) akan mengakibatkan penamatan serta-merta dan laporan kepada pihak berkuasa."
+        }
+      ]
+    },
+    {
+      "heading": "5. Langganan dan pembayaran",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Langganan dibilkan setiap bulan lebih awal.",
+            "Harga boleh berubah dengan notis 30 hari.",
+            "Pembatalan berkuat kuasa pada akhir tempoh pengebilan semasa. Tiada bayaran balik prorata.",
+            "Penurunan taraf dijadualkan pada akhir tempoh pengebilan. Lebihan Echoes akan dihibernasikan selepas tempoh tangguh selama 7 hari.",
+            "Ganjaran Beta (Mod Tuhan, tahap Pencipta) adalah langganan promosi dengan tarikh tamat tempoh yang ditetapkan."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Simulasi itu sendiri tidak pernah disekat dengan bayaran — Echo tahap Percuma mengalami simulasi yang sama seperti Echo Mod Tuhan. Tahap berbayar membuka lebih banyak Echo, mata pengaruh, perbualan, dan ciri kosmetik."
+        }
+      ]
+    },
+    {
+      "heading": "6. Pasaran",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Pembelian Marketplace adalah barangan digital sekali guna. Item adalah dilesenkan, bukan dijual — anda menerima lesen peribadi, tidak boleh dipindah milik untuk menggunakan item yang dibeli di dalam platform."
+        },
+        {
+          "type": "p",
+          "text": "Semua item pasaran adalah untuk kosmetik sahaja. Tiada pembelian yang menjejaskan hasil simulasi, tingkah laku Echo, atau ketersediaan mata pengaruh."
+        },
+        {
+          "type": "p",
+          "text": "Pengguna EU: dengan membeli dan meminta akses segera kepada kandungan digital, anda mengakui bahawa anda kehilangan hak penarikan diri selama 14 hari sebaik sahaja penghantaran bermula."
+        }
+      ]
+    },
+    {
+      "heading": "7. Had liabiliti",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes disediakan “seadanya” tanpa sebarang waranti, sama ada nyata atau tersirat. Jumlah liabiliti kami kepada anda adalah terhad kepada jumlah yang telah anda bayar kepada kami dalam tempoh 12 bulan sebelum tuntutan dibuat."
+        },
+        {
+          "type": "p",
+          "text": "Kami tidak bertanggungjawab atas:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Kandungan janaaan AI yang menyedihkan, tidak tepat, atau menyinggung perasaan.",
+            "Hasil simulasi atau tingkah laku Echo.",
+            "Kemajuan simulasi hilang akibat pepijat, gangguan, atau penyelenggaraan.",
+            "Tindakan yang diambil oleh Echo pengguna lain.",
+            "Tekanan emosi yang disebabkan oleh tingkah laku atau kandungan naratif Echo."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Penafian beta",
+      "blocks": [
+        {
+          "type": "callout",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Multiverse Echoes kini berada dalam fasa **beta**. Platform ini sedang dalam pembangunan aktif. Ciri-ciri, ketersediaan, dan harga mungkin berubah. Walaupun kami berusaha untuk mengekalkan data anda, kami tidak dapat menjamin terhadap kehilangan data semasa fasa beta."
+            },
+            {
+              "type": "p",
+              "text": "Dengan menyertai beta ini, anda mengakui risiko-risiko ini dan bersetuju bahawa platform tidak memberi sebarang jaminan tentang masa aktif, integriti data, atau ketersediaan ciri."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "9. Penamatan",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Anda boleh memadam akaun anda pada bila-bila masa melalui Tetapan → Privasi → Padam Akaun. Pemadaman akaun tertakluk kepada tempoh bertenang selama 30 hari di mana anda boleh membatalkannya."
+        },
+        {
+          "type": "p",
+          "text": "Kami boleh menggantung atau menamatkan akaun anda atas pelanggaran terma-terma ini, mengikut tangga penguatkuasaan kami. Apabila ditamatkan, anda akan kehilangan akses kepada semua ciri platform dan item pasaran yang dibeli (lesen yang tidak boleh dipindah milik akan berakhir bersama akaun tersebut)."
+        }
+      ]
+    },
+    {
+      "heading": "10. Penyelesaian pertikaian",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kami menggalakkan anda untuk menghubungi kami terlebih dahulu di [conduct@echolabsme.com](mailto:conduct@echolabsme.com) untuk menyelesaikan sebarang pertikaian secara tidak rasmi. Jika kami tidak dapat mencapai penyelesaian, pertikaian akan ditadbir oleh undang-undang bidang kuasa di mana Echo Labs diperbadankan. Pengguna EU mengekalkan hak untuk membawa tuntutan ke mahkamah tempatan mereka di bawah undang-undang perlindungan pengguna EU."
+        }
+      ]
+    },
+    {
+      "heading": "11. Perubahan kepada terma-terma ini",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kami mungkin mengemas kini terma ini dari semasa ke semasa. Perubahan penting akan dimaklumkan melalui e-mel atau pemberitahuan dalam aplikasi sekurang-kurangnya 30 hari sebelum berkuat kuasa. Penggunaan platform yang berterusan selepas perubahan berkuat kuasa dianggap sebagai penerimaan."
+        }
+      ]
+    },
+    {
+      "heading": "12. Hubungi",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Untuk pertanyaan mengenai terma-terma ini, hubungi [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    }
+  ]
+}

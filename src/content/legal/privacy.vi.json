@@ -1,0 +1,303 @@
+{
+  "title": "Chính sách Bảo mật",
+  "lastUpdated": "31 tháng 3 năm 2026",
+  "sections": [
+    {
+      "heading": "1. Chúng tôi là ai",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes là một Nền tảng Mô phỏng Sự sống Tự trị được vận hành bởi Echo Labs (“chúng tôi”, “nền tảng”). Chúng tôi đóng vai trò là bên kiểm soát dữ liệu đối với tất cả các dữ liệu cá nhân được xử lý thông qua nền tảng này."
+        },
+        {
+          "type": "p",
+          "text": "Để biết thêm chi tiết về quyền riêng tư, vui lòng liên hệ với chúng tôi tại [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    },
+    {
+      "heading": "2. Dữ liệu chúng tôi thu thập",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Danh mục",
+            "Ví dụ"
+          ],
+          "rows": [
+            [
+              "Dữ liệu tài khoản",
+              "Địa chỉ email, tên hiển thị, mật khẩu đã mã hóa"
+            ],
+            [
+              "Dữ liệu hồ sơ",
+              "Tiểu sử, chọn ảnh đại diện, múi giờ, ngôn ngữ ưu tiên"
+            ],
+            [
+              "Dữ liệu Persona",
+              "Nhân vật mô phỏng, gợi ý giả định, độ tuổi khi tạo"
+            ],
+            [
+              "Dữ liệu mô phỏng",
+              "Các mục nhật ký, sự kiện cuộc đời, mối quan hệ, ký ức do AI tạo ra"
+            ],
+            [
+              "Dữ liệu cộng đồng",
+              "Tin nhắn kênh, bài đăng bảng tin, lượt bình chọn thăm dò ý kiến"
+            ],
+            [
+              "Dữ liệu thanh toán",
+              "Gói đăng ký, mã tham chiếu nhà cung cấp thanh toán (chúng tôi không bao giờ lưu trữ số thẻ)"
+            ],
+            [
+              "Dữ liệu phân tích",
+              "Sự kiện sử dụng tính năng (ẩn danh, có thể từ chối tham gia)"
+            ],
+            [
+              "Dữ liệu phiên",
+              "Token truy cập, token làm mới, dấu thời gian đăng nhập"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Cách thức và lý do chúng tôi sử dụng dữ liệu của bạn",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Mục đích",
+            "Cơ sở pháp lý",
+            "Quyền kiểm soát của bạn"
+          ],
+          "rows": [
+            [
+              "Tạo tài khoản và xác thực",
+              "Hợp đồng",
+              "Xóa tài khoản"
+            ],
+            [
+              "Mô phỏng tiếng vang (xử lý nhân vật)",
+              "Sự đồng ý",
+              "Xóa Echo bất cứ lúc nào"
+            ],
+            [
+              "Tương tác Echo giữa các người dùng",
+              "Lợi ích hợp pháp",
+              "Bật/tắt Chế độ Solo"
+            ],
+            [
+              "Nhắn tin cộng đồng",
+              "Lợi ích hợp pháp",
+              "Từ chối tham gia cộng đồng"
+            ],
+            [
+              "Kiểm duyệt nội dung và an toàn",
+              "Lợi ích hợp pháp",
+              "—"
+            ],
+            [
+              "Quản lý gói đăng ký",
+              "Hợp đồng",
+              "Hủy đăng ký"
+            ],
+            [
+              "Phân tích và cải thiện dịch vụ",
+              "Lợi ích hợp pháp",
+              "Tùy chọn từ chối phân tích trong Cài đặt"
+            ],
+            [
+              "Thực thi và tuân thủ pháp luật",
+              "Nghĩa vụ pháp lý",
+              "—"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "4. Xử lý AI và suy luận cục bộ",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Tất cả các quá trình suy luận AI đều chạy cục bộ trên phần cứng của chính chúng tôi thông qua các mô hình mã nguồn mở. Dữ liệu cá nhân và các câu lệnh mô phỏng của bạn **không bao giờ được gửi đến nhà cung cấp AI bên thứ ba**. Đây là cam kết cốt lõi về quyền riêng tư — không có dữ liệu cá nhân nào rời khỏi cơ sở hạ tầng của chúng tôi để xử lý AI."
+        }
+      ]
+    },
+    {
+      "heading": "5. Thời gian chúng tôi lưu trữ dữ liệu của bạn",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Dữ liệu",
+            "Giữ chân"
+          ],
+          "rows": [
+            [
+              "Dữ liệu tài khoản và hồ sơ",
+              "Cho đến khi xóa + thời gian ân hạn 30 ngày"
+            ],
+            [
+              "Dữ liệu mô phỏng và chân dung người dùng",
+              "Cho đến khi Echo hoặc tài khoản bị xóa"
+            ],
+            [
+              "Tin nhắn cộng đồng",
+              "1 năm kể từ khi đăng"
+            ],
+            [
+              "Mã thông báo phiên",
+              "Truy cập: 1 giờ; Làm mới: 30 ngày; Nhật ký đăng nhập: 90 ngày"
+            ],
+            [
+              "Dữ liệu phân tích",
+              "lũy kế 6 tháng gần nhất"
+            ],
+            [
+              "Hồ sơ thanh toán",
+              "7 năm (yêu cầu pháp lý)"
+            ],
+            [
+              "Nhật ký kiểm duyệt",
+              "3 năm"
+            ],
+            [
+              "Hồ sơ chấp thuận",
+              "Thời hạn tài khoản + 5 năm"
+            ],
+            [
+              "Các tệp xuất dữ liệu",
+              "72 giờ sau khi tạo"
+            ],
+            [
+              "Bản sao lưu được mã hóa",
+              "xoay vòng cuốn chiếu 90 ngày"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "6. Quyền của bạn",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Theo GDPR và các luật về quyền riêng tư hiện hành, bạn có quyền:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Truy cập** — Yêu cầu một bản sao của tất cả dữ liệu cá nhân của bạn. Có sẵn tại Cài đặt → Quyền riêng tư → Xuất dữ liệu.",
+            "**Xóa dữ liệu** — Xóa tài khoản và tất cả dữ liệu liên quan. Có sẵn tại Cài đặt → Quyền riêng tư → Xóa tài khoản. Thời gian chờ 30 ngày cho phép hủy bỏ yêu cầu này.",
+            "**Khả năng di chuyển dữ liệu** — Xuất dữ liệu của bạn dưới định dạng có cấu trúc, máy có thể đọc được (JSON). Có sẵn tại Cài đặt → Quyền riêng tư → Xuất dữ liệu.",
+            "**Hiệu chỉnh** — Sửa đổi dữ liệu hồ sơ hoặc thông tin cá nhân không chính xác thông qua cài đặt tài khoản của bạn.",
+            "**Đối tượng** — Từ chối tương tác giữa những người dùng (Chế độ Solo), các tính năng cộng đồng hoặc phân tích trong Cài đặt → Quyền riêng tư.",
+            "**Rút lại sự đồng ý** — Xóa một Echo để thu hồi sự đồng ý xử lý persona. Xóa tài khoản của bạn để thu hồi tất cả sự đồng ý."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Để thực hiện bất kỳ quyền nào, hãy sử dụng các công cụ trong ứng dụng ở trên hoặc gửi email đến [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Chúng tôi sẽ phản hồi trong vòng 30 ngày."
+        }
+      ]
+    },
+    {
+      "heading": "7. Bảo mật dữ liệu",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Các trường PII được mã hóa khi lưu trữ bằng AES-256-GCM",
+            "Cơ sở dữ liệu được mã hóa bằng BitLocker",
+            "Bản sao lưu được mã hóa bằng Cryptomator (AES-256)",
+            "Tất cả dữ liệu trong quá trình truyền tải được mã hóa bằng TLS 1.3",
+            "Mật khẩu được băm bằng Argon2id (không bao giờ lưu dưới dạng văn bản thuần túy)",
+            "Các phiên làm việc sử dụng JWT được ký bằng Ed25519",
+            "Tất cả quyền truy cập dữ liệu của quản trị viên đều được ghi lại trong nhật ký kiểm tra chỉ ghi thêm."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Các bên xử lý thứ ba",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Dịch vụ",
+            "Dữ liệu được chia sẻ",
+            "Mục đích"
+          ],
+          "rows": [
+            [
+              "Stripe",
+              "Email, siêu dữ liệu thanh toán",
+              "Xử lý thanh toán bằng thẻ"
+            ],
+            [
+              "NOWPayments",
+              "Số tiền thanh toán",
+              "Thanh toán bằng tiền điện tử"
+            ],
+            [
+              "Xaman",
+              "Địa chỉ ví",
+              "Thanh toán bằng XRP"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Chúng tôi không bao giờ chia sẻ dữ liệu của bạn với bên thứ ba cho mục đích quảng cáo. Quá trình suy luận AI chạy hoàn toàn trên phần cứng của chính chúng tôi."
+        }
+      ]
+    },
+    {
+      "heading": "9. Dữ liệu của trẻ em",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes dành cho người dùng từ 16 tuổi trở lên. Chúng tôi không cố ý thu thập dữ liệu cá nhân từ bất kỳ ai dưới 16 tuổi. Nếu chúng tôi biết được người dùng dưới 16 tuổi, tài khoản của họ sẽ bị tạm đình chỉ để chờ xác minh."
+        }
+      ]
+    },
+    {
+      "heading": "10. Chuyển giao dữ liệu quốc tế",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hiện tại, tất cả dữ liệu được xử lý và lưu trữ trên cơ sở hạ tầng trong một khu vực pháp lý duy nhất. Không có hoạt động chuyển giao dữ liệu quốc tế nào diễn ra. Nếu điều này thay đổi trong tương lai, chúng tôi sẽ cập nhật chính sách này và đảm bảo các biện pháp bảo vệ phù hợp (Các điều khoản hợp đồng tiêu chuẩn hoặc quyết định về mức độ đầy đủ) được áp dụng."
+        }
+      ]
+    },
+    {
+      "heading": "11. Thông báo vi phạm dữ liệu",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Trong trường hợp xảy ra vi phạm dữ liệu cá nhân gây rủi ro cho quyền và tự do của bạn, chúng tôi sẽ thông báo cho cơ quan giám sát có thẩm quyền trong vòng 72 giờ theo Điều 33 của GDPR. Nếu vi phạm gây rủi ro cao cho bạn, chúng tôi sẽ thông báo trực tiếp cho bạn mà không chậm trễ bất hợp lý theo Điều 34 của GDPR."
+        }
+      ]
+    },
+    {
+      "heading": "12. Khiếu nại",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Nếu bạn không hài lòng với cách chúng tôi xử lý dữ liệu của bạn, vui lòng liên hệ với chúng tôi trước qua địa chỉ [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Bạn cũng có quyền gửi khiếu nại lên cơ quan giám sát bảo vệ dữ liệu tại địa phương."
+        }
+      ]
+    },
+    {
+      "heading": "13. Thay đổi đối với chính sách này",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Chúng tôi có thể cập nhật chính sách này theo thời gian. Những thay đổi quan trọng sẽ được thông báo qua email hoặc thông báo trong ứng dụng ít nhất 30 ngày trước khi có hiệu lực."
+        }
+      ]
+    }
+  ]
+}

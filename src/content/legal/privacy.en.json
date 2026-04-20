@@ -1,0 +1,136 @@
+{
+  "title": "Privacy Policy",
+  "lastUpdated": "31 March 2026",
+  "sections": [
+    {
+      "heading": "1. Who we are",
+      "blocks": [
+        { "type": "p", "text": "Multiverse Echoes is an Autonomous Life Simulation Platform operated by Echo Labs (\u201cwe\u201d, \u201cus\u201d, \u201cthe platform\u201d). We act as the data controller for all personal data processed through the platform." },
+        { "type": "p", "text": "For privacy enquiries, contact us at [conduct@echolabsme.com](mailto:conduct@echolabsme.com)." }
+      ]
+    },
+    {
+      "heading": "2. Data we collect",
+      "blocks": [
+        { "type": "table", "columns": ["Category", "Examples"], "rows": [
+          ["Account Data", "Email address, display name, hashed password"],
+          ["Profile Data", "Bio, avatar selection, timezone, language preference"],
+          ["Persona Data", "Echo personas, what-if prompts, age at creation"],
+          ["Simulation Data", "AI-generated diary entries, life events, relationships, memories"],
+          ["Community Data", "Channel messages, feed posts, poll votes"],
+          ["Payment Data", "Subscription tier, payment provider reference (we never store card numbers)"],
+          ["Analytics Data", "Feature usage events (anonymised, opt-out available)"],
+          ["Session Data", "Access tokens, refresh tokens, login timestamps"]
+        ]}
+      ]
+    },
+    {
+      "heading": "3. How and why we use your data",
+      "blocks": [
+        { "type": "table", "columns": ["Purpose", "Lawful Basis", "Your Control"], "rows": [
+          ["Account creation and authentication", "Contract", "Delete account"],
+          ["Echo simulation (persona processing)", "Consent", "Delete Echo any time"],
+          ["Cross-user Echo interactions", "Legitimate Interest", "Solo Mode toggle"],
+          ["Community messaging", "Legitimate Interest", "Community opt-out"],
+          ["Content moderation and safety", "Legitimate Interest", "\u2014"],
+          ["Subscription management", "Contract", "Cancel subscription"],
+          ["Analytics and service improvement", "Legitimate Interest", "Analytics opt-out in Settings"],
+          ["Enforcement and legal compliance", "Legal Obligation", "\u2014"]
+        ]}
+      ]
+    },
+    {
+      "heading": "4. AI processing and local inference",
+      "blocks": [
+        { "type": "p", "text": "All AI inference runs locally on our own hardware via open-source models. Your persona data and simulation prompts are **never sent to a third-party AI provider**. This is a core privacy commitment \u2014 no personal data leaves our infrastructure for AI processing." }
+      ]
+    },
+    {
+      "heading": "5. How long we keep your data",
+      "blocks": [
+        { "type": "table", "columns": ["Data", "Retention"], "rows": [
+          ["Account and profile data", "Until deletion + 30-day grace period"],
+          ["Persona and simulation data", "Until Echo or account deletion"],
+          ["Community messages", "1 year from posting"],
+          ["Session tokens", "Access: 1 hour; Refresh: 30 days; Login logs: 90 days"],
+          ["Analytics data", "6 months rolling"],
+          ["Payment records", "7 years (legal requirement)"],
+          ["Moderation records", "3 years"],
+          ["Consent records", "Duration of account + 5 years"],
+          ["Data export files", "72 hours after generation"],
+          ["Encrypted backups", "90-day rolling rotation"]
+        ]}
+      ]
+    },
+    {
+      "heading": "6. Your rights",
+      "blocks": [
+        { "type": "p", "text": "Under GDPR and applicable privacy laws, you have the right to:" },
+        { "type": "ul", "items": [
+          "**Access** \u2014 Request a copy of all your personal data. Available via Settings \u2192 Privacy \u2192 Export Data.",
+          "**Erasure** \u2014 Delete your account and all associated data. Available via Settings \u2192 Privacy \u2192 Delete Account. A 30-day grace period allows cancellation.",
+          "**Portability** \u2014 Export your data in a structured, machine-readable format (JSON). Available via Settings \u2192 Privacy \u2192 Export Data.",
+          "**Rectification** \u2014 Correct inaccurate profile or persona data through your account settings.",
+          "**Object** \u2014 Opt out of cross-user interactions (Solo Mode), community features, or analytics in Settings \u2192 Privacy.",
+          "**Withdraw consent** \u2014 Delete an Echo to revoke persona processing consent. Delete your account to revoke all consent."
+        ]},
+        { "type": "p", "text": "To exercise any right, use the in-app tools above or email [conduct@echolabsme.com](mailto:conduct@echolabsme.com). We respond within 30 days." }
+      ]
+    },
+    {
+      "heading": "7. Data security",
+      "blocks": [
+        { "type": "ul", "items": [
+          "PII fields encrypted at rest with AES-256-GCM",
+          "Database encrypted with BitLocker",
+          "Backups encrypted with Cryptomator (AES-256)",
+          "All data in transit encrypted with TLS 1.3",
+          "Passwords hashed with Argon2id (never stored in plaintext)",
+          "Sessions use Ed25519-signed JWTs",
+          "All admin data access logged in append-only audit logs"
+        ]}
+      ]
+    },
+    {
+      "heading": "8. Third-party processors",
+      "blocks": [
+        { "type": "table", "columns": ["Service", "Data Shared", "Purpose"], "rows": [
+          ["Stripe", "Email, billing metadata", "Card payment processing"],
+          ["NOWPayments", "Payment amount", "Cryptocurrency payments"],
+          ["Xaman", "Wallet address", "XRP payments"]
+        ]},
+        { "type": "p", "text": "We never share your data with third parties for advertising. AI inference runs entirely on our own hardware." }
+      ]
+    },
+    {
+      "heading": "9. Children\u2019s data",
+      "blocks": [
+        { "type": "p", "text": "Multiverse Echoes is for users aged 16 and over. We do not knowingly collect personal data from anyone under 16. If we learn that a user is under 16, their account will be suspended pending verification." }
+      ]
+    },
+    {
+      "heading": "10. International data transfers",
+      "blocks": [
+        { "type": "p", "text": "Currently, all data is processed and stored on infrastructure in a single jurisdiction. No international data transfers occur. If this changes in future, we will update this policy and ensure appropriate safeguards (Standard Contractual Clauses or adequacy decisions) are in place." }
+      ]
+    },
+    {
+      "heading": "11. Data breach notification",
+      "blocks": [
+        { "type": "p", "text": "In the event of a personal data breach that poses a risk to your rights and freedoms, we will notify the relevant supervisory authority within 72 hours per GDPR Article 33. If the breach poses a high risk to you, we will notify you directly without undue delay per GDPR Article 34." }
+      ]
+    },
+    {
+      "heading": "12. Complaints",
+      "blocks": [
+        { "type": "p", "text": "If you are unhappy with how we handle your data, please contact us first at [conduct@echolabsme.com](mailto:conduct@echolabsme.com). You also have the right to lodge a complaint with your local data protection supervisory authority." }
+      ]
+    },
+    {
+      "heading": "13. Changes to this policy",
+      "blocks": [
+        { "type": "p", "text": "We may update this policy from time to time. Material changes will be communicated via email or in-app notification at least 30 days before taking effect." }
+      ]
+    }
+  ]
+}

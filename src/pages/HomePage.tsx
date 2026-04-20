@@ -18,7 +18,7 @@ function SectionDivider() {
 }
 
 export function HomePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // Read auth state once at render — don't subscribe to changes so backend
   // failures can't trigger re-renders that break scroll animations.
   const isAuthenticated = useAuthStore.getState().isAuthenticated;
@@ -78,7 +78,8 @@ export function HomePage() {
         <meta property="og:title" content={t('website.home.ogTitle')} />
         <meta property="og:description" content={t('website.home.ogDesc')} />
         <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
-        <meta property="og:url" content="https://echolabsme.com/home" />
+        {/* og:url is emitted path-aware by WebsiteLayout so it matches the
+            active locale's URL (/es/home, /ja/plans, …). Don't hardcode here. */}
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@EchoLabsME" />
@@ -88,7 +89,8 @@ export function HomePage() {
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
             name: 'Multiverse Echoes',
-            description: 'AI-powered life simulation platform where autonomous digital selves live, write diaries, and experience life events in parallel worlds.',
+            description: t('website.home.metaDesc'),
+            inLanguage: i18n.language,
             url: 'https://echolabsme.com',
             applicationCategory: 'Simulation',
             operatingSystem: 'Web',

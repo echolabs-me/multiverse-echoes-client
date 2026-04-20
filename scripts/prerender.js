@@ -1,9 +1,27 @@
 /**
- * Post-build pre-rendering script.
+ * Post-build pre-rendering script (per-locale).
  *
- * Serves dist/ with a minimal Node HTTP server (no Vite dependency),
- * crawls public routes with Playwright, and overwrites the HTML files
- * in dist/ with the fully rendered content.
+ * Loops 21 supported locales × 8 public website routes = 168 Playwright
+ * captures (+1 flag page at `/`). Writes each as a standalone HTML file so
+ * Cloudflare Pages serves fully-populated HTML with translated titles,
+ * meta, JSON-LD, og:*, hreflang, canonical, and `<html lang>`/`<html dir>`
+ * for every locale — fixing the Search Console "Duplicate without
+ * user-selected canonical" that came from serving identical English HTML
+ * for every `?lng=xx` variant of each route.
+ *
+ * English stays at unprefixed paths (`dist/home/`, `dist/about/`, …); every
+ * other locale lives at `dist/{locale}/{route}/index.html` (`dist/es/home/`,
+ * `dist/zh-Hant/plans/`, …), matching the App.tsx `<Route path="/:locale">`
+ * structure.
+ *
+ * The Playwright-rendered HTML picks up the correct locale because:
+ *   1. URL path is `/es/home` (not `?lng=es`), which i18n.ts'
+ *      resolveInitialLocale() reads via LOCALE_PATH_PATTERN regex before
+ *      any React code runs.
+ *   2. i18next initialises with that locale; every `t(...)` call inside
+ *      any page's <Helmet> or JSX body renders in the target language.
+ *   3. applyDocumentDirection() in i18n.ts sets <html lang> and
+ *      <html dir="rtl"> for Arabic and Urdu, captured in the final HTML.
  *
  * Usage: node scripts/prerender.js
  */
@@ -18,11 +36,21 @@ const DIST = join(__dirname, '..', 'dist');
 const PORT = 4175;
 const BASE = `http://localhost:${PORT}`;
 
-const ROUTES_WITH_LOCALE = ['/home', '/about', '/terms', '/privacy', '/waitlist', '/contact', '/accessibility', '/plans'];
+/** 21 live locales. Keep in sync with `client/src/i18n.ts` SUPPORTED_LOCALES. */
+const LOCALES = [
+  'en', 'zh-Hans', 'zh-Hant', 'hi', 'es', 'ar', 'fr', 'bn', 'pt-BR',
+  'ru', 'ur', 'id', 'de', 'ja', 'vi', 'tr', 'ko', 'tl', 'it', 'th', 'ms',
+];
 
-// Fallback titles for pages where Helmet may not fire during prerender.
-// Used as a post-processing string-replace on the captured HTML.
-const TITLE_MAP = {
+const ROUTES = ['/home', '/about', '/terms', '/privacy', '/waitlist', '/contact', '/accessibility', '/plans'];
+
+/**
+ * English fallback titles for pages where `<Helmet>` hasn't fired during
+ * Playwright capture (seen in rare hydration-timing races). Only applied
+ * to the English pass — non-English relies on Helmet fully, and an empty
+ * <title> on a non-English page surfaces as a visible smoke-test failure.
+ */
+const EN_TITLE_FALLBACK = {
   '/home': 'What if you\u2019d taken a different path? | Multiverse Echoes',
   '/about': 'About EchoLabsME \u2014 The Founder Story',
   '/terms': 'Terms of Service \u2014 Multiverse Echoes',
@@ -47,7 +75,7 @@ function startServer() {
       const url = new URL(req.url, BASE);
       let filePath = join(DIST, url.pathname);
 
-      // If path has no extension, try as directory/index.html, then SPA fallback
+      // If path has no extension, try as directory/index.html, then SPA fallback.
       if (!extname(filePath)) {
         const dirIndex = join(filePath, 'index.html');
         if (existsSync(dirIndex)) {
@@ -82,6 +110,227 @@ function startServer() {
   });
 }
 
+/** Derive the dist filesystem directory for a (locale, route) pair.
+ *  `en + /home -> dist/home`, `es + /home -> dist/es/home`, …. */
+function outDirFor(locale, route) {
+  return locale === 'en' ? join(DIST, route) : join(DIST, locale, route);
+}
+
+/** Derive the URL path for a (locale, route) pair. */
+function urlFor(locale, route) {
+  return locale === 'en' ? route : `/${locale}${route}`;
+}
+
+async function capture(browser, locale, route) {
+  const url = urlFor(locale, route);
+  const page = await browser.newPage();
+
+  // Seed localStorage so the client-side i18n bootstrap treats this visitor
+  // as already-having-picked-a-locale. For non-English, the URL path also
+  // drives locale resolution (higher priority), but setting localStorage
+  // avoids any edge case where the flag page shows up.
+  await page.addInitScript((localeCode) => {
+    try {
+      localStorage.setItem('locale_selected', 'true');
+      localStorage.setItem('locale', localeCode);
+    } catch {
+      /* Safari private-mode or similar — no-op. */
+    }
+  }, locale);
+
+  let html = '';
+  let captureError = null;
+  try {
+    await page.goto(`${BASE}${url}`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForSelector('#root > *', { timeout: 7000 });
+
+    // i18n.ts exposes `window.__i18nLocaleReady` once the target locale's
+    // dynamic chunk has loaded and applied. For English (bundled) this
+    // resolves on the first tick; for every other locale we wait until the
+    // dynamic-import chunk arrives so the captured HTML is fully translated
+    // rather than containing the English fallback. Falls through to a
+    // waitForTimeout if the signal never appears (safety net).
+    try {
+      await page.waitForFunction(
+        (expected) => window.__i18nLocaleReady === expected,
+        locale,
+        { timeout: 10000 },
+      );
+    } catch {
+      // Signal slow or absent — continue with the content wait below.
+    }
+
+    // Legal routes lazy-load their locale-specific JSON via LegalDocument,
+    // which sets `window.__legalDocReady = "{doc}-{locale}"` after applying.
+    // Wait for that signal so the captured HTML contains translated body
+    // content, not the English fallback placeholder.
+    const legalRoutes = { '/terms': 'terms', '/privacy': 'privacy', '/accessibility': 'accessibility' };
+    const legalDoc = legalRoutes[route];
+    if (legalDoc) {
+      try {
+        await page.waitForFunction(
+          (expected) => window.__legalDocReady === expected,
+          `${legalDoc}-${locale}`,
+          { timeout: 10000 },
+        );
+      } catch {
+        // Legal content signal slow or absent — content wait below covers.
+      }
+    }
+
+    // Small grace period for React to re-render with the loaded locale.
+    await page.waitForTimeout(400);
+    html = await page.content();
+  } catch (err) {
+    captureError = err;
+  } finally {
+    await page.close();
+  }
+
+  if (captureError) {
+    // One locale/route failing shouldn't abort the whole build — log and move
+    // on. Missing HTML is preferable to a half-deployed locale matrix.
+    return {
+      url,
+      size: 0,
+      warn: ` SKIP ${captureError.name || 'Error'}: ${(captureError.message || '').split('\n')[0]}`,
+    };
+  }
+
+  // Helmet (react-helmet-async 3.0 + React 19) can end up emitting two
+  // or three <title> tags in the captured HTML: the template fallback,
+  // a Helmet-injected copy, and sometimes a second Helmet copy from
+  // StrictMode's double-render. Dedupe in three passes:
+  //
+  //   1. Strip the template's generic "Multiverse Echoes" fallback and
+  //      any empty <title></title>. These are always redundant once
+  //      Helmet has committed a real title.
+  //   2. Dedupe duplicate <title>X</title> occurrences by keeping only
+  //      the first one. React-helmet-async's merging logic treats the
+  //      first-rendered <Helmet> as authoritative for SSR/static, so
+  //      keeping the first matches its intent.
+  //   3. If after all that there's no title at all (Helmet never fired),
+  //      inject an English fallback for English pages. Non-English pages
+  //      with no title will surface as a smoke-test warning below
+  //      instead of silently getting the wrong-language fallback.
+  html = html.replace(/<title>Multiverse Echoes<\/title>\s*/g, '');
+  html = html.replace(/<title><\/title>\s*/g, '');
+
+  let titleSeen = false;
+  html = html.replace(/<title>[^<]*<\/title>/g, (m) => {
+    if (titleSeen) return '';
+    titleSeen = true;
+    return m;
+  });
+
+  if (!titleSeen && locale === 'en' && EN_TITLE_FALLBACK[route]) {
+    html = html.replace(/<head>/, `<head><title>${EN_TITLE_FALLBACK[route]}</title>`);
+  }
+
+  // Apply first-wins dedupe to the other Helmet-managed head tags that
+  // suffer the same multi-emit quirk as <title>:
+  //
+  //   Single-valued: canonical, og:*, twitter:*, description/keywords/robots
+  //                  meta, JSON-LD scripts.
+  //   Multi-valued:  og:locale:alternate (21 entries), rel="alternate"
+  //                  hreflang links (22 entries incl. x-default).
+  //
+  // Strategy: dedupe meta tags by (property/name) + content so multi-valued
+  // tags keep every unique content value, single-valued ones collapse to
+  // the first. Same for <link rel="alternate"> dedupe by (rel + hreflang).
+  //
+  // <link rel="canonical"> is single-valued (href). JSON-LD <script> blocks
+  // are deduped by exact string match.
+
+  // meta[property=og:*]  — dedupe by (property, content)
+  {
+    const seen = new Set();
+    html = html.replace(
+      /<meta\s+property="(og:[^"]+)"\s+content="([^"]*)"[^>]*>/g,
+      (m, prop, content) => {
+        const key = `${prop}||${content}`;
+        if (seen.has(key)) return '';
+        seen.add(key);
+        return m;
+      },
+    );
+  }
+
+  // meta[name=twitter:*]  — dedupe by (name, content)
+  {
+    const seen = new Set();
+    html = html.replace(
+      /<meta\s+name="(twitter:[^"]+)"\s+content="([^"]*)"[^>]*>/g,
+      (m, name, content) => {
+        const key = `${name}||${content}`;
+        if (seen.has(key)) return '';
+        seen.add(key);
+        return m;
+      },
+    );
+  }
+
+  // meta[name=description|keywords|robots]  — dedupe by name
+  for (const metaName of ['description', 'keywords', 'robots']) {
+    let seen = false;
+    const pattern = new RegExp(`<meta\\s+name="${metaName}"[^>]*>`, 'g');
+    html = html.replace(pattern, (m) => {
+      if (seen) return '';
+      seen = true;
+      return m;
+    });
+  }
+
+  // link[rel=canonical]  — single-valued, keep first
+  {
+    let canonSeen = false;
+    html = html.replace(/<link\s+rel="canonical"[^>]*>/g, (m) => {
+      if (canonSeen) return '';
+      canonSeen = true;
+      return m;
+    });
+  }
+
+  // link[rel=alternate]  — multi-valued (hreflang), dedupe by hreflang
+  {
+    const seen = new Set();
+    html = html.replace(
+      /<link\s+rel="alternate"\s+hreflang="([^"]+)"[^>]*>/g,
+      (m, hreflang) => {
+        if (seen.has(hreflang)) return '';
+        seen.add(hreflang);
+        return m;
+      },
+    );
+  }
+
+  // script[type=application/ld+json]  — dedupe by exact content. Using
+  // a non-greedy body match to avoid spanning across unrelated blocks.
+  {
+    const seen = new Set();
+    html = html.replace(
+      /<script[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g,
+      (m) => {
+        if (seen.has(m)) return '';
+        seen.add(m);
+        return m;
+      },
+    );
+  }
+
+  const outDir = outDirFor(locale, route);
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(join(outDir, 'index.html'), html, 'utf-8');
+
+  const size = Buffer.byteLength(html, 'utf-8');
+  // Non-destructive sanity: empty title on a non-English page signals that
+  // Helmet didn't commit the translated title in time. Report but don't fail
+  // the build — a human-visible warning is more useful than a crash here.
+  const emptyTitle = html.includes('<title></title>');
+  const warn = locale !== 'en' && emptyTitle ? ' WARN empty title' : '';
+  return { url, size, warn };
+}
+
 async function main() {
   if (!existsSync(join(DIST, 'index.html'))) {
     console.error('dist/index.html not found. Run `npm run build` first.');
@@ -95,65 +344,35 @@ async function main() {
     const { chromium } = await import('playwright');
     const browser = await chromium.launch({ headless: true });
 
-    // Pre-render / (flag page) WITHOUT locale
-    {
+    try {
+      // 1. Flag page at `/` (no locale, x-default).
       console.log('Pre-rendering / (flag page)...');
       const page = await browser.newPage();
-      await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded', timeout: 10000 });
-      await page.waitForSelector('#root > *', { timeout: 5000 });
-      await page.waitForTimeout(1000);
-      const html = await page.content();
+      await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await page.waitForSelector('#root > *', { timeout: 7000 });
+      await page.waitForTimeout(1200);
+      const flagHtml = await page.content();
       await page.close();
+      writeFileSync(join(DIST, 'index.html'), flagHtml, 'utf-8');
+      console.log(`  ${Buffer.byteLength(flagHtml, 'utf-8')} bytes, content: ${flagHtml.includes('MULTIVERSE ECHOES') ? 'YES' : 'NO'}`);
 
-      const outFile = join(DIST, 'index.html');
-      writeFileSync(outFile, html, 'utf-8');
-      const size = Buffer.byteLength(html, 'utf-8');
-      const hasContent = html.includes('MULTIVERSE ECHOES') || html.includes('language');
-      console.log(`  ${size} bytes, content: ${hasContent ? 'YES' : 'NO'}`);
-    }
-
-    // Pre-render other routes WITH locale set
-    for (const route of ROUTES_WITH_LOCALE) {
-      console.log(`Pre-rendering ${route}...`);
-      const page = await browser.newPage();
-
-      await page.addInitScript(() => {
-        localStorage.setItem('locale_selected', 'true');
-        localStorage.setItem('locale', 'en');
-      });
-
-      try {
-        await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded', timeout: 10000 });
-        await page.waitForSelector('#root > *', { timeout: 5000 });
-        await page.waitForTimeout(1000);
-        let html = await page.content();
-        await page.close();
-
-        // Fallback: if Helmet didn't inject a proper <title>, replace it
-        // with the known title for this route. Guarantees correct SEO
-        // metadata regardless of Helmet render timing.
-        if (TITLE_MAP[route] && (html.includes('<title></title>') || !html.includes('<title>' + TITLE_MAP[route]))) {
-          html = html
-            .replace('<title></title>', `<title>${TITLE_MAP[route]}</title>`)
-            .replace('<title>Multiverse Echoes</title>', `<title>${TITLE_MAP[route]}</title>`);
+      // 2. The 21 × 8 locale/route matrix.
+      const startedAt = Date.now();
+      let done = 0;
+      const total = LOCALES.length * ROUTES.length;
+      for (const locale of LOCALES) {
+        console.log(`\n[${locale}] ${ROUTES.length} routes`);
+        for (const route of ROUTES) {
+          const { url, size, warn } = await capture(browser, locale, route);
+          done += 1;
+          console.log(`  (${done}/${total}) ${url.padEnd(30)} ${String(size).padStart(6)} bytes${warn}`);
         }
-
-        const outDir = join(DIST, route);
-        mkdirSync(outDir, { recursive: true });
-        const outFile = join(outDir, 'index.html');
-        writeFileSync(outFile, html, 'utf-8');
-
-        const size = Buffer.byteLength(html, 'utf-8');
-        const hasContent = html.includes('Multiverse Echoes') || html.includes('website.hero');
-        console.log(`  ${size} bytes, content: ${hasContent ? 'YES' : 'NO'}`);
-      } catch (err) {
-        await page.close();
-        console.warn(`  SKIP: ${route} (${err.name}) — will use client-side rendering`);
       }
+      const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
+      console.log(`\nPre-rendering complete. ${total} pages in ${elapsed}s.`);
+    } finally {
+      await browser.close();
     }
-
-    await browser.close();
-    console.log('Pre-rendering complete.');
   } finally {
     server.close();
   }

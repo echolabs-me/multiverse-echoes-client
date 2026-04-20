@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useParams } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
+import { SUPPORTED_LOCALES, type SupportedLocale } from './i18n.ts';
 import { SkipLink, ToastContainer } from './components/index.ts';
 import { AppLayout } from './components/AppLayout.tsx';
 import { WebsiteLayout } from './components/website/WebsiteLayout.tsx';
@@ -47,6 +49,59 @@ function hasSelectedLocale(): boolean {
   return localStorage.getItem('locale_selected') === 'true';
 }
 
+/**
+ * Compute the post-flag-page landing URL for a return visitor.
+ * English (the default) -> `/home`; any other supported locale -> `/{locale}/home`.
+ * Fallback to `/home` if the stored locale has gone stale or unsupported.
+ */
+function rememberedHome(): string {
+  if (typeof localStorage === 'undefined') return '/home';
+  const stored = localStorage.getItem('locale');
+  if (!stored || !(SUPPORTED_LOCALES as readonly string[]).includes(stored)) {
+    return '/home';
+  }
+  return stored === 'en' ? '/home' : `/${stored}/home`;
+}
+
+/**
+ * Route wrapper for locale-prefixed URLs (e.g. `/es/home`, `/zh-Hant/plans`).
+ *
+ * Responsibilities:
+ *   1. Validate the URL's `:locale` segment against SUPPORTED_LOCALES.
+ *     If invalid, render the 404 page so we don't serve a broken localized
+ *     page under a bogus locale code (important for SEO — no ghost URLs).
+ *   2. On client-side navigation INTO a locale prefix (e.g. user switching
+ *     from `/home` to `/es/home` via the language picker), call
+ *     `i18n.changeLanguage(locale)` so the page re-renders in that locale
+ *     and `<html lang>`/`<html dir>` update via the languageChanged hook.
+ *
+ * Bootstrap-time (initial page load) locale resolution happens in
+ * `resolveInitialLocale()` in `i18n.ts`, which reads the URL path prefix
+ * directly. That covers the SSR/prerender case where this component's
+ * `useEffect` hasn't run yet.
+ */
+function LocaleRoute() {
+  const { locale } = useParams<{ locale: string }>();
+  const { i18n } = useTranslation();
+  const isValid =
+    !!locale && (SUPPORTED_LOCALES as readonly string[]).includes(locale);
+
+  useEffect(() => {
+    if (isValid && locale && i18n.language !== locale) {
+      void i18n.changeLanguage(locale as SupportedLocale);
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('locale', locale);
+        localStorage.setItem('locale_selected', 'true');
+      }
+    }
+  }, [locale, isValid, i18n]);
+
+  if (!isValid) {
+    return <NotFoundPage />;
+  }
+  return <Outlet />;
+}
+
 export function App() {
   const initialize = useAuthStore((s) => s.initialize);
 
@@ -60,19 +115,20 @@ export function App() {
         <SkipLink />
         <ToastContainer />
         <Routes>
-          {/* Root: flag page or redirect to /home */}
+          {/* Root: flag page for first-touch visitors; return visitors skip
+              it and go straight to their remembered locale's home. */}
           <Route
             path="/"
             element={
               hasSelectedLocale() ? (
-                <Navigate to="/home" replace />
+                <Navigate to={rememberedHome()} replace />
               ) : (
                 <LanguageSelectionPage />
               )
             }
           />
 
-          {/* Public website routes — with website nav + footer */}
+          {/* Public website routes — English (unprefixed). */}
           <Route element={<WebsiteLayout />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
@@ -82,6 +138,24 @@ export function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/accessibility" element={<AccessibilityPage />} />
             <Route path="/plans" element={<PlansPage />} />
+          </Route>
+
+          {/* Public website routes — locale-prefixed (e.g. /es/home, /zh-Hant/plans).
+              English lives at the unprefixed root above per convention; the
+              other 20 locales live here. LocaleRoute validates the :locale
+              param and calls i18n.changeLanguage on client-side navigation. */}
+          <Route path="/:locale" element={<LocaleRoute />}>
+            <Route index element={<Navigate to="home" replace />} />
+            <Route element={<WebsiteLayout />}>
+              <Route path="home" element={<HomePage />} />
+              <Route path="about" element={<AboutPage />} />
+              <Route path="terms" element={<TermsPage />} />
+              <Route path="privacy" element={<PrivacyPolicyPage />} />
+              <Route path="waitlist" element={<WaitlistPage />} />
+              <Route path="contact" element={<ContactPage />} />
+              <Route path="accessibility" element={<AccessibilityPage />} />
+              <Route path="plans" element={<PlansPage />} />
+            </Route>
           </Route>
 
           {/* Legacy routes — redirect to new paths */}
