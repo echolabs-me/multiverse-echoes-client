@@ -299,6 +299,15 @@ export type DataAccessLog = {
 	resource: string,
 	reason: string,
 	timestamp: string,
+	/**
+	 *  Restricted-access marker (ME-PDP-001 §6.3; ME-TSP-001 §2.2).
+	 *  Set to `true` for accesses to content or metadata that is
+	 *  itself legally restricted — currently only CSAM evidence
+	 *  bundles and the admin endpoints that manipulate their
+	 *  incident records. The `/admin/audit-log` endpoint surfaces
+	 *  this flag so restricted accesses can be queried separately.
+	 */
+	restricted?: boolean,
 };
 
 export type DataAccessType = "Read" | "Export" | "Modify" | "Delete" | "AdminView";
@@ -594,7 +603,17 @@ export type EnforcementAction = {
 	expires_at: string | null,
 };
 
-export type EnforcementActionType = "MessageDeleted" | "UserMuted" | "UserChannelBanned" | "ChannelLocked" | "Warning" | "Quarantine" | "Suspension" | "Ban" | "FalsePositiveRestoration";
+export type EnforcementActionType = "MessageDeleted" | "UserMuted" | "UserChannelBanned" | "ChannelLocked" | "Warning" | "Quarantine" | "Suspension" | "Ban" | "FalsePositiveRestoration" | 
+/**
+ *  Account action taken as a consequence of a Cloudflare CSAM
+ *  Scanning Tool match (ME-TSP-001 §2.2). Emitted when an admin
+ *  files a `CSAMIncident` record; the structured audit trail is
+ *  the incident record itself (evidence bundle, NCMEC report id,
+ *  regional report id, preservation-locked flag). See
+ *  `crates/core/src/models/csam_incident.rs` and
+ *  `crates/safety/src/csam_preservation.rs`.
+ */
+"CsamMatch";
 
 // Source of an analytics event.
 export type EventSource = "Client" | "Engine";
@@ -1307,6 +1326,20 @@ export type ShardTheme = {
 
 export type ShardType = "Public" | "Private" | "Personal";
 
+/**
+ *  Off-platform social handle surfaced on the public profile.
+ * 
+ *  `platform` is a short identifier (e.g. "twitter", "github", "mastodon")
+ *  validated against the platform allowlist at write time. `url` is the
+ *  full URL (scheme + host allowlist enforced). Stored as a flat Vec on
+ *  `User` rather than a side table — the set is small (O(5)) and always
+ *  read with the user row.
+ */
+export type SocialLink = {
+	platform: string,
+	url: string,
+};
+
 // Story export job for Echo timeline rendering. Reference: ME-UAD-001 §5.4.
 export type StoryExport = {
 	export_id: string,
@@ -1443,6 +1476,19 @@ export type User = {
 	 *  `POST /account/me/profile/avatar`. None = default placeholder on client.
 	 */
 	avatar_url?: string | null,
+	/**
+	 *  Off-platform social links surfaced on the public profile. Each link
+	 *  is validated at write time (scheme + host allowlist per
+	 *  ME-UAD-001 §2.3). Empty vec for accounts that predate this field.
+	 */
+	social_links?: SocialLink[],
+	/**
+	 *  Opt-in flag controlling whether other authenticated users can
+	 *  discover this user's Echo stories via the public feed. Defaults to
+	 *  `false` — public visibility is opt-in, not opt-out, per the
+	 *  platform's privacy-by-default posture. Reference: ME-UAD-001 §2.3.
+	 */
+	public_echo_feed?: boolean,
 };
 
 export type UserInventory = {
