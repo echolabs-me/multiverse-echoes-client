@@ -143,6 +143,27 @@ const TIERS: Tier[] = [
   },
 ];
 
+/** Signature colour for each tier. Drives the small dot beside the tier name
+ *  on tier cards and the tier-coloured name inside add-on eligibility lines,
+ *  so a visitor can visually match "my tier" to "my eligible add-ons".
+ *
+ *  Expressed as Tailwind arbitrary-value classes (rather than a hex lookup +
+ *  inline style={}) to satisfy the CSP style-src: no 'unsafe-inline' rule. */
+const TIER_DOT_BG: Record<TierKey, string> = {
+  free: 'bg-[#dc5050]',
+  starter: 'bg-[#4caf7d]',
+  core: 'bg-[#d4915c]',
+  creator: 'bg-[#8b7ec8]',
+  godMode: 'bg-[#f5c842]',
+};
+const TIER_NAME_TEXT: Record<TierKey, string> = {
+  free: 'text-[#dc5050]',
+  starter: 'text-[#4caf7d]',
+  core: 'text-[#d4915c]',
+  creator: 'text-[#8b7ec8]',
+  godMode: 'text-[#f5c842]',
+};
+
 interface AddOn {
   key: AddOnKey;
   emoji: string;
@@ -150,8 +171,6 @@ interface AddOn {
   price: string;
   recurring?: boolean;
   descKey: string;
-  highlight?: boolean;
-  showcaseHl?: boolean;
 }
 
 type AddOnKey =
@@ -215,8 +234,8 @@ const ADDON_MATRIX: Record<AddOnKey, Record<TierKey, AddOnAvailability>> = {
 };
 
 const ADD_ONS: AddOn[] = [
-  { key: 'speed_boost', emoji: '⚡', nameKey: 'tiers.addOns.speedBoost', price: '$4.99', recurring: true, descKey: 'tiers.addOns.speedBoostDesc', highlight: true },
-  { key: 'video_voice_boost', emoji: '🎬', nameKey: 'tiers.addOns.videoVoiceBoost', price: '$3.99', recurring: true, descKey: 'tiers.addOns.videoVoiceBoostDesc', showcaseHl: true },
+  { key: 'speed_boost', emoji: '⚡', nameKey: 'tiers.addOns.speedBoost', price: '$4.99', recurring: true, descKey: 'tiers.addOns.speedBoostDesc' },
+  { key: 'video_voice_boost', emoji: '🎬', nameKey: 'tiers.addOns.videoVoiceBoost', price: '$3.99', recurring: true, descKey: 'tiers.addOns.videoVoiceBoostDesc' },
   { key: 'extra_echo', emoji: '🎭', nameKey: 'tiers.addOns.extraEcho', price: '$5', recurring: true, descKey: 'tiers.addOns.extraEchoDesc' },
   { key: 'nudge_100_pack', emoji: '💬', nameKey: 'tiers.addOns.nudgePack', price: '$2.99', descKey: 'tiers.addOns.nudgePackDesc' },
   { key: 'premium_actions_20_pack', emoji: '✨', nameKey: 'tiers.addOns.premiumActionsPack', price: '$3.99', descKey: 'tiers.addOns.premiumActionsPackDesc' },
@@ -274,8 +293,14 @@ export function PricingSection() {
                 {tier.icon}
               </div>
 
-              {/* Name + tagline */}
-              <h3 className="mb-1 font-serif text-2xl font-bold text-[var(--text-primary)]">{t(tier.nameKey)}</h3>
+              {/* Name + tagline (colored dot anchors tier-colour identity) */}
+              <h3 className="mb-1 font-serif text-2xl font-bold text-[var(--text-primary)]">
+                {t(tier.nameKey)}
+                <span
+                  aria-hidden="true"
+                  className={`ml-2 inline-block h-2.5 w-2.5 rounded-full align-middle ${TIER_DOT_BG[tier.key]}`}
+                />
+              </h3>
               <p className="mb-5 min-h-[36px] text-[13px] text-[var(--text-muted)]">{t(tier.tagline)}</p>
 
               {/* Price */}
@@ -364,42 +389,60 @@ export function PricingSection() {
           </div>
           <div className="grid gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
             {ADD_ONS.map((addon) => {
-              const availableTiers: string[] = [];
-              const includedEntries: { tierName: string; count: number }[] = [];
+              const availableTierEntries: { key: TierKey; name: string }[] = [];
+              const includedEntries: { key: TierKey; name: string; count: number }[] = [];
               TIERS.forEach((tier) => {
                 const availability = ADDON_MATRIX[addon.key][tier.key];
                 if (availability === 'available') {
-                  availableTiers.push(t(tier.nameKey));
+                  availableTierEntries.push({ key: tier.key, name: t(tier.nameKey) });
                 } else if (typeof availability === 'object' && 'included' in availability) {
-                  includedEntries.push({ tierName: t(tier.nameKey), count: availability.included });
+                  includedEntries.push({ key: tier.key, name: t(tier.nameKey), count: availability.included });
                 }
               });
+              // Marker strings never appear in real translations — safe to split on.
+              const TIERS_MARK = '\u0000TIERS\u0000';
+              const TIER_MARK = '\u0000TIER\u0000';
+              const showEligibility = availableTierEntries.length > 0 || includedEntries.length > 0;
               return (
                 <div
                   key={addon.nameKey}
-                  className={`rounded-xl border p-5 transition-all duration-300 hover:bg-[#161E27] ${
-                    addon.highlight
-                      ? 'border-[rgba(212,145,92,0.3)] bg-gradient-to-br from-[#111920] to-[rgba(212,145,92,0.04)]'
-                      : addon.showcaseHl
-                        ? 'border-[rgba(76,168,175,0.3)] bg-gradient-to-br from-[#111920] to-[rgba(76,168,175,0.04)]'
-                        : 'border-[#1E2A36] bg-[#111920]'
-                  }`}
+                  className="rounded-xl border border-[#1E2A36] bg-[#111920] p-5 transition-all duration-300 hover:bg-[#161E27]"
                 >
                   <div className="mb-3 text-2xl">{addon.emoji}</div>
                   <h4 className="mb-1 text-[15px] font-semibold text-[var(--text-primary)]">{t(addon.nameKey)}</h4>
                   <p className="mb-2 text-lg font-bold text-[var(--accent)]">{addon.price}{addon.recurring ? t('payment.perMonth') : ''}</p>
                   <p className="mb-3 text-xs leading-relaxed text-[var(--text-muted)]">{t(addon.descKey)}</p>
-                  {(availableTiers.length > 0 || includedEntries.length > 0) && (
+                  {showEligibility && (
                     <div className="border-t border-[var(--border)] pt-2.5 text-[11px] leading-snug text-[var(--text-muted)]">
-                      {availableTiers.length > 0 && (
-                        <div>{t('tiers.addOns.availableOn', { tiers: availableTiers.join(', ') })}</div>
-                      )}
+                      {availableTierEntries.length > 0 && (() => {
+                        const parts = t('tiers.addOns.availableOn', { tiers: TIERS_MARK }).split(TIERS_MARK);
+                        return (
+                          <div>
+                            {parts[0]}
+                            {availableTierEntries.map((e, i) => (
+                              <span key={e.key}>
+                                <span className={`font-medium ${TIER_NAME_TEXT[e.key]}`}>{e.name}</span>
+                                {i < availableTierEntries.length - 1 && ', '}
+                              </span>
+                            ))}
+                            {parts[1] ?? ''}
+                          </div>
+                        );
+                      })()}
                       {includedEntries.length > 0 && (
-                        <div className={availableTiers.length > 0 ? 'mt-0.5' : ''}>
+                        <div className={availableTierEntries.length > 0 ? 'mt-0.5' : ''}>
                           {t('tiers.addOns.includedPrefix')}{' '}
-                          {includedEntries
-                            .map((e) => t('tiers.addOns.includedOnTier', { count: e.count, tier: e.tierName }))
-                            .join(', ')}
+                          {includedEntries.map((e, i) => {
+                            const parts = t('tiers.addOns.includedOnTier', { count: e.count, tier: TIER_MARK }).split(TIER_MARK);
+                            return (
+                              <span key={e.key}>
+                                {parts[0]}
+                                <span className={`font-medium ${TIER_NAME_TEXT[e.key]}`}>{e.name}</span>
+                                {parts[1] ?? ''}
+                                {i < includedEntries.length - 1 && ', '}
+                              </span>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
