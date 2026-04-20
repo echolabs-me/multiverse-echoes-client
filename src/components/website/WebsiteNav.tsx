@@ -71,7 +71,7 @@ export function WebsiteNav() {
   const linkClass =
     'font-serif text-sm tracking-wider transition-colors ' +
     (scrolled
-      ? 'text-[var(--text-secondary)] hover:text-[var(--accent)]'
+      ? 'text-(--text-secondary) hover:text-(--accent)'
       : 'text-[rgba(232,224,216,0.7)] hover:text-[#E8E0D8]');
 
   // Accent-pill treatment so the language switcher reads as a single,
@@ -79,7 +79,7 @@ export function WebsiteNav() {
   // current language name; tinted accent background + border that
   // intensifies on hover without clashing with the serif nav tone.
   const langButtonClass =
-    'flex items-center gap-1.5 rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-3 py-1 font-serif text-xs tracking-wider text-[var(--accent)] transition-all hover:border-[var(--accent)] hover:bg-[var(--accent)]/20';
+    'flex items-center gap-1.5 rounded-full border border-(--accent)/40 bg-(--accent)/10 px-3 py-1 font-serif text-xs tracking-wider text-(--accent) transition-all hover:border-(--accent) hover:bg-(--accent)/20';
 
   return (
     <header
@@ -122,14 +122,14 @@ export function WebsiteNav() {
           {showWaitlistCta ? (
             <Link
               to="/waitlist"
-              className="rounded-md bg-[var(--accent)] px-5 py-2 font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a] hover:shadow-[0_0_20px_rgba(212,145,92,0.15)]"
+              className="rounded-md bg-(--accent) px-5 py-2 font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a] hover:shadow-[0_0_20px_rgba(212,145,92,0.15)]"
             >
               {t('auth.joinWaitlist')} ▸
             </Link>
           ) : (
             <Link
               to={enterTo}
-              className="rounded-md bg-[var(--accent)] px-5 py-2 font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a] hover:shadow-[0_0_20px_rgba(212,145,92,0.15)]"
+              className="rounded-md bg-(--accent) px-5 py-2 font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a] hover:shadow-[0_0_20px_rgba(212,145,92,0.15)]"
             >
               {enterLabel} ▸
             </Link>
@@ -180,33 +180,33 @@ export function WebsiteNav() {
             <Link
               to="/home"
               onClick={handleHomeClick}
-              className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
+              className="font-serif text-base tracking-wider text-(--text-secondary) hover:text-(--accent)"
             >
               {t('website.nav.home')}
             </Link>
             <button
               onClick={() => scrollToSection('features')}
-              className="text-start font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
+              className="text-start font-serif text-base tracking-wider text-(--text-secondary) hover:text-(--accent)"
             >
               {t('website.nav.features')}
             </button>
             <button
               onClick={() => scrollToSection('pricing')}
-              className="text-start font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
+              className="text-start font-serif text-base tracking-wider text-(--text-secondary) hover:text-(--accent)"
             >
               {t('website.nav.pricing')}
             </button>
             <Link
               to="/about"
               onClick={() => setMenuOpen(false)}
-              className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
+              className="font-serif text-base tracking-wider text-(--text-secondary) hover:text-(--accent)"
             >
               {t('website.nav.about')}
             </Link>
             <Link
               to="/contact"
               onClick={() => setMenuOpen(false)}
-              className="font-serif text-base tracking-wider text-[var(--text-secondary)] hover:text-[var(--accent)]"
+              className="font-serif text-base tracking-wider text-(--text-secondary) hover:text-(--accent)"
             >
               {t('website.nav.contact')}
             </Link>
@@ -230,7 +230,7 @@ export function WebsiteNav() {
             <Link
               to={showWaitlistCta ? '/waitlist' : enterTo}
               onClick={() => setMenuOpen(false)}
-              className="mt-2 rounded-md bg-[var(--accent)] py-3 text-center font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a]"
+              className="mt-2 rounded-md bg-(--accent) py-3 text-center font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a]"
             >
               {showWaitlistCta ? t('auth.joinWaitlist') : enterLabel} ▸
             </Link>

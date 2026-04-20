@@ -27,7 +27,7 @@ export function WebsiteLayout() {
   }, [pathname, hash]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--canvas)]">
+    <div className="flex min-h-screen flex-col bg-(--canvas)">
       <Helmet>
         <link rel="canonical" href={`${CANONICAL_BASE}${pathname}`} />
         <meta property="og:url" content={`${CANONICAL_BASE}${pathname}`} />

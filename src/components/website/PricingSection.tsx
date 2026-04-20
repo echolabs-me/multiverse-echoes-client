@@ -243,7 +243,7 @@ const ADD_ONS: AddOn[] = [
 ];
 
 const ICON_MAP = { check: '✓', x: '✗', star: '★', addon: '✓' };
-const COLOR_MAP = { check: 'text-[#4CAF7D]', x: 'text-[var(--text-muted)] opacity-50', star: 'text-[#C9A84C]', addon: 'text-[#4CAF7D]' };
+const COLOR_MAP = { check: 'text-[#4CAF7D]', x: 'text-(--text-muted) opacity-50', star: 'text-[#C9A84C]', addon: 'text-[#4CAF7D]' };
 
 export function PricingSection() {
   const { t } = useTranslation();
@@ -252,14 +252,14 @@ export function PricingSection() {
 
   return (
     <section id="pricing" className="section-reveal px-4 pb-24 pt-28 sm:px-6">
-      <div className="mx-auto max-w-[1360px]">
+      <div className="mx-auto max-w-340">
         {/* Header */}
         <div className="mb-14 text-center">
-          <p className="mb-6 font-serif text-xs uppercase tracking-[4px] text-[var(--accent)]">{t('website.pricing.eyebrow')}</p>
-          <h2 className="mb-4 font-serif text-4xl font-semibold text-[var(--text-primary)]">
+          <p className="mb-6 font-serif text-xs uppercase tracking-[4px] text-(--accent)">{t('website.pricing.eyebrow')}</p>
+          <h2 className="mb-4 font-serif text-4xl font-semibold text-(--text-primary)">
             {t('website.pricing.headline')}
           </h2>
-          <p className="mx-auto max-w-xl text-[var(--text-secondary)]">
+          <p className="mx-auto max-w-xl text-(--text-secondary)">
             {t('website.pricing.subheadline')}
           </p>
         </div>
@@ -271,19 +271,19 @@ export function PricingSection() {
               key={tier.nameKey}
               className={`relative flex flex-col rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.3)] ${
                 tier.popular
-                  ? 'border-[var(--accent)] bg-[#1A2330] shadow-[0_0_40px_rgba(212,145,92,0.15)]'
+                  ? 'border-(--accent) bg-[#1A2330] shadow-[0_0_40px_rgba(212,145,92,0.15)]'
                   : tier.god
                     ? 'border-[#C9A84C] bg-[#111920] shadow-[0_0_30px_rgba(201,168,76,0.1)]'
                     : 'border-[#1E2A36] bg-[#111920]'
               }`}
             >
               {tier.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[var(--accent)] px-4 py-1 text-[11px] font-bold uppercase tracking-[1.5px] text-[#0A0F14]">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-(--accent) px-4 py-1 text-[11px] font-bold uppercase tracking-[1.5px] text-[#0A0F14]">
                   {t('tiers.mostPopular')}
                 </span>
               )}
               {tier.god && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gradient-to-r from-[#C9A84C] to-[#E0C060] px-4 py-1 text-[11px] font-bold uppercase tracking-[1.5px] text-[#0A0F14]">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-linear-to-r from-[#C9A84C] to-[#E0C060] px-4 py-1 text-[11px] font-bold uppercase tracking-[1.5px] text-[#0A0F14]">
                   {t('tiers.ultimate')}
                 </span>
               )}
@@ -294,24 +294,24 @@ export function PricingSection() {
               </div>
 
               {/* Name + tagline (colored dot anchors tier-colour identity) */}
-              <h3 className="mb-1 font-serif text-2xl font-bold text-[var(--text-primary)]">
+              <h3 className="mb-1 font-serif text-2xl font-bold text-(--text-primary)">
                 {t(tier.nameKey)}
                 <span
                   aria-hidden="true"
                   className={`ml-2 inline-block h-2.5 w-2.5 rounded-full align-middle ${TIER_DOT_BG[tier.key]}`}
                 />
               </h3>
-              <p className="mb-5 min-h-[36px] text-[13px] text-[var(--text-muted)]">{t(tier.tagline)}</p>
+              <p className="mb-5 min-h-9 text-[13px] text-(--text-muted)">{t(tier.tagline)}</p>
 
               {/* Price */}
               <div className="mb-6 border-b border-[#1E2A36] pb-5">
-                <div className="text-4xl font-bold leading-none text-[var(--text-primary)]">
+                <div className="text-4xl font-bold leading-none text-(--text-primary)">
                   <span className="align-super text-xl">$</span>
                   {tier.price}
                   {tier.cents && <span className="text-xl">{tier.cents}</span>}
                 </div>
-                <p className="mt-1 text-[13px] text-[var(--text-muted)]">{t(tier.period)}</p>
-                {tier.note && <p className="mt-1 text-xs font-medium text-[var(--accent)]">{t(tier.note)}</p>}
+                <p className="mt-1 text-[13px] text-(--text-muted)">{t(tier.period)}</p>
+                {tier.note && <p className="mt-1 text-xs font-medium text-(--accent)">{t(tier.note)}</p>}
               </div>
 
               {/* Features — first 2 rows are headline specs (bolder, larger) */}
@@ -324,21 +324,21 @@ export function PricingSection() {
                       key={f.text}
                       className={`flex items-start gap-2 leading-snug ${
                         isHeadlineSpec
-                          ? 'text-[14px] font-semibold text-[var(--text-primary)]'
-                          : 'text-[13px] text-[var(--text-secondary)]'
+                          ? 'text-[14px] font-semibold text-(--text-primary)'
+                          : 'text-[13px] text-(--text-secondary)'
                       }`}
                     >
                       <span className={`mt-0.5 shrink-0 text-sm ${COLOR_MAP[f.type]}`}>{ICON_MAP[f.type]}</span>
                       <span>
                         {t(f.text)}
                         {f.type === 'addon' && (
-                          <span className="ml-1.5 rounded bg-[rgba(212,145,92,0.08)] px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-[var(--accent)]">
+                          <span className="ml-1.5 rounded bg-[rgba(212,145,92,0.08)] px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-(--accent)">
                             {t('tiers.addonLabel')}
                           </span>
                         )}
                         {isIpRow && (
                           <Tooltip content={t('tiers.influencePoints.explainer')} position="top">
-                            <span className="ml-1 cursor-help text-[10px] text-[var(--text-muted)]">ⓘ</span>
+                            <span className="ml-1 cursor-help text-[10px] text-(--text-muted)">ⓘ</span>
                           </Tooltip>
                         )}
                       </span>
@@ -346,7 +346,7 @@ export function PricingSection() {
                   );
                 })}
                 {tier.showcase.map((s) => (
-                  <li key={s} className="flex items-start gap-2 text-[13px] leading-snug text-[var(--text-secondary)]">
+                  <li key={s} className="flex items-start gap-2 text-[13px] leading-snug text-(--text-secondary)">
                     <span className={`mt-0.5 shrink-0 text-sm ${tier.god ? 'text-[#C9A84C]' : 'text-[#4CAF7D]'}`}>
                       {tier.god ? '★' : '✓'}
                     </span>
@@ -360,10 +360,10 @@ export function PricingSection() {
                 to={isAuthenticated ? '/settings' : '/register'}
                 className={`mt-auto block rounded-[10px] py-3 text-center text-sm font-semibold tracking-wider transition-all duration-200 ${
                   tier.btnStyle === 'primary'
-                    ? 'bg-[var(--accent)] text-[#0A0F14] hover:bg-[#e0a06a] hover:shadow-[0_4px_20px_rgba(212,145,92,0.15)]'
+                    ? 'bg-(--accent) text-[#0A0F14] hover:bg-[#e0a06a] hover:shadow-[0_4px_20px_rgba(212,145,92,0.15)]'
                     : tier.btnStyle === 'gold'
-                      ? 'bg-gradient-to-r from-[#C9A84C] to-[#E0C060] text-[#0A0F14] hover:shadow-[0_4px_20px_rgba(201,168,76,0.2)]'
-                      : 'border border-[#1E2A36] text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                      ? 'bg-linear-to-r from-[#C9A84C] to-[#E0C060] text-[#0A0F14] hover:shadow-[0_4px_20px_rgba(201,168,76,0.2)]'
+                      : 'border border-[#1E2A36] text-(--text-secondary) hover:border-(--text-secondary) hover:text-(--text-primary)'
                 }`}
               >
                 {tier.price === '0' ? t('tiers.getStarted') : t('tiers.subscribe')}
@@ -373,17 +373,17 @@ export function PricingSection() {
         </div>
 
         {/* Voice call note */}
-        <p className="mb-16 text-center text-[13px] italic text-[var(--text-muted)]">
+        <p className="mb-16 text-center text-[13px] italic text-(--text-muted)">
           {t('tiers.voiceCallNote')}
         </p>
 
         {/* Add-ons */}
         <div className="mb-16">
           <div className="mb-9 text-center">
-            <h3 className="mb-2 font-serif text-3xl font-semibold text-[var(--text-primary)]">
+            <h3 className="mb-2 font-serif text-3xl font-semibold text-(--text-primary)">
               {t('tiers.addOns.title')}
             </h3>
-            <p className="text-[15px] text-[var(--text-secondary)]">
+            <p className="text-[15px] text-(--text-secondary)">
               {t('tiers.enhanceTiers')}
             </p>
           </div>
@@ -409,11 +409,11 @@ export function PricingSection() {
                   className="rounded-xl border border-[#1E2A36] bg-[#111920] p-5 transition-all duration-300 hover:bg-[#161E27]"
                 >
                   <div className="mb-3 text-2xl">{addon.emoji}</div>
-                  <h4 className="mb-1 text-[15px] font-semibold text-[var(--text-primary)]">{t(addon.nameKey)}</h4>
-                  <p className="mb-2 text-lg font-bold text-[var(--accent)]">{addon.price}{addon.recurring ? t('payment.perMonth') : ''}</p>
-                  <p className="mb-3 text-xs leading-relaxed text-[var(--text-muted)]">{t(addon.descKey)}</p>
+                  <h4 className="mb-1 text-[15px] font-semibold text-(--text-primary)">{t(addon.nameKey)}</h4>
+                  <p className="mb-2 text-lg font-bold text-(--accent)">{addon.price}{addon.recurring ? t('payment.perMonth') : ''}</p>
+                  <p className="mb-3 text-xs leading-relaxed text-(--text-muted)">{t(addon.descKey)}</p>
                   {showEligibility && (
-                    <div className="border-t border-[var(--border)] pt-2.5 text-[11px] leading-snug text-[var(--text-muted)]">
+                    <div className="border-t border-(--border) pt-2.5 text-[11px] leading-snug text-(--text-muted)">
                       {availableTierEntries.length > 0 && (() => {
                         const parts = t('tiers.addOns.availableOn', { tiers: TIERS_MARK }).split(TIERS_MARK);
                         return (
@@ -454,11 +454,11 @@ export function PricingSection() {
         </div>
 
         {/* Enterprise */}
-        <div className="rounded-2xl border border-[#1E2A36] bg-gradient-to-br from-[#111920] to-[rgba(139,126,200,0.08)] p-12 text-center">
-          <h3 className="mb-3 font-serif text-3xl font-semibold text-[var(--text-primary)]">
+        <div className="rounded-2xl border border-[#1E2A36] bg-linear-to-br from-[#111920] to-[rgba(139,126,200,0.08)] p-12 text-center">
+          <h3 className="mb-3 font-serif text-3xl font-semibold text-(--text-primary)">
             {t('tiers.enterprise')}
           </h3>
-          <p className="mx-auto mb-6 max-w-lg text-[15px] leading-relaxed text-[var(--text-secondary)]">
+          <p className="mx-auto mb-6 max-w-lg text-[15px] leading-relaxed text-(--text-secondary)">
             {t('tiers.enterpriseDesc')}
           </p>
           <div className="mb-7 flex flex-wrap justify-center gap-6">
@@ -469,7 +469,7 @@ export function PricingSection() {
               'tiers.enterpriseFeatures.slaGuarantees',
               'tiers.enterpriseFeatures.apiAccess'
             ].map((f) => (
-              <span key={f} className="flex items-center gap-1.5 text-[13px] text-[var(--text-muted)]">
+              <span key={f} className="flex items-center gap-1.5 text-[13px] text-(--text-muted)">
                 <span className="text-[#8B7EC8]">✓</span> {t(f)}
               </span>
             ))}
@@ -483,7 +483,7 @@ export function PricingSection() {
         </div>
 
         {/* Footer note */}
-        <p className="mt-12 text-center text-[13px] leading-relaxed text-[var(--text-muted)]">
+        <p className="mt-12 text-center text-[13px] leading-relaxed text-(--text-muted)">
           {t('tiers.footerNoteLine1')}<br />
           {t('tiers.footerNoteLine2')}<br />
           {t('tiers.footerNoteLine3')}

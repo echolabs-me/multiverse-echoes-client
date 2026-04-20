@@ -46,15 +46,15 @@ export function LanguageSwitcher({ onSelect }: LanguageSwitcherProps) {
   };
 
   return (
-    <div className="grid max-h-64 min-w-[11rem] grid-cols-1 gap-1 overflow-y-auto rounded-lg border border-[var(--border)] bg-[var(--surface)] p-2 shadow-lg">
+    <div className="grid max-h-64 min-w-[11rem] grid-cols-1 gap-1 overflow-y-auto rounded-lg border border-(--border) bg-(--surface) p-2 shadow-lg">
       {LANGUAGES.map((lang) => (
         <button
           key={lang.code}
           onPointerDown={(e) => { e.preventDefault(); selectLanguage(lang.code); }}
           className={`w-full rounded-md px-3 py-1.5 text-start text-xs transition-colors ${
             i18n.language === lang.code
-              ? 'bg-[var(--accent-subtle)] text-[var(--accent)]'
-              : 'text-[var(--text-secondary)] hover:bg-[var(--surface-raised)] hover:text-[var(--text-primary)]'
+              ? 'bg-(--accent-subtle) text-(--accent)'
+              : 'text-(--text-secondary) hover:bg-(--surface-raised) hover:text-(--text-primary)'
           }`}
         >
           {lang.name}

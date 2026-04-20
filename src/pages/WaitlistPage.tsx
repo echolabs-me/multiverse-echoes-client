@@ -130,20 +130,20 @@ export function WaitlistPage() {
 
       <div className="px-4 pt-28 pb-16 sm:px-6">
         <article className="mx-auto max-w-2xl">
-          <h1 className="mb-4 font-serif text-4xl font-light tracking-wider text-[var(--text-primary)]">
+          <h1 className="mb-4 font-serif text-4xl font-light tracking-wider text-(--text-primary)">
             {t('auth.joinWaitlist')}
           </h1>
 
-          <p className="mb-10 leading-relaxed text-[var(--text-secondary)]">
+          <p className="mb-10 leading-relaxed text-(--text-secondary)">
             {t('waitlist.heroSubtitle')}
           </p>
 
           {/* Count banner — big number, same treatment as About › The Numbers */}
-          <div className="mb-10 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 text-center">
-            <p className="text-4xl font-light text-[var(--accent)]">
+          <div className="mb-10 rounded-xl border border-(--border) bg-(--surface) p-6 text-center">
+            <p className="text-4xl font-light text-(--accent)">
               {totalCount !== null ? totalCount.toLocaleString() : '—'}
             </p>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">{t('waitlist.alreadyWaiting')}</p>
+            <p className="mt-1 text-sm text-(--text-muted)">{t('waitlist.alreadyWaiting')}</p>
           </div>
 
           {/* Signup or success */}
@@ -171,7 +171,7 @@ export function WaitlistPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="rounded-md bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--canvas)] transition-all hover:bg-[var(--accent-hover)] hover:shadow-[0_0_30px_rgba(212,145,92,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-md bg-(--accent) px-6 py-3 text-sm font-semibold text-(--canvas) transition-all hover:bg-(--accent-hover) hover:shadow-[0_0_30px_rgba(212,145,92,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isSubmitting ? t('common.loading') : t('waitlist.joinButton')}
                 </button>
@@ -184,13 +184,13 @@ export function WaitlistPage() {
             </form>
           ) : (
             <div
-              className="mb-16 rounded-xl border border-[var(--accent)]/30 bg-[var(--accent)]/5 p-6 text-center"
+              className="mb-16 rounded-xl border border-(--accent)/30 bg-(--accent)/5 p-6 text-center"
               role="status"
             >
-              <h2 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
+              <h2 className="mb-2 text-xl font-medium text-(--text-primary)">
                 {t('waitlist.checkEmailTitle')}
               </h2>
-              <p className="leading-relaxed text-[var(--text-secondary)]">
+              <p className="leading-relaxed text-(--text-secondary)">
                 {t('waitlist.checkEmailDesc', { email: submittedEmail })}
               </p>
             </div>
@@ -198,24 +198,24 @@ export function WaitlistPage() {
 
           {/* What to expect — reuses existing expectStep1-3 i18n keys */}
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">
+            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">
               {t('waitlist.expectTitle')}
             </h2>
-            <ol className="flex flex-col gap-4 text-[var(--text-secondary)]">
+            <ol className="flex flex-col gap-4 text-(--text-secondary)">
               <li className="flex gap-4 leading-relaxed">
-                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/15 text-sm font-medium text-[var(--accent)]">
+                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-(--accent)/15 text-sm font-medium text-(--accent)">
                   1
                 </span>
                 <span>{t('waitlist.expectStep1')}</span>
               </li>
               <li className="flex gap-4 leading-relaxed">
-                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/15 text-sm font-medium text-[var(--accent)]">
+                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-(--accent)/15 text-sm font-medium text-(--accent)">
                   2
                 </span>
                 <span>{t('waitlist.expectStep2')}</span>
               </li>
               <li className="flex gap-4 leading-relaxed">
-                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/15 text-sm font-medium text-[var(--accent)]">
+                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-(--accent)/15 text-sm font-medium text-(--accent)">
                   3
                 </span>
                 <span>{t('waitlist.expectStep3')}</span>
@@ -223,9 +223,9 @@ export function WaitlistPage() {
             </ol>
           </section>
 
-          <div className="mt-16 text-center text-sm text-[var(--text-muted)]">
+          <div className="mt-16 text-center text-sm text-(--text-muted)">
             {t('waitlist.haveInviteCode')}{' '}
-            <Link to="/register" className="text-[var(--accent)] hover:underline">
+            <Link to="/register" className="text-(--accent) hover:underline">
               {t('waitlist.registerHere')}
             </Link>
             .

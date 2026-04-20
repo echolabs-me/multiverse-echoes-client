@@ -154,27 +154,27 @@ export function ContactPage() {
 
       <div className="px-4 pt-28 pb-16 sm:px-6">
         <article className="mx-auto max-w-2xl">
-          <h1 className="mb-4 font-serif text-4xl font-light tracking-wider text-[var(--text-primary)]">
+          <h1 className="mb-4 font-serif text-4xl font-light tracking-wider text-(--text-primary)">
             {t('contact.title')}
           </h1>
-          <p className="mb-10 leading-relaxed text-[var(--text-secondary)]">
+          <p className="mb-10 leading-relaxed text-(--text-secondary)">
             {t('contact.description')}
           </p>
 
           {submitted ? (
             <div
-              className="mb-10 rounded-xl border border-[var(--accent)]/30 bg-[var(--accent)]/5 p-6 text-center"
+              className="mb-10 rounded-xl border border-(--accent)/30 bg-(--accent)/5 p-6 text-center"
               role="status"
             >
-              <h2 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
+              <h2 className="mb-2 text-xl font-medium text-(--text-primary)">
                 {t('contact.successTitle')}
               </h2>
-              <p className="leading-relaxed text-[var(--text-secondary)]">
+              <p className="leading-relaxed text-(--text-secondary)">
                 {t('contact.successDesc')}
                 {cooldown > 0 && (
                   <>
                     {' '}
-                    <span className="text-[var(--text-muted)]">
+                    <span className="text-(--text-muted)">
                       {t('contact.cooldown', { seconds: cooldown })}
                     </span>
                   </>
@@ -216,7 +216,7 @@ export function ContactPage() {
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="contact-subject"
-                  className="text-sm font-medium text-[var(--text-primary)]"
+                  className="text-sm font-medium text-(--text-primary)"
                 >
                   {t('contact.labelSubject')}
                 </label>
@@ -226,7 +226,7 @@ export function ContactPage() {
                   onChange={(e) => setSubject(e.target.value)}
                   required
                   disabled={!canSubmit}
-                  className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-[var(--text-primary)] transition-colors focus:border-[var(--accent)] focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-md border border-(--border) bg-(--surface) px-3 py-2 text-(--text-primary) transition-colors focus:border-(--accent) focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {SUBJECT_KEYS.map((s) => (
                     <option key={s.value} value={s.value}>
@@ -252,8 +252,8 @@ export function ContactPage() {
                 <p
                   className={`text-end text-xs ${
                     messageRemaining < 100
-                      ? 'text-[var(--accent)]'
-                      : 'text-[var(--text-muted)]'
+                      ? 'text-(--accent)'
+                      : 'text-(--text-muted)'
                   }`}
                   aria-live="polite"
                 >
@@ -284,22 +284,22 @@ export function ContactPage() {
               <button
                 type="submit"
                 disabled={!canSubmit}
-                className="rounded-md bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--canvas)] transition-all hover:bg-[var(--accent-hover)] hover:shadow-[0_0_30px_rgba(212,145,92,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-md bg-(--accent) px-6 py-3 text-sm font-semibold text-(--canvas) transition-all hover:bg-(--accent-hover) hover:shadow-[0_0_30px_rgba(212,145,92,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isSubmitting ? t('contact.sending') : t('contact.sendMessage')}
               </button>
             </form>
           )}
 
-          <div className="text-center text-sm text-[var(--text-muted)]">
+          <div className="text-center text-sm text-(--text-muted)">
             {t('contact.lookingElse')}{' '}
-            <Link to="/about" className="text-[var(--accent)] hover:underline">
+            <Link to="/about" className="text-(--accent) hover:underline">
               {t('website.nav.about')}
             </Link>
             {' · '}
             <Link
               to="/waitlist"
-              className="text-[var(--accent)] hover:underline"
+              className="text-(--accent) hover:underline"
             >
               {t('auth.joinWaitlist')}
             </Link>

@@ -42,37 +42,37 @@ export function AboutPage() {
 
       <div className="px-4 pt-28 pb-16 sm:px-6">
         <article className="mx-auto max-w-2xl">
-          <h1 className="mb-8 font-serif text-4xl font-light tracking-wider text-[var(--text-primary)]">
+          <h1 className="mb-8 font-serif text-4xl font-light tracking-wider text-(--text-primary)">
             {t('website.nav.about')}
           </h1>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.originTitle')}</h2>
-            <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
+            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.originTitle')}</h2>
+            <p className="mb-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.originP1')}
             </p>
-            <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
+            <p className="mb-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.originP2')}
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.buildTitle')}</h2>
-            <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
+            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.buildTitle')}</h2>
+            <p className="mb-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.buildP1')}
             </p>
-            <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
+            <p className="mb-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.buildP2')}
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.stackTitle')}</h2>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.stackTitle')}</h2>
+            <div className="rounded-xl border border-(--border) bg-(--surface) p-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-[var(--accent)]">{t('website.about.stackEngine')}</h3>
-                  <ul className="space-y-1 text-sm text-[var(--text-secondary)]">
+                  <h3 className="mb-2 text-sm font-semibold text-(--accent)">{t('website.about.stackEngine')}</h3>
+                  <ul className="space-y-1 text-sm text-(--text-secondary)">
                     <li>{t('website.about.stackEngine1')}</li>
                     <li>{t('website.about.stackEngine2')}</li>
                     <li>{t('website.about.stackEngine3')}</li>
@@ -81,8 +81,8 @@ export function AboutPage() {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-[var(--accent)]">{t('website.about.stackClient')}</h3>
-                  <ul className="space-y-1 text-sm text-[var(--text-secondary)]">
+                  <h3 className="mb-2 text-sm font-semibold text-(--accent)">{t('website.about.stackClient')}</h3>
+                  <ul className="space-y-1 text-sm text-(--text-secondary)">
                     <li>{t('website.about.stackClient1')}</li>
                     <li>{t('website.about.stackClient2')}</li>
                     <li>{t('website.about.stackClient3')}</li>
@@ -95,27 +95,27 @@ export function AboutPage() {
           </section>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.visionTitle')}</h2>
-            <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
+            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.visionTitle')}</h2>
+            <p className="mb-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.visionP1')}
             </p>
-            <p className="mb-4 leading-relaxed text-[var(--text-secondary)]">
+            <p className="mb-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.visionP2')}
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-[var(--text-primary)]">{t('website.about.numbersTitle')}</h2>
+            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.numbersTitle')}</h2>
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="text-center">
-                <p className="text-3xl font-light text-[var(--accent)]">95,000</p>
-                <p className="mt-1 text-sm text-[var(--text-muted)]">{t('website.about.numbersCode')}</p>
+                <p className="text-3xl font-light text-(--accent)">95,000</p>
+                <p className="mt-1 text-sm text-(--text-muted)">{t('website.about.numbersCode')}</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-light text-[var(--accent)]">
+                <p className="text-3xl font-light text-(--accent)">
                   {waitlistTotal !== null ? waitlistTotal.toLocaleString() : '—'}
                 </p>
-                <p className="mt-1 text-sm text-[var(--text-muted)]">{t('website.about.numbersWaitlist')}</p>
+                <p className="mt-1 text-sm text-(--text-muted)">{t('website.about.numbersWaitlist')}</p>
               </div>
             </div>
           </section>
@@ -124,7 +124,7 @@ export function AboutPage() {
           <div className="mt-16 text-center">
             <Link
               to="/register"
-              className="inline-block rounded-md bg-[var(--accent)] px-8 py-3 text-base font-semibold text-[var(--canvas)] transition-all hover:bg-[var(--accent-hover)] hover:shadow-[0_0_30px_rgba(212,145,92,0.2)]"
+              className="inline-block rounded-md bg-(--accent) px-8 py-3 text-base font-semibold text-(--canvas) transition-all hover:bg-(--accent-hover) hover:shadow-[0_0_30px_rgba(212,145,92,0.2)]"
             >
               {t('website.hero.cta')}
             </Link>

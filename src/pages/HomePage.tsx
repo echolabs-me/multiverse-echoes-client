@@ -129,7 +129,7 @@ export function HomePage() {
             {t('website.hero.headline')}
           </h1>
           <p
-            className="me-fade-up mx-auto mb-10 max-w-lg text-lg font-light italic leading-relaxed text-[var(--accent)]"
+            className="me-fade-up mx-auto mb-10 max-w-lg text-lg font-light italic leading-relaxed text-(--accent)"
             data-delay="300"
           >
             {t('website.hero.subheadline')}
@@ -147,7 +147,7 @@ export function HomePage() {
               href="https://x.com/EchoLabsME"
               target="_blank"
               rel="noopener noreferrer"
-              className="me-x-link inline-flex items-center gap-2 rounded-md border border-[var(--text-muted)] px-5 py-2 text-sm tracking-wider text-[var(--text-primary)] transition-all hover:border-[var(--accent)] hover:text-[var(--accent)] hover:shadow-[0_0_20px_rgba(212,145,92,0.08)]"
+              className="me-x-link inline-flex items-center gap-2 rounded-md border border-(--text-muted) px-5 py-2 text-sm tracking-wider text-(--text-primary) transition-all hover:border-(--accent) hover:text-(--accent) hover:shadow-[0_0_20px_rgba(212,145,92,0.08)]"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -161,10 +161,10 @@ export function HomePage() {
           className="me-fade-up absolute bottom-8 flex flex-col items-center gap-1"
           data-delay="900"
         >
-          <p className="text-xs tracking-[0.2em] text-[var(--text-muted)]">
+          <p className="text-xs tracking-[0.2em] text-(--text-muted)">
             {t('website.home.scrollExplore')}
           </p>
-          <svg className="h-4 w-4 animate-bounce text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="h-4 w-4 animate-bounce text-(--text-muted)" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
@@ -175,20 +175,20 @@ export function HomePage() {
       {/* ═══ Section 2: How It Works ═══ */}
       <section className="section-reveal px-6 py-24">
         <div className="mx-auto max-w-3xl">
-          <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-[var(--text-primary)]">
+          <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-(--text-primary)">
             {t('website.howItWorks.title')}
           </h2>
           <div className="flex flex-col gap-10">
             {([1, 2, 3, 4] as const).map((n) => (
               <div key={n} className="section-reveal flex gap-5">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--accent)] font-serif text-base text-[var(--accent)]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-(--accent) font-serif text-base text-(--accent)">
                   {n}
                 </div>
                 <div>
-                  <h3 className="mb-1 text-lg font-medium text-[var(--text-primary)]">
+                  <h3 className="mb-1 text-lg font-medium text-(--text-primary)">
                     {t(`website.howItWorks.step${n}Title`)}
                   </h3>
-                  <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                  <p className="text-sm leading-relaxed text-(--text-secondary)">
                     {t(`website.howItWorks.step${n}Desc`)}
                   </p>
                 </div>
@@ -203,13 +203,13 @@ export function HomePage() {
       {/* ═══ Section 3: Features Showcase ═══ */}
       <section id="features" className="section-reveal px-6 pb-24 pt-28">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-[var(--text-primary)]">
+          <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-(--text-primary)">
             {t('website.features.title')}
           </h2>
 
           {/* Feature 1: Autonomous diary — image left */}
           <div className="section-reveal mb-20 flex flex-col items-center gap-10 md:flex-row">
-            <div className="w-full overflow-hidden rounded-xl border border-[var(--border)] shadow-lg md:w-1/2">
+            <div className="w-full overflow-hidden rounded-xl border border-(--border) shadow-lg md:w-1/2">
               <img
                 src="/screenshots/Echo_DIary_with_Avatar.jpeg"
                 alt="Echo diary with AI portrait"
@@ -218,10 +218,10 @@ export function HomePage() {
               />
             </div>
             <div className="w-full md:w-1/2">
-              <h3 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
+              <h3 className="mb-2 text-xl font-medium text-(--text-primary)">
                 {t('website.features.diaryTitle')}
               </h3>
-              <p className="leading-relaxed text-[var(--text-secondary)]">
+              <p className="leading-relaxed text-(--text-secondary)">
                 {t('website.features.diaryDesc')}
               </p>
             </div>
@@ -230,14 +230,14 @@ export function HomePage() {
           {/* Feature 2: AI images — image right */}
           <div className="section-reveal mb-20 flex flex-col-reverse items-center gap-10 md:flex-row">
             <div className="w-full md:w-1/2">
-              <h3 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
+              <h3 className="mb-2 text-xl font-medium text-(--text-primary)">
                 {t('website.features.imagesTitle')}
               </h3>
-              <p className="leading-relaxed text-[var(--text-secondary)]">
+              <p className="leading-relaxed text-(--text-secondary)">
                 {t('website.features.imagesDesc')}
               </p>
             </div>
-            <div className="w-full overflow-hidden rounded-xl border border-[var(--border)] shadow-lg md:w-1/2">
+            <div className="w-full overflow-hidden rounded-xl border border-(--border) shadow-lg md:w-1/2">
               <img
                 src="/screenshots/App_Page_Full_Capture.jpeg"
                 alt="AI-generated diary scene"
@@ -249,7 +249,7 @@ export function HomePage() {
 
           {/* Feature 3: Nudge — image left */}
           <div className="section-reveal mb-20 flex flex-col items-center gap-10 md:flex-row">
-            <div className="w-full overflow-hidden rounded-xl border border-[var(--border)] shadow-lg md:w-1/2">
+            <div className="w-full overflow-hidden rounded-xl border border-(--border) shadow-lg md:w-1/2">
               <img
                 src="/screenshots/Nudge_Echo.jpeg"
                 alt="Nudge your Echo"
@@ -258,10 +258,10 @@ export function HomePage() {
               />
             </div>
             <div className="w-full md:w-1/2">
-              <h3 className="mb-2 text-xl font-medium text-[var(--text-primary)]">
+              <h3 className="mb-2 text-xl font-medium text-(--text-primary)">
                 {t('website.features.voiceTitle')}
               </h3>
-              <p className="leading-relaxed text-[var(--text-secondary)]">
+              <p className="leading-relaxed text-(--text-secondary)">
                 {t('website.features.voiceDesc')}
               </p>
             </div>
@@ -269,20 +269,20 @@ export function HomePage() {
 
           {/* Remaining features in a grid */}
           <div className="section-reveal grid gap-8 sm:grid-cols-3">
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <div className="rounded-xl border border-(--border) bg-(--surface) p-6">
               <div className="mb-3 text-2xl">🎥</div>
-              <h3 className="mb-1 font-medium text-[var(--text-primary)]">{t('website.features.videoTitle')}</h3>
-              <p className="text-sm text-[var(--text-secondary)]">{t('website.features.videoDesc')}</p>
+              <h3 className="mb-1 font-medium text-(--text-primary)">{t('website.features.videoTitle')}</h3>
+              <p className="text-sm text-(--text-secondary)">{t('website.features.videoDesc')}</p>
             </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <div className="rounded-xl border border-(--border) bg-(--surface) p-6">
               <div className="mb-3 text-2xl">🌐</div>
-              <h3 className="mb-1 font-medium text-[var(--text-primary)]">{t('website.features.languagesTitle')}</h3>
-              <p className="text-sm text-[var(--text-secondary)]">{t('website.features.languagesDesc')}</p>
+              <h3 className="mb-1 font-medium text-(--text-primary)">{t('website.features.languagesTitle')}</h3>
+              <p className="text-sm text-(--text-secondary)">{t('website.features.languagesDesc')}</p>
             </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
+            <div className="rounded-xl border border-(--border) bg-(--surface) p-6">
               <div className="mb-3 text-2xl">💞</div>
-              <h3 className="mb-1 font-medium text-[var(--text-primary)]">{t('website.features.relationshipsTitle')}</h3>
-              <p className="text-sm text-[var(--text-secondary)]">{t('website.features.relationshipsDesc')}</p>
+              <h3 className="mb-1 font-medium text-(--text-primary)">{t('website.features.relationshipsTitle')}</h3>
+              <p className="text-sm text-(--text-secondary)">{t('website.features.relationshipsDesc')}</p>
             </div>
           </div>
         </div>
@@ -293,47 +293,47 @@ export function HomePage() {
       {/* ═══ Section 4: Worlds ═══ */}
       <section className="section-reveal px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-[var(--text-primary)]">
+          <h2 className="mb-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-(--text-primary)">
             {t('website.worlds.title')}
           </h2>
           <div className="grid gap-6 sm:grid-cols-3">
             {/* Cyber-Tokyo */}
-            <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
+            <div className="section-reveal group relative overflow-hidden rounded-2xl border border-(--border) bg-(--surface)">
               <div className="me-shard-bg-tokyo h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
+              <div className="absolute inset-x-0 top-0 h-48 bg-linear-to-b from-transparent via-transparent to-(--surface)" />
               <div className="relative p-6 pt-0">
                 <h3 className="mb-2 font-serif text-xl font-semibold text-[#00d4ff]">
                   {t('website.worlds.tokyoName')}
                 </h3>
-                <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                <p className="text-sm leading-relaxed text-(--text-secondary)">
                   {t('website.worlds.tokyoDesc')}
                 </p>
               </div>
             </div>
 
             {/* Nomad Australia */}
-            <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
+            <div className="section-reveal group relative overflow-hidden rounded-2xl border border-(--border) bg-(--surface)">
               <div className="me-shard-bg-australia h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
+              <div className="absolute inset-x-0 top-0 h-48 bg-linear-to-b from-transparent via-transparent to-(--surface)" />
               <div className="relative p-6 pt-0">
                 <h3 className="mb-2 font-serif text-xl font-semibold text-[#c4783c]">
                   {t('website.worlds.australiaName')}
                 </h3>
-                <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                <p className="text-sm leading-relaxed text-(--text-secondary)">
                   {t('website.worlds.australiaDesc')}
                 </p>
               </div>
             </div>
 
             {/* Renaissance Florence */}
-            <div className="section-reveal group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
+            <div className="section-reveal group relative overflow-hidden rounded-2xl border border-(--border) bg-(--surface)">
               <div className="me-shard-bg-florence h-48 bg-cover bg-center transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-transparent via-transparent to-[var(--surface)]" />
+              <div className="absolute inset-x-0 top-0 h-48 bg-linear-to-b from-transparent via-transparent to-(--surface)" />
               <div className="relative p-6 pt-0">
                 <h3 className="mb-2 font-serif text-xl font-semibold text-[#8b6f47]">
                   {t('website.worlds.florenceName')}
                 </h3>
-                <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                <p className="text-sm leading-relaxed text-(--text-secondary)">
                   {t('website.worlds.florenceDesc')}
                 </p>
               </div>
@@ -347,20 +347,20 @@ export function HomePage() {
       {/* ═══ Section 5: Social Proof ═══ */}
       <section className="section-reveal px-6 py-24">
         <div className="mx-auto max-w-xl text-center">
-          <p className="mb-6 font-serif text-5xl font-light italic text-[var(--accent)]">
+          <p className="mb-6 font-serif text-5xl font-light italic text-(--accent)">
             {t('website.home.socialProofQuote')}
           </p>
           <SectionDivider />
           <div className="mt-12 flex flex-col items-center gap-2">
-            <p className="text-4xl font-light text-[var(--text-primary)]">
+            <p className="text-4xl font-light text-(--text-primary)">
               {waitlistCount !== null ? waitlistCount.toLocaleString() : '—'}
             </p>
-            <p className="text-sm text-[var(--text-secondary)]">
+            <p className="text-sm text-(--text-secondary)">
               {waitlistCount !== null 
                 ? t('website.social.waitlistCount', { count: waitlistCount.toLocaleString() })
                 : t('website.social.waitlistCount', { count: 'Many' })}
             </p>
-            <p className="mt-4 text-xs italic text-[var(--text-muted)]">{t('website.social.builtBy')}</p>
+            <p className="mt-4 text-xs italic text-(--text-muted)">{t('website.social.builtBy')}</p>
           </div>
         </div>
       </section>
@@ -375,12 +375,12 @@ export function HomePage() {
       {/* ═══ Section 7: The Founder (brief) ═══ */}
       <section className="section-reveal px-6 py-24">
         <div className="mx-auto max-w-xl text-center">
-          <p className="mb-8 font-serif text-xl font-light italic leading-relaxed text-[var(--accent)]">
+          <p className="mb-8 font-serif text-xl font-light italic leading-relaxed text-(--accent)">
             {t('website.founder.brief')}
           </p>
           <Link
             to="/about"
-            className="text-sm tracking-wider text-[var(--text-secondary)] underline decoration-[var(--border)] underline-offset-4 transition-colors hover:text-[var(--accent)] hover:decoration-[var(--accent)]"
+            className="text-sm tracking-wider text-(--text-secondary) underline decoration-(--border) underline-offset-4 transition-colors hover:text-(--accent) hover:decoration-(--accent)"
           >
             {t('website.founder.readMore')} →
           </Link>
@@ -394,7 +394,7 @@ export function HomePage() {
         {/* Background glow */}
         <div className="me-radial-glow-ambient pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full" />
         <div className="relative z-10 mx-auto max-w-lg text-center">
-          <h2 className="mb-8 font-serif text-4xl font-light tracking-[0.08em] text-[var(--text-primary)]">
+          <h2 className="mb-8 font-serif text-4xl font-light tracking-[0.08em] text-(--text-primary)">
             {t('website.finalCta.headline')}
           </h2>
           <Link
@@ -403,7 +403,7 @@ export function HomePage() {
           >
             {t('website.finalCta.cta')}
           </Link>
-          <p className="mt-6 text-sm text-[var(--text-muted)]">{t('website.finalCta.noCreditCard')}</p>
+          <p className="mt-6 text-sm text-(--text-muted)">{t('website.finalCta.noCreditCard')}</p>
         </div>
       </section>
 
