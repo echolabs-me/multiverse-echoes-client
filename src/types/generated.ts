@@ -578,7 +578,15 @@ export type Echo = {
 	echo_id: string,
 	owner_user_id: string,
 	name: string,
+	/**
+	 *  Persona prompt at rest holds AES-256-GCM ciphertext whenever
+	 *  `persona_text_encrypted == true`; API responses always emit
+	 *  plaintext because the repository decrypts on read. Immutable after
+	 *  creation (see `birth_hash` derivation in ME-UAD-001 §2.4). Reference:
+	 *  ME-UAD-001 §9.1, ME-PDP-001 §6.1.
+	 */
 	persona_text: string,
+	// What-if prompt, same encryption contract as `persona_text`.
 	what_if_prompt: string,
 	persona_mode: PersonaMode,
 	/**
@@ -1569,6 +1577,13 @@ export type UpdateCSAMIncidentRequest = {
 
 export type User = {
 	user_id: string,
+	/**
+	 *  Email address. At rest in Redb this field holds AES-256-GCM
+	 *  ciphertext whenever `email_encrypted == true`; API responses always
+	 *  emit plaintext because the repository decrypts on read. The `email`
+	 *  JSON key itself is unchanged across the wire for client-side
+	 *  compatibility. Reference: ME-UAD-001 §9.1, ME-PDP-001 §6.1.
+	 */
 	email: string,
 	email_verified: boolean,
 	display_name: string,
