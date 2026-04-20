@@ -57,21 +57,22 @@ describe('LanguageSelectionPage', () => {
     expect(englishElements.length).toBeGreaterThanOrEqual(1);
   });
 
-  it('renders the 20 live language tiles', async () => {
+  it('renders the 21 live language tiles', async () => {
     await act(async () => {
       renderPage();
     });
     // LanguageSelectionPage.tsx `const languages: Language[]` currently
-    // lists 20 live locales; each renders as a role="option" button via
-    // LanguageTile (line 229). Commit 7770536 removed the "coming soon"
-    // placeholder mechanism — the page now shows only live languages.
+    // lists 21 live locales (zh-Hant added as 21st in c4ecafd); each
+    // renders as a role="option" button via LanguageTile (line 229).
+    // Commit 7770536 removed the "coming soon" placeholder mechanism —
+    // the page now shows only live languages.
     const tiles = screen.getAllByRole('option');
-    expect(tiles).toHaveLength(20);
+    expect(tiles).toHaveLength(21);
   });
 
   // NOTE: The previous "shows coming soon for unavailable languages" test
   // was deleted. Product-decision rationale: commit 7770536 redesigned the
   // page to show only live languages, removing both the placeholder tiles
   // and the "More languages coming soon" tooltip. No source contract
-  // remains to assert. Replacement coverage is the 20-tile test above.
+  // remains to assert. Replacement coverage is the 21-tile test above.
 });
