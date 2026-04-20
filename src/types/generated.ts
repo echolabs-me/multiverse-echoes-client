@@ -490,9 +490,14 @@ export type DiscordLink = {
 	discord_username: string,
 	linked_at: string,
 	sync_display_name: boolean,
-	// Discord OAuth access token (stored encrypted at rest in production).
+	/**
+	 *  Discord OAuth access token. At rest AES-256-GCM ciphertext when
+	 *  `tokens_encrypted == true`; API / handler reads always receive
+	 *  plaintext because the repository decrypts on read. Reference:
+	 *  ME-UAD-001 §9.1, ME-PDP-001 §6.1.
+	 */
 	access_token?: string | null,
-	// Discord OAuth refresh token (stored encrypted at rest in production).
+	// Discord OAuth refresh token, same contract as `access_token`.
 	refresh_token?: string | null,
 };
 
@@ -1790,7 +1795,12 @@ export type WaitlistCountResponse = {
 // Waitlist entry for pre-launch signups. Reference: ME-UXF-001 §4.1.
 export type WaitlistEntry = {
 	entry_id: string,
-	// Email address (encrypted at rest in production).
+	/**
+	 *  Email address. At rest in Redb this field holds AES-256-GCM
+	 *  ciphertext whenever `email_encrypted == true`; API responses
+	 *  always emit plaintext because the repository decrypts on read.
+	 *  Reference: ME-UAD-001 §9.1, ME-PDP-001 §6.1.
+	 */
 	email: string,
 	// Queue position (auto-incremented, adjusted by referrals).
 	position: number,
