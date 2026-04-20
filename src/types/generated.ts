@@ -123,6 +123,91 @@ export type BreachSeverity = "Low" | "Medium" | "High" | "Critical";
 
 export type BreachSource = "Manual" | "Automated";
 
+export type CSAMIncident = {
+	id: string,
+	created_at: string,
+	// Uploader whose account is the subject of enforcement.
+	user_id: string,
+	// URL of the matched content at the edge (Cloudflare notification).
+	image_url: string,
+	/**
+	 *  Date on Cloudflare's notification email — distinct from `created_at`
+	 *  because the admin may file the incident record hours after the
+	 *  daily digest lands.
+	 */
+	cloudflare_notification_date: string,
+	/**
+	 *  NCMEC CyberTipline report number once filed. `None` until the
+	 *  operator files the report and records it via `PATCH
+	 *  /admin/csam-incidents/{id}`.
+	 */
+	ncmec_report_id: string | null,
+	/**
+	 *  Regional-equivalent report identifier (e.g. Singapore SPF
+	 *  e-services reference). `None` if no regional filing is required
+	 *  per `docs/runbooks/csam-incident-response.md`.
+	 */
+	regional_report_id: string | null,
+	/**
+	 *  R2 object key of the encrypted evidence bundle. Always present
+	 *  after creation; fetching the bytes requires the preservation
+	 *  key and a signed one-time URL.
+	 */
+	preservation_bundle_path: string,
+	/**
+	 *  SHA-256 hex digest of the preservation key used to encrypt this
+	 *  bundle. Pinning the fingerprint on each incident lets a future
+	 *  key-rotation migration identify which rows need re-encryption
+	 *  without exposing any key material.
+	 */
+	preservation_key_fingerprint: string,
+	status: CSAMIncidentStatus,
+	// Free-text admin notes (sanitised at ingress). Max 10,000 chars.
+	notes?: string,
+	/**
+	 *  When `true`, the preservation bundle is retained indefinitely,
+	 *  overriding the 90-day default. Set during active law-enforcement
+	 *  investigations.
+	 */
+	preservation_locked?: boolean,
+};
+
+export type CSAMIncidentResponse = {
+	id: string,
+	created_at: string,
+	user_id: string,
+	image_url: string,
+	cloudflare_notification_date: string,
+	ncmec_report_id: string | null,
+	regional_report_id: string | null,
+	preservation_bundle_path: string,
+	preservation_key_fingerprint: string,
+	status: CSAMIncidentStatus,
+	notes: string,
+	preservation_locked: boolean,
+};
+
+export type CSAMIncidentStatus = 
+/**
+ *  Incident filed, evidence preserved, enforcement applied. No
+ *  external reports filed yet.
+ */
+{ state: "preserved" } | 
+// NCMEC and/or regional report filed. Report IDs recorded.
+{ state: "reported" } | 
+/**
+ *  Law enforcement notified / engaged. Typically paired with
+ *  `preservation_locked = true`.
+ */
+{ state: "law_enforcement_notified" } | 
+/**
+ *  Incident closed. `reason` carries the disposition — closure
+ *  semantics are NOT interchangeable:
+ *    - `FalsePositive` → enforcement reversed
+ *    - `ResolvedAfterReporting` → enforcement preserved
+ */
+{ state: "closed"; reason: ClosureReason };
+
 export type CancelRequest = {
 	session_id: string,
 };
@@ -172,6 +257,20 @@ export type ChannelResponse = {
 export type ChannelStatus = "Active" | "Archived" | "Locked";
 
 export type ChannelType = "Shard" | "Global" | "Topic" | "PrivateShard" | "Event";
+
+export type ClosureReason = 
+/**
+ *  Report accepted by NCMEC/LE, no further platform action needed.
+ *  User remains suspended; echoes remain quarantined.
+ */
+"resolved_after_reporting" | 
+/**
+ *  Cloudflare's post-review confirmed the match was a false
+ *  positive. The admin PATCH that closes the incident in this
+ *  state automatically reactivates the user and un-quarantines
+ *  the echoes.
+ */
+"false_positive";
 
 export type CommitRequest = {
 	session_id: string,
@@ -252,6 +351,29 @@ export type CreateApiKeyResponse = {
 	// The raw API key — shown once, never again.
 	key: string,
 	created_at: string,
+};
+
+export type CreateCSAMIncidentRequest = {
+	user_id: string,
+	image_url: string,
+	// RFC-3339 timestamp of the Cloudflare notification email.
+	cloudflare_notification_date: string,
+	/**
+	 *  Base64-encoded image bytes. Optional — the runbook walks the
+	 *  operator through pulling bytes from origin storage; if they
+	 *  cannot be recovered (e.g. the origin was already purged), the
+	 *  bundle preserves metadata-only and this field is omitted.
+	 *  Max 5 MiB after base64 decode (~6.67 MiB of base64 input).
+	 */
+	image_bytes_b64: string | null,
+	// If the image was an echo avatar, which echo.
+	echo_id: string | null,
+	notes: string | null,
+};
+
+export type CreateCSAMIncidentResponse = {
+	incident: CSAMIncidentResponse,
+	enforcement: EnforcementSummary,
 };
 
 export type CreateChannelRequest = {
@@ -615,6 +737,18 @@ export type EnforcementActionType = "MessageDeleted" | "UserMuted" | "UserChanne
  */
 "CsamMatch";
 
+/**
+ *  Explicit list of enforcement actions taken on incident creation —
+ *  makes the audit trail self-describing in the HTTP response (not
+ *  only in log lines).
+ */
+export type EnforcementSummary = {
+	user_suspended: boolean,
+	sessions_revoked: boolean,
+	echoes_quarantined: number,
+	api_keys_revoked: number,
+};
+
 // Source of an analytics event.
 export type EventSource = "Client" | "Engine";
 
@@ -826,6 +960,21 @@ export type HealthResponse = {
 	last_tick_at: number,
 };
 
+/**
+ *  Single-use download nonce for evidence-bundle access
+ *  (`GET /admin/csam-incidents/{id}/evidence`). Consumed on first
+ *  successful fetch; expires after `expires_at` regardless of use.
+ */
+export type IncidentEvidenceNonce = {
+	nonce_id: string,
+	incident_id: string,
+	issued_to: string,
+	issued_at: string,
+	expires_at: string,
+	// `true` once the one-time download has completed.
+	consumed: boolean,
+};
+
 // POST /echoes/:id/influence — Apply influence to an Echo.
 export type InfluenceRequest = {
 	suggestion: string,
@@ -847,6 +996,13 @@ export type InviteResponse = {
 	invite_token: string,
 	status: FamilyMemberStatus,
 	invited_at: string,
+};
+
+export type IssueEvidenceUrlResponse = {
+	nonce_id: string,
+	url: string,
+	expires_at: string,
+	preservation_key_fingerprint: string,
 };
 
 export type LifeEvent = {
@@ -1398,6 +1554,18 @@ export type TravelResponse = {
 };
 
 export type TravelState = "Stationary" | "Travelling";
+
+export type UpdateCSAMIncidentRequest = {
+	ncmec_report_id: string | null,
+	regional_report_id: string | null,
+	/**
+	 *  Status transition. Any variant is accepted; `Closed {
+	 *  reason: FalsePositive }` additionally reverses enforcement.
+	 */
+	status: CSAMIncidentStatus | null,
+	preservation_locked: boolean | null,
+	notes: string | null,
+};
 
 export type User = {
 	user_id: string,
