@@ -96,6 +96,14 @@ export function WebsiteFooter() {
             <Link to="/accessibility" className="text-sm text-(--text-secondary) hover:text-(--text-primary)">
               {t('website.footer.accessibility')}
             </Link>
+            <a
+              href="https://status.echolabsme.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
+              {t('website.footer.status')}
+            </a>
           </div>
 
           {/* Social + Language */}
