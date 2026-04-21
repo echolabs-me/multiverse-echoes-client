@@ -27,6 +27,7 @@
     "notFoundDesc": "Этой страницы нет ни в одном шарде.",
     "backToDashboard": "Вернуться на панель управления",
     "checkStatusLink": "Проверить статус платформы на status.echolabsme.com",
+    "checkStatusLinkShort": "Статус",
     "next": "Далее",
     "search": "Поиск",
     "continue": "Продолжить",

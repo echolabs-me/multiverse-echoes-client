@@ -76,7 +76,7 @@ export function ShardViewPage() {
       void fetchEchoes();
     } catch (err: unknown) {
       const detail = err instanceof Error ? err.message : t('common.error');
-      addToast(detail, 'danger');
+      addToast(detail, 'danger', { platformLink: true });
     }
   };
 

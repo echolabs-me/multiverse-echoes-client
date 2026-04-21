@@ -27,6 +27,7 @@
     "notFoundDesc": "Questa pagina non esiste in nessuno Shard.",
     "backToDashboard": "Torna alla Dashboard",
     "checkStatusLink": "Verifica lo stato della piattaforma su status.echolabsme.com",
+    "checkStatusLinkShort": "Stato",
     "next": "Avanti",
     "search": "Cerca",
     "continue": "Continua",

@@ -456,7 +456,7 @@ export function EchoDetailPage() {
       setHibernateModal(false);
       await fetchEcho(activeEcho.echo_id);
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 
@@ -504,7 +504,7 @@ export function EchoDetailPage() {
           );
         }
       } else {
-        addToast(t('common.error'), 'danger');
+        addToast(t('common.error'), 'danger', { platformLink: true });
       }
     }
   };
@@ -516,7 +516,7 @@ export function EchoDetailPage() {
       await accountApi.updatePrivacy({ solo_mode: !soloMode });
       setSoloMode(!soloMode);
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 

@@ -27,6 +27,7 @@
     "notFoundDesc": "Bu sayfa hiçbir Shard'da mevcut değil.",
     "backToDashboard": "Kontrol Paneline Dön",
     "checkStatusLink": "Platform durumunu status.echolabsme.com adresinde kontrol edin",
+    "checkStatusLinkShort": "Durum",
     "next": "Sonraki",
     "search": "Ara",
     "continue": "Devam et",

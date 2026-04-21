@@ -175,7 +175,7 @@ export function PlansPage() {
       if (msg.includes('Rate lookup') || msg.includes('rate')) {
         addToast(t('payment.cryptoUnavailable'), 'warning');
       } else {
-        addToast(t('common.errorGeneric'), 'danger');
+        addToast(t('common.errorGeneric'), 'danger', { platformLink: true });
       }
     } finally {
       setLoading(null);
@@ -190,7 +190,7 @@ export function PlansPage() {
         window.location.href = result.portal_url;
       }
     } catch {
-      addToast(t('common.errorGeneric'), 'danger');
+      addToast(t('common.errorGeneric'), 'danger', { platformLink: true });
     } finally {
       setLoading(null);
     }

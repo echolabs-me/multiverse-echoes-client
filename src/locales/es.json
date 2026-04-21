@@ -26,6 +26,7 @@
     "notFoundDesc": "Esta página no existe en ningún Fragmento.",
     "backToDashboard": "Volver al panel",
     "checkStatusLink": "Comprueba el estado de la plataforma en status.echolabsme.com",
+    "checkStatusLinkShort": "Estado",
     "next": "Siguiente",
     "search": "Buscar",
     "continue": "Continuar",

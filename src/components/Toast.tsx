@@ -31,7 +31,22 @@ function ToastEntry({ toast }: { toast: ToastItem }) {
       className={`flex animate-slide-in items-center gap-3 rounded-lg border px-4 py-3 shadow-lg ${config.bg} ${config.border}`}
     >
       <Icon size={18} className="shrink-0" aria-hidden="true" />
-      <p className="flex-1 text-sm text-text-primary">{toast.message}</p>
+      <div className="flex-1 text-sm text-text-primary">
+        <span>{toast.message}</span>
+        {toast.platformLink && (
+          <>
+            {' '}
+            <a
+              href="https://status.echolabsme.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 text-text-muted hover:text-text-primary"
+            >
+              {t('common.checkStatusLinkShort')}
+            </a>
+          </>
+        )}
+      </div>
       <button
         onClick={() => removeToast(toast.id)}
         className="shrink-0 text-text-muted transition-color-opacity hover:text-text-primary"

@@ -27,6 +27,7 @@
     "notFoundDesc": "이 페이지는 어떤 샤드(Shard)에도 존재하지 않습니다.",
     "backToDashboard": "대시보드로 돌아가기",
     "checkStatusLink": "status.echolabsme.com에서 플랫폼 상태 확인",
+    "checkStatusLinkShort": "상태",
     "next": "다음",
     "search": "검색",
     "continue": "계속하세요",

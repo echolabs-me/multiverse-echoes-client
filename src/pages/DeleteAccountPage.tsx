@@ -26,7 +26,7 @@ export function DeleteAccountPage() {
       await logout();
       navigate('/login');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     } finally {
       setIsDeleting(false);
     }

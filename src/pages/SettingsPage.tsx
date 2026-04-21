@@ -126,7 +126,7 @@ function ProfileSection() {
       addToast(t('settings.displayNameSaved'), 'success');
       setIsEditing(false);
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     } finally {
       setIsSaving(false);
     }
@@ -231,7 +231,7 @@ function AccountSection() {
       setCurrentPassword('');
       setNewPassword('');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     } finally {
       setIsChanging(false);
     }
@@ -243,7 +243,7 @@ function AccountSection() {
       setSessions((prev) => prev.filter((s) => s.session_id !== sessionId));
       addToast(t('settings.sessionRevoked'), 'success');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 
@@ -379,7 +379,7 @@ function PrivacySection() {
       await accountApi.updatePrivacy({ solo_mode: !soloMode });
       setSoloMode(!soloMode);
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 
@@ -388,7 +388,7 @@ function PrivacySection() {
       const result = await accountApi.updatePrivacy({ do_not_sell: !doNotSell });
       setDoNotSell(result.do_not_sell);
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 
@@ -405,7 +405,7 @@ function PrivacySection() {
       URL.revokeObjectURL(url);
       addToast(t('settings.dataExported'), 'success');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     } finally {
       setIsExporting(false);
     }
@@ -503,7 +503,7 @@ function NotificationPrefsSection() {
       const updated = await accountApi.updateNotificationPreferences({ [key]: value });
       setPrefs(updated);
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 
@@ -740,7 +740,7 @@ function LanguageSettingsCard() {
       addToast(t('common.saved'), 'success');
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      addToast(msg || t('errors.INTERNAL_ERROR'), 'danger');
+      addToast(msg || t('errors.INTERNAL_ERROR'), 'danger', { platformLink: true });
     } finally {
       setSaving(false);
     }
@@ -822,7 +822,7 @@ function DiscordLinkSection() {
         err instanceof Error && err.message
           ? err.message
           : t('common.error');
-      addToast(msg, 'danger');
+      addToast(msg, 'danger', { platformLink: true });
     }
   };
 
@@ -833,7 +833,7 @@ function DiscordLinkSection() {
       setUsername(null);
       addToast(t('settings.discordUnlinked'), 'success');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 
@@ -959,7 +959,7 @@ function DangerZoneSection() {
       const fetchProfile = useAuthStore.getState().fetchProfile;
       await fetchProfile();
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     } finally {
       setIsCancelling(false);
     }

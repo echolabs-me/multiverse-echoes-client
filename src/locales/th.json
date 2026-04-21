@@ -27,6 +27,7 @@
     "notFoundDesc": "หน้านี้ไม่มีอยู่ใน Shard ใดๆ",
     "backToDashboard": "กลับไปยังแผงควบคุม",
     "checkStatusLink": "ตรวจสอบสถานะแพลตฟอร์มที่ status.echolabsme.com",
+    "checkStatusLinkShort": "สถานะ",
     "next": "ถัดไป",
     "search": "ค้นหา",
     "continue": "ดำเนินการต่อ",

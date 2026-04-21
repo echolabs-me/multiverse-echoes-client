@@ -27,6 +27,7 @@
     "notFoundDesc": "このページはどのシャードにも存在しません。",
     "backToDashboard": "ダッシュボードに戻る",
     "checkStatusLink": "プラットフォームの状態は status.echolabsme.com で確認",
+    "checkStatusLinkShort": "ステータス",
     "next": "次へ",
     "search": "検索",
     "continue": "続行",

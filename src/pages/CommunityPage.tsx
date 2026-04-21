@@ -198,7 +198,7 @@ export function CommunityPage() {
       setMessages((prev) => [...prev, msg]);
       setMessageText('');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     } finally {
       setIsSending(false);
     }
@@ -218,7 +218,7 @@ export function CommunityPage() {
       setEditingMessageId(null);
       addToast(t('community.messageEdited'), 'success');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 
@@ -229,7 +229,7 @@ export function CommunityPage() {
       setMessages((prev) => prev.filter((m) => m.message_id !== messageId));
       addToast(t('community.messageDeleted'), 'success');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 
@@ -248,7 +248,7 @@ export function CommunityPage() {
       const msg = await channelApi.uploadImage(activeChannel.channel_id, file);
       setMessages((prev) => [...prev, msg]);
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     } finally {
       setIsSending(false);
     }
@@ -265,7 +265,7 @@ export function CommunityPage() {
       });
       addToast(t('community.voteRecorded'), 'success');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     }
   };
 
@@ -284,7 +284,7 @@ export function CommunityPage() {
       setPollOptions(['', '']);
       void loadMessages();
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     } finally {
       setIsSending(false);
     }

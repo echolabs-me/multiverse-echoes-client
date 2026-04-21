@@ -112,7 +112,7 @@ export function DowngradeChoicePage() {
       } catch (err) {
         const message =
           err instanceof ApiRequestError ? err.message : t('tiers.downgrade.errorGeneric');
-        addToast(message, 'danger');
+        addToast(message, 'danger', { platformLink: true });
       } finally {
         setMutating(false);
       }
@@ -129,7 +129,7 @@ export function DowngradeChoicePage() {
       } catch (err) {
         const message =
           err instanceof ApiRequestError ? err.message : t('tiers.downgrade.errorGeneric');
-        addToast(message, 'danger');
+        addToast(message, 'danger', { platformLink: true });
       } finally {
         setMutating(false);
       }
@@ -148,7 +148,7 @@ export function DowngradeChoicePage() {
       } catch (err) {
         const message =
           err instanceof ApiRequestError ? err.message : t('tiers.downgrade.errorGeneric');
-        addToast(message, 'danger');
+        addToast(message, 'danger', { platformLink: true });
       } finally {
         setMutating(false);
       }
@@ -165,7 +165,7 @@ export function DowngradeChoicePage() {
       } catch (err) {
         const message =
           err instanceof ApiRequestError ? err.message : t('tiers.downgrade.errorGeneric');
-        addToast(message, 'danger');
+        addToast(message, 'danger', { platformLink: true });
       } finally {
         setMutating(false);
       }

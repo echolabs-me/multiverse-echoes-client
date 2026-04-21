@@ -161,7 +161,7 @@ export function CommunitySidebar() {
       setMessages((prev) => [...prev, msg]);
       setMessageText('');
     } catch {
-      addToast(t('common.error'), 'danger');
+      addToast(t('common.error'), 'danger', { platformLink: true });
     } finally {
       setIsSending(false);
     }
@@ -175,7 +175,7 @@ export function CommunitySidebar() {
     try {
       const msg = await channelApi.uploadImage(activeChannel.channel_id, file);
       setMessages((prev) => [...prev, msg]);
-    } catch { addToast(t('common.error'), 'danger'); } finally { setIsSending(false); }
+    } catch { addToast(t('common.error'), 'danger', { platformLink: true }); } finally { setIsSending(false); }
   };
 
   const handlePollVote = async (msg: ChannelMessage, answerId: number) => {
@@ -188,7 +188,7 @@ export function CommunitySidebar() {
         answer_id: answerId,
       });
       addToast(t('community.voteRecorded'), 'success');
-    } catch { addToast(t('common.error'), 'danger'); }
+    } catch { addToast(t('common.error'), 'danger', { platformLink: true }); }
   };
 
   const handleCreatePoll = async () => {
@@ -206,7 +206,7 @@ export function CommunitySidebar() {
       setPollOptions(['', '']);
       await loadMessages();
       addToast(t('community.pollCreated'), 'success');
-    } catch { addToast(t('common.error'), 'danger'); } finally { setIsSending(false); }
+    } catch { addToast(t('common.error'), 'danger', { platformLink: true }); } finally { setIsSending(false); }
   };
 
   // ── Not linked CTA ──
