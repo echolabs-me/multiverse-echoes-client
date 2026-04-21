@@ -804,6 +804,11 @@
     "registerHere": "Regístrate aquí"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Algo salió mal",
+      "body": "La aplicación encontró un error inesperado. Intenta recargar — si el problema persiste, consulta la página de estado de la plataforma.",
+      "reload": "Recargar"
+    },
     "INTERNAL_ERROR": "Algo salió mal por nuestra parte. Vuelve a intentarlo.",
     "UNAUTHORIZED": "Necesitas iniciar sesión para hacer eso.",
     "FORBIDDEN": "No tienes permiso para hacer eso.",

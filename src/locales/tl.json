@@ -804,6 +804,11 @@
     "registerHere": "Mag-register dito"
   },
   "errors": {
+    "appCrashed": {
+      "title": "May naganap na mali",
+      "body": "Nagkaroon ng hindi inaasahang error ang app. Subukang i-reload — kung nagpapatuloy ang problema, tingnan ang status page ng platform.",
+      "reload": "I-reload"
+    },
     "INTERNAL_ERROR": "May nagkamali sa aming panig. Pakisubukan muli.",
     "UNAUTHORIZED": "Kailangang mag-sign in upang magawa iyan.",
     "FORBIDDEN": "Wala kang pahintulot na gawin iyan.",

@@ -804,6 +804,11 @@
     "registerHere": "Register here"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Something went wrong",
+      "body": "The app ran into an unexpected error. Try reloading — if the problem persists, check the platform status page.",
+      "reload": "Reload"
+    },
     "INTERNAL_ERROR": "Something went wrong on our end. Please try again.",
     "UNAUTHORIZED": "You need to sign in to do that.",
     "FORBIDDEN": "You don't have permission to do that.",

@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet, useParams } from 'react
 import { HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LOCALES, type SupportedLocale } from './i18n.ts';
-import { SkipLink, ToastContainer } from './components/index.ts';
+import { ErrorBoundary, SkipLink, ToastContainer } from './components/index.ts';
 import { AppLayout } from './components/AppLayout.tsx';
 import { WebsiteLayout } from './components/website/WebsiteLayout.tsx';
 import { useAuthStore } from './stores/useAuthStore.ts';
@@ -114,6 +114,7 @@ export function App() {
       <BrowserRouter>
         <SkipLink />
         <ToastContainer />
+        <ErrorBoundary>
         <Routes>
           {/* Root: flag page for first-touch visitors; return visitors skip
               it and go straight to their remembered locale's home. */}
@@ -201,6 +202,7 @@ export function App() {
           {/* 404 catch-all */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        </ErrorBoundary>
       </BrowserRouter>
     </HelmetProvider>
   );

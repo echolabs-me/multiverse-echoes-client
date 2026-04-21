@@ -804,6 +804,11 @@
     "registerHere": "点此注册"
   },
   "errors": {
+    "appCrashed": {
+      "title": "出现问题",
+      "body": "应用遇到了意外错误。请尝试重新加载 — 如果问题仍然存在，请查看平台状态页面。",
+      "reload": "重新加载"
+    },
     "INTERNAL_ERROR": "我们这边出了点问题,请再试一次。",
     "UNAUTHORIZED": "你需要先登录才能这样做。",
     "FORBIDDEN": "你没有权限这样做。",

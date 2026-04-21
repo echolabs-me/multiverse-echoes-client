@@ -804,6 +804,11 @@
     "registerHere": "Daftar di sini"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Sesuatu tidak kena",
+      "body": "Aplikasi mengalami ralat yang tidak dijangka. Cuba muat semula — jika masalah berterusan, semak halaman status platform.",
+      "reload": "Muat semula"
+    },
     "INTERNAL_ERROR": "Sesuatu telah berlaku di pihak kami. Sila cuba lagi.",
     "UNAUTHORIZED": "Anda perlu log masuk untuk melakukan perkara tersebut.",
     "FORBIDDEN": "Anda tidak mempunyai kebenaran untuk melakukan perkara itu.",

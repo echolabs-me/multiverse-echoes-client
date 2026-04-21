@@ -804,6 +804,11 @@
     "registerHere": "Hier registrieren"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Etwas ist schiefgelaufen",
+      "body": "Die App ist auf einen unerwarteten Fehler gestoßen. Versuche es mit einem Neuladen — bleibt das Problem bestehen, prüfe die Plattform-Statusseite.",
+      "reload": "Neu laden"
+    },
     "INTERNAL_ERROR": "Hier ist bei uns etwas schiefgelaufen. Bitte versuchen Sie es erneut.",
     "UNAUTHORIZED": "Sie müssen sich anmelden, um dies zu tun.",
     "FORBIDDEN": "Sie haben keine Berechtigung, dies zu tun.",

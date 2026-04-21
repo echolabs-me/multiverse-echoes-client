@@ -804,6 +804,11 @@
     "registerHere": "Buradan kayıt olun"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Bir sorun oluştu",
+      "body": "Uygulama beklenmeyen bir hatayla karşılaştı. Yeniden yüklemeyi deneyin — sorun devam ederse platform durum sayfasını kontrol edin.",
+      "reload": "Yeniden yükle"
+    },
     "INTERNAL_ERROR": "Bizim tarafımızda bir sorun oluştu. Lütfen tekrar deneyin.",
     "UNAUTHORIZED": "Bunu yapmak için giriş yapmanız gerekiyor.",
     "FORBIDDEN": "Bunu yapmaya yetkiniz yok.",

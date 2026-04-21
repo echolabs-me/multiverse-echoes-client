@@ -804,6 +804,11 @@
     "registerHere": "Inscrivez-vous ici"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Un problème est survenu",
+      "body": "L’application a rencontré une erreur inattendue. Essayez de recharger — si le problème persiste, consultez la page d’état de la plateforme.",
+      "reload": "Recharger"
+    },
     "INTERNAL_ERROR": "Quelque chose a mal tourné de notre côté. Réessaie.",
     "UNAUTHORIZED": "Tu dois te connecter pour faire ça.",
     "FORBIDDEN": "Tu n'as pas la permission de faire ça.",

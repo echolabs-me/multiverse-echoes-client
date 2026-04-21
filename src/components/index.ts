@@ -7,6 +7,7 @@ export { EchoBirthAnimation } from './EchoBirthAnimation.tsx';
 export { Dropdown } from './Dropdown.tsx';
 export { EchoPortrait3D } from './EchoPortrait3D.tsx';
 export { EmptyState } from './EmptyState.tsx';
+export { ErrorBoundary, ErrorFallback } from './ErrorBoundary.tsx';
 export { ExtensionSlot } from './ExtensionSlot.tsx';
 export { Input } from './Input.tsx';
 export { Modal } from './Modal.tsx';

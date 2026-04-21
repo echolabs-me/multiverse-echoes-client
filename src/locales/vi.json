@@ -804,6 +804,11 @@
     "registerHere": "Đăng ký tại đây"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Đã xảy ra lỗi",
+      "body": "Ứng dụng gặp lỗi không mong muốn. Hãy thử tải lại — nếu vấn đề vẫn tiếp diễn, vui lòng kiểm tra trang trạng thái nền tảng.",
+      "reload": "Tải lại"
+    },
     "INTERNAL_ERROR": "Đã có lỗi xảy ra từ phía chúng tôi. Vui lòng thử lại.",
     "UNAUTHORIZED": "Bạn cần đăng nhập để thực hiện việc này.",
     "FORBIDDEN": "Bạn không có quyền thực hiện thao tác này.",

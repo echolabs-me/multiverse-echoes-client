@@ -804,6 +804,11 @@
     "registerHere": "Daftar di sini"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Terjadi kesalahan",
+      "body": "Aplikasi mengalami kesalahan tak terduga. Coba muat ulang — jika masalah berlanjut, periksa halaman status platform.",
+      "reload": "Muat ulang"
+    },
     "INTERNAL_ERROR": "Terjadi kesalahan pada sistem kami. Silakan coba lagi.",
     "UNAUTHORIZED": "Anda harus masuk untuk melakukan itu.",
     "FORBIDDEN": "Anda tidak memiliki izin untuk melakukan itu.",

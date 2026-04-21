@@ -804,6 +804,11 @@
     "registerHere": "Cadastre-se aqui"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Algo deu errado",
+      "body": "O app encontrou um erro inesperado. Tente recarregar — se o problema persistir, consulte a página de status da plataforma.",
+      "reload": "Recarregar"
+    },
     "INTERNAL_ERROR": "Algo deu errado do nosso lado. Por favor, tente novamente.",
     "UNAUTHORIZED": "Você precisa fazer login para fazer isso.",
     "FORBIDDEN": "Você não tem permissão para fazer isso.",

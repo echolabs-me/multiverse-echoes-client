@@ -804,6 +804,11 @@
     "registerHere": "Registrati qui"
   },
   "errors": {
+    "appCrashed": {
+      "title": "Qualcosa è andato storto",
+      "body": "L’app ha riscontrato un errore inatteso. Prova a ricaricare — se il problema persiste, controlla la pagina di stato della piattaforma.",
+      "reload": "Ricarica"
+    },
     "INTERNAL_ERROR": "Si è verificato un errore da parte nostra. Riprova, per favore.",
     "UNAUTHORIZED": "Devi effettuare l'accesso per farlo.",
     "FORBIDDEN": "Non hai il permesso di farlo.",
