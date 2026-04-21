@@ -2004,7 +2004,15 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
  *  entry "Pre-expiry PromotionalSubscription notification UI").
  *  Reference: ME-MIS-001 §7.2, §12.4.
  */
-{ PromotionalSubscriptionExpiring: { user_id: string; days_remaining: number } };
+{ PromotionalSubscriptionExpiring: { user_id: string; days_remaining: number } } | 
+/**
+ *  Audit event: the daily `DataLifecycleEnforcer` just purged
+ *  hibernated Echoes and/or archived Private Shards that crossed
+ *  their 90-day grace window (ME-MIS-001 §5.2).
+ * 
+ *  One event per user per sweep pass.
+ */
+{ HibernatedContentDeleted: { user_id: string; echo_ids: string[]; shard_ids: string[]; deleted_at: string } };
 
 /**
  *  Events sent over the WebSocket to clients.
