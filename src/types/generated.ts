@@ -76,6 +76,20 @@ export type ApiKeyListItem = {
 };
 
 /**
+ *  Tier the user falls to when a `PromotionalSubscription` expires.
+ *  Reference: ME-MIS-001 §7.2.
+ * 
+ *  Narrow variant set mirrors `GrantedTier`'s rationale: today every
+ *  beta-reward promo auto-downgrades to Free, and the Core option
+ *  exists for future Custom promos where a partial downgrade makes
+ *  sense. Creator is intentionally absent — add when a grant flow
+ *  needs it.
+ *  `PartialOrd`/`Ord` derived so "pick most conservative auto-downgrade
+ *  across overlapping expired promos" reduces to `.min()`.
+ */
+export type AutoDowngradeTier = "Free" | "Core";
+
+/**
  *  Beta invite code for gated registration.
  *  Reference: ME-UXF-001 §4.2.
  */
@@ -90,6 +104,54 @@ export type BetaInvite = {
 	expires_at: string,
 	created_at: string,
 };
+
+/**
+ *  Tracks whether a user participated in beta, what phase they were
+ *  in, and whether the Founding Echo badge has been granted.
+ * 
+ *  Primary key: `user_id` (one record per user).
+ * 
+ *  `feedback_count` is currently an unused placeholder. No feedback
+ *  submission flow exists in the codebase yet; when one ships, the
+ *  increment call will live alongside the submission handler. Until
+ *  then the field is always 0 for new records. Reference: ME-MIS-001
+ *  §7.3 clarification.
+ */
+export type BetaParticipation = {
+	user_id: string,
+	/**
+	 *  Locked at creation. A tester invited to closed beta who didn't
+	 *  accept until after open beta opened is still `ClosedBeta`.
+	 */
+	beta_tier: BetaTier,
+	joined_at: string,
+	// Placeholder until a feedback submission flow ships. Default 0.
+	feedback_count?: number,
+	/**
+	 *  Flips to `true` when the Founding Echo `MarketplaceItem` is
+	 *  added to the user's `UserInventory`. Gate for idempotency in
+	 *  `godmode grant-beta-rewards` so re-runs don't double-grant.
+	 */
+	badge_granted: boolean,
+};
+
+/**
+ *  Classification of a beta tester for reward granting.
+ *  Reference: ME-MIS-001 §7.3.
+ * 
+ *  - `ClosedBeta` — tester admitted during closed beta phases 1–3
+ *    (first 25 + random 50 + random 25 waitlist draws, 100 testers
+ *    total). At public launch receives a 3-month God Mode
+ *    `PromotionalSubscription`.
+ *  - `OpenBeta` — tester admitted during open beta phase 4 (remainder
+ *    of the waitlist). At public launch receives a 1-month Core
+ *    `PromotionalSubscription`.
+ * 
+ *  Enum is not changeable post-creation — a user's beta tier is fixed
+ *  by the phase they joined in. A tester invited to closed beta who
+ *  didn't accept until after open beta opened is still `ClosedBeta`.
+ */
+export type BetaTier = "ClosedBeta" | "OpenBeta";
 
 /**
  *  GDPR Article 33 breach record-keeping.
@@ -966,6 +1028,22 @@ export type GlobalEventStatus = "Scheduled" | "Active" | "Completed";
  */
 export type GlobalEventType = "Economic" | "Social" | "Environmental" | "Political" | "Cultural";
 
+/**
+ *  Subset of `SubscriptionTier` that a `PromotionalSubscription` can
+ *  grant. Reference: ME-MIS-001 §7.2.
+ * 
+ *  Narrower than `SubscriptionTier` because a promo is always an
+ *  *upgrade*: granting Free or Starter as a promo has no meaning, and
+ *  Creator is not used by any current reward shape. If a future promo
+ *  needs Creator, add the variant — backward compatible because serde
+ *  errors on unknown variants only when reading old data, and no Creator
+ *  grants exist on disk today.
+ *  `PartialOrd`/`Ord` derived so tier resolution can pick the highest
+ *  active promo via a plain `sort()` / `.max_by_key()`. Order follows
+ *  the canonical tier ladder (lower variant = lower tier).
+ */
+export type GrantedTier = "Core" | "GodMode";
+
 export type HealthResponse = {
 	status: string,
 	tick_interval_seconds: number,
@@ -1282,6 +1360,45 @@ export type PostMessageRequest = {
 };
 
 export type ProfileVisibility = "Public" | "FriendsOnly" | "Private";
+
+/**
+ *  Provenance of a `PromotionalSubscription`. Reference: ME-MIS-001 §7.2.
+ * 
+ *  - `ClosedBetaReward` — 3-month God Mode grant for closed beta testers.
+ *  - `OpenBetaReward` — 1-month Core grant for open beta testers.
+ *  - `Custom` — discretionary grant (partnerships, support make-goods,
+ *    etc). Tier + duration set by the granting admin; fields are not
+ *    constrained by the two beta-reward shapes.
+ */
+export type PromoType = "ClosedBetaReward" | "OpenBetaReward" | "Custom";
+
+/**
+ *  A promotional subscription override. When an instance is active
+ *  (`starts_at <= now < expires_at`) it takes precedence over the
+ *  user's paid subscription tier for its duration.
+ * 
+ *  Primary key: `promo_id`. A user can have many records over time;
+ *  query by `user_id` returns a list.
+ */
+export type PromotionalSubscription = {
+	promo_id: string,
+	user_id: string,
+	promo_type: PromoType,
+	granted_tier: GrantedTier,
+	/**
+	 *  UTC timestamp when the grant activates. For beta rewards this is
+	 *  `public_launch_date`; for Custom it's whatever the operator set.
+	 */
+	starts_at: string,
+	/**
+	 *  UTC timestamp when the grant expires. The expiry enforcer
+	 *  (`me_billing::subscription`) downgrades `User.subscription_tier`
+	 *  to `auto_downgrade_to` at or after this time.
+	 */
+	expires_at: string,
+	auto_downgrade_to: AutoDowngradeTier,
+	created_at: string,
+};
 
 /**
  *  How a Private Shard was provisioned to its owner (ME-TIER-001 v6 §2).
@@ -1877,7 +1994,17 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
 // Emitted when the daily digest notification is generated. Phase 7 digest system.
 { DailyDigestGenerated: { user_id: string; notification_id: string } } | 
 // Emitted when an Echo's AI-generated portrait is ready (background generation complete).
-{ EchoAvatarReady: { echo_id: string; avatar_url: string } } | { EmergencyHibernation: { reason: string } };
+{ EchoAvatarReady: { echo_id: string; avatar_url: string } } | { EmergencyHibernation: { reason: string } } | 
+/**
+ *  A user's active `PromotionalSubscription` is approaching expiry.
+ *  Emitted by the hourly `SubscriptionExpiryEnforcer` at 30, 7, and
+ *  1 day remaining. Deduplicated via `PromotionalSubscription.notified_thresholds`
+ *  so each threshold fires exactly once per promo. Consumers: the
+ *  notification-creation path (not wired in Block 3 — see debt.md
+ *  entry "Pre-expiry PromotionalSubscription notification UI").
+ *  Reference: ME-MIS-001 §7.2, §12.4.
+ */
+{ PromotionalSubscriptionExpiring: { user_id: string; days_remaining: number } };
 
 /**
  *  Events sent over the WebSocket to clients.
