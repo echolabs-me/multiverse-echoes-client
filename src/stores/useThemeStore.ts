@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { safeGetItem, safeRemoveItem, safeSetItem } from '../lib/safeStorage.ts';
 
 /**
  * Theme override — a set of CSS custom property overrides applied on top of
@@ -51,13 +52,13 @@ interface ThemeState {
 }
 
 const getStoredBase = (): ThemeBase => {
-  const stored = localStorage.getItem('theme');
+  const stored = safeGetItem('theme');
   if (stored === 'light' || stored === 'dark') return stored;
   return 'dark'; // CDS-001 §2.1 — dark is the primary palette
 };
 
 const getStoredOverrideId = (): string | null => {
-  return localStorage.getItem('theme-override') || null;
+  return safeGetItem('theme-override') || null;
 };
 
 let appliedTokens: string[] = [];
@@ -83,15 +84,15 @@ const clearTokenOverrides = () => {
 
 const applyTheme = (base: ThemeBase, override: ThemeOverride | null) => {
   document.documentElement.setAttribute('data-theme', base);
-  localStorage.setItem('theme', base);
+  safeSetItem('theme', base);
 
   clearTokenOverrides();
 
   if (override) {
     applyTokenOverrides(override.tokens);
-    localStorage.setItem('theme-override', override.id);
+    safeSetItem('theme-override', override.id);
   } else {
-    localStorage.removeItem('theme-override');
+    safeRemoveItem('theme-override');
   }
 };
 
@@ -106,7 +107,7 @@ export const useThemeStore = create<ThemeState>((set, get) => {
 
   applyTheme(initialBase, initialOverride);
 
-  const initialDisable3D = localStorage.getItem('disable-3d') === 'true';
+  const initialDisable3D = safeGetItem('disable-3d') === 'true';
 
   return {
     base: initialBase,
@@ -169,7 +170,7 @@ export const useThemeStore = create<ThemeState>((set, get) => {
     },
 
     setDisable3D: (disabled) => {
-      localStorage.setItem('disable-3d', String(disabled));
+      safeSetItem('disable-3d', String(disabled));
       set({ disable3D: disabled });
     },
 

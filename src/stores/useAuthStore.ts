@@ -3,6 +3,7 @@ import type { User, LoginRequest, RegisterRequest, RegisterResponse } from '../t
 import { auth, account } from '../lib/api/endpoints.ts';
 import { useSystemStore } from './useSystemStore.ts';
 import { setTokens, clearTokens, loadStoredTokens, configureApi } from '../lib/api/client.ts';
+import { safeGetItem } from '../lib/safeStorage.ts';
 
 interface AuthState {
   user: User | null;
@@ -27,8 +28,11 @@ export const useAuthStore = create<AuthState>((set) => {
 
   // Hydrate auth state synchronously from localStorage so the first render
   // sees the correct value — prevents redirect-to-login on page refresh.
+  // Every storage read routes through safeStorage so a throwing localStorage
+  // (sandbox policy, disabled storage) lands the user on the login screen
+  // instead of crash-looping through the ErrorBoundary.
   loadStoredTokens();
-  const hasStoredToken = !!localStorage.getItem('access_token');
+  const hasStoredToken = !!safeGetItem('access_token');
 
   return {
     user: null,
@@ -87,7 +91,7 @@ export const useAuthStore = create<AuthState>((set) => {
 
     initialize: () => {
       loadStoredTokens();
-      const hasToken = !!localStorage.getItem('access_token');
+      const hasToken = !!safeGetItem('access_token');
       set({ isAuthenticated: hasToken });
       // Fetch profile if we have a token
       if (hasToken) {

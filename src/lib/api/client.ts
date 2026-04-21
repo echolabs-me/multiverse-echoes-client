@@ -1,4 +1,5 @@
 import type { ApiError } from '../../types/api.ts';
+import { safeGetItem, safeRemoveItem, safeSetItem } from '../safeStorage.ts';
 
 function resolveBaseUrl(): string {
   const envUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
@@ -9,8 +10,12 @@ function resolveBaseUrl(): string {
 
 let baseUrl = resolveBaseUrl();
 // Restore tokens from localStorage on module load (survives full page reloads).
-let accessToken: string | null = localStorage.getItem('access_token');
-let refreshToken: string | null = localStorage.getItem('refresh_token');
+// safeGetItem returns null if localStorage itself throws (sandbox policy,
+// storage disabled) — we treat that the same as "no token stored" and let
+// the user land on the login screen instead of crash-looping through the
+// ErrorBoundary.
+let accessToken: string | null = safeGetItem('access_token');
+let refreshToken: string | null = safeGetItem('refresh_token');
 let onAuthFailure: (() => void) | null = null;
 
 export function configureApi(options: {
@@ -24,20 +29,20 @@ export function configureApi(options: {
 export function setTokens(access: string, refresh: string) {
   accessToken = access;
   refreshToken = refresh;
-  localStorage.setItem('access_token', access);
-  localStorage.setItem('refresh_token', refresh);
+  safeSetItem('access_token', access);
+  safeSetItem('refresh_token', refresh);
 }
 
 export function clearTokens() {
   accessToken = null;
   refreshToken = null;
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('refresh_token');
+  safeRemoveItem('access_token');
+  safeRemoveItem('refresh_token');
 }
 
 export function loadStoredTokens() {
-  accessToken = localStorage.getItem('access_token');
-  refreshToken = localStorage.getItem('refresh_token');
+  accessToken = safeGetItem('access_token');
+  refreshToken = safeGetItem('refresh_token');
 }
 
 export function getBaseUrl(): string {
@@ -91,12 +96,12 @@ async function tryRefreshToken(): Promise<boolean> {
         expires_in: number;
       };
       accessToken = data.access_token;
-      localStorage.setItem('access_token', data.access_token);
+      safeSetItem('access_token', data.access_token);
       // Server rotates the refresh token on every /auth/refresh call
       // (RFC 6819 §5.2.2.3). Persist the new one — the old one is
       // already dead server-side.
       refreshToken = data.refresh_token;
-      localStorage.setItem('refresh_token', data.refresh_token);
+      safeSetItem('refresh_token', data.refresh_token);
       return true;
     } catch {
       return false;

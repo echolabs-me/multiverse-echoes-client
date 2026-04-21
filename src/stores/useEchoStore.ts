@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { EchoResponse, CreateEchoRequest } from '../types/api.ts';
 import { echoes } from '../lib/api/endpoints.ts';
+import { safeGetJSON, safeSetItem } from '../lib/safeStorage.ts';
 
 interface EchoState {
   echoList: EchoResponse[];
@@ -26,17 +27,18 @@ export const useEchoStore = create<EchoState>((set, get) => ({
     set({ isLoading: true });
     const list = await echoes.list();
     // Restore user's custom order from localStorage if available.
-    try {
-      const savedOrder = JSON.parse(localStorage.getItem('me_echo_order') ?? '[]') as string[];
-      if (savedOrder.length > 0) {
-        const orderMap = new Map(savedOrder.map((id, i) => [id, i]));
-        list.sort((a, b) => {
-          const ai = orderMap.get(a.echo_id) ?? 999;
-          const bi = orderMap.get(b.echo_id) ?? 999;
-          return ai - bi;
-        });
-      }
-    } catch { /* non-critical */ }
+    // safeGetJSON clears the corrupted key on parse failure so the next
+    // boot starts clean (no crash-reload loop if the stored bytes are
+    // ever truncated / user-edited / shape-changed across versions).
+    const savedOrder = safeGetJSON<string[]>('me_echo_order', []);
+    if (savedOrder.length > 0) {
+      const orderMap = new Map(savedOrder.map((id, i) => [id, i]));
+      list.sort((a, b) => {
+        const ai = orderMap.get(a.echo_id) ?? 999;
+        const bi = orderMap.get(b.echo_id) ?? 999;
+        return ai - bi;
+      });
+    }
     set({ echoList: list, isLoading: false });
   },
 
@@ -89,8 +91,6 @@ export const useEchoStore = create<EchoState>((set, get) => ({
     list.splice(toIndex, 0, moved);
     set({ echoList: list });
     // Persist order to localStorage so it survives refreshes.
-    try {
-      localStorage.setItem('me_echo_order', JSON.stringify(list.map((e) => e.echo_id)));
-    } catch { /* non-critical */ }
+    safeSetItem('me_echo_order', JSON.stringify(list.map((e) => e.echo_id)));
   },
 }));

@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import en from './locales/en.json';
+import { safeGetItem, safeSetItem } from './lib/safeStorage.ts';
 
 /**
  * Supported locale codes. Keep this in sync with `config/default.toml`
@@ -68,16 +69,16 @@ function resolveInitialLocale(): SupportedLocale {
   const pathMatch = window.location.pathname.match(LOCALE_PATH_PATTERN);
   if (pathMatch && (SUPPORTED_LOCALES as readonly string[]).includes(pathMatch[1])) {
     // Persist so deep-link users don't re-enter the flag page on later visits.
-    localStorage.setItem('locale', pathMatch[1]);
-    localStorage.setItem('locale_selected', 'true');
+    safeSetItem('locale', pathMatch[1]);
+    safeSetItem('locale_selected', 'true');
     return pathMatch[1] as SupportedLocale;
   }
   const param = new URLSearchParams(window.location.search).get('lng');
   if (param && (SUPPORTED_LOCALES as readonly string[]).includes(param)) {
-    localStorage.setItem('locale', param);
+    safeSetItem('locale', param);
     return param as SupportedLocale;
   }
-  const stored = localStorage.getItem('locale');
+  const stored = safeGetItem('locale');
   if (stored && (SUPPORTED_LOCALES as readonly string[]).includes(stored)) {
     return stored as SupportedLocale;
   }

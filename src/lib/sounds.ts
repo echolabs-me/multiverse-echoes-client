@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { safeGetItem, safeSetItem } from './safeStorage.ts';
 
 /**
  * Notification sound system — CDS-001 §8.2
@@ -69,17 +70,17 @@ function playTone(frequency: number, volume: number, durationMs = 150) {
 }
 
 export const useSoundStore = create<SoundState>((set, get) => ({
-  enabled: localStorage.getItem('sound_enabled') === 'true',
-  volume: parseFloat(localStorage.getItem('sound_volume') ?? '0.15'),
+  enabled: safeGetItem('sound_enabled') === 'true',
+  volume: parseFloat(safeGetItem('sound_volume') ?? '0.15'),
 
   setEnabled: (enabled) => {
-    localStorage.setItem('sound_enabled', String(enabled));
+    safeSetItem('sound_enabled', String(enabled));
     set({ enabled });
   },
 
   setVolume: (volume) => {
     const clamped = Math.max(0, Math.min(1, volume));
-    localStorage.setItem('sound_volume', String(clamped));
+    safeSetItem('sound_volume', String(clamped));
     set({ volume: clamped });
   },
 
