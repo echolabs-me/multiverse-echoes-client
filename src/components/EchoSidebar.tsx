@@ -127,21 +127,21 @@ function EchoCard({
           </span>
         </div>
         {/* Row 2: mood + tick */}
-        <p className="truncate ps-[18px] text-[11px] text-text-secondary">
+        <p className="truncate ps-4.5 text-[11px] text-text-secondary">
           {getMoodLabel(echo.current_mood)} · {t('echoSidebar.tick', { tick: echo.current_tick })}
         </p>
         {/* Row 3: travelling indicator or diary preview */}
         {showTravelIndicator ? (
-          <p className="ps-[18px] text-xs/snug text-accent italic">
+          <p className="ps-4.5 text-xs/snug text-accent italic">
             {t('echoSidebar.arrivingAt', { shard: shardName })}
           </p>
         ) : latestDiary ? (
-          <p className="line-clamp-2 ps-[18px] text-xs/snug text-text-secondary italic">
+          <p className="line-clamp-2 ps-4.5 text-xs/snug text-text-secondary italic">
             &ldquo;{latestDiary}&rdquo;
           </p>
         ) : null}
         {/* Row 4: shard name */}
-        <p className="truncate ps-[18px] text-[11px] text-text-muted">
+        <p className="truncate ps-4.5 text-[11px] text-text-muted">
           {shardName}
         </p>
       </button>
@@ -275,7 +275,7 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
     <aside
       className={forceVisible
         ? "flex min-h-0 w-full flex-1 flex-col bg-transparent"
-        : "hidden h-full w-[200px] flex-col border-e border-border/50 bg-transparent md:flex lg:w-[232px]"
+        : "hidden h-full w-50 flex-col border-e border-border/50 bg-transparent md:flex lg:w-58"
       }
       aria-label={t('echoSidebar.title')}
     >

@@ -536,7 +536,7 @@ export function CommunityPage() {
                                 <MoreVertical size={14} />
                               </button>
                               {menuOpenId === msg.message_id && (
-                                <div className="absolute inset-e-0 inset-bs-7 z-10 min-w-[140px] rounded-lg border border-border bg-surface py-1 shadow-lg">
+                                <div className="absolute inset-e-0 inset-bs-7 z-10 min-w-35 rounded-lg border border-border bg-surface py-1 shadow-lg">
                                   {canEditMessage(msg) && (
                                     <button
                                       onClick={() => {

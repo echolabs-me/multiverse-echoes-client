@@ -127,7 +127,7 @@ export function LanguageSelectionPage() {
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-canvas px-4">
       {/* Radial glow behind centre — matches hero-glow from landing page */}
       <div
-        className={`me-hero-glow-soft pointer-events-none fixed inset-s-1/2 inset-bs-[40%] size-[600px] -translate-1/2 rounded-full ${animClass}`}
+        className={`me-hero-glow-soft pointer-events-none fixed inset-s-1/2 inset-bs-[40%] size-150 -translate-1/2 rounded-full ${animClass}`}
       />
 
       <div className="relative z-10 flex flex-col items-center">
@@ -169,7 +169,7 @@ export function LanguageSelectionPage() {
         ) : (
           <div
             ref={containerRef}
-            className={`me-fade-up relative size-[640px] ${animClass}`}
+            className={`me-fade-up relative size-160 ${animClass}`}
             data-delay="300"
             role="listbox"
             aria-label={t('onboarding.languageSelectionLabel')}

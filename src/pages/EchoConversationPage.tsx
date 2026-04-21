@@ -340,7 +340,7 @@ export function EchoConversationPage() {
           }
           disabled={isSending || atLimit || !conversationId}
           rows={1}
-          className="max-h-[150px] flex-1 resize-none rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40"
+          className="max-h-37.5 flex-1 resize-none rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40"
           aria-label={t('conversation.inputPlaceholder')}
         />
         <button

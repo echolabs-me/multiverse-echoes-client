@@ -116,7 +116,7 @@ export function HomePage() {
         {/* Dark overlay + blur for text readability */}
         <div className="absolute inset-0 bg-[#0A0F14]/80 backdrop-blur-sm" />
         {/* Radial glow */}
-        <div className="me-hero-glow pointer-events-none absolute inset-s-1/2 inset-bs-[40%] size-[700px] -translate-1/2 rounded-full" />
+        <div className="me-hero-glow pointer-events-none absolute inset-s-1/2 inset-bs-[40%] size-175 -translate-1/2 rounded-full" />
 
         <div className="section-reveal relative z-10 mx-auto max-w-2xl px-6 text-center">
           <img
@@ -394,7 +394,7 @@ export function HomePage() {
       {/* ═══ Section 8: Final CTA ═══ */}
       <section className="section-reveal relative overflow-hidden px-6 py-32">
         {/* Background glow */}
-        <div className="me-radial-glow-ambient pointer-events-none absolute inset-s-1/2 inset-bs-1/2 size-[500px] -translate-1/2 rounded-full" />
+        <div className="me-radial-glow-ambient pointer-events-none absolute inset-s-1/2 inset-bs-1/2 size-125 -translate-1/2 rounded-full" />
         <div className="relative z-10 mx-auto max-w-lg text-center">
           <h2 className="mbe-8 font-serif text-4xl font-light tracking-[0.08em] text-(--text-primary)">
             {t('website.finalCta.headline')}

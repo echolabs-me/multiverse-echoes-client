@@ -34,6 +34,13 @@ export default defineConfig([
         // to know which classes exist and which are canonical. Path is
         // resolved relative to each linted file.
         entryPoint: 'src/styles/global.css',
+        // Required to make `enforce-canonical-classes` collapse
+        // px-expressed arbitrary values into the spacing scale
+        // (e.g. `max-h-[120px]` -> `max-h-30`). Without this, Tailwind's
+        // canonicalizer only handles rem-expressed values and named
+        // aliases (`h-[100vh]` -> `h-screen`), matching the gap we hit
+        // against IntelliSense's suggestCanonicalClasses.
+        rootFontSize: 16,
       },
     },
     languageOptions: {

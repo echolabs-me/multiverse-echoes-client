@@ -81,7 +81,7 @@ export function MoodHistoryStrip({
         onMouseLeave={() => setHoveredIndex(null)}
       >
         {/* Segment bar — the tall coloured blocks */}
-        <div className="flex w-full gap-[3px] overflow-hidden rounded-xl">
+        <div className="flex w-full gap-0.75 overflow-hidden rounded-xl">
           {chronological.map((entry, i) => {
             const palette = getMoodPalette(entry.mood);
             const isHovered = hoveredIndex === i;
@@ -106,7 +106,7 @@ export function MoodHistoryStrip({
                 ref={setSegmentVars}
                 data-hovered={isHovered}
                 data-pos={pos}
-                className="me-mh-segment group relative min-w-[4px] flex-1 cursor-pointer border-none p-0 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
+                className="me-mh-segment group relative min-w-1 flex-1 cursor-pointer border-none p-0 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
                 onClick={() => handleClick(entry)}
                 onMouseMove={(e) => handleMouseMove(e, i)}
                 onFocus={() => setHoveredIndex(i)}
@@ -129,8 +129,8 @@ export function MoodHistoryStrip({
                 {/* "Now" playhead on latest segment */}
                 {isLatest && (
                   <div className="absolute inset-s-1/2 -inset-be-3 -translate-x-1/2">
-                    <div className="me-mh-playhead size-3 rotate-45 rounded-[2px]" />
-                    <div className="me-mh-playhead-ping absolute inset-0 size-3 rotate-45 animate-ping rounded-[2px]" />
+                    <div className="me-mh-playhead size-3 rotate-45 rounded-xs" />
+                    <div className="me-mh-playhead-ping absolute inset-0 size-3 rotate-45 animate-ping rounded-xs" />
                   </div>
                 )}
               </button>

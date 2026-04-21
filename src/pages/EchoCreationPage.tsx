@@ -143,7 +143,7 @@ export function EchoCreationPage() {
               placeholder={t('echo.whatIfPlaceholder')}
               maxLength={2000}
               required
-              className="min-h-[120px]"
+              className="min-h-30"
             />
             <p className="mbs-1.5 text-xs text-text-secondary">
               {t('echo.whatIfHint')}
@@ -163,7 +163,7 @@ export function EchoCreationPage() {
               }
               placeholder={t('echo.personaOptionalPlaceholder')}
               maxLength={2000}
-              className="min-h-[100px]"
+              className="min-h-25"
             />
             <p className="mbs-1 text-end text-xs text-text-muted">
               {personaText.length}/2000
@@ -180,7 +180,7 @@ export function EchoCreationPage() {
               }
               placeholder={t('echo.physicalDescriptionPlaceholder')}
               maxLength={1000}
-              className="min-h-[100px]"
+              className="min-h-25"
             />
             <p className="mbs-1.5 text-xs text-text-secondary">
               {t('echo.physicalDescriptionHelper')}

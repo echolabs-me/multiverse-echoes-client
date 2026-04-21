@@ -114,7 +114,7 @@ export function CommunityPulseCard() {
                   return t('communityFeed.daysAgo', { count: days });
                 })()}</span>
               </div>
-              <p className="line-clamp-1 ps-[27px] text-xs/snug text-text-secondary">
+              <p className="line-clamp-1 ps-6.75 text-xs/snug text-text-secondary">
                 {tickerText}
               </p>
             </div>

@@ -40,7 +40,7 @@ export const Input = forwardRef<
         <textarea
           ref={ref as React.Ref<HTMLTextAreaElement>}
           id={inputId}
-          className={`${inputClasses} min-h-[80px] resize-y ${error ? errorClasses : ''} ${className}`}
+          className={`${inputClasses} min-h-20 resize-y ${error ? errorClasses : ''} ${className}`}
           aria-invalid={error ? 'true' : undefined}
           aria-describedby={error ? `${inputId}-error` : undefined}
           {...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}

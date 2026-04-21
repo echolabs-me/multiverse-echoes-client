@@ -115,7 +115,7 @@ export function TickTimer() {
 
       {/* Full-width ambient bar at header bottom */}
       <div
-        className="tick-bar pointer-events-none absolute inset-s-0 inset-e-0 inset-be-0 h-[3px]"
+        className="tick-bar pointer-events-none absolute inset-s-0 inset-e-0 inset-be-0 h-0.75"
         aria-hidden="true"
       >
         {/* Track */}
@@ -147,7 +147,7 @@ export function TickTimer() {
         {/* Ambient upward glow — contained within the bar's overflow:hidden parent */}
         <div
           ref={ambientRef}
-          className="tick-bar-ambient-glow me-progress-bar absolute inset-s-0 inset-be-0 h-[3px] transition-opacity duration-1000"
+          className="tick-bar-ambient-glow me-progress-bar absolute inset-s-0 inset-be-0 h-0.75 transition-opacity duration-1000"
         />
       </div>
     </>

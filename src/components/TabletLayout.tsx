@@ -44,12 +44,12 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
   return (
     <div className="relative flex w-full flex-1 overflow-hidden">
       {/* ── LEFT: Echo list (260px fixed) ── */}
-      <aside className="flex w-[260px] shrink-0 flex-col border-e border-border/50 bg-canvas">
+      <aside className="flex w-65 shrink-0 flex-col border-e border-border/50 bg-canvas">
         <EchoSidebar forceVisible />
       </aside>
 
       {/* ── COMMUNITY PULSE (260px fixed) ── */}
-      <aside className="flex w-[260px] shrink-0 flex-col border-e border-border/50 bg-canvas">
+      <aside className="flex w-65 shrink-0 flex-col border-e border-border/50 bg-canvas">
         <div className="shrink-0 border-be border-border/50 p-3">
           <span className="text-[11px] font-semibold tracking-wider text-text-muted uppercase">
             {t('communityFeed.title')}
@@ -68,7 +68,7 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
       </main>
 
       {/* ── RIGHT: Oracle + Community tabs (280px fixed) ── */}
-      <aside className="flex w-[280px] shrink-0 flex-col border-s border-border/50 bg-canvas">
+      <aside className="flex w-70 shrink-0 flex-col border-s border-border/50 bg-canvas">
         {/* Tab bar */}
         <div className="flex shrink-0 border-be border-border/50" role="tablist">
           <div

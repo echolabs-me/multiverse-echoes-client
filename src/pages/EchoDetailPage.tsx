@@ -802,7 +802,7 @@ export function EchoDetailPage() {
             {/* Diary search and filter bar — always visible when entries exist or a filter is active */}
             {(diaryEntries.length > 0 || moodFilter || diarySearch) && (
               <div className="mbe-3 flex flex-wrap items-center gap-2">
-                <div className="relative min-w-[180px] flex-1">
+                <div className="relative min-w-45 flex-1">
                   <Search size={14} className="absolute inset-s-2.5 inset-bs-1/2 -translate-y-1/2 text-text-muted" aria-hidden="true" />
                   <input
                     type="text"

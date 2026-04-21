@@ -65,7 +65,7 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
 
   return (
     <aside
-      className="hidden h-full w-[76px] shrink-0 flex-col border-e border-border bg-surface md:flex"
+      className="hidden h-full w-19 shrink-0 flex-col border-e border-border bg-surface md:flex"
       aria-label={t('common.sidebar', 'Sidebar navigation')}
     >
       <nav className="flex-1 overflow-y-auto px-1.5 py-2">
@@ -285,10 +285,10 @@ export function AppLayout() {
             {/* ═══ TABLET LEFT PANES ═══ */}
             {!isMobileViewport && isTablet && showEchoPanes && (
               <>
-                <aside className="flex w-[260px] shrink-0 flex-col border-e border-border/50 bg-canvas">
+                <aside className="flex w-65 shrink-0 flex-col border-e border-border/50 bg-canvas">
                   <EchoSidebar forceVisible />
                 </aside>
-                <aside className="flex w-[260px] shrink-0 flex-col border-e border-border/50 bg-canvas">
+                <aside className="flex w-65 shrink-0 flex-col border-e border-border/50 bg-canvas">
                   <div className="shrink-0 border-be border-border/50 p-3">
                     <span className="text-[11px] font-semibold tracking-wider text-text-muted uppercase">
                       {t('communityFeed.title')}
@@ -304,7 +304,7 @@ export function AppLayout() {
             {/* ═══ DESKTOP LEFT PANES ═══ */}
             {!isMobileViewport && !isTablet && showEchoPanes && (
               <>
-                <aside className="hidden max-w-[311px] min-w-[220px] flex-1 flex-col overflow-y-auto border-e border-border/50 min-[1920px]:flex">
+                <aside className="hidden max-w-77.75 min-w-55 flex-1 flex-col overflow-y-auto border-e border-border/50 min-[1920px]:flex">
                   <div className="px-3 py-2.5 text-[11px] font-semibold tracking-wider text-text-muted uppercase">
                     {t('communityFeed.title')}
                   </div>
@@ -333,10 +333,10 @@ export function AppLayout() {
             {/* ═══ DESKTOP RIGHT PANES ═══ */}
             {!isMobileViewport && !isTablet && (
               <>
-                <aside className="flex w-[260px] shrink-0 flex-col border-s border-border/50 min-[1920px]:w-[280px]">
+                <aside className="flex w-65 shrink-0 flex-col border-s border-border/50 min-[1920px]:w-70">
                   <OracleSidebar />
                 </aside>
-                <aside className="hidden max-w-[280px] min-w-[200px] flex-1 flex-col border-s border-border/50 min-[1920px]:flex">
+                <aside className="hidden max-w-70 min-w-50 flex-1 flex-col border-s border-border/50 min-[1920px]:flex">
                   <CommunitySidebar />
                 </aside>
               </>
@@ -421,7 +421,7 @@ function TabletRightSidebar() {
   const [activeTab, setActiveTab] = useState<'oracle' | 'community'>('oracle');
 
   return (
-    <aside className="flex w-[280px] shrink-0 flex-col border-s border-border/50 bg-canvas">
+    <aside className="flex w-70 shrink-0 flex-col border-s border-border/50 bg-canvas">
       <div className="flex shrink-0 border-be border-border/50" role="tablist">
         <div
           onClick={() => setActiveTab('oracle')}
@@ -497,7 +497,7 @@ function DesktopPulseSection() {
         }
       </button>
       {open && (
-        <div className="max-h-[200px] overflow-y-auto px-2 pbe-2">
+        <div className="max-h-50 overflow-y-auto px-2 pbe-2">
           <CommunityPulseCard />
         </div>
       )}
