@@ -61,12 +61,12 @@ export function MoodHistoryStrip({
   return (
     <div className={`relative ${className}`} ref={containerRef}>
       {/* Header row */}
-      <div className="mb-3 flex items-center justify-between">
-        <p className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+      <div className="mbe-3 flex items-center justify-between">
+        <p className="text-xs font-semibold tracking-wider text-text-secondary uppercase">
           {t('echoDetail.moodJourney', 'Mood Journey')}
         </p>
         {chronological.length > 1 && (
-          <p className="text-[10px] tabular-nums text-text-muted">
+          <p className="text-[10px] text-text-muted tabular-nums">
             {formatSimDate(firstDate)} — {formatSimDate(lastDate)}
           </p>
         )}
@@ -106,7 +106,7 @@ export function MoodHistoryStrip({
                 ref={setSegmentVars}
                 data-hovered={isHovered}
                 data-pos={pos}
-                className="me-mh-segment group relative min-w-[4px] flex-1 cursor-pointer border-none p-0 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
+                className="me-mh-segment group relative min-w-[4px] flex-1 cursor-pointer border-none p-0 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1"
                 onClick={() => handleClick(entry)}
                 onMouseMove={(e) => handleMouseMove(e, i)}
                 onFocus={() => setHoveredIndex(i)}
@@ -121,16 +121,16 @@ export function MoodHistoryStrip({
                 {/* Mood label — shown inside segment when wide enough or hovered */}
                 <span
                   data-hovered={isHovered}
-                  className="me-mh-label absolute bottom-2 start-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-medium uppercase tracking-wide transition-opacity duration-200"
+                  className="me-mh-label absolute inset-s-1/2 inset-be-2 -translate-x-1/2 text-[9px] font-medium tracking-wide whitespace-nowrap uppercase transition-opacity duration-200"
                 >
                   {isHovered ? getMoodLabel(entry.mood) : ''}
                 </span>
 
                 {/* "Now" playhead on latest segment */}
                 {isLatest && (
-                  <div className="absolute -bottom-3 start-1/2 -translate-x-1/2">
-                    <div className="me-mh-playhead h-3 w-3 rotate-45 rounded-[2px]" />
-                    <div className="me-mh-playhead-ping absolute inset-0 h-3 w-3 rotate-45 animate-ping rounded-[2px]" />
+                  <div className="absolute inset-s-1/2 -inset-be-3 -translate-x-1/2">
+                    <div className="me-mh-playhead size-3 rotate-45 rounded-[2px]" />
+                    <div className="me-mh-playhead-ping absolute inset-0 size-3 rotate-45 animate-ping rounded-[2px]" />
                   </div>
                 )}
               </button>
@@ -139,7 +139,7 @@ export function MoodHistoryStrip({
         </div>
 
         {/* Dot track — a line of dots along the bottom edge */}
-        <div className="mt-4 flex w-full items-center">
+        <div className="mbs-4 flex w-full items-center">
           <div className="flex w-full items-center gap-0">
             {chronological.map((entry, i) => {
               const palette = getMoodPalette(entry.mood);
@@ -179,10 +179,10 @@ export function MoodHistoryStrip({
           }}
           className="me-mh-tooltip pointer-events-none absolute z-10 rounded-xl px-4 py-2.5 text-xs shadow-xl"
         >
-          <p className="text-sm font-semibold capitalize text-text-primary">
+          <p className="text-sm font-semibold text-text-primary capitalize">
             {getMoodLabel(chronological[hoveredIndex].mood)}
           </p>
-          <p className="mt-0.5 text-text-muted">
+          <p className="mbs-0.5 text-text-muted">
             {formatSimDate(chronological[hoveredIndex].simulated_date)}
           </p>
           {chronological[hoveredIndex].location_name && (

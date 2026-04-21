@@ -50,26 +50,26 @@ export function OnboardingWelcomePage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
-      <h1 className="mb-8 text-2xl font-bold text-text-primary">
+      <h1 className="mbe-8 text-2xl font-bold text-text-primary">
         {t('onboarding.welcomeTitle')}
       </h1>
 
-      <Card className="mb-8 w-full max-w-md text-center">
-        <div className="mb-4 flex justify-center" aria-hidden="true">
+      <Card className="mbe-8 w-full max-w-md text-center">
+        <div className="mbe-4 flex justify-center" aria-hidden="true">
           {card.icon}
         </div>
-        <h2 className="mb-2 text-lg font-semibold text-text-primary">
+        <h2 className="mbe-2 text-lg font-semibold text-text-primary">
           {t(card.titleKey)}
         </h2>
         <p className="text-sm text-text-secondary">{t(card.bodyKey)}</p>
       </Card>
 
       {/* Progress dots */}
-      <div className="mb-6 flex gap-2" aria-label={`Card ${currentCard + 1} of ${cards.length}`}>
+      <div className="mbe-6 flex gap-2" aria-label={`Card ${currentCard + 1} of ${cards.length}`}>
         {cards.map((_, i) => (
           <div
             key={i}
-            className={`h-2 w-2 rounded-full transition-colors ${
+            className={`size-2 rounded-full transition-colors ${
               i === currentCard ? 'bg-accent' : 'bg-border'
             }`}
           />

@@ -65,7 +65,7 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
 
   return (
     <aside
-      className="hidden md:flex h-full w-[76px] flex-shrink-0 flex-col border-e border-border bg-surface"
+      className="hidden h-full w-[76px] shrink-0 flex-col border-e border-border bg-surface md:flex"
       aria-label={t('common.sidebar', 'Sidebar navigation')}
     >
       <nav className="flex-1 overflow-y-auto px-1.5 py-2">
@@ -82,9 +82,9 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
                 aria-current={isActive(item.path) ? 'page' : undefined}
               >
                 {item.icon}
-                <span className="text-[9px] font-medium leading-tight">{t(item.labelKey, item.id)}</span>
+                <span className="text-[9px] leading-tight font-medium">{t(item.labelKey, item.id)}</span>
                 {item.badge != null && item.badge > 0 && (
-                  <span className="absolute top-0.5 end-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-0.5 text-[9px] font-bold text-canvas">
+                  <span className="absolute inset-e-0.5 inset-bs-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-0.5 text-[9px] font-bold text-canvas">
                     {item.badge > 99 ? '99+' : item.badge}
                   </span>
                 )}
@@ -93,16 +93,16 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
           ))}
         </ul>
       </nav>
-      <div className="border-t border-border px-1.5 py-2">
+      <div className="border-bs border-border px-1.5 py-2">
         <button
           onClick={() => {
             void useAuthStore.getState().logout();
             navigate('/login');
           }}
-          className="flex w-full flex-col items-center gap-0.5 rounded-lg px-1 py-2 text-text-muted hover:bg-surface-raised hover:text-danger transition-colors"
+          className="flex w-full flex-col items-center gap-0.5 rounded-lg px-1 py-2 text-text-muted transition-colors hover:bg-surface-raised hover:text-danger"
         >
           <LogOut size={20} />
-          <span className="text-[9px] font-medium leading-tight">{t('auth.logout')}</span>
+          <span className="text-[9px] leading-tight font-medium">{t('auth.logout')}</span>
         </button>
       </div>
     </aside>
@@ -116,7 +116,7 @@ function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: Re
   const palette = useMoodPaletteStore((s) => s.palette);
 
   return (
-    <div className="relative flex flex-1 min-h-0 overflow-hidden">
+    <div className="relative flex min-h-0 flex-1 overflow-hidden">
       {show && palette && (
         <>
           <div
@@ -134,7 +134,7 @@ function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: Re
           </div>
         </>
       )}
-      <div className="flex flex-1 min-h-0">
+      <div className="flex min-h-0 flex-1">
         {children}
       </div>
     </div>
@@ -222,17 +222,17 @@ export function AppLayout() {
   return (
     <div className="flex h-full flex-col bg-canvas">
       {/* Top bar — logo + mobile hamburger */}
-      <header className="relative flex h-14 flex-shrink-0 items-center justify-between border-b border-border bg-surface px-4 overflow-hidden gap-2">
-        <div className="flex items-center gap-2 min-w-0 flex-shrink-0">
-          <img src="/logo.png" alt="" aria-hidden="true" className="h-8 w-8 flex-shrink-0 rounded" />
-          <span className="hidden md:inline text-lg font-bold text-accent truncate">
+      <header className="relative flex h-14 shrink-0 items-center justify-between gap-2 overflow-hidden border-be border-border bg-surface px-4">
+        <div className="flex min-w-0 shrink-0 items-center gap-2">
+          <img src="/logo.png" alt="" aria-hidden="true" className="size-8 shrink-0 rounded-sm" />
+          <span className="hidden truncate text-lg font-bold text-accent md:inline">
             {t('app.title')}
           </span>
         </div>
-        <div className="flex flex-1 items-center justify-center min-w-0 px-2">
+        <div className="flex min-w-0 flex-1 items-center justify-center px-2">
           <TickTimer />
         </div>
-        <div className="flex items-center justify-end flex-shrink-0">
+        <div className="flex shrink-0 items-center justify-end">
           <button
             onClick={() => setMobileNavOpen(!mobileNavOpen)}
             className="rounded-md p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary md:hidden"
@@ -245,7 +245,7 @@ export function AppLayout() {
 
       {/* Mobile nav drawer */}
       {mobileNavOpen && (
-        <div className="absolute inset-x-0 top-14 z-30 border-b border-border bg-surface p-4 shadow-lg md:hidden">
+        <div className="absolute inset-x-0 inset-bs-14 z-30 border-be border-border bg-surface p-4 shadow-lg md:hidden">
           <nav>
             <ul className="flex flex-col gap-1">
               {[
@@ -260,7 +260,7 @@ export function AppLayout() {
                     onClick={() => { navigate(item.path); setMobileNavOpen(false); }}
                     className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm ${
                       isActive(item.path)
-                        ? 'bg-accent-subtle text-accent font-medium'
+                        ? 'bg-accent-subtle font-medium text-accent'
                         : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
                     }`}
                   >
@@ -285,16 +285,16 @@ export function AppLayout() {
             {/* ═══ TABLET LEFT PANES ═══ */}
             {!isMobileViewport && isTablet && showEchoPanes && (
               <>
-                <aside className="flex w-[260px] flex-shrink-0 flex-col border-e border-border/50 bg-canvas">
+                <aside className="flex w-[260px] shrink-0 flex-col border-e border-border/50 bg-canvas">
                   <EchoSidebar forceVisible />
                 </aside>
-                <aside className="flex w-[260px] flex-shrink-0 flex-col border-e border-border/50 bg-canvas">
-                  <div className="flex-shrink-0 border-b border-border/50 px-3 py-3">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                <aside className="flex w-[260px] shrink-0 flex-col border-e border-border/50 bg-canvas">
+                  <div className="shrink-0 border-be border-border/50 p-3">
+                    <span className="text-[11px] font-semibold tracking-wider text-text-muted uppercase">
                       {t('communityFeed.title')}
                     </span>
                   </div>
-                  <div className="flex-1 min-h-0 overflow-y-auto px-2 py-2">
+                  <div className="min-h-0 flex-1 overflow-y-auto p-2">
                     <CommunityPulseCard />
                   </div>
                 </aside>
@@ -304,15 +304,15 @@ export function AppLayout() {
             {/* ═══ DESKTOP LEFT PANES ═══ */}
             {!isMobileViewport && !isTablet && showEchoPanes && (
               <>
-                <aside className="hidden min-[1920px]:flex flex-1 min-w-[220px] max-w-[311px] flex-col border-e border-border/50 overflow-y-auto">
-                  <div className="px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                <aside className="hidden max-w-[311px] min-w-[220px] flex-1 flex-col overflow-y-auto border-e border-border/50 min-[1920px]:flex">
+                  <div className="px-3 py-2.5 text-[11px] font-semibold tracking-wider text-text-muted uppercase">
                     {t('communityFeed.title')}
                   </div>
-                  <div className="flex-1 overflow-y-auto px-2 pb-2">
+                  <div className="flex-1 overflow-y-auto px-2 pbe-2">
                     <CommunityPulseCard />
                   </div>
                 </aside>
-                <div className="flex flex-shrink-0 flex-col border-e border-border/50">
+                <div className="flex shrink-0 flex-col border-e border-border/50">
                   <div className="min-[1920px]:hidden">
                     <DesktopPulseSection />
                   </div>
@@ -333,10 +333,10 @@ export function AppLayout() {
             {/* ═══ DESKTOP RIGHT PANES ═══ */}
             {!isMobileViewport && !isTablet && (
               <>
-                <aside className="flex w-[260px] min-[1920px]:w-[280px] flex-shrink-0 flex-col border-s border-border/50">
+                <aside className="flex w-[260px] shrink-0 flex-col border-s border-border/50 min-[1920px]:w-[280px]">
                   <OracleSidebar />
                 </aside>
-                <aside className="hidden min-[1920px]:flex flex-1 min-w-[200px] max-w-[280px] flex-col border-s border-border/50">
+                <aside className="hidden max-w-[280px] min-w-[200px] flex-1 flex-col border-s border-border/50 min-[1920px]:flex">
                   <CommunitySidebar />
                 </aside>
               </>
@@ -347,7 +347,7 @@ export function AppLayout() {
 
       {/* Mobile bottom bar */}
       <nav
-        className="flex h-14 items-center justify-around border-t border-border bg-surface md:hidden"
+        className="flex h-14 items-center justify-around border-bs border-border bg-surface md:hidden"
         aria-label={t('common.mobileNav', 'Mobile navigation')}
       >
         {mobileNavItems.map((item) => (
@@ -372,7 +372,7 @@ export function AppLayout() {
             {item.icon}
             <span>{t(item.labelKey, item.id)}</span>
             {item.badge != null && item.badge > 0 && (
-              <span className="absolute -top-1 end-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-canvas">
+              <span className="absolute inset-e-0 -inset-bs-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-canvas">
                 {item.badge > 99 ? '99+' : item.badge}
               </span>
             )}
@@ -383,7 +383,7 @@ export function AppLayout() {
       {/* Oracle overlay — phone only (tablets use TabletLayout overlay, desktop has pane) */}
       {mobileOracleOpen && (
         <dialog
-          className="fixed inset-0 z-50 flex h-full w-full max-w-none flex-col bg-canvas p-0 m-0 md:hidden border-none shadow-none backdrop:bg-black/50 open:animate-modal-in"
+          className="fixed inset-0 z-50 m-0 flex size-full max-w-none flex-col border-none bg-canvas p-0 shadow-none backdrop:bg-black/50 open:animate-modal-in md:hidden"
           open
           aria-modal="true"
           aria-label={t('oracle.title')}
@@ -392,7 +392,7 @@ export function AppLayout() {
           }}
           onClose={() => setMobileOracleOpen(false)}
         >
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
+          <div className="flex items-center justify-between border-be border-border px-4 py-3">
             <div className="flex items-center gap-2">
               <Sparkles size={16} className="text-accent" />
               <span className="text-sm font-semibold">{t('oracle.title')}</span>
@@ -421,14 +421,14 @@ function TabletRightSidebar() {
   const [activeTab, setActiveTab] = useState<'oracle' | 'community'>('oracle');
 
   return (
-    <aside className="flex w-[280px] flex-shrink-0 flex-col border-s border-border/50 bg-canvas">
-      <div className="flex flex-shrink-0 border-b border-border/50" role="tablist">
+    <aside className="flex w-[280px] shrink-0 flex-col border-s border-border/50 bg-canvas">
+      <div className="flex shrink-0 border-be border-border/50" role="tablist">
         <div
           onClick={() => setActiveTab('oracle')}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveTab('oracle'); } }}
-          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold tracking-wider uppercase transition-colors ${
             activeTab === 'oracle'
-              ? 'border-b-2 border-accent text-accent'
+              ? 'border-be-2 border-accent text-accent'
               : 'text-text-muted hover:text-text-secondary'
           }`}
           aria-selected={activeTab === 'oracle'}
@@ -441,9 +441,9 @@ function TabletRightSidebar() {
         <div
           onClick={() => setActiveTab('community')}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveTab('community'); } }}
-          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+          className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold tracking-wider uppercase transition-colors ${
             activeTab === 'community'
-              ? 'border-b-2 border-accent text-accent'
+              ? 'border-be-2 border-accent text-accent'
               : 'text-text-muted hover:text-text-secondary'
           }`}
           aria-selected={activeTab === 'community'}
@@ -454,7 +454,7 @@ function TabletRightSidebar() {
           {t('communitySidebar.title')}
         </div>
       </div>
-      <div className="flex flex-1 min-h-0 flex-col">
+      <div className="flex min-h-0 flex-1 flex-col">
         {activeTab === 'oracle' ? <OracleSidebar /> : <CommunitySidebar />}
       </div>
     </aside>
@@ -483,12 +483,12 @@ function DesktopPulseSection() {
   }, []);
 
   return (
-    <div className="flex-shrink-0 border-b-2 border-border bg-surface-raised/30">
+    <div className="shrink-0 border-be-2 border-border bg-surface-raised/30">
       <button
         onClick={toggle}
-        className="flex w-full items-center justify-between px-3 py-1.5 text-start hover:bg-surface-raised transition-colors"
+        className="flex w-full items-center justify-between px-3 py-1.5 text-start transition-colors hover:bg-surface-raised"
       >
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-accent/70">
+        <span className="text-[11px] font-semibold tracking-wider text-accent/70 uppercase">
           {t('communityFeed.title')}
         </span>
         {open
@@ -497,7 +497,7 @@ function DesktopPulseSection() {
         }
       </button>
       {open && (
-        <div className="max-h-[200px] overflow-y-auto px-2 pb-2">
+        <div className="max-h-[200px] overflow-y-auto px-2 pbe-2">
           <CommunityPulseCard />
         </div>
       )}

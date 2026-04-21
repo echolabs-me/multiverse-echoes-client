@@ -9,11 +9,11 @@ export function NotFoundPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
       <div className="flex flex-col items-center text-center">
-        <Compass size={48} className="mb-4 text-text-muted" aria-hidden="true" />
-        <h1 className="mb-2 text-2xl font-bold text-text-primary">
+        <Compass size={48} className="mbe-4 text-text-muted" aria-hidden="true" />
+        <h1 className="mbe-2 text-2xl font-bold text-text-primary">
           {t('common.notFoundTitle')}
         </h1>
-        <p className="mb-6 text-sm text-text-secondary">
+        <p className="mbe-6 text-sm text-text-secondary">
           {t('common.notFoundDesc')}
         </p>
         <Link to="/dashboard">
@@ -23,7 +23,7 @@ export function NotFoundPage() {
           href="https://status.echolabsme.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 text-xs text-text-muted hover:text-text-secondary underline underline-offset-4"
+          className="mbs-6 text-xs text-text-muted underline underline-offset-4 hover:text-text-secondary"
         >
           {t('common.checkStatusLink')}
         </a>

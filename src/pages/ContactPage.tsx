@@ -152,21 +152,21 @@ export function ContactPage() {
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
 
-      <div className="px-4 pt-28 pb-16 sm:px-6">
+      <div className="px-4 pbs-28 pbe-16 sm:px-6">
         <article className="mx-auto max-w-2xl">
-          <h1 className="mb-4 font-serif text-4xl font-light tracking-wider text-(--text-primary)">
+          <h1 className="mbe-4 font-serif text-4xl font-light tracking-wider text-(--text-primary)">
             {t('contact.title')}
           </h1>
-          <p className="mb-10 leading-relaxed text-(--text-secondary)">
+          <p className="mbe-10 leading-relaxed text-(--text-secondary)">
             {t('contact.description')}
           </p>
 
           {submitted ? (
             <div
-              className="mb-10 rounded-xl border border-(--accent)/30 bg-(--accent)/5 p-6 text-center"
+              className="mbe-10 rounded-xl border border-(--accent)/30 bg-(--accent)/5 p-6 text-center"
               role="status"
             >
-              <h2 className="mb-2 text-xl font-medium text-(--text-primary)">
+              <h2 className="mbe-2 text-xl font-medium text-(--text-primary)">
                 {t('contact.successTitle')}
               </h2>
               <p className="leading-relaxed text-(--text-secondary)">
@@ -184,7 +184,7 @@ export function ContactPage() {
           ) : (
             <form
               onSubmit={(e) => void handleSubmit(e)}
-              className="mb-10 flex flex-col gap-5"
+              className="mbe-10 flex flex-col gap-5"
               noValidate
             >
               <Input
@@ -274,7 +274,7 @@ export function ContactPage() {
 
               {error && (
                 <p
-                  className="text-sm text-[var(--danger,#dc2626)]"
+                  className="text-sm text-(--danger,#dc2626)"
                   role="alert"
                 >
                   {error}

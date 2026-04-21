@@ -42,20 +42,20 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
   }
 
   return (
-    <div className="relative flex flex-1 w-full overflow-hidden">
+    <div className="relative flex w-full flex-1 overflow-hidden">
       {/* ── LEFT: Echo list (260px fixed) ── */}
-      <aside className="flex w-[260px] flex-shrink-0 flex-col border-e border-border/50 bg-canvas">
+      <aside className="flex w-[260px] shrink-0 flex-col border-e border-border/50 bg-canvas">
         <EchoSidebar forceVisible />
       </aside>
 
       {/* ── COMMUNITY PULSE (260px fixed) ── */}
-      <aside className="flex w-[260px] flex-shrink-0 flex-col border-e border-border/50 bg-canvas">
-        <div className="flex-shrink-0 border-b border-border/50 px-3 py-3">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+      <aside className="flex w-[260px] shrink-0 flex-col border-e border-border/50 bg-canvas">
+        <div className="shrink-0 border-be border-border/50 p-3">
+          <span className="text-[11px] font-semibold tracking-wider text-text-muted uppercase">
             {t('communityFeed.title')}
           </span>
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto px-2 py-2">
+        <div className="min-h-0 flex-1 overflow-y-auto p-2">
           <CommunityPulseCard />
         </div>
       </aside>
@@ -68,15 +68,15 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
       </main>
 
       {/* ── RIGHT: Oracle + Community tabs (280px fixed) ── */}
-      <aside className="flex w-[280px] flex-shrink-0 flex-col border-s border-border/50 bg-canvas">
+      <aside className="flex w-[280px] shrink-0 flex-col border-s border-border/50 bg-canvas">
         {/* Tab bar */}
-        <div className="flex flex-shrink-0 border-b border-border/50" role="tablist">
+        <div className="flex shrink-0 border-be border-border/50" role="tablist">
           <div
             onClick={selectOracle}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectOracle(); } }}
-            className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+            className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold tracking-wider uppercase transition-colors ${
               activeTab === 'oracle'
-                ? 'border-b-2 border-accent text-accent'
+                ? 'border-be-2 border-accent text-accent'
                 : 'text-text-muted hover:text-text-secondary'
             }`}
             aria-selected={activeTab === 'oracle'}
@@ -89,9 +89,9 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
           <div
             onClick={selectCommunity}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCommunity(); } }}
-            className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+            className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold tracking-wider uppercase transition-colors ${
               activeTab === 'community'
-                ? 'border-b-2 border-accent text-accent'
+                ? 'border-be-2 border-accent text-accent'
                 : 'text-text-muted hover:text-text-secondary'
             }`}
             aria-selected={activeTab === 'community'}
@@ -104,7 +104,7 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
         </div>
 
         {/* Tab content — one mounts at a time */}
-        <div className="flex flex-1 min-h-0 flex-col">
+        <div className="flex min-h-0 flex-1 flex-col">
           {activeTab === 'oracle' ? <OracleSidebar /> : <CommunitySidebar />}
         </div>
       </aside>

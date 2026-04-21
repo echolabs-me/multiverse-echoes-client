@@ -50,14 +50,14 @@ export function OnboardingProfilePage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4">
-      <h1 className="mb-8 text-2xl font-bold text-text-primary">
+      <h1 className="mbe-8 text-2xl font-bold text-text-primary">
         {t('onboarding.profileTitle')}
       </h1>
 
       <div className="w-full max-w-md">
         {/* Avatar selection */}
-        <div className="mb-6">
-          <label className="mb-2 block text-sm font-medium text-text-secondary">
+        <div className="mbe-6">
+          <label className="mbe-2 block text-sm font-medium text-text-secondary">
             {t('onboarding.avatar')}
           </label>
           <div className="flex gap-3">
@@ -79,7 +79,7 @@ export function OnboardingProfilePage() {
                       el.style.setProperty('--me-avatar-bg', avatar.color);
                     }
                   }}
-                  className="me-avatar-tint flex h-12 w-12 items-center justify-center rounded-full text-base font-medium text-canvas"
+                  className="me-avatar-tint flex size-12 items-center justify-center rounded-full text-base font-medium text-canvas"
                   role="img"
                   aria-label={avatar.id}
                 >
@@ -91,9 +91,9 @@ export function OnboardingProfilePage() {
         </div>
 
         {/* Bio */}
-        <div className="mb-6">
-          <div className="rounded-lg border border-accent/30 bg-accent/5 px-4 py-4">
-            <div className="mb-3 flex items-center gap-2">
+        <div className="mbe-6">
+          <div className="rounded-lg border border-accent/30 bg-accent/5 p-4">
+            <div className="mbe-3 flex items-center gap-2">
               <span className="text-base" aria-hidden="true">{'\ud83d\udc64'}</span>
               <p id={bioLabelId} className="text-sm font-medium text-text-primary">
                 {t('onboarding.bio')}
@@ -106,13 +106,13 @@ export function OnboardingProfilePage() {
               onChange={(e) => setBio((e.target as HTMLTextAreaElement).value)}
               placeholder={t('onboarding.bioHint')}
               maxLength={500}
-              className="!bg-canvas border-accent/20 min-h-[100px]"
+              className="min-h-[100px] border-accent/20 bg-canvas!"
             />
-            <p className="mt-1 text-end text-xs text-text-muted">
+            <p className="mbs-1 text-end text-xs text-text-muted">
               {bio.length}/500
             </p>
-            <div className="mt-2 flex items-start gap-2 rounded-md bg-accent/10 px-3 py-2">
-              <span className="mt-0.5 text-base leading-none" aria-hidden="true">{'\u2728'}</span>
+            <div className="mbs-2 flex items-start gap-2 rounded-md bg-accent/10 px-3 py-2">
+              <span className="mbs-0.5 text-base leading-none" aria-hidden="true">{'\u2728'}</span>
               <p className="text-sm text-text-secondary">
                 {t('onboarding.bioCallout')}
               </p>
@@ -121,7 +121,7 @@ export function OnboardingProfilePage() {
         </div>
 
         {/* Timezone */}
-        <div className="mb-8 flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-3">
+        <div className="mbe-8 flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-3">
           <span className="text-base" aria-hidden="true">{'\ud83c\udf10'}</span>
           <div>
             <p className="text-sm font-medium text-text-secondary">

@@ -30,7 +30,7 @@ export function BottomBar({
 
   return (
     <nav
-      className={`flex h-14 items-center justify-around border-t border-border bg-surface md:hidden ${className}`}
+      className={`flex h-14 items-center justify-around border-bs border-border bg-surface md:hidden ${className}`}
       aria-label={t('common.mobileNav', 'Mobile navigation')}
     >
       {items.map((item) => (

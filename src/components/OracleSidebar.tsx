@@ -90,12 +90,12 @@ export function OracleSidebar() {
   };
 
   return (
-    <div className="flex flex-1 min-h-0 flex-col">
+    <div className="flex min-h-0 flex-1 flex-col">
       {/* Header — premium branding with accent left border */}
-      <div className="border-b border-border border-s-2 border-s-accent px-3 py-3">
+      <div className="border-s-2 border-be border-border border-s-accent p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent/15">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-accent/15">
               <Sparkles size={22} className="text-accent" />
             </div>
             <h2 className="text-sm font-bold text-accent">
@@ -113,24 +113,24 @@ export function OracleSidebar() {
             </button>
           </div>
         </div>
-        <p className="mt-1.5 text-[11px] text-text-secondary">
+        <p className="mbs-1.5 text-[11px] text-text-secondary">
           {t('oracle.tagline')}
         </p>
       </div>
 
       {/* Messages */}
       <div
-        className="flex-1 space-y-3 overflow-y-auto px-3 py-3"
+        className="flex-1 space-y-3 overflow-y-auto p-3"
         aria-live="polite"
         aria-label={t('oracle.conversation')}
       >
         {/* Empty state with suggested questions */}
         {messages.length === 0 && (
-          <div className="flex flex-col items-center gap-4 pt-6 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
+          <div className="flex flex-col items-center gap-4 pbs-6 text-center">
+            <div className="flex size-12 items-center justify-center rounded-full bg-accent/10">
               <Sparkles size={24} className="text-accent" />
             </div>
-            <p className="text-xs text-text-secondary leading-relaxed px-2">
+            <p className="px-2 text-xs/relaxed text-text-secondary">
               {t('oracle.welcomeMessage')}
             </p>
             <div className="flex w-full flex-col gap-1.5 px-1">
@@ -158,7 +158,7 @@ export function OracleSidebar() {
 
         {isLoading && (
           <div className="flex items-center gap-2 text-xs text-text-muted">
-            <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-accent" />
+            <span className="inline-block size-2 animate-pulse rounded-full bg-accent" />
             {t('oracle.thinking')}
           </div>
         )}
@@ -171,7 +171,7 @@ export function OracleSidebar() {
       </div>
 
       {/* Persistent feedback buttons */}
-      <div className="flex gap-1.5 border-t border-border px-3 pt-2 pb-1">
+      <div className="flex gap-1.5 border-bs border-border px-3 pbs-2 pbe-1">
         <button
           onClick={() => startFeedback('Bug')}
           disabled={isLoading}
@@ -198,7 +198,7 @@ export function OracleSidebar() {
       <div>
         <form
           onSubmit={handleSubmit}
-          className="flex gap-2 px-3 pt-2.5 pb-1.5"
+          className="flex gap-2 px-3 pbs-2.5 pbe-1.5"
         >
           <textarea
             ref={inputRef}
@@ -225,7 +225,7 @@ export function OracleSidebar() {
             <Send size={14} />
           </button>
         </form>
-        <p className="px-3 pb-2 text-[9px] text-text-secondary">
+        <p className="px-3 pbe-2 text-[9px] text-text-secondary">
           {t('oracle.rateLimit', { limit: String(rateLimit) })}
         </p>
       </div>
@@ -253,7 +253,7 @@ function MessageBubble({
       >
         <p className="whitespace-pre-wrap">{message.text}</p>
         {message.deep_links && message.deep_links.length > 0 && (
-          <div className="mt-1.5 flex flex-col gap-1">
+          <div className="mbs-1.5 flex flex-col gap-1">
             {message.deep_links.map((link) => (
               <button
                 key={link.path}

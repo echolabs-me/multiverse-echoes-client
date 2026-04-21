@@ -205,21 +205,21 @@ export function PlansPage() {
       <div className="mx-auto w-full max-w-6xl p-6">
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+          className="mbe-6 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
         >
           <ArrowLeft size={16} />
           {t('common.back')}
         </button>
 
-        <h1 className="mb-2 text-2xl font-bold text-text-primary">{t('payment.title')}</h1>
-        <p className="mb-8 text-sm text-text-secondary">{t('payment.subtitle')}</p>
+        <h1 className="mbe-2 text-2xl font-bold text-text-primary">{t('payment.title')}</h1>
+        <p className="mbe-8 text-sm text-text-secondary">{t('payment.subtitle')}</p>
 
         {isPaid && (
-          <div className="mb-6">
+          <div className="mbe-6">
             <button
               onClick={() => void handleManageSubscription()}
               disabled={loading === 'manage'}
-              className="flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-primary hover:bg-surface-raised disabled:opacity-50 transition-colors"
+              className="flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-primary transition-colors hover:bg-surface-raised disabled:opacity-50"
             >
               <Settings size={16} />
               {loading === 'manage' ? t('common.loading') : t('payment.manageSubscription')}
@@ -251,12 +251,12 @@ export function PlansPage() {
                         featureKey.endsWith('ip') || featureKey === 'tiers.features.unlimitedIp';
                       return (
                         <li key={featureKey} className="flex items-start gap-2 text-xs text-text-secondary">
-                          <Check size={14} className="mt-0.5 shrink-0 text-success" />
+                          <Check size={14} className="mbs-0.5 shrink-0 text-success" />
                           <span>
                             {t(featureKey)}
                             {isIpRow && (
                               <Tooltip content={t('tiers.influencePoints.explainer')} position="top">
-                                <span className="ml-1 cursor-help text-[10px] text-text-muted">ⓘ</span>
+                                <span className="ms-1 cursor-help text-[10px] text-text-muted">ⓘ</span>
                               </Tooltip>
                             )}
                           </span>
@@ -266,11 +266,11 @@ export function PlansPage() {
                   </ul>
 
                   {!isFree && !isCurrent && (
-                    <div className="mt-2 flex flex-col gap-2">
+                    <div className="mbs-2 flex flex-col gap-2">
                       <Tooltip content={t('payment.cardComingSoon')} position="top">
                         <button
                           onClick={() => addToast(t('payment.cardComingSoon'), 'info')}
-                          className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#635BFF] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#5851db] transition-colors"
+                          className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#635BFF] px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#5851db]"
                         >
                           <StripeLogo height={20} />
                           <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white/90">{t('common.comingSoon')}</span>
@@ -280,7 +280,7 @@ export function PlansPage() {
                       <button
                         onClick={() => void handleTierPayment(tier.stripeKey, 'nowpayments')}
                         disabled={loading !== null}
-                        className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-black px-5 py-2.5 text-xs font-semibold text-white hover:bg-neutral-900 disabled:opacity-50 transition-colors"
+                        className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-black px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-neutral-900 disabled:opacity-50"
                       >
                         <NowPaymentsLogo height={16} />
                         {loading === `${tier.stripeKey}-nowpayments` ? t('payment.subscribing') : t('payment.payWithCrypto')}
@@ -289,7 +289,7 @@ export function PlansPage() {
                       <button
                         onClick={() => void handleTierPayment(tier.stripeKey, 'xaman')}
                         disabled={loading !== null}
-                        className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#3052FF] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#2744d9] disabled:opacity-50 transition-colors"
+                        className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#3052FF] px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#2744d9] disabled:opacity-50"
                       >
                         <XamanLogo height={16} />
                         {loading === `${tier.stripeKey}-xaman` ? t('payment.subscribing') : t('payment.payWithXRP')}
@@ -298,7 +298,7 @@ export function PlansPage() {
                   )}
 
                   {isCurrent && !isFree && (
-                    <p className="mt-2 text-center text-xs text-text-secondary">{t('payment.currentPlan')}</p>
+                    <p className="mbs-2 text-center text-xs text-text-secondary">{t('payment.currentPlan')}</p>
                   )}
                 </div>
               </Card>
@@ -306,24 +306,24 @@ export function PlansPage() {
           })}
         </div>
 
-        <Card className="mt-6">
-          <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
+        <Card className="mbs-6">
+          <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-start">
             <div className="flex flex-col gap-1">
               <h3 className="text-lg font-bold text-text-primary">{t('tiers.enterprise')}</h3>
               <p className="text-xs text-text-secondary">{t('tiers.enterpriseDesc')}</p>
             </div>
             <button
               onClick={() => navigate('/contact')}
-              className="rounded-lg border border-border bg-surface px-5 py-2.5 text-xs font-semibold text-text-primary hover:bg-surface-raised transition-colors"
+              className="rounded-lg border border-border bg-surface px-5 py-2.5 text-xs font-semibold text-text-primary transition-colors hover:bg-surface-raised"
             >
               {t('tiers.contactUs')}
             </button>
           </div>
         </Card>
 
-        <div className="mt-10">
-          <h2 className="mb-1 text-xl font-bold text-text-primary">{t('tiers.addOns.title')}</h2>
-          <p className="mb-4 text-sm text-text-secondary">{t('tiers.enhanceTiers')}</p>
+        <div className="mbs-10">
+          <h2 className="mbe-1 text-xl font-bold text-text-primary">{t('tiers.addOns.title')}</h2>
+          <p className="mbe-4 text-sm text-text-secondary">{t('tiers.enhanceTiers')}</p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {ADD_ONS.map((addon) => {
               const availability = ADDON_AVAILABILITY[addon.key][currentTier];
@@ -340,13 +340,13 @@ export function PlansPage() {
                       {addon.priceLabel}
                       {addon.recurring ? t('payment.perMonth') : ''}
                     </p>
-                    <p className="text-xs leading-relaxed text-text-secondary">{t(addon.descKey)}</p>
+                    <p className="text-xs/relaxed text-text-secondary">{t(addon.descKey)}</p>
                     {canBuy && (
                       <Tooltip content={t('payment.cardComingSoon')} position="top">
                         <button
                           onClick={() => addToast(t('payment.cardComingSoon'), 'info')}
                           disabled={loading !== null}
-                          className="mt-1 flex w-full items-center justify-center gap-2 rounded-lg bg-[#635BFF] px-4 py-2 text-xs font-semibold text-white hover:bg-[#5851db] disabled:opacity-50 transition-colors"
+                          className="mbs-1 flex w-full items-center justify-center gap-2 rounded-lg bg-[#635BFF] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#5851db] disabled:opacity-50"
                         >
                           <StripeLogo height={16} />
                           <span>{t('tiers.addOns.buyAddon')}</span>
@@ -357,12 +357,12 @@ export function PlansPage() {
                       </Tooltip>
                     )}
                     {isIncluded && (
-                      <p className="mt-1 text-xs font-semibold text-success">
+                      <p className="mbs-1 text-xs font-semibold text-success">
                         {t('tiers.addOns.included', { count: availability.included })}
                       </p>
                     )}
                     {availability === 'unavailable' && (
-                      <p className="mt-1 text-xs italic text-text-muted">{t('tiers.addOns.notAvailableOnPlan')}</p>
+                      <p className="mbs-1 text-xs text-text-muted italic">{t('tiers.addOns.notAvailableOnPlan')}</p>
                     )}
                   </div>
                 </Card>

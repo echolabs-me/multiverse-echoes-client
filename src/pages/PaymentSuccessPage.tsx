@@ -55,25 +55,25 @@ export function PaymentSuccessPage() {
       <div className="mx-auto max-w-md p-6 text-center">
         {isConfirmed ? (
           <>
-            <CheckCircle size={48} className="mx-auto mb-4 text-success" />
-            <h1 className="mb-2 text-2xl font-bold text-text-primary">{t('payment.successTitle')}</h1>
-            <p className="mb-6 text-sm text-text-secondary">{t('payment.successDesc')}</p>
+            <CheckCircle size={48} className="mx-auto mbe-4 text-success" />
+            <h1 className="mbe-2 text-2xl font-bold text-text-primary">{t('payment.successTitle')}</h1>
+            <p className="mbe-6 text-sm text-text-secondary">{t('payment.successDesc')}</p>
           </>
         ) : isPending && polling ? (
           <>
-            <Loader2 size={48} className="mx-auto mb-4 animate-spin text-accent" />
-            <h1 className="mb-2 text-2xl font-bold text-text-primary">{t('payment.successPending')}</h1>
-            <p className="mb-6 text-sm text-text-secondary">{t('payment.successPendingDesc')}</p>
+            <Loader2 size={48} className="mx-auto mbe-4 animate-spin text-accent" />
+            <h1 className="mbe-2 text-2xl font-bold text-text-primary">{t('payment.successPending')}</h1>
+            <p className="mbe-6 text-sm text-text-secondary">{t('payment.successPendingDesc')}</p>
             <p className="text-xs text-text-muted">{t('payment.checkingStatus')}</p>
           </>
         ) : (
           <>
-            <h1 className="mb-2 text-2xl font-bold text-text-primary">{t('payment.successPending')}</h1>
-            <p className="mb-6 text-sm text-text-secondary">{t('payment.successPendingDesc')}</p>
+            <h1 className="mbe-2 text-2xl font-bold text-text-primary">{t('payment.successPending')}</h1>
+            <p className="mbe-6 text-sm text-text-secondary">{t('payment.successPendingDesc')}</p>
           </>
         )}
 
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mbs-6 flex flex-col gap-3">
           <button
             onClick={() => navigate('/dashboard')}
             className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent/90"

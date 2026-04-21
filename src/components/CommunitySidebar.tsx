@@ -222,7 +222,7 @@ export function CommunitySidebar() {
         </p>
         <button
           onClick={() => navigate('/settings?tab=account')}
-          className="flex items-center gap-2 rounded-lg bg-[#5865F2] px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[#4752C4] transition-colors"
+          className="flex items-center gap-2 rounded-lg bg-[#5865F2] px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#4752C4]"
         >
           <ExternalLink size={14} />
           {t('communitySidebar.linkAccount')}
@@ -242,11 +242,11 @@ export function CommunitySidebar() {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="border-b border-border px-3 py-2">
+      <div className="border-be border-border px-3 py-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <DiscordIcon size={14} />
-            <span className="text-[10px] font-medium uppercase tracking-wider text-[#5865F2]">
+            <span className="text-[10px] font-medium tracking-wider text-[#5865F2] uppercase">
               {t('communitySidebar.poweredBy')}
             </span>
           </div>
@@ -256,10 +256,10 @@ export function CommunitySidebar() {
         </div>
 
         {/* Channel selector dropdown */}
-        <div className="relative mt-1.5">
+        <div className="relative mbs-1.5">
           <button
             onClick={() => setShowChannelPicker(!showChannelPicker)}
-            className="flex w-full items-center justify-between rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-text-primary hover:border-accent/40 transition-colors"
+            className="flex w-full items-center justify-between rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-text-primary transition-colors hover:border-accent/40"
           >
             <span className="truncate">{activeChannel?.name ?? t('communitySidebar.selectChannel')}</span>
             <span className="flex items-center gap-1">
@@ -272,7 +272,7 @@ export function CommunitySidebar() {
             </span>
           </button>
           {showChannelPicker && (
-            <div className="absolute start-0 end-0 top-full z-10 mt-1 rounded-lg border border-border bg-surface py-1 shadow-lg">
+            <div className="absolute inset-s-0 inset-e-0 inset-bs-full z-10 mbs-1 rounded-lg border border-border bg-surface py-1 shadow-lg">
               {channelList.map((ch) => (
                 <button
                   key={ch.channel_id}
@@ -285,7 +285,7 @@ export function CommunitySidebar() {
                 >
                   <span className="truncate">{ch.name}</span>
                   {unreadChannels.has(ch.channel_id) && (
-                    <span className="ms-1 rounded-full bg-accent px-1.5 py-0.5 text-[8px] font-bold uppercase leading-none text-canvas">
+                    <span className="ms-1 rounded-full bg-accent px-1.5 py-0.5 text-[8px] leading-none font-bold text-canvas uppercase">
                       {t('community.new')}
                     </span>
                   )}
@@ -316,10 +316,10 @@ export function CommunitySidebar() {
               const timeStr = formatTime(msg.created_at);
 
               return (
-                <div key={msg.message_id} className={`group/msg text-xs ${showHeader && idx > 0 ? 'mt-3' : ''}`}>
+                <div key={msg.message_id} className={`group/msg text-xs ${showHeader && idx > 0 ? 'mbs-3' : ''}`}>
                   {showHeader ? (
                     <div className="flex items-start gap-2">
-                      <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/20 text-[10px] font-bold text-accent">
+                      <div className="mbs-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-accent/20 text-[10px] font-bold text-accent">
                         {initial}
                       </div>
                       <div className="min-w-0 flex-1">
@@ -331,19 +331,19 @@ export function CommunitySidebar() {
                       </div>
                     </div>
                   ) : (
-                    <div className="group/line flex items-start gap-2 rounded px-0 py-px hover:bg-surface-raised">
-                      <span className="mt-0.5 hidden w-6 shrink-0 text-center text-[9px] text-text-muted group-hover/line:inline">
+                    <div className="group/line flex items-start gap-2 rounded-sm px-0 py-px hover:bg-surface-raised">
+                      <span className="mbs-0.5 hidden w-6 shrink-0 text-center text-[9px] text-text-muted group-hover/line:inline">
                         {timeStr}
                       </span>
                       {msg.content && <p className="min-w-0 flex-1 text-text-primary">{msg.content}</p>}
                     </div>
                   )}
                   {msg.image_url && (
-                    <button onClick={() => setExpandedImage(msg.image_url)} className="mt-0.5 block">
+                    <button onClick={() => setExpandedImage(msg.image_url)} className="mbs-0.5 block">
                       <img
                         src={msg.image_url}
                         alt={t('community.sharedImage')}
-                        className="max-h-32 max-w-full rounded border border-border object-cover hover:opacity-90 transition-opacity"
+                        className="max-h-32 max-w-full rounded-sm border border-border object-cover transition-opacity hover:opacity-90"
                       />
                     </button>
                   )}
@@ -351,14 +351,14 @@ export function CommunitySidebar() {
                     try {
                       const poll: PollData = JSON.parse(msg.poll_data!);
                       return (
-                        <div className="mt-1 rounded border border-accent/30 bg-accent/5 p-2">
-                          <p className="mb-1 text-xs font-semibold text-text-primary">{poll.question}</p>
+                        <div className="mbs-1 rounded-sm border border-accent/30 bg-accent/5 p-2">
+                          <p className="mbe-1 text-xs font-semibold text-text-primary">{poll.question}</p>
                           <div className="flex flex-col gap-1">
                             {poll.options.map((opt) => (
                               <button
                                 key={opt.id}
                                 onClick={() => void handlePollVote(msg, opt.id)}
-                                className="flex items-center justify-between rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary hover:border-accent transition-colors"
+                                className="flex items-center justify-between rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary transition-colors hover:border-accent"
                               >
                                 <span>{opt.text}</span>
                                 <span className="text-text-muted">{opt.votes}</span>
@@ -379,16 +379,16 @@ export function CommunitySidebar() {
 
       {/* Composer */}
       {activeChannel && !activeChannel.is_read_only && !isFreeUser && (
-        <div className="border-t border-border px-3 py-2">
+        <div className="border-bs border-border px-3 py-2">
           {showPollForm && (
-            <div className="mb-2 space-y-1.5 rounded-lg border border-border bg-surface p-2">
+            <div className="mbe-2 space-y-1.5 rounded-lg border border-border bg-surface p-2">
               <input
                 type="text"
                 value={pollQuestion}
                 onChange={(e) => setPollQuestion(e.target.value)}
                 placeholder={t('community.pollQuestion')}
                 maxLength={300}
-                className="w-full rounded border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
+                className="w-full rounded-sm border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
               />
               {pollOptions.map((opt, i) => (
                 <input
@@ -402,7 +402,7 @@ export function CommunitySidebar() {
                   }}
                   placeholder={t('community.pollOption', { n: i + 1 })}
                   maxLength={55}
-                  className="w-full rounded border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
+                  className="w-full rounded-sm border border-border bg-canvas px-2 py-1 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
                 />
               ))}
               <div className="flex items-center gap-2">
@@ -419,7 +419,7 @@ export function CommunitySidebar() {
                 <button
                   type="button"
                   onClick={() => { setShowPollForm(false); setPollQuestion(''); setPollOptions(['', '']); }}
-                  className="rounded px-2 py-0.5 text-[10px] text-text-secondary hover:bg-surface-raised"
+                  className="rounded-sm px-2 py-0.5 text-[10px] text-text-secondary hover:bg-surface-raised"
                 >
                   {t('common.cancel')}
                 </button>
@@ -427,7 +427,7 @@ export function CommunitySidebar() {
                   type="button"
                   onClick={() => void handleCreatePoll()}
                   disabled={isSending || !pollQuestion.trim() || pollOptions.filter((o) => o.trim()).length < 2}
-                  className="rounded bg-emerald-600 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-emerald-500 disabled:opacity-50"
+                  className="rounded-sm bg-emerald-600 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-emerald-500 disabled:opacity-50"
                 >
                   {t('community.createPoll')}
                 </button>
@@ -449,7 +449,7 @@ export function CommunitySidebar() {
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={isSending}
-              className="rounded p-1.5 text-[#5865F2] hover:bg-[#5865F2]/10 transition-colors"
+              className="rounded-sm p-1.5 text-[#5865F2] transition-colors hover:bg-[#5865F2]/10"
               title={t('community.uploadImage')}
             >
               <Paperclip size={14} />
@@ -457,7 +457,7 @@ export function CommunitySidebar() {
             <button
               onClick={() => setShowPollForm((p) => !p)}
               disabled={isSending}
-              className="rounded p-1.5 text-emerald-500 hover:bg-emerald-500/10 transition-colors"
+              className="rounded-sm p-1.5 text-emerald-500 transition-colors hover:bg-emerald-500/10"
               title={t('community.createPoll')}
             >
               <BarChart3 size={14} />
@@ -468,7 +468,7 @@ export function CommunitySidebar() {
               onChange={(e) => setMessageText(e.target.value)}
               maxLength={MAX_MESSAGE_LENGTH}
               placeholder={t('community.messagePlaceholder')}
-              className="flex-1 rounded border border-border bg-surface px-2 py-1.5 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
+              className="flex-1 rounded-sm border border-border bg-surface px-2 py-1.5 text-xs text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
@@ -479,7 +479,7 @@ export function CommunitySidebar() {
             <Button
               onClick={() => void handleSend()}
               disabled={!messageText.trim() || isSending}
-              className="!px-2 !py-1.5"
+              className="px-2! py-1.5!"
             >
               <Send size={12} />
             </Button>
@@ -487,7 +487,7 @@ export function CommunitySidebar() {
         </div>
       )}
       {activeChannel?.is_read_only && (
-        <div className="border-t border-border px-3 py-2">
+        <div className="border-bs border-border px-3 py-2">
           <p className="text-center text-[10px] text-text-secondary">{t('community.announcementsOnly')}</p>
         </div>
       )}

@@ -25,7 +25,7 @@ export function TranslationPending() {
   const { t } = useTranslation();
   return (
     <span
-      className="ms-2 inline-block text-[11px] italic text-accent/70"
+      className="ms-2 inline-block text-[11px] text-accent/70 italic"
       aria-live="polite"
     >
       {t('common.translationPending', 'Translating\u2026')}

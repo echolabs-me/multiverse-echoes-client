@@ -92,7 +92,7 @@ export function OraclePanel() {
   return (
     <>
       {/* Floating Action Button */}
-      <div className="fixed end-6 bottom-6 z-50 flex flex-col items-center gap-1">
+      <div className="fixed inset-e-6 inset-be-6 z-50 flex flex-col items-center gap-1">
         {!isOpen && (
           <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-medium text-text-secondary shadow-sm">
             Oracle
@@ -100,7 +100,7 @@ export function OraclePanel() {
         )}
         <button
           onClick={toggle}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-accent text-canvas shadow-lg transition-transform duration-[var(--duration-fast)] hover:scale-110 hover:bg-accent-hover focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="flex size-14 items-center justify-center rounded-full bg-accent text-canvas shadow-lg transition-transform duration-(--duration-fast) hover:scale-110 hover:bg-accent-hover focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:outline-none"
           aria-label={t('oracle.toggle')}
           aria-expanded={isOpen}
           aria-controls="oracle-panel"
@@ -116,10 +116,10 @@ export function OraclePanel() {
           id="oracle-panel"
           role="dialog"
           aria-label={t('oracle.title')}
-          className="fixed top-0 end-0 z-40 flex h-full w-full flex-col border-s border-border bg-canvas shadow-lg sm:w-96"
+          className="fixed inset-e-0 inset-bs-0 z-40 flex size-full flex-col border-s border-border bg-canvas shadow-lg sm:w-96"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
+          <div className="flex items-center justify-between border-be border-border px-4 py-3">
             <div className="flex items-center gap-2">
               <Sparkles size={20} className="text-accent" />
               <div>
@@ -148,18 +148,18 @@ export function OraclePanel() {
           </div>
 
           {/* Rate limit info */}
-          <div className="border-b border-border px-4 py-2 text-xs text-text-secondary">
+          <div className="border-be border-border px-4 py-2 text-xs text-text-secondary">
             {t('oracle.rateLimit', { limit: String(rateLimit) })}
           </div>
 
           {/* Messages */}
           <div
-            className="flex-1 space-y-4 overflow-y-auto px-4 py-4"
+            className="flex-1 space-y-4 overflow-y-auto p-4"
             aria-live="polite"
             aria-label={t('oracle.conversation')}
           >
             {messages.length === 0 && (
-              <div className="flex flex-col items-center gap-3 pt-12 text-center">
+              <div className="flex flex-col items-center gap-3 pbs-12 text-center">
                 <Sparkles size={40} className="text-accent opacity-50" />
                 <p className="text-sm text-text-secondary">
                   {t('oracle.welcomeMessage')}
@@ -177,7 +177,7 @@ export function OraclePanel() {
 
             {isLoading && (
               <div className="flex items-center gap-2 text-sm text-text-muted">
-                <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-accent" />
+                <span className="inline-block size-2 animate-pulse rounded-full bg-accent" />
                 {t('oracle.thinking')}
               </div>
             )}
@@ -190,7 +190,7 @@ export function OraclePanel() {
           </div>
 
           {/* Persistent feedback buttons */}
-          <div className="flex gap-2 border-t border-border px-4 pt-2 pb-1">
+          <div className="flex gap-2 border-bs border-border px-4 pbs-2 pbe-1">
             <button
               onClick={() => startFeedback('Bug')}
               disabled={isLoading}
@@ -264,7 +264,7 @@ function MessageBubble({
       >
         <p className="whitespace-pre-wrap">{message.text}</p>
         {message.deep_links && message.deep_links.length > 0 && (
-          <div className="mt-2 flex flex-col gap-1">
+          <div className="mbs-2 flex flex-col gap-1">
             {message.deep_links.map((link) => (
               <button
                 key={link.path}

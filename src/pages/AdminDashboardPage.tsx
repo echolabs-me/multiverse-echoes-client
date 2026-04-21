@@ -48,10 +48,10 @@ export function AdminDashboardPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-canvas">
         <div className="text-center">
-          <Shield size={48} className="mx-auto mb-4 text-danger" />
+          <Shield size={48} className="mx-auto mbe-4 text-danger" />
           <h1 className="text-xl font-semibold text-text-primary">{t('admin.accessDenied')}</h1>
-          <p className="mt-2 text-text-secondary">{t('admin.accessDeniedDesc')}</p>
-          <Button className="mt-4" onClick={() => navigate('/dashboard')}>
+          <p className="mbs-2 text-text-secondary">{t('admin.accessDeniedDesc')}</p>
+          <Button className="mbs-4" onClick={() => navigate('/dashboard')}>
             {t('common.back')}
           </Button>
         </div>
@@ -73,7 +73,7 @@ export function AdminDashboardPage() {
   return (
     <div className="min-h-screen bg-canvas">
       {/* Header */}
-      <header className="border-b border-border bg-surface px-6 py-4">
+      <header className="border-be border-border bg-surface px-6 py-4">
         <div className="flex items-center gap-3">
           <Shield size={24} className="text-accent" />
           <h1 className="text-xl font-semibold text-text-primary">{t('admin.title')}</h1>
@@ -81,7 +81,7 @@ export function AdminDashboardPage() {
       </header>
 
       {/* Tabs */}
-      <div className="border-b border-border px-6">
+      <div className="border-be border-border px-6">
         <Tabs
           tabs={tabs}
           activeTab={activeTab}
@@ -90,7 +90,7 @@ export function AdminDashboardPage() {
       </div>
 
       {/* Content */}
-      <div className="mx-auto max-w-6xl px-6 py-6">
+      <div className="mx-auto max-w-6xl p-6">
         {activeTab === 'dashboard' && <DashboardView />}
         {activeTab === 'reports' && <ReportsView />}
         {activeTab === 'users' && <UsersView />}
@@ -236,11 +236,11 @@ function ReportsView() {
                     {report.target_type}: {report.target_id.slice(0, 8)}
                   </span>
                 </div>
-                <p className="mt-1 text-sm text-text-secondary">{report.reason}</p>
+                <p className="mbs-1 text-sm text-text-secondary">{report.reason}</p>
                 {report.details && (
-                  <p className="mt-1 text-xs text-text-muted">{report.details}</p>
+                  <p className="mbs-1 text-xs text-text-muted">{report.details}</p>
                 )}
-                <div className="mt-2 flex items-center gap-3 text-xs text-text-muted">
+                <div className="mbs-2 flex items-center gap-3 text-xs text-text-muted">
                   <span>{new Date(report.created_at).toLocaleString()}</span>
                   <span className="flex items-center gap-1">
                     <Clock size={10} />
@@ -254,7 +254,7 @@ function ReportsView() {
                   <select
                     value={resolveAction}
                     onChange={(e) => setResolveAction(e.target.value)}
-                    className="rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary"
+                    className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
                     aria-label={t('admin.selectAction')}
                   >
                     <option value="Quarantine">{t('admin.actionQuarantine')}</option>
@@ -267,7 +267,7 @@ function ReportsView() {
                     value={resolveNotes}
                     onChange={(e) => setResolveNotes(e.target.value)}
                     placeholder={t('admin.resolutionNotes')}
-                    className="rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary"
+                    className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
                     rows={2}
                     aria-label={t('admin.resolutionNotes')}
                   />
@@ -343,7 +343,7 @@ function UsersView() {
     <div className="space-y-4">
       <form onSubmit={handleSearch} className="flex gap-2">
         <div className="relative flex-1">
-          <Search size={16} className="absolute top-1/2 start-3 -translate-y-1/2 text-text-muted" />
+          <Search size={16} className="absolute inset-s-3 inset-bs-1/2 -translate-y-1/2 text-text-muted" />
           <input
             type="text"
             value={searchQuery}
@@ -362,7 +362,7 @@ function UsersView() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm" role="table">
             <thead>
-              <tr className="border-b border-border text-start text-text-muted">
+              <tr className="border-be border-border text-start text-text-muted">
                 <th className="px-3 py-2">{t('admin.userName')}</th>
                 <th className="px-3 py-2">{t('admin.userEmail')}</th>
                 <th className="px-3 py-2">{t('admin.userTier')}</th>
@@ -373,7 +373,7 @@ function UsersView() {
             </thead>
             <tbody>
               {users.map((u) => (
-                <tr key={u.user_id} className="border-b border-border">
+                <tr key={u.user_id} className="border-be border-border">
                   <td className="px-3 py-2 text-text-primary">{u.display_name}</td>
                   <td className="px-3 py-2 text-text-secondary">{u.email}</td>
                   <td className="px-3 py-2">
@@ -443,7 +443,7 @@ function ShardsView() {
       <div className="overflow-x-auto">
         <table className="w-full text-sm" role="table">
           <thead>
-            <tr className="border-b border-border text-start text-text-muted">
+            <tr className="border-be border-border text-start text-text-muted">
               <th className="px-3 py-2">{t('admin.shardName')}</th>
               <th className="px-3 py-2">{t('admin.shardType')}</th>
               <th className="px-3 py-2">{t('admin.shardStatus')}</th>
@@ -454,7 +454,7 @@ function ShardsView() {
             {shards.map((s) => {
               const capacityPct = s.max_active_echoes > 0 ? (s.current_active_count / s.max_active_echoes) * 100 : 0;
               return (
-                <tr key={s.shard_id} className="border-b border-border">
+                <tr key={s.shard_id} className="border-be border-border">
                   <td className="px-3 py-2 text-text-primary">{s.name}</td>
                   <td className="px-3 py-2 text-text-secondary">{s.shard_type}</td>
                   <td className="px-3 py-2">
@@ -525,7 +525,7 @@ function ControlsView() {
   return (
     <div className="space-y-6">
       <Card>
-        <h3 className="mb-3 text-sm font-semibold text-text-secondary">{t('admin.tickControl')}</h3>
+        <h3 className="mbe-3 text-sm font-semibold text-text-secondary">{t('admin.tickControl')}</h3>
         <div className="flex items-center gap-4">
           <Badge variant={paused ? 'warning' : 'success'}>
             {paused ? 'Paused' : 'Running'}
@@ -538,14 +538,14 @@ function ControlsView() {
           </Button>
         </div>
         {paused && (
-          <p className="mt-3 text-xs text-text-muted">
+          <p className="mbs-3 text-xs text-text-muted">
             Tick engine is paused. No Echoes will be processed until resumed.
           </p>
         )}
       </Card>
       <Card>
-        <h3 className="mb-3 text-sm font-semibold text-text-secondary">{t('admin.manualTick')}</h3>
-        <p className="mb-3 text-xs text-text-muted">{t('admin.manualTickDesc')}</p>
+        <h3 className="mbe-3 text-sm font-semibold text-text-secondary">{t('admin.manualTick')}</h3>
+        <p className="mbe-3 text-xs text-text-muted">{t('admin.manualTickDesc')}</p>
         <Button
           variant="secondary"
           onClick={async () => {
@@ -623,7 +623,7 @@ function AnalyticsView() {
 
       {/* Revenue (stubs) */}
       <Card>
-        <h3 className="mb-3 text-sm font-semibold text-text-secondary">{t('admin.revenueCard')}</h3>
+        <h3 className="mbe-3 text-sm font-semibold text-text-secondary">{t('admin.revenueCard')}</h3>
         <div className="grid grid-cols-3 gap-4 text-sm">
           <div>
             <p className="text-text-muted">{t('admin.revenueMrr')}</p>
@@ -690,13 +690,13 @@ function FeedbackQueueView() {
 
   return (
     <div>
-      <h2 className="mb-4 text-lg font-semibold text-text-primary">{t('admin.feedbackQueue')}</h2>
+      <h2 className="mbe-4 text-lg font-semibold text-text-primary">{t('admin.feedbackQueue')}</h2>
 
-      <div className="mb-4 flex gap-3">
+      <div className="mbe-4 flex gap-3">
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
-          className="rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary"
+          className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
         >
           <option value="all">{t('admin.feedbackType')}: {t('admin.filterAll')}</option>
           <option value="Bug">{t('admin.feedbackTypeBug')}</option>
@@ -708,7 +708,7 @@ function FeedbackQueueView() {
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary"
+          className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
         >
           <option value="all">{t('admin.feedbackStatus')}: {t('admin.filterAll')}</option>
           <option value="New">{t('admin.feedbackStatusNew')}</option>
@@ -726,7 +726,7 @@ function FeedbackQueueView() {
             <Card key={item.feedback_id}>
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="mb-1 flex items-center gap-2">
+                  <div className="mbe-1 flex items-center gap-2">
                     <Badge variant={typeBadgeColor[item.feedback_type] ?? 'default'}>
                       {item.feedback_type}
                     </Badge>
@@ -736,27 +736,27 @@ function FeedbackQueueView() {
                     {item.priority && <Badge variant="danger">{item.priority}</Badge>}
                   </div>
                   <p className="text-sm text-text-primary">{item.user_message}</p>
-                  <p className="mt-1 text-xs text-text-muted italic">{item.structured_summary}</p>
-                  <p className="mt-1 text-xs text-text-muted">
+                  <p className="mbs-1 text-xs text-text-muted italic">{item.structured_summary}</p>
+                  <p className="mbs-1 text-xs text-text-muted">
                     {t('admin.feedbackScreen')}: {item.context.screen}
                     {item.context.echo_id && ` · Echo: ${item.context.echo_id.slice(0, 8)}…`}
                   </p>
                   {item.github_issue_url && (
-                    <p className="mt-1 text-xs">
+                    <p className="mbs-1 text-xs">
                       <a
                         href={item.github_issue_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-accent hover:text-accent/80 underline"
+                        className="text-accent underline hover:text-accent/80"
                       >
                         GitHub Issue
                       </a>
                     </p>
                   )}
                   {item.resolution_notes && (
-                    <p className="mt-1 text-xs text-success">{t('admin.resolutionPrefix')}: {item.resolution_notes}</p>
+                    <p className="mbs-1 text-xs text-success">{t('admin.resolutionPrefix')}: {item.resolution_notes}</p>
                   )}
-                  <p className="mt-1 text-xs text-text-muted">
+                  <p className="mbs-1 text-xs text-text-muted">
                     {new Date(item.created_at).toLocaleString()}
                   </p>
                 </div>
@@ -785,7 +785,7 @@ function FeedbackQueueView() {
                     onChange={(e) => {
                       if (e.target.value) void handlePriority(item.feedback_id, e.target.value as FeedbackPriority);
                     }}
-                    className="rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary"
+                    className="rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary"
                   >
                     <option value="">{t('admin.feedbackPriorityLabel')}</option>
                     <option value="P0">P0</option>
@@ -874,7 +874,7 @@ function ModeratorsView() {
     <div className="space-y-4">
       <form onSubmit={(e) => void handlePromote(e)} className="flex gap-2">
         <div className="relative flex-1">
-          <Users size={16} className="absolute top-1/2 start-3 -translate-y-1/2 text-text-muted" />
+          <Users size={16} className="absolute inset-s-3 inset-bs-1/2 -translate-y-1/2 text-text-muted" />
           <input
             type="text"
             value={promoteUserId}
@@ -899,7 +899,7 @@ function ModeratorsView() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm" role="table">
             <thead>
-              <tr className="border-b border-border text-start text-text-muted">
+              <tr className="border-be border-border text-start text-text-muted">
                 <th className="px-3 py-2">{t('admin.userName')}</th>
                 <th className="px-3 py-2">{t('admin.userEmail')}</th>
                 <th className="px-3 py-2">{t('admin.moderators.updatedAt')}</th>
@@ -908,7 +908,7 @@ function ModeratorsView() {
             </thead>
             <tbody>
               {moderators.map((m) => (
-                <tr key={m.user_id} className="border-b border-border">
+                <tr key={m.user_id} className="border-be border-border">
                   <td className="px-3 py-2 text-text-primary">{m.display_name}</td>
                   <td className="px-3 py-2 text-text-secondary">{m.email}</td>
                   <td className="px-3 py-2 text-text-secondary">

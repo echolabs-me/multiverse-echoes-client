@@ -108,10 +108,10 @@ export function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
       <div className="w-full max-w-md">
-        <div className="mb-8 flex flex-col items-center">
+        <div className="mbe-8 flex flex-col items-center">
           <Sparkles
             size={32}
-            className="mb-3 text-accent"
+            className="mbe-3 text-accent"
             aria-hidden="true"
           />
           <h1 className="text-2xl font-bold text-text-primary">
@@ -120,8 +120,8 @@ export function RegisterPage() {
         </div>
 
         {/* Closed beta banner — explains why an invite code is needed */}
-        <div className="mb-6 rounded-lg border border-accent/30 bg-accent/5 px-4 py-4 text-center">
-          <p className="mb-3 text-sm text-text-secondary">{t('auth.closedBetaBanner')}</p>
+        <div className="mbe-6 rounded-lg border border-accent/30 bg-accent/5 p-4 text-center">
+          <p className="mbe-3 text-sm text-text-secondary">{t('auth.closedBetaBanner')}</p>
           <Link
             to="/waitlist"
             className="inline-block rounded-md bg-accent px-5 py-2 text-sm font-semibold text-canvas transition-colors hover:bg-accent-hover"
@@ -146,7 +146,7 @@ export function RegisterPage() {
               readOnly={!!codeFromUrl}
               autoComplete="off"
             />
-            <p className="mt-1 text-xs text-text-secondary">{t('auth.inviteCodeHint')}</p>
+            <p className="mbs-1 text-xs text-text-secondary">{t('auth.inviteCodeHint')}</p>
           </div>
 
           <Input
@@ -179,7 +179,7 @@ export function RegisterPage() {
               required
               autoComplete="new-password"
             />
-            <p className="mt-1 text-xs text-text-muted">{t('auth.passwordHint')}</p>
+            <p className="mbs-1 text-xs text-text-muted">{t('auth.passwordHint')}</p>
             <PasswordStrength password={password} />
           </div>
 
@@ -200,7 +200,7 @@ export function RegisterPage() {
                 type="checkbox"
                 checked={tosAccepted}
                 onChange={(e) => setTosAccepted(e.target.checked)}
-                className="mt-0.5 accent-accent"
+                className="mbs-0.5 accent-accent"
               />
               <span>
                 {t('auth.tosAgree')}{' '}
@@ -208,7 +208,7 @@ export function RegisterPage() {
                   href="/terms-of-service"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-accent hover:text-accent-hover underline"
+                  className="text-accent underline hover:text-accent-hover"
                 >
                   {t('auth.tosLink')}
                 </a>
@@ -225,7 +225,7 @@ export function RegisterPage() {
                 type="checkbox"
                 checked={privacyAccepted}
                 onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                className="mt-0.5 accent-accent"
+                className="mbs-0.5 accent-accent"
               />
               <span>
                 {t('auth.privacyAgree')}{' '}
@@ -233,7 +233,7 @@ export function RegisterPage() {
                   href="/privacy-policy"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-accent hover:text-accent-hover underline"
+                  className="text-accent underline hover:text-accent-hover"
                 >
                   {t('auth.privacyLink')}
                 </a>
@@ -266,7 +266,7 @@ export function RegisterPage() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-text-secondary">
+        <p className="mbs-6 text-center text-sm text-text-secondary">
           {t('auth.alreadyHaveAccount')}{' '}
           <Link to="/login" className="text-accent hover:text-accent-hover">
             {t('auth.logIn')}
@@ -300,7 +300,7 @@ function PasswordStrength({ password }: { password: string }) {
   if (!password) return null;
 
   return (
-    <div className="mt-2">
+    <div className="mbs-2">
       <div className="flex gap-1">
         {[1, 2, 3, 4].map((i) => (
           <div
@@ -311,7 +311,7 @@ function PasswordStrength({ password }: { password: string }) {
           />
         ))}
       </div>
-      <p className={`mt-1 text-xs ${level <= 1 ? 'text-danger' : level <= 2 ? 'text-warning' : 'text-text-muted'}`}>
+      <p className={`mbs-1 text-xs ${level <= 1 ? 'text-danger' : level <= 2 ? 'text-warning' : 'text-text-muted'}`}>
         {t(label)}
       </p>
     </div>

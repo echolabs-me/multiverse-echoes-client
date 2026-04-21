@@ -258,7 +258,7 @@ export function VoiceSessionModal({
   }[state];
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface-base/95 backdrop-blur-sm pb-safe pt-safe touch-manipulation">
+    <div className="bg-surface-base/95 pb-safe pt-safe fixed inset-0 z-50 flex touch-manipulation flex-col items-center justify-center backdrop-blur-sm">
       {/* Hidden audio element for WebRTC remote audio playback */}
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <audio ref={remoteAudioRef} autoPlay playsInline className="hidden" />
@@ -266,7 +266,7 @@ export function VoiceSessionModal({
       {(state === 'idle' || state === 'error' || state === 'connecting') && (
         <button
           onClick={() => void endSession()}
-          className="absolute end-4 top-4 rounded-full p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
+          className="absolute inset-e-4 inset-bs-4 rounded-full p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
           aria-label={t('voice.close')}
         >
           <X size={24} />
@@ -275,7 +275,7 @@ export function VoiceSessionModal({
 
       {/* Duration warning */}
       {showDurationWarning && remainingSeconds !== null && remainingSeconds > 0 && (
-        <div className="absolute top-4 start-4 flex items-center gap-2 rounded-lg bg-yellow-500/20 px-3 py-2 text-sm text-yellow-400">
+        <div className="absolute inset-s-4 inset-bs-4 flex items-center gap-2 rounded-lg bg-yellow-500/20 px-3 py-2 text-sm text-yellow-400">
           <Clock size={16} />
           {t('voice.durationWarning', 'Call ends in {{time}}', { time: formatTime(remainingSeconds) })}
         </div>
@@ -283,25 +283,25 @@ export function VoiceSessionModal({
 
       {/* Timer (always visible during call) */}
       {remainingSeconds !== null && state !== 'idle' && state !== 'error' && !showDurationWarning && (
-        <div className="absolute top-4 start-4 flex items-center gap-2 text-sm text-text-tertiary">
+        <div className="text-text-tertiary absolute inset-s-4 inset-bs-4 flex items-center gap-2 text-sm">
           <Clock size={14} />
           {formatTime(remainingSeconds)}
         </div>
       )}
 
       {/* Echo name */}
-      <h2 className="mb-6 text-xl font-semibold text-text-primary">{echoName}</h2>
+      <h2 className="mbe-6 text-xl font-semibold text-text-primary">{echoName}</h2>
 
       {/* Portrait / LivePortrait video */}
       <div
-        className={`relative mb-6 h-48 w-48 overflow-hidden rounded-full border-4 transition-all duration-300 ${stateColor}`}
+        className={`relative mbe-6 size-48 overflow-hidden rounded-full border-4 transition-all duration-300 ${stateColor}`}
       >
         {videoFrame ? (
-          <img src={videoFrame} alt={echoName} className="h-full w-full object-cover" />
+          <img src={videoFrame} alt={echoName} className="size-full object-cover" />
         ) : avatarUrl ? (
-          <img src={avatarUrl} alt={echoName} className="h-full w-full object-cover" loading="eager" />
+          <img src={avatarUrl} alt={echoName} className="size-full object-cover" loading="eager" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-surface-raised text-4xl font-bold text-text-secondary">
+          <div className="flex size-full items-center justify-center bg-surface-raised text-4xl font-bold text-text-secondary">
             {echoName[0]}
           </div>
         )}
@@ -309,7 +309,7 @@ export function VoiceSessionModal({
         {/* Loading overlay */}
         {state === 'connecting' && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <Loader2 className="h-12 w-12 animate-spin text-white" />
+            <Loader2 className="size-12 animate-spin text-white" />
           </div>
         )}
 
@@ -317,16 +317,16 @@ export function VoiceSessionModal({
         {state === 'thinking' && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/30">
             <div className="flex gap-1">
-              <span className="me-bounce-delay-0 h-2 w-2 animate-bounce rounded-full bg-white" />
-              <span className="me-bounce-delay-150 h-2 w-2 animate-bounce rounded-full bg-white" />
-              <span className="me-bounce-delay-300 h-2 w-2 animate-bounce rounded-full bg-white" />
+              <span className="me-bounce-delay-0 size-2 animate-bounce rounded-full bg-white" />
+              <span className="me-bounce-delay-150 size-2 animate-bounce rounded-full bg-white" />
+              <span className="me-bounce-delay-300 size-2 animate-bounce rounded-full bg-white" />
             </div>
           </div>
         )}
       </div>
 
       {/* State label */}
-      <p className={`mb-4 text-sm ${state === 'error' ? 'text-red-400' : 'text-text-secondary'}`}>
+      <p className={`mbe-4 text-sm ${state === 'error' ? 'text-red-400' : 'text-text-secondary'}`}>
         {stateLabel}
       </p>
 
@@ -334,7 +334,7 @@ export function VoiceSessionModal({
       {transcript && (state === 'listening' || state === 'thinking' || state === 'speaking') && (
         <div
           ref={transcriptRef}
-          className="mb-4 max-h-48 max-w-md overflow-y-auto rounded-lg bg-surface-raised px-4 py-2 text-sm text-text-secondary"
+          className="mbe-4 max-h-48 max-w-md overflow-y-auto rounded-lg bg-surface-raised px-4 py-2 text-sm text-text-secondary"
         >
           {transcript.split('\n').filter(Boolean).map((line, i) => (
             <p key={i} className={line.startsWith('[You]') ? 'text-text-tertiary' : 'text-accent'}>

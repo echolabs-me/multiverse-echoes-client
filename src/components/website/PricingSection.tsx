@@ -251,12 +251,12 @@ export function PricingSection() {
   const isAuthenticated = useAuthStore.getState().isAuthenticated;
 
   return (
-    <section id="pricing" className="section-reveal px-4 pb-24 pt-28 sm:px-6">
+    <section id="pricing" className="section-reveal px-4 pbs-28 pbe-24 sm:px-6">
       <div className="mx-auto max-w-340">
         {/* Header */}
-        <div className="mb-14 text-center">
-          <p className="mb-6 font-serif text-xs uppercase tracking-[4px] text-(--accent)">{t('website.pricing.eyebrow')}</p>
-          <h2 className="mb-4 font-serif text-4xl font-semibold text-(--text-primary)">
+        <div className="mbe-14 text-center">
+          <p className="mbe-6 font-serif text-xs tracking-[4px] text-(--accent) uppercase">{t('website.pricing.eyebrow')}</p>
+          <h2 className="mbe-4 font-serif text-4xl font-semibold text-(--text-primary)">
             {t('website.pricing.headline')}
           </h2>
           <p className="mx-auto max-w-xl text-(--text-secondary)">
@@ -265,7 +265,7 @@ export function PricingSection() {
         </div>
 
         {/* Tier cards */}
-        <div className="mb-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        <div className="mbe-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {TIERS.map((tier) => (
             <div
               key={tier.nameKey}
@@ -278,44 +278,44 @@ export function PricingSection() {
               }`}
             >
               {tier.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-(--accent) px-4 py-1 text-[11px] font-bold uppercase tracking-[1.5px] text-[#0A0F14]">
+                <span className="absolute inset-s-1/2 -inset-bs-3 -translate-x-1/2 rounded-full bg-(--accent) px-4 py-1 text-[11px] font-bold tracking-[1.5px] whitespace-nowrap text-[#0A0F14] uppercase">
                   {t('tiers.mostPopular')}
                 </span>
               )}
               {tier.god && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-linear-to-r from-[#C9A84C] to-[#E0C060] px-4 py-1 text-[11px] font-bold uppercase tracking-[1.5px] text-[#0A0F14]">
+                <span className="absolute inset-s-1/2 -inset-bs-3 -translate-x-1/2 rounded-full bg-linear-to-r from-[#C9A84C] to-[#E0C060] px-4 py-1 text-[11px] font-bold tracking-[1.5px] whitespace-nowrap text-[#0A0F14] uppercase">
                   {t('tiers.ultimate')}
                 </span>
               )}
 
               {/* Icon */}
-              <div className={`mb-5 flex h-10 w-10 items-center justify-center rounded-[10px] text-xl ${tier.iconClass}`}>
+              <div className={`mbe-5 flex size-10 items-center justify-center rounded-[10px] text-xl ${tier.iconClass}`}>
                 {tier.icon}
               </div>
 
               {/* Name + tagline (colored dot anchors tier-colour identity) */}
-              <h3 className="mb-1 font-serif text-2xl font-bold text-(--text-primary)">
+              <h3 className="mbe-1 font-serif text-2xl font-bold text-(--text-primary)">
                 {t(tier.nameKey)}
                 <span
                   aria-hidden="true"
-                  className={`ml-2 inline-block h-2.5 w-2.5 rounded-full align-middle ${TIER_DOT_BG[tier.key]}`}
+                  className={`ms-2 inline-block size-2.5 rounded-full align-middle ${TIER_DOT_BG[tier.key]}`}
                 />
               </h3>
-              <p className="mb-5 min-h-9 text-[13px] text-(--text-muted)">{t(tier.tagline)}</p>
+              <p className="mbe-5 min-h-9 text-[13px] text-(--text-muted)">{t(tier.tagline)}</p>
 
               {/* Price */}
-              <div className="mb-6 border-b border-[#1E2A36] pb-5">
-                <div className="text-4xl font-bold leading-none text-(--text-primary)">
+              <div className="mbe-6 border-be border-[#1E2A36] pbe-5">
+                <div className="text-4xl leading-none font-bold text-(--text-primary)">
                   <span className="align-super text-xl">$</span>
                   {tier.price}
                   {tier.cents && <span className="text-xl">{tier.cents}</span>}
                 </div>
-                <p className="mt-1 text-[13px] text-(--text-muted)">{t(tier.period)}</p>
-                {tier.note && <p className="mt-1 text-xs font-medium text-(--accent)">{t(tier.note)}</p>}
+                <p className="mbs-1 text-[13px] text-(--text-muted)">{t(tier.period)}</p>
+                {tier.note && <p className="mbs-1 text-xs font-medium text-(--accent)">{t(tier.note)}</p>}
               </div>
 
               {/* Features — first 2 rows are headline specs (bolder, larger) */}
-              <ul className="mb-6 flex flex-1 flex-col gap-1">
+              <ul className="mbe-6 flex flex-1 flex-col gap-1">
                 {tier.features.map((f, idx) => {
                   const isHeadlineSpec = idx < 2;
                   const isIpRow = f.text.endsWith('ip') || f.text === 'tiers.features.unlimitedIp';
@@ -328,17 +328,17 @@ export function PricingSection() {
                           : 'text-[13px] text-(--text-secondary)'
                       }`}
                     >
-                      <span className={`mt-0.5 shrink-0 text-sm ${COLOR_MAP[f.type]}`}>{ICON_MAP[f.type]}</span>
+                      <span className={`mbs-0.5 shrink-0 text-sm ${COLOR_MAP[f.type]}`}>{ICON_MAP[f.type]}</span>
                       <span>
                         {t(f.text)}
                         {f.type === 'addon' && (
-                          <span className="ml-1.5 rounded bg-[rgba(212,145,92,0.08)] px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-(--accent)">
+                          <span className="ms-1.5 rounded-sm bg-[rgba(212,145,92,0.08)] px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-(--accent)">
                             {t('tiers.addonLabel')}
                           </span>
                         )}
                         {isIpRow && (
                           <Tooltip content={t('tiers.influencePoints.explainer')} position="top">
-                            <span className="ml-1 cursor-help text-[10px] text-(--text-muted)">ⓘ</span>
+                            <span className="ms-1 cursor-help text-[10px] text-(--text-muted)">ⓘ</span>
                           </Tooltip>
                         )}
                       </span>
@@ -347,7 +347,7 @@ export function PricingSection() {
                 })}
                 {tier.showcase.map((s) => (
                   <li key={s} className="flex items-start gap-2 text-[13px] leading-snug text-(--text-secondary)">
-                    <span className={`mt-0.5 shrink-0 text-sm ${tier.god ? 'text-[#C9A84C]' : 'text-[#4CAF7D]'}`}>
+                    <span className={`mbs-0.5 shrink-0 text-sm ${tier.god ? 'text-[#C9A84C]' : 'text-[#4CAF7D]'}`}>
                       {tier.god ? '★' : '✓'}
                     </span>
                     <span>{t(s)}</span>
@@ -358,7 +358,7 @@ export function PricingSection() {
               {/* Button */}
               <Link
                 to={isAuthenticated ? '/settings' : '/register'}
-                className={`mt-auto block rounded-[10px] py-3 text-center text-sm font-semibold tracking-wider transition-all duration-200 ${
+                className={`mbs-auto block rounded-[10px] py-3 text-center text-sm font-semibold tracking-wider transition-all duration-200 ${
                   tier.btnStyle === 'primary'
                     ? 'bg-(--accent) text-[#0A0F14] hover:bg-[#e0a06a] hover:shadow-[0_4px_20px_rgba(212,145,92,0.15)]'
                     : tier.btnStyle === 'gold'
@@ -373,14 +373,14 @@ export function PricingSection() {
         </div>
 
         {/* Voice call note */}
-        <p className="mb-16 text-center text-[13px] italic text-(--text-muted)">
+        <p className="mbe-16 text-center text-[13px] text-(--text-muted) italic">
           {t('tiers.voiceCallNote')}
         </p>
 
         {/* Add-ons */}
-        <div className="mb-16">
-          <div className="mb-9 text-center">
-            <h3 className="mb-2 font-serif text-3xl font-semibold text-(--text-primary)">
+        <div className="mbe-16">
+          <div className="mbe-9 text-center">
+            <h3 className="mbe-2 font-serif text-3xl font-semibold text-(--text-primary)">
               {t('tiers.addOns.title')}
             </h3>
             <p className="text-[15px] text-(--text-secondary)">
@@ -408,12 +408,12 @@ export function PricingSection() {
                   key={addon.nameKey}
                   className="rounded-xl border border-[#1E2A36] bg-[#111920] p-5 transition-all duration-300 hover:bg-[#161E27]"
                 >
-                  <div className="mb-3 text-2xl">{addon.emoji}</div>
-                  <h4 className="mb-1 text-[15px] font-semibold text-(--text-primary)">{t(addon.nameKey)}</h4>
-                  <p className="mb-2 text-lg font-bold text-(--accent)">{addon.price}{addon.recurring ? t('payment.perMonth') : ''}</p>
-                  <p className="mb-3 text-xs leading-relaxed text-(--text-muted)">{t(addon.descKey)}</p>
+                  <div className="mbe-3 text-2xl">{addon.emoji}</div>
+                  <h4 className="mbe-1 text-[15px] font-semibold text-(--text-primary)">{t(addon.nameKey)}</h4>
+                  <p className="mbe-2 text-lg font-bold text-(--accent)">{addon.price}{addon.recurring ? t('payment.perMonth') : ''}</p>
+                  <p className="mbe-3 text-xs/relaxed text-(--text-muted)">{t(addon.descKey)}</p>
                   {showEligibility && (
-                    <div className="border-t border-(--border) pt-2.5 text-[11px] leading-snug text-(--text-muted)">
+                    <div className="border-bs border-(--border) pbs-2.5 text-[11px] leading-snug text-(--text-muted)">
                       {availableTierEntries.length > 0 && (() => {
                         const parts = t('tiers.addOns.availableOn', { tiers: TIERS_MARK }).split(TIERS_MARK);
                         return (
@@ -430,7 +430,7 @@ export function PricingSection() {
                         );
                       })()}
                       {includedEntries.length > 0 && (
-                        <div className={availableTierEntries.length > 0 ? 'mt-0.5' : ''}>
+                        <div className={availableTierEntries.length > 0 ? 'mbs-0.5' : ''}>
                           {t('tiers.addOns.includedPrefix')}{' '}
                           {includedEntries.map((e, i) => {
                             const parts = t('tiers.addOns.includedOnTier', { count: e.count, tier: TIER_MARK }).split(TIER_MARK);
@@ -455,13 +455,13 @@ export function PricingSection() {
 
         {/* Enterprise */}
         <div className="rounded-2xl border border-[#1E2A36] bg-linear-to-br from-[#111920] to-[rgba(139,126,200,0.08)] p-12 text-center">
-          <h3 className="mb-3 font-serif text-3xl font-semibold text-(--text-primary)">
+          <h3 className="mbe-3 font-serif text-3xl font-semibold text-(--text-primary)">
             {t('tiers.enterprise')}
           </h3>
-          <p className="mx-auto mb-6 max-w-lg text-[15px] leading-relaxed text-(--text-secondary)">
+          <p className="mx-auto mbe-6 max-w-lg text-[15px] leading-relaxed text-(--text-secondary)">
             {t('tiers.enterpriseDesc')}
           </p>
-          <div className="mb-7 flex flex-wrap justify-center gap-6">
+          <div className="mbe-7 flex flex-wrap justify-center gap-6">
             {[
               'tiers.enterpriseFeatures.customEchoLimits',
               'tiers.enterpriseFeatures.customHeartbeat',
@@ -483,7 +483,7 @@ export function PricingSection() {
         </div>
 
         {/* Footer note */}
-        <p className="mt-12 text-center text-[13px] leading-relaxed text-(--text-muted)">
+        <p className="mbs-12 text-center text-[13px] leading-relaxed text-(--text-muted)">
           {t('tiers.footerNoteLine1')}<br />
           {t('tiers.footerNoteLine2')}<br />
           {t('tiers.footerNoteLine3')}

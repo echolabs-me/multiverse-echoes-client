@@ -227,7 +227,7 @@ export function EchoConversationPage() {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <header className="flex items-center gap-3 border-b border-border bg-surface px-4 py-3">
+      <header className="flex items-center gap-3 border-be border-border bg-surface px-4 py-3">
         <button
           onClick={() => navigate(`/echoes/${echoId}`)}
           className="rounded-md p-1.5 text-text-secondary hover:bg-surface-raised hover:text-text-primary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
@@ -263,14 +263,14 @@ export function EchoConversationPage() {
       >
         {isLoading && (
           <div className="flex items-center justify-center py-12">
-            <span className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-accent border-t-transparent" role="status">
+            <span className="inline-block size-6 animate-spin rounded-full border-2 border-accent border-bs-transparent" role="status">
               <span className="sr-only">{t('common.loading')}</span>
             </span>
           </div>
         )}
 
         {!isLoading && messages.length === 0 && conversationId && (
-          <div className="flex flex-col items-center gap-3 pt-12 text-center">
+          <div className="flex flex-col items-center gap-3 pbs-12 text-center">
             <p className="text-sm text-text-muted">{t('conversation.startPrompt')}</p>
           </div>
         )}
@@ -283,12 +283,12 @@ export function EchoConversationPage() {
             <div
               className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm ${
                 msg.role === 'user'
-                  ? 'rounded-br-sm bg-accent text-canvas'
-                  : 'rounded-bl-sm bg-surface text-text-primary'
+                  ? 'rounded-ee-sm bg-accent text-canvas'
+                  : 'rounded-es-sm bg-surface text-text-primary'
               }`}
             >
               <p className="whitespace-pre-wrap">{msg.content}</p>
-              <div className="mt-1 flex items-center justify-end gap-1">
+              <div className="mbs-1 flex items-center justify-end gap-1">
                 <time className="text-[10px] opacity-60">
                   {formatTime(msg.created_at)}
                 </time>
@@ -299,11 +299,11 @@ export function EchoConversationPage() {
 
         {isSending && (
           <div className="flex justify-start">
-            <div className="rounded-2xl rounded-bl-sm bg-surface px-4 py-3">
+            <div className="rounded-2xl rounded-es-sm bg-surface px-4 py-3">
               <div className="flex gap-1">
-                <span className="inline-block h-2 w-2 animate-bounce rounded-full bg-text-muted [animation-delay:0ms]" />
-                <span className="inline-block h-2 w-2 animate-bounce rounded-full bg-text-muted [animation-delay:150ms]" />
-                <span className="inline-block h-2 w-2 animate-bounce rounded-full bg-text-muted [animation-delay:300ms]" />
+                <span className="inline-block size-2 animate-bounce rounded-full bg-text-muted [animation-delay:0ms]" />
+                <span className="inline-block size-2 animate-bounce rounded-full bg-text-muted [animation-delay:150ms]" />
+                <span className="inline-block size-2 animate-bounce rounded-full bg-text-muted [animation-delay:300ms]" />
               </div>
             </div>
           </div>
@@ -317,7 +317,7 @@ export function EchoConversationPage() {
       {/* Input */}
       <form
         onSubmit={(e) => void handleSend(e)}
-        className="flex gap-2 border-t border-border px-4 py-3"
+        className="flex gap-2 border-bs border-border px-4 py-3"
       >
         <textarea
           ref={inputRef}
@@ -340,7 +340,7 @@ export function EchoConversationPage() {
           }
           disabled={isSending || atLimit || !conversationId}
           rows={1}
-          className="flex-1 resize-none rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40 max-h-[150px]"
+          className="max-h-[150px] flex-1 resize-none rounded-2xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40"
           aria-label={t('conversation.inputPlaceholder')}
         />
         <button

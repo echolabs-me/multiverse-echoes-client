@@ -97,13 +97,13 @@ export function CommunityPulseCard() {
                 el.style.setProperty('--me-mood-shadow', `rgba(${mr},${mg},${mb},0.10)`);
                 el.style.setProperty('--me-mood-edge', `rgba(${mr},${mg},${mb},0.5)`);
               }}
-              className="me-community-row w-full rounded-lg border-s-[3px] px-2.5 py-1.5 text-start bg-surface-raised/50"
+              className="me-community-row w-full rounded-lg border-s-[3px] bg-surface-raised/50 px-2.5 py-1.5 text-start"
             >
               <div className="flex items-center gap-1.5">
-                <span className="me-mood-dot h-2 w-2 flex-shrink-0 rounded-full" />
-                <Icon size={11} className={`flex-shrink-0 ${iconColor} ${isLifeEvent ? 'fill-accent' : ''}`} />
-                <span className="text-xs font-medium text-text-primary truncate">{echoName}</span>
-                <span className="ms-auto text-[10px] text-text-muted whitespace-nowrap">{(() => {
+                <span className="me-mood-dot size-2 shrink-0 rounded-full" />
+                <Icon size={11} className={`shrink-0 ${iconColor} ${isLifeEvent ? 'fill-accent' : ''}`} />
+                <span className="truncate text-xs font-medium text-text-primary">{echoName}</span>
+                <span className="ms-auto text-[10px] whitespace-nowrap text-text-muted">{(() => {
                   const seconds = Math.floor((Date.now() - new Date(item.created_at).getTime()) / 1000);
                   if (seconds < 60) return t('communityFeed.justNow');
                   const minutes = Math.floor(seconds / 60);
@@ -114,7 +114,7 @@ export function CommunityPulseCard() {
                   return t('communityFeed.daysAgo', { count: days });
                 })()}</span>
               </div>
-              <p className="text-xs leading-snug ps-[27px] text-text-secondary line-clamp-1">
+              <p className="line-clamp-1 ps-[27px] text-xs/snug text-text-secondary">
                 {tickerText}
               </p>
             </div>

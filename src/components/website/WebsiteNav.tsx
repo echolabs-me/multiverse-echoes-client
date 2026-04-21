@@ -83,9 +83,9 @@ export function WebsiteNav() {
 
   return (
     <header
-      className={`isolate fixed top-0 right-0 left-0 z-[9999] transition-all duration-500 ${
+      className={`fixed inset-x-0 inset-bs-0 isolate z-9999 transition-all duration-500 ${
         scrolled || menuOpen
-          ? 'border-b border-[rgba(212,145,92,0.15)] bg-[#0A0F14]'
+          ? 'border-be border-[rgba(212,145,92,0.15)] bg-[#0A0F14]'
           : 'bg-transparent'
       }`}
     >
@@ -95,7 +95,7 @@ export function WebsiteNav() {
           <img
             src="/logo.png"
             alt="Multiverse Echoes"
-            className="h-9 w-9 rounded-lg object-contain"
+            className="size-9 rounded-lg object-contain"
           />
           <span className="hidden font-serif text-base font-light tracking-[0.14em] text-[#E8E0D8] sm:inline">
             MULTIVERSE ECHOES
@@ -156,7 +156,7 @@ export function WebsiteNav() {
               <span>{currentLangName}</span>
             </button>
             {langOpen && (
-              <div className="absolute top-10 right-0 z-50">
+              <div className="absolute inset-e-0 inset-bs-10 z-50">
                 <LanguageSwitcher onSelect={() => setLangOpen(false)} />
               </div>
             )}
@@ -175,7 +175,7 @@ export function WebsiteNav() {
 
       {/* Mobile slide-out menu */}
       {menuOpen && (
-        <div className="border-t border-[rgba(212,145,92,0.15)] bg-[#0A0F14] px-6 pb-8 pt-6 md:hidden">
+        <div className="border-bs border-[rgba(212,145,92,0.15)] bg-[#0A0F14] px-6 pbs-6 pbe-8 md:hidden">
           <div className="flex flex-col gap-5">
             <Link
               to="/home"
@@ -211,7 +211,7 @@ export function WebsiteNav() {
               {t('website.nav.contact')}
             </Link>
 
-            <div className="my-1 border-t border-[rgba(212,145,92,0.1)]" />
+            <div className="my-1 border-bs border-[rgba(212,145,92,0.1)]" />
 
             {/* Language selector — same accent-pill treatment as desktop */}
             <button
@@ -230,7 +230,7 @@ export function WebsiteNav() {
             <Link
               to={showWaitlistCta ? '/waitlist' : enterTo}
               onClick={() => setMenuOpen(false)}
-              className="mt-2 rounded-md bg-(--accent) py-3 text-center font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a]"
+              className="mbs-2 rounded-md bg-(--accent) py-3 text-center font-serif text-sm font-semibold tracking-wider text-[#0A0F14] transition-all hover:bg-[#e0a06a]"
             >
               {showWaitlistCta ? t('auth.joinWaitlist') : enterLabel} ▸
             </Link>

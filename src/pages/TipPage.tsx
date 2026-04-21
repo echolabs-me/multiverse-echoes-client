@@ -38,17 +38,17 @@ export function TipPage() {
       <div className="mx-auto w-full max-w-lg p-6">
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+          className="mbe-6 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
         >
           <ArrowLeft size={16} />
           {t('common.back')}
         </button>
 
-        <div className="mb-6 flex items-center gap-2">
+        <div className="mbe-6 flex items-center gap-2">
           <Heart size={24} className="text-accent" />
           <h1 className="text-2xl font-bold text-text-primary">{t('payment.tipTitle')}</h1>
         </div>
-        <p className="mb-6 text-sm text-text-secondary">{t('payment.tipDesc')}</p>
+        <p className="mbe-6 text-sm text-text-secondary">{t('payment.tipDesc')}</p>
 
         <Card>
           <div className="flex flex-col gap-4">
@@ -64,7 +64,7 @@ export function TipPage() {
                   className={`rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
                     !useCustom && amount === cents
                       ? 'border-accent bg-accent/10 text-accent'
-                      : 'border-border bg-surface text-text-primary hover:bg-surface-hover'
+                      : 'hover:bg-surface-hover border-border bg-surface text-text-primary'
                   }`}
                 >
                   ${(cents / 100).toFixed(0)}
@@ -78,7 +78,7 @@ export function TipPage() {
                 className={`rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
                   useCustom
                     ? 'border-accent bg-accent/10 text-accent'
-                    : 'border-border bg-surface text-text-primary hover:bg-surface-hover'
+                    : 'hover:bg-surface-hover border-border bg-surface text-text-primary'
                 }`}
               >
                 {t('payment.tipCustom')}
@@ -101,7 +101,7 @@ export function TipPage() {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-text-primary">
+              <label className="mbe-1 block text-sm font-medium text-text-primary">
                 {t('payment.tipMessage')}
               </label>
               <input
@@ -114,7 +114,7 @@ export function TipPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-2 pt-2">
+            <div className="flex flex-col gap-2 pbs-2">
               <button
                 onClick={() => handleTip('nowpayments')}
                 disabled={loading !== null || effectiveAmount < 100}
@@ -126,7 +126,7 @@ export function TipPage() {
               <button
                 onClick={() => handleTip('xaman')}
                 disabled={loading !== null || effectiveAmount < 100}
-                className="flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-primary hover:bg-surface-hover disabled:opacity-50"
+                className="hover:bg-surface-hover flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-primary disabled:opacity-50"
               >
                 <Wallet size={16} />
                 {loading === 'xaman' ? t('payment.subscribing') : `${t('payment.payWithXRP')} — $${(effectiveAmount / 100).toFixed(2)}`}

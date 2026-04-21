@@ -20,12 +20,12 @@ export function EmptyState({
     <div
       className={`flex animate-fade-in flex-col items-center justify-center py-12 text-center ${className}`}
     >
-      <div className="mb-4 text-text-muted">
+      <div className="mbe-4 text-text-muted">
         {icon ?? <Inbox size={48} strokeWidth={1.5} aria-hidden="true" />}
       </div>
-      <h3 className="mb-1 text-lg font-medium text-text-primary">{title}</h3>
+      <h3 className="mbe-1 text-lg font-medium text-text-primary">{title}</h3>
       {description && (
-        <p className="mb-4 max-w-sm text-sm text-text-secondary">
+        <p className="mbe-4 max-w-sm text-sm text-text-secondary">
           {description}
         </p>
       )}

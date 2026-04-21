@@ -46,10 +46,10 @@ export function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
       <div className="w-full max-w-md">
-        <div className="mb-8 flex flex-col items-center">
+        <div className="mbe-8 flex flex-col items-center">
           <Sparkles
             size={32}
-            className="mb-3 text-accent"
+            className="mbe-3 text-accent"
             aria-hidden="true"
           />
           <h1 className="text-2xl font-bold text-text-primary">
@@ -108,7 +108,7 @@ export function LoginPage() {
           </p>
         </form>
 
-        <p className="mt-6 text-center text-sm text-text-secondary">
+        <p className="mbs-6 text-center text-sm text-text-secondary">
           {t('auth.noAccount')}{' '}
           <Link to="/register" className="text-accent hover:text-accent-hover">
             {t('auth.createOne')}

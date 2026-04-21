@@ -58,25 +58,25 @@ export function SettingsPage() {
       <div className="mx-auto max-w-4xl p-6">
           <button
             onClick={() => navigate('/dashboard')}
-            className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
           >
             <ArrowLeft size={16} />
             {t('common.back')}
           </button>
 
-          <h1 className="mb-6 text-2xl font-bold text-text-primary">
+          <h1 className="mbe-6 text-2xl font-bold text-text-primary">
             {t('settings.title')}
           </h1>
 
           {/* Tab navigation */}
-          <div className="mb-6 flex flex-wrap gap-1 border-b border-border">
+          <div className="mbe-6 flex flex-wrap gap-1 border-be border-border">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => { setActiveTab(tab.id); setSearchParams({ tab: tab.id }); }}
-                  className={`flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm transition-colors ${
+                  className={`flex items-center gap-1.5 border-be-2 px-3 py-2 text-sm transition-colors ${
                     activeTab === tab.id
                       ? 'border-accent text-accent'
                       : 'border-transparent text-text-secondary hover:text-text-primary'
@@ -135,18 +135,18 @@ function ProfileSection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.profile')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.profile')}</h3>
         <div className="flex flex-col gap-3">
           <div>
             <label className="text-xs text-text-muted">{t('auth.displayName')}</label>
             {isEditing ? (
-              <div className="mt-1 flex gap-2">
+              <div className="mbs-1 flex gap-2">
                 <input
                   type="text"
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
                   maxLength={30}
-                  className="flex-1 rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:outline-none"
+                  className="flex-1 rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:outline-none"
                 />
                 <Button onClick={() => void handleSave()} disabled={isSaving || editName.trim().length < 3}>
                   {t('common.save')}
@@ -251,7 +251,7 @@ function AccountSection() {
     <div className="flex flex-col gap-4">
       {/* Subscription Tier */}
       <Card>
-        <h3 className="mb-3 text-sm font-semibold text-text-primary">
+        <h3 className="mbe-3 text-sm font-semibold text-text-primary">
           {t('settings.subscriptionTier')}
         </h3>
         <div className="flex items-center justify-between">
@@ -260,7 +260,7 @@ function AccountSection() {
           </div>
           <Link
             to="/plans"
-            className="text-xs font-medium text-accent hover:text-accent-hover transition-colors"
+            className="text-xs font-medium text-accent transition-colors hover:text-accent-hover"
           >
             {t('settings.managePlan')}
           </Link>
@@ -269,7 +269,7 @@ function AccountSection() {
 
       {/* Change Password */}
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
           {t('settings.changePassword')}
         </h3>
         <div className="flex flex-col gap-3">
@@ -295,7 +295,7 @@ function AccountSection() {
               placeholder={t('auth.passwordHint')}
             />
             {passwordsMismatch && (
-              <p className="mt-1 text-xs text-danger">{t('settings.passwordMismatchChange')}</p>
+              <p className="mbs-1 text-xs text-danger">{t('settings.passwordMismatchChange')}</p>
             )}
           </div>
           <Button
@@ -309,7 +309,7 @@ function AccountSection() {
 
       {/* Sessions */}
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
           {t('settings.sessions')}
         </h3>
         {isLoadingSessions ? (
@@ -414,7 +414,7 @@ function PrivacySection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.privacy')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.privacy')}</h3>
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <input
@@ -422,7 +422,7 @@ function PrivacySection() {
               type="checkbox"
               checked={soloMode}
               onChange={() => void handleSoloModeToggle()}
-              className="h-4 w-4 rounded border-border accent-accent"
+              className="size-4 rounded-sm border-border accent-accent"
               aria-label={t('settings.soloMode')}
             />
             <label htmlFor="solo-mode-toggle">
@@ -436,7 +436,7 @@ function PrivacySection() {
               type="checkbox"
               checked={doNotSell}
               onChange={() => void handleDoNotSellToggle()}
-              className="h-4 w-4 rounded border-border accent-accent"
+              className="size-4 rounded-sm border-border accent-accent"
               aria-label={t('settings.doNotSellLabel')}
             />
             <label htmlFor="do-not-sell-toggle">
@@ -450,10 +450,10 @@ function PrivacySection() {
       </Card>
 
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
           {t('settings.exportData')}
         </h3>
-        <p className="mb-3 text-sm text-text-secondary">
+        <p className="mbe-3 text-sm text-text-secondary">
           {t('settings.exportDesc')}
         </p>
         <Button variant="secondary" onClick={() => void handleExport()} disabled={isExporting}>
@@ -527,7 +527,7 @@ function NotificationPrefsSection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
           {t('settings.notificationPrefs')}
         </h3>
         <div className="flex flex-col gap-3">
@@ -538,14 +538,14 @@ function NotificationPrefsSection() {
               <div key={key} className="flex items-center justify-between">
                 <span className="text-sm text-text-primary">{label}</span>
                 {mandatory ? (
-                  <span className="rounded border border-border bg-surface/50 px-2 py-1 text-xs text-text-muted">
+                  <span className="rounded-sm border border-border bg-surface/50 px-2 py-1 text-xs text-text-muted">
                     {t('settings.alwaysOn')}
                   </span>
                 ) : (
                   <select
                     value={value}
                     onChange={(e) => void updatePref(key, e.target.value)}
-                    className="rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary focus:border-accent focus:outline-none"
+                    className="rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary focus:border-accent focus:outline-none"
                     aria-label={`${label} preference`}
                   >
                     <option value="InApp">{t('settings.inAppOnly')}</option>
@@ -560,7 +560,7 @@ function NotificationPrefsSection() {
       </Card>
 
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.sound')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.sound')}</h3>
         <SoundSettings />
       </Card>
     </div>
@@ -578,7 +578,7 @@ function SoundSettings() {
           type="checkbox"
           checked={enabled}
           onChange={() => setEnabled(!enabled)}
-          className="h-4 w-4 rounded border-border accent-accent"
+          className="size-4 rounded-sm border-border accent-accent"
         />
         <span className="text-sm text-text-primary">{t('settings.soundEnabled')}</span>
       </label>
@@ -609,7 +609,7 @@ function AppearanceSection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.theme')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.theme')}</h3>
         <div className="flex gap-2">
           <Button
             variant={base === 'dark' && !activeOverrideId ? 'primary' : 'secondary'}
@@ -632,8 +632,8 @@ function AppearanceSection() {
         </div>
 
         {overrides.length > 0 && (
-          <div className="mt-4">
-            <h4 className="mb-2 text-xs font-medium text-text-secondary">
+          <div className="mbs-4">
+            <h4 className="mbe-2 text-xs font-medium text-text-secondary">
               {t('settings.customThemes')}
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -654,19 +654,19 @@ function AppearanceSection() {
       </Card>
 
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.3dEnvironments')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.3dEnvironments')}</h3>
         <label className="flex items-center gap-3">
           <input
             type="checkbox"
             checked={!disable3D}
             onChange={(e) => setDisable3D(!e.target.checked)}
-            className="h-4 w-4 rounded border-border accent-accent"
+            className="size-4 rounded-sm border-border accent-accent"
           />
           <span className="text-sm text-text-secondary">
             {t('settings.enable3D')}
           </span>
         </label>
-        <p className="mt-2 text-xs text-text-secondary">
+        <p className="mbs-2 text-xs text-text-secondary">
           {t('settings.3dDescription')}
         </p>
       </Card>
@@ -748,7 +748,7 @@ function LanguageSettingsCard() {
 
   return (
     <Card>
-      <h3 className="mb-4 text-sm font-semibold text-text-primary">
+      <h3 className="mbe-4 text-sm font-semibold text-text-primary">
         {t('settings.language')}
       </h3>
       <label className="flex flex-col gap-2">
@@ -780,8 +780,8 @@ function ApiKeysSection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-text-primary">{t('settings.apiKeys')}</h3>
-        <p className="mb-3 text-sm text-text-secondary">{t('settings.apiKeyComingSoon')}</p>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.apiKeys')}</h3>
+        <p className="mbe-3 text-sm text-text-secondary">{t('settings.apiKeyComingSoon')}</p>
         <Button variant="secondary" disabled>
           {t('settings.createApiKey')}
         </Button>
@@ -841,7 +841,7 @@ function DiscordLinkSection() {
 
   return (
     <Card>
-      <div className="flex items-center gap-2 mb-4">
+      <div className="mbe-4 flex items-center gap-2">
         <svg width="20" height="16" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M60.1 4.9A58.5 58.5 0 0045.4.2a.2.2 0 00-.2.1 40.8 40.8 0 00-1.8 3.7 54 54 0 00-16.2 0A37.4 37.4 0 0025.4.3a.2.2 0 00-.2-.1A58.4 58.4 0 0010.5 5a.2.2 0 00-.1 0C1.5 18.7-.9 32 .3 45.2v.1a58.9 58.9 0 0018 9.1.2.2 0 00.3-.1 42.2 42.2 0 003.6-5.9.2.2 0 00-.1-.3 38.8 38.8 0 01-5.5-2.7.2.2 0 01 0-.4l1.1-.9a.2.2 0 01.2 0 42 42 0 0035.8 0 .2.2 0 01.2 0l1.1.9a.2.2 0 010 .3 36.4 36.4 0 01-5.5 2.7.2.2 0 00-.1.3 47.3 47.3 0 003.6 5.9.2.2 0 00.3.1A58.7 58.7 0 0071 45.3v-.1C72.4 30 68.4 16.8 60.1 5a.2.2 0 00-.1 0zM23.7 37.1c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1zm23.7 0c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1z" fill="#5865F2"/>
         </svg>
@@ -852,7 +852,7 @@ function DiscordLinkSection() {
       {linked ? (
         <div className="flex items-center justify-between rounded-lg border border-[#5865F2]/30 bg-[#5865F2]/10 px-4 py-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#5865F2]">
+            <div className="flex size-8 items-center justify-center rounded-full bg-[#5865F2]">
               <span className="text-sm font-bold text-white">
                 {(username ?? '?')[0].toUpperCase()}
               </span>
@@ -864,19 +864,19 @@ function DiscordLinkSection() {
           </div>
           <button
             onClick={() => void handleUnlink()}
-            className="rounded-md border border-border px-3 py-1.5 text-xs text-text-secondary hover:bg-surface-hover transition-colors"
+            className="hover:bg-surface-hover rounded-md border border-border px-3 py-1.5 text-xs text-text-secondary transition-colors"
           >
             {t('settings.unlinkDiscord')}
           </button>
         </div>
       ) : (
         <>
-          <p className="mb-3 text-sm text-text-secondary">
+          <p className="mbe-3 text-sm text-text-secondary">
             Link your Discord account to sync your identity across in-app and Discord communities.
           </p>
           <button
             onClick={() => void handleLink()}
-            className="flex items-center gap-2 rounded-lg bg-[#5865F2] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#4752C4] transition-colors"
+            className="flex items-center gap-2 rounded-lg bg-[#5865F2] px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#4752C4]"
           >
             <ExternalLink size={14} />
             {t('settings.linkDiscord')}
@@ -901,7 +901,7 @@ function MyFeedbackSection() {
 
   return (
     <Card>
-      <h3 className="mb-3 text-sm font-semibold text-text-primary">
+      <h3 className="mbe-3 text-sm font-semibold text-text-primary">
         {t('settings.myFeedback')}
       </h3>
       {items.length === 0 ? (
@@ -911,9 +911,9 @@ function MyFeedbackSection() {
           {items.map((item) => (
             <div
               key={item.feedback_id}
-              className="rounded border border-border p-3"
+              className="rounded-sm border border-border p-3"
             >
-              <div className="mb-1 flex items-center gap-2 text-xs">
+              <div className="mbe-1 flex items-center gap-2 text-xs">
                 <span className="font-medium text-accent">{item.feedback_type}</span>
                 <span className="text-text-muted">·</span>
                 <span className={item.status === 'Resolved' ? 'text-success' : 'text-text-muted'}>
@@ -926,7 +926,7 @@ function MyFeedbackSection() {
               </div>
               <p className="text-sm text-text-primary">{item.user_message}</p>
               {item.resolution_notes && (
-                <p className="mt-1 text-xs text-success italic">
+                <p className="mbs-1 text-xs text-success italic">
                   Resolution: {item.resolution_notes}
                 </p>
               )}
@@ -968,15 +968,15 @@ function DangerZoneSection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mb-4 text-sm font-semibold text-danger">{t('settings.dangerZone')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-danger">{t('settings.dangerZone')}</h3>
 
         {isPendingDeletion && deletionScheduledAt ? (
-          <div className="mb-4">
-            <div className="mb-3 rounded-md border border-danger/30 bg-danger/10 p-3">
+          <div className="mbe-4">
+            <div className="mbe-3 rounded-md border border-danger/30 bg-danger/10 p-3">
               <p className="text-sm font-medium text-danger">
                 {t('settings.deletionScheduled', { date: formatDate(deletionScheduledAt) })}
               </p>
-              <p className="mt-1 text-xs text-text-secondary">
+              <p className="mbs-1 text-xs text-text-secondary">
                 {t('settings.deletionScheduledDesc')}
               </p>
             </div>
@@ -990,7 +990,7 @@ function DangerZoneSection() {
           </div>
         ) : (
           <>
-            <p className="mb-4 text-sm text-text-secondary">
+            <p className="mbe-4 text-sm text-text-secondary">
               {t('settings.deleteAccountWarning')}
             </p>
             <Button variant="danger" onClick={() => navigate('/settings/delete-account')}>

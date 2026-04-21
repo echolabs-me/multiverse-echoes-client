@@ -97,7 +97,7 @@ function renderInline(text: string): ReactNode {
     }
     if (part.startsWith('`') && part.endsWith('`')) {
       return (
-        <code key={i} className="rounded bg-(--surface) px-1 py-0.5 text-[0.9em]">
+        <code key={i} className="rounded-sm bg-(--surface) px-1 py-0.5 text-[0.9em]">
           {part.slice(1, -1)}
         </code>
       );
@@ -125,19 +125,19 @@ function renderBlock(block: Block, index: number): ReactNode {
   switch (block.type) {
     case 'p':
       return (
-        <p key={index} className="mt-2 first:mt-0">
+        <p key={index} className="mbs-2 first:mbs-0">
           {renderInline(block.text)}
         </p>
       );
     case 'h3':
       return (
-        <h3 key={index} className="mt-3 mb-1 text-sm font-semibold text-(--text-primary)">
+        <h3 key={index} className="mbs-3 mbe-1 text-sm font-semibold text-(--text-primary)">
           {renderInline(block.text)}
         </h3>
       );
     case 'ul':
       return (
-        <ul key={index} className="mt-2 list-disc space-y-1 ps-5">
+        <ul key={index} className="mbs-2 list-disc space-y-1 ps-5">
           {block.items.map((item, i) => (
             <li key={i}>{renderInline(item)}</li>
           ))}
@@ -147,17 +147,17 @@ function renderBlock(block: Block, index: number): ReactNode {
       return (
         <div
           key={index}
-          className="mt-2 rounded-lg border border-(--accent)/30 bg-(--accent)/5 p-4"
+          className="mbs-2 rounded-lg border border-(--accent)/30 bg-(--accent)/5 p-4"
         >
           {block.blocks.map((b, i) => renderBlock(b, i))}
         </div>
       );
     case 'table':
       return (
-        <div key={index} className="mt-2 overflow-x-auto">
+        <div key={index} className="mbs-2 overflow-x-auto">
           <table className="w-full border-collapse text-xs">
             <thead>
-              <tr className="border-b border-(--border) text-start">
+              <tr className="border-be border-(--border) text-start">
                 {block.columns.map((col, i) => (
                   <th
                     key={i}
@@ -250,10 +250,10 @@ export function LegalDocument({ docName, metaDescription }: LegalDocumentProps) 
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
       </Helmet>
-      <div className="mx-auto w-full max-w-3xl px-6 pt-28 pb-6">
+      <div className="mx-auto w-full max-w-3xl px-6 pbs-28 pbe-6">
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 flex items-center gap-1 text-sm text-(--text-secondary) hover:text-(--text-primary)"
+          className="mbe-6 flex items-center gap-1 text-sm text-(--text-secondary) hover:text-(--text-primary)"
         >
           <ArrowLeft size={16} />
           {t('common.back')}
@@ -261,7 +261,7 @@ export function LegalDocument({ docName, metaDescription }: LegalDocumentProps) 
 
         {showMachineTranslationBanner && (
           <div
-            className="mb-6 rounded-lg border border-(--accent)/30 bg-(--accent)/10 px-4 py-3 text-sm text-(--text-secondary)"
+            className="mbe-6 rounded-lg border border-(--accent)/30 bg-(--accent)/10 px-4 py-3 text-sm text-(--text-secondary)"
             role="note"
           >
             {t('common.legalMachineTranslationDisclaimer')}
@@ -270,24 +270,24 @@ export function LegalDocument({ docName, metaDescription }: LegalDocumentProps) 
 
         {showEnglishOnlyBanner && (
           <div
-            className="mb-6 rounded-lg border border-(--accent)/30 bg-(--accent)/10 px-4 py-3 text-sm text-(--text-secondary)"
+            className="mbe-6 rounded-lg border border-(--accent)/30 bg-(--accent)/10 px-4 py-3 text-sm text-(--text-secondary)"
             role="note"
           >
             {t('common.legalDocsEnglishOnly')}
           </div>
         )}
 
-        <h1 className="mb-2 text-3xl font-bold text-(--text-primary)">
+        <h1 className="mbe-2 text-3xl font-bold text-(--text-primary)">
           {doc.title}
         </h1>
-        <p className="mb-8 text-sm text-(--text-muted)">
+        <p className="mbe-8 text-sm text-(--text-muted)">
           Last updated: {doc.lastUpdated}
         </p>
 
-        <div className="flex flex-col gap-6 text-sm leading-relaxed text-(--text-secondary)">
+        <div className="flex flex-col gap-6 text-sm/relaxed text-(--text-secondary)">
           {doc.sections.map((section, i) => (
             <section key={i}>
-              <h2 className="mb-2 text-lg font-semibold text-(--text-primary)">
+              <h2 className="mbe-2 text-lg font-semibold text-(--text-primary)">
                 {section.heading}
               </h2>
               {section.blocks.map((b, bi) => renderBlock(b, bi))}

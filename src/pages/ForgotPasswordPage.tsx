@@ -37,8 +37,8 @@ export function ForgotPasswordPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
       <div className="w-full max-w-md">
-        <div className="mb-8 flex flex-col items-center">
-          <Sparkles size={32} className="mb-3 text-accent" aria-hidden="true" />
+        <div className="mbe-8 flex flex-col items-center">
+          <Sparkles size={32} className="mbe-3 text-accent" aria-hidden="true" />
           <h1 className="text-2xl font-bold text-text-primary">
             {t('auth.forgotPasswordTitle')}
           </h1>
@@ -47,13 +47,13 @@ export function ForgotPasswordPage() {
         {submitted ? (
           <div className="rounded-lg bg-surface p-6 text-center">
             <p className="text-text-primary">{t('auth.forgotPasswordSent')}</p>
-            <Link to="/login" className="mt-4 inline-block text-sm text-accent hover:text-accent-hover">
+            <Link to="/login" className="mbs-4 inline-block text-sm text-accent hover:text-accent-hover">
               {t('auth.backToLogin')}
             </Link>
           </div>
         ) : (
           <>
-            <p className="mb-6 text-center text-sm text-text-secondary">
+            <p className="mbe-6 text-center text-sm text-text-secondary">
               {t('auth.forgotPasswordDesc')}
             </p>
 
@@ -80,7 +80,7 @@ export function ForgotPasswordPage() {
               </Button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-text-secondary">
+            <p className="mbs-6 text-center text-sm text-text-secondary">
               <Link to="/login" className="text-accent hover:text-accent-hover">
                 {t('auth.backToLogin')}
               </Link>

@@ -123,7 +123,7 @@ export function Dropdown({
         <div
           role="listbox"
           tabIndex={-1}
-          className="absolute start-0 top-full z-40 mt-1 min-w-[160px] rounded-lg border border-border bg-surface-raised py-1 shadow-lg"
+          className="absolute inset-s-0 inset-bs-full z-40 mbs-1 min-w-[160px] rounded-lg border border-border bg-surface-raised py-1 shadow-lg"
           onKeyDown={handleKeyDown}
         >
           {items.map((item, i) => (

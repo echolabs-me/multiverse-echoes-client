@@ -131,10 +131,10 @@ describe('MoodHistoryStrip', () => {
     const entries = [makeDiaryEntry()];
     const { container } = render(
       <Wrapper>
-        <MoodHistoryStrip entries={entries} className="mt-4" />
+        <MoodHistoryStrip entries={entries} className="mbs-4" />
       </Wrapper>,
     );
-    expect(container.firstChild).toHaveClass('mt-4');
+    expect(container.firstChild).toHaveClass('mbs-4');
   });
 
   it('shows date range when multiple entries', () => {

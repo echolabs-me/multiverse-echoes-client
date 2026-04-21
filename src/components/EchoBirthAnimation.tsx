@@ -203,7 +203,7 @@ function ReducedMotionFallback({
 
   return (
     <div className="flex flex-col items-center justify-center gap-6">
-      <div className="flex h-32 w-32 items-center justify-center rounded-full bg-accent/10">
+      <div className="flex size-32 items-center justify-center rounded-full bg-accent/10">
         <span className="text-5xl font-bold text-accent">
           {echoName[0] ?? '?'}
         </span>
@@ -242,7 +242,7 @@ export function EchoBirthAnimation({
   }
 
   return (
-    <div className="h-80 w-80">
+    <div className="size-80">
       <Suspense
         fallback={
           <ReducedMotionFallback

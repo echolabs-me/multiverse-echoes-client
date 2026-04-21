@@ -84,7 +84,7 @@ export function EchoActivityHint({
       aria-atomic="true"
     >
       <p
-        className={`text-xs italic text-text-secondary transition-opacity duration-300 ease-in-out ${
+        className={`text-xs text-text-secondary italic transition-opacity duration-300 ease-in-out ${
           fading ? 'opacity-0' : 'opacity-80'
         }`}
       >

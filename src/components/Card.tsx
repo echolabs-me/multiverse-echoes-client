@@ -20,7 +20,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   return (
     <div
       ref={ref}
-      className={`rounded-lg border border-border bg-surface shadow-md transition-[border-color] duration-[var(--duration-normal)] hover:border-accent ${paddingClasses[variant]} ${className}`}
+      className={`rounded-lg border border-border bg-surface shadow-md transition-[border-color] duration-(--duration-normal) hover:border-accent ${paddingClasses[variant]} ${className}`}
       {...props}
     >
       {children}

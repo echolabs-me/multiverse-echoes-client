@@ -300,23 +300,23 @@ export function CommunityPage() {
     <div className="flex h-full flex-1 overflow-hidden">
         {/* Channel sidebar */}
         <div className="w-60 shrink-0 overflow-y-auto border-e border-border bg-surface p-3">
-          <h2 className="mb-1 px-2 text-xs font-semibold uppercase tracking-wider text-text-muted">
+          <h2 className="mbe-1 px-2 text-xs font-semibold tracking-wider text-text-muted uppercase">
             {t('community.channels')}
           </h2>
-          <p className="mb-3 px-2 text-xs text-text-muted">
+          <p className="mbe-3 px-2 text-xs text-text-muted">
             {t('community.poweredByDiscord')}
           </p>
           {discordLinked === false && (
             <button
               onClick={() => navigate('/settings?tab=account')}
-              className="mb-3 flex w-full items-center gap-2 rounded-lg bg-[#5865F2] px-3 py-2.5 text-start text-sm font-medium text-white shadow-sm hover:bg-[#4752C4] transition-colors"
+              className="mbe-3 flex w-full items-center gap-2 rounded-lg bg-[#5865F2] px-3 py-2.5 text-start text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#4752C4]"
             >
               <ExternalLink size={14} />
               {t('community.linkDiscord')}
             </button>
           )}
           {discordLinked && discordUsername && (
-            <p className="mb-3 px-2 text-xs text-success">
+            <p className="mbe-3 px-2 text-xs text-success">
               {t('community.discordConnected', { username: discordUsername })}
             </p>
           )}
@@ -346,13 +346,13 @@ export function CommunityPage() {
                   }`}>
                     {ch.name}
                     {unreadChannels.has(ch.channel_id) && activeChannel?.channel_id !== ch.channel_id && (
-                      <span className="rounded-full bg-accent px-1.5 py-0.5 text-[9px] font-bold uppercase leading-none text-canvas">
+                      <span className="rounded-full bg-accent px-1.5 py-0.5 text-[9px] leading-none font-bold text-canvas uppercase">
                         {t('community.new')}
                       </span>
                     )}
                   </span>
                   {ch.description && (
-                    <span className="mt-0.5 block text-[11px] leading-snug text-text-secondary">
+                    <span className="mbs-0.5 block text-[11px] leading-snug text-text-secondary">
                       {ch.description}
                     </span>
                   )}
@@ -374,7 +374,7 @@ export function CommunityPage() {
           ) : (
             <>
               {/* Channel header */}
-              <div className="flex items-center gap-2 border-b border-border px-4 py-3">
+              <div className="flex items-center gap-2 border-be border-border px-4 py-3">
                 <h2 className="text-sm font-semibold text-text-primary">
                   {activeChannel.name}
                 </h2>
@@ -416,7 +416,7 @@ export function CommunityPage() {
                       return (
                       <div
                         key={msg.message_id}
-                        className={`group/msg relative rounded-lg px-3 hover:bg-surface-raised ${showHeader ? 'mt-4 pt-2 pb-1' : 'py-0.5 ps-12'}`}
+                        className={`group/msg relative rounded-lg px-3 hover:bg-surface-raised ${showHeader ? 'mbs-4 pbs-2 pbe-1' : 'py-0.5 ps-12'}`}
                       >
                         {editingMessageId === msg.message_id ? (
                           <div className="flex gap-2">
@@ -426,7 +426,7 @@ export function CommunityPage() {
                               onChange={(e) => setEditText(e.target.value)}
                               maxLength={MAX_MESSAGE_LENGTH}
                               aria-label={t('community.editMessageLabel')}
-                              className="flex-1 rounded border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                              className="flex-1 rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') void handleEdit(msg.message_id);
                                 if (e.key === 'Escape') setEditingMessageId(null);
@@ -451,7 +451,7 @@ export function CommunityPage() {
                           <>
                             {showHeader ? (
                               <div className="flex items-start gap-3">
-                                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/20 text-xs font-bold text-accent">
+                                <div className="mbs-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-accent/20 text-xs font-bold text-accent">
                                   {initial}
                                 </div>
                                 <div className="min-w-0 flex-1">
@@ -473,7 +473,7 @@ export function CommunityPage() {
                               </div>
                             ) : (
                               <div className="group/line flex items-start">
-                                <span className="me-3 mt-0.5 hidden w-8 shrink-0 text-center text-[10px] text-text-muted group-hover/line:inline">
+                                <span className="me-3 mbs-0.5 hidden w-8 shrink-0 text-center text-[10px] text-text-muted group-hover/line:inline">
                                   {timeStr}
                                 </span>
                                 {msg.content && (
@@ -484,12 +484,12 @@ export function CommunityPage() {
                             {msg.image_url && (
                               <button
                                 onClick={() => setExpandedImage(msg.image_url)}
-                                className="mt-1 block"
+                                className="mbs-1 block"
                               >
                                 <img
                                   src={msg.image_url}
                                   alt={t('community.sharedImage')}
-                                  className="max-h-48 max-w-xs rounded-lg border border-border object-cover hover:opacity-90 transition-opacity"
+                                  className="max-h-48 max-w-xs rounded-lg border border-border object-cover transition-opacity hover:opacity-90"
                                 />
                               </button>
                             )}
@@ -498,14 +498,14 @@ export function CommunityPage() {
                                 const poll: import('../types/api.ts').PollData = JSON.parse(msg.poll_data!);
                                 const totalVotes = poll.options.reduce((sum, o) => sum + o.votes, 0);
                                 return (
-                                  <div className="mt-2 rounded-lg border border-accent/30 bg-accent/5 p-3">
-                                    <p className="mb-2 text-sm font-semibold text-text-primary">{poll.question}</p>
+                                  <div className="mbs-2 rounded-lg border border-accent/30 bg-accent/5 p-3">
+                                    <p className="mbe-2 text-sm font-semibold text-text-primary">{poll.question}</p>
                                     <div className="flex flex-col gap-1.5">
                                       {poll.options.map((opt) => (
                                         <button
                                           key={opt.id}
                                           onClick={() => void handlePollVote(msg, opt.id)}
-                                          className="flex items-center justify-between rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary hover:border-accent hover:bg-accent/10 transition-colors"
+                                          className="flex items-center justify-between rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary transition-colors hover:border-accent hover:bg-accent/10"
                                         >
                                           <span>{opt.text}</span>
                                           <span className="ms-2 text-xs text-text-muted">
@@ -514,7 +514,7 @@ export function CommunityPage() {
                                         </button>
                                       ))}
                                     </div>
-                                    <p className="mt-1.5 text-xs text-text-muted">
+                                    <p className="mbs-1.5 text-xs text-text-muted">
                                       {t('community.totalVotes', { count: totalVotes })}
                                     </p>
                                   </div>
@@ -523,20 +523,20 @@ export function CommunityPage() {
                             })()}
 
                             {/* Message actions */}
-                            <div className="absolute end-2 top-2 hidden group-hover:flex">
+                            <div className="absolute inset-e-2 inset-bs-2 hidden group-hover:flex">
                               <button
                                 onClick={() =>
                                   setMenuOpenId(
                                     menuOpenId === msg.message_id ? null : msg.message_id,
                                   )
                                 }
-                                className="rounded p-1 text-text-muted hover:bg-surface hover:text-text-primary"
+                                className="rounded-sm p-1 text-text-muted hover:bg-surface hover:text-text-primary"
                                 aria-label={t('common.messageActions')}
                               >
                                 <MoreVertical size={14} />
                               </button>
                               {menuOpenId === msg.message_id && (
-                                <div className="absolute end-0 top-7 z-10 min-w-[140px] rounded-lg border border-border bg-surface py-1 shadow-lg">
+                                <div className="absolute inset-e-0 inset-bs-7 z-10 min-w-[140px] rounded-lg border border-border bg-surface py-1 shadow-lg">
                                   {canEditMessage(msg) && (
                                     <button
                                       onClick={() => {
@@ -575,9 +575,9 @@ export function CommunityPage() {
 
               {/* Poll creation form */}
               {showPollForm && !activeChannel.is_read_only && (
-                <div className="border-t border-border px-4 py-3">
+                <div className="border-bs border-border px-4 py-3">
                   <div className="rounded-lg border border-accent/30 bg-accent/5 p-3">
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-accent">
+                    <p className="mbe-2 text-xs font-semibold tracking-wider text-accent uppercase">
                       {t('community.createPoll')}
                     </p>
                     <input
@@ -586,7 +586,7 @@ export function CommunityPage() {
                       onChange={(e) => setPollQuestion(e.target.value)}
                       placeholder={t('community.pollQuestion')}
                       maxLength={300}
-                      className="mb-2 w-full rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                      className="mbe-2 w-full rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
                     />
                     {pollOptions.map((opt, i) => (
                       <input
@@ -600,10 +600,10 @@ export function CommunityPage() {
                         }}
                         placeholder={t('community.pollOption', { n: i + 1 })}
                         maxLength={55}
-                        className="mb-1 w-full rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+                        className="mbe-1 w-full rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
                       />
                     ))}
-                    <div className="mt-2 flex items-center gap-2">
+                    <div className="mbs-2 flex items-center gap-2">
                       {pollOptions.length < 4 && (
                         <button
                           onClick={() => setPollOptions([...pollOptions, ''])}
@@ -632,7 +632,7 @@ export function CommunityPage() {
               )}
 
               {/* Composer */}
-              <div className="border-t border-border px-4 py-3">
+              <div className="border-bs border-border px-4 py-3">
                 {activeChannel.is_read_only ? (
                   <p className="py-1 text-center text-xs text-text-muted">
                     {t('community.announcementsOnly')}
@@ -658,7 +658,7 @@ export function CommunityPage() {
                     <button
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isSending}
-                      className="rounded-lg p-2 text-[#5865F2] hover:bg-[#5865F2]/10 transition-colors"
+                      className="rounded-lg p-2 text-[#5865F2] transition-colors hover:bg-[#5865F2]/10"
                       aria-label={t('community.uploadImage')}
                       title={t('community.uploadImage')}
                     >
@@ -683,7 +683,7 @@ export function CommunityPage() {
                       onChange={(e) => setMessageText(e.target.value)}
                       maxLength={MAX_MESSAGE_LENGTH}
                       placeholder={t('community.messagePlaceholder')}
-                      className="flex-1 rounded-lg border-2 border-accent/30 bg-surface px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
+                      className="flex-1 rounded-lg border-2 border-accent/30 bg-surface px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/25 focus:outline-none"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
@@ -720,7 +720,7 @@ export function CommunityPage() {
           aria-label={t('community.closeImage')}
         >
           <span
-            className="absolute top-4 end-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+            className="absolute inset-e-4 inset-bs-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
             aria-hidden="true"
           >
             <X size={20} />

@@ -46,7 +46,7 @@ export function Tooltip({
         <div
           id={tooltipId}
           role="tooltip"
-          className={`pointer-events-none absolute z-40 whitespace-nowrap rounded-md bg-surface-raised px-2.5 py-1.5 text-xs text-text-primary shadow-md ${positionClasses[position]}`}
+          className={`pointer-events-none absolute z-40 rounded-md bg-surface-raised px-2.5 py-1.5 text-xs whitespace-nowrap text-text-primary shadow-md ${positionClasses[position]}`}
         >
           {content}
         </div>

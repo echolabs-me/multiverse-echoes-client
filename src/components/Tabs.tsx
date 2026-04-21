@@ -59,7 +59,7 @@ export function Tabs({ tabs, defaultTab, activeTab: controlledActiveTab, onTabCh
 
   return (
     <div className={className}>
-      <div role="tablist" className="flex gap-1 border-b border-border">
+      <div role="tablist" className="flex gap-1 border-be border-border">
         {tabs.map((tab, i) => (
           <button
             key={tab.id}
@@ -71,7 +71,7 @@ export function Tabs({ tabs, defaultTab, activeTab: controlledActiveTab, onTabCh
             tabIndex={tab.id === activeId ? 0 : -1}
             className={`px-4 py-2 text-sm font-medium transition-colors ${
               tab.id === activeId
-                ? 'border-b-2 border-accent text-accent'
+                ? 'border-be-2 border-accent text-accent'
                 : 'text-text-secondary hover:text-text-primary'
             }`}
             onClick={() => setActiveId(tab.id)}
@@ -87,7 +87,7 @@ export function Tabs({ tabs, defaultTab, activeTab: controlledActiveTab, onTabCh
           id={`panel-${activeTabObj.id}`}
           aria-labelledby={`tab-${activeTabObj.id}`}
           tabIndex={0}
-          className="pt-4"
+          className="pbs-4"
           key={activeId}
         >
           {activeTabObj.content}

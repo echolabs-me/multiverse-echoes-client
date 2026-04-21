@@ -295,8 +295,8 @@ export function StoryExportModal({
       aria-label={t('export.title')}
     >
       <div className="p-6">
-        <h2 className="mb-1 text-lg font-semibold">{t('export.title')}</h2>
-        <p className="mb-4 text-sm text-text-secondary">
+        <h2 className="mbe-1 text-lg font-semibold">{t('export.title')}</h2>
+        <p className="mbe-4 text-sm text-text-secondary">
           {selectedEchoIds.size > 1
             ? t('export.subtitleMultiple')
             : t('export.subtitle', {
@@ -305,15 +305,15 @@ export function StoryExportModal({
         </p>
 
         {/* AI Disclaimer */}
-        <div className="mb-4 rounded-md bg-surface p-3 text-xs text-text-secondary">
+        <div className="mbe-4 rounded-md bg-surface p-3 text-xs text-text-secondary">
           {t('export.disclaimer')}
         </div>
 
         {!exportData && !tierGated ? (
           <>
             {/* Step 1: Echo selection */}
-            <fieldset className="mb-4">
-              <legend className="mb-2 text-sm font-medium text-text-secondary">
+            <fieldset className="mbe-4">
+              <legend className="mbe-2 text-sm font-medium text-text-secondary">
                 {t('export.selectEchoes')}
               </legend>
               {echoesLoading ? (
@@ -323,17 +323,17 @@ export function StoryExportModal({
                 </div>
               ) : (
                 <>
-                  <div className="mb-2 max-h-40 space-y-1 overflow-y-auto rounded-lg border border-border p-2">
+                  <div className="mbe-2 max-h-40 space-y-1 overflow-y-auto rounded-lg border border-border p-2">
                     {allEchoes.map((echo) => (
                       <label
                         key={echo.echo_id}
-                        className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-sm transition-colors hover:bg-surface"
+                        className="flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm transition-colors hover:bg-surface"
                       >
                         <input
                           type="checkbox"
                           checked={selectedEchoIds.has(echo.echo_id)}
                           onChange={() => toggleEcho(echo.echo_id)}
-                          className="rounded border-border"
+                          className="rounded-sm border-border"
                         />
                         <span className="flex-1 truncate">{echo.name}</span>
                         {echo.shard_name && (
@@ -356,7 +356,7 @@ export function StoryExportModal({
             </fieldset>
 
             {/* Step 2: Date range (collapsible) */}
-            <div className="mb-4">
+            <div className="mbe-4">
               <button
                 type="button"
                 onClick={() => setDateRangeOpen((p) => !p)}
@@ -366,7 +366,7 @@ export function StoryExportModal({
                 {t('export.dateRange')}
               </button>
               {dateRangeOpen && (
-                <div className="mt-2 flex items-center gap-3 rounded-lg border border-border p-3">
+                <div className="mbs-2 flex items-center gap-3 rounded-lg border border-border p-3">
                   <div className="flex flex-1 flex-col gap-1">
                     <label className="text-xs text-text-secondary" htmlFor="export-from">
                       {t('export.dateFrom')}
@@ -376,7 +376,7 @@ export function StoryExportModal({
                       type="date"
                       value={fromDate}
                       onChange={(e) => setFromDate(e.target.value)}
-                      className="rounded border border-border bg-canvas px-2 py-1.5 text-sm"
+                      className="rounded-sm border border-border bg-canvas px-2 py-1.5 text-sm"
                     />
                   </div>
                   <div className="flex flex-1 flex-col gap-1">
@@ -388,7 +388,7 @@ export function StoryExportModal({
                       type="date"
                       value={toDate}
                       onChange={(e) => setToDate(e.target.value)}
-                      className="rounded border border-border bg-canvas px-2 py-1.5 text-sm"
+                      className="rounded-sm border border-border bg-canvas px-2 py-1.5 text-sm"
                     />
                   </div>
                 </div>
@@ -396,8 +396,8 @@ export function StoryExportModal({
             </div>
 
             {/* Step 3: Format selection */}
-            <fieldset className="mb-4 space-y-2">
-              <legend className="mb-2 text-sm font-medium text-text-secondary">
+            <fieldset className="mbe-4 space-y-2">
+              <legend className="mbe-2 text-sm font-medium text-text-secondary">
                 {t('export.selectFormat')}
               </legend>
               {FORMAT_OPTIONS.map((opt) => (
@@ -426,7 +426,7 @@ export function StoryExportModal({
                     <p className="text-xs text-text-secondary">{t(opt.descKey)}</p>
                   </div>
                   {opt.disabled && (
-                    <span className="rounded bg-surface-raised px-1.5 py-0.5 text-[10px] font-medium text-text-muted">
+                    <span className="rounded-sm bg-surface-raised px-1.5 py-0.5 text-[10px] font-medium text-text-muted">
                       {t('export.comingPostLaunch')}
                     </span>
                   )}
@@ -434,7 +434,7 @@ export function StoryExportModal({
               ))}
             </fieldset>
 
-            {error && <p className="mb-4 text-sm text-danger">{t(error)}</p>}
+            {error && <p className="mbe-4 text-sm text-danger">{t(error)}</p>}
 
             {/* Step 4: Export button */}
             <div className="flex justify-end gap-2">
@@ -467,9 +467,9 @@ export function StoryExportModal({
         ) : (
           <>
             {/* Export progress + status */}
-            <div className="mb-4">
+            <div className="mbe-4">
               {/* Progress bar */}
-              <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-surface-raised">
+              <div className="mbe-3 h-2 w-full overflow-hidden rounded-full bg-surface-raised">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${
                     exportData?.status === 'Failed'
@@ -503,13 +503,13 @@ export function StoryExportModal({
                   {t(`export.${statusKey(exportData?.status)}`)}
                 </p>
               </div>
-              <p className="mt-1 text-xs text-text-secondary">
+              <p className="mbs-1 text-xs text-text-secondary">
                 {t('export.formatLabel')}: {exportData?.format}
               </p>
             </div>
 
             {exportData?.status === 'Complete' && (
-              <div className="mb-4 flex flex-col gap-2">
+              <div className="mbe-4 flex flex-col gap-2">
                 <button
                   onClick={handleDownload}
                   disabled={isDownloading}

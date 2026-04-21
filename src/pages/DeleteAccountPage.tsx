@@ -44,23 +44,23 @@ export function DeleteAccountPage() {
       <div className="mx-auto max-w-xl p-6">
           <button
             onClick={() => navigate('/settings')}
-            className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
           >
             <ArrowLeft size={16} />
             {t('common.back')}
           </button>
 
           <Card>
-            <div className="mb-4 flex items-center gap-2 text-danger">
+            <div className="mbe-4 flex items-center gap-2 text-danger">
               <AlertTriangle size={20} />
               <h1 className="text-lg font-bold">{t('settings.deleteAccount')}</h1>
             </div>
 
-            <p className="mb-4 text-sm text-text-secondary">
+            <p className="mbe-4 text-sm text-text-secondary">
               {t('settings.deleteAccountWarning')}
             </p>
 
-            <div className="mb-4">
+            <div className="mbe-4">
               <Input
                 label={t('settings.deleteAccountConfirm')}
                 value={confirmText}

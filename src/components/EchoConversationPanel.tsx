@@ -200,7 +200,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
   return (
     <div className="flex h-full flex-col border-s border-border bg-canvas">
       {/* Header */}
-      <header className="flex items-center gap-3 border-b border-border bg-surface px-4 py-3">
+      <header className="flex items-center gap-3 border-be border-border bg-surface px-4 py-3">
         <div className="flex-1">
           <h2 className="text-sm font-semibold text-text-primary">{echoName}</h2>
           <p className="text-xs text-text-secondary">
@@ -236,14 +236,14 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
       >
         {isLoading && (
           <div className="flex items-center justify-center py-8">
-            <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-accent border-t-transparent" role="status">
+            <span className="inline-block size-5 animate-spin rounded-full border-2 border-accent border-bs-transparent" role="status">
               <span className="sr-only">{t('common.loading')}</span>
             </span>
           </div>
         )}
 
         {!isLoading && messages.length === 0 && conversationId && (
-          <div className="flex flex-col items-center gap-2 pt-8 text-center">
+          <div className="flex flex-col items-center gap-2 pbs-8 text-center">
             <p className="text-xs text-text-secondary">{t('conversation.startPrompt')}</p>
           </div>
         )}
@@ -256,12 +256,12 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
             <div
               className={`max-w-[80%] rounded-2xl px-3 py-2 text-xs ${
                 msg.role === 'user'
-                  ? 'rounded-br-sm bg-accent text-canvas'
-                  : 'rounded-bl-sm bg-surface text-text-primary'
+                  ? 'rounded-ee-sm bg-accent text-canvas'
+                  : 'rounded-es-sm bg-surface text-text-primary'
               }`}
             >
               <p className="whitespace-pre-wrap">{msg.content}</p>
-              <div className="mt-0.5 flex items-center justify-end gap-1">
+              <div className="mbs-0.5 flex items-center justify-end gap-1">
                 <time className="text-[9px] opacity-60">
                   {formatTime(msg.created_at)}
                 </time>
@@ -272,11 +272,11 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
 
         {isSending && (
           <div className="flex justify-start">
-            <div className="rounded-2xl rounded-bl-sm bg-surface px-3 py-2.5">
+            <div className="rounded-2xl rounded-es-sm bg-surface px-3 py-2.5">
               <div className="flex gap-1">
-                <span className="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:0ms]" />
-                <span className="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:150ms]" />
-                <span className="inline-block h-1.5 w-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:300ms]" />
+                <span className="inline-block size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:0ms]" />
+                <span className="inline-block size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:150ms]" />
+                <span className="inline-block size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:300ms]" />
               </div>
             </div>
           </div>
@@ -290,7 +290,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
       {/* Input */}
       <form
         onSubmit={(e) => void handleSend(e)}
-        className="flex gap-2 border-t border-border px-3 py-2"
+        className="flex gap-2 border-bs border-border px-3 py-2"
       >
         <textarea
           ref={inputRef}
@@ -314,7 +314,7 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
           }
           disabled={isSending || atLimit || !conversationId}
           rows={1}
-          className="flex-1 resize-none rounded-2xl border border-border bg-surface px-3 py-2 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40 max-h-[120px]"
+          className="max-h-[120px] flex-1 resize-none rounded-2xl border border-border bg-surface px-3 py-2 text-xs text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-40"
           aria-label={t('conversation.inputPlaceholder')}
         />
         <button

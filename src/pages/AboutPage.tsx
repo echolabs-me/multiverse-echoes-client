@@ -40,38 +40,38 @@ export function AboutPage() {
         <meta name="twitter:site" content="@EchoLabsME" />
       </Helmet>
 
-      <div className="px-4 pt-28 pb-16 sm:px-6">
+      <div className="px-4 pbs-28 pbe-16 sm:px-6">
         <article className="mx-auto max-w-2xl">
-          <h1 className="mb-8 font-serif text-4xl font-light tracking-wider text-(--text-primary)">
+          <h1 className="mbe-8 font-serif text-4xl font-light tracking-wider text-(--text-primary)">
             {t('website.nav.about')}
           </h1>
 
-          <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.originTitle')}</h2>
-            <p className="mb-4 leading-relaxed text-(--text-secondary)">
+          <section className="mbe-12">
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.originTitle')}</h2>
+            <p className="mbe-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.originP1')}
             </p>
-            <p className="mb-4 leading-relaxed text-(--text-secondary)">
+            <p className="mbe-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.originP2')}
             </p>
           </section>
 
-          <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.buildTitle')}</h2>
-            <p className="mb-4 leading-relaxed text-(--text-secondary)">
+          <section className="mbe-12">
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.buildTitle')}</h2>
+            <p className="mbe-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.buildP1')}
             </p>
-            <p className="mb-4 leading-relaxed text-(--text-secondary)">
+            <p className="mbe-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.buildP2')}
             </p>
           </section>
 
-          <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.stackTitle')}</h2>
+          <section className="mbe-12">
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.stackTitle')}</h2>
             <div className="rounded-xl border border-(--border) bg-(--surface) p-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-(--accent)">{t('website.about.stackEngine')}</h3>
+                  <h3 className="mbe-2 text-sm font-semibold text-(--accent)">{t('website.about.stackEngine')}</h3>
                   <ul className="space-y-1 text-sm text-(--text-secondary)">
                     <li>{t('website.about.stackEngine1')}</li>
                     <li>{t('website.about.stackEngine2')}</li>
@@ -81,7 +81,7 @@ export function AboutPage() {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold text-(--accent)">{t('website.about.stackClient')}</h3>
+                  <h3 className="mbe-2 text-sm font-semibold text-(--accent)">{t('website.about.stackClient')}</h3>
                   <ul className="space-y-1 text-sm text-(--text-secondary)">
                     <li>{t('website.about.stackClient1')}</li>
                     <li>{t('website.about.stackClient2')}</li>
@@ -94,34 +94,34 @@ export function AboutPage() {
             </div>
           </section>
 
-          <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.visionTitle')}</h2>
-            <p className="mb-4 leading-relaxed text-(--text-secondary)">
+          <section className="mbe-12">
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.visionTitle')}</h2>
+            <p className="mbe-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.visionP1')}
             </p>
-            <p className="mb-4 leading-relaxed text-(--text-secondary)">
+            <p className="mbe-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.visionP2')}
             </p>
           </section>
 
-          <section className="mb-12">
-            <h2 className="mb-4 text-xl font-medium text-(--text-primary)">{t('website.about.numbersTitle')}</h2>
+          <section className="mbe-12">
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.numbersTitle')}</h2>
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="text-center">
                 <p className="text-3xl font-light text-(--accent)">95,000</p>
-                <p className="mt-1 text-sm text-(--text-muted)">{t('website.about.numbersCode')}</p>
+                <p className="mbs-1 text-sm text-(--text-muted)">{t('website.about.numbersCode')}</p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-light text-(--accent)">
                   {waitlistTotal !== null ? waitlistTotal.toLocaleString() : '—'}
                 </p>
-                <p className="mt-1 text-sm text-(--text-muted)">{t('website.about.numbersWaitlist')}</p>
+                <p className="mbs-1 text-sm text-(--text-muted)">{t('website.about.numbersWaitlist')}</p>
               </div>
             </div>
           </section>
 
           {/* CTA */}
-          <div className="mt-16 text-center">
+          <div className="mbs-16 text-center">
             <Link
               to="/register"
               className="inline-block rounded-md bg-(--accent) px-8 py-3 text-base font-semibold text-(--canvas) transition-all hover:bg-(--accent-hover) hover:shadow-[0_0_30px_rgba(212,145,92,0.2)]"

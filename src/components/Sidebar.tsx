@@ -13,7 +13,7 @@ export function Sidebar({ children, className = '' }: SidebarProps) {
 
   return (
     <aside
-      className={`flex h-full flex-col border-e border-border bg-surface transition-[width] duration-[var(--duration-slow)] ${
+      className={`flex h-full flex-col border-e border-border bg-surface transition-[width] duration-(--duration-slow) ${
         collapsed ? 'w-16' : 'w-64'
       } ${className}`}
       aria-label={t('common.sidebar', 'Sidebar navigation')}
@@ -23,7 +23,7 @@ export function Sidebar({ children, className = '' }: SidebarProps) {
       </div>
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center justify-center border-t border-border p-3 text-text-muted hover:text-text-primary"
+        className="flex items-center justify-center border-bs border-border p-3 text-text-muted hover:text-text-primary"
         aria-label={
           collapsed
             ? t('common.expandSidebar', 'Expand sidebar')

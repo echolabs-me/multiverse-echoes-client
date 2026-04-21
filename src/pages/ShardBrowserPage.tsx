@@ -36,21 +36,21 @@ export function ShardBrowserPage() {
           {/* Back */}
           <button
             onClick={() => navigate('/dashboard')}
-            className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
           >
             <ArrowLeft size={16} />
             {t('common.back')}
           </button>
 
-          <h1 className="mb-4 text-2xl font-bold text-text-primary">
+          <h1 className="mbe-4 text-2xl font-bold text-text-primary">
             {t('shardBrowser.title')}
           </h1>
 
           {/* Search */}
-          <div className="relative mb-6">
+          <div className="relative mbe-6">
             <Search
               size={16}
-              className="absolute start-3 top-1/2 -translate-y-1/2 text-text-muted"
+              className="absolute inset-s-3 inset-bs-1/2 -translate-y-1/2 text-text-muted"
               aria-hidden="true"
             />
             <input
@@ -58,7 +58,7 @@ export function ShardBrowserPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t('shardBrowser.searchPlaceholder')}
-              className="w-full rounded-lg border border-border bg-surface py-2 ps-9 pe-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full rounded-lg border border-border bg-surface py-2 ps-9 pe-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
               aria-label={t('shardBrowser.searchPlaceholder')}
             />
           </div>
@@ -78,7 +78,7 @@ export function ShardBrowserPage() {
                 <Card
                   key={shard.shard_id}
                   onClick={() => navigate(`/shards/${shard.shard_id}`)}
-                  className="overflow-hidden !p-0"
+                  className="overflow-hidden p-0!"
                 >
                   {shard.banner_image && (
                     <img

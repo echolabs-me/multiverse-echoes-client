@@ -8,12 +8,11 @@ import tseslint from 'typescript-eslint';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 // Canonical-form enforcement level for the better-tailwindcss rules.
-// Ships at 'warn' in the install commit so the pre-commit hook's
-// `npm run lint` stays green while pre-existing violations are visible
-// (see the install commit body for rule-bites evidence). The follow-up
-// cleanup commit auto-fixes + flips this to 'error' to block future
-// regressions. Every rule below is in the plugin's `recommended` preset.
-const TAILWIND_LEVEL = 'warn';
+// Bumped from 'warn' to 'error' in the cleanup commit (2026-04-21)
+// once `eslint --fix` brought the codebase to zero violations. Every
+// rule below is in the plugin's `recommended` preset. Future
+// canonical-form regressions now fail `npm run lint` at the hook.
+const TAILWIND_LEVEL = 'error';
 
 export default defineConfig([
   globalIgnores(['dist', 'src-tauri']),

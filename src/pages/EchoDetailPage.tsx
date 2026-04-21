@@ -549,18 +549,18 @@ export function EchoDetailPage() {
       <div className="relative flex-1 overflow-y-auto">
         <div className="mx-auto max-w-4xl p-6">
           {/* Mobile Echo switcher — dropdown for quick navigation */}
-          <div className="relative mb-4">
+          <div className="relative mbe-4">
             <MobileEchoSwitcher />
           </div>
 
           {/* Echo header */}
-          <div className="mb-6 flex items-start gap-4">
+          <div className="mbe-6 flex items-start gap-4">
             {activeEcho.avatar_url ? (
               <button
                 type="button"
                 onClick={() => setIsPortraitExpanded(true)}
                 aria-label={t('echoDetail.viewPortrait')}
-                className="shrink-0 rounded-xl transition-transform duration-[var(--duration-fast)] hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="shrink-0 rounded-xl transition-transform duration-(--duration-fast) hover:scale-105 focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
               >
                 <EchoPortrait3D name={activeEcho.name} mood={activeEcho.current_mood} size="lg" avatarUrl={activeEcho.avatar_url} />
               </button>
@@ -574,12 +574,12 @@ export function EchoDetailPage() {
                   {activeEcho.status}
                 </Badge>
               </div>
-              <p className="mt-1 text-sm text-text-muted">
+              <p className="mbs-1 text-sm text-text-muted">
                 {t('echoDetail.createdOn', {
                   date: formatDate(activeEcho.created_at),
                 })}
               </p>
-              <p className="mt-1 text-sm text-text-secondary">
+              <p className="mbs-1 text-sm text-text-secondary">
                 {t('dashboard.mood')}: {getMoodLabel(activeEcho.current_mood)} &middot; {t('dashboard.tick', { tick: activeEcho.current_tick })}
               </p>
             </div>
@@ -587,18 +587,18 @@ export function EchoDetailPage() {
 
           {/* What-if prompt */}
           <Card variant="compact">
-            <div className="mb-1 flex items-center gap-2">
+            <div className="mbe-1 flex items-center gap-2">
               <Sparkles size={16} className="text-accent" aria-hidden="true" />
               <h3 className="text-sm font-semibold text-text-primary">{t('echoDetail.whatIf')}</h3>
             </div>
-            <p className="text-sm italic text-text-secondary">
+            <p className="text-sm text-text-secondary italic">
               &ldquo;{activeEcho.what_if_prompt}&rdquo;
             </p>
           </Card>
 
           {/* Persona */}
           <Card variant="compact">
-            <div className="mb-1 flex items-center gap-2">
+            <div className="mbe-1 flex items-center gap-2">
               <Settings size={16} className="text-accent" aria-hidden="true" />
               <h3 className="text-sm font-semibold text-text-primary">{t('echoDetail.persona')}</h3>
             </div>
@@ -610,7 +610,7 @@ export function EchoDetailPage() {
             {activeEcho.persona_text.length > 200 && (
               <button
                 onClick={() => setShowAllPersona(!showAllPersona)}
-                className="mt-1 flex items-center gap-1 text-xs text-accent hover:text-accent/80"
+                className="mbs-1 flex items-center gap-1 text-xs text-accent hover:text-accent/80"
               >
                 {showAllPersona ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                 {showAllPersona ? t('common.showLess') : t('common.showMore')}
@@ -633,7 +633,7 @@ export function EchoDetailPage() {
                   }
                 }}
                 disabled={activeEcho.status === 'Hibernated'}
-                className={`action-btn-primary flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+                className={`action-btn-primary flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-40 ${
                   showConversation
                     ? 'bg-accent text-canvas shadow-md shadow-accent/20'
                     : 'bg-accent text-canvas shadow-md shadow-accent/20 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/30'
@@ -646,7 +646,7 @@ export function EchoDetailPage() {
                 <button
                   onClick={() => setInfluenceModal(true)}
                   disabled={activeEcho.status === 'Hibernated'}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm font-semibold text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/15 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm font-semibold text-amber-400 transition-all hover:border-amber-500/50 hover:bg-amber-500/15 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <Zap size={18} className="text-amber-400" /> {t('echoDetail.useInfluence')}
                   {influence && influence.daily_limit !== null && influence.remaining !== null && (
@@ -656,7 +656,7 @@ export function EchoDetailPage() {
                   )}
                 </button>
                 {nudgeRipple && (
-                  <span className="pointer-events-none absolute inset-0 rounded-xl animate-nudge-ripple" aria-hidden="true" />
+                  <span className="pointer-events-none absolute inset-0 animate-nudge-ripple rounded-xl" aria-hidden="true" />
                 )}
               </div>
             </div>
@@ -670,7 +670,7 @@ export function EchoDetailPage() {
             </button>
             {/* Nudge confirmation banner */}
             {nudgeConfirmed && (
-              <div className="flex items-center gap-1.5 rounded-lg border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-medium text-success animate-slide-in">
+              <div className="flex animate-slide-in items-center gap-1.5 rounded-lg border border-success/30 bg-success/10 px-3 py-1.5 text-xs font-medium text-success">
                 <Zap size={12} /> {t('echoDetail.influenceUsed')}
               </div>
             )}
@@ -678,7 +678,7 @@ export function EchoDetailPage() {
             <div className="relative inline-flex">
               <button
                 onClick={() => setShowMoreMenu((p) => !p)}
-                className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-text-muted hover:border-border hover:text-text-secondary transition-all"
+                className="action-btn flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-text-muted transition-all hover:border-border hover:text-text-secondary"
                 aria-label={t('common.more')}
               >
                 <MoreHorizontal size={14} /> {t('common.more')}
@@ -691,10 +691,10 @@ export function EchoDetailPage() {
                     aria-label={t('echoDetail.closeMenuAriaLabel')}
                     tabIndex={-1}
                   />
-                  <div className="absolute start-0 z-50 mt-1 w-48 rounded-lg border border-border bg-surface shadow-lg py-1">
+                  <div className="absolute inset-s-0 z-50 mbs-1 w-48 rounded-lg border border-border bg-surface py-1 shadow-lg">
                     <button
                       onClick={() => { setHibernateModal(true); setShowMoreMenu(false); }}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary"
                     >
                       {activeEcho.status === 'Active'
                         ? <Moon size={14} className="text-blue-400" />
@@ -703,14 +703,14 @@ export function EchoDetailPage() {
                     </button>
                     <button
                       onClick={() => { setExportModal(true); setShowMoreMenu(false); }}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary hover:bg-surface-raised hover:text-text-primary transition-colors"
+                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-text-secondary transition-colors hover:bg-surface-raised hover:text-text-primary"
                     >
                       <Download size={14} className="text-sky-400" /> {t('echoDetail.exportStory')}
                     </button>
-                    <div className="my-1 border-t border-border" role="separator" />
+                    <div className="my-1 border-bs border-border" role="separator" />
                     <button
                       onClick={() => { setDeleteError(null); setDeleteModal(true); setShowMoreMenu(false); }}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-red-500 hover:bg-red-500/10 transition-colors"
+                      className="flex w-full items-center gap-2 px-3 py-2 text-xs text-red-500 transition-colors hover:bg-red-500/10"
                     >
                       <Trash2 size={14} /> {t('echoDetail.delete')}
                     </button>
@@ -722,17 +722,17 @@ export function EchoDetailPage() {
 
           {/* Past Conversations */}
           {pastConversations.length > 0 && (
-            <div className="mb-4">
+            <div className="mbe-4">
               <button
                 onClick={() => setShowPastConversations((p) => !p)}
-                className="flex w-full items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-start text-xs font-medium text-text-secondary hover:bg-surface-raised transition-colors"
+                className="flex w-full items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-start text-xs font-medium text-text-secondary transition-colors hover:bg-surface-raised"
               >
                 <MessageCircle size={14} />
                 {t('conversation.pastConversations', { name: activeEcho.name, count: pastConversations.length })}
                 {showPastConversations ? <ChevronUp size={14} className="ms-auto" /> : <ChevronDown size={14} className="ms-auto" />}
               </button>
               {showPastConversations && (
-                <div className="mt-2 space-y-1.5">
+                <div className="mbs-2 space-y-1.5">
                   {pastConversations.map((conv) => (
                     <button
                       key={conv.conversation_id}
@@ -761,14 +761,14 @@ export function EchoDetailPage() {
           )}
 
           {/* Mood history strip */}
-          <MoodHistoryStrip entries={diaryEntries} className="mb-6" />
+          <MoodHistoryStrip entries={diaryEntries} className="mbe-6" />
 
           {/* Activity hint — ambient flavour between ticks */}
           {activeEcho.status === 'Active' && (
             <EchoActivityHint
               mood={currentMood}
               locationName={diaryEntries[0]?.location_name}
-              className="mb-3"
+              className="mbe-3"
             />
           )}
 
@@ -779,7 +779,7 @@ export function EchoDetailPage() {
           ) && (() => {
             const shardName = shardList.find((s) => s.shard_id === activeEcho.current_shard_id)?.name ?? activeEcho.current_shard_id;
             return (
-              <div className="mb-4 flex items-center gap-3 rounded-lg border border-accent/30 bg-accent/5 px-4 py-3">
+              <div className="mbe-4 flex items-center gap-3 rounded-lg border border-accent/30 bg-accent/5 px-4 py-3">
                 <Navigation size={18} className="shrink-0 text-accent" />
                 <div>
                   <p className="text-sm font-medium text-text-primary">
@@ -794,28 +794,28 @@ export function EchoDetailPage() {
           })()}
 
           {/* Diary entries */}
-          <section className="mb-6">
-            <div className="mb-3 flex items-center gap-2">
+          <section className="mbe-6">
+            <div className="mbe-3 flex items-center gap-2">
               <BookOpen size={18} className="text-accent" aria-hidden="true" />
               <h2 className="text-lg font-semibold text-text-primary">{t('echoDetail.diary')}</h2>
             </div>
             {/* Diary search and filter bar — always visible when entries exist or a filter is active */}
             {(diaryEntries.length > 0 || moodFilter || diarySearch) && (
-              <div className="mb-3 flex flex-wrap items-center gap-2">
-                <div className="relative flex-1 min-w-[180px]">
-                  <Search size={14} className="absolute start-2.5 top-1/2 -translate-y-1/2 text-text-muted" aria-hidden="true" />
+              <div className="mbe-3 flex flex-wrap items-center gap-2">
+                <div className="relative min-w-[180px] flex-1">
+                  <Search size={14} className="absolute inset-s-2.5 inset-bs-1/2 -translate-y-1/2 text-text-muted" aria-hidden="true" />
                   <input
                     type="text"
                     value={diarySearch}
                     onChange={(e) => setDiarySearch(e.target.value)}
                     placeholder={t('echoDetail.searchDiary')}
-                    className="w-full rounded-lg border border-border bg-surface py-1.5 ps-8 pe-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                    className="w-full rounded-lg border border-border bg-surface py-1.5 ps-8 pe-3 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
                   />
                 </div>
                 <select
                   value={moodFilter}
                   onChange={(e) => setMoodFilter(e.target.value)}
-                  className="rounded-lg border border-border bg-surface px-3 py-1.5 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                  className="rounded-lg border border-border bg-surface px-3 py-1.5 text-sm text-text-primary focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
                   aria-label={t('echoDetail.filterMood')}
                 >
                   <option value="">{t('echoDetail.allMoods')}</option>
@@ -841,7 +841,7 @@ export function EchoDetailPage() {
               />
             ) : filteredDiary.length === 0 ? (
               <div className="flex flex-col items-center gap-3 py-8 text-center">
-                <p className="text-sm italic text-text-secondary">{t('echoDetail.noFilterMatch')}</p>
+                <p className="text-sm text-text-secondary italic">{t('echoDetail.noFilterMatch')}</p>
                 <Button
                   variant="secondary"
                   onClick={() => { setDiarySearch(''); setMoodFilter(''); }}
@@ -859,7 +859,7 @@ export function EchoDetailPage() {
                     <div key={day}>
                       <button
                         onClick={() => toggleDay(day)}
-                        className="mb-2 flex w-full items-center gap-2 border-b border-accent/20 pb-1 text-start"
+                        className="mbe-2 flex w-full items-center gap-2 border-be border-accent/20 pbe-1 text-start"
                       >
                         {expanded ? (
                           <ChevronDown size={16} className="text-accent" />
@@ -874,7 +874,7 @@ export function EchoDetailPage() {
                         </span>
                       </button>
                       {expanded && (
-                        <div className="mb-3 flex flex-col gap-3 ps-2">
+                        <div className="mbe-3 flex flex-col gap-3 ps-2">
                           {entries.map((entry) => (
                             <DiaryCard
                               key={entry.diary_id}
@@ -899,8 +899,8 @@ export function EchoDetailPage() {
           </section>
 
           {/* Life Events */}
-          <section className="mb-6">
-            <div className="mb-3 flex items-center gap-2">
+          <section className="mbe-6">
+            <div className="mbe-3 flex items-center gap-2">
               <Zap size={18} className="text-accent" aria-hidden="true" />
               <h2 className="text-lg font-semibold text-text-primary">{t('echoDetail.events')}</h2>
             </div>
@@ -933,8 +933,8 @@ export function EchoDetailPage() {
           </section>
 
           {/* Relationships */}
-          <section className="mb-6">
-            <div className="mb-3 flex items-center gap-2">
+          <section className="mbe-6">
+            <div className="mbe-3 flex items-center gap-2">
               <Users size={18} className="text-accent" aria-hidden="true" />
               <h2 className="text-lg font-semibold text-text-primary">
                 {t('echoDetail.relationships')}
@@ -992,8 +992,8 @@ export function EchoDetailPage() {
                           {t(`relationships.${rel.status}`, { defaultValue: rel.status })}
                         </Badge>
                       </div>
-                      <div className="mt-2">
-                        <div className="mb-1 flex items-center justify-between text-xs text-text-secondary">
+                      <div className="mbs-2">
+                        <div className="mbe-1 flex items-center justify-between text-xs text-text-secondary">
                           <span>{t('echoDetail.sentiment')}</span>
                           <span className={sentimentColor}>{sentimentPct}%</span>
                         </div>
@@ -1007,7 +1007,7 @@ export function EchoDetailPage() {
                         </div>
                       </div>
                       {rel.is_cross_user && (
-                        <p className="mt-1 text-[10px] text-text-secondary">
+                        <p className="mbs-1 text-[10px] text-text-secondary">
                           {t('echoDetail.crossUser')}
                         </p>
                       )}
@@ -1021,8 +1021,8 @@ export function EchoDetailPage() {
           {/* Memories — hidden from user UI (internal infrastructure for tick context) */}
 
           {/* Echo Settings */}
-          <section className="mb-6">
-            <div className="mb-3 flex items-center gap-2">
+          <section className="mbe-6">
+            <div className="mbe-3 flex items-center gap-2">
               <Settings size={18} className="text-accent" aria-hidden="true" />
               <h2 className="text-lg font-semibold text-text-primary">
                 {t('echoDetail.settings')}
@@ -1034,7 +1034,7 @@ export function EchoDetailPage() {
                   type="checkbox"
                   checked={soloMode}
                   onChange={handleSoloModeToggle}
-                  className="h-4 w-4 rounded border-border accent-accent"
+                  className="size-4 rounded-sm border-border accent-accent"
                 />
                 <span className="text-sm text-text-primary">
                   {t('echoDetail.soloMode')}
@@ -1054,7 +1054,7 @@ export function EchoDetailPage() {
           aria-label={t('echoDetail.closePortrait')}
         >
           <span
-            className="absolute top-4 end-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+            className="absolute inset-e-4 inset-bs-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
             aria-hidden="true"
           >
             <X size={20} />
@@ -1077,11 +1077,11 @@ export function EchoDetailPage() {
         }}
         title={t('echoDetail.deleteConfirmTitle', { name: activeEcho.name })}
       >
-        <p className="mb-4 text-sm text-text-secondary">
+        <p className="mbe-4 text-sm text-text-secondary">
           {t('echoDetail.deleteConfirmBody')}
         </p>
         {deleteError && (
-          <p className="mb-3 text-sm text-red-500" role="alert">
+          <p className="mbe-3 text-sm text-red-500" role="alert">
             {deleteError}
           </p>
         )}
@@ -1113,7 +1113,7 @@ export function EchoDetailPage() {
         onClose={() => setHibernateModal(false)}
         title={activeEcho.status === 'Active' ? t('echoDetail.hibernate') : t('echoDetail.wake')}
       >
-        <p className="mb-4 text-sm text-text-secondary">
+        <p className="mbe-4 text-sm text-text-secondary">
           {activeEcho.status === 'Active'
             ? t('echoDetail.hibernateConfirm')
             : t('echoDetail.wakeConfirm')}
@@ -1132,22 +1132,22 @@ export function EchoDetailPage() {
         onClose={() => setInfluenceModal(false)}
         title={t('echoDetail.useInfluence')}
       >
-        <p className="mb-2 text-xs text-text-secondary">
+        <p className="mbe-2 text-xs text-text-secondary">
           {t('echoDetail.influenceHelperText')}
         </p>
         {influence && influence.daily_limit !== null && influence.remaining !== null && (
-          <p className="mb-3 text-xs text-text-secondary">
+          <p className="mbe-3 text-xs text-text-secondary">
             {t('echoDetail.influenceBudgetInfo', {
               remaining: influence.remaining,
               limit: influence.daily_limit,
             })}
           </p>
         )}
-        <div className="mb-4 flex flex-col gap-3">
+        <div className="mbe-4 flex flex-col gap-3">
           <select
             value={influenceType}
             onChange={(e) => setInfluenceType(e.target.value)}
-            className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+            className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
             aria-label={t('echoDetail.influenceType')}
           >
             <option value="nudge">{t('echoDetail.influenceNudge')}</option>
@@ -1381,7 +1381,7 @@ function DiaryCard({
   return (
     <div
       id={`diary-${entry.diary_id}`}
-      className={isNew ? 'animate-diary-arrive me-diary-pre-arrival' : ''}
+      className={isNew ? 'me-diary-pre-arrival animate-diary-arrive' : ''}
     >
       <Card
         className={`me-echo-card-mood-edge ${isNew ? 'animate-diary-glow' : ''}`}
@@ -1401,7 +1401,7 @@ function DiaryCard({
             src={entry.image_url}
             alt="Scene from diary entry"
             loading="eager"
-            className="w-full aspect-video rounded-lg mb-3 animate-fade-in object-cover"
+            className="mbe-3 aspect-video w-full animate-fade-in rounded-lg object-cover"
           />
         )}
         <div className="flex items-start justify-between">
@@ -1409,8 +1409,8 @@ function DiaryCard({
             <p className="text-sm font-medium text-text-primary">
               {formatSimDate(entry.simulated_date)} — {getMoodLabel(entry.mood)}
             </p>
-            <p className="mt-1 text-sm text-text-secondary">{entry.content}</p>
-            <p className="mt-1 text-xs text-text-secondary">{entry.location_name}</p>
+            <p className="mbs-1 text-sm text-text-secondary">{entry.content}</p>
+            <p className="mbs-1 text-xs text-text-secondary">{entry.location_name}</p>
           </div>
           <div className="ms-3 flex shrink-0 flex-col items-end gap-1">
             <span className="text-xs text-text-muted">
@@ -1423,7 +1423,7 @@ function DiaryCard({
           // eslint-disable-next-line jsx-a11y/media-has-caption
           <video
             ref={handleVideoReady}
-            className="mt-3 w-full rounded-lg"
+            className="mbs-3 w-full rounded-lg"
             controls
             playsInline
           />
@@ -1431,7 +1431,7 @@ function DiaryCard({
         <button
           onClick={handleWatchNarration}
           disabled={videoState === 'generating'}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-accent/20 bg-accent/5 px-4 py-2.5 text-sm font-medium text-accent transition-colors hover:bg-accent/10 disabled:opacity-50"
+          className="mbs-3 flex w-full items-center justify-center gap-2 rounded-lg border border-accent/20 bg-accent/5 px-4 py-2.5 text-sm font-medium text-accent transition-colors hover:bg-accent/10 disabled:opacity-50"
         >
           {videoState === 'generating' ? (
             <>

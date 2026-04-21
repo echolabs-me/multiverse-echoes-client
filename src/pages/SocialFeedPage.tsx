@@ -37,13 +37,13 @@ export function SocialFeedPage() {
       <div className="mx-auto max-w-3xl p-6">
           <button
             onClick={() => navigate('/dashboard')}
-            className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
           >
             <ArrowLeft size={16} />
             {t('common.back')}
           </button>
 
-          <h1 className="mb-4 text-2xl font-bold text-text-primary">
+          <h1 className="mbe-4 text-2xl font-bold text-text-primary">
             {t('feeds.socialTitle')}
           </h1>
 
@@ -99,7 +99,7 @@ function SocialFeedCard({
     <>
       <Card variant="compact" className="group animate-slide-in">
         <div className="flex items-start gap-3">
-          <div className="mt-0.5">{icon}</div>
+          <div className="mbs-0.5">{icon}</div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <button
@@ -110,8 +110,8 @@ function SocialFeedCard({
               </button>
               <Badge variant="default">{t(`feedTypes.${item.item_type}`, { defaultValue: item.item_type.replace('_', ' ') })}</Badge>
             </div>
-            <p className="mt-1 text-sm text-text-secondary">{item.body}</p>
-            <div className="mt-1 flex items-center gap-2 text-xs text-text-muted">
+            <p className="mbs-1 text-sm text-text-secondary">{item.body}</p>
+            <div className="mbs-1 flex items-center gap-2 text-xs text-text-muted">
               <span>{new Date(item.created_at).toLocaleString()}</span>
               {item.significance > 0 && (
                 <span className="flex items-center gap-1">
@@ -121,7 +121,7 @@ function SocialFeedCard({
               )}
               <button
                 onClick={() => setShareOpen(true)}
-                className="rounded p-1 text-text-muted hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+                className="rounded-sm p-1 text-text-muted hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
                 aria-label={t('share.title')}
               >
                 <Share2 size={14} />

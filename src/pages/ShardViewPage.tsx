@@ -113,7 +113,7 @@ export function ShardViewPage() {
           {/* Back */}
           <button
             onClick={() => navigate(-1)}
-            className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
           >
             <ArrowLeft size={16} />
             {t('common.back')}
@@ -121,7 +121,7 @@ export function ShardViewPage() {
 
           {/* Banner image */}
           {activeShard.banner_image && (
-            <div className="mb-4 overflow-hidden rounded-xl">
+            <div className="mbe-4 overflow-hidden rounded-xl">
               <img
                 src={activeShard.banner_image}
                 alt={activeShard.name}
@@ -132,10 +132,10 @@ export function ShardViewPage() {
           )}
 
           {/* Shard header */}
-          <div className="mb-6">
+          <div className="mbe-6">
             <h1 className="text-2xl font-bold text-text-primary">{activeShard.name}</h1>
-            <p className="mt-1 text-sm text-text-secondary">{activeShard.description}</p>
-            <div className="mt-2 flex items-center gap-3 text-sm text-text-muted">
+            <p className="mbs-1 text-sm text-text-secondary">{activeShard.description}</p>
+            <div className="mbs-2 flex items-center gap-3 text-sm text-text-muted">
               <Badge variant={activeShard.status === 'Active' ? 'success' : 'default'}>
                 {t(`shardView.status${activeShard.status}`, { defaultValue: activeShard.status })}
               </Badge>
@@ -151,21 +151,21 @@ export function ShardViewPage() {
 
           {/* Travel button + confirmation */}
           {eligibleEchoes.length > 0 && (
-            <div className="mb-6">
+            <div className="mbe-6">
               <Button variant="secondary" onClick={() => setTravelModal(true)}>
                 <MapPin size={16} /> {t('shardView.travelHere')}
               </Button>
             </div>
           )}
           {travelConfirmed && (
-            <div className="mb-6 flex items-center gap-2 rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm font-medium text-success animate-slide-in">
+            <div className="mbe-6 flex animate-slide-in items-center gap-2 rounded-lg border border-success/30 bg-success/10 px-4 py-3 text-sm font-medium text-success">
               <MapPin size={16} /> {t('shardView.travelInitiated')}
             </div>
           )}
 
           {/* Echoes in Shard */}
-          <section className="mb-6">
-            <div className="mb-3 flex items-center gap-2">
+          <section className="mbe-6">
+            <div className="mbe-3 flex items-center gap-2">
               <Users size={18} className="text-accent" aria-hidden="true" />
               <h2 className="text-lg font-semibold text-text-primary">
                 {t('shardView.echoes')}
@@ -185,7 +185,7 @@ export function ShardViewPage() {
                     onClick={() => navigate(`/echoes/${echo.echo_id}`)}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-raised text-sm font-medium">
+                      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface-raised text-sm font-medium">
                         {echo.name[0]}
                       </div>
                       <div>
@@ -206,8 +206,8 @@ export function ShardViewPage() {
 
           {/* Recent activity from shard feed */}
           {shardFeed.length > 0 && (
-            <section className="mb-6">
-              <h2 className="mb-3 text-lg font-semibold text-text-primary">{t('shardView.recentActivity')}</h2>
+            <section className="mbe-6">
+              <h2 className="mbe-3 text-lg font-semibold text-text-primary">{t('shardView.recentActivity')}</h2>
               <div className="flex flex-col gap-2">
                 {shardFeed.slice(0, 20).map((item) => (
                   <Card key={item.item_id} variant="compact">
@@ -230,13 +230,13 @@ export function ShardViewPage() {
         onClose={() => setTravelModal(false)}
         title={t('shardView.travelHere')}
       >
-        <p className="mb-3 text-sm text-text-secondary">
+        <p className="mbe-3 text-sm text-text-secondary">
           {t('shardView.travelSelectEcho')}
         </p>
         <select
           value={selectedEchoId}
           onChange={(e) => setSelectedEchoId(e.target.value)}
-          className="mb-4 w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          className="mbe-4 w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
           aria-label={t('shardView.travelSelectEcho')}
         >
           <option value="">{t('shardView.travelChooseEcho')}</option>

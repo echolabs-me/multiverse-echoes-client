@@ -200,7 +200,7 @@ export function SearchPage() {
     const parts = text.split(regex);
     return parts.map((part, i) =>
       regex.test(part) ? (
-        <mark key={i} className="rounded bg-accent/30 px-0.5 text-text-primary">
+        <mark key={i} className="rounded-sm bg-accent/30 px-0.5 text-text-primary">
           {part}
         </mark>
       ) : (
@@ -215,17 +215,17 @@ export function SearchPage() {
         {/* Back button */}
         <button
           onClick={() => navigate(-1)}
-          className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+          className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
         >
           <ArrowLeft size={16} />
           {t('common.back')}
         </button>
 
         {/* Search input */}
-        <form onSubmit={handleSubmit} className="relative mb-6">
+        <form onSubmit={handleSubmit} className="relative mbe-6">
           <SearchIcon
             size={20}
-            className="absolute top-1/2 start-3 -translate-y-1/2 text-text-muted"
+            className="absolute inset-s-3 inset-bs-1/2 -translate-y-1/2 text-text-muted"
             aria-hidden="true"
           />
           <input
@@ -234,16 +234,16 @@ export function SearchPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t('search.placeholder')}
-            className="w-full rounded-lg border border-border bg-surface py-3 pe-20 ps-10 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
+            className="w-full rounded-lg border border-border bg-surface py-3 ps-10 pe-20 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
             aria-label={t('search.placeholder')}
           />
-          <kbd className="absolute top-1/2 end-3 -translate-y-1/2 rounded border border-border bg-canvas px-2 py-0.5 text-xs text-text-secondary">
+          <kbd className="absolute inset-e-3 inset-bs-1/2 -translate-y-1/2 rounded-sm border border-border bg-canvas px-2 py-0.5 text-xs text-text-secondary">
             {t('search.shortcut')}
           </kbd>
         </form>
 
         {/* Filters row */}
-        <div className="mb-4 flex flex-wrap items-center gap-2">
+        <div className="mbe-4 flex flex-wrap items-center gap-2">
           {/* Content type tabs */}
           <div className="flex gap-1" role="tablist" aria-label={t('search.filterByType')}>
             {CONTENT_TYPES.map((type) => (
@@ -270,7 +270,7 @@ export function SearchPage() {
               type="date"
               value={dateFrom}
               onChange={(e) => setDateFrom(e.target.value)}
-              className="rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary"
+              className="rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary"
               aria-label={t('search.dateFrom')}
             />
             <span className="text-xs text-text-muted">—</span>
@@ -278,7 +278,7 @@ export function SearchPage() {
               type="date"
               value={dateTo}
               onChange={(e) => setDateTo(e.target.value)}
-              className="rounded border border-border bg-surface px-2 py-1 text-xs text-text-primary"
+              className="rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary"
               aria-label={t('search.dateTo')}
             />
           </div>
@@ -286,7 +286,7 @@ export function SearchPage() {
 
         {/* Scope indicator */}
         {(scopeEchoId || scopeShardId) && (
-          <div className="mb-4 flex items-center gap-2 rounded-md bg-surface px-3 py-2 text-sm text-text-secondary">
+          <div className="mbe-4 flex items-center gap-2 rounded-md bg-surface px-3 py-2 text-sm text-text-secondary">
             {scopeEchoId && <span>{t('search.scopeEcho')}</span>}
             {scopeShardId && <span>{t('search.scopeShard')}</span>}
           </div>
@@ -294,8 +294,8 @@ export function SearchPage() {
 
         {/* Recent searches (when no query) */}
         {!hasSearched && recentSearches.length > 0 && (
-          <div className="mb-6">
-            <div className="mb-2 flex items-center justify-between">
+          <div className="mbe-6">
+            <div className="mbe-2 flex items-center justify-between">
               <h3 className="text-sm font-medium text-text-secondary">
                 {t('search.recentSearches')}
               </h3>
@@ -328,7 +328,7 @@ export function SearchPage() {
         {/* Loading */}
         {isLoading && (
           <div className="flex items-center justify-center py-12">
-            <span className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-accent border-t-transparent" role="status">
+            <span className="inline-block size-6 animate-spin rounded-full border-2 border-accent border-bs-transparent" role="status">
               <span className="sr-only">{t('common.loading')}</span>
             </span>
           </div>
@@ -337,7 +337,7 @@ export function SearchPage() {
         {/* Results */}
         {!isLoading && hasSearched && (
           <>
-            <p className="mb-4 text-sm text-text-secondary">
+            <p className="mbe-4 text-sm text-text-secondary">
               {t('search.resultCount', { count: results.length })}
             </p>
 
@@ -350,7 +350,7 @@ export function SearchPage() {
               <div className="space-y-6">
                 {Object.entries(grouped).map(([type, items]) => (
                   <section key={type}>
-                    <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-text-secondary">
+                    <h3 className="mbe-2 flex items-center gap-2 text-sm font-semibold text-text-secondary">
                       {typeIcons[type]}
                       {t(typeLabels[type])}
                       <span className="text-text-muted">({items.length})</span>
@@ -367,7 +367,7 @@ export function SearchPage() {
                               <p className="text-sm font-medium text-text-primary">
                                 {highlightSnippet(result.title, query)}
                               </p>
-                              <p className="mt-1 text-xs text-text-secondary line-clamp-2">
+                              <p className="mbs-1 line-clamp-2 text-xs text-text-secondary">
                                 {highlightSnippet(result.snippet, query)}
                               </p>
                             </div>

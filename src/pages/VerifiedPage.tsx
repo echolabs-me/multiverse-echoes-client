@@ -10,13 +10,13 @@ export function VerifiedPage() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4 text-center">
       <CheckCircle
         size={48}
-        className="mb-6 text-success"
+        className="mbe-6 text-success"
         aria-hidden="true"
       />
-      <h1 className="mb-2 text-2xl font-bold text-text-primary">
+      <h1 className="mbe-2 text-2xl font-bold text-text-primary">
         {t('auth.verifiedTitle')}
       </h1>
-      <p className="mb-8 text-text-secondary">
+      <p className="mbe-8 text-text-secondary">
         {t('auth.verifiedDescription')}
       </p>
       <Link to="/onboarding/welcome">

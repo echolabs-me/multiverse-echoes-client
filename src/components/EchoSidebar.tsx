@@ -92,20 +92,20 @@ function EchoCard({
       ref={setMoodVars}
       className={`me-echo-card-mood-edge flex w-full items-start gap-0 rounded-lg transition-all ${
         isActive
-          ? 'bg-accent-subtle border border-accent/30'
-          : 'hover:bg-surface-raised border border-transparent'
+          ? 'border border-accent/30 bg-accent-subtle'
+          : 'border border-transparent hover:bg-surface-raised'
       }`}
     >
       {/* Drag handle — mood-colored */}
       <div
-        className="me-mood-fg flex-shrink-0 cursor-grab active:cursor-grabbing px-1 py-3 touch-none transition-opacity opacity-40 hover:opacity-80"
+        className="me-mood-fg shrink-0 cursor-grab touch-none px-1 py-3 opacity-40 transition-opacity hover:opacity-80 active:cursor-grabbing"
         {...dragHandleProps}
       >
         <GripVertical size={14} />
       </div>
       <button
         onClick={onClick}
-        className="flex flex-1 min-w-0 flex-col gap-1 py-2.5 pe-3 text-start"
+        className="flex min-w-0 flex-1 flex-col gap-1 py-2.5 pe-3 text-start"
         aria-current={isActive ? 'page' : undefined}
       >
         {/* Row 1: avatar/mood dot + name */}
@@ -114,11 +114,11 @@ function EchoCard({
             <img
               src={echo.avatar_url}
               alt=""
-              className="me-avatar-ring h-6 w-6 flex-shrink-0 rounded-full object-cover"
+              className="me-avatar-ring size-6 shrink-0 rounded-full object-cover"
             />
           ) : (
             <span
-              className="me-mood-dot h-2.5 w-2.5 flex-shrink-0 rounded-full"
+              className="me-mood-dot size-2.5 shrink-0 rounded-full"
               aria-label={echo.current_mood}
             />
           )}
@@ -127,21 +127,21 @@ function EchoCard({
           </span>
         </div>
         {/* Row 2: mood + tick */}
-        <p className="truncate text-[11px] text-text-secondary ps-[18px]">
+        <p className="truncate ps-[18px] text-[11px] text-text-secondary">
           {getMoodLabel(echo.current_mood)} · {t('echoSidebar.tick', { tick: echo.current_tick })}
         </p>
         {/* Row 3: travelling indicator or diary preview */}
         {showTravelIndicator ? (
-          <p className="text-xs text-accent ps-[18px] italic leading-snug">
+          <p className="ps-[18px] text-xs/snug text-accent italic">
             {t('echoSidebar.arrivingAt', { shard: shardName })}
           </p>
         ) : latestDiary ? (
-          <p className="line-clamp-2 text-xs text-text-secondary ps-[18px] italic leading-snug">
+          <p className="line-clamp-2 ps-[18px] text-xs/snug text-text-secondary italic">
             &ldquo;{latestDiary}&rdquo;
           </p>
         ) : null}
         {/* Row 4: shard name */}
-        <p className="truncate text-[11px] text-text-muted ps-[18px]">
+        <p className="truncate ps-[18px] text-[11px] text-text-muted">
           {shardName}
         </p>
       </button>
@@ -274,17 +274,17 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
   return (
     <aside
       className={forceVisible
-        ? "flex flex-1 min-h-0 w-full flex-col bg-transparent"
-        : "hidden md:flex h-full w-[200px] lg:w-[232px] flex-col border-e border-border/50 bg-transparent"
+        ? "flex min-h-0 w-full flex-1 flex-col bg-transparent"
+        : "hidden h-full w-[200px] flex-col border-e border-border/50 bg-transparent md:flex lg:w-[232px]"
       }
       aria-label={t('echoSidebar.title')}
     >
-      <div className="flex-shrink-0 px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+      <div className="shrink-0 px-3 py-2.5 text-[11px] font-semibold tracking-wider text-text-muted uppercase">
         {t('echoSidebar.title')}
       </div>
       {/* Mood Legend */}
-      <div className="flex-shrink-0 border-b border-border px-3 py-3">
-        <p className="mb-2 text-xs font-semibold text-text-primary">
+      <div className="shrink-0 border-be border-border p-3">
+        <p className="mbe-2 text-xs font-semibold text-text-primary">
           {t('echoSidebar.moodLegend')}
         </p>
         <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
@@ -294,7 +294,7 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
                 ref={(el) => {
                   if (el) el.style.setProperty('--me-mood-color', color);
                 }}
-                className="me-mood-dot h-2.5 w-2.5 flex-shrink-0 rounded-full"
+                className="me-mood-dot size-2.5 shrink-0 rounded-full"
               />
               <span className="text-xs text-text-secondary">{getMoodLabel(mood)}</span>
             </div>
@@ -302,7 +302,7 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
         </div>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-2 pb-2">
+      <nav className="flex-1 overflow-y-auto px-2 pbe-2">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -328,10 +328,10 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
           </SortableContext>
         </DndContext>
       </nav>
-      <div className="px-3 pb-3 pt-2 border-t border-border/50">
+      <div className="border-bs border-border/50 px-3 pbs-2 pbe-3">
         <button
           onClick={() => navigate('/onboarding/create-echo')}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-accent/15 border border-accent/30 py-2.5 text-sm font-medium text-accent hover:bg-accent/25 transition-colors"
+          className="flex w-full items-center justify-center gap-2 rounded-lg border border-accent/30 bg-accent/15 py-2.5 text-sm font-medium text-accent transition-colors hover:bg-accent/25"
         >
           <span className="text-base leading-none">+</span>
           {t('echoSidebar.createEcho')}
@@ -373,13 +373,13 @@ export function MobileEchoSwitcher() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-sm"
       >
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex min-w-0 items-center gap-2">
           {activeEcho && (
             <span
               ref={(el) => {
                 if (el) el.style.setProperty('--me-mood-color', getMoodColor(activeEcho.current_mood));
               }}
-              className="me-mood-dot h-2 w-2 flex-shrink-0 rounded-full"
+              className="me-mood-dot size-2 shrink-0 rounded-full"
             />
           )}
           <span className="truncate font-medium text-text-primary">
@@ -388,7 +388,7 @@ export function MobileEchoSwitcher() {
         </div>
         <ChevronDown
           size={16}
-          className={`flex-shrink-0 text-text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`shrink-0 text-text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -401,9 +401,9 @@ export function MobileEchoSwitcher() {
             aria-label={t('echoSidebar.closeAriaLabel')}
             tabIndex={-1}
           />
-          <div className="absolute start-0 end-0 z-50 mx-4 mt-1 rounded-lg border border-border bg-surface shadow-lg">
-            <div className="flex items-center justify-between px-3 py-2 border-b border-border">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+          <div className="absolute inset-s-0 inset-e-0 z-50 mx-4 mbs-1 rounded-lg border border-border bg-surface shadow-lg">
+            <div className="flex items-center justify-between border-be border-border px-3 py-2">
+              <span className="text-[11px] font-semibold tracking-wider text-text-muted uppercase">
                 {t('echoSidebar.switchEcho')}
               </span>
               <button
@@ -431,11 +431,11 @@ export function MobileEchoSwitcher() {
                       ref={(el) => {
                         if (el) el.style.setProperty('--me-mood-color', getMoodColor(echo.current_mood));
                       }}
-                      className="me-mood-dot h-2.5 w-2.5 flex-shrink-0 rounded-full"
+                      className="me-mood-dot size-2.5 shrink-0 rounded-full"
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium leading-tight">{echo.name}</p>
-                      <p className="truncate text-[11px] text-text-muted leading-tight">
+                      <p className="truncate text-sm/tight font-medium">{echo.name}</p>
+                      <p className="truncate text-[11px] leading-tight text-text-muted">
                         {shardNameMap.get(echo.current_shard_id) ?? t('echoSidebar.unknownShard')}
                       </p>
                     </div>

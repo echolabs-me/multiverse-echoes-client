@@ -127,18 +127,18 @@ export function LanguageSelectionPage() {
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-canvas px-4">
       {/* Radial glow behind centre — matches hero-glow from landing page */}
       <div
-        className={`me-hero-glow-soft pointer-events-none fixed top-[40%] left-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full ${animClass}`}
+        className={`me-hero-glow-soft pointer-events-none fixed inset-s-1/2 inset-bs-[40%] size-[600px] -translate-1/2 rounded-full ${animClass}`}
       />
 
       <div className="relative z-10 flex flex-col items-center">
         {/* Centre text */}
         <h1
-          className={`me-fade-up mb-2 text-center font-serif text-4xl font-light tracking-[0.14em] text-[#E8E0D8] ${animClass}`}
+          className={`me-fade-up mbe-2 text-center font-serif text-4xl font-light tracking-[0.14em] text-[#E8E0D8] ${animClass}`}
         >
           MULTIVERSE ECHOES
         </h1>
         <p
-          className={`me-fade-up mb-8 text-center font-serif text-lg font-light tracking-wide text-[#9BA5AE] ${animClass}`}
+          className={`me-fade-up mbe-8 text-center font-serif text-lg font-light tracking-wide text-[#9BA5AE] ${animClass}`}
           data-delay="150"
         >
           Choose your language&ensp;&middot;&ensp;选择语言&ensp;&middot;&ensp;भाषा चुनें
@@ -169,7 +169,7 @@ export function LanguageSelectionPage() {
         ) : (
           <div
             ref={containerRef}
-            className={`me-fade-up relative h-[640px] w-[640px] ${animClass}`}
+            className={`me-fade-up relative size-[640px] ${animClass}`}
             data-delay="300"
             role="listbox"
             aria-label={t('onboarding.languageSelectionLabel')}
@@ -177,7 +177,7 @@ export function LanguageSelectionPage() {
             {/* Centre logo */}
             <video
               src="/logo-loop-seamless.mp4"
-              className="me-centered-absolute pointer-events-none absolute h-80 w-80 rounded-full object-cover opacity-80"
+              className="me-centered-absolute pointer-events-none absolute size-80 rounded-full object-cover opacity-80"
               autoPlay
               loop
               muted
@@ -259,10 +259,10 @@ function LanguageTile({
         src={`/flags/${lang.countryCode}.svg`}
         alt=""
         aria-hidden="true"
-        className="h-9 w-9 rounded-full object-cover"
+        className="size-9 rounded-full object-cover"
         draggable={false}
       />
-      <span className="whitespace-nowrap font-serif text-sm font-medium text-[#E8E0D8]">
+      <span className="font-serif text-sm font-medium whitespace-nowrap text-[#E8E0D8]">
         {lang.nativeName}
       </span>
     </button>

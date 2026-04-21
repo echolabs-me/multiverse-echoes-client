@@ -75,12 +75,12 @@ export function TickTimer() {
         {isGenerating || isWaiting ? (
           <>
             <span
-              className="tick-digit-breathe me-neon-glow hidden sm:inline text-sm font-semibold text-accent leading-tight"
+              className="tick-digit-breathe me-neon-glow hidden text-sm/tight font-semibold text-accent sm:inline"
             >
               {isWaiting ? t('tickTimer.nextTick', { time: timeDisplay }) : t('tickTimer.generating')}
             </span>
             <span
-              className="tick-digit-breathe me-neon-glow sm:hidden text-sm font-semibold text-accent leading-tight"
+              className="tick-digit-breathe me-neon-glow text-sm/tight font-semibold text-accent sm:hidden"
             >
               {isWaiting ? t('tickTimer.nextTick', { time: timeDisplay }) : t('tickTimer.generatingShort')}
             </span>
@@ -88,14 +88,14 @@ export function TickTimer() {
         ) : (
           <>
             <span
-              className={`tick-digit-breathe text-xl sm:text-2xl font-semibold tabular-nums leading-none tracking-wide ${
-                isArrived ? 'text-success me-neon-glow-success' : 'text-text-primary me-neon-glow'
+              className={`tick-digit-breathe text-xl leading-none font-semibold tracking-wide tabular-nums sm:text-2xl ${
+                isArrived ? 'me-neon-glow-success text-success' : 'me-neon-glow text-text-primary'
               }`}
             >
               {timeDisplay}
             </span>
             <span
-              className="me-neon-glow-soft hidden sm:inline text-xs text-text-secondary leading-none"
+              className="me-neon-glow-soft hidden text-xs leading-none text-text-secondary sm:inline"
             >
               {isArrived
                 ? t('tickTimer.arrived')
@@ -115,7 +115,7 @@ export function TickTimer() {
 
       {/* Full-width ambient bar at header bottom */}
       <div
-        className="tick-bar absolute bottom-0 start-0 end-0 h-[3px] pointer-events-none"
+        className="tick-bar pointer-events-none absolute inset-s-0 inset-e-0 inset-be-0 h-[3px]"
         aria-hidden="true"
       >
         {/* Track */}
@@ -125,7 +125,7 @@ export function TickTimer() {
         {!isGenerating && !isArrived && !isWaiting && (
           <div
             ref={fillRef}
-            className="tick-bar-fill me-progress-bar absolute inset-y-0 start-0"
+            className="tick-bar-fill me-progress-bar absolute inset-y-0 inset-s-0"
           />
         )}
 
@@ -147,7 +147,7 @@ export function TickTimer() {
         {/* Ambient upward glow — contained within the bar's overflow:hidden parent */}
         <div
           ref={ambientRef}
-          className="tick-bar-ambient-glow me-progress-bar absolute bottom-0 start-0 h-[3px] transition-opacity duration-1000"
+          className="tick-bar-ambient-glow me-progress-bar absolute inset-s-0 inset-be-0 h-[3px] transition-opacity duration-1000"
         />
       </div>
     </>

@@ -258,7 +258,7 @@ export function EchoPortrait3D({
         <img
           src={avatarUrl}
           alt={`${name} portrait`}
-          className="h-full w-full object-cover"
+          className="size-full object-cover"
           loading="eager"
         />
       </div>

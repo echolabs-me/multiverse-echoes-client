@@ -178,20 +178,20 @@ export function DowngradeChoicePage() {
       <div className="mx-auto max-w-3xl p-6">
         <button
           onClick={() => navigate(-1)}
-          className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+          className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
         >
           <ArrowLeft size={16} />
           {t('common.back')}
         </button>
 
-        <h1 className="mb-6 text-2xl font-bold text-text-primary">
+        <h1 className="mbe-6 text-2xl font-bold text-text-primary">
           {t('tiers.downgrade.title')}
         </h1>
 
         {loadState.kind === 'loading' && (
           <div className="flex items-center justify-center py-12">
             <Spinner />
-            <span className="ml-3 text-text-secondary">
+            <span className="ms-3 text-text-secondary">
               {t('tiers.downgrade.loadingPending')}
             </span>
           </div>
@@ -204,10 +204,10 @@ export function DowngradeChoicePage() {
         {loadState.kind === 'error' && (
           <Card>
             <div className="flex items-start gap-3">
-              <AlertTriangle size={20} className="mt-0.5 text-danger" />
+              <AlertTriangle size={20} className="mbs-0.5 text-danger" />
               <div>
                 <p className="text-sm text-text-primary">{loadState.message}</p>
-                <p className="mt-1 text-xs text-text-muted">{loadState.code}</p>
+                <p className="mbs-1 text-xs text-text-muted">{loadState.code}</p>
               </div>
             </div>
           </Card>
@@ -265,16 +265,16 @@ function ChoiceSurface({
   if (session.state === STATE_PICKING_INCLUDED) {
     return (
       <div>
-        <p className="mb-2 text-sm text-text-secondary">
+        <p className="mbe-2 text-sm text-text-secondary">
           {t('tiers.downgrade.pickIncludedTitle', {
             oldTier: session.old_tier,
             newTier: session.new_tier,
           })}
         </p>
-        <p className="mb-6 text-sm text-text-muted">
+        <p className="mbe-6 text-sm text-text-muted">
           {t('tiers.downgrade.pickIncludedSubtitle')}
         </p>
-        <p className="mb-4 text-xs text-text-muted">
+        <p className="mbe-4 text-xs text-text-muted">
           {t('tiers.downgrade.timeoutWarning', { hours: hoursRemaining })}
         </p>
 
@@ -297,7 +297,7 @@ function ChoiceSurface({
           ))}
         </div>
 
-        <div className="mt-8">
+        <div className="mbs-8">
           <Button
             variant="ghost"
             disabled={mutating}
@@ -317,18 +317,18 @@ function ChoiceSurface({
 
   return (
     <div>
-      <p className="mb-2 text-sm text-text-secondary">
+      <p className="mbe-2 text-sm text-text-secondary">
         {t('tiers.downgrade.shardDecisionTitle', {
           oldTier: session.old_tier,
           newTier: session.new_tier,
         })}
       </p>
-      <p className="mb-4 text-xs text-text-muted">
+      <p className="mbe-4 text-xs text-text-muted">
         {t('tiers.downgrade.timeoutWarning', { hours: hoursRemaining })}
       </p>
 
       {session.picked_included_shard_id && (
-        <Card className="mb-4" variant="compact">
+        <Card className="mbe-4" variant="compact">
           <p className="text-xs text-text-muted">
             {t('tiers.downgrade.keepingIncluded', {
               shard: shardNames[session.picked_included_shard_id] ?? session.picked_included_shard_id,
@@ -351,7 +351,7 @@ function ChoiceSurface({
         ))}
       </div>
 
-      <div className="mt-8 flex items-center justify-between gap-4">
+      <div className="mbs-8 flex items-center justify-between gap-4">
         <Button
           variant="ghost"
           disabled={mutating}

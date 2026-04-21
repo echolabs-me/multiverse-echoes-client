@@ -40,16 +40,16 @@ export function ErrorFallback() {
       className="flex min-h-screen items-center justify-center bg-canvas px-4"
     >
       <div className="flex max-w-md flex-col items-center text-center">
-        <h1 className="mb-3 text-2xl font-bold text-text-primary">
+        <h1 className="mbe-3 text-2xl font-bold text-text-primary">
           {t('errors.appCrashed.title')}
         </h1>
-        <p className="mb-6 text-sm text-text-secondary">
+        <p className="mbe-6 text-sm text-text-secondary">
           {t('errors.appCrashed.body')}
         </p>
         <button
           type="button"
           onClick={() => window.location.reload()}
-          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-fg hover:bg-accent/90"
+          className="text-accent-fg rounded-md bg-accent px-4 py-2 text-sm font-medium hover:bg-accent/90"
         >
           {t('errors.appCrashed.reload')}
         </button>
@@ -57,7 +57,7 @@ export function ErrorFallback() {
           href="https://status.echolabsme.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 text-xs text-text-muted hover:text-text-secondary underline underline-offset-4"
+          className="mbs-6 text-xs text-text-muted underline underline-offset-4 hover:text-text-secondary"
         >
           {t('common.checkStatusLink')}
         </a>

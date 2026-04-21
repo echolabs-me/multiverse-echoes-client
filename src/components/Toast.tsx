@@ -40,7 +40,7 @@ function ToastEntry({ toast }: { toast: ToastItem }) {
               href="https://status.echolabsme.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline underline-offset-2 text-text-muted hover:text-text-primary"
+              className="text-text-muted underline underline-offset-2 hover:text-text-primary"
             >
               {t('common.checkStatusLinkShort')}
             </a>
@@ -49,7 +49,7 @@ function ToastEntry({ toast }: { toast: ToastItem }) {
       </div>
       <button
         onClick={() => removeToast(toast.id)}
-        className="shrink-0 text-text-muted transition-color-opacity hover:text-text-primary"
+        className="transition-color-opacity shrink-0 text-text-muted hover:text-text-primary"
         aria-label={t('common.dismiss')}
       >
         <X size={16} />
@@ -65,7 +65,7 @@ export function ToastContainer() {
 
   return (
     <div
-      className="fixed end-4 top-4 z-50 flex w-80 flex-col gap-2"
+      className="fixed inset-e-4 inset-bs-4 z-50 flex w-80 flex-col gap-2"
       aria-live="polite"
       aria-atomic="false"
     >

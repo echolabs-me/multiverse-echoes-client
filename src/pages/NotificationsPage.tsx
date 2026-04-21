@@ -94,13 +94,13 @@ export function NotificationsPage() {
       <div className="mx-auto max-w-3xl p-6">
           <button
             onClick={() => navigate('/dashboard')}
-            className="mb-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
           >
             <ArrowLeft size={16} />
             {t('common.back')}
           </button>
 
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mbe-4 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-text-primary">
               {t('notifications.title')}
             </h1>
@@ -118,7 +118,7 @@ export function NotificationsPage() {
           {/* Link to preferences */}
           <button
             onClick={() => navigate('/settings')}
-            className="mb-6 flex items-center gap-1 text-sm text-accent hover:text-accent/80"
+            className="mbe-6 flex items-center gap-1 text-sm text-accent hover:text-accent/80"
           >
             <Settings size={14} />
             {t('notifications.preferencesLink')}
@@ -146,7 +146,7 @@ export function NotificationsPage() {
                   } p-4 hover:border-accent`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5">
+                    <div className="mbs-0.5">
                       {getCategoryIcon(notification.category)}
                     </div>
                     <div className="flex-1">
@@ -157,15 +157,15 @@ export function NotificationsPage() {
                       >
                         {notification.title}
                       </p>
-                      <p className="mt-0.5 text-sm text-text-secondary">
+                      <p className="mbs-0.5 text-sm text-text-secondary">
                         {notification.body}
                       </p>
-                      <span className="mt-1 text-xs text-text-muted">
+                      <span className="mbs-1 text-xs text-text-muted">
                         {new Date(notification.created_at).toLocaleString()}
                       </span>
                     </div>
                     {!notification.read && (
-                      <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-accent" />
+                      <div className="mbs-1 size-2 shrink-0 rounded-full bg-accent" />
                     )}
                   </div>
                 </button>

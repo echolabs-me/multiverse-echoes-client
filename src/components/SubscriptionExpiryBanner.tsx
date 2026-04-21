@@ -23,7 +23,7 @@ export function SubscriptionExpiryBanner() {
 
   return (
     <div
-      className={`mb-4 flex items-center gap-3 rounded-lg border px-4 py-3 text-sm ${
+      className={`mbe-4 flex items-center gap-3 rounded-lg border px-4 py-3 text-sm ${
         isExpired
           ? 'border-error/30 bg-error/10 text-error'
           : 'border-warning/30 bg-warning/10 text-warning'

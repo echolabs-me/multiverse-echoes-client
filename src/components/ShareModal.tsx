@@ -137,13 +137,13 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
       aria-label={t('share.title')}
     >
       <div className="p-6">
-        <h2 className="mb-4 text-lg font-semibold">{t('share.title')}</h2>
+        <h2 className="mbe-4 text-lg font-semibold">{t('share.title')}</h2>
 
         {/* Preview card */}
-        <div className="mb-4 rounded-lg border border-border bg-surface p-4">
-          <p className="text-sm font-medium text-text-primary line-clamp-2">{title}</p>
-          <p className="mt-1 text-xs text-text-secondary line-clamp-3">{body}</p>
-          <p className="mt-2 text-[10px] text-text-secondary">{t('share.previewDisclaimer')}</p>
+        <div className="mbe-4 rounded-lg border border-border bg-surface p-4">
+          <p className="line-clamp-2 text-sm font-medium text-text-primary">{title}</p>
+          <p className="mbs-1 line-clamp-3 text-xs text-text-secondary">{body}</p>
+          <p className="mbs-2 text-[10px] text-text-secondary">{t('share.previewDisclaimer')}</p>
         </div>
 
         {/* Share actions */}
@@ -179,7 +179,7 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
           </button>
         </div>
 
-        <div className="mt-4 flex justify-end">
+        <div className="mbs-4 flex justify-end">
           <Button variant="ghost" onClick={onClose}>
             {t('common.close')}
           </Button>

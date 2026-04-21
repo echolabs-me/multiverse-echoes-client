@@ -62,13 +62,13 @@ export function Modal({
       onClick={handleBackdropClick}
       aria-labelledby={titleId}
     >
-      <div className="flex items-center justify-between border-b border-border px-6 py-4">
+      <div className="flex items-center justify-between border-be border-border px-6 py-4">
         <h2 id={titleId} className="text-lg font-semibold text-text-primary">
           {title}
         </h2>
         <button
           onClick={onClose}
-          className="rounded-md p-1 text-text-muted transition-color-opacity hover:text-text-primary"
+          className="transition-color-opacity rounded-md p-1 text-text-muted hover:text-text-primary"
           aria-label={t('common.close')}
         >
           <X size={20} />
