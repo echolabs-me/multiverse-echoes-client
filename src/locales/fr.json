@@ -25,6 +25,7 @@
     "notFoundTitle": "Page introuvable",
     "notFoundDesc": "Cette page n'existe dans aucun Fragment.",
     "backToDashboard": "Retour au tableau de bord",
+    "checkStatusLink": "Consulter l’état de la plateforme sur status.echolabsme.com",
     "next": "Suivant",
     "search": "Rechercher",
     "continue": "Continuer",

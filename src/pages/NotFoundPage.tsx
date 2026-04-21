@@ -19,6 +19,14 @@ export function NotFoundPage() {
         <Link to="/dashboard">
           <Button>{t('common.backToDashboard')}</Button>
         </Link>
+        <a
+          href="https://status.echolabsme.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 text-xs text-text-muted hover:text-text-secondary underline underline-offset-4"
+        >
+          {t('common.checkStatusLink')}
+        </a>
       </div>
     </div>
   );

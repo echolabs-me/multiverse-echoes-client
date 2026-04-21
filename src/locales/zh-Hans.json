@@ -25,6 +25,7 @@
     "notFoundTitle": "页面未找到",
     "notFoundDesc": "这个页面不存在于任何位面。",
     "backToDashboard": "返回仪表盘",
+    "checkStatusLink": "在 status.echolabsme.com 查看平台状态",
     "next": "下一步",
     "search": "搜索",
     "continue": "继续",

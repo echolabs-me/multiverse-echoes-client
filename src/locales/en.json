@@ -26,6 +26,7 @@
     "notFoundTitle": "Page Not Found",
     "notFoundDesc": "This page doesn't exist in any Shard.",
     "backToDashboard": "Back to Dashboard",
+    "checkStatusLink": "Check platform status at status.echolabsme.com",
     "next": "Next",
     "search": "Search",
     "continue": "Continue",
