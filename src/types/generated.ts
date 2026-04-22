@@ -6,6 +6,12 @@ export type AcceptRequest = {
 	invite_token: string,
 };
 
+export type AccessEntryResponse = {
+	user_id: string,
+	granted_at: string,
+	granted_by: string,
+};
+
 export type AccountStatus = "Active" | "Suspended" | "PendingDeletion" | "Deleted";
 
 /**
@@ -35,6 +41,23 @@ export type ActiveConversationResponse = {
 	messages: ConversationMessageResponse[],
 };
 
+export type AdminPagination = {
+	limit: number,
+	offset?: number,
+};
+
+export type AdminUpsertItemRequest = {
+	item_id?: string | null,
+	name: string,
+	description: string,
+	item_type: MarketplaceItemType,
+	rarity: ItemRarity,
+	price_tier_required: SubscriptionTier,
+	price_coins?: number | null,
+	image_url?: string | null,
+	is_available?: boolean | null,
+};
+
 // A single analytics event.
 export type AnalyticsEvent = {
 	id: string,
@@ -42,6 +65,14 @@ export type AnalyticsEvent = {
 	event_name: string,
 	created_at: string,
 	source: EventSource,
+};
+
+// Query parameters for admin analytics.
+export type AnalyticsQuery = {
+	event_name: string | null,
+	since: string | null,
+	limit: number,
+	offset?: number,
 };
 
 /**
@@ -89,6 +120,17 @@ export type ApiKeyListItem = {
  */
 export type AutoDowngradeTier = "Free" | "Core";
 
+export type BanRequest = {
+	user_id: string,
+	channel_id: string,
+	reason: string,
+};
+
+// Request body for batch analytics event submission.
+export type BatchEventsRequest = {
+	events: ClientEvent[],
+};
+
 /**
  *  Beta invite code for gated registration.
  *  Reference: ME-UXF-001 §4.2.
@@ -98,6 +140,16 @@ export type BetaInvite = {
 	code: string,
 	// Email address the invite was issued to (for auto-claim on registration).
 	email?: string | null,
+	created_by: string,
+	claimed_by: string | null,
+	claimed_at: string | null,
+	expires_at: string,
+	created_at: string,
+};
+
+export type BetaInviteResponse = {
+	id: string,
+	code: string,
 	created_by: string,
 	claimed_by: string | null,
 	claimed_at: string | null,
@@ -175,6 +227,19 @@ export type BreachRecord = {
 	 *  this field existed.
 	 */
 	source?: BreachSource,
+};
+
+export type BreachRecordResponse = {
+	id: string,
+	detected_at: string,
+	severity: string,
+	description: string,
+	affected_user_count: number,
+	response_actions: string[],
+	notified_authorities: boolean,
+	notified_users: boolean,
+	resolved_at: string | null,
+	created_by: string,
 };
 
 /**
@@ -274,6 +339,11 @@ export type CancelRequest = {
 	session_id: string,
 };
 
+export type ChangePasswordRequest = {
+	current_password: string,
+	new_password: string,
+};
+
 export type Channel = {
 	channel_id: string,
 	name: string,
@@ -319,6 +389,23 @@ export type ChannelResponse = {
 export type ChannelStatus = "Active" | "Archived" | "Locked";
 
 export type ChannelType = "Shard" | "Global" | "Topic" | "PrivateShard" | "Event";
+
+/**
+ *  A single client-side event.
+ * 
+ *  `properties` is an arbitrary JSON object. The server persists it as
+ *  the untyped `serde_json::Value` it really is; the [`JsonObject`]
+ *  wrapper exists purely so specta 2.0.0-rc.23 can export the
+ *  containing types without overflowing the exporter stack (its
+ *  built-in `Type for serde_json::Value` recurses infinitely). See
+ *  [`crate::specta_support::JsonObject`].
+ * 
+ *  [`JsonObject`]: crate::specta_support::JsonObject
+ */
+export type ClientEvent = {
+	event_name: string,
+	properties?: Record<string, never>,
+};
 
 export type ClosureReason = 
 /**
@@ -415,6 +502,17 @@ export type CreateApiKeyResponse = {
 	created_at: string,
 };
 
+export type CreateBetaInviteRequest = {
+	expires_in_days: number | null,
+};
+
+export type CreateBreachRecordRequest = {
+	severity: string,
+	description: string,
+	affected_user_count: number,
+	response_actions: string[],
+};
+
 export type CreateCSAMIncidentRequest = {
 	user_id: string,
 	image_url: string,
@@ -464,8 +562,35 @@ export type CreateEchoRequest = {
 	physical_description?: string | null,
 };
 
+export type CreateGlobalEventRequest = {
+	name: string,
+	description: string,
+	event_type: GlobalEventType,
+	// Fixed-point intensity 0–1000 (0.0–1.0).
+	intensity: number,
+	// Shard IDs to affect. None/empty = all shards.
+	affected_shards: string[] | null,
+	start_tick: number,
+	duration_ticks: number,
+};
+
 export type CreateGroupRequest = {
 	name: string,
+};
+
+export type CreatePollRequest = {
+	question: string,
+	options: string[],
+};
+
+export type CreatePrivateShardRequest = {
+	name: string,
+	description: string,
+	base_template: string,
+};
+
+export type CreatePublicShardRequest = {
+	template_name: string,
 };
 
 export type CreateReportRequest = {
@@ -545,6 +670,17 @@ export type DiaryEntry = {
 	created_at: string,
 };
 
+/**
+ *  GET /echoes/:id/diary — Cursor-paginated diary entries with optional
+ *  mood filter. Reference: ME-API-001 §4.1 (cursor pagination) + §4.3.4.
+ */
+export type DiaryQuery = {
+	cursor?: string | null,
+	limit?: number | null,
+	// Optional mood filter — when provided, only entries matching this mood are returned.
+	mood: string | null,
+};
+
 // Discord account link. Reference: ME-CSS-001 §4.
 export type DiscordLink = {
 	user_id: string,
@@ -561,6 +697,20 @@ export type DiscordLink = {
 	access_token?: string | null,
 	// Discord OAuth refresh token, same contract as `access_token`.
 	refresh_token?: string | null,
+};
+
+export type DiscordLinkResponse = {
+	discord_user_id: string,
+	discord_username: string,
+	linked_at: string,
+	sync_display_name: boolean,
+};
+
+export type DiscordLinkStatus = {
+	linked: boolean,
+	discord_user_id: string | null,
+	discord_username: string | null,
+	sync_display_name: boolean | null,
 };
 
 /**
@@ -713,6 +863,11 @@ export type Echo = {
 	voice_description?: string | null,
 };
 
+export type EchoListQuery = {
+	limit: number,
+	offset?: number,
+};
+
 export type EchoMemory = {
 	memory_id: string,
 	echo_id: string,
@@ -781,6 +936,13 @@ export type EchoResponse = {
 	 *  to apply.
 	 */
 	original_locale?: string | null,
+	/**
+	 *  UTC instant this Echo entered hibernation, `None` while Active. Drives
+	 *  the ME-MIS-001 §5.2 hibernated-Echo card banner and the 90-day
+	 *  auto-deletion countdown referenced by ME-UAD-001 §5.3. Mirrors
+	 *  `Echo.hibernated_at`.
+	 */
+	hibernated_at: string | null,
 };
 
 export type EchoStatus = "Active" | "Travelling" | "Hibernated" | "Quarantined" | "Deleted";
@@ -822,6 +984,56 @@ export type EnforcementSummary = {
 	sessions_revoked: boolean,
 	echoes_quarantined: number,
 	api_keys_revoked: number,
+};
+
+export type EquipRequest = {
+	equipped: boolean,
+};
+
+/**
+ *  Escalate an item to an Admin for review.
+ * 
+ *  Only Moderators (or, in a future expansion, Private Shard Owners
+ *  scoped to their own shard) can call this. Admins get 400
+ *  `ADMIN_CANNOT_ESCALATE` — there is no higher tier to escalate to.
+ *  Standard users file reports via `/reports` instead.
+ * 
+ *  Creates a `ModerationAction` with `action_type: EscalatedToAdmin`.
+ *  The admin resolves via `POST /admin/escalations/:action_id/resolve`.
+ */
+export type EscalateRequest = {
+	// User being escalated (e.g. repeated offender needing ban).
+	target_user_id: string | null,
+	// Specific message being escalated.
+	target_message_id: string | null,
+	// Channel being escalated (e.g. needs locking).
+	target_channel_id: string | null,
+	// Why the moderator is escalating. Free-text, 1–2000 chars.
+	reason: string,
+};
+
+export type EscalateResponse = {
+	action_id: string,
+	action_type: ModerationActionType,
+	moderator_id: string,
+	target_user_id: string | null,
+	target_message_id: string | null,
+	target_channel_id: string | null,
+	reason: string,
+	created_at: string,
+};
+
+export type EscalationItem = {
+	action_id: string,
+	moderator_id: string,
+	target_user_id: string | null,
+	target_message_id: string | null,
+	target_channel_id: string | null,
+	reason: string,
+	created_at: string,
+	resolved_at: string | null,
+	resolved_by: string | null,
+	resolution_notes: string | null,
 };
 
 // Source of an analytics event.
@@ -963,12 +1175,42 @@ export type FeedItemResponse = {
 
 export type FeedItemType = "diary_entry" | "life_event" | "relationship_change" | "achievement" | "global_event_participation" | "user_shared";
 
+export type FeedQuery = {
+	// Optional Echo ID filter. If provided, only feed items for that Echo are returned.
+	echo_id: string | null,
+	/**
+	 *  Opaque pagination cursor from the previous response's
+	 *  `next_cursor`. Omit for the first page.
+	 */
+	cursor?: string | null,
+	/**
+	 *  Maximum items to return on this page. Clamped server-side to
+	 *  `MAX_PAGE_SIZE`. Omit for the server default.
+	 */
+	limit?: number | null,
+};
+
 // Context snapshot captured at the time of feedback submission.
 export type FeedbackContext = {
 	screen: string,
 	echo_id?: string | null,
 	shard_id?: string | null,
 	recent_events?: string[],
+};
+
+export type FeedbackEntry = {
+	feedback_id: string,
+	user_id: string,
+	feedback_type: FeedbackType,
+	user_message: string,
+	structured_summary: string,
+	context: FeedbackContext,
+	status: FeedbackStatus,
+	priority?: FeedbackPriority | null,
+	github_issue_url?: string | null,
+	resolution_notes?: string | null,
+	created_at: string,
+	updated_at: string,
 };
 
 /**
@@ -1026,6 +1268,19 @@ export type GlobalEvent = {
 	created_at: string,
 };
 
+export type GlobalEventResponse = {
+	event_id: string,
+	name: string,
+	description: string,
+	event_type: GlobalEventType,
+	intensity: number,
+	affected_shards: string[],
+	start_tick: number,
+	duration_ticks: number,
+	status: GlobalEventStatus,
+	created_at: string,
+};
+
 // Lifecycle status of a global event.
 export type GlobalEventStatus = "Scheduled" | "Active" | "Completed";
 
@@ -1034,6 +1289,21 @@ export type GlobalEventStatus = "Scheduled" | "Active" | "Completed";
  *  Reference: ME-SDB-001 §7.1.
  */
 export type GlobalEventType = "Economic" | "Social" | "Environmental" | "Political" | "Cultural";
+
+export type GlobalSearchQuery = {
+	q: string,
+	/**
+	 *  Optional filter — one of: `echoes | shards | diary | events | messages | feed`.
+	 *  Omitted = search all types and merge results.
+	 */
+	type: string | null,
+	cursor?: string | null,
+	limit: number,
+};
+
+export type GrantAccessRequest = {
+	user_id: string,
+};
 
 /**
  *  Subset of `SubscriptionTier` that a `PromotionalSubscription` can
@@ -1073,6 +1343,21 @@ export type IncidentEvidenceNonce = {
 	consumed: boolean,
 };
 
+/**
+ *  GET /echoes/:id/influence — Get influence balance for this Echo's owner.
+ * 
+ *  `daily_limit`, `remaining`, `used_today` are `Option<u32>`: `None`
+ *  for uncapped tiers (GodMode) and `Some(n)` for finite caps. The
+ *  Commit 3.5 sentinel retirement replaced the pre-existing
+ *  `u32::MAX` unlimited marker on the wire with JSON `null`.
+ */
+export type InfluenceBalanceResponse = {
+	echo_id: string,
+	daily_limit: number | null,
+	remaining: number | null,
+	used_today: number | null,
+};
+
 // POST /echoes/:id/influence — Apply influence to an Echo.
 export type InfluenceRequest = {
 	suggestion: string,
@@ -1082,6 +1367,20 @@ export type InfluenceRequest = {
 export type InfluenceResponse = {
 	influence_id: string,
 	remaining_points: number,
+};
+
+export type InventoryRowResponse = {
+	inventory_id: string,
+	item_id: string,
+	acquired_at: string,
+	equipped: boolean,
+	price_paid_coins: number,
+	/**
+	 *  Embedded item metadata so a client can render the inventory without a
+	 *  second round-trip. `None` iff the referenced item was deleted from
+	 *  the catalog — surface the row anyway so the user sees a placeholder.
+	 */
+	item: MarketplaceItemResponse | null,
 };
 
 export type InviteRequest = {
@@ -1102,6 +1401,22 @@ export type IssueEvidenceUrlResponse = {
 	expires_at: string,
 	preservation_key_fingerprint: string,
 };
+
+export type ItemListQuery = {
+	cursor?: string | null,
+	limit?: number | null,
+	// Optional type filter — case-insensitive match on `MarketplaceItemType`.
+	item_type?: string | null,
+	// Optional rarity filter — case-insensitive match on `ItemRarity`.
+	rarity?: string | null,
+};
+
+/**
+ *  Rarity tier for marketplace items. Higher rarity can correspond to
+ *  higher `price_tier_required`, but the two are independent fields so a
+ *  free Common item and a Core-locked Legendary item can both exist.
+ */
+export type ItemRarity = "Common" | "Rare" | "Epic" | "Legendary";
 
 export type LifeEvent = {
 	event_id: string,
@@ -1125,6 +1440,23 @@ export type LifeEventType = "Career" | "Relationship" | "Personal" | "Conflict" 
  */
 "Departure";
 
+export type ListChannelsQuery = {
+	type: ChannelType | null,
+};
+
+export type ListMessagesQuery = {
+	/**
+	 *  Opaque pagination cursor (base64-encoded UUID of the last item on the
+	 *  previous page). Previous field name `before` is still accepted as an
+	 *  alias for back-compat with existing clients that send a raw UUID.
+	 *  Reference: ME-API-001 §4.1.
+	 */
+	cursor?: string | null,
+	before?: string | null,
+	after: string | null,
+	limit: number | null,
+};
+
 export type LocationType = "Residential" | "Commercial" | "Social" | "Workplace" | "Transit" | "Landmark" | "Wilderness";
 
 export type MarketplaceCategory = "DashboardTheme" | "PortraitStyle" | "ExportTemplate" | "ShardAesthetic" | "ScenarioPack" | "SeasonalCosmetic" | "SoundPack";
@@ -1144,6 +1476,33 @@ export type MarketplaceItem = {
 	content_hash: string,
 	created_at: string,
 };
+
+export type MarketplaceItemResponse = {
+	item_id: string,
+	name: string,
+	description: string,
+	item_type: MarketplaceItemType,
+	rarity: ItemRarity,
+	price_tier_required: SubscriptionTier,
+	price_coins: number,
+	image_url: string | null,
+	is_available: boolean,
+	created_at: string,
+};
+
+/**
+ *  Category of item sold on the marketplace. Reference: ME-API-001 §4.3.9,
+ *  ME-CSS-001 §7.
+ */
+export type MarketplaceItemType = 
+// Cosmetic skin applied to an Echo portrait / card accent.
+"EchoSkin" | 
+// Visual theme applied to a Shard (parallax, color palette).
+"ShardTheme" | 
+// Diary narration preset (font, frame, header animation).
+"DiaryStyle" | 
+// Profile badge awarded or purchased.
+"Badge";
 
 export type MemoryType = "Episodic" | "Semantic" | "Emotional" | "Relationship" | "Summarised";
 
@@ -1227,6 +1586,32 @@ export type ModerationActionType =
  */
 "EscalatedToAdmin";
 
+export type ModerationResponse = {
+	action_id: string,
+	action_type: ModerationActionType,
+	moderator_id: string,
+	target_user_id: string | null,
+	target_channel_id: string | null,
+	reason: string,
+	expires_at: string | null,
+	created_at: string,
+};
+
+export type ModeratorUserItem = {
+	user_id: string,
+	email: string,
+	display_name: string,
+	account_type: AccountType,
+	updated_at: string,
+};
+
+export type MuteRequest = {
+	user_id: string,
+	channel_id: string,
+	duration_seconds: number,
+	reason: string,
+};
+
 export type Notification = {
 	notification_id: string,
 	user_id: string,
@@ -1259,6 +1644,21 @@ export type NotificationPreferences = {
 	updated_at: string,
 };
 
+export type NotificationQuery = {
+	limit: number,
+	unread_only?: boolean,
+};
+
+export type OAuthCallbackParams = {
+	code: string,
+	state: string,
+};
+
+export type OAuthInitResponse = {
+	// The Discord authorization URL the client should redirect to.
+	auth_url: string,
+};
+
 export type OracleAskRequest = {
 	question: string,
 	// Legacy field names (from server-side callers).
@@ -1287,10 +1687,41 @@ export type OracleContextPayload = {
 	screen: string | null,
 };
 
+export type OracleContextResponse = {
+	user_id: string,
+	echo_count: number,
+	echoes: OracleEchoRef[],
+	shards: OracleShardRef[],
+	recent_events: OracleEventRef[],
+};
+
+export type OracleEchoRef = {
+	echo_id: string,
+	name: string,
+	status: string,
+	current_shard_id: string,
+	current_mood: string,
+	avatar_url: string | null,
+};
+
+export type OracleEventRef = {
+	item_id: string,
+	echo_id: string,
+	headline: string,
+	tick_id: number,
+	created_at: string,
+};
+
 // A prior message in the Oracle conversation for session continuity.
 export type OracleHistoryMessage = {
 	role: string,
 	text: string,
+};
+
+export type OracleShardRef = {
+	shard_id: string,
+	name: string,
+	status: string,
 };
 
 /**
@@ -1302,6 +1733,29 @@ export type OracleHistoryMessage = {
  *  for archetype mappings used by the persona→voice classifier.
  */
 export type OrpheusVoice = "tara" | "leah" | "jess" | "leo" | "dan" | "mia" | "zac" | "zoe";
+
+/**
+ *  Shared pagination query parameters. Handlers can flatten this via
+ *  `#[serde(flatten)]` into their own `Query` struct when they need
+ *  additional filters.
+ */
+export type PageParams = {
+	cursor?: string | null,
+	limit?: number | null,
+};
+
+export type PasswordResetConfirmRequest = {
+	reset_token: string,
+	new_password: string,
+};
+
+export type PasswordResetRequest = {
+	email: string,
+};
+
+export type PasswordResetResponse = {
+	message: string,
+};
 
 export type PaymentRecord = {
 	payment_id: string,
@@ -1367,6 +1821,12 @@ export type PersonaMode = "Quick" | "Detailed";
 export type PickIncludedShardRequest = {
 	session_id: string,
 	shard_id: string,
+};
+
+export type PollVoteRequest = {
+	discord_message_id: string,
+	discord_channel_id: string,
+	answer_id: number,
 };
 
 export type PostMessageRequest = {
@@ -1472,6 +1932,18 @@ export type PublicProfileResponse = {
 	is_founding_echo: boolean,
 };
 
+export type PurchaseRequest = {
+	item_id: string,
+};
+
+export type RelationshipResponse = {
+	relationship_id: string,
+	source_user_id: string,
+	target_user_id: string,
+	relationship_type: UserRelationshipType,
+	created_at: string,
+};
+
 export type RelationshipStatus = "Active" | "Faded" | "Ended" | "Severed";
 
 export type ReportResponse = {
@@ -1491,6 +1963,21 @@ export type ReportResponse = {
 export type ReportStatus = "Pending" | "Reviewing" | "Resolved" | "Dismissed";
 
 export type ReportTargetType = "Echo" | "User" | "Content" | "Message";
+
+export type ResolveEscalationRequest = {
+	resolution_notes: string,
+};
+
+export type SearchQuery = {
+	q: string,
+	cursor?: string | null,
+	limit: number,
+	/**
+	 *  Legacy offset — accepted for back-compat with clients that haven't
+	 *  migrated to cursor pagination yet. Ignored if `cursor` is set.
+	 */
+	offset?: number,
+};
 
 export type SearchResult = {
 	item_type: string,
@@ -1595,6 +2082,21 @@ export type ShardDetail = {
 	created_at: string,
 	// Locale of name/description fields: user's locale or "en" (pending).
 	content_locale: string,
+	/**
+	 *  How this shard was provisioned (ME-TIER-001 v6 §2). See
+	 *  [`ShardSummary::provisioning_type`] for the rendering contract.
+	 */
+	provisioning_type: ProvisioningType,
+	/**
+	 *  UTC instant this shard entered the Archived state. See
+	 *  [`ShardSummary::archived_at`] for the rendering contract.
+	 */
+	archived_at: string | null,
+	/**
+	 *  UTC instant at which the archive sweep deletes this shard. See
+	 *  [`ShardSummary::archive_expires_at`] for the rendering contract.
+	 */
+	archive_expires_at: string | null,
 };
 
 export type ShardEchoSummary = {
@@ -1604,6 +2106,15 @@ export type ShardEchoSummary = {
 	current_mood: string,
 	current_location_id: string,
 	current_tick: number,
+};
+
+export type ShardListQuery = {
+	// Filter by shard type: `public` or `private`.
+	type: string | null,
+	// Comma-separated tag filter.
+	tags: string | null,
+	// Sort order: `population` or `newest` (default).
+	sort: string,
 };
 
 export type ShardLocation = {
@@ -1646,6 +2157,26 @@ export type ShardSummary = {
 	created_at: string,
 	// Locale of name/description fields: user's locale or "en" (pending).
 	content_locale: string,
+	/**
+	 *  How this shard was provisioned (ME-TIER-001 v6 §2). Drives the
+	 *  archived-shard card banner in ME-MIS-001 §5.2. Mirrors
+	 *  `Shard.provisioning_type`.
+	 */
+	provisioning_type: ProvisioningType,
+	/**
+	 *  UTC instant this shard entered the Archived state. `None` unless
+	 *  `provisioning_type == Archived`. Drives the ME-MIS-001 §5.2
+	 *  archived-shard banner timestamp. Mirrors `Shard.archived_at`.
+	 */
+	archived_at: string | null,
+	/**
+	 *  UTC instant at which the archive sweep deletes this shard
+	 *  (convention: `archived_at + 30 days`). Drives the ME-MIS-001
+	 *  §5.2 countdown label on archived-shard cards and the
+	 *  Account → Subscription pending-deletion list. Mirrors
+	 *  `Shard.archive_expires_at`.
+	 */
+	archive_expires_at: string | null,
 };
 
 export type ShardTheme = {
@@ -1728,14 +2259,64 @@ export type StoryExportResponse = {
 	subtitle_path: string | null,
 };
 
+export type SubmitFeedbackRequest = {
+	user_message: string,
+	structured_summary: string,
+	feedback_type: FeedbackType,
+	context: FeedbackContext,
+};
+
+export type SubmitFeedbackResponse = {
+	feedback_id: string,
+	status: string,
+	message: string,
+};
+
 export type SubscriptionStatus = "Active" | "PastDue" | "Cancelled" | "Expired";
 
 export type SubscriptionTier = "Free" | "Starter" | "Core" | "Creator" | "GodMode";
 
+export type SystemStatusResponse = {
+	tick_number: number,
+	tick_duration_ms: number,
+	ram_usage_mb: number,
+	vram_usage_mb: number,
+	vram_total_mb: number,
+	active_echoes: number,
+	hibernated_echoes: number,
+	total_users: number,
+	total_shards: number,
+};
+
 export type TechnologyLevel = "Primitive" | "Industrial" | "Modern" | "NearFuture" | "FarFuture" | "Fantasy";
+
+export type TickResponse = {
+	message: string,
+	tick_id: number,
+};
+
+export type TickStateResponse = {
+	tick_number: number,
+	tick_duration_ms: number,
+	paused: boolean,
+};
 
 export type TravelRequest = {
 	destination_shard_id: string,
+};
+
+export type TravelRequestDecision = {
+	approved: boolean,
+};
+
+export type TravelRequestResponse = {
+	request_id: string,
+	echo_id: string,
+	requester_user_id: string,
+	destination_shard_id: string,
+	status: string,
+	created_at: string,
+	expires_at: string,
 };
 
 export type TravelResponse = {
@@ -1747,6 +2328,19 @@ export type TravelResponse = {
 
 export type TravelState = "Stationary" | "Travelling";
 
+export type UpdateAccountRequest = {
+	display_name: string | null,
+	email: string | null,
+	locale: string | null,
+	timezone: string | null,
+};
+
+export type UpdateBreachRecordRequest = {
+	notified_authorities: boolean | null,
+	notified_users: boolean | null,
+	resolved: boolean | null,
+};
+
 export type UpdateCSAMIncidentRequest = {
 	ncmec_report_id: string | null,
 	regional_report_id: string | null,
@@ -1757,6 +2351,59 @@ export type UpdateCSAMIncidentRequest = {
 	status: CSAMIncidentStatus | null,
 	preservation_locked: boolean | null,
 	notes: string | null,
+};
+
+export type UpdateChannelRequest = {
+	description: string | null,
+	is_read_only: boolean | null,
+	slow_mode_seconds: number | null,
+	status: ChannelStatus | null,
+};
+
+export type UpdateDiscordPrefsRequest = {
+	sync_display_name: boolean | null,
+};
+
+export type UpdatePreferencesRequest = {
+	echo_life_events: NotificationDelivery | null,
+	daily_digest: NotificationDelivery | null,
+	social: NotificationDelivery | null,
+	community: NotificationDelivery | null,
+	shard_activity: NotificationDelivery | null,
+	platform: NotificationDelivery | null,
+	marketplace: NotificationDelivery | null,
+	billing: NotificationDelivery | null,
+	moderation: NotificationDelivery | null,
+	account: NotificationDelivery | null,
+};
+
+export type UpdatePrivacyRequest = {
+	solo_mode: boolean | null,
+	do_not_sell: boolean | null,
+	profile_visibility: ProfileVisibility | null,
+};
+
+export type UpdateProfileRequest = {
+	display_name: string | null,
+	/**
+	 *  User's UI locale. Must be `"en"` or one of `config.translation.supported_locales`.
+	 *  Reference: docs/claude/i18n-multilingual-tasks.md CC TASK 1 STEP 6.
+	 */
+	locale: string | null,
+	// Free-text bio shown on the public profile. Empty string clears it.
+	bio: string | null,
+};
+
+export type UpdateReportRequest = {
+	status: ReportStatus | null,
+	priority: number | null,
+	resolution: string | null,
+};
+
+export type UpdateShardRequest = {
+	name: string | null,
+	description: string | null,
+	status: string | null,
 };
 
 export type User = {
@@ -1931,6 +2578,33 @@ export type UserSubscription = {
 	updated_at: string,
 };
 
+export type VersionResponse = {
+	version: string,
+	name: string,
+};
+
+// A complete voice conversation session between a user and their Echo.
+export type VoiceConversation = {
+	id: string,
+	echo_id: string,
+	user_id: string,
+	transcript: VoiceConversationTurn[],
+	started_at: string,
+	ended_at: string | null,
+	/**
+	 *  LLM-generated summary of the conversation (2-3 sentences).
+	 *  Injected into tick prompts and future voice call context.
+	 */
+	summary: string | null,
+};
+
+// A single turn in a voice conversation.
+export type VoiceConversationTurn = {
+	speaker: string,
+	text: string,
+	timestamp: string,
+};
+
 /**
  *  One turn of a persisted voice conversation. Mirrors
  *  `me_core::models::voice::VoiceConversationTurn` with `utoipa::ToSchema`
@@ -1965,6 +2639,36 @@ export type VoiceConversationView = {
 	 *  session is still in progress or the summariser hasn't caught up.
 	 */
 	summary: string | null,
+};
+
+export type VoiceSessionResponse = {
+	active: boolean,
+	echo_id: string | null,
+	voice_ws_url: string | null,
+	started_at: string | null,
+	remaining_seconds?: number | null,
+};
+
+export type VoiceStartResponse = {
+	voice_ws_url: string,
+	echo_id: string,
+	session_nonce: number,
+	conversation_id: string,
+	session_duration_seconds: number,
+	/**
+	 *  Cloudflare Calls App ID for WebRTC audio transport.
+	 *  Client uses this to configure STUN/TURN. Secret stays server-side.
+	 */
+	calls_app_id: string,
+	/**
+	 *  Short-lived, single-use token embedded in `voice_ws_url`. The
+	 *  pipeline sidecar verifies this via the loopback-only endpoint
+	 *  /internal/voice/verify-session before accepting the WS upgrade.
+	 *  Clients don't need to use this value directly — it's already
+	 *  baked into `voice_ws_url` — but it's returned here so a custom
+	 *  client could validate the URL it received.
+	 */
+	session_token: string,
 };
 
 export type WaitlistCountResponse = {
@@ -2075,6 +2779,17 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
  *  One event per user per sweep pass.
  */
 { HibernatedContentDeleted: { user_id: string; echo_ids: string[]; shard_ids: string[]; deleted_at: string } };
+
+// Query params for WebSocket connection (JWT token).
+export type WsAuthQuery = {
+	/**
+	 *  Short-lived JWT access token. Browsers can't set
+	 *  `Authorization` headers during the WebSocket upgrade handshake,
+	 *  so the token is passed in the query string. The server
+	 *  validates signature + expiry + blocklist on every upgrade.
+	 */
+	token: string | null,
+};
 
 /**
  *  Events sent over the WebSocket to clients.
