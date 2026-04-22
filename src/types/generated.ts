@@ -781,6 +781,13 @@ export type EchoResponse = {
 	 *  to apply.
 	 */
 	original_locale?: string | null,
+	/**
+	 *  UTC instant this Echo entered hibernation, `None` while Active. Drives
+	 *  the ME-MIS-001 §5.2 hibernated-Echo card banner and the 90-day
+	 *  auto-deletion countdown referenced by ME-UAD-001 §5.3. Mirrors
+	 *  `Echo.hibernated_at`.
+	 */
+	hibernated_at: string | null,
 };
 
 export type EchoStatus = "Active" | "Travelling" | "Hibernated" | "Quarantined" | "Deleted";
@@ -1595,6 +1602,21 @@ export type ShardDetail = {
 	created_at: string,
 	// Locale of name/description fields: user's locale or "en" (pending).
 	content_locale: string,
+	/**
+	 *  How this shard was provisioned (ME-TIER-001 v6 §2). See
+	 *  [`ShardSummary::provisioning_type`] for the rendering contract.
+	 */
+	provisioning_type: ProvisioningType,
+	/**
+	 *  UTC instant this shard entered the Archived state. See
+	 *  [`ShardSummary::archived_at`] for the rendering contract.
+	 */
+	archived_at: string | null,
+	/**
+	 *  UTC instant at which the archive sweep deletes this shard. See
+	 *  [`ShardSummary::archive_expires_at`] for the rendering contract.
+	 */
+	archive_expires_at: string | null,
 };
 
 export type ShardEchoSummary = {
@@ -1646,6 +1668,26 @@ export type ShardSummary = {
 	created_at: string,
 	// Locale of name/description fields: user's locale or "en" (pending).
 	content_locale: string,
+	/**
+	 *  How this shard was provisioned (ME-TIER-001 v6 §2). Drives the
+	 *  archived-shard card banner in ME-MIS-001 §5.2. Mirrors
+	 *  `Shard.provisioning_type`.
+	 */
+	provisioning_type: ProvisioningType,
+	/**
+	 *  UTC instant this shard entered the Archived state. `None` unless
+	 *  `provisioning_type == Archived`. Drives the ME-MIS-001 §5.2
+	 *  archived-shard banner timestamp. Mirrors `Shard.archived_at`.
+	 */
+	archived_at: string | null,
+	/**
+	 *  UTC instant at which the archive sweep deletes this shard
+	 *  (convention: `archived_at + 30 days`). Drives the ME-MIS-001
+	 *  §5.2 countdown label on archived-shard cards and the
+	 *  Account → Subscription pending-deletion list. Mirrors
+	 *  `Shard.archive_expires_at`.
+	 */
+	archive_expires_at: string | null,
 };
 
 export type ShardTheme = {
