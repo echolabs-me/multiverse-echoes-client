@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { trackEvent } from '../lib/analytics.ts';
 import type { SupportedLocale } from '../i18n.ts';
+import { useReducedMotion } from '../hooks/useReducedMotion.ts';
+import { AdaptiveLanguageSubheader } from '../components/AdaptiveLanguageSubheader.tsx';
 
 /**
  * Apply the user's locale choice to a desired destination path.
@@ -50,11 +52,6 @@ const languages: Language[] = [
   { code: 'th', countryCode: 'th', nativeName: 'ไทย' },
   { code: 'ms', countryCode: 'my', nativeName: 'Melayu' },
 ];
-
-/** Check if user prefers reduced motion. */
-function prefersReducedMotion(): boolean {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
 
 export function LanguageSelectionPage() {
   const navigate = useNavigate();
@@ -119,7 +116,7 @@ export function LanguageSelectionPage() {
     [selectLanguage],
   );
 
-  const reduced = prefersReducedMotion();
+  const reduced = useReducedMotion();
 
   const animClass = reduced ? 'me-anim-none' : '';
 
@@ -137,12 +134,7 @@ export function LanguageSelectionPage() {
         >
           MULTIVERSE ECHOES
         </h1>
-        <p
-          className={`me-fade-up mbe-8 text-center font-serif text-lg font-light tracking-wide text-[#9BA5AE] ${animClass}`}
-          data-delay="150"
-        >
-          Choose your language&ensp;&middot;&ensp;选择语言&ensp;&middot;&ensp;भाषा चुनें
-        </p>
+        <AdaptiveLanguageSubheader />
 
         {/* Language tiles — circle on desktop/tablet, grid on phone */}
         {useGrid ? (

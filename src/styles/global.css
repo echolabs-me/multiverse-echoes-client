@@ -1128,6 +1128,18 @@ pre {
 
 /* ─── LanguageSelectionPage: dynamic-scale helpers ─── */
 
+/* Adaptive subheader — three centred slots with rotating phrases 2 and 3.
+ * min-inline-size sizes each slot to fit the majority of "Choose your
+ * language" translations in a single line. A handful of the longest
+ * Latin-diacritic phrases (German / Vietnamese / Tagalog) push a few ch
+ * beyond this minimum; the paragraph is text-align: center with natural
+ * inline flow so any pulse only affects the paragraph's own edges — the
+ * flag circle below lives in a fixed-size container unaffected by
+ * subheader width. */
+.me-adaptive-slot {
+  min-inline-size: 14ch;
+}
+
 /* Language tile — scale + border set via data-expanded / data-reduced. */
 .me-lang-tile {
   position: relative;

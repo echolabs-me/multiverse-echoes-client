@@ -15,10 +15,16 @@ void testI18n.use(initReactI18next).init({
   resources: {
     en: {
       translation: {
-        // Only key actually used by LanguageSelectionPage.tsx (aria-label on
-        // the listbox containers — lines 137 and 159). Heading and subtitle
-        // are hardcoded in source, not i18n.
-        'onboarding.languageSelectionLabel': 'Language selection',
+        onboarding: {
+          // aria-label on the listbox containers (circle + mobile grid).
+          languageSelectionLabel: 'Language selection',
+          // Rendered by AdaptiveLanguageSubheader (replaces the prior
+          // hardcoded subtitle). Only English is seeded here — the
+          // component's per-slot translateFor() falls back to 'en' for
+          // locales whose bundle isn't loaded in this test instance, so
+          // the bar still renders without errors.
+          chooseLanguageTitle: 'Choose your language',
+        },
       },
     },
   },
@@ -41,9 +47,9 @@ describe('LanguageSelectionPage', () => {
     await act(async () => {
       renderPage();
     });
-    // LanguageSelectionPage.tsx:119-123 renders a hardcoded brand h1. The
-    // legacy 'Choose your language' heading is now part of a multilingual
-    // subtitle (line 128) and is not a standalone element.
+    // The legacy 'Choose your language' heading is now rendered by the
+    // AdaptiveLanguageSubheader component as three rotating slots — the
+    // brand h1 remains the only standalone heading on the page.
     expect(
       screen.getByRole('heading', { level: 1, name: 'MULTIVERSE ECHOES' }),
     ).toBeInTheDocument();
