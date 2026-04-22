@@ -952,6 +952,13 @@ export type FeedItemResponse = {
 	 *  CC TASK 3 Step 3.
 	 */
 	content_locale: string,
+	/**
+	 *  True iff the authoring Echo's owner owns the Founding Echo badge.
+	 *  Computed once per response via a single batched
+	 *  `UserInventoryRepository::get_founding_echo_owners` call over
+	 *  the page's unique `owner_user_id`s. See ME-MIS-001 §7.3.
+	 */
+	owner_is_founding_echo: boolean,
 };
 
 export type FeedItemType = "diary_entry" | "life_event" | "relationship_change" | "achievement" | "global_event_participation" | "user_shared";
@@ -1154,6 +1161,13 @@ export type MessageResponse = {
 	can_delete: boolean,
 	image_url: string | null,
 	poll_data: string | null,
+	/**
+	 *  True iff the message's `author_id` owns the Founding Echo badge.
+	 *  Computed once per response via a single batched
+	 *  `UserInventoryRepository::get_founding_echo_owners` call. See
+	 *  ME-MIS-001 §7.3.
+	 */
+	owner_is_founding_echo: boolean,
 };
 
 export type MessageType = "UserMessage" | "SystemMessage" | "EchoHighlight";
@@ -1422,6 +1436,42 @@ export type ProvisioningType = "Included" |
  */
 "PaidAddon" | "Archived";
 
+export type PublicEchoRef = {
+	echo_id: string,
+	name: string,
+	current_shard_id: string,
+	current_mood: string,
+	avatar_url: string | null,
+	created_at: string,
+	/**
+	 *  True iff this Echo's owning user owns the Founding Echo badge.
+	 *  Computed at response serialization via
+	 *  `UserInventoryRepository::get_founding_echo_owners`. See
+	 *  ME-MIS-001 §7.3.
+	 */
+	owner_is_founding_echo: boolean,
+};
+
+export type PublicProfileResponse = {
+	user_id: string,
+	display_name: string,
+	bio: string | null,
+	avatar_url: string | null,
+	profile_visibility: ProfileVisibility,
+	account_type: AccountType,
+	subscription_tier: SubscriptionTier,
+	created_at: string,
+	// True iff the viewer and target mutually follow each other.
+	mutual_follow: boolean,
+	/**
+	 *  True iff this user owns the Founding Echo badge in
+	 *  `UserInventory`. Computed at response serialization via
+	 *  `UserInventoryRepository::get_founding_echo_owners`. See
+	 *  ME-MIS-001 §7.3.
+	 */
+	is_founding_echo: boolean,
+};
+
 export type RelationshipStatus = "Active" | "Faded" | "Ended" | "Severed";
 
 export type ReportResponse = {
@@ -1448,6 +1498,18 @@ export type SearchResult = {
 	echo_id: string | null,
 	snippet: string,
 	created_at: string,
+	/**
+	 *  True iff the owning user of the referenced content owns the
+	 *  Founding Echo badge. For echo / diary / event rows the owner
+	 *  is the caller (search is currently self-scoped — see
+	 *  `list_by_owner(&auth.user_id)` in every handler). For shard
+	 *  rows the field is always `false` — shard results do not
+	 *  render a user badge (shards have no single owner).
+	 *  Computed once per response from one batched
+	 *  `UserInventoryRepository::get_founding_echo_owners` call.
+	 *  Reference: ME-MIS-001 §7.3.
+	 */
+	owner_is_founding_echo: boolean,
 };
 
 export type SendMessageRequest = {
