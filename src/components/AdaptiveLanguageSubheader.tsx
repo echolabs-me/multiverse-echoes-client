@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LOCALES, RTL_LOCALES, type SupportedLocale } from '../i18n.ts';
 import { useReducedMotion } from '../hooks/useReducedMotion.ts';
 import {
@@ -7,8 +6,8 @@ import {
   shuffle,
   staticFallbackSlots,
 } from './adaptiveLanguageSubheader.utils.ts';
+import { CHOOSE_LANGUAGE_TITLES } from '../generated/choose-language-titles.ts';
 
-const CHOOSE_LANGUAGE_KEY = 'onboarding.chooseLanguageTitle';
 const ROTATION_INTERVAL_MS = 1000;
 const FADE_MS = 300;
 
@@ -49,22 +48,33 @@ const FADE_MS = 300;
  * interrupted every second. The <p> has no aria-live because only the
  * stable slot 1 is announced.
  *
- * Hydration — initial slot-1 value is 'en' on both server and client; a
- * useEffect runs post-mount to swap in the detected locale, avoiding any
- * hydration-mismatch warning from the prerender path.
+ * No-FOUC — the 21 "Choose your language" translations are inlined via
+ * generated/choose-language-titles.ts (a build-time reflection of the
+ * canonical locale JSONs, verified in-sync by the pre-commit hook). This
+ * removes the ~200 ms English-fallback flash that previously appeared on
+ * slot 1 while the lazy-loaded native bundle fetched. Total bundle cost is
+ * ~400 bytes gzipped — negligible compared to the ~300 KB gzipped cost of
+ * eagerly preloading all 21 full locale bundles on entry.
+ *
+ * Hydration — the prerender pass sees no `navigator`, so server HTML always
+ * ships with slot 1 = 'en' and a deterministic-by-random shuffle for slots
+ * 2+3. On client mount, `navigator.language` is read synchronously and the
+ * shuffle re-runs, so the first client paint uses the real values. The
+ * resulting slot-content + `lang` attribute mismatch is intentional and
+ * suppressed with `suppressHydrationWarning` on the paragraph root — this
+ * is React's sanctioned pattern for locale-dependent content under SSR.
  */
 export function AdaptiveLanguageSubheader() {
-  const { i18n } = useTranslation();
   const reduced = useReducedMotion();
 
-  const [slot1Locale, setSlot1Locale] = useState<SupportedLocale>('en');
-  useEffect(() => {
-    const applyDetectedLocale = () => {
-      if (typeof navigator === 'undefined') return;
-      setSlot1Locale(detectShippedLocale(navigator.language));
-    };
-    applyDetectedLocale();
-  }, []);
+  // Read the detected locale synchronously on first client render so slot 1
+  // never flashes English on the way to the native greeting. On the prerender
+  // pass `navigator` is undefined and this returns 'en' — the hydration
+  // divergence is handled by suppressHydrationWarning on the paragraph root.
+  const [slot1Locale] = useState<SupportedLocale>(() => {
+    if (typeof navigator === 'undefined') return 'en';
+    return detectShippedLocale(navigator.language);
+  });
 
   const rotation = useMemo<readonly SupportedLocale[]>(() => {
     const others = (SUPPORTED_LOCALES as readonly SupportedLocale[]).filter(
@@ -73,28 +83,12 @@ export function AdaptiveLanguageSubheader() {
     return shuffle(others);
   }, [slot1Locale]);
 
-  const [bundlesReady, setBundlesReady] = useState(() =>
-    (SUPPORTED_LOCALES as readonly string[]).every((l) =>
-      i18n.hasResourceBundle(l, 'translation'),
-    ),
-  );
-  useEffect(() => {
-    if (bundlesReady) return;
-    let cancelled = false;
-    void i18n.loadLanguages([...SUPPORTED_LOCALES]).then(() => {
-      if (!cancelled) setBundlesReady(true);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [bundlesReady, i18n]);
-
   const [cursor, setCursor] = useState(0);
   const [fading, setFading] = useState(false);
   const swapTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
-    if (reduced || !bundlesReady) return undefined;
+    if (reduced) return undefined;
     const intervalId = setInterval(() => {
       setFading(true);
       swapTimerRef.current = setTimeout(() => {
@@ -109,12 +103,10 @@ export function AdaptiveLanguageSubheader() {
         swapTimerRef.current = undefined;
       }
     };
-  }, [reduced, bundlesReady, rotation.length]);
+  }, [reduced, rotation.length]);
 
-  const translateFor = (locale: SupportedLocale): string => {
-    const source = i18n.hasResourceBundle(locale, 'translation') ? locale : 'en';
-    return i18n.getFixedT(source, 'translation')(CHOOSE_LANGUAGE_KEY);
-  };
+  const translateFor = (locale: SupportedLocale): string =>
+    CHOOSE_LANGUAGE_TITLES[locale];
 
   const [staticSlot2, staticSlot3] = staticFallbackSlots(slot1Locale);
   const slot2Locale: SupportedLocale = reduced
@@ -136,6 +128,7 @@ export function AdaptiveLanguageSubheader() {
       data-delay="150"
       data-testid="adaptive-language-subheader"
       dir="ltr"
+      suppressHydrationWarning
     >
       <span
         lang={slot1Locale}

@@ -13,11 +13,14 @@ import {
   detectShippedLocale,
   shuffle,
 } from '../src/components/adaptiveLanguageSubheader.utils.ts';
+import { CHOOSE_LANGUAGE_TITLES } from '../src/generated/choose-language-titles.ts';
 import { SUPPORTED_LOCALES } from '../src/i18n.ts';
 
-// Static imports of all 21 locale bundles — the production client lazy-loads
-// non-English locales via a backend, but in tests we pre-seed every bundle so
-// the component's loadLanguages path is a synchronous no-op.
+// Static imports of all 21 locale bundles. The production client lazy-loads
+// non-English locales, but the component reads its slot text from the
+// generated CHOOSE_LANGUAGE_TITLES map (no i18n bundle lookup). These raw
+// imports power the phraseFor() helper used by assertions so test literals
+// come from the canonical locale JSONs, not from a hand-maintained copy.
 import en from '../src/locales/en.json';
 import zhHans from '../src/locales/zh-Hans.json';
 import zhHant from '../src/locales/zh-Hant.json';
@@ -443,26 +446,50 @@ describe('AdaptiveLanguageSubheader', () => {
     expect(bar.querySelector('[data-slot="3"]')?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('uses the existing onboarding.chooseLanguageTitle i18n key', async () => {
-    // Regression guard: if the component accidentally introduces a parallel
-    // i18n key, swapping the en bundle's chooseLanguageTitle through this
-    // instance-level override must propagate to the rendered slot 1.
-    setNavLanguage('en');
-    const i18n = buildI18n();
-    i18n.addResourceBundle(
-      'en',
-      'translation',
-      { onboarding: { chooseLanguageTitle: 'ADAPTIVE_OVERRIDE' } },
-      true,
-      true,
-    );
+  it('inline titles table matches every locale JSON onboarding.chooseLanguageTitle', () => {
+    // Parity guard for the generated inline map. Duplicates the pre-commit
+    // check in-process so a test run catches drift even if the generator
+    // is not rerun. The component reads translations from
+    // CHOOSE_LANGUAGE_TITLES; if that map diverges from the canonical
+    // locale JSONs, every visitor sees a stale or wrong greeting.
+    for (const locale of Object.keys(BUNDLES)) {
+      expect(CHOOSE_LANGUAGE_TITLES[locale as keyof typeof CHOOSE_LANGUAGE_TITLES]).toBe(
+        phraseFor(locale as keyof typeof BUNDLES),
+      );
+    }
+  });
+
+  it('renders slot 1 in the detected locale on the FIRST render — no English intermediate (FOUC guard)', async () => {
+    // FOUC regression guard. Before the inline-titles refactor, the
+    // component used i18n.getFixedT which falls back to 'en' until the
+    // detected locale's bundle finishes lazy-loading — Korean visitors saw
+    // "Choose your language" for ~200 ms on the landing page. This test
+    // renders with an i18n instance that has NO non-English bundle seeded,
+    // so a bundle-dependent implementation would be forced into the English
+    // fallback; the inline-titles path must render Korean immediately.
+    setNavLanguage('ko-KR');
+    const bareI18n = i18next.createInstance();
+    void bareI18n.use(initReactI18next).init({
+      resources: { en: { translation: { onboarding: { chooseLanguageTitle: 'Choose your language' } } } },
+      lng: 'en',
+      fallbackLng: 'en',
+      interpolation: { escapeValue: false },
+      showSupportNotice: false,
+    });
     await act(async () => {
-      renderWith(i18n);
+      render(
+        <I18nextProvider i18n={bareI18n}>
+          <AdaptiveLanguageSubheader />
+        </I18nextProvider>,
+      );
     });
     const slot1 = screen.getByTestId('adaptive-language-subheader').querySelector(
       '[data-slot="1"]',
     );
-    expect(slot1?.textContent).toBe('ADAPTIVE_OVERRIDE');
+    expect(slot1?.getAttribute('lang')).toBe('ko');
+    expect(slot1?.textContent).toBe(phraseFor('ko'));
+    // Specifically assert it's NOT the English fallback string.
+    expect(slot1?.textContent).not.toBe('Choose your language');
   });
 
   it('applies the me-adaptive-slot min-inline-size class to all three slots', async () => {

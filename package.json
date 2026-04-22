@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/generate-sitemap.js",
+    "prebuild": "node scripts/generate-sitemap.js && node scripts/generate-choose-language-inline.js",
     "build": "tsc -b && vite build",
     "postbuild": "node scripts/prerender.js",
     "generate-sitemap": "node scripts/generate-sitemap.js",
@@ -20,6 +20,7 @@
     "check-i18n": "node scripts/check-i18n-keys.js",
     "check-strings": "node scripts/check-hardcoded-strings.js",
     "check-dynamic-keys": "node scripts/check-dynamic-keys.js",
+    "check-choose-language-inline": "node scripts/generate-choose-language-inline.js --check",
     "test:watch": "vitest"
   },
   "dependencies": {

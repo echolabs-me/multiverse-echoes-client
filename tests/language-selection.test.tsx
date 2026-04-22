@@ -18,12 +18,6 @@ void testI18n.use(initReactI18next).init({
         onboarding: {
           // aria-label on the listbox containers (circle + mobile grid).
           languageSelectionLabel: 'Language selection',
-          // Rendered by AdaptiveLanguageSubheader (replaces the prior
-          // hardcoded subtitle). Only English is seeded here — the
-          // component's per-slot translateFor() falls back to 'en' for
-          // locales whose bundle isn't loaded in this test instance, so
-          // the bar still renders without errors.
-          chooseLanguageTitle: 'Choose your language',
         },
       },
     },
