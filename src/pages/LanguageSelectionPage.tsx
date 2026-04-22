@@ -130,7 +130,7 @@ export function LanguageSelectionPage() {
       <div className="relative z-10 flex flex-col items-center">
         {/* Centre text */}
         <h1
-          className={`me-fade-up mbe-2 text-center font-serif text-4xl font-light tracking-[0.14em] text-[#E8E0D8] ${animClass}`}
+          className={`me-fade-up mbe-2 text-center font-serif text-4xl font-light tracking-[0.14em] text-(--text-primary) ${animClass}`}
         >
           MULTIVERSE ECHOES
         </h1>
@@ -243,7 +243,7 @@ function LanguageTile({
       onMouseLeave={onMouseLeave}
       data-expanded={expanded}
       data-reduced={reduced}
-      className={`me-lang-tile group flex flex-col items-center gap-1.5 rounded-xl bg-[rgba(212,145,92,0.06)] text-center outline-none focus-visible:ring-2 focus-visible:ring-[#D4915C] focus-visible:ring-offset-2 focus-visible:ring-offset-canvas ${
+      className={`me-lang-tile group flex flex-col items-center gap-1.5 rounded-xl bg-(--accent)/6 text-center outline-none focus-visible:ring-2 focus-visible:ring-(--accent) focus-visible:ring-offset-2 focus-visible:ring-offset-canvas ${
         isCircle ? 'px-3 py-2.5' : 'px-2 py-3'
       }`}
     >
@@ -254,7 +254,7 @@ function LanguageTile({
         className="size-9 rounded-full object-cover"
         draggable={false}
       />
-      <span className="font-serif text-sm font-medium whitespace-nowrap text-[#E8E0D8]">
+      <span className="font-serif text-sm font-medium whitespace-nowrap text-(--text-primary)">
         {lang.nativeName}
       </span>
     </button>

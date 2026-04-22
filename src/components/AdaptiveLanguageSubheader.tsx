@@ -132,7 +132,7 @@ export function AdaptiveLanguageSubheader() {
 
   return (
     <p
-      className="me-fade-up mbe-8 text-center font-serif text-lg font-light tracking-wide text-[#9BA5AE]"
+      className="me-fade-up mbe-8 text-center font-serif text-lg font-light tracking-wide text-(--text-secondary)"
       data-delay="150"
       data-testid="adaptive-language-subheader"
       dir="ltr"
