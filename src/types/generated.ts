@@ -1787,7 +1787,8 @@ export type PaymentType = "Subscription" | "MarketplacePurchase" | "Tip";
  *  Included slot — the user must transition each to a terminal
  *  decision before the session can commit. On timeout, all remaining
  *  `Undecided` + `UpgradeBack` shards fall to `Archive` (conservative
- *  default that preserves content for 30 days).
+ *  default that preserves content for the 90-day archive retention
+ *  window per `me_api::data_lifecycle::GRACE_PERIOD_DAYS`).
  * 
  *  `UpgradeBack` per Flag B resolution (Session 100 dispatch): the
  *  shard stays `Included` in the DB during the 24-hour grace window
@@ -1879,9 +1880,11 @@ export type PromotionalSubscription = {
  * 
  *  - `Included` — granted by tier (Creator=1, GodMode=3).
  *  - `PaidAddon` — purchased via the Private Shard add-on ($4.99/mo).
- *  - `Archived` — lost its Included slot on downgrade; 30-day retention
- *    window gated by `Shard.archive_expires_at`, then swept. During the
- *    window auto-restores on re-upgrade or add-on purchase (Commit 7B).
+ *  - `Archived` — lost its Included slot on downgrade; 90-day
+ *    retention window gated by `Shard.archive_expires_at` (per
+ *    `me_api::data_lifecycle::GRACE_PERIOD_DAYS`), then swept by the
+ *    daily `DataLifecycleEnforcer`. During the window auto-restores
+ *    on re-upgrade or add-on purchase (Commit 7B).
  * 
  *  For non-Private shards the field is a legacy no-op carrier — it is
  *  always populated (default `PaidAddon`) but ignored by business logic.
@@ -2042,11 +2045,14 @@ export type Shard = {
 	archived_at?: string | null,
 	/**
 	 *  UTC instant at which the archive sweep deletes this shard.
-	 *  Convention: `archived_at + 30 days`. The sweep
-	 *  (`spawn_shard_archive_enforcer`) runs hourly and deletes shards
-	 *  whose `archive_expires_at` is in the past. If the user upgrades
-	 *  or purchases the Private Shard add-on during the window, both
-	 *  `archived_at` and `archive_expires_at` are cleared (Commit 7B).
+	 *  Convention: `archived_at + GRACE_PERIOD_DAYS` (90 days per
+	 *  `me_api::data_lifecycle::GRACE_PERIOD_DAYS`, ME-MIS-001 §5.2).
+	 *  The daily `DataLifecycleEnforcer` deletes every shard whose
+	 *  `archive_expires_at` is in the past, in the same pass that
+	 *  deletes hibernated Echoes past their 90-day grace. If the
+	 *  user upgrades or purchases the Private Shard add-on during the
+	 *  window, both `archived_at` and `archive_expires_at` are
+	 *  cleared (Commit 7B).
 	 */
 	archive_expires_at?: string | null,
 	updated_at: string,
@@ -2170,11 +2176,14 @@ export type ShardSummary = {
 	 */
 	archived_at: string | null,
 	/**
-	 *  UTC instant at which the archive sweep deletes this shard
-	 *  (convention: `archived_at + 30 days`). Drives the ME-MIS-001
-	 *  §5.2 countdown label on archived-shard cards and the
-	 *  Account → Subscription pending-deletion list. Mirrors
-	 *  `Shard.archive_expires_at`.
+	 *  UTC instant at which the archive sweep deletes this shard.
+	 *  Convention: `archived_at + GRACE_PERIOD_DAYS` (90 days per
+	 *  `me_api::data_lifecycle::GRACE_PERIOD_DAYS`, ME-MIS-001 §5.2 —
+	 *  the Echo hibernation grace and the Private-Shard archive
+	 *  retention share the same 90-day window and the same daily
+	 *  sweep). Drives the ME-MIS-001 §5.2 countdown label on
+	 *  archived-shard cards and the Account → Subscription pending-
+	 *  deletion list. Mirrors `Shard.archive_expires_at`.
 	 */
 	archive_expires_at: string | null,
 };
@@ -2299,6 +2308,76 @@ export type TickStateResponse = {
 	tick_number: number,
 	tick_duration_ms: number,
 	paused: boolean,
+};
+
+/**
+ *  Per-tier quota snapshot served by `GET /subscription/tier-limits`.
+ * 
+ *  This is the server-sourced single source of truth for every
+ *  per-tier quota the client renders — the pre-confirm downgrade
+ *  screen reads `echo_count_limit` for each tier so the user sees how
+ *  many Echoes will be hibernated on commit, the Talk-to-Echo UI
+ *  reads `conversation_daily_limit` off the caller's tier entry, and
+ *  pricing / tier-comparison surfaces read the full quota set.
+ *  Clients MUST NOT hardcode any of these values; reads should always
+ *  flow through this endpoint.
+ * 
+ *  `None` in an `Option<u32>` encodes "unlimited" (the canonical
+ *  shape for GodMode on conversations, nudges, and influence per
+ *  ME-MIS-001 §3.1). Fields that are finite on every tier (Echoes,
+ *  Private Shard inclusions, follow cap, REST rate limit) are
+ *  plain `u32`.
+ */
+export type TierLimits = {
+	// The subscription tier these limits describe.
+	tier: SubscriptionTier,
+	/**
+	 *  Maximum concurrent Echoes the tier permits
+	 *  (`[monetization].*_tier_echo_limit`). All five tiers are
+	 *  finite post-Session-099 — GodMode caps at 12.
+	 */
+	echo_count_limit: number,
+	/**
+	 *  Daily Talk-to-Echo conversations
+	 *  (`[monetization.conversations].*_daily_conversations`).
+	 *  `None` iff unlimited (GodMode, encoded as `0` in config).
+	 */
+	conversation_daily_limit: number | null,
+	/**
+	 *  Daily Influence Points
+	 *  (`[monetization.influence].*_daily_points`). `None` iff
+	 *  unlimited.
+	 */
+	influence_daily_limit: number | null,
+	/**
+	 *  Daily Nudges (`[monetization.nudges].*_daily_nudges`). `None`
+	 *  iff unlimited (GodMode, encoded as `0` in config and mapped
+	 *  via `NudgeLimits::from_config`).
+	 */
+	nudge_daily_limit: number | null,
+	/**
+	 *  Private Shards included with the tier
+	 *  (`[monetization.private_shards].*_included`). PaidAddon
+	 *  shards are purchased on top of this floor.
+	 */
+	private_shards_included: number,
+	/**
+	 *  Maximum outgoing Follows on the social graph
+	 *  (`[social.follow_limits].*`). Block and mute are not capped.
+	 */
+	follow_cap: number,
+	/**
+	 *  HTTP requests-per-minute limit on bearer-JWT calls
+	 *  (`[api.rate_limits].*_requests_per_minute`). API-key calls
+	 *  follow a separate per-key cap.
+	 */
+	api_requests_per_minute: number,
+	/**
+	 *  Maximum concurrent API keys the tier permits. `None` iff
+	 *  unlimited (GodMode). Sourced from `api_keys::api_key_limit`;
+	 *  not config-driven today (see function doc).
+	 */
+	api_key_limit: number | null,
 };
 
 export type TravelRequest = {
