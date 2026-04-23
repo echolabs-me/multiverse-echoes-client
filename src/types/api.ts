@@ -22,6 +22,7 @@ import type {
   DowngradeSession as _DowngradeSession,
   DowngradeSessionState as _DowngradeSessionState,
   DowngradeSessionView as _DowngradeSessionView,
+  EchoResponse as _EchoResponse,
   EconomicModel as _EconomicModel,
   EchoRelationshipType as _EchoRelationshipType,
   EchoStatus as _EchoStatus,
@@ -40,12 +41,16 @@ import type {
   PendingDecisionEntry as _PendingDecisionEntry,
   PersonaMode as _PersonaMode,
   PickIncludedShardRequest as _PickIncludedShardRequest,
+  ProvisioningType as _ProvisioningType,
   ReportStatus as _ReportStatus,
   ReportTargetType as _ReportTargetType,
   ShardDecisionRequest as _ShardDecisionRequest,
+  ShardDetail as _ShardDetail,
+  ShardSummary as _ShardSummary,
   ShardType as _ShardType,
   SubscriptionTier as _SubscriptionTier,
   TechnologyLevel as _TechnologyLevel,
+  TierLimits as _TierLimits,
   TravelState as _TravelState,
   UserRelationshipType as _UserRelationshipType,
   WaitlistStatus as _WaitlistStatus,
@@ -81,12 +86,14 @@ export type PendingDecision = _PendingDecision;
 export type PendingDecisionEntry = _PendingDecisionEntry;
 export type PersonaMode = _PersonaMode;
 export type PickIncludedShardRequest = _PickIncludedShardRequest;
+export type ProvisioningType = _ProvisioningType;
 export type ReportStatus = _ReportStatus;
 export type ReportTargetType = _ReportTargetType;
 export type ShardDecisionRequest = _ShardDecisionRequest;
 export type ShardType = _ShardType;
 export type SubscriptionTier = _SubscriptionTier;
 export type TechnologyLevel = _TechnologyLevel;
+export type TierLimits = _TierLimits;
 export type TravelState = _TravelState;
 export type UserRelationshipType = _UserRelationshipType;
 export type WaitlistStatus = _WaitlistStatus;
@@ -194,56 +201,17 @@ export interface CreateEchoRequest {
   physical_description?: string;
 }
 
-export interface EchoResponse {
-  echo_id: string;
-  name: string;
-  persona_text: string;
-  what_if_prompt: string;
-  status: string;
-  current_mood: string;
-  current_tick: number;
-  current_shard_id: string;
-  birth_hash: string;
-  created_at: string;
-  avatar_url: string | null;
-  /** Optional free-text physical description supplied at creation. Null for
-   *  Echoes created before the field was introduced. Immutable after
-   *  creation per ME-UAD-001 §2.4 v1.1. */
-  physical_description: string | null;
-}
+/** Server-sourced Echo response. Regenerated from the Rust struct via
+ *  `cargo run --bin generate-types`; this file re-exports the specta
+ *  shape rather than redeclaring fields, so new server-added fields
+ *  (e.g. `hibernated_at`, `persona_text_original`) flow through without
+ *  a hand-maintained duplicate. */
+export type EchoResponse = _EchoResponse;
 
 // --- Shard ---
 
-export interface ShardSummary {
-  shard_id: string;
-  name: string;
-  shard_type: ShardType;
-  status: string;
-  description: string;
-  current_active_count: number;
-  current_hibernated_count: number;
-  max_active_echoes: number;
-  banner_image: string | null;
-  created_at: string;
-}
-
-export interface ShardDetail {
-  shard_id: string;
-  name: string;
-  shard_type: ShardType;
-  status: string;
-  description: string;
-  era: string;
-  region: string;
-  tags: string[];
-  current_active_count: number;
-  current_hibernated_count: number;
-  max_active_echoes: number;
-  max_hibernated_echoes: number;
-  allows_travel: boolean;
-  tick_rate_modifier: number;
-  created_at: string;
-}
+export type ShardSummary = _ShardSummary;
+export type ShardDetail = _ShardDetail;
 
 /** Alias for backward compatibility — maps to ShardSummary. */
 export type Shard = ShardSummary;

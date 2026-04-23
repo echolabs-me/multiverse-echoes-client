@@ -42,6 +42,7 @@ import { PaymentSuccessPage } from './pages/PaymentSuccessPage.tsx';
 import { PaymentCancelledPage } from './pages/PaymentCancelledPage.tsx';
 import { TipPage } from './pages/TipPage.tsx';
 import { DowngradeChoicePage } from './pages/DowngradeChoicePage.tsx';
+import { DowngradeConfirmPage } from './pages/DowngradeConfirmPage.tsx';
 import { NotFoundPage } from './pages/NotFoundPage.tsx';
 
 function hasSelectedLocale(): boolean {
@@ -193,6 +194,16 @@ export function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/admin" element={<AdminDashboardPage />} />
             <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
+            {/* ME-MIS-001 §5.2 Surface C — the informed-consent
+                screen gates entry to the per-shard decision flow.
+                DowngradeChoicePage itself checks for `?consented=1`
+                and redirects here if missing, so even a direct URL
+                hit to /downgrade-choice funnels through this page
+                first. */}
+            <Route
+              path="/subscription/downgrade-confirm"
+              element={<DowngradeConfirmPage />}
+            />
             <Route
               path="/subscription/downgrade-choice"
               element={<DowngradeChoicePage />}

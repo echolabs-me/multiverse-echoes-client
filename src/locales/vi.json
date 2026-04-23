@@ -1328,11 +1328,46 @@
       "keepIncluded": "Giữ làm Đi kèm",
       "buyAddon": "Mua gói bổ sung (4,99 $/tháng)",
       "upgradeBack": "Nâng cấp trở lại",
-      "archive": "Lưu trữ (giữ 30 ngày)",
-      "archiveWarning": "Shard sẽ ngừng hoạt động ngay lập tức và bị xóa sau 30 ngày, trừ khi bạn khôi phục bằng cách nâng cấp trở lại hoặc mua gói bổ sung.",
+      "archive": "Lưu trữ (giữ lại 90 ngày)",
+      "archiveWarning": "Shard ngừng hoạt động ngay lập tức và sẽ bị xóa sau 90 ngày, trừ khi bạn khôi phục bằng cách nâng cấp lại hoặc mua tiện ích bổ sung.",
       "commit": "Xác nhận quyết định",
       "cancel": "Hủy — quyết định sau",
       "successMessage": "Các quyết định hạ cấp của bạn đã được áp dụng."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "Echo này đang ngủ đông và sẽ bị xóa vào {{date}}, trừ khi bạn nâng cấp lại hoặc giải phóng một slot để đánh thức nó.",
+      "echoDeletesOn": "Xóa vào {{date}}",
+      "shardArchivedBanner": "Shard này đã được lưu trữ. Nó đã ngừng hoạt động và sẽ bị xóa vào {{date}}, trừ khi bạn khôi phục bằng cách nâng cấp lại hoặc mua tiện ích bổ sung.",
+      "shardDeletesOn": "Xóa vào {{date}}",
+      "consent": {
+        "title": "Xác nhận hạ cấp",
+        "loading": "Đang tải chi tiết hạ cấp của bạn…",
+        "noPending": "Không có quyết định hạ cấp nào đang chờ.",
+        "errorGeneric": "Đã xảy ra lỗi khi tải chi tiết hạ cấp của bạn.",
+        "summary": "Bạn đang chuyển từ {{oldTier}} sang {{newTier}}. Đây là những gì sẽ xảy ra khi bạn xác nhận.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{count}} trong số {{total}} Echo của bạn sẽ vào chế độ ngủ đông.",
+        "echoesNoneHibernated": "Không có Echo nào vào chế độ ngủ đông. Tất cả {{total}} đều nằm trong giới hạn {{cap}} của {{newTier}}.",
+        "echoesDeletion": "Các Echo đang ngủ đông sẽ bị xóa vĩnh viễn 90 ngày sau khi xác nhận, trừ khi bạn đánh thức chúng bằng cách giải phóng một slot hoặc nâng cấp lại trước đó.",
+        "shardsHeader": "Shards riêng tư",
+        "shardsDecisionCount": "{{count}} Shard riêng tư cần một quyết định trên màn hình tiếp theo: mua dưới dạng tiện ích bổ sung, nâng cấp lại, hoặc lưu trữ.",
+        "shardsNoneToDecide": "Không cần quyết định nào về Shard riêng tư trong lần hạ cấp này.",
+        "shardsDeletion": "Các Shard bạn chọn lưu trữ sẽ bị xóa vĩnh viễn 90 ngày sau khi xác nhận, trừ khi bạn khôi phục chúng bằng cách mua tiện ích bổ sung hoặc nâng cấp lại.",
+        "checkboxLabel": "Tôi hiểu những thay đổi này và rằng các Echo ngủ đông và Shard lưu trữ sẽ bị xóa vĩnh viễn sau 90 ngày trừ khi tôi hành động.",
+        "proceed": "Tiếp tục đến các quyết định",
+        "cancel": "Hủy hạ cấp",
+        "retry": "Thử lại"
+      },
+      "pendingList": {
+        "title": "Xóa đang chờ",
+        "empty": "Không có Echo hoặc Shard nào được lên lịch xóa.",
+        "echoLabel": "Echo",
+        "shardLabel": "Shard riêng tư",
+        "deletesOn": "Xóa vào {{date}}",
+        "loading": "Đang tải các mục xóa đang chờ…",
+        "loadError": "Không thể tải các mục xóa đang chờ.",
+        "retry": "Thử lại"
+      }
     }
   },
   "contact": {

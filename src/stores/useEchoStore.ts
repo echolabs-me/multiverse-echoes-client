@@ -66,21 +66,92 @@ export const useEchoStore = create<EchoState>((set, get) => ({
   },
 
   hibernateEcho: async (id) => {
-    await echoes.hibernate(id);
+    // Snapshot the pre-call state so we can roll back on failure.
+    // Copy by structure (not reference) so later mutations to the
+    // list don't retroactively alter the rollback target.
+    const prevList = get().echoList;
+    const prevActive = get().activeEcho;
+    const prevEntry = prevList.find((e) => e.echo_id === id);
+
+    // Optimistic `status` flip for snappy UI. `hibernated_at` stays
+    // on the previous value (null while Active) — the server owns
+    // that field, so we wait for the handler response before
+    // touching it. No client-generated timestamps.
     set({
-      echoList: get().echoList.map((e) =>
+      echoList: prevList.map((e) =>
         e.echo_id === id ? { ...e, status: 'Hibernated' } : e,
       ),
+      activeEcho:
+        prevActive?.echo_id === id
+          ? { ...prevActive, status: 'Hibernated' }
+          : prevActive,
     });
+
+    try {
+      // Server returns the full updated EchoResponse including the
+      // authoritative `hibernated_at` instant. Merge it in verbatim
+      // — do NOT overlay a client-side clock value.
+      const updated = await echoes.hibernate(id);
+      set({
+        echoList: get().echoList.map((e) =>
+          e.echo_id === id ? updated : e,
+        ),
+        activeEcho:
+          get().activeEcho?.echo_id === id ? updated : get().activeEcho,
+      });
+    } catch (err) {
+      // Roll back the optimistic status flip. If the entry was not
+      // in the list at call time (edge case: deleted during flight),
+      // we leave the list as the mutator above wrote it.
+      if (prevEntry) {
+        set({
+          echoList: get().echoList.map((e) =>
+            e.echo_id === id ? prevEntry : e,
+          ),
+          activeEcho:
+            get().activeEcho?.echo_id === id ? prevActive : get().activeEcho,
+        });
+      }
+      throw err;
+    }
   },
 
   wakeEcho: async (id) => {
-    await echoes.wake(id);
+    const prevList = get().echoList;
+    const prevActive = get().activeEcho;
+    const prevEntry = prevList.find((e) => e.echo_id === id);
+
     set({
-      echoList: get().echoList.map((e) =>
+      echoList: prevList.map((e) =>
         e.echo_id === id ? { ...e, status: 'Active' } : e,
       ),
+      activeEcho:
+        prevActive?.echo_id === id
+          ? { ...prevActive, status: 'Active' }
+          : prevActive,
     });
+
+    try {
+      const updated = await echoes.wake(id);
+      set({
+        echoList: get().echoList.map((e) =>
+          e.echo_id === id ? updated : e,
+        ),
+        activeEcho:
+          get().activeEcho?.echo_id === id ? updated : get().activeEcho,
+      });
+    } catch (err) {
+      if (prevEntry) {
+        set({
+          echoList: get().echoList.map((e) =>
+            e.echo_id === id ? prevEntry : e,
+          ),
+          activeEcho:
+            get().activeEcho?.echo_id === id ? prevActive : get().activeEcho,
+        });
+      }
+      throw err;
+    }
   },
 
   setActiveEcho: (echo) => set({ activeEcho: echo }),

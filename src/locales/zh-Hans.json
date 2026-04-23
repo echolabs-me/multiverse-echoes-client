@@ -1328,11 +1328,46 @@
       "keepIncluded": "作为包含项保留",
       "buyAddon": "购买附加包($4.99/月)",
       "upgradeBack": "恢复升级",
-      "archive": "归档(保留 30 天)",
-      "archiveWarning": "Shard 将立即停止运行,30 天后删除,除非您在此期间重新升级或购买附加包以恢复。",
+      "archive": "归档（保留 90 天）",
+      "archiveWarning": "该 Shard 立即停止运行，并将在 90 天后删除，除非您重新升级或购买附加组件恢复它。",
       "commit": "提交决定",
       "cancel": "取消 — 稍后决定",
       "successMessage": "您的降级决定已生效。"
+    },
+    "deletion": {
+      "echoHibernatedBanner": "此 Echo 已休眠，将于 {{date}} 删除，除非您升级回原方案或腾出一个槽位将其唤醒。",
+      "echoDeletesOn": "将于 {{date}} 删除",
+      "shardArchivedBanner": "此 Shard 已归档。它已停止运行，并将于 {{date}} 删除，除非您通过重新升级或购买附加组件恢复它。",
+      "shardDeletesOn": "将于 {{date}} 删除",
+      "consent": {
+        "title": "确认您的降级",
+        "loading": "正在加载您的降级详情…",
+        "noPending": "没有待处理的降级决定。",
+        "errorGeneric": "加载您的降级详情时出错。",
+        "summary": "您将从 {{oldTier}} 降级到 {{newTier}}。确认后将发生以下更改。",
+        "echoesHeader": "回声",
+        "echoesHibernateCount": "您的 {{total}} 个回声中有 {{count}} 个将被休眠。",
+        "echoesNoneHibernated": "不会有任何回声被休眠。所有 {{total}} 个都在 {{newTier}} 的 {{cap}} 个上限之内。",
+        "echoesDeletion": "休眠的回声将在确认后 90 天永久删除，除非您通过腾出槽位将其唤醒或在此之前升级回原方案。",
+        "shardsHeader": "私有 Shard",
+        "shardsDecisionCount": "有 {{count}} 个私有 Shard 需要在下一屏作出决定：作为附加组件购买、升级回原方案或归档。",
+        "shardsNoneToDecide": "此次降级无需对私有 Shard 作出决定。",
+        "shardsDeletion": "您选择归档的 Shard 将在确认后 90 天永久删除，除非您通过购买附加组件或升级回原方案恢复它们。",
+        "checkboxLabel": "我理解这些更改，并且休眠的回声和归档的 Shard 将在 90 天后永久删除，除非我采取行动。",
+        "proceed": "继续进行决定",
+        "cancel": "取消降级",
+        "retry": "重试"
+      },
+      "pendingList": {
+        "title": "待删除项目",
+        "empty": "没有待删除的回声或 Shard。",
+        "echoLabel": "回声",
+        "shardLabel": "私有 Shard",
+        "deletesOn": "将于 {{date}} 删除",
+        "loading": "正在加载待删除项目…",
+        "loadError": "无法加载待删除项目。",
+        "retry": "重试"
+      }
     }
   },
   "contact": {

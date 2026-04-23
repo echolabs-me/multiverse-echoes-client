@@ -1328,11 +1328,46 @@
       "keepIncluded": "Pertahankan sebagai Termasuk",
       "buyAddon": "Beli add-on ($4,99/bln)",
       "upgradeBack": "Naikkan kembali paket",
-      "archive": "Arsipkan (retensi 30 hari)",
-      "archiveWarning": "Shard akan berhenti berjalan seketika dan dihapus setelah 30 hari, kecuali Anda memulihkannya dengan menaikkan paket atau membeli add-on.",
+      "archive": "Arsipkan (disimpan 90 hari)",
+      "archiveWarning": "Shard langsung berhenti berjalan dan dihapus setelah 90 hari, kecuali Anda memulihkannya dengan melakukan upgrade kembali atau membeli add-on.",
       "commit": "Konfirmasi keputusan",
       "cancel": "Batal — putuskan nanti",
       "successMessage": "Keputusan penurunan paket Anda telah diterapkan."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "Echo ini sedang hibernasi dan akan dihapus pada {{date}}, kecuali Anda upgrade kembali atau membebaskan slot untuk membangunkannya.",
+      "echoDeletesOn": "Dihapus pada {{date}}",
+      "shardArchivedBanner": "Shard ini telah diarsipkan. Shard berhenti berjalan dan akan dihapus pada {{date}}, kecuali Anda memulihkannya dengan melakukan upgrade kembali atau membeli add-on.",
+      "shardDeletesOn": "Dihapus pada {{date}}",
+      "consent": {
+        "title": "Konfirmasi penurunan paket",
+        "loading": "Memuat detail penurunan paket Anda…",
+        "noPending": "Tidak ada keputusan penurunan paket yang tertunda.",
+        "errorGeneric": "Terjadi kesalahan saat memuat detail penurunan paket Anda.",
+        "summary": "Anda pindah dari {{oldTier}} ke {{newTier}}. Berikut yang akan terjadi saat Anda mengonfirmasi.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{count}} dari {{total}} Echo Anda akan masuk mode hibernasi.",
+        "echoesNoneHibernated": "Tidak ada Echo yang akan masuk mode hibernasi. Semua {{total}} muat dalam batas {{cap}} dari {{newTier}}.",
+        "echoesDeletion": "Echo yang hibernasi dihapus secara permanen 90 hari setelah konfirmasi, kecuali Anda membangunkannya dengan membebaskan slot atau melakukan upgrade kembali sebelumnya.",
+        "shardsHeader": "Shards privat",
+        "shardsDecisionCount": "{{count}} Shard privat memerlukan keputusan di layar berikutnya: beli sebagai add-on, upgrade kembali, atau arsipkan.",
+        "shardsNoneToDecide": "Tidak ada keputusan Shard privat yang diperlukan untuk penurunan paket ini.",
+        "shardsDeletion": "Shard yang Anda pilih untuk diarsipkan akan dihapus secara permanen 90 hari setelah konfirmasi, kecuali Anda memulihkannya dengan membeli add-on atau melakukan upgrade kembali.",
+        "checkboxLabel": "Saya memahami perubahan ini dan bahwa Echo yang hibernasi dan Shard yang diarsipkan akan dihapus secara permanen setelah 90 hari kecuali saya mengambil tindakan.",
+        "proceed": "Lanjut ke keputusan",
+        "cancel": "Batalkan penurunan paket",
+        "retry": "Coba lagi"
+      },
+      "pendingList": {
+        "title": "Penghapusan tertunda",
+        "empty": "Tidak ada Echo atau Shard yang dijadwalkan untuk dihapus.",
+        "echoLabel": "Echo",
+        "shardLabel": "Shard privat",
+        "deletesOn": "Dihapus pada {{date}}",
+        "loading": "Memuat penghapusan tertunda…",
+        "loadError": "Tidak dapat memuat penghapusan tertunda.",
+        "retry": "Coba lagi"
+      }
     }
   },
   "contact": {

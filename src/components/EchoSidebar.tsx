@@ -21,6 +21,8 @@ import { useShardStore } from '../stores/useShardStore.ts';
 import { getMoodColor } from '../lib/moodColor.ts';
 import { getMoodLabel } from '../lib/moodLabel.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
+import { echoDeletionDate, isEchoHibernated } from '../lib/hibernation.ts';
+import { formatDeletionDate } from '../lib/formatDate.ts';
 import type { EchoResponse } from '../types/api.ts';
 
 /** Convert hex color to rgba string. */
@@ -77,6 +79,12 @@ function EchoCard({
   // Only show travelling if the echo is active (not hibernated)
   const showTravelIndicator = isTravelling && echo.status === 'Active';
 
+  // ME-MIS-001 §5.2 hibernated Echo card banner. Takes precedence over
+  // the travelling and diary-preview rows when the Echo is hibernated
+  // so the 90-day deletion countdown is always visible on the card.
+  const hibernated = isEchoHibernated(echo);
+  const deletionDate = echoDeletionDate(echo.hibernated_at);
+
   // Set mood-derived CSS custom properties once the card mounts / re-renders
   // with a new mood. Avoids inline style attributes (strict CSP style-src).
   const setMoodVars = (el: HTMLElement | null) => {
@@ -130,8 +138,18 @@ function EchoCard({
         <p className="truncate ps-4.5 text-[11px] text-text-secondary">
           {getMoodLabel(echo.current_mood)} · {t('echoSidebar.tick', { tick: echo.current_tick })}
         </p>
-        {/* Row 3: travelling indicator or diary preview */}
-        {showTravelIndicator ? (
+        {/* Row 3: hibernation banner > travelling indicator > diary preview */}
+        {hibernated && deletionDate ? (
+          <p
+            className="ps-4.5 text-[11px] font-medium text-warning"
+            role="status"
+            aria-live="polite"
+          >
+            {t('tiers.deletion.echoDeletesOn', {
+              date: formatDeletionDate(deletionDate),
+            })}
+          </p>
+        ) : showTravelIndicator ? (
           <p className="ps-4.5 text-xs/snug text-accent italic">
             {t('echoSidebar.arrivingAt', { shard: shardName })}
           </p>
@@ -414,7 +432,10 @@ export function MobileEchoSwitcher() {
               </button>
             </div>
             <ul className="max-h-64 overflow-y-auto p-1.5">
-              {echoList.map((echo) => (
+              {echoList.map((echo) => {
+                const echoHibernated = isEchoHibernated(echo);
+                const echoDeletion = echoDeletionDate(echo.hibernated_at);
+                return (
                 <li key={echo.echo_id}>
                   <button
                     onClick={() => {
@@ -438,10 +459,22 @@ export function MobileEchoSwitcher() {
                       <p className="truncate text-[11px] leading-tight text-text-muted">
                         {shardNameMap.get(echo.current_shard_id) ?? t('echoSidebar.unknownShard')}
                       </p>
+                      {echoHibernated && echoDeletion && (
+                        <p
+                          className="truncate text-[11px] leading-tight font-medium text-warning"
+                          role="status"
+                          aria-live="polite"
+                        >
+                          {t('tiers.deletion.echoDeletesOn', {
+                            date: formatDeletionDate(echoDeletion),
+                          })}
+                        </p>
+                      )}
                     </div>
                   </button>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </div>
         </>

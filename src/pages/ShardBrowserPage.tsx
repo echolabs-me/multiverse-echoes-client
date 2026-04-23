@@ -9,6 +9,8 @@ import {
   EmptyState,
 } from '../components/index.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
+import { isShardArchived, shardDeletionDate } from '../lib/hibernation.ts';
+import { formatDeletionDate } from '../lib/formatDate.ts';
 
 export function ShardBrowserPage() {
   const navigate = useNavigate();
@@ -74,7 +76,10 @@ export function ShardBrowserPage() {
             />
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredShards.map((shard) => (
+              {filteredShards.map((shard) => {
+                const archived = isShardArchived(shard);
+                const archiveDeletion = shardDeletionDate(shard.archive_expires_at);
+                return (
                 <Card
                   key={shard.shard_id}
                   onClick={() => navigate(`/shards/${shard.shard_id}`)}
@@ -94,7 +99,13 @@ export function ShardBrowserPage() {
                         {t(`shardNames.${shard.name.toLowerCase().replace(/\s+/g, '-')}`, { defaultValue: shard.name })}
                       </h3>
                       <Badge
-                        variant={shard.status === 'Active' ? 'success' : 'default'}
+                        variant={
+                          archived
+                            ? 'warning'
+                            : shard.status === 'Active'
+                              ? 'success'
+                              : 'default'
+                        }
                       >
                         {t(`shardBrowser.status${shard.status}`, { defaultValue: shard.status })}
                       </Badge>
@@ -102,6 +113,21 @@ export function ShardBrowserPage() {
                     <p className="line-clamp-4 text-xs text-text-secondary">
                       {t(`shardDescriptions.${shard.name.toLowerCase().replace(/\s+/g, '-')}`, { defaultValue: shard.description })}
                     </p>
+                    {/* ME-MIS-001 §5.2 Surface B — archived Shard card
+                        chip. `archive_expires_at` is server-provided
+                        (not computed client-side); see
+                        `crates/api/src/routes/shards.rs::ShardSummary`. */}
+                    {archived && archiveDeletion && (
+                      <p
+                        className="text-[11px] font-medium text-warning"
+                        role="status"
+                        aria-live="polite"
+                      >
+                        {t('tiers.deletion.shardDeletesOn', {
+                          date: formatDeletionDate(archiveDeletion),
+                        })}
+                      </p>
+                    )}
                     <div className="flex items-center gap-2 text-xs text-text-muted">
                       <MapPin size={12} aria-hidden="true" />
                       <span>{t(`shardBrowser.type${shard.shard_type}`, { defaultValue: shard.shard_type })}</span>
@@ -112,7 +138,8 @@ export function ShardBrowserPage() {
                     </div>
                   </div>
                 </Card>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

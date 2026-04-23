@@ -148,6 +148,12 @@ void testI18n.use(initReactI18next).init({
         // moodLabel.ts:37 aliases 'neutral' → 'neutral', then resolves
         // i18n.t('moods.neutral'). Loaded-state tests use current_mood: 'neutral'.
         'moods.neutral': 'Neutral',
+        // ME-MIS-001 §5.2 Surface A hibernated Echo banner. Keep the
+        // interpolation shape ({{date}}) identical to en.json so the
+        // assertions below resolve the same way in production.
+        'tiers.deletion.echoHibernatedBanner':
+          'This Echo is hibernated and will be deleted on {{date}} unless you upgrade back or free up a slot to wake it.',
+        'tiers.deletion.echoDeletesOn': 'Deletes {{date}}',
       },
     },
   },
@@ -266,5 +272,65 @@ describe('EchoDetailPage — feed sections (loaded state)', () => {
     });
     expect(await screen.findByText('No relationships yet')).toBeInTheDocument();
     expect(screen.getByText('Relationships will form')).toBeInTheDocument();
+  });
+});
+
+// ME-MIS-001 §5.2 Surface A — hibernated Echo banner. Mirrors the
+// card/switcher banner shown on EchoSidebar; on the detail page the
+// banner renders as a full-width warning strip above the What-if card
+// whenever `hibernated_at != null`, with the Status badge swapped to
+// the warning variant.
+describe('EchoDetailPage — hibernated Echo banner (ME-MIS-001 §5.2 Surface A)', () => {
+  afterEach(() => {
+    mockActiveEcho = null;
+  });
+
+  it('renders the banner with the 90-day deletion date when the Echo is hibernated', async () => {
+    // hibernated_at fixed in UTC so the locale-sensitive long-form date
+    // below resolves deterministically under en-US: 2026-01-15T12:00Z +
+    // 90 days → 2026-04-15.
+    mockActiveEcho = {
+      echo_id: 'e1',
+      name: 'Sleepy',
+      persona_text: 'p',
+      what_if_prompt: 'w',
+      status: 'Hibernated',
+      current_mood: 'neutral',
+      current_tick: 10,
+      current_shard_id: 's1',
+      birth_hash: 'h',
+      created_at: '2026-01-01T00:00:00Z',
+      avatar_url: null,
+      physical_description: null,
+      hibernated_at: '2026-01-15T12:00:00Z',
+    };
+    await act(async () => {
+      renderPage();
+    });
+    const banner = await screen.findByRole('status');
+    expect(banner.textContent).toContain('April 15, 2026');
+    expect(banner.textContent).toContain('hibernated');
+  });
+
+  it('does NOT render the banner when the Echo is active (hibernated_at is null)', async () => {
+    mockActiveEcho = {
+      echo_id: 'e1',
+      name: 'Awake',
+      persona_text: 'p',
+      what_if_prompt: 'w',
+      status: 'Active',
+      current_mood: 'neutral',
+      current_tick: 10,
+      current_shard_id: 's1',
+      birth_hash: 'h',
+      created_at: '2026-01-01T00:00:00Z',
+      avatar_url: null,
+      physical_description: null,
+      hibernated_at: null,
+    };
+    await act(async () => {
+      renderPage();
+    });
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 });

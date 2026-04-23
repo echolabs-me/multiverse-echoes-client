@@ -57,7 +57,8 @@ import { ApiRequestError } from '../lib/api/client.ts';
 import { translateError } from '../lib/translateError.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
-import { formatDate, formatDateTime } from '../lib/formatDate.ts';
+import { formatDate, formatDateTime, formatDeletionDate } from '../lib/formatDate.ts';
+import { echoDeletionDate, isEchoHibernated } from '../lib/hibernation.ts';
 import type {
   EchoRelationship,
   InfluenceBalance,
@@ -570,7 +571,15 @@ export function EchoDetailPage() {
             <div className="flex-1">
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-text-primary">{activeEcho.name}</h1>
-                <Badge variant={activeEcho.status === 'Active' ? 'success' : 'default'}>
+                <Badge
+                  variant={
+                    isEchoHibernated(activeEcho)
+                      ? 'warning'
+                      : activeEcho.status === 'Active'
+                        ? 'success'
+                        : 'default'
+                  }
+                >
                   {activeEcho.status}
                 </Badge>
               </div>
@@ -584,6 +593,27 @@ export function EchoDetailPage() {
               </p>
             </div>
           </div>
+
+          {/* ME-MIS-001 §5.2 hibernated Echo banner — renders the 90-day
+              auto-deletion countdown when `hibernated_at` is populated. */}
+          {(() => {
+            const deletionDate = echoDeletionDate(activeEcho.hibernated_at);
+            if (!isEchoHibernated(activeEcho) || !deletionDate) return null;
+            return (
+              <div
+                className="mbe-4 flex items-start gap-3 rounded-lg border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning"
+                role="status"
+                aria-live="polite"
+              >
+                <Moon size={18} className="mbs-0.5 shrink-0" aria-hidden="true" />
+                <span className="flex-1">
+                  {t('tiers.deletion.echoHibernatedBanner', {
+                    date: formatDeletionDate(deletionDate),
+                  })}
+                </span>
+              </div>
+            );
+          })()}
 
           {/* What-if prompt */}
           <Card variant="compact">

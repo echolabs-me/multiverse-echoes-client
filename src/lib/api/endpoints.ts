@@ -51,6 +51,8 @@ import type {
   SubmitFeedbackResponse,
   ModeratorUserItem,
   DowngradeSessionView,
+  ShardDetail,
+  TierLimits,
 } from '../../types/api.ts';
 
 // --- Auth ---
@@ -94,11 +96,18 @@ export const echoes = {
   delete: (echoId: string) =>
     request<MessageResponse>(`/echoes/${echoId}`, { method: 'DELETE' }),
 
+  // Server handlers return the updated `EchoResponse` (see
+  // `crates/api/src/routes/echoes.rs::hibernate_echo` and `wake_echo`
+  // — both end with `Ok(Json(EchoResponse::from(&updated)))`). The
+  // previous `MessageResponse` annotation was a type lie: in
+  // particular it erased the server-authoritative `hibernated_at`
+  // timestamp, forcing the store to fabricate one client-side where
+  // clock skew could corrupt the 90-day deletion countdown.
   hibernate: (echoId: string) =>
-    request<MessageResponse>(`/echoes/${echoId}/hibernate`, { method: 'POST' }),
+    request<EchoResponse>(`/echoes/${echoId}/hibernate`, { method: 'POST' }),
 
   wake: (echoId: string) =>
-    request<MessageResponse>(`/echoes/${echoId}/wake`, { method: 'POST' }),
+    request<EchoResponse>(`/echoes/${echoId}/wake`, { method: 'POST' }),
 
   travel: (echoId: string, targetShardId: string) =>
     request<MessageResponse>(`/echoes/${echoId}/travel`, {
@@ -217,7 +226,16 @@ export const shards = {
     return request<Shard[]>(`/shards${qs ? `?${qs}` : ''}`);
   },
 
-  get: (shardId: string) => request<Shard>(`/shards/${shardId}`),
+  // Server handler returns `ShardDetail` (see
+  // `crates/api/src/routes/shards.rs::get_shard` → `shard_to_detail`),
+  // not the summary shape the list endpoint returns. The previous
+  // `Shard` annotation (which aliases to `ShardSummary`) was a type
+  // lie — the runtime carries `era`, `region`, `tags`,
+  // `max_hibernated_echoes`, `allows_travel`, `tick_rate_modifier`,
+  // and `content_locale` in addition to the summary fields. Narrowed
+  // to `ShardDetail` so consumers can rely on those fields without a
+  // cast and so the type system catches future drift.
+  get: (shardId: string) => request<ShardDetail>(`/shards/${shardId}`),
 
   echoes: (shardId: string) => request<EchoResponse[]>(`/shards/${shardId}/echoes`),
 };
@@ -641,6 +659,19 @@ export const payments = {
 // crates/api/src/routes/subscription.rs (mounted at /subscription in
 // crates/api/src/lib.rs:415).
 export const subscription = {
+  /**
+   * Server-sourced per-tier quota snapshot (ME-MIS-001 §5.2
+   * pre-confirm consent screen source of truth for the Echo-count
+   * delta, plus anywhere else pricing/limits get displayed).
+   *
+   * Returns all five tiers in canonical low-to-high order (Free →
+   * GodMode). Clients MUST NOT hardcode any of these values — the
+   * whole reason this endpoint exists (PR #25) is that the server is
+   * the source of truth. Handler:
+   * `crates/api/src/routes/subscription.rs::get_tier_limits`.
+   */
+  tierLimits: () => request<TierLimits[]>('/subscription/tier-limits'),
+
   downgradePending: () =>
     request<DowngradeSessionView>('/subscription/downgrade/pending'),
 

@@ -1328,11 +1328,46 @@
       "keepIncluded": "Als enthalten behalten",
       "buyAddon": "Add-on kaufen (4,99 $/Monat)",
       "upgradeBack": "Erneut upgraden",
-      "archive": "Archivieren (30 Tage Aufbewahrung)",
-      "archiveWarning": "Der Shard hört sofort auf zu ticken und wird nach 30 Tagen gelöscht, sofern du ihn nicht durch ein erneutes Upgrade oder den Kauf des Add-ons wiederherstellst.",
+      "archive": "Archivieren (90 Tage Aufbewahrung)",
+      "archiveWarning": "Der Shard hört sofort auf zu ticken und wird nach 90 Tagen gelöscht, sofern du ihn nicht durch ein erneutes Upgrade oder den Kauf des Add-ons wiederherstellst.",
       "commit": "Entscheidungen bestätigen",
       "cancel": "Abbrechen — später entscheiden",
       "successMessage": "Deine Herabstufungsentscheidungen wurden übernommen."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "Dieser Echo ist im Ruhezustand und wird am {{date}} gelöscht, sofern du nicht erneut upgradest oder einen Platz freigibst, um ihn zu wecken.",
+      "echoDeletesOn": "Löschung am {{date}}",
+      "shardArchivedBanner": "Dieser Shard ist archiviert. Er hat aufgehört zu ticken und wird am {{date}} gelöscht, sofern du ihn nicht durch ein erneutes Upgrade oder den Kauf des Add-ons wiederherstellst.",
+      "shardDeletesOn": "Löschung am {{date}}",
+      "consent": {
+        "title": "Bestätige dein Downgrade",
+        "loading": "Lade die Details deines Downgrades…",
+        "noPending": "Keine ausstehenden Downgrade-Entscheidungen.",
+        "errorGeneric": "Beim Laden der Downgrade-Details ist etwas schiefgelaufen.",
+        "summary": "Du wechselst von {{oldTier}} zu {{newTier}}. Nach der Bestätigung passiert Folgendes.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{count}} von deinen {{total}} Echoes werden in den Ruhezustand versetzt.",
+        "echoesNoneHibernated": "Keine Echoes werden in den Ruhezustand versetzt. Alle {{total}} passen in das Limit von {{cap}} bei {{newTier}}.",
+        "echoesDeletion": "Echoes im Ruhezustand werden 90 Tage nach der Bestätigung endgültig gelöscht, es sei denn, du weckst sie durch das Freigeben eines Platzes oder upgradest vorher zurück.",
+        "shardsHeader": "Private Shards",
+        "shardsDecisionCount": "{{count}} private Shard(s) benötigen auf dem nächsten Bildschirm eine Entscheidung: als Add-on kaufen, zurück upgraden oder archivieren.",
+        "shardsNoneToDecide": "Bei diesem Downgrade sind keine Entscheidungen zu privaten Shards nötig.",
+        "shardsDeletion": "Shards, die du zum Archivieren auswählst, werden 90 Tage nach der Bestätigung endgültig gelöscht, es sei denn, du stellst sie durch den Kauf des Add-ons oder ein erneutes Upgrade wieder her.",
+        "checkboxLabel": "Ich verstehe diese Änderungen und dass Echoes im Ruhezustand und archivierte Shards nach 90 Tagen endgültig gelöscht werden, wenn ich nicht handle.",
+        "proceed": "Weiter zu den Entscheidungen",
+        "cancel": "Downgrade abbrechen",
+        "retry": "Erneut versuchen"
+      },
+      "pendingList": {
+        "title": "Ausstehende Löschungen",
+        "empty": "Keine Echoes oder Shards zur Löschung vorgemerkt.",
+        "echoLabel": "Echo",
+        "shardLabel": "Privater Shard",
+        "deletesOn": "Löschung am {{date}}",
+        "loading": "Lade ausstehende Löschungen…",
+        "loadError": "Ausstehende Löschungen konnten nicht geladen werden.",
+        "retry": "Erneut versuchen"
+      }
     }
   },
   "contact": {

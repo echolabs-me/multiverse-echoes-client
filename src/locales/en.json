@@ -1328,11 +1328,46 @@
       "keepIncluded": "Keep as Included",
       "buyAddon": "Buy add-on ($4.99/mo)",
       "upgradeBack": "Upgrade back",
-      "archive": "Archive (30-day retention)",
-      "archiveWarning": "The shard stops ticking immediately and is deleted after 30 days unless you restore it by re-upgrading or buying the add-on.",
+      "archive": "Archive (90-day retention)",
+      "archiveWarning": "The shard stops ticking immediately and is deleted after 90 days unless you restore it by re-upgrading or buying the add-on.",
       "commit": "Commit decisions",
       "cancel": "Cancel — decide later",
       "successMessage": "Your downgrade decisions have been applied."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "This Echo is hibernated and will be deleted on {{date}} unless you upgrade back or free up a slot to wake it.",
+      "echoDeletesOn": "Deletes {{date}}",
+      "shardArchivedBanner": "This Shard is archived. It stops ticking and will be deleted on {{date}} unless you restore it by re-upgrading or buying the add-on.",
+      "shardDeletesOn": "Deletes {{date}}",
+      "consent": {
+        "title": "Confirm your downgrade",
+        "loading": "Loading your downgrade details…",
+        "noPending": "No pending downgrade decisions.",
+        "errorGeneric": "Something went wrong loading your downgrade details.",
+        "summary": "You're moving from {{oldTier}} to {{newTier}}. Here's what will happen when you commit.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{count}} of your {{total}} Echo(es) will be hibernated.",
+        "echoesNoneHibernated": "No Echoes will be hibernated. All {{total}} fit under the {{newTier}} cap of {{cap}}.",
+        "echoesDeletion": "Hibernated Echoes are permanently deleted 90 days after commit unless you wake them by freeing a slot or upgrade back before then.",
+        "shardsHeader": "Private Shards",
+        "shardsDecisionCount": "{{count}} Private Shard(s) need a decision on the next screen: Buy as add-on, upgrade back, or archive.",
+        "shardsNoneToDecide": "No Private Shard decisions required on this downgrade.",
+        "shardsDeletion": "Shards you choose to archive are permanently deleted 90 days after commit unless you restore them by buying the add-on or upgrading back.",
+        "checkboxLabel": "I understand these changes and that hibernated Echoes and archived Shards will be permanently deleted after 90 days unless I act.",
+        "proceed": "Proceed to decisions",
+        "cancel": "Cancel downgrade",
+        "retry": "Retry"
+      },
+      "pendingList": {
+        "title": "Pending deletions",
+        "empty": "No Echoes or Shards are scheduled for deletion.",
+        "echoLabel": "Echo",
+        "shardLabel": "Private Shard",
+        "deletesOn": "Deletes {{date}}",
+        "loading": "Loading pending deletions…",
+        "loadError": "Couldn't load pending deletions.",
+        "retry": "Retry"
+      }
     }
   },
   "contact": {

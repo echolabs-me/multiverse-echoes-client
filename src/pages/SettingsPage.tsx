@@ -26,12 +26,25 @@ import { useThemeStore } from '../stores/useThemeStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
 import {
   account as accountApi,
+  echoes as echoesApi,
   feedback as feedbackApi,
+  shards as shardsApi,
 } from '../lib/api/endpoints.ts';
 import { request } from '../lib/api/client.ts';
 import { trackEvent } from '../lib/analytics.ts';
-import { formatDate } from '../lib/formatDate.ts';
-import type { NotificationPreferences, FeedbackEntry } from '../types/api.ts';
+import { formatDate, formatDeletionDate } from '../lib/formatDate.ts';
+import {
+  echoDeletionDate,
+  isEchoHibernated,
+  isShardArchived,
+  shardDeletionDate,
+} from '../lib/hibernation.ts';
+import type {
+  NotificationPreferences,
+  FeedbackEntry,
+  EchoResponse,
+  Shard,
+} from '../types/api.ts';
 
 export function SettingsPage() {
   const navigate = useNavigate();
@@ -266,6 +279,9 @@ function AccountSection() {
           </Link>
         </div>
       </Card>
+
+      {/* ME-MIS-001 §5.2 Surface D — pending-deletion list. */}
+      <PendingDeletionsCard />
 
       {/* Change Password */}
       <Card>
@@ -1000,5 +1016,134 @@ function DangerZoneSection() {
         )}
       </Card>
     </div>
+  );
+}
+
+// ── ME-MIS-001 §5.2 Surface D — Account → Subscription pending-deletion list ──
+//
+// Lists every Echo and Private Shard the user owns that is scheduled
+// for deletion, sorted by deletion date ascending so the soonest-
+// due item is on top. Mirrors the unified 90-day window from
+// `crates/api/src/data_lifecycle.rs::GRACE_PERIOD_DAYS` —
+// hibernated Echoes anchor from `hibernated_at` (client-computed via
+// `echoDeletionDate`) and archived Shards anchor from the
+// server-provided `archive_expires_at`.
+interface PendingEntry {
+  id: string;
+  kind: 'echo' | 'shard';
+  name: string;
+  deletionDate: Date;
+}
+
+type PendingState =
+  | { kind: 'loading' }
+  | { kind: 'ready'; entries: PendingEntry[] }
+  | { kind: 'error' };
+
+function PendingDeletionsCard() {
+  const { t } = useTranslation();
+  const [state, setState] = useState<PendingState>({ kind: 'loading' });
+  // Incremented to force the fetch effect to re-run on retry. The
+  // effect's dep array closes over this counter, so `setAttempt`
+  // schedules a fresh mount-style load without needing to lift the
+  // fetch body into a separate identity-stable callback.
+  const [attempt, setAttempt] = useState(0);
+
+  useEffect(() => {
+    // `state` is reset to `loading` by the retry onClick before
+    // `attempt` ticks, so the fetch effect doesn't need to set it
+    // itself — which also keeps `react-hooks/set-state-in-effect`
+    // satisfied (no unconditional setState at effect entry).
+    let cancelled = false;
+    (async () => {
+      try {
+        const [echoesList, shardsList] = await Promise.all([
+          echoesApi.list(),
+          shardsApi.list(),
+        ]);
+        if (cancelled) return;
+        const pending: PendingEntry[] = [];
+        for (const e of echoesList as EchoResponse[]) {
+          if (!isEchoHibernated(e)) continue;
+          const d = echoDeletionDate(e.hibernated_at);
+          if (!d) continue;
+          pending.push({ id: e.echo_id, kind: 'echo', name: e.name, deletionDate: d });
+        }
+        for (const s of shardsList as Shard[]) {
+          if (!isShardArchived(s)) continue;
+          const d = shardDeletionDate(s.archive_expires_at);
+          if (!d) continue;
+          pending.push({ id: s.shard_id, kind: 'shard', name: s.name, deletionDate: d });
+        }
+        pending.sort(
+          (a, b) => a.deletionDate.getTime() - b.deletionDate.getTime(),
+        );
+        setState({ kind: 'ready', entries: pending });
+      } catch {
+        if (!cancelled) setState({ kind: 'error' });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [attempt]);
+
+  return (
+    <Card>
+      <h3 className="mbe-3 text-sm font-semibold text-text-primary">
+        {t('tiers.deletion.pendingList.title')}
+      </h3>
+      {state.kind === 'loading' ? (
+        <p className="text-xs text-text-muted">
+          {t('tiers.deletion.pendingList.loading')}
+        </p>
+      ) : state.kind === 'error' ? (
+        <div
+          className="flex items-center justify-between gap-3 text-xs text-text-secondary"
+          role="alert"
+        >
+          <span>{t('tiers.deletion.pendingList.loadError')}</span>
+          <button
+            type="button"
+            onClick={() => {
+              setState({ kind: 'loading' });
+              setAttempt((a) => a + 1);
+            }}
+            className="shrink-0 font-medium text-accent transition-colors duration-(--duration-fast) hover:text-accent-hover"
+          >
+            {t('tiers.deletion.pendingList.retry')}
+          </button>
+        </div>
+      ) : state.entries.length === 0 ? (
+        <p className="text-xs text-text-muted">
+          {t('tiers.deletion.pendingList.empty')}
+        </p>
+      ) : (
+        <ul className="flex flex-col gap-2">
+          {state.entries.map((entry) => (
+            <li
+              key={`${entry.kind}-${entry.id}`}
+              className="flex items-center justify-between rounded-md border border-warning/30 bg-warning/10 px-3 py-2"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-text-primary">
+                  {entry.name}
+                </p>
+                <p className="text-[11px] text-text-muted">
+                  {entry.kind === 'echo'
+                    ? t('tiers.deletion.pendingList.echoLabel')
+                    : t('tiers.deletion.pendingList.shardLabel')}
+                </p>
+              </div>
+              <p className="shrink-0 text-xs font-medium text-warning">
+                {t('tiers.deletion.pendingList.deletesOn', {
+                  date: formatDeletionDate(entry.deletionDate),
+                })}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Card>
   );
 }

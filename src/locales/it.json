@@ -1328,11 +1328,46 @@
       "keepIncluded": "Mantieni come incluso",
       "buyAddon": "Acquista componente aggiuntivo (4,99 $/mese)",
       "upgradeBack": "Torna al piano superiore",
-      "archive": "Archivia (conservazione 30 giorni)",
-      "archiveWarning": "Lo Shard smette immediatamente di avanzare e verrà eliminato dopo 30 giorni se non lo ripristini aggiornando di nuovo il piano o acquistando il componente aggiuntivo.",
+      "archive": "Archivia (conservazione 90 giorni)",
+      "archiveWarning": "Il Shard smette immediatamente di avanzare e viene eliminato dopo 90 giorni, a meno che tu non lo ripristini tornando al piano superiore o acquistando l’add-on.",
       "commit": "Conferma decisioni",
       "cancel": "Annulla — decidi dopo",
       "successMessage": "Le tue decisioni di declassamento sono state applicate."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "Questo Echo è in ibernazione e verrà eliminato il {{date}}, a meno che tu non torni al piano superiore o liberi uno spazio per risvegliarlo.",
+      "echoDeletesOn": "Eliminazione il {{date}}",
+      "shardArchivedBanner": "Questo Shard è archiviato. Ha smesso di avanzare e verrà eliminato il {{date}}, a meno che tu non lo ripristini tornando al piano superiore o acquistando l’add-on.",
+      "shardDeletesOn": "Eliminazione il {{date}}",
+      "consent": {
+        "title": "Conferma il downgrade",
+        "loading": "Caricamento dei dettagli del downgrade…",
+        "noPending": "Nessuna decisione di downgrade in sospeso.",
+        "errorGeneric": "Si è verificato un errore durante il caricamento dei dettagli del downgrade.",
+        "summary": "Stai passando da {{oldTier}} a {{newTier}}. Ecco cosa accadrà alla conferma.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{count}} dei tuoi {{total}} Echo passeranno in ibernazione.",
+        "echoesNoneHibernated": "Nessun Echo passerà in ibernazione. Tutti i {{total}} rientrano nel limite di {{cap}} di {{newTier}}.",
+        "echoesDeletion": "Gli Echo in ibernazione vengono eliminati in modo permanente 90 giorni dopo la conferma, a meno che tu non li risvegli liberando uno spazio o non torni al piano superiore prima di allora.",
+        "shardsHeader": "Shard privati",
+        "shardsDecisionCount": "{{count}} Shard privato/i richiede una decisione nella schermata successiva: acquistare come add-on, tornare al piano superiore o archiviare.",
+        "shardsNoneToDecide": "Nessuna decisione sugli Shard privati è richiesta per questo downgrade.",
+        "shardsDeletion": "Gli Shard che scegli di archiviare vengono eliminati in modo permanente 90 giorni dopo la conferma, a meno che tu non li ripristini acquistando l’add-on o tornando al piano superiore.",
+        "checkboxLabel": "Comprendo queste modifiche e che gli Echo in ibernazione e gli Shard archiviati verranno eliminati in modo permanente dopo 90 giorni, a meno che non agisca.",
+        "proceed": "Procedi alle decisioni",
+        "cancel": "Annulla il downgrade",
+        "retry": "Riprova"
+      },
+      "pendingList": {
+        "title": "Eliminazioni in sospeso",
+        "empty": "Nessun Echo o Shard programmato per l’eliminazione.",
+        "echoLabel": "Echo",
+        "shardLabel": "Shard privato",
+        "deletesOn": "Eliminazione il {{date}}",
+        "loading": "Caricamento eliminazioni in sospeso…",
+        "loadError": "Impossibile caricare le eliminazioni in sospeso.",
+        "retry": "Riprova"
+      }
     }
   },
   "contact": {

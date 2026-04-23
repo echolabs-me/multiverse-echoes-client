@@ -1328,11 +1328,46 @@
       "keepIncluded": "Manter como incluído",
       "buyAddon": "Comprar complemento (US$ 4,99/mês)",
       "upgradeBack": "Voltar ao plano anterior",
-      "archive": "Arquivar (retenção de 30 dias)",
-      "archiveWarning": "O Shard para de avançar imediatamente e será excluído em 30 dias a menos que você o restaure voltando ao plano superior ou comprando o complemento.",
+      "archive": "Arquivar (retenção de 90 dias)",
+      "archiveWarning": "O Shard para de avançar imediatamente e é excluído após 90 dias, a menos que você o restaure voltando ao plano superior ou comprando o complemento.",
       "commit": "Confirmar decisões",
       "cancel": "Cancelar — decidir depois",
       "successMessage": "Suas decisões de downgrade foram aplicadas."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "Este Echo está em hibernação e será excluído em {{date}}, a menos que você volte ao plano anterior ou libere um espaço para reativá-lo.",
+      "echoDeletesOn": "Exclusão em {{date}}",
+      "shardArchivedBanner": "Este Shard está arquivado. Ele parou de avançar e será excluído em {{date}}, a menos que você o restaure voltando ao plano superior ou comprando o complemento.",
+      "shardDeletesOn": "Exclusão em {{date}}",
+      "consent": {
+        "title": "Confirme a redução do plano",
+        "loading": "Carregando os detalhes da sua redução de plano…",
+        "noPending": "Nenhuma decisão de redução pendente.",
+        "errorGeneric": "Ocorreu um erro ao carregar os detalhes da sua redução de plano.",
+        "summary": "Você está indo de {{oldTier}} para {{newTier}}. Veja o que acontece ao confirmar.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{count}} dos seus {{total}} Echo(s) entrarão em hibernação.",
+        "echoesNoneHibernated": "Nenhum Echo entrará em hibernação. Os {{total}} cabem no limite de {{cap}} de {{newTier}}.",
+        "echoesDeletion": "Os Echoes em hibernação são excluídos permanentemente 90 dias após a confirmação, a menos que você os acorde liberando uma vaga ou volte ao plano superior antes disso.",
+        "shardsHeader": "Shards privados",
+        "shardsDecisionCount": "{{count}} Shard(s) privado(s) precisam de uma decisão na próxima tela: comprar como complemento, voltar ao plano superior ou arquivar.",
+        "shardsNoneToDecide": "Nenhuma decisão sobre Shards privados é necessária nesta redução de plano.",
+        "shardsDeletion": "Os Shards que você escolher arquivar são excluídos permanentemente 90 dias após a confirmação, a menos que você os restaure comprando o complemento ou voltando ao plano superior.",
+        "checkboxLabel": "Eu entendo essas mudanças e que Echoes em hibernação e Shards arquivados serão excluídos permanentemente após 90 dias, a menos que eu aja.",
+        "proceed": "Prosseguir para as decisões",
+        "cancel": "Cancelar redução",
+        "retry": "Tentar novamente"
+      },
+      "pendingList": {
+        "title": "Exclusões pendentes",
+        "empty": "Nenhum Echo ou Shard está agendado para exclusão.",
+        "echoLabel": "Echo",
+        "shardLabel": "Shard privado",
+        "deletesOn": "Exclusão em {{date}}",
+        "loading": "Carregando exclusões pendentes…",
+        "loadError": "Não foi possível carregar as exclusões pendentes.",
+        "retry": "Tentar novamente"
+      }
     }
   },
   "contact": {

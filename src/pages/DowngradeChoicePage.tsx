@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Button, Card, Spinner, EmptyState } from '../components/index.ts';
@@ -63,6 +63,14 @@ export function DowngradeChoicePage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const addToast = useToastStore((s) => s.addToast);
+
+  // ME-MIS-001 §5.2 Surface C route gate — the per-shard decision
+  // screen is only reachable after the user has seen and acknowledged
+  // the pre-confirm consent screen. Any entry without `consented=1`
+  // is redirected to `/subscription/downgrade-confirm` first.
+  // Direct-URL hits and stale bookmarks both funnel through consent.
+  const [searchParams] = useSearchParams();
+  const hasConsent = searchParams.get('consented') === '1';
 
   const [loadState, setLoadState] = useState<LoadState>({ kind: 'loading' });
   const [mutating, setMutating] = useState<boolean>(false);
@@ -172,6 +180,10 @@ export function DowngradeChoicePage() {
     },
     [addToast, navigate, t],
   );
+
+  if (!hasConsent) {
+    return <Navigate to="/subscription/downgrade-confirm" replace />;
+  }
 
   return (
     <div className="flex-1 overflow-y-auto">

@@ -1328,11 +1328,46 @@
       "keepIncluded": "Panatilihin bilang Kasama",
       "buyAddon": "Bumili ng add-on ($4.99/buwan)",
       "upgradeBack": "Mag-upgrade muli",
-      "archive": "I-archive (30-araw na pagpapanatili)",
-      "archiveWarning": "Ang Shard ay titigil agad at buburahin pagkalipas ng 30 araw maliban kung ibabalik mo ito sa pamamagitan ng pag-upgrade muli o pagbili ng add-on.",
+      "archive": "I-archive (90 araw na pagpapanatili)",
+      "archiveWarning": "Agad na hihinto ang pag-tick ng Shard at made-delete ito pagkatapos ng 90 araw, maliban kung ibabalik mo ito sa pamamagitan ng muling pag-upgrade o pagbili ng add-on.",
       "commit": "Kumpirmahin ang mga desisyon",
       "cancel": "Kanselahin — magpasya mamaya",
       "successMessage": "Naisagawa na ang iyong mga desisyon sa pag-downgrade."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "Naka-hibernate ang Echo na ito at ide-delete sa {{date}} maliban kung mag-upgrade ka pabalik o magpalaya ng slot para gisingin ito.",
+      "echoDeletesOn": "Ide-delete sa {{date}}",
+      "shardArchivedBanner": "Naka-archive ang Shard na ito. Huminto na ito at made-delete sa {{date}} maliban kung ibabalik mo ito sa pamamagitan ng muling pag-upgrade o pagbili ng add-on.",
+      "shardDeletesOn": "Ide-delete sa {{date}}",
+      "consent": {
+        "title": "Kumpirmahin ang iyong downgrade",
+        "loading": "Naglo-load ng mga detalye ng iyong downgrade…",
+        "noPending": "Walang nakabinbing mga desisyon sa downgrade.",
+        "errorGeneric": "Nagkaroon ng error sa paglo-load ng mga detalye ng iyong downgrade.",
+        "summary": "Lumilipat ka mula {{oldTier}} patungong {{newTier}}. Narito ang mangyayari kapag nagkumpirma ka.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "Magiging nakahibernate ang {{count}} sa {{total}} mong Echo(es).",
+        "echoesNoneHibernated": "Walang Echo na magiging nakahibernate. Ang lahat ng {{total}} ay akma sa cap na {{cap}} ng {{newTier}}.",
+        "echoesDeletion": "Ang mga nakahibernate na Echoes ay permanenteng made-delete 90 araw pagkatapos ng kumpirmasyon, maliban kung gisingin mo ang mga ito sa pamamagitan ng pagpapalaya ng slot o mag-upgrade ka pabalik bago iyon.",
+        "shardsHeader": "Mga pribadong Shards",
+        "shardsDecisionCount": "Ang {{count}} pribadong Shard ay nangangailangan ng desisyon sa susunod na screen: bilhin bilang add-on, mag-upgrade pabalik, o i-archive.",
+        "shardsNoneToDecide": "Walang kinakailangang mga desisyon ukol sa pribadong Shard sa downgrade na ito.",
+        "shardsDeletion": "Ang mga Shard na pinili mong i-archive ay permanenteng made-delete 90 araw pagkatapos ng kumpirmasyon, maliban kung ibalik mo ang mga ito sa pamamagitan ng pagbili ng add-on o mag-upgrade pabalik.",
+        "checkboxLabel": "Nauunawaan ko ang mga pagbabagong ito at na ang mga nakahibernate na Echoes at na-archive na mga Shards ay permanenteng made-delete pagkatapos ng 90 araw maliban kung may gagawin ako.",
+        "proceed": "Magpatuloy sa mga desisyon",
+        "cancel": "Kanselahin ang downgrade",
+        "retry": "Subukan ulit"
+      },
+      "pendingList": {
+        "title": "Mga nakabinbing pagbura",
+        "empty": "Walang mga Echo o Shard na nakatakdang burahin.",
+        "echoLabel": "Echo",
+        "shardLabel": "Pribadong Shard",
+        "deletesOn": "Ide-delete sa {{date}}",
+        "loading": "Naglo-load ng mga nakabinbing pagbura…",
+        "loadError": "Hindi ma-load ang mga nakabinbing pagbura.",
+        "retry": "Subukan ulit"
+      }
     }
   },
   "contact": {

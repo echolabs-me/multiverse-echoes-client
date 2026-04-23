@@ -1328,11 +1328,46 @@
       "keepIncluded": "Kekalkan sebagai Termasuk",
       "buyAddon": "Beli tambahan ($4.99/bulan)",
       "upgradeBack": "Naik taraf semula",
-      "archive": "Arkibkan (pengekalan 30 hari)",
-      "archiveWarning": "Shard akan berhenti berjalan serta-merta dan dipadam selepas 30 hari melainkan anda memulihkannya dengan menaik taraf semula atau membeli tambahan.",
+      "archive": "Arkib (disimpan 90 hari)",
+      "archiveWarning": "Shard berhenti berjalan dengan serta-merta dan dipadamkan selepas 90 hari, kecuali anda memulihkannya dengan menaik taraf semula atau membeli add-on.",
       "commit": "Sahkan keputusan",
       "cancel": "Batal — putuskan kemudian",
       "successMessage": "Keputusan penurunan pelan anda telah digunakan."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "Echo ini sedang hibernasi dan akan dipadamkan pada {{date}}, kecuali anda menaik taraf semula atau membebaskan slot untuk mengejutkannya.",
+      "echoDeletesOn": "Dipadam pada {{date}}",
+      "shardArchivedBanner": "Shard ini telah diarkibkan. Ia telah berhenti dan akan dipadamkan pada {{date}}, kecuali anda memulihkannya dengan menaik taraf semula atau membeli add-on.",
+      "shardDeletesOn": "Dipadam pada {{date}}",
+      "consent": {
+        "title": "Sahkan penurunan pelan anda",
+        "loading": "Memuat butiran penurunan pelan anda…",
+        "noPending": "Tiada keputusan penurunan pelan yang tertangguh.",
+        "errorGeneric": "Berlaku ralat semasa memuat butiran penurunan pelan anda.",
+        "summary": "Anda berpindah dari {{oldTier}} ke {{newTier}}. Berikut ialah apa yang akan berlaku apabila anda mengesahkan.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{count}} daripada {{total}} Echo anda akan masuk mod hibernasi.",
+        "echoesNoneHibernated": "Tiada Echo akan masuk mod hibernasi. Semua {{total}} muat dalam had {{cap}} bagi {{newTier}}.",
+        "echoesDeletion": "Echo yang dihibernasi akan dipadam secara kekal 90 hari selepas pengesahan, kecuali anda mengejutkannya dengan membebaskan slot atau menaik taraf semula sebelum itu.",
+        "shardsHeader": "Shards peribadi",
+        "shardsDecisionCount": "{{count}} Shard peribadi memerlukan keputusan pada skrin seterusnya: beli sebagai add-on, naik taraf semula, atau arkibkan.",
+        "shardsNoneToDecide": "Tiada keputusan Shard peribadi diperlukan pada penurunan pelan ini.",
+        "shardsDeletion": "Shard yang anda pilih untuk diarkibkan akan dipadam secara kekal 90 hari selepas pengesahan, kecuali anda memulihkannya dengan membeli add-on atau menaik taraf semula.",
+        "checkboxLabel": "Saya memahami perubahan ini dan bahawa Echo yang dihibernasi dan Shard yang diarkibkan akan dipadam secara kekal selepas 90 hari kecuali saya mengambil tindakan.",
+        "proceed": "Teruskan ke keputusan",
+        "cancel": "Batalkan penurunan pelan",
+        "retry": "Cuba lagi"
+      },
+      "pendingList": {
+        "title": "Pemadaman tertangguh",
+        "empty": "Tiada Echo atau Shard yang dijadualkan untuk dipadam.",
+        "echoLabel": "Echo",
+        "shardLabel": "Shard peribadi",
+        "deletesOn": "Dipadam pada {{date}}",
+        "loading": "Memuat pemadaman tertangguh…",
+        "loadError": "Tidak dapat memuat pemadaman tertangguh.",
+        "retry": "Cuba lagi"
+      }
     }
   },
   "contact": {

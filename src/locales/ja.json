@@ -1328,11 +1328,46 @@
       "keepIncluded": "含まれる枠として維持",
       "buyAddon": "アドオンを購入($4.99/月)",
       "upgradeBack": "アップグレードして戻す",
-      "archive": "アーカイブ(30 日間保持)",
-      "archiveWarning": "シャードは直ちにティックを停止し、再アップグレードまたはアドオン購入で復元しない限り 30 日後に削除されます。",
+      "archive": "アーカイブ（90日間保持）",
+      "archiveWarning": "Shardはすぐに停止し、90日後に削除されます。プランを再度アップグレードするかアドオンを購入して復元しない限り。",
       "commit": "決定を確定",
       "cancel": "キャンセル — 後で決定",
       "successMessage": "ダウングレードの決定が適用されました。"
+    },
+    "deletion": {
+      "echoHibernatedBanner": "このEchoは休止中で、{{date}}に削除されます。プランを戻すか、スロットを空けて目覚めさせない限り。",
+      "echoDeletesOn": "{{date}}に削除",
+      "shardArchivedBanner": "このShardはアーカイブ済みです。動作を停止し、{{date}}に削除されます。プランを再度アップグレードするかアドオンを購入して復元しない限り。",
+      "shardDeletesOn": "{{date}}に削除",
+      "consent": {
+        "title": "ダウングレードを確認",
+        "loading": "ダウングレードの詳細を読み込み中…",
+        "noPending": "保留中のダウングレード判断はありません。",
+        "errorGeneric": "ダウングレード詳細の読み込み中にエラーが発生しました。",
+        "summary": "{{oldTier}}から{{newTier}}に変更します。確定すると次のことが起こります。",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{total}}個のEchoのうち{{count}}個が休止状態になります。",
+        "echoesNoneHibernated": "休止状態になるEchoはありません。{{total}}個すべてが{{newTier}}の上限{{cap}}に収まります。",
+        "echoesDeletion": "休止中のEchoは確定から90日後に完全に削除されます。スロットを空けて起こすか、それまでにプランを戻さない限り。",
+        "shardsHeader": "プライベート Shards",
+        "shardsDecisionCount": "{{count}}個のプライベートShardは次の画面で判断が必要です：アドオンとして購入、プランに戻す、またはアーカイブ。",
+        "shardsNoneToDecide": "このダウングレードではプライベートShardの判断は必要ありません。",
+        "shardsDeletion": "アーカイブに選択したShardは確定から90日後に完全に削除されます。アドオンを購入して復元するか、プランに戻さない限り。",
+        "checkboxLabel": "これらの変更を理解しており、休止中のEchoとアーカイブされたShardは、私が行動しない限り90日後に完全に削除されることを了承します。",
+        "proceed": "判断に進む",
+        "cancel": "ダウングレードをキャンセル",
+        "retry": "再試行"
+      },
+      "pendingList": {
+        "title": "削除予定",
+        "empty": "削除予定のEchoまたはShardはありません。",
+        "echoLabel": "Echo",
+        "shardLabel": "プライベート Shard",
+        "deletesOn": "{{date}}に削除",
+        "loading": "削除予定を読み込み中…",
+        "loadError": "削除予定を読み込めませんでした。",
+        "retry": "再試行"
+      }
     }
   },
   "contact": {

@@ -96,6 +96,22 @@ export function formatRelativeTime(date: string | Date): string {
 }
 
 /**
+ * Format a date for ME-MIS-001 §5.2 deletion-countdown labels — long
+ * month name, numeric day and year (e.g. "21 July 2026"). Uses the
+ * active app locale via `intlLocale` so non-English users read the
+ * deletion date in their own script.
+ */
+export function formatDeletionDate(date: string | Date): string {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleDateString(intlLocale(i18n.language), {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+/**
  * Format a date and time together — convenience for timestamps displayed
  * in a single string (e.g. "5 Apr 2026, 14:32").
  */

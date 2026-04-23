@@ -1328,11 +1328,46 @@
       "keepIncluded": "Conserver comme inclus",
       "buyAddon": "Acheter l'option (4,99 $/mois)",
       "upgradeBack": "Remonter de niveau",
-      "archive": "Archiver (conservation 30 jours)",
-      "archiveWarning": "Le Shard cesse de progresser immédiatement et sera supprimé dans 30 jours, sauf si vous le restaurez en remontant de niveau ou en achetant l'option.",
+      "archive": "Archiver (conservation 90 jours)",
+      "archiveWarning": "Le Shard cesse de progresser immédiatement et sera supprimé dans 90 jours, sauf si vous le restaurez en remontant de niveau ou en achetant l’option.",
       "commit": "Valider les décisions",
       "cancel": "Annuler — décider plus tard",
       "successMessage": "Vos décisions de rétrogradation ont été appliquées."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "Cet Echo est en hibernation et sera supprimé le {{date}}, sauf si vous remontez de niveau ou libérez un emplacement pour le réveiller.",
+      "echoDeletesOn": "Supprimé le {{date}}",
+      "shardArchivedBanner": "Ce Shard est archivé. Il a cessé de progresser et sera supprimé le {{date}}, sauf si vous le restaurez en remontant de niveau ou en achetant l’option.",
+      "shardDeletesOn": "Supprimé le {{date}}",
+      "consent": {
+        "title": "Confirme la rétrogradation",
+        "loading": "Chargement des détails de ta rétrogradation…",
+        "noPending": "Aucune décision de rétrogradation en attente.",
+        "errorGeneric": "Une erreur est survenue lors du chargement des détails de ta rétrogradation.",
+        "summary": "Tu passes de {{oldTier}} à {{newTier}}. Voici ce qui se passera au moment de valider.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{count}} de tes {{total}} Echo(s) passeront en hibernation.",
+        "echoesNoneHibernated": "Aucun Echo ne passera en hibernation. Les {{total}} rentrent dans la limite de {{cap}} de {{newTier}}.",
+        "echoesDeletion": "Les Echoes en hibernation sont définitivement supprimés 90 jours après la validation, sauf si tu les réveilles en libérant un emplacement ou remontes de niveau avant.",
+        "shardsHeader": "Shards privés",
+        "shardsDecisionCount": "{{count}} Shard(s) privé(s) nécessitent une décision à l’écran suivant : acheter en option, remonter de niveau, ou archiver.",
+        "shardsNoneToDecide": "Aucune décision sur les Shards privés n’est requise pour cette rétrogradation.",
+        "shardsDeletion": "Les Shards que tu choisis d’archiver sont définitivement supprimés 90 jours après la validation, sauf si tu les restaures en achetant l’option ou en remontant de niveau.",
+        "checkboxLabel": "Je comprends ces changements et que les Echoes en hibernation et les Shards archivés seront définitivement supprimés après 90 jours sauf si j’agis.",
+        "proceed": "Passer aux décisions",
+        "cancel": "Annuler la rétrogradation",
+        "retry": "Réessayer"
+      },
+      "pendingList": {
+        "title": "Suppressions en attente",
+        "empty": "Aucun Echo ni Shard n’est programmé pour suppression.",
+        "echoLabel": "Echo",
+        "shardLabel": "Shard privé",
+        "deletesOn": "Supprimé le {{date}}",
+        "loading": "Chargement des suppressions en attente…",
+        "loadError": "Impossible de charger les suppressions en attente.",
+        "retry": "Réessayer"
+      }
     }
   },
   "contact": {

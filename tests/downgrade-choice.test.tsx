@@ -154,7 +154,14 @@ async function renderPage() {
   await act(async () => {
     render(
       <I18nextProvider i18n={testI18n}>
-        <MemoryRouter initialEntries={['/subscription/downgrade-choice']}>
+        {/* ME-MIS-001 §5.2 Surface C guard — the `?consented=1` query
+            param is what the pre-confirm consent screen redirects
+            into. Rendering DowngradeChoicePage without it now fires a
+            <Navigate> away to /downgrade-confirm, which this test
+            file is not wired for. */}
+        <MemoryRouter
+          initialEntries={['/subscription/downgrade-choice?consented=1']}
+        >
           <DowngradeChoicePage />
         </MemoryRouter>
       </I18nextProvider>,

@@ -1328,11 +1328,46 @@
       "keepIncluded": "포함으로 유지",
       "buyAddon": "애드온 구매($4.99/월)",
       "upgradeBack": "다시 업그레이드",
-      "archive": "보관(30일 보존)",
-      "archiveWarning": "샤드는 즉시 틱을 중지하며, 재업그레이드하거나 애드온을 구매하여 복원하지 않으면 30일 후 삭제됩니다.",
+      "archive": "보관 (90일 유지)",
+      "archiveWarning": "Shard는 즉시 진행을 멈추며 90일 후에 삭제됩니다. 플랜을 다시 업그레이드하거나 애드온을 구매하여 복원하지 않는 한.",
       "commit": "결정 확정",
       "cancel": "취소 — 나중에 결정",
       "successMessage": "다운그레이드 결정이 적용되었습니다."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "이 Echo는 휴면 상태이며 플랜을 다시 업그레이드하거나 슬롯을 비워 깨우지 않으면 {{date}}에 삭제됩니다.",
+      "echoDeletesOn": "{{date}}에 삭제",
+      "shardArchivedBanner": "이 Shard는 보관 상태입니다. 진행을 멈췄으며 플랜을 다시 업그레이드하거나 애드온을 구매하여 복원하지 않는 한 {{date}}에 삭제됩니다.",
+      "shardDeletesOn": "{{date}}에 삭제",
+      "consent": {
+        "title": "다운그레이드 확인",
+        "loading": "다운그레이드 세부 정보를 불러오는 중…",
+        "noPending": "대기 중인 다운그레이드 결정이 없습니다.",
+        "errorGeneric": "다운그레이드 세부 정보를 불러오는 중 오류가 발생했습니다.",
+        "summary": "{{oldTier}}에서 {{newTier}}로 변경합니다. 확정 시 다음과 같이 진행됩니다.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{total}}개의 Echo 중 {{count}}개가 휴면 상태가 됩니다.",
+        "echoesNoneHibernated": "휴면 상태가 되는 Echo는 없습니다. 모든 {{total}}개가 {{newTier}}의 {{cap}} 한도 내에 있습니다.",
+        "echoesDeletion": "휴면 중인 Echo는 확정 후 90일이 지나면 영구 삭제됩니다. 슬롯을 비워 깨우거나 그 전에 플랜을 다시 업그레이드하지 않는 한.",
+        "shardsHeader": "비공개 Shards",
+        "shardsDecisionCount": "{{count}}개의 비공개 Shard에 다음 화면에서 결정이 필요합니다: 애드온으로 구매, 플랜 다시 업그레이드, 또는 보관.",
+        "shardsNoneToDecide": "이번 다운그레이드에는 비공개 Shard에 대한 결정이 필요하지 않습니다.",
+        "shardsDeletion": "보관하기로 선택한 Shard는 확정 후 90일이 지나면 영구 삭제됩니다. 애드온을 구매하거나 플랜을 다시 업그레이드하여 복원하지 않는 한.",
+        "checkboxLabel": "이러한 변경 사항과 제가 조치를 취하지 않으면 휴면 Echo와 보관된 Shard가 90일 후에 영구 삭제된다는 점을 이해합니다.",
+        "proceed": "결정으로 진행",
+        "cancel": "다운그레이드 취소",
+        "retry": "다시 시도"
+      },
+      "pendingList": {
+        "title": "대기 중인 삭제",
+        "empty": "삭제 예정인 Echo나 Shard가 없습니다.",
+        "echoLabel": "Echo",
+        "shardLabel": "비공개 Shard",
+        "deletesOn": "{{date}}에 삭제",
+        "loading": "대기 중인 삭제를 불러오는 중…",
+        "loadError": "대기 중인 삭제를 불러오지 못했습니다.",
+        "retry": "다시 시도"
+      }
     }
   },
   "contact": {

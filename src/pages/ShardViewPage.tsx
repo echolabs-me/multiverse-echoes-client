@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, MapPin, Users } from 'lucide-react';
+import { ArrowLeft, Archive, MapPin, Users } from 'lucide-react';
 import {
   Card,
   Badge,
@@ -16,7 +16,8 @@ import { useShardStore } from '../stores/useShardStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { shards as shardApi, echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
-import { formatDate } from '../lib/formatDate.ts';
+import { formatDate, formatDeletionDate } from '../lib/formatDate.ts';
+import { isShardArchived, shardDeletionDate } from '../lib/hibernation.ts';
 import { getMoodLabel } from '../lib/moodLabel.ts';
 import type { EchoResponse, FeedItem } from '../types/api.ts';
 
@@ -136,7 +137,15 @@ export function ShardViewPage() {
             <h1 className="text-2xl font-bold text-text-primary">{activeShard.name}</h1>
             <p className="mbs-1 text-sm text-text-secondary">{activeShard.description}</p>
             <div className="mbs-2 flex items-center gap-3 text-sm text-text-muted">
-              <Badge variant={activeShard.status === 'Active' ? 'success' : 'default'}>
+              <Badge
+                variant={
+                  isShardArchived(activeShard)
+                    ? 'warning'
+                    : activeShard.status === 'Active'
+                      ? 'success'
+                      : 'default'
+                }
+              >
                 {t(`shardView.status${activeShard.status}`, { defaultValue: activeShard.status })}
               </Badge>
               <span>
@@ -148,6 +157,29 @@ export function ShardViewPage() {
               <span>{t(`shardView.type${activeShard.shard_type}`, { defaultValue: activeShard.shard_type })}</span>
             </div>
           </div>
+
+          {/* ME-MIS-001 §5.2 Surface B — archived Shard banner. Uses
+              the server-provided `archive_expires_at` (not a
+              client-side computation) so the countdown cannot drift
+              from the DataLifecycleEnforcer's delete decision. */}
+          {(() => {
+            const archiveDeletion = shardDeletionDate(activeShard.archive_expires_at);
+            if (!isShardArchived(activeShard) || !archiveDeletion) return null;
+            return (
+              <div
+                className="mbe-4 flex items-start gap-3 rounded-lg border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning"
+                role="status"
+                aria-live="polite"
+              >
+                <Archive size={18} className="mbs-0.5 shrink-0" aria-hidden="true" />
+                <span className="flex-1">
+                  {t('tiers.deletion.shardArchivedBanner', {
+                    date: formatDeletionDate(archiveDeletion),
+                  })}
+                </span>
+              </div>
+            );
+          })()}
 
           {/* Travel button + confirmation */}
           {eligibleEchoes.length > 0 && (

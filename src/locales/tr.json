@@ -1328,11 +1328,46 @@
       "keepIncluded": "Dahil olarak tut",
       "buyAddon": "Eklenti satın al (4,99 $/ay)",
       "upgradeBack": "Tekrar yükselt",
-      "archive": "Arşivle (30 günlük saklama)",
-      "archiveWarning": "Shard hemen ilerlemeyi durdurur ve yeniden yükseltme yapmadığınız veya eklentiyi satın almadığınız sürece 30 gün sonra silinir.",
+      "archive": "Arşivle (90 gün saklanır)",
+      "archiveWarning": "Shard hemen durur ve 90 gün sonra silinir; planınızı yeniden yükseltip veya eklentiyi satın alarak geri yüklemediğiniz sürece.",
       "commit": "Kararları onayla",
       "cancel": "İptal — sonra karar ver",
       "successMessage": "Düşüş kararlarınız uygulandı."
+    },
+    "deletion": {
+      "echoHibernatedBanner": "Bu Echo uyku modunda ve planınızı geri yükseltmediğiniz ya da onu uyandırmak için bir yuva açmadığınız sürece {{date}} tarihinde silinecek.",
+      "echoDeletesOn": "{{date}} tarihinde silinir",
+      "shardArchivedBanner": "Bu Shard arşivlendi. Durdu ve {{date}} tarihinde silinecek; planınızı yeniden yükseltip veya eklentiyi satın alarak geri yüklemediğiniz sürece.",
+      "shardDeletesOn": "{{date}} tarihinde silinir",
+      "consent": {
+        "title": "Plan düşürmeyi onayla",
+        "loading": "Plan düşürme ayrıntıları yükleniyor…",
+        "noPending": "Bekleyen plan düşürme kararı yok.",
+        "errorGeneric": "Plan düşürme ayrıntıları yüklenirken bir hata oluştu.",
+        "summary": "{{oldTier}} planından {{newTier}} planına geçiyorsunuz. Onayladığınızda gerçekleşecekler aşağıdadır.",
+        "echoesHeader": "Echoes",
+        "echoesHibernateCount": "{{total}} Echo’dan {{count}} tanesi uyku moduna alınacak.",
+        "echoesNoneHibernated": "Hiçbir Echo uyku moduna alınmayacak. {{total}} tanesi de {{newTier}} planının {{cap}} sınırı içinde.",
+        "echoesDeletion": "Uykuda olan Echo'lar, onaydan 90 gün sonra kalıcı olarak silinir; bir yuva açıp onları uyandırmadıkça veya daha önce planı geri yükseltmedikçe.",
+        "shardsHeader": "Özel Shard’lar",
+        "shardsDecisionCount": "{{count}} özel Shard, bir sonraki ekranda karar gerektiriyor: eklenti olarak satın al, planı geri yükselt veya arşivle.",
+        "shardsNoneToDecide": "Bu plan düşürme için özel Shard kararı gerekmez.",
+        "shardsDeletion": "Arşivlemeyi seçtiğiniz Shard’lar onaydan 90 gün sonra kalıcı olarak silinir; eklentiyi satın alıp veya planı geri yükseltip onları geri yüklemediğiniz sürece.",
+        "checkboxLabel": "Bu değişiklikleri ve harekete geçmezsem uykudaki Echo'ların ve arşivlenen Shard'ların 90 gün sonra kalıcı olarak silineceğini anlıyorum.",
+        "proceed": "Kararlara geç",
+        "cancel": "Plan düşürmeyi iptal et",
+        "retry": "Tekrar dene"
+      },
+      "pendingList": {
+        "title": "Bekleyen silmeler",
+        "empty": "Silmek üzere planlanmış Echo veya Shard yok.",
+        "echoLabel": "Echo",
+        "shardLabel": "Özel Shard",
+        "deletesOn": "{{date}} tarihinde silinir",
+        "loading": "Bekleyen silmeler yükleniyor…",
+        "loadError": "Bekleyen silmeler yüklenemedi.",
+        "retry": "Tekrar dene"
+      }
     }
   },
   "contact": {
