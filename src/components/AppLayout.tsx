@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Outlet, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 import {
   LayoutDashboard,
   Compass,
@@ -221,6 +222,13 @@ export function AppLayout() {
 
   return (
     <div className="flex h-full flex-col bg-canvas">
+      {/* Authenticated app-shell routes are not content — they're behind a
+          login gate and must never appear in search results. Emitting
+          noindex/nofollow here covers every dashboard, echo, shard, feed,
+          community, settings, and admin URL with one directive. */}
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       {/* Top bar — logo + mobile hamburger */}
       <header className="relative flex h-14 shrink-0 items-center justify-between gap-2 overflow-hidden border-be border-border bg-surface px-4">
         <div className="flex min-w-0 shrink-0 items-center gap-2">

@@ -116,9 +116,14 @@ function outDirFor(locale, route) {
   return locale === 'en' ? join(DIST, route) : join(DIST, locale, route);
 }
 
-/** Derive the URL path for a (locale, route) pair. */
+/** Derive the URL path for a (locale, route) pair.
+ *  Trailing slash matches what CF Pages serves in production (`/foo/`),
+ *  so the captured React pathname and the runtime pathname agree — and the
+ *  canonical/hreflang URLs emitted inside the captured HTML match the URL
+ *  the browser actually lands on. */
 function urlFor(locale, route) {
-  return locale === 'en' ? route : `/${locale}${route}`;
+  const base = locale === 'en' ? route : `/${locale}${route}`;
+  return `${base}/`;
 }
 
 async function capture(browser, locale, route) {

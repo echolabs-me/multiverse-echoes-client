@@ -44,6 +44,7 @@ import { TipPage } from './pages/TipPage.tsx';
 import { DowngradeChoicePage } from './pages/DowngradeChoicePage.tsx';
 import { DowngradeConfirmPage } from './pages/DowngradeConfirmPage.tsx';
 import { NotFoundPage } from './pages/NotFoundPage.tsx';
+import { NoIndexLayout } from './components/NoIndexLayout.tsx';
 
 function hasSelectedLocale(): boolean {
   if (typeof localStorage === 'undefined') return false;
@@ -165,19 +166,27 @@ export function App() {
           <Route path="/terms-of-service" element={<Navigate to="/terms" replace />} />
           <Route path="/privacy-policy" element={<Navigate to="/privacy" replace />} />
 
-          {/* Pre-auth routes — no app shell */}
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/verify-pending" element={<VerifyPendingPage />} />
-          <Route path="/verified" element={<VerifiedPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
-          <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
-          <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
-          <Route path="/payment/success" element={<PaymentSuccessPage />} />
-          <Route path="/payment/cancelled" element={<PaymentCancelledPage />} />
-          <Route path="/tip" element={<TipPage />} />
+          {/* Pre-auth routes — no app shell. Wrapped in NoIndexLayout so every
+              sign-up/sign-in/onboarding/payment URL carries
+              `<meta name="robots" content="noindex, nofollow">`. Without this,
+              Googlebot follows external backlinks into these routes and files
+              them as low-quality duplicates of the home page (they share the
+              SPA index.html pre-hydration), which surfaces in Search Console
+              as "Crawled – currently not indexed." */}
+          <Route element={<NoIndexLayout />}>
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/verify-pending" element={<VerifyPendingPage />} />
+            <Route path="/verified" element={<VerifiedPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
+            <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
+            <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
+            <Route path="/payment/success" element={<PaymentSuccessPage />} />
+            <Route path="/payment/cancelled" element={<PaymentCancelledPage />} />
+            <Route path="/tip" element={<TipPage />} />
+          </Route>
 
           {/* App shell routes — NavSidebar + Oracle sidebar */}
           <Route element={<AppLayout />}>

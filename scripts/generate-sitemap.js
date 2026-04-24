@@ -17,11 +17,11 @@
  */
 
 import { writeFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const BASE = 'https://echolabsme.com';
+export const BASE = 'https://echolabsme.com';
 const OUT = join(__dirname, '..', 'public', 'sitemap.xml');
 
 const LOCALES = [
@@ -41,11 +41,15 @@ const ROUTES = [
 ];
 
 /** Absolute URL for a (locale, route) pair. English lives at the unprefixed
- *  root; every other locale lives at `/{locale}{route}`. */
+ *  root; every other locale lives at `/{locale}{route}`. Trailing slash is
+ *  always appended for non-root routes because CF Pages 308-redirects the
+ *  no-slash form to the slash form (matches `dist/<loc>/<route>/index.html`).
+ *  Declaring the slash form as canonical removes the redirect chain. */
 function urlFor(locale, routePath) {
-  return locale === 'en'
+  const prefix = locale === 'en'
     ? `${BASE}${routePath}`
     : `${BASE}/${locale}${routePath}`;
+  return prefix.endsWith('/') ? prefix : `${prefix}/`;
 }
 
 /** XHTML-namespaced hreflang block covering all 21 locales + x-default for a
@@ -71,7 +75,9 @@ function urlEntry({ url, changefreq, priority, alternates }) {
   ].join('\n');
 }
 
-function main() {
+/** Build the full sitemap XML string. Pure function so tests can import and
+ *  inspect the output without triggering the filesystem write in main(). */
+export function buildSitemapXml() {
   const lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
@@ -107,11 +113,23 @@ function main() {
   lines.push('</urlset>');
   lines.push('');
 
-  const xml = lines.join('\n');
-  writeFileSync(OUT, xml, { encoding: 'utf-8' });
+  return lines.join('\n');
+}
 
+export { urlFor, LOCALES, ROUTES };
+
+function main() {
+  const xml = buildSitemapXml();
+  writeFileSync(OUT, xml, { encoding: 'utf-8' });
   const total = 1 + LOCALES.length * ROUTES.length;
   console.log(`Generated ${OUT} — ${total} URLs, ${xml.length.toLocaleString()} bytes`);
 }
 
-main();
+// Only run the writer when invoked directly (`node scripts/generate-sitemap.js`).
+// When vitest imports this module, we want the pure helpers but no side effects.
+const invokedAsCli =
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (invokedAsCli) {
+  main();
+}

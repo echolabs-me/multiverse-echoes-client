@@ -78,24 +78,55 @@ export const onRequest = async ({ request, next }: PagesContext): Promise<Respon
     return next();
   }
 
+  // Normalize the incoming pathname BEFORE the PUBLIC_ROUTES check.
+  // After the trailing-slash-canonical migration, legitimate visitor URLs
+  // carry a trailing slash (`/home/?lng=es`). Without this normalization,
+  // `PUBLIC_ROUTES.has('/home/')` misses the `/home` entry, the middleware
+  // falls through to next(), and the intended 301 to `/es/home/` never
+  // fires — defeating the whole purpose of the fix for the exact users it
+  // was meant to serve. Root (`/`) is kept as-is; only non-root paths
+  // have their trailing slash stripped for the lookup.
   const isRoot = url.pathname === '/';
-  if (!isRoot && !PUBLIC_ROUTES.has(url.pathname)) {
+  const lookupPath =
+    !isRoot && url.pathname.endsWith('/')
+      ? url.pathname.slice(0, -1)
+      : url.pathname;
+
+  if (!isRoot && !PUBLIC_ROUTES.has(lookupPath)) {
     return next();
   }
 
-  // Preserve other query params and the hash; only strip the `lng` param
-  // since it's now encoded in the pathname.
+  // Strip the `lng` query param (now encoded in the pathname). Other
+  // query params are preserved via `url.searchParams.toString()` below.
+  // URL fragments are not transmitted in HTTP requests — browser handles
+  // fragment preservation on redirect client-side.
   url.searchParams.delete('lng');
 
   // Root redirects bypass the flag picker — the user already told us their
   // locale via the legacy query string, no need to ask again.
-  const basePath = isRoot ? '/home' : url.pathname;
-  const newPath = lng === 'en' ? basePath : `/${lng}${basePath}`;
+  const basePath = isRoot ? '/home' : lookupPath;
+  const pathWithLocale = lng === 'en' ? basePath : `/${lng}${basePath}`;
 
-  const target = new URL(newPath, url.origin);
+  // Trailing slash is the canonical form (matches CF Pages' directory-index
+  // serving). Emitting it directly avoids a 301 → 308 chain where the browser
+  // hits `/ja/home`, then gets a second redirect to `/ja/home/`.
+  const normalizedPath = pathWithLocale.endsWith('/')
+    ? pathWithLocale
+    : `${pathWithLocale}/`;
+
   const remaining = url.searchParams.toString();
-  if (remaining) target.search = remaining;
-  target.hash = url.hash;
+  const location = `${normalizedPath}` + (remaining ? `?${remaining}` : '');
 
-  return Response.redirect(target.toString(), 301);
+  // Emit a PATH-ONLY Location header (no scheme, no host). The browser
+  // resolves it against the request's current origin, which is the
+  // user-visible `echolabsme.com` — not the internal `*.pages.dev` hostname
+  // that CF Pages' Function runtime sees via `request.url`. Using
+  // `Response.redirect(new URL(...).toString(), 301)` here would bake in
+  // whatever `url.origin` resolved to, and in Pages Functions that is
+  // `https://echolabsme.pages.dev` — which leaks the staging hostname into
+  // the Location header and duplicates content on a second hostname.
+  return new Response(null, {
+    status: 301,
+    headers: { Location: location },
+  });
 };

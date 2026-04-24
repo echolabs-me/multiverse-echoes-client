@@ -5,6 +5,7 @@ import {
   LOCALE_PATH_PATTERN,
   type SupportedLocale,
 } from '../../i18n.ts';
+import { toCanonicalPath } from '../../lib/canonicalPath.ts';
 
 const BASE_URL = 'https://echolabsme.com';
 
@@ -87,7 +88,9 @@ function urlFor(base: string, locale: SupportedLocale): string {
  */
 export function HreflangTags() {
   const { pathname } = useLocation();
-  const { base, locale: current } = splitLocale(pathname);
+  // Normalize to the trailing-slash form before splitting so every emitted
+  // hreflang URL matches what CF Pages actually serves (no 308 chain).
+  const { base, locale: current } = splitLocale(toCanonicalPath(pathname));
 
   return (
     <Helmet>

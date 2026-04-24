@@ -5,12 +5,20 @@ import { useTranslation } from 'react-i18next';
 import { WebsiteNav } from './WebsiteNav.tsx';
 import { WebsiteFooter } from './WebsiteFooter.tsx';
 import { HreflangTags } from './HreflangTags.tsx';
+import { toCanonicalPath } from '../../lib/canonicalPath.ts';
 
 const CANONICAL_BASE = 'https://echolabsme.com';
 
 export function WebsiteLayout() {
   const { pathname, hash } = useLocation();
   const { t, i18n } = useTranslation();
+  // Always emit the trailing-slash form regardless of which URL variant the
+  // user hit. This keeps `<link rel="canonical">` and `<meta property="og:url">`
+  // stable across `/foo`, `/foo/`, `/foo?x=1`, and `/foo#anchor` — CF Pages
+  // 308s `/foo` to `/foo/` so the slash form is the only stable canonical.
+  // `useLocation().pathname` already strips query/hash, so we only need to
+  // normalize the trailing slash here.
+  const canonicalUrl = `${CANONICAL_BASE}${toCanonicalPath(pathname)}`;
 
   // Scroll to hash on navigation, or to top on route change
   useEffect(() => {
@@ -31,8 +39,8 @@ export function WebsiteLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-(--canvas)">
       <Helmet>
-        <link rel="canonical" href={`${CANONICAL_BASE}${pathname}`} />
-        <meta property="og:url" content={`${CANONICAL_BASE}${pathname}`} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:url" content={canonicalUrl} />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
