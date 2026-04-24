@@ -1000,7 +1000,22 @@ export type EnforcementActionType = "MessageDeleted" | "UserMuted" | "UserChanne
  *  `crates/core/src/models/csam_incident.rs` and
  *  `crates/safety/src/csam_preservation.rs`.
  */
-"CsamMatch";
+"CsamMatch" | 
+/**
+ *  Admin flagged a Shard as carrying a notable emergent phenomenon
+ *  for the Public Shard browser (ME-SDB-001 §9.2). One row per
+ *  flag action — together with `ShardFlagCleared` this provides the
+ *  audit trail across changes, since the `Shard.admin_flag` field
+ *  itself only carries the current state. Precedent for an
+ *  admin-side audit row on a non-moderation-policy action:
+ *  `FalsePositiveRestoration` above.
+ */
+"ShardFlagged" | 
+/**
+ *  Admin cleared the flag on a Shard (paired with `ShardFlagged`
+ *  above). ME-SDB-001 §9.2.
+ */
+"ShardFlagCleared";
 
 /**
  *  Explicit list of enforcement actions taken on incident creation —
@@ -2104,7 +2119,27 @@ export type Shard = {
 	 *  cleared (Commit 7B).
 	 */
 	archive_expires_at?: string | null,
+	/**
+	 *  Admin-set flag marking this Shard as carrying a notable emergent
+	 *  phenomenon (ME-SDB-001 §9.2). `None` = no flag. `Some(...)` =
+	 *  currently flagged. Cleared by PATCH with `flagged=false`.
+	 *  History across flag/unflag actions lives in
+	 *  `EnforcementActionRepository` (one row per admin action).
+	 */
+	admin_flag?: ShardAdminFlag | null,
 	updated_at: string,
+};
+
+/**
+ *  Admin flag on a Shard surfacing a notable emergent phenomenon for
+ *  the Public Shard browser. Reference: ME-SDB-001 §9.2.
+ */
+export type ShardAdminFlag = {
+	flagged: boolean,
+	reason: string,
+	flagged_by_admin_id: string,
+	flagged_at: string,
+	category: ShardFlagCategory,
 };
 
 export type ShardDecisionRequest = {
@@ -2152,6 +2187,11 @@ export type ShardDetail = {
 	 *  [`ShardSummary::archive_expires_at`] for the rendering contract.
 	 */
 	archive_expires_at: string | null,
+	/**
+	 *  Admin-set flag (ME-SDB-001 §9.2). See
+	 *  [`ShardSummary::admin_flag`] for the rendering contract.
+	 */
+	admin_flag: ShardAdminFlag | null,
 };
 
 export type ShardEchoSummary = {
@@ -2161,6 +2201,36 @@ export type ShardEchoSummary = {
 	current_mood: string,
 	current_location_id: string,
 	current_tick: number,
+};
+
+/**
+ *  Closed set of categories an admin may assign when flagging a Shard
+ *  under ME-SDB-001 §9.2 "Notable emergent phenomena".
+ */
+export type ShardFlagCategory = "emergent_culture" | "unusual_economics" | "significant_event";
+
+/**
+ *  Body for `PATCH /admin/shards/{shard_id}/flag`. Reference ME-SDB-001
+ *  §9.2 "Notable emergent phenomena — manually flagged by admins".
+ * 
+ *  Semantics:
+ *    * `flagged == true`: `reason` (10-500 chars) and `category` are both
+ *      required. Sets or overwrites the flag.
+ *    * `flagged == false`: `reason` and `category` must both be absent.
+ *      Clears the flag.
+ * 
+ *  Validation is entirely handler-side (`Json` extractor, not
+ *  `ValidatedJson`). A validator-crate `#[validate(length(...))]` on
+ *  `reason` would fire before the handler's presence-matrix check,
+ *  making the `SHARD_FLAG_FIELDS_UNEXPECTED` branch unreachable for
+ *  `{ flagged: false, reason: "short" }` (it would return
+ *  `VALIDATION_ERROR` instead). Order enforced by the handler:
+ *  unexpected-fields → required-fields → length bounds → success.
+ */
+export type ShardFlagRequest = {
+	flagged: boolean,
+	reason: string | null,
+	category: ShardFlagCategory | null,
 };
 
 export type ShardListQuery = {
@@ -2235,6 +2305,12 @@ export type ShardSummary = {
 	 *  deletion list. Mirrors `Shard.archive_expires_at`.
 	 */
 	archive_expires_at: string | null,
+	/**
+	 *  Admin-set flag surfacing a notable emergent phenomenon for the
+	 *  Public Shard browser. Mirrors `Shard.admin_flag`. Reference:
+	 *  ME-SDB-001 §9.2.
+	 */
+	admin_flag: ShardAdminFlag | null,
 };
 
 export type ShardTheme = {
@@ -2869,7 +2945,17 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
 // Emitted from process_interaction_with_analytics when a new Echo relationship forms.
 { RelationshipFormed: { echo_a: string; echo_b: string } } | 
 // Emitted when an existing Echo relationship changes type. Phase 7.
-{ RelationshipChanged: { echo_a: string; echo_b: string } } | { ShardCreated: { shard_id: string; shard_type: string; owner_id: string } } | { ShardStatusChanged: { shard_id: string; old_status: string; new_status: string } } | { ShardTravelRequested: { echo_id: string; from_shard: string; to_shard: string } } | { ShardTravelApproved: { echo_id: string; destination_shard: string } } | { ShardTravelCompleted: { echo_id: string; shard_id: string } } | { ShardTravelDenied: { echo_id: string; reason: string } } | { ShardCapacityWarning: { shard_id: string; percent: number } } | { EchoMoved: { echo_id: string; shard_id: string; from_location: string; to_location: string; arrival_tick: number } } | { EchoWealthChanged: { echo_id: string; old_value: number; new_value: number; reason: string } } | { GlobalEventPropagated: { event_id: string; affected_shards: string[] } } | 
+{ RelationshipChanged: { echo_a: string; echo_b: string } } | { ShardCreated: { shard_id: string; shard_type: string; owner_id: string } } | { ShardStatusChanged: { shard_id: string; old_status: string; new_status: string } } | 
+/**
+ *  Admin flagged a Shard with a notable emergent phenomenon
+ *  (ME-SDB-001 §9.2). Paired with `ShardAdminFlagUnflagged` below.
+ */
+{ ShardAdminFlagged: { shard_id: string; admin_id: string; category: ShardFlagCategory; reason: string } } | 
+/**
+ *  Admin cleared the flag on a previously-flagged Shard
+ *  (ME-SDB-001 §9.2).
+ */
+{ ShardAdminFlagUnflagged: { shard_id: string; admin_id: string } } | { ShardTravelRequested: { echo_id: string; from_shard: string; to_shard: string } } | { ShardTravelApproved: { echo_id: string; destination_shard: string } } | { ShardTravelCompleted: { echo_id: string; shard_id: string } } | { ShardTravelDenied: { echo_id: string; reason: string } } | { ShardCapacityWarning: { shard_id: string; percent: number } } | { EchoMoved: { echo_id: string; shard_id: string; from_location: string; to_location: string; arrival_tick: number } } | { EchoWealthChanged: { echo_id: string; old_value: number; new_value: number; reason: string } } | { GlobalEventPropagated: { event_id: string; affected_shards: string[] } } | 
 // Emitted by safety classifier on T2/T3 detection. Wired via record_content_flagged().
 { ContentFlagged: { content_id: string; tier: string } } | 
 // Emitted when T3 content triggers Echo quarantine. Phase 7 safety enforcement.
