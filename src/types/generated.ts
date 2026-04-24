@@ -560,6 +560,15 @@ export type CreateEchoRequest = {
 	 *  descriptor extraction from `persona_text` is skipped.
 	 */
 	physical_description?: string | null,
+	/**
+	 *  User acknowledgement of the third-party-Echo caveat (ME-TSP-001
+	 *  §4.2). Required to be `Some(true)` when the server-side
+	 *  public-figure classifier flags the persona as a real public
+	 *  figure; otherwise the create call returns 400
+	 *  `PUBLIC_FIGURE_CONSENT_REQUIRED`. Defaults to `None` — users
+	 *  creating ordinary fictional Echoes never see this surface.
+	 */
+	public_figure_acknowledgement?: boolean | null,
 };
 
 export type CreateGlobalEventRequest = {
@@ -861,6 +870,17 @@ export type Echo = {
 	 *  `None` and get a voice_description backfilled lazily on first narration.
 	 */
 	voice_description?: string | null,
+	/**
+	 *  Result of the LLM-classifier public-figure screen performed at Echo
+	 *  creation. Mirrors `PersonaConsent.public_figure_flag`; stored on the
+	 *  Echo because this is the sole persistence surface today (no
+	 *  PersonaConsent table yet). `None` = record predates the screening gate
+	 *  (never screened). `Some(false)` = screened, persona is not a public
+	 *  figure. `Some(true)` = screened, persona matched a public figure and
+	 *  the user explicitly acknowledged the third-party-Echo caveat before
+	 *  creation. Reference: ME-TSP-001 §4.2 + §9.1.
+	 */
+	public_figure_flag?: boolean | null,
 };
 
 export type EchoListQuery = {
@@ -943,6 +963,14 @@ export type EchoResponse = {
 	 *  `Echo.hibernated_at`.
 	 */
 	hibernated_at: string | null,
+	/**
+	 *  Result of the public-figure classifier screen at Echo creation
+	 *  (ME-TSP-001 §4.2 + §9.1). `None` = record predates the screening
+	 *  gate (never screened); `Some(false)` = screened and not a public
+	 *  figure; `Some(true)` = screened, matched a public figure, and the
+	 *  user explicitly acknowledged the third-party-Echo caveat.
+	 */
+	public_figure_flag?: boolean | null,
 };
 
 export type EchoStatus = "Active" | "Travelling" | "Hibernated" | "Quarantined" | "Deleted";
@@ -1815,6 +1843,16 @@ export type PersonaConsent = {
 	consent_declaration: boolean,
 	declaration_timestamp: string,
 	is_self: boolean,
+	/**
+	 *  Result of the LLM-classifier public-figure screen performed at Echo
+	 *  creation. `None` = record predates the screening gate (never
+	 *  screened). `Some(false)` = screened, persona is not a public figure.
+	 *  `Some(true)` = screened, persona matched a public figure and the user
+	 *  explicitly acknowledged the third-party-Echo caveat before creation.
+	 *  Reference: ME-TSP-001 §4.2 (Third-Party Echoes) + §9.1 (Persona
+	 *  Laundering).
+	 */
+	public_figure_flag?: boolean | null,
 };
 
 export type PersonaMode = "Quick" | "Detailed";
