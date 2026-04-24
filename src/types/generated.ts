@@ -1971,6 +1971,17 @@ export type ResolveEscalationRequest = {
 	resolution_notes: string,
 };
 
+/**
+ *  Body for `POST /admin/echoes/{id}/restore`. `reason` is captured on
+ *  the emitted `EchoRestored` event and on the `EnforcementAction` row
+ *  so later auditors can correlate the restoration to the operator's
+ *  free-text justification. ME-TSP-001 §6.3 step 2 notes that reviewer
+ *  notes ("content within policy", etc.) typically drive this value.
+ */
+export type RestoreEchoRequest = {
+	reason: string,
+};
+
 export type SearchQuery = {
 	q: string,
 	cursor?: string | null,
@@ -2812,8 +2823,11 @@ export type WorldEvent = {
 
 // All event variants from the doc suite.
 export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: string } } | { EchoDeleted: { echo_id: string } } | { EchoHibernated: { echo_id: string; reason: string } } | { EchoWoken: { echo_id: string } } | 
-// Emitted when a quarantined Echo is restored by admin. Phase 7.
-{ EchoRestored: { echo_id: string } } | { TickStarted: { tick_id: number } } | { TickCompleted: { tick_id: number } } | { DiaryEntryGenerated: { echo_id: string; diary_id: string } } | { DiaryImageReady: { echo_id: string; diary_id: string; image_url: string } } | { LifeEventOccurred: { echo_id: string; event_id: string } } | { MoodChanged: { echo_id: string; old_mood: string; new_mood: string } } | { EchoInteraction: { echo_a: string; echo_b: string; interaction_type: string; tick_id: number } } | 
+/**
+ *  Emitted when a quarantined Echo is restored by admin after
+ *  false-positive review. Reference: ME-TSP-001 §6.3.
+ */
+{ EchoRestored: { echo_id: string; restored_by_admin_id: string; reason: string } } | { TickStarted: { tick_id: number } } | { TickCompleted: { tick_id: number } } | { DiaryEntryGenerated: { echo_id: string; diary_id: string } } | { DiaryImageReady: { echo_id: string; diary_id: string; image_url: string } } | { LifeEventOccurred: { echo_id: string; event_id: string } } | { MoodChanged: { echo_id: string; old_mood: string; new_mood: string } } | { EchoInteraction: { echo_a: string; echo_b: string; interaction_type: string; tick_id: number } } | 
 // Emitted from process_interaction_with_analytics when a new Echo relationship forms.
 { RelationshipFormed: { echo_a: string; echo_b: string } } | 
 // Emitted when an existing Echo relationship changes type. Phase 7.
