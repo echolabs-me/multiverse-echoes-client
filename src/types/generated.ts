@@ -41,6 +41,98 @@ export type ActiveConversationResponse = {
 	messages: ConversationMessageResponse[],
 };
 
+/**
+ *  Query parameters for `GET /admin/echoes`. Defaults: `limit = 50`
+ *  (via `default_admin_limit`), `offset = 0`. Validated loudly at the
+ *  handler edge via [`validate_admin_pagination`] — `limit = 0` and
+ *  `limit > 500` are rejected with 400; `offset > u32::MAX` is
+ *  rejected with 400 `OFFSET_INVALID`. The 500 ceiling matches the
+ *  repo-level `MAX_LIMIT` clamp; loud rejection at the handler edge
+ *  prevents response-metadata lies (Copilot finding on PR #42).
+ */
+export type AdminEchoListQuery = {
+	/**
+	 *  Optional `EchoStatus` filter as a string matching the Debug form of
+	 *  the variant (`Active`, `Travelling`, `Hibernated`, `Quarantined`,
+	 *  `Deleted`). `None` or absent query param → no filter. Parsed in the
+	 *  handler so the DTO stays utoipa-friendly (EchoStatus lives in
+	 *  `me-core` which doesn't depend on `utoipa`); an unknown string
+	 *  yields 400 `INVALID_STATUS` rather than a silent empty result.
+	 */
+	status?: string | null,
+	limit: number,
+	offset?: number,
+};
+
+/**
+ *  Envelope response for `GET /admin/echoes`. `total` reflects the count
+ *  of rows matching the active filter (before pagination), so a client can
+ *  compute `hasMore = offset + items.len() < total`.
+ */
+export type AdminEchoListResponse = {
+	items: AdminEchoSummary[],
+	total: number,
+	limit: number,
+	offset: number,
+};
+
+/**
+ *  Admin view of an Echo — nested inside `AdminUserDetail` and returned
+ *  directly by `POST /admin/echoes/{id}/restore` + `GET /admin/echoes`.
+ *  Extended in Lane F (2026-04-24) with `owner_user_id`, `avatar_url`,
+ *  `quarantined_at`, `public_figure_flag` so the God Mode Report Queue
+ *  can render each row without a per-row N+1 lookup. Fields are wire-pinned
+ *  by `admin_echo_summary_wire_shape` below.
+ */
+export type AdminEchoSummary = {
+	echo_id: string,
+	name: string,
+	status: string,
+	owner_user_id: string,
+	avatar_url: string | null,
+	quarantined_at: string | null,
+	public_figure_flag: boolean | null,
+};
+
+/**
+ *  One row in the admin enforcement-actions listing. Wire-side
+ *  projection of `EnforcementAction` — me-core cannot depend on utoipa
+ *  so the domain model can't be returned directly. `action_type` is
+ *  Debug-formatted (PascalCase variant name, matching the established
+ *  `AdminEchoSummary::status` and `EnforcementEntry::action_type`
+ *  conventions); clients parse it as a typed union if they want the
+ *  richer shape.
+ */
+export type AdminEnforcementActionSummary = {
+	action_id: string,
+	/**
+	 *  The admin who took the action. `None` for pre-v1.3 rows that
+	 *  predate actor attribution (see ME-TSP-001 §8.3).
+	 */
+	admin_id: string | null,
+	target: AdminEnforcementActionTarget,
+	/**
+	 *  Debug-formatted `EnforcementActionType` — PascalCase variant
+	 *  name (e.g. `"FalsePositiveRestoration"`, `"CsamMatch"`,
+	 *  `"Quarantine"`).
+	 */
+	action_type: string,
+	reason: string,
+	created_at: string,
+	expires_at: string | null,
+};
+
+/**
+ *  Wire-side projection of `EnforcementActionTarget` for
+ *  `GET /admin/enforcement-actions`. Mirrors the me-core tagged-enum
+ *  shape (`kind: "user" | "echo"`) so clients can discriminate the same
+ *  way as they do for the underlying `target` field in the domain model.
+ *  me-core cannot depend on utoipa (architectural invariant — me-core is
+ *  crate-layer-free-of-HTTP-concerns), so this is a thin wire-side
+ *  projection with the same serialization shape.
+ */
+export type AdminEnforcementActionTarget = { kind: "user"; user_id: string } | { kind: "echo"; echo_id: string; owner_user_id: string | null } | { kind: "shard"; shard_id: string; owner_user_id: string | null };
+
 export type AdminPagination = {
 	limit: number,
 	offset?: number,
@@ -851,6 +943,18 @@ export type Echo = {
 	hibernated_at: string | null,
 	deleted_at: string | null,
 	/**
+	 *  UTC timestamp of the most recent transition into `EchoStatus::Quarantined`.
+	 *  Sibling of `hibernated_at`/`deleted_at`: set when status flips to
+	 *  Quarantined (CSAM match, false-positive report resolution, etc.), cleared
+	 *  back to `None` when the echo is restored to Active. Used as the order-by
+	 *  source for the God Mode Report Queue (most-recently-quarantined first).
+	 *  `#[serde(default)]` so pre-field Redb rows deserialise with `None`;
+	 *  a one-shot backfill at server boot copies `updated_at` into this field
+	 *  for any row with `status == Quarantined && quarantined_at == None`.
+	 *  Reference: ME-TSP-001 §6.3, ME-OPS-001 §4.7.
+	 */
+	quarantined_at?: string | null,
+	/**
 	 *  URL of the AI-generated portrait image (face, generated once at creation from bio).
 	 *  Used as the MuseTalk reference face for voice sessions.
 	 */
@@ -983,12 +1087,135 @@ export type EditMessageRequest = {
 
 export type EnforcementAction = {
 	action_id: string,
-	user_id: string | null,
+	/**
+	 *  The admin who took the action. `None` for pre-migration rows
+	 *  that predate actor attribution (see custom `Deserialize`).
+	 */
+	admin_id: string | null,
+	target: EnforcementActionTarget,
 	action_type: EnforcementActionType,
 	reason: string,
 	created_at: string,
 	expires_at: string | null,
 };
+
+/**
+ *  Query parameters for `GET /admin/enforcement-actions`. Mirrors the
+ *  filter shape of `me_core::repositories::enforcement_action_repo::EnforcementActionFilter`
+ *  with the tagged-enum `target` surface flattened to the `(target_type,
+ *  target_id)` pair for wire-simplicity. Enum-valued params arrive as
+ *  strings and parse in the handler (EchoStatus pattern — the me-core
+ *  enums don't depend on utoipa; unknown values return 400 rather than a
+ *  silent empty result).
+ * 
+ *  Default `limit = 50` (via `default_admin_limit`), zero-default offset.
+ *  Validated loudly at the handler edge via [`validate_admin_pagination`]:
+ *  `limit = 0` and `limit > 500` are rejected with 400; `offset` larger
+ *  than `u32::MAX` is rejected with 400 `OFFSET_INVALID`. The 500
+ *  ceiling matches the repo-level `MAX_LIMIT` clamp, so loud rejection
+ *  at the handler edge prevents response-metadata lies (Copilot finding
+ *  on PR #42).
+ */
+export type EnforcementActionListQuery = {
+	/**
+	 *  Admin who took the action. Strict-Some: pre-migration rows with
+	 *  `admin_id: None` do NOT match a specific-admin filter (per 2b
+	 *  design — we don't claim legacy rows were taken by anyone in
+	 *  particular).
+	 */
+	admin_id?: string | null,
+	/**
+	 *  Filter by `EnforcementActionType`. PascalCase variant name (e.g.
+	 *  `FalsePositiveRestoration`, `CsamMatch`, `Quarantine`). Unknown
+	 *  value → 400 `INVALID_ACTION_TYPE`.
+	 */
+	action_type?: string | null,
+	/**
+	 *  Target-enum shape: `User` | `Echo` | `Any`. Composes with
+	 *  `target_id` per [`compose_target_filter`]. Unknown value → 400
+	 *  `INVALID_TARGET_TYPE`.
+	 */
+	target_type?: string | null,
+	/**
+	 *  Specific target id. Requires `target_type` and must not be paired
+	 *  with `target_type=Any`. See [`compose_target_filter`].
+	 */
+	target_id?: string | null,
+	// Inclusive lower bound on `created_at` (RFC 3339).
+	since?: string | null,
+	// Inclusive upper bound on `created_at` (RFC 3339).
+	until?: string | null,
+	limit: number,
+	offset?: number,
+};
+
+/**
+ *  Envelope response for `GET /admin/enforcement-actions`. Shape mirrors
+ *  `AdminEchoListResponse` — `total` reflects the true match count
+ *  (ignoring limit/offset) so clients can compute `hasMore = offset +
+ *  items.len() < total`.
+ */
+export type EnforcementActionListResponse = {
+	items: AdminEnforcementActionSummary[],
+	total: number,
+	limit: number,
+	offset: number,
+};
+
+/**
+ *  Target of an [`EnforcementAction`] — what was acted on.
+ * 
+ *  Closed enum. Only the variants with real write sites today are
+ *  included (see ME-TSP-001 §8.3). New variants land as their write
+ *  sites materialise; do not add speculative variants. The `Shard`
+ *  variant was added in v1.5 when Lane D.17's
+ *  `PATCH /admin/shards/{id}/flag` handler became the first Shard
+ *  write-site (Lane F PR #43 merge resolution).
+ */
+export type EnforcementActionTarget = 
+/**
+ *  Account-level action affecting a specific user. Written by
+ *  `csam_incidents::reverse_enforcement` when reactivating a
+ *  suspended user.
+ */
+{ kind: "user"; user_id: string } | 
+/**
+ *  Action scoped to a specific Echo. Written by
+ *  `admin::restore_echo` when un-quarantining after a false
+ *  positive. `owner_user_id` is the Echo's owner at the time the
+ *  action was written; `None` when the historical writer did not
+ *  capture it.
+ */
+{ kind: "echo"; echo_id: string; owner_user_id: string | null } | 
+/**
+ *  Action scoped to a specific Shard. Written by
+ *  `admin::set_admin_flag` (D.17) when an admin flags or clears a
+ *  flag on a shard for ME-SDB-001 §9.2 emergent-phenomena
+ *  tracking. `owner_user_id` is `None` for Public shards (no
+ *  owner) and `Some(uuid)` for personal/private shards. Mirrors
+ *  the Echo variant's owner-shape pattern.
+ */
+{ kind: "shard"; shard_id: string; owner_user_id: string | null };
+
+/**
+ *  Constraint on the `target` field of an [`EnforcementAction`] for
+ *  [`EnforcementActionFilter`] queries. Mirrors the variant shape of
+ *  [`crate::models::safety::EnforcementActionTarget`] but with the
+ *  per-variant id promoted to `Option<Uuid>` so callers can either pin
+ *  a specific target id or accept any target of that variant.
+ * 
+ *  Variant semantics (an action matches the filter iff):
+ *  - `User { user_id: Some(id) }` — action's target is `Target::User { user_id: id }` exactly.
+ *  - `User { user_id: None }`     — action's target is any `Target::User` variant.
+ *  - `Echo { echo_id: Some(id) }` — action's target is `Target::Echo { echo_id: id, .. }`.
+ *  - `Echo { echo_id: None }`     — action's target is any `Target::Echo` variant.
+ *  - `Any`                        — action's target is any variant (User or Echo).
+ * 
+ *  Absence of a `target` constraint on the parent filter (i.e.
+ *  `filter.target = None`) means no constraint on the target axis — use
+ *  that rather than `Any` when you don't care about target shape at all.
+ */
+export type EnforcementActionTargetFilter = { User: { user_id: string | null } } | { Echo: { echo_id: string | null } } | "Any";
 
 export type EnforcementActionType = "MessageDeleted" | "UserMuted" | "UserChannelBanned" | "ChannelLocked" | "Warning" | "Quarantine" | "Suspension" | "Ban" | "FalsePositiveRestoration" | 
 /**
@@ -2421,6 +2648,14 @@ export type SystemStatusResponse = {
 	total_users: number,
 	total_shards: number,
 };
+
+/**
+ *  Target-shape filter variant for `GET /admin/enforcement-actions`.
+ *  Paired with `target_id` on the query string; the handler composes
+ *  the two into `EnforcementActionTargetFilter` per
+ *  [`compose_target_filter`]'s table.
+ */
+export type TargetTypeFilter = "User" | "Echo" | "Any";
 
 export type TechnologyLevel = "Primitive" | "Industrial" | "Modern" | "NearFuture" | "FarFuture" | "Fantasy";
 
