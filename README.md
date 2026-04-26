@@ -29,7 +29,7 @@ The client opens at `http://localhost:1420`.
 Create a `.env.local` file in the project root:
 
 ```env
-VITE_API_BASE_URL=https://api.echolabs.me
+VITE_API_BASE_URL=https://api.echolabsme.com
 ```
 
 ## Available Scripts
@@ -80,7 +80,7 @@ The client supports custom themes, export templates, and extension panels. See [
 
 ## API Documentation
 
-API reference and developer guides are available at the [Developer Portal](https://developers.echolabs.me).
+API reference and developer guides are available at the [Developer Portal](https://developers.echolabsme.com).
 
 ## Contributing
 
@@ -98,6 +98,6 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 
 ## Links
 
-- [Developer Portal](https://developers.echolabs.me)
-- [API Terms of Use](https://developers.echolabs.me/legal/api-terms)
-- [Echolabs](https://echolabs.me)
+- [Developer Portal](https://developers.echolabsme.com)
+- [API Terms of Use](https://developers.echolabsme.com/legal/api-terms)
+- [Echolabs](https://echolabsme.com)
