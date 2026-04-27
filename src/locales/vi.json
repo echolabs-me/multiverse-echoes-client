@@ -701,7 +701,7 @@
       "empty": "Chưa có Quản trị viên. Thăng chức một người dùng Tiêu chuẩn bằng ID.",
       "updatedAt": "Đã cập nhật"
     },
-    "tabShareTokens": "Share Tokens"
+    "tabShareTokens": "Chia sẻ Tokens"
   },
   "nav": {
     "dashboard": "Bảng điều khiển",
@@ -1409,7 +1409,7 @@
   },
   "adminShare": {
     "tokens": {
-      "heading": "Share Tokens",
+      "heading": "Chia sẻ Tokens",
       "creatorFilterLabel": "ID người tạo",
       "creatorFilterPlaceholder": "ví dụ: 0193f9b8-...",
       "statusFilterLabel": "Trạng thái",

@@ -1,0 +1,209 @@
+# Per-locale tone guidance. Currently shipped as documented intent only —
+# not injected into translation sidecar requests. Sidecar API does not
+# accept tone fields; extending it is a separate future commit. If
+# register drift is observed in human review of translated output,
+# prioritize the sidecar extension then.
+#
+# Schema (validated by translate-i18n.py at startup):
+#   <locale>:
+#     locale: <ISO code, must equal the YAML key>
+#     register: <one-token register name e.g. "formal_ui_desu_masu">
+#     dialect_variant: <free-text dialect / region flag>
+#     notes: <free-text rationale or guidance>
+#
+# All 21 locales (en + 20 non-English) MUST be present.
+
+en:
+  locale: en
+  register: "neutral_ui"
+  dialect_variant: "en-US (international UI baseline)"
+  notes: >
+    Source language. Concise UI register: complete sentences for body
+    copy, sentence case for buttons and labels, no marketing-grade
+    superlatives. Reference for all other locales.
+
+ar:
+  locale: ar
+  register: "formal_msa"
+  dialect_variant: "Modern Standard Arabic (MSA), not regional dialect"
+  notes: >
+    Use literary MSA. Avoid Egyptian, Levantine, or Gulf colloquialisms.
+    UI strings are RTL — do not embed LTR control characters unless
+    the source itself contains placeholders that need explicit
+    isolation (handled by the React layout, not this layer).
+
+bn:
+  locale: bn
+  register: "formal_ui"
+  dialect_variant: "Bengali (Bangladesh + West Bengal common register)"
+  notes: >
+    Use the formal "আপনি" (apni) form throughout. Avoid colloquial
+    "তুমি" (tumi) which reads as casual / familiar. Match existing
+    Bengali UI strings in tone.
+
+de:
+  locale: de
+  register: "formal_sie"
+  dialect_variant: "Standard German (Hochdeutsch)"
+  notes: >
+    Address users with the formal "Sie" form. Avoid Austrian / Swiss
+    spellings (no "Ä → ae" substitution; full umlauts retained).
+    Compound nouns are written as one word per German convention.
+
+es:
+  locale: es
+  register: "formal_usted"
+  dialect_variant: "International Spanish (es-ES leaning, no Latin-American regionalisms)"
+  notes: >
+    Use "usted" for direct address. Vocabulary kept neutral so the
+    bundle reads naturally to both Iberian and Latin-American users.
+    Avoid colloquialisms specific to one country.
+
+fr:
+  locale: fr
+  register: "formal_vous"
+  dialect_variant: "Standard French (France)"
+  notes: >
+    Address users with the formal "vous" form. Standard metropolitan
+    French spelling (no Quebec or Belgian variants).
+
+hi:
+  locale: hi
+  register: "formal_aap"
+  dialect_variant: "Standard Hindi (Devanagari)"
+  notes: >
+    Use the formal "आप" (aap) form. Avoid Sanskritised forms in UI
+    contexts; favour everyday Hindi vocabulary that English-Hindi
+    bilingual users will recognise.
+
+id:
+  locale: id
+  register: "formal_anda"
+  dialect_variant: "Bahasa Indonesia (standard)"
+  notes: >
+    Use "Anda" (capitalised) for direct address. Standard Indonesian
+    spelling and register; avoid Malaysian Malay phrasings (those
+    belong in the ms locale).
+
+it:
+  locale: it
+  register: "formal_lei"
+  dialect_variant: "Standard Italian"
+  notes: >
+    Address users with the formal "Lei" form (capitalised when
+    referring to the user). Avoid regional vocabulary; standard
+    Italian readable across all regions.
+
+ja:
+  locale: ja
+  register: "formal_ui_desu_masu"
+  dialect_variant: "Standard Japanese (ja-JP)"
+  notes: >
+    Use polite desu / masu form for UI strings. Avoid keigo (excessive
+    honorifics) for general UI; reserve any sonkeigo / kenjougo for
+    interactions with named users. No casual-form (da / dearu)
+    contractions.
+
+ko:
+  locale: ko
+  register: "formal_haeyo"
+  dialect_variant: "Standard Korean (ko-KR)"
+  notes: >
+    Use the polite haeyo-che (해요체) form for UI. Avoid the more
+    formal hapnida-che (합니다체) which reads as overly stiff in
+    consumer software, and avoid the casual banmal entirely.
+
+ms:
+  locale: ms
+  register: "formal_anda"
+  dialect_variant: "Bahasa Melayu (Malaysia standard)"
+  notes: >
+    Use "anda" for direct address. Malaysian Malay spelling and
+    vocabulary; avoid loanwords specific to Indonesian (those belong
+    in the id locale).
+
+pt-BR:
+  locale: pt-BR
+  register: "formal_voce"
+  dialect_variant: "Brazilian Portuguese (NOT European Portuguese)"
+  notes: >
+    Use "você" (NOT "tu") for direct address. Brazilian spellings
+    after the 1990 orthographic agreement (e.g. "ato" not "acto",
+    "fato" not "facto"). Avoid Portugal-specific vocabulary like
+    "telemóvel" — use "celular".
+
+ru:
+  locale: ru
+  register: "formal_vy"
+  dialect_variant: "Standard Russian"
+  notes: >
+    Use the formal "Вы" (Vy) form, capitalised when addressing the
+    user directly. Standard Russian orthography; no transliterated
+    English where a native term exists.
+
+th:
+  locale: th
+  register: "formal_khun"
+  dialect_variant: "Standard Thai"
+  notes: >
+    Address users with "คุณ" (khun) prefix where natural. Polite
+    particles (ครับ / ค่ะ) are typically OMITTED in UI strings — they
+    belong to spoken / first-person dialogue, not to system text.
+
+tl:
+  locale: tl
+  register: "formal_po_opo"
+  dialect_variant: "Tagalog (Filipino) — Manila standard"
+  notes: >
+    Use "po / opo" markers for politeness when the source carries
+    direct address. Standard Tagalog; Taglish (English code-mixing)
+    is acceptable for technical UI terms that lack established
+    Tagalog equivalents.
+
+tr:
+  locale: tr
+  register: "formal_siz"
+  dialect_variant: "Standard Turkish"
+  notes: >
+    Use the formal "siz" form. Standard Istanbul Turkish; no Ottoman
+    archaic forms. Compound words follow modern orthography rules.
+
+ur:
+  locale: ur
+  register: "formal_aap"
+  dialect_variant: "Standard Urdu (Pakistan + India common register)"
+  notes: >
+    Use the formal "آپ" (aap) form. Standard Urdu Nastaliq script.
+    Avoid heavy Persian / Arabic loanwords unless they carry a
+    technical meaning English readers wouldn't recognise.
+
+vi:
+  locale: vi
+  register: "formal_quy_vi"
+  dialect_variant: "Standard Vietnamese"
+  notes: >
+    Use "Quý vị" or "bạn" for general address — bạn is friendlier and
+    appropriate for consumer UI. Standard Hanoi-leaning Vietnamese
+    spelling. Tone marks must be preserved exactly.
+
+zh-Hans:
+  locale: zh-Hans
+  register: "formal_ui"
+  dialect_variant: "Simplified Chinese (Mainland China standard)"
+  notes: >
+    Simplified characters (简体). Mainland China usage and vocabulary;
+    avoid Taiwan / Hong Kong specific terms (those belong in
+    zh-Hant). Use 您 (nín) for direct address in formal UI contexts;
+    fall back to 你 (nǐ) for friendlier surfaces only when the source
+    is similarly informal.
+
+zh-Hant:
+  locale: zh-Hant
+  register: "formal_ui"
+  dialect_variant: "Traditional Chinese (Hong Kong leaning, derived from zh-Hans via OpenCC s2hk)"
+  notes: >
+    Traditional characters (繁體). Generated by OpenCC s2hk from the
+    zh-Hans bundle, NOT translated independently. Vocabulary and
+    sentence structure follow the Simplified source — register stays
+    formal_ui. No manual edits should diverge from the s2hk-converted
+    output without coordinating a separate review pass.

@@ -1410,7 +1410,7 @@
   "adminShare": {
     "tokens": {
       "heading": "Share Tokens",
-      "creatorFilterLabel": "Creator user ID",
+      "creatorFilterLabel": "ID ผู้ใช้ของผู้สร้าง",
       "creatorFilterPlaceholder": "เช่น 0193f9b8-...",
       "statusFilterLabel": "สถานะ",
       "statusAny": "ทั้งหมด",

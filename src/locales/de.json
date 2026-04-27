@@ -297,7 +297,7 @@
   },
   "feeds": {
     "personalTitle": "Persönlicher Feed",
-    "socialTitle": "Social Feed",
+    "socialTitle": "Social-Feed",
     "personalEmpty": "Dein Feed ist ruhig",
     "personalEmptyDesc": "Aktivitäten deiner Echos erscheinen hier, während sie ihr Leben leben.",
     "socialEmpty": "Dein Social-Feed ist ruhig.",
@@ -701,7 +701,7 @@
       "empty": "Noch keine Moderatoren. Befördern Sie einen Standard-Benutzer per Benutzer-ID.",
       "updatedAt": "Aktualisiert"
     },
-    "tabShareTokens": "Share Tokens"
+    "tabShareTokens": "Share-Tokens"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -711,7 +711,7 @@
     "notifications": "Benachrichtigungen",
     "settings": "Einstellungen",
     "personalFeed": "Persönlicher Feed",
-    "socialFeed": "Social Feed",
+    "socialFeed": "Social-Feed",
     "browseShards": "Splitter durchsuchen",
     "menu": "Menü"
   },
@@ -1409,7 +1409,7 @@
   },
   "adminShare": {
     "tokens": {
-      "heading": "Share Tokens",
+      "heading": "Share-Tokens",
       "creatorFilterLabel": "Creator-Benutzer-ID",
       "creatorFilterPlaceholder": "z. B. 0193f9b8-...",
       "statusFilterLabel": "Status",

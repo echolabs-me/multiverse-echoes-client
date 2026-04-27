@@ -1418,7 +1418,7 @@
       "statusRevoked": "Révoqué",
       "statusExpired": "Expiré",
       "applyFilters": "Appliquer les filtres",
-      "colToken": "Token",
+      "colToken": "Jeton",
       "colCreatedBy": "Créé par",
       "colCreatedAt": "Création",
       "colExpiresAt": "Expire",
