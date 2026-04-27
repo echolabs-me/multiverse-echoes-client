@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "本翻譯僅供參考。英文版本為具有法律效力的權威文本。",
     "openMenu": "打開菜單",
     "closeMenu": "關閉菜單",
-    "fieldRequired": "請填寫此字段。"
+    "fieldRequired": "請填寫此字段。",
+    "previous": "上一步"
   },
   "auth": {
     "email": "郵箱",
@@ -488,7 +489,9 @@
     "shareToSocial": "分享到社交媒體",
     "downloadImage": "下載為圖片",
     "previewDisclaimer": "AI 生成內容 — 不代表真實事件或真實人物。",
-    "imageDisclaimer": "AI 生成內容 — Multiverse Echoes"
+    "imageDisclaimer": "AI 生成內容 — Multiverse Echoes",
+    "creating": "正在建立分享連結...",
+    "errorCreating": "無法建立分享連結，請重試。"
   },
   "export": {
     "title": "導出回聲故事",
@@ -697,7 +700,8 @@
       "demote": "降級",
       "empty": "尚無版主。按用户 ID 提升一名標準用户。",
       "updatedAt": "更新時間"
-    }
+    },
+    "tabShareTokens": "分享令牌"
   },
   "nav": {
     "dashboard": "儀表盤",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "請檢查提交內容並重試。",
     "errorGeneric": "出了點問題。請重試。",
     "errorNetwork": "無法連接服務。檢查網絡並重試。"
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "分享令牌",
+      "creatorFilterLabel": "創建者用户 ID",
+      "creatorFilterPlaceholder": "例如 0193f9b8-...",
+      "statusFilterLabel": "狀態",
+      "statusAny": "全部",
+      "statusActive": "有效",
+      "statusRevoked": "已撤銷",
+      "statusExpired": "已過期",
+      "applyFilters": "應用篩選",
+      "colToken": "令牌",
+      "colCreatedBy": "創建者",
+      "colCreatedAt": "創建時間",
+      "colExpiresAt": "過期時間",
+      "colStatus": "狀態",
+      "neverExpires": "永不過期",
+      "alreadyRevoked": "已撤銷",
+      "revoke": "撤銷",
+      "revokeModalTitle": "撤銷分享令牌",
+      "revokeModalBody": "這將立即使分享鏈接失效。接收者將看到分享未找到頁面。",
+      "revokeReasonLabel": "撤銷原因",
+      "revokeReasonPlaceholder": "原因將記錄在審計行中……",
+      "revokeConfirm": "確認撤銷",
+      "revokeSuccess": "分享令牌已撤銷。",
+      "revokeError": "撤銷分享令牌失敗。請重試。",
+      "loadError": "加載分享令牌失敗。請重試。",
+      "empty": "沒有分享令牌與當前篩選條件匹配。",
+      "paginationLabel": "顯示 {{from}}–{{to}}，共 {{total}}"
+    }
   }
 }

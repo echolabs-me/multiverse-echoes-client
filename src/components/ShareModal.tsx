@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link2, Share2, Image, Check } from 'lucide-react';
+import { Link2, Share2, Image, Check, Loader } from 'lucide-react';
 import { Button } from './Button.tsx';
 import { getComputedTokenColor } from '../lib/tokenColor.ts';
+import { useCreateShare } from '../hooks/useCreateShare.ts';
+import type { ShareFeedItemResponse } from '../types/generated.ts';
 
 /**
  * Canvas2D font stack mirroring the CSS `body` font-family from
@@ -25,13 +27,30 @@ interface ShareModalProps {
   onClose: () => void;
   title: string;
   body: string;
-  shareUrl: string;
+  /**
+   * The feed item id to share. Lane H Commit 4 changed this prop from
+   * `shareUrl` (which callers built incorrectly from `item.item_id`,
+   * producing a URL the og-router Worker would always 404) to `itemId`,
+   * which the modal POSTs to `/feeds/{itemId}/share` to receive a
+   * server-issued canonical share URL keyed by token, not item id.
+   */
+  itemId: string;
 }
 
-export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalProps) {
+/**
+ * Per-share-token contract: each modal-open mints a NEW server-side
+ * `ShareToken` (Lane H Commit 1 design). When the user closes and reopens
+ * the modal for the same item, the share-create call fires again — the
+ * recipient sees the most-recent-token's snapshot, prior tokens remain
+ * resolvable until revocation (Lane H Commit 7). This matches the design
+ * intent: a "share" is a discrete user action, not a per-item identifier.
+ */
+export function ShareModal({ open, onClose, title, body, itemId }: ShareModalProps) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
+  const [shareData, setShareData] = useState<ShareFeedItemResponse | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const { create, isLoading, error } = useCreateShare();
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -43,7 +62,35 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
     }
   }, [open]);
 
+  // Fire create on each (open→true, itemId) change. The cleanup
+  // function cancels stale resolutions so a fast close+reopen does not
+  // show the previous open's response. State clears happen in the
+  // .then() (async, not synchronously inside the effect) so the
+  // intervening UI window is the loading spinner, never a flash of the
+  // prior shareData.
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    void create(itemId)
+      .then((data) => {
+        if (!cancelled) {
+          setCopied(false);
+          setShareData(data);
+        }
+      })
+      .catch(() => {
+        // Hook captures the error in `error`; nothing more to do here.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, itemId, create]);
+
+  const shareUrl = shareData?.share_url ?? '';
+  const actionsDisabled = isLoading || !!error || !shareData;
+
   const handleCopyLink = async () => {
+    if (!shareUrl) return;
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
@@ -54,20 +101,20 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
   };
 
   const handleNativeShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title,
-          text: body.slice(0, 200),
-          url: shareUrl,
-        });
-      } catch {
-        // User cancelled or share failed
-      }
+    if (!shareUrl || !navigator.share) return;
+    try {
+      await navigator.share({
+        title,
+        text: body.slice(0, 200),
+        url: shareUrl,
+      });
+    } catch {
+      // User cancelled or share failed
     }
   };
 
   const handleDownloadImage = () => {
+    if (!shareUrl) return;
     // Create a simple branded text card as a downloadable image via canvas
     const canvas = document.createElement('canvas');
     canvas.width = 800;
@@ -146,11 +193,38 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
           <p className="mbs-2 text-[10px] text-text-secondary">{t('share.previewDisclaimer')}</p>
         </div>
 
+        {/* Loading state — replaces the action buttons section while the
+            server is minting the share token. Mirrors StoryExportModal's
+            spinner pattern. */}
+        {isLoading && (
+          <div
+            className="mbe-2 flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-4 py-3 text-sm text-text-secondary"
+            data-testid="share-modal-loading"
+          >
+            <Loader size={16} className="animate-spin" />
+            <span>{t('share.creating')}</span>
+          </div>
+        )}
+
+        {/* Error state — surfaces a hook-captured failure inline using the
+            error/danger token pattern from SubscriptionExpiryBanner.tsx. */}
+        {error && (
+          <div
+            role="alert"
+            data-testid="share-modal-error"
+            className="border-error/30 bg-error/10 text-error mbe-2 rounded-lg border px-4 py-3 text-sm"
+          >
+            {t('share.errorCreating')}
+          </div>
+        )}
+
         {/* Share actions */}
         <div className="space-y-2">
           <button
             onClick={() => void handleCopyLink()}
-            className="flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-start text-sm transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+            disabled={actionsDisabled}
+            data-testid="share-modal-copy"
+            className="flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-start text-sm transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           >
             {copied ? (
               <Check size={18} className="text-success" />
@@ -163,7 +237,9 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
           {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
             <button
               onClick={() => void handleNativeShare()}
-              className="flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-start text-sm transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+              disabled={actionsDisabled}
+              data-testid="share-modal-native"
+              className="flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-start text-sm transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Share2 size={18} className="text-text-secondary" />
               <span>{t('share.shareToSocial')}</span>
@@ -172,7 +248,9 @@ export function ShareModal({ open, onClose, title, body, shareUrl }: ShareModalP
 
           <button
             onClick={handleDownloadImage}
-            className="flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-start text-sm transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+            disabled={actionsDisabled}
+            data-testid="share-modal-download"
+            className="flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-start text-sm transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Image size={18} className="text-text-secondary" />
             <span>{t('share.downloadImage')}</span>

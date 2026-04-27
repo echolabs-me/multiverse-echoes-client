@@ -54,6 +54,14 @@ import type {
   ShardDetail,
   TierLimits,
 } from '../../types/api.ts';
+import type {
+  AdminRevokeShareTokenResponse,
+  AdminShareTokenListResponse,
+  AdminShareTokenSummary,
+  ShareFeedItemRequest,
+  ShareFeedItemResponse,
+  ViralContentResponse,
+} from '../../types/generated.ts';
 
 // --- Auth ---
 
@@ -269,6 +277,22 @@ export const feeds = {
     if (cursor) params.set('cursor', cursor);
     return request<FeedPage>(`/feeds/shard/${shardId}?${params.toString()}`);
   },
+
+  /**
+   * Create a share token for a feed item. Server materialises a
+   * `ShareToken` + `ShareSnapshot` and returns the canonical
+   * `https://echolabsme.com/share/{token}` URL the og-router Worker
+   * resolves. Each call mints a NEW token by design (Lane H Commit 1
+   * `ShareToken` is per-share-token, not per-item) — callers should
+   * cache the response for the lifetime of the modal session and
+   * re-call only when the user explicitly re-opens. Reference:
+   * `crates/api/src/routes/feeds.rs::share_feed_item`.
+   */
+  share: (itemId: string, body: ShareFeedItemRequest = {}) =>
+    request<ShareFeedItemResponse>(`/feeds/${itemId}/share`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+    }),
 };
 
 // --- Notifications ---
@@ -575,6 +599,59 @@ export const admin = {
     request<ModeratorUserItem>(`/admin/moderators/${userId}`, {
       method: 'DELETE',
     }),
+};
+
+// Lane H Commit 6 — viral-content monitoring admin surface.
+// Lane H Commit 7 extends `adminShare` with token list / get / revoke.
+export const adminShare = {
+  listViralContent: (params?: {
+    since?: string;
+    min_share_count?: number;
+    limit?: number;
+    offset?: number;
+  }) => {
+    const query = new URLSearchParams();
+    if (params?.since) query.set('since', params.since);
+    if (params?.min_share_count !== undefined)
+      query.set('min_share_count', String(params.min_share_count));
+    if (params?.limit !== undefined) query.set('limit', String(params.limit));
+    if (params?.offset !== undefined) query.set('offset', String(params.offset));
+    const qs = query.toString();
+    return request<ViralContentResponse>(
+      `/admin/share/viral-content${qs ? `?${qs}` : ''}`,
+    );
+  },
+
+  listTokens: (params?: {
+    creator_user_id?: string;
+    item_kind?: 'feed_item';
+    status?: 'any' | 'active' | 'revoked' | 'expired';
+    limit?: number;
+    offset?: number;
+  }) => {
+    const query = new URLSearchParams();
+    if (params?.creator_user_id) query.set('creator_user_id', params.creator_user_id);
+    if (params?.item_kind) query.set('item_kind', params.item_kind);
+    if (params?.status) query.set('status', params.status);
+    if (params?.limit !== undefined) query.set('limit', String(params.limit));
+    if (params?.offset !== undefined) query.set('offset', String(params.offset));
+    const qs = query.toString();
+    return request<AdminShareTokenListResponse>(
+      `/admin/share/tokens${qs ? `?${qs}` : ''}`,
+    );
+  },
+
+  getToken: (token: string) =>
+    request<AdminShareTokenSummary>(`/admin/share/tokens/${token}`),
+
+  revokeToken: (token: string, reason: string) =>
+    request<AdminRevokeShareTokenResponse>(
+      `/admin/share/tokens/${token}/revoke`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      },
+    ),
 };
 
 export const feedback = {

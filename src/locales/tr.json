@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "Bu çeviri kolaylık sağlamak amacıyla sunulmuştur. İngilizce metin, yasal olarak yetkili metindir.",
     "openMenu": "Menüyü aç",
     "closeMenu": "Menüyü kapat",
-    "fieldRequired": "Lütfen bu alanı doldurun."
+    "fieldRequired": "Lütfen bu alanı doldurun.",
+    "previous": "Önceki"
   },
   "auth": {
     "email": "E-posta",
@@ -182,7 +183,7 @@
     "viewPlans": "Planları Görüntüle"
   },
   "echoDetail": {
-    "persona": "Persona",
+    "persona": "Kişilik",
     "whatIf": "Ya şöyle olsaydı…",
     "createdOn": "{{date}} tarihinde oluşturuldu",
     "diary": "Günlük",
@@ -488,7 +489,9 @@
     "shareToSocial": "Sosyal medyada paylaş",
     "downloadImage": "Resim olarak indir",
     "previewDisclaimer": "Yapay zeka tarafından oluşturulmuş içerik — gerçek olayları veya kişileri temsil etmez.",
-    "imageDisclaimer": "Yapay zeka tarafından oluşturulan içerik — Multiverse Echoes"
+    "imageDisclaimer": "Yapay zeka tarafından oluşturulan içerik — Multiverse Echoes",
+    "creating": "Paylaşım bağlantısı oluşturuluyor...",
+    "errorCreating": "Bağlantı oluşturulamadı. Lütfen tekrar deneyin."
   },
   "export": {
     "title": "Echo Hikayesini Dışa Aktar",
@@ -674,7 +677,7 @@
     "triggerBackup": "Yedeği Başlat",
     "analyticsLoadFailed": "Analizler yüklenemedi",
     "revenueCard": "Gelir (Yakında)",
-    "revenueMrr": "MRR",
+    "revenueMrr": "Aylık Yinelenen Gelir",
     "revenueChurn": "Müşteri Kayıp Oranı",
     "revenueSubscribers": "Aboneler",
     "revenuePending": "Stripe entegrasyonu bekleniyor",
@@ -697,7 +700,8 @@
       "demote": "İndir",
       "empty": "Henüz moderatör yok. Standart bir kullanıcıyı Kullanıcı Kimliği ile yükseltin.",
       "updatedAt": "Güncellendi"
-    }
+    },
+    "tabShareTokens": "Paylaşım Tokenleri"
   },
   "nav": {
     "dashboard": "Kontrol Paneli",
@@ -1156,10 +1160,10 @@
       "buildP2": "Motor, tek bir NVIDIA B200 GPU üzerinde çalışır. Her 9 dakikada 500 otonom Echo yaşamını işler — her biri günlük girişleri, yapay zeka ile üretilmiş sinematik görseller, ses sentezi ve dudak senkronlu video anlatımıyla. Tamamı 20 dilde.",
       "stackTitle": "Teknoloji Yığını",
       "stackEngine": "Motor",
-      "stackEngine1": "Rust (ECS architecture)",
-      "stackEngine2": "Gemma 4 31B (local LLM)",
-      "stackEngine3": "FLUX.2 Klein (image gen)",
-      "stackEngine4": "VoxCPM2 (voice synthesis)",
+      "stackEngine1": "Rust (ECS mimarisi)",
+      "stackEngine2": "Gemma 4 31B (yerel LLM)",
+      "stackEngine3": "FLUX.2 Klein (görsel oluşturma)",
+      "stackEngine4": "VoxCPM2 (ses sentezi)",
       "stackEngine5": "MuseTalk + LivePortrait (video)",
       "stackClient": "İstemci",
       "stackClient1": "React 19 + TypeScript 6",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "Kontrol edip tekrar deneyin.",
     "errorGeneric": "Bir hata oluştu. Tekrar deneyin.",
     "errorNetwork": "Servise ulaşılamadı. Bağlantıyı kontrol edin."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Paylaşım Tokenleri",
+      "creatorFilterLabel": "Oluşturan kullanıcı ID",
+      "creatorFilterPlaceholder": "örn. 0193f9b8-...",
+      "statusFilterLabel": "Durum",
+      "statusAny": "Herhangi",
+      "statusActive": "Aktif",
+      "statusRevoked": "İptal Edildi",
+      "statusExpired": "Süresi Doldu",
+      "applyFilters": "Filtreleri uygula",
+      "colToken": "Token",
+      "colCreatedBy": "Oluşturan",
+      "colCreatedAt": "Oluşturulma Tarihi",
+      "colExpiresAt": "Bitiş Tarihi",
+      "colStatus": "Durum",
+      "neverExpires": "Asla",
+      "alreadyRevoked": "Zaten iptal edildi",
+      "revoke": "İptal Et",
+      "revokeModalTitle": "Paylaşım tokenini iptal et",
+      "revokeModalBody": "Bu, paylaşım bağlantısını hemen geçersiz kılacak. Alıcılar paylaşım-bulunamadı sayfasını görecek.",
+      "revokeReasonLabel": "İptal nedeni",
+      "revokeReasonPlaceholder": "Denetim satırında kaydedilen neden…",
+      "revokeConfirm": "İptal işlemini onayla",
+      "revokeSuccess": "Paylaşım tokeni iptal edildi.",
+      "revokeError": "Paylaşım tokeni iptal edilemedi. Lütfen tekrar deneyin.",
+      "loadError": "Paylaşım tokenleri yüklenemedi. Lütfen tekrar deneyin.",
+      "empty": "Geçerli filtrelere uygun paylaşım tokeni yok.",
+      "paginationLabel": "{{from}}–{{to}} / {{total}} gösteriliyor"
+    }
   }
 }

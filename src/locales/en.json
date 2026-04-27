@@ -29,6 +29,7 @@
     "checkStatusLink": "Check platform status at status.echolabsme.com",
     "checkStatusLinkShort": "Status",
     "next": "Next",
+    "previous": "Previous",
     "search": "Search",
     "continue": "Continue",
     "skip": "Skip for now",
@@ -488,7 +489,9 @@
     "shareToSocial": "Share to social media",
     "downloadImage": "Download as image",
     "previewDisclaimer": "AI-generated content — does not represent real events or people.",
-    "imageDisclaimer": "AI-generated content — Multiverse Echoes"
+    "imageDisclaimer": "AI-generated content — Multiverse Echoes",
+    "creating": "Creating share link...",
+    "errorCreating": "Could not create share link. Please try again."
   },
   "export": {
     "title": "Export Echo Story",
@@ -611,6 +614,7 @@
     "tabAnalytics": "Analytics",
     "tabFeedback": "Feedback",
     "tabModerators": "Moderators",
+    "tabShareTokens": "Share Tokens",
     "moderators": {
       "heading": "Current Moderators",
       "promote": "Promote",
@@ -698,6 +702,37 @@
     "feedbackStatusResolved": "Resolved",
     "feedbackStatusWontfix": "Won't Fix",
     "resolutionPrefix": "Resolution"
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Share Tokens",
+      "creatorFilterLabel": "Creator user ID",
+      "creatorFilterPlaceholder": "e.g. 0193f9b8-...",
+      "statusFilterLabel": "Status",
+      "statusAny": "Any",
+      "statusActive": "Active",
+      "statusRevoked": "Revoked",
+      "statusExpired": "Expired",
+      "applyFilters": "Apply filters",
+      "colToken": "Token",
+      "colCreatedBy": "Created by",
+      "colCreatedAt": "Created",
+      "colExpiresAt": "Expires",
+      "colStatus": "Status",
+      "neverExpires": "Never",
+      "alreadyRevoked": "Already revoked",
+      "revoke": "Revoke",
+      "revokeModalTitle": "Revoke share token",
+      "revokeModalBody": "This will immediately invalidate the share link. Recipients will see the share-not-found page.",
+      "revokeReasonLabel": "Revocation reason",
+      "revokeReasonPlaceholder": "Reason recorded on the audit row…",
+      "revokeConfirm": "Confirm revoke",
+      "revokeSuccess": "Share token revoked.",
+      "revokeError": "Failed to revoke share token. Please try again.",
+      "loadError": "Failed to load share tokens. Please try again.",
+      "empty": "No share tokens match the current filters.",
+      "paginationLabel": "Showing {{from}}–{{to}} of {{total}}"
+    }
   },
   "nav": {
     "dashboard": "Dashboard",

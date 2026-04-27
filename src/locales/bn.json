@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Multiverse Echoes",
+    "title": "মাল্টিভার্স ইকোজ",
     "tagline": "স্বয়ংশাসিত জীবন সিমুলেশন প্ল্যাটফর্ম"
   },
   "tickTimer": {
@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "এই অনুবাদটি কেবল সুবিধার্থে প্রদান করা হয়েছে। ইংরেজি সংস্করণটিই আইনত অনুমোদিত পাঠ।",
     "openMenu": "মেনু খুলুন",
     "closeMenu": "মেনু বন্ধ করুন",
-    "fieldRequired": "অনুগ্রহ করে এই ঘরটি পূরণ করুন।"
+    "fieldRequired": "অনুগ্রহ করে এই ঘরটি পূরণ করুন।",
+    "previous": "পূর্ববর্তী"
   },
   "auth": {
     "email": "ইমেল",
@@ -488,7 +489,9 @@
     "shareToSocial": "সোশ্যাল মিডিয়ায় শেয়ার করুন",
     "downloadImage": "ছবি হিসেবে ডাউনলোড করুন",
     "previewDisclaimer": "এআই-তৈরি বিষয়বস্তু — বাস্তব ঘটনা বা ব্যক্তির প্রতিনিধিত্ব করে না।",
-    "imageDisclaimer": "এআই-জেনারেটেড কন্টেন্ট — মাল্টিভার্স ইকোস"
+    "imageDisclaimer": "এআই-জেনারেটেড কন্টেন্ট — মাল্টিভার্স ইকোস",
+    "creating": "শেয়ার লিঙ্ক তৈরি করা হচ্ছে...",
+    "errorCreating": "শেয়ার লিঙ্ক তৈরি করা যায়নি। আবার চেষ্টা করুন।"
   },
   "export": {
     "title": "এক্সপোর্ট ইকো স্টোরি",
@@ -697,7 +700,8 @@
       "demote": "ডিমোট করুন",
       "empty": "এখনও কোনো মডারেটর নেই। ব্যবহারকারী আইডি দিয়ে একজন স্ট্যান্ডার্ড ব্যবহারকারীকে প্রমোট করুন।",
       "updatedAt": "আপডেট হয়েছে"
-    }
+    },
+    "tabShareTokens": "শেয়ার টোকেন"
   },
   "nav": {
     "dashboard": "ড্যাশবোর্ড",
@@ -1131,17 +1135,17 @@
       "terms": "শর্তাবলী",
       "privacy": "গোপনীয়তা",
       "contact": "যোগাযোগ করুন",
-      "copyright": "© 2026 EchoLabsME Pte. Ltd.",
+      "copyright": "© ২০২৬ ইকোল্যাবসএমই পিটিই লিমিটেড",
       "accessibility": "প্রবেশযোগ্যতা",
       "status": "স্ট্যাটাস"
     },
     "legalBanner": "এই পৃষ্ঠাটি বর্তমানে শুধুমাত্র ইংরেজিতে উপলব্ধ। পেশাদার অনুবাদ প্রক্রিয়া চলছে।",
     "languagePage": {
-      "title": "Multiverse Echoes",
+      "title": "মাল্টিভার্স ইকোজ",
       "selectPrompt": "আপনার পছন্দের ভাষাটি নির্বাচন করুন"
     },
     "pricing": {
-      "eyebrow": "EchoLabsME",
+      "eyebrow": "ইকোল্যাবসএমই",
       "headline": "আপনার মাল্টিভার্স বেছে নিন",
       "subheadline": "প্রতিটি টিয়ার আরও বিকল্প জীবন, দ্রুত হৃদস্পন্দন এবং আপনার ইকো-দের সাথে গভীরতর সংযোগ খুলে দেয়।"
     },
@@ -1162,8 +1166,8 @@
       "stackEngine4": "VoxCPM2 (কণ্ঠ সংশ্লেষণ)",
       "stackEngine5": "MuseTalk + LivePortrait (ভিডিও)",
       "stackClient": "ক্লায়েন্ট",
-      "stackClient1": "React 19 + TypeScript 6",
-      "stackClient2": "Tailwind CSS v4",
+      "stackClient1": "রিঅ্যাক্ট ১৯ + টাইপস্ক্রিপ্ট ৬",
+      "stackClient2": "টেইলউইন্ড সিএসএস ভি৪",
       "stackClient3": "২০ ভাষায় i18n",
       "stackClient4": "রিয়েল-টাইম WebSocket ফিড",
       "stackClient5": "NLLB-200 অনুবাদ সাইডকার",
@@ -1234,7 +1238,7 @@
       "explainer": "প্রিমিয়াম অ্যাকশন: কার্যকলাপ প্রস্তাব করুন বা সম্পর্কের ইঙ্গিত দিন — পদক্ষেপ নেবে কিনা তা ইকোই ঠিক করে।"
     },
     "heartbeatDaily": "দৈনিক",
-    "echoesSingle": "Echo",
+    "echoesSingle": "ইকো",
     "taglineFree": "আরেকটি জীবনের আভাস",
     "taglineStarter": "আপনার প্রথম বিকল্প জীবনগুলো",
     "taglineCore": "সম্পূর্ণ অভিজ্ঞতা",
@@ -1310,7 +1314,7 @@
       "16vid16voice": "১৬টি ভিডিও ডায়েরি / দিন, ১৬টি ভয়েস কল / দিন",
       "unlimitedVidVoice": "সীমাহীন ভিডিও ডায়েরি, সীমাহীন ভয়েস কল"
     },
-    "heartbeatTwiceDaily": "2×",
+    "heartbeatTwiceDaily": "২×",
     "heartbeat2hr": "2ঘ",
     "heartbeat30m": "30মি",
     "heartbeat15m": "15মি",
@@ -1345,7 +1349,7 @@
         "noPending": "কোনো বিচারাধীন ডাউনগ্রেড সিদ্ধান্ত নেই।",
         "errorGeneric": "আপনার ডাউনগ্রেড বিবরণ লোড করতে কিছু ভুল হয়েছে।",
         "summary": "আপনি {{oldTier}} থেকে {{newTier}}-এ যাচ্ছেন। নিশ্চিত করার পর যা ঘটবে তা এখানে।",
-        "echoesHeader": "Echoes",
+        "echoesHeader": "ইকোজ",
         "echoesHibernateCount": "আপনার {{total}} Echo-এর মধ্যে {{count}}টি হাইবারনেট হবে।",
         "echoesNoneHibernated": "কোনো Echo হাইবারনেট হবে না। সব {{total}}টি {{newTier}}-এর {{cap}} সীমার মধ্যে।",
         "echoesDeletion": "হাইবারনেট করা Echoes নিশ্চিতকরণের 90 দিন পর স্থায়ীভাবে মুছে যায়, যদি না আপনি একটি স্লট খালি করে সেগুলিকে জাগান বা তার আগে আবার আপগ্রেড করেন।",
@@ -1361,7 +1365,7 @@
       "pendingList": {
         "title": "বিচারাধীন মুছে ফেলা",
         "empty": "মুছে ফেলার জন্য নির্ধারিত কোনো Echo বা Shard নেই।",
-        "echoLabel": "Echo",
+        "echoLabel": "ইকো",
         "shardLabel": "ব্যক্তিগত Shard",
         "deletesOn": "{{date}} তারিখে মুছে যাবে",
         "loading": "বিচারাধীন মুছে ফেলা লোড হচ্ছে…",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "পরীক্ষা করে আবার চেষ্টা করুন।",
     "errorGeneric": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।",
     "errorNetwork": "সেবায় পৌঁছানো যায়নি। সংযোগ পরীক্ষা করুন।"
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "শেয়ার টোকেন",
+      "creatorFilterLabel": "স্রষ্টা ব্যবহারকারী আইডি",
+      "creatorFilterPlaceholder": "যেমন 0193f9b8-...",
+      "statusFilterLabel": "অবস্থা",
+      "statusAny": "সকল",
+      "statusActive": "সক্রিয়",
+      "statusRevoked": "বাতিল করা হয়েছে",
+      "statusExpired": "মেয়াদ উত্তীর্ণ",
+      "applyFilters": "ফিল্টার প্রয়োগ করুন",
+      "colToken": "টোকেন",
+      "colCreatedBy": "তৈরি করেছেন",
+      "colCreatedAt": "তৈরির তারিখ",
+      "colExpiresAt": "মেয়াদ শেষ হওয়ার তারিখ",
+      "colStatus": "অবস্থা",
+      "neverExpires": "কখনো না",
+      "alreadyRevoked": "ইতিমধ্যে বাতিল করা হয়েছে",
+      "revoke": "বাতিল করুন",
+      "revokeModalTitle": "শেয়ার টোকেন বাতিল করুন",
+      "revokeModalBody": "এটি শেয়ার লিঙ্কটি অবিলম্বে অবৈধ করবে। প্রাপকরা শেয়ার-পাওয়া যায়নি পৃষ্ঠা দেখতে পাবেন।",
+      "revokeReasonLabel": "বাতিলের কারণ",
+      "revokeReasonPlaceholder": "অডিট সারিতে রেকর্ড করা কারণ…",
+      "revokeConfirm": "বাতিল নিশ্চিত করুন",
+      "revokeSuccess": "শেয়ার টোকেন বাতিল করা হয়েছে।",
+      "revokeError": "শেয়ার টোকেন বাতিল করতে ব্যর্থ। পুনরায় চেষ্টা করুন।",
+      "loadError": "শেয়ার টোকেন লোড করতে ব্যর্থ। পুনরায় চেষ্টা করুন।",
+      "empty": "বর্তমান ফিল্টারগুলির সাথে কোনও শেয়ার টোকেন মিলে না।",
+      "paginationLabel": "{{from}}–{{to}} প্রদর্শিত হচ্ছে {{total}} এর মধ্যে"
+    }
   }
 }

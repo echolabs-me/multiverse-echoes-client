@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "คำแปลนี้จัดทำขึ้นเพื่อความสะดวกเท่านั้น ให้ยึดถือฉบับภาษาอังกฤษเป็นหลักในทางกฎหมาย",
     "openMenu": "เปิดเมนู",
     "closeMenu": "ปิดเมนู",
-    "fieldRequired": "กรุณากรอกข้อมูลในช่องนี้"
+    "fieldRequired": "กรุณากรอกข้อมูลในช่องนี้",
+    "previous": "ก่อนหน้า"
   },
   "auth": {
     "email": "อีเมล",
@@ -488,7 +489,9 @@
     "shareToSocial": "แชร์ไปยังโซเชียลมีเดีย",
     "downloadImage": "ดาวน์โหลดเป็นรูปภาพ",
     "previewDisclaimer": "เนื้อหาที่สร้างโดย AI — ไม่ได้แสดงถึงเหตุการณ์หรือบุคคลที่มีตัวตนจริง",
-    "imageDisclaimer": "เนื้อหาที่สร้างโดย AI — Multiverse Echoes"
+    "imageDisclaimer": "เนื้อหาที่สร้างโดย AI — Multiverse Echoes",
+    "creating": "กำลังสร้างลิงก์แชร์...",
+    "errorCreating": "ไม่สามารถสร้างลิงก์ได้ กรุณาลองอีกครั้ง"
   },
   "export": {
     "title": "ส่งออกเรื่องราว Echo",
@@ -697,7 +700,8 @@
       "demote": "ลดตำแหน่ง",
       "empty": "ยังไม่มีผู้ดูแล โปรดเลื่อนตำแหน่งผู้ใช้มาตรฐานโดยใช้รหัสผู้ใช้",
       "updatedAt": "อัปเดตเมื่อ"
-    }
+    },
+    "tabShareTokens": "Share Tokens"
   },
   "nav": {
     "dashboard": "แผงควบคุม",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "ตรวจสอบและลองอีกครั้ง",
     "errorGeneric": "เกิดข้อผิดพลาด ลองอีกครั้ง",
     "errorNetwork": "เชื่อมต่อไม่ได้ ตรวจสอบการเชื่อมต่อ"
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Share Tokens",
+      "creatorFilterLabel": "Creator user ID",
+      "creatorFilterPlaceholder": "เช่น 0193f9b8-...",
+      "statusFilterLabel": "สถานะ",
+      "statusAny": "ทั้งหมด",
+      "statusActive": "ใช้งาน",
+      "statusRevoked": "ถูกยกเลิก",
+      "statusExpired": "หมดอายุ",
+      "applyFilters": "ใช้ตัวกรอง",
+      "colToken": "Token",
+      "colCreatedBy": "สร้างโดย",
+      "colCreatedAt": "สร้างเมื่อ",
+      "colExpiresAt": "หมดอายุเมื่อ",
+      "colStatus": "สถานะ",
+      "neverExpires": "ไม่มีกำหนด",
+      "alreadyRevoked": "ถูกยกเลิกแล้ว",
+      "revoke": "ยกเลิก",
+      "revokeModalTitle": "ยกเลิก share token",
+      "revokeModalBody": "สิ่งนี้จะทำให้ลิงก์แชร์ไม่ถูกต้องทันที ผู้รับจะเห็นหน้าแชร์ไม่พบ",
+      "revokeReasonLabel": "เหตุผลในการยกเลิก",
+      "revokeReasonPlaceholder": "เหตุผลบันทึกไว้ในแถว audit…",
+      "revokeConfirm": "ยืนยันการยกเลิก",
+      "revokeSuccess": "Share token ถูกยกเลิกแล้ว",
+      "revokeError": "ไม่สามารถยกเลิก share token ได้ โปรดลองอีกครั้ง",
+      "loadError": "ไม่สามารถโหลด share tokens ได้ โปรดลองอีกครั้ง",
+      "empty": "ไม่มี share tokens ที่ตรงกับตัวกรองปัจจุบัน",
+      "paginationLabel": "แสดง {{from}}–{{to}} จาก {{total}}"
+    }
   }
 }

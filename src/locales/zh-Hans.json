@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "本翻译仅供参考。英文版本为具有法律效力的权威文本。",
     "openMenu": "打开菜单",
     "closeMenu": "关闭菜单",
-    "fieldRequired": "请填写此字段。"
+    "fieldRequired": "请填写此字段。",
+    "previous": "上一步"
   },
   "auth": {
     "email": "邮箱",
@@ -488,7 +489,9 @@
     "shareToSocial": "分享到社交媒体",
     "downloadImage": "下载为图片",
     "previewDisclaimer": "AI 生成内容 — 不代表真实事件或真实人物。",
-    "imageDisclaimer": "AI 生成内容 — Multiverse Echoes"
+    "imageDisclaimer": "AI 生成内容 — Multiverse Echoes",
+    "creating": "正在创建分享链接...",
+    "errorCreating": "无法创建分享链接，请重试。"
   },
   "export": {
     "title": "导出回声故事",
@@ -697,7 +700,8 @@
       "demote": "降级",
       "empty": "尚无版主。按用户 ID 提升一名标准用户。",
       "updatedAt": "更新时间"
-    }
+    },
+    "tabShareTokens": "分享令牌"
   },
   "nav": {
     "dashboard": "仪表盘",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "请检查提交内容并重试。",
     "errorGeneric": "出了点问题。请重试。",
     "errorNetwork": "无法连接服务。检查网络并重试。"
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "分享令牌",
+      "creatorFilterLabel": "创建者用户 ID",
+      "creatorFilterPlaceholder": "例如 0193f9b8-...",
+      "statusFilterLabel": "状态",
+      "statusAny": "全部",
+      "statusActive": "有效",
+      "statusRevoked": "已撤销",
+      "statusExpired": "已过期",
+      "applyFilters": "应用筛选",
+      "colToken": "令牌",
+      "colCreatedBy": "创建者",
+      "colCreatedAt": "创建时间",
+      "colExpiresAt": "过期时间",
+      "colStatus": "状态",
+      "neverExpires": "永不过期",
+      "alreadyRevoked": "已撤销",
+      "revoke": "撤销",
+      "revokeModalTitle": "撤销分享令牌",
+      "revokeModalBody": "这将立即使分享链接失效。接收者将看到分享未找到页面。",
+      "revokeReasonLabel": "撤销原因",
+      "revokeReasonPlaceholder": "原因将记录在审计行中……",
+      "revokeConfirm": "确认撤销",
+      "revokeSuccess": "分享令牌已撤销。",
+      "revokeError": "撤销分享令牌失败。请重试。",
+      "loadError": "加载分享令牌失败。请重试。",
+      "empty": "没有分享令牌与当前筛选条件匹配。",
+      "paginationLabel": "显示 {{from}}–{{to}}，共 {{total}}"
+    }
   }
 }

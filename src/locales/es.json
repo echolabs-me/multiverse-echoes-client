@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "Esta traducción se proporciona para su conveniencia. La versión en inglés es el texto legalmente autorizado.",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
-    "fieldRequired": "Rellena este campo."
+    "fieldRequired": "Rellena este campo.",
+    "previous": "Anterior"
   },
   "auth": {
     "email": "Correo electrónico",
@@ -488,7 +489,9 @@
     "shareToSocial": "Compartir en redes sociales",
     "downloadImage": "Descargar como imagen",
     "previewDisclaimer": "Contenido generado por IA — no representa eventos ni personas reales.",
-    "imageDisclaimer": "Contenido generado por IA — Multiverse Echoes"
+    "imageDisclaimer": "Contenido generado por IA — Multiverse Echoes",
+    "creating": "Creando enlace para compartir...",
+    "errorCreating": "No se pudo crear el enlace. Inténtalo de nuevo."
   },
   "export": {
     "title": "Exportar historia del Eco",
@@ -697,7 +700,8 @@
       "demote": "Degradar",
       "empty": "Aún no hay moderadores. Promueve a un usuario Estándar por su ID.",
       "updatedAt": "Actualizado"
-    }
+    },
+    "tabShareTokens": "Tokens de Compartición"
   },
   "nav": {
     "dashboard": "Panel",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "Revisa y reenvía.",
     "errorGeneric": "Algo salió mal. Inténtalo de nuevo.",
     "errorNetwork": "No se pudo conectar. Revisa tu conexión."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Tokens de Compartición",
+      "creatorFilterLabel": "ID de usuario creador",
+      "creatorFilterPlaceholder": "p. ej. 0193f9b8-...",
+      "statusFilterLabel": "Estado",
+      "statusAny": "Cualquiera",
+      "statusActive": "Activo",
+      "statusRevoked": "Revocado",
+      "statusExpired": "Expirado",
+      "applyFilters": "Aplicar filtros",
+      "colToken": "Token",
+      "colCreatedBy": "Creado por",
+      "colCreatedAt": "Creado",
+      "colExpiresAt": "Expira",
+      "colStatus": "Estado",
+      "neverExpires": "Nunca",
+      "alreadyRevoked": "Ya revocado",
+      "revoke": "Revocar",
+      "revokeModalTitle": "Revocar token de compartición",
+      "revokeModalBody": "Esto invalidará inmediatamente el enlace de compartición. Los destinatarios verán la página de compartición no encontrada.",
+      "revokeReasonLabel": "Motivo de revocación",
+      "revokeReasonPlaceholder": "Motivo registrado en la fila de auditoría…",
+      "revokeConfirm": "Confirmar revocación",
+      "revokeSuccess": "Token de compartición revocado.",
+      "revokeError": "Error al revocar el token de compartición. Intenta de nuevo.",
+      "loadError": "Error al cargar los tokens de compartición. Intenta de nuevo.",
+      "empty": "Ningún token de compartición coincide con los filtros actuales.",
+      "paginationLabel": "Mostrando {{from}}–{{to}} de {{total}}"
+    }
   }
 }

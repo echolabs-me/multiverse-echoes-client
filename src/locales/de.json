@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "Diese Übersetzung dient lediglich der Bequemlichkeit. Die englische Fassung ist der rechtlich maßgebliche Text.",
     "openMenu": "Menü öffnen",
     "closeMenu": "Menü schließen",
-    "fieldRequired": "Bitte fülle dieses Feld aus."
+    "fieldRequired": "Bitte fülle dieses Feld aus.",
+    "previous": "Zurück"
   },
   "auth": {
     "email": "E-Mail",
@@ -488,7 +489,9 @@
     "shareToSocial": "In sozialen Medien teilen",
     "downloadImage": "Als Bild herunterladen",
     "previewDisclaimer": "KI-generierte Inhalte — stellen keine realen Ereignisse oder Personen dar.",
-    "imageDisclaimer": "KI-generierte Inhalte — Multiverse Echoes"
+    "imageDisclaimer": "KI-generierte Inhalte — Multiverse Echoes",
+    "creating": "Teilen-Link wird erstellt...",
+    "errorCreating": "Link konnte nicht erstellt werden. Bitte erneut versuchen."
   },
   "export": {
     "title": "Echo-Story exportieren",
@@ -697,7 +700,8 @@
       "demote": "Herabstufen",
       "empty": "Noch keine Moderatoren. Befördern Sie einen Standard-Benutzer per Benutzer-ID.",
       "updatedAt": "Aktualisiert"
-    }
+    },
+    "tabShareTokens": "Share Tokens"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -1156,11 +1160,11 @@
       "buildP2": "Die Engine läuft auf einer einzigen NVIDIA B200 GPU. Sie verarbeitet 500 autonome Echo-Leben alle 9 Minuten — jeweils mit Tagebucheinträgen, KI-generierten Filmszenen, Sprachsynthese und lippensynchroner Videoerzählung. Alles in 20 Sprachen.",
       "stackTitle": "Der Tech-Stack",
       "stackEngine": "Engine",
-      "stackEngine1": "Rust (ECS architecture)",
-      "stackEngine2": "Gemma 4 31B (local LLM)",
-      "stackEngine3": "FLUX.2 Klein (image gen)",
-      "stackEngine4": "VoxCPM2 (voice synthesis)",
-      "stackEngine5": "MuseTalk + LivePortrait (video)",
+      "stackEngine1": "Rust (ECS-Architektur)",
+      "stackEngine2": "Gemma 4 31B (lokales LLM)",
+      "stackEngine3": "FLUX.2 Klein (Bildgenerierung)",
+      "stackEngine4": "VoxCPM2 (Sprachsynthese)",
+      "stackEngine5": "MuseTalk + LivePortrait (Video)",
       "stackClient": "Client",
       "stackClient1": "React 19 + TypeScript 6",
       "stackClient2": "Tailwind CSS v4",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "Überprüfen und erneut versuchen.",
     "errorGeneric": "Etwas ging schief. Erneut versuchen.",
     "errorNetwork": "Dienst nicht erreichbar. Verbindung prüfen."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Share Tokens",
+      "creatorFilterLabel": "Creator-Benutzer-ID",
+      "creatorFilterPlaceholder": "z. B. 0193f9b8-...",
+      "statusFilterLabel": "Status",
+      "statusAny": "Beliebig",
+      "statusActive": "Aktiv",
+      "statusRevoked": "Widerrufen",
+      "statusExpired": "Abgelaufen",
+      "applyFilters": "Filter anwenden",
+      "colToken": "Token",
+      "colCreatedBy": "Erstellt von",
+      "colCreatedAt": "Erstellt",
+      "colExpiresAt": "Verfällt",
+      "colStatus": "Status",
+      "neverExpires": "Nie",
+      "alreadyRevoked": "Bereits widerrufen",
+      "revoke": "Widerrufen",
+      "revokeModalTitle": "Share Token widerrufen",
+      "revokeModalBody": "Dies macht den Share-Link sofort ungültig. Empfänger sehen eine Fehlermeldung.",
+      "revokeReasonLabel": "Grund für Widerruf",
+      "revokeReasonPlaceholder": "Grund wird in der Audit-Zeile vermerkt…",
+      "revokeConfirm": "Widerruf bestätigen",
+      "revokeSuccess": "Share Token widerrufen.",
+      "revokeError": "Share Token konnte nicht widerrufen werden. Bitte versuchen Sie es erneut.",
+      "loadError": "Share Tokens konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+      "empty": "Keine Share Tokens entsprechen den aktuellen Filtern.",
+      "paginationLabel": "Zeige {{from}}–{{to}} von {{total}}"
+    }
   }
 }

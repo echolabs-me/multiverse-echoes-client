@@ -93,8 +93,6 @@ function SocialFeedCard({
       <Zap size={14} className="text-accent" aria-hidden="true" />
     );
 
-  const shareUrl = `${window.location.origin}/share/${item.item_id}`;
-
   return (
     <>
       <Card variant="compact" className="group animate-slide-in">
@@ -135,7 +133,7 @@ function SocialFeedCard({
         onClose={() => setShareOpen(false)}
         title={item.title}
         body={item.body}
-        shareUrl={shareUrl}
+        itemId={item.item_id}
       />
     </>
   );

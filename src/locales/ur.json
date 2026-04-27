@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "یہ ترجمہ سہولت کے لیے فراہم کیا گیا ہے۔ انگریزی ورژن قانونی طور پر مستند متن ہے۔",
     "openMenu": "مینو کھولیں",
     "closeMenu": "مینو بند کریں",
-    "fieldRequired": "براہ کرم یہ خانہ پُر کریں۔"
+    "fieldRequired": "براہ کرم یہ خانہ پُر کریں۔",
+    "previous": "پچھلا"
   },
   "auth": {
     "email": "ای میل",
@@ -488,7 +489,9 @@
     "shareToSocial": "سوشل میڈیا پر شیئر کریں",
     "downloadImage": "تصویر کے طور پر ڈاؤن لوڈ کریں",
     "previewDisclaimer": "مصنوعی ذہانت (AI) سے تیار کردہ مواد — حقیقی واقعات یا لوگوں کی نمائندگی نہیں کرتا۔",
-    "imageDisclaimer": "مصنوعی ذہانت سے تیار کردہ مواد — ملٹی ورس ایکوز"
+    "imageDisclaimer": "مصنوعی ذہانت سے تیار کردہ مواد — ملٹی ورس ایکوز",
+    "creating": "اشتراک کا لنک بنایا جا رہا ہے...",
+    "errorCreating": "لنک نہیں بنایا جا سکا۔ دوبارہ کوشش کریں۔"
   },
   "export": {
     "title": "ایکو کہانی ایکسپورٹ کریں",
@@ -697,7 +700,8 @@
       "demote": "تنزیل کریں",
       "empty": "ابھی تک کوئی ماڈریٹر نہیں۔ صارف ID کے ذریعے ایک معیاری صارف کو ترقی دیں۔",
       "updatedAt": "اپ ڈیٹ ہوا"
-    }
+    },
+    "tabShareTokens": "شیئر ٹوکن"
   },
   "nav": {
     "dashboard": "ڈیش بورڈ",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "چیک کریں اور دوبارہ کوشش کریں۔",
     "errorGeneric": "کچک غلط ہوا۔ دوبارہ کوشش کریں۔",
     "errorNetwork": "سروس تک نہیں پہنچا۔ کنکشن چیک کریں۔"
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "شیئر ٹوکن",
+      "creatorFilterLabel": "تخلیق کار کی صارف ID",
+      "creatorFilterPlaceholder": "مثال کے طور پر 0193f9b8-...",
+      "statusFilterLabel": "حالت",
+      "statusAny": "کوئی بھی",
+      "statusActive": "فعال",
+      "statusRevoked": "منسوخ",
+      "statusExpired": "ختم شدہ",
+      "applyFilters": "فلٹرز لاگو کریں",
+      "colToken": "ٹوکن",
+      "colCreatedBy": "بنایا گیا",
+      "colCreatedAt": "تخلیق کی تاریخ",
+      "colExpiresAt": "ختم ہونے کی تاریخ",
+      "colStatus": "حالت",
+      "neverExpires": "کبھی نہیں",
+      "alreadyRevoked": "پہلے سے منسوخ",
+      "revoke": "منسوخ کریں",
+      "revokeModalTitle": "شیئر ٹوکن منسوخ کریں",
+      "revokeModalBody": "یہ شیئر لنک کو فوری طور پر غیر فعال کر دے گا۔ موصول کنندگان شیئر نہ ملنے والا صفحہ دیکھیں گے۔",
+      "revokeReasonLabel": "منسوخی کی وجہ",
+      "revokeReasonPlaceholder": "آڈٹ قطار پر درج وجہ…",
+      "revokeConfirm": "منسوخی کی تصدیق کریں",
+      "revokeSuccess": "شیئر ٹوکن منسوخ کر دیا گیا۔",
+      "revokeError": "شیئر ٹوکن منسوخ کرنا ناکام۔ براہ کرم دوبارہ کوشش کریں۔",
+      "loadError": "شیئر ٹوکنز لوڈ کرنا ناکام۔ براہ کرم دوبارہ کوشش کریں۔",
+      "empty": "کوئی شیئر ٹوکنز موجودہ فلٹرز سے مماثل نہیں۔",
+      "paginationLabel": "{{from}}–{{to}} دکھا رہے ہیں {{total}} میں سے"
+    }
   }
 }

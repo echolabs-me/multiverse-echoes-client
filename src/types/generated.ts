@@ -138,6 +138,59 @@ export type AdminPagination = {
 	offset?: number,
 };
 
+// Body for `POST /admin/share/tokens/{token}/revoke`.
+export type AdminRevokeShareTokenRequest = {
+	/**
+	 *  Free-text justification recorded on the row alongside the
+	 *  admin actor id. Required + non-empty + bounded by
+	 *  [`SHARE_REVOCATION_REASON_MAX_CHARS`] (500 chars). The literal
+	 *  `500` in the validator attribute is pinned to the const via
+	 *  the `_REASON_MAX_PIN` compile-time assertion above — drift
+	 *  fails the build.
+	 */
+	reason: string,
+};
+
+// Response for `POST /admin/share/tokens/{token}/revoke`.
+export type AdminRevokeShareTokenResponse = {
+	token: string,
+	revoked_at: string,
+	revoked_by_user_id: string,
+	revocation_reason: string,
+};
+
+/**
+ *  Envelope response for `GET /admin/share/tokens`. Shape mirrors
+ *  Lane F's `EnforcementActionListResponse` — `total` is the true
+ *  match count before pagination.
+ */
+export type AdminShareTokenListResponse = {
+	items: AdminShareTokenSummary[],
+	total: number,
+	limit: number,
+	offset: number,
+};
+
+/**
+ *  Wire-side projection of `me_core::models::share::ShareToken`. Mirrors
+ *  the field set 1:1 — the model is already wire-stable (Specta-derived
+ *  for the client) but utoipa needs a `ToSchema` derive that lives on
+ *  the api crate (me-core can't depend on utoipa, same architectural
+ *  invariant as Lane F's `AdminEnforcementActionSummary`).
+ */
+export type AdminShareTokenSummary = {
+	token: string,
+	item_kind: ShareableKind,
+	item_id: string,
+	created_by_user_id: string,
+	include_display_name: boolean,
+	created_at: string,
+	expires_at: string | null,
+	revoked_at: string | null,
+	revoked_by_user_id: string | null,
+	revocation_reason: string | null,
+};
+
 export type AdminUpsertItemRequest = {
 	item_id?: string | null,
 	name: string,
@@ -177,6 +230,37 @@ export type AnalyticsSummary = {
 	event_name: string,
 	count: number,
 	distinct_users: number,
+};
+
+/**
+ *  A single anonymous client-side event. Wire-identical to
+ *  [`ClientEvent`] minus `user_id` — there is no `user_id` field on
+ *  the wire because the caller is unauthenticated by definition.
+ *  Server stamps [`ANONYMOUS_USER_ID_SENTINEL`] on persistence. Lane
+ *  H Commit 5 Deliverable 3.
+ */
+export type AnonymousAnalyticsEvent = {
+	event_name: string,
+	properties?: Record<string, never>,
+};
+
+/**
+ *  Request body for `POST /analytics/events/anonymous`. Lane H Commit
+ *  5 Deliverable 3.
+ */
+export type AnonymousIngestRequest = {
+	events: AnonymousAnalyticsEvent[],
+};
+
+/**
+ *  Response from `POST /analytics/events/anonymous`. No `opted_out`
+ *  field — anonymous events have no user identity to opt out, so the
+ *  concept does not apply (per ME-PDP-001 amendment shipped this
+ *  commit). Lane H Commit 5 Deliverable 3.
+ */
+export type AnonymousIngestResponse = {
+	// Count of events the server actually persisted.
+	accepted: number,
 };
 
 // API key for third-party access. Reference: ME-API-001 §3.2.
@@ -542,6 +626,27 @@ export type ContentFlag = {
 	action_taken: string,
 	reviewed_by: string | null,
 	review_timestamp: string | null,
+};
+
+/**
+ *  Compact preview of the shared item's content, populated only when
+ *  the underlying `FeedItem` still exists at admin-query time. The body
+ *  is truncated to `BODY_EXCERPT_MAX_CHARS` characters at a Unicode
+ *  scalar boundary (no UTF-8 splits).
+ */
+export type ContentPreviewSummary = {
+	headline: string,
+	/**
+	 *  Body text truncated to at most `BODY_EXCERPT_MAX_CHARS` chars
+	 *  (Unicode scalar boundary). Carries an ellipsis suffix only when
+	 *  the original was longer than the cap.
+	 */
+	body_excerpt: string,
+	/**
+	 *  User who owns the item — surfaced so admin can navigate to
+	 *  their profile / moderation surface in one click.
+	 */
+	owner_user_id: string,
 };
 
 export type ContentTierEnum = "T0" | "T1" | "T2" | "T3";
@@ -2567,6 +2672,226 @@ export type ShardTheme = {
 export type ShardType = "Public" | "Private" | "Personal";
 
 /**
+ *  Body accepted by `POST /feeds/{item_id}/share`.
+ * 
+ *  All fields optional. `include_display_name_override` lets the caller
+ *  override the user's account-level `share_attribution_default` for this
+ *  specific share. If unset, the account default is used. Lane H Commit 4
+ *  `ShareModal` wires this override.
+ */
+export type ShareFeedItemRequest = {
+	/**
+	 *  `Some(true)` = this share renders the sharing user's display
+	 *  name regardless of the user's account default. `Some(false)` =
+	 *  anonymous render regardless of the account default. `None` =
+	 *  fall back to `User.share_attribution_default`.
+	 */
+	include_display_name_override?: boolean | null,
+};
+
+/**
+ *  Body returned by `POST /feeds/{item_id}/share`.
+ * 
+ *  `share_url` is the canonical user-facing URL of the form
+ *  `{config.api.share_base_url}/share/{token}`. `token` is the token
+ *  UUID (also embedded in `share_url` after the final slash).
+ *  `expires_at` carries the materialised expiry timestamp — newly
+ *  created tokens (Lane H Commit 7+) get `Some(now + 30d)` per
+ *  ME-CSS-001 §6.3. Legacy tokens written before Commit 7 stay at
+ *  `None` and never expire. `include_display_name` is the
+ *  materialised attribution value (`false` = anonymous render,
+ *  `true` = sharing user's display name shown).
+ * 
+ *  `is_public` is preserved for backward compatibility. Its semantic
+ *  shifts to "this feed item has at least one active share token".
+ *  The flag-flip via `feed_store.mark_public` is preserved per Lane H
+ *  Commit 1's PR body explicit out-of-scope note; Lane H Commit 4 may
+ *  revisit when `ShareModal` is rewired.
+ */
+export type ShareFeedItemResponse = {
+	item_id: string,
+	token: string,
+	share_url: string,
+	include_display_name: boolean,
+	is_public: boolean,
+	expires_at: string | null,
+};
+
+/**
+ *  What kind of feed item this share token resolves to. Lane H Commit 1
+ *  supports `FeedItem` only (which is the only entity exposing `is_public`
+ *  in the current data model). The enum is closed and exhaustive — adding
+ *  a new variant later requires adding a new write site (per the
+ *  `EnforcementActionTarget` precedent).
+ */
+export type ShareItemKind = "feed_item";
+
+/**
+ *  The snapshot of a feed item at share-time. Persisted in Redb under
+ *  primary key `token: Uuid` (one snapshot per token; lookup by token).
+ *  Snapshots are immutable — once written, never modified. Updates to the
+ *  live `FeedItem` / `DiaryEntry` / `LifeEvent` after share-time do NOT
+ *  propagate to the snapshot.
+ * 
+ *  Storage choice: snapshot lives in Redb on the API server (B200-on side)
+ *  AND, in Lane H Commit 3, mirrors to Cloudflare KV for B200-off serving
+ *  by the og-router Worker. Commit 1 writes only Redb.
+ */
+export type ShareSnapshot = {
+	token: string,
+	// Captured content at share-time. Distinct from the live FeedItem.
+	content: ShareSnapshotContent,
+	/**
+	 *  User display name as of share-time, ONLY populated if the token's
+	 *  `include_display_name == true`. Stored as a snapshot — if the user
+	 *  changes their display name later, the share continues to show the
+	 *  share-time value.
+	 */
+	author_display_name: string | null,
+	created_at: string,
+};
+
+/**
+ *  The content fields of a feed-item snapshot. Mirrors the user-visible
+ *  surface of `crate::models::community::FeedItem` at share-time:
+ *  `headline`, `body`, `echo_id`, `echo_name`, `shard_id`.
+ * 
+ *  Echo-name materialisation: snapshotted at share-time (Lane H Commit 3,
+ *  Decision 1). This deliberately reverses Lane H Commit 1's prior choice
+ *  to derive the name at render time. Rationale: the share-render path
+ *  runs in the og-router Cloudflare Worker against KV, with no available
+ *  roundtrip back to the B200 Rust API. Render-time Echo lookup would
+ *  either require a cross-origin fetch (defeating the KV-mirror cache
+ *  purpose) or fall back to a generic label. Snapshotting the name pays
+ *  a one-time Echo lookup at share-create time and keeps the Worker
+ *  render path self-contained on KV state. Echo names are immutable
+ *  per ME-VIS-001 so the snapshot value is byte-stable for the lifetime
+ *  of the share.
+ */
+export type ShareSnapshotContent = {
+	/**
+	 *  The feed-item id this snapshot was derived from. Useful for
+	 *  "view live item" navigation when the recipient is also a user.
+	 */
+	source_item_id: string,
+	// Headline text at share-time.
+	headline: string,
+	// Body text at share-time.
+	body: string,
+	/**
+	 *  Echo whose feed item this is. Non-optional; every feed item
+	 *  belongs to an Echo.
+	 */
+	echo_id: string,
+	/**
+	 *  Echo's display name at share-time. `#[serde(default)]` so any
+	 *  snapshot row written before this field existed (i.e. by Lane H
+	 *  Commit 1 or Commit 2) deserialises with the empty string. The
+	 *  Worker render path treats empty as "An Echo" (no leak of a
+	 *  stale or missing name into the rendered page).
+	 */
+	echo_name?: string,
+	/**
+	 *  Shard the Echo lives in at share-time (used for navigational
+	 *  breadcrumb on the share page).
+	 */
+	shard_id: string,
+};
+
+/**
+ *  A single share token. Persisted in Redb under primary key `token: Uuid`.
+ *  Tokens are URL-safe (rendered in share URLs as the canonical
+ *  `https://echolabsme.com/share/{token}` per Lane H Commit 3 dispatch).
+ * 
+ *  Attribution materialisation: at token creation time, the calling code
+ *  reads `User.share_attribution_default` (Lane H Commit 2) optionally
+ *  overridden by a per-share request flag, and writes the final value to
+ *  `include_display_name`. The token is the source of truth for what the
+ *  recipient sees; the User account default exists only to seed the per-
+ *  share value at create time.
+ * 
+ *  Revocation: setting `revoked_at` to `Some(now)` revokes the token. The
+ *  resolver path checks `revoked_at.is_none()` before serving.
+ * 
+ *  Expiry: `expires_at = None` means the token never expires. A non-None
+ *  value is honoured by the resolver path. Lane H Commit 1 writes
+ *  `expires_at = None` for all tokens (no expiry policy yet); Lane H
+ *  Commit 7 lands the expiry-policy surface.
+ */
+export type ShareToken = {
+	token: string,
+	item_kind: ShareItemKind,
+	item_id: string,
+	// User who created the share. Always populated.
+	created_by_user_id: string,
+	/**
+	 *  Per-token final attribution value. `true` = the recipient sees the
+	 *  sharing user's display name. `false` = anonymous render.
+	 */
+	include_display_name: boolean,
+	created_at: string,
+	/**
+	 *  `None` = never expires. `Some(t)` = resolver returns 404 for any
+	 *  view at or after `t`.
+	 */
+	expires_at: string | null,
+	/**
+	 *  `None` = active. `Some(t)` = revoked at `t`. Revoked tokens always
+	 *  404 regardless of `expires_at`.
+	 */
+	revoked_at: string | null,
+	/**
+	 *  Admin user who issued the revocation, when the revocation was made
+	 *  from the admin surface. `None` for tokens revoked by the original
+	 *  creator from the user-facing surface (or for never-revoked tokens).
+	 *  `#[serde(default)]` so any token row written before this field
+	 *  existed (Lane H Commits 1–6) deserialises with `None`.
+	 */
+	revoked_by_user_id?: string | null,
+	/**
+	 *  Free-text rationale captured at revocation time. Required by
+	 *  ME-CSS-001 §6.3 revocation policy when the actor is an admin
+	 *  (the admin endpoint enforces non-empty); user-initiated revoke
+	 *  (Commit 7 ships admin-only — user-facing revoke lives elsewhere)
+	 *  leaves this as `None`. `#[serde(default)]` for legacy rows.
+	 */
+	revocation_reason?: string | null,
+};
+
+/**
+ *  Query parameters for `GET /admin/share/tokens`. Status string
+ *  values: `any` (default) | `active` | `revoked` | `expired`.
+ *  Unknown values return 400 `INVALID_STATUS`.
+ */
+export type ShareTokenListQuery = {
+	// Restrict to tokens created by this user.
+	creator_user_id?: string | null,
+	/**
+	 *  Restrict to tokens whose `item_kind` matches. Snake-case string
+	 *  matching the `ShareableKind` wire form (`feed_item`). Unknown
+	 *  value → 400 `INVALID_ITEM_KIND`.
+	 */
+	item_kind?: string | null,
+	/**
+	 *  Status filter: `any` | `active` | `revoked` | `expired`. Default
+	 *  `any`. Unknown value → 400 `INVALID_STATUS`.
+	 */
+	status?: string | null,
+	limit: number,
+	offset?: number,
+};
+
+/**
+ *  What kind of shared item this row points at.
+ * 
+ *  Wire-side mirror of `me_core::models::share::ShareItemKind` — kept
+ *  distinct so future kind additions land here as a single edit
+ *  (handler + spec) rather than rippling through every share-related
+ *  admin endpoint. Snake-case serialised to match `ShareItemKind`.
+ */
+export type ShareableKind = "feed_item";
+
+/**
  *  Off-platform social handle surfaced on the public profile.
  * 
  *  `platform` is a short identifier (e.g. "twitter", "github", "mastodon")
@@ -2942,6 +3267,15 @@ export type User = {
 	 *  platform's privacy-by-default posture. Reference: ME-UAD-001 §2.3.
 	 */
 	public_echo_feed?: boolean,
+	/**
+	 *  Default attribution preference for the user's share links. `false`
+	 *  = anonymous renders by default (recipients do not see the user's
+	 *  display name). `true` = display name shown on shares by default.
+	 *  Per ME-CSS-001 §6.3 the platform default is anonymous; users opt
+	 *  in via the Privacy section of Settings. Per-share `ShareModal`
+	 *  override flips this on the individual token.
+	 */
+	share_attribution_default?: boolean,
 };
 
 export type UserInventory = {
@@ -3020,6 +3354,70 @@ export type UserSubscription = {
 export type VersionResponse = {
 	version: string,
 	name: string,
+};
+
+/**
+ *  One viral-content row. Sort key is `share_count` desc, with stable
+ *  tie-break on `item_id` asc.
+ */
+export type ViralContentItem = {
+	/**
+	 *  String form of the `Uuid` from the `share.created` event's
+	 *  `properties.item_id`. Stays a string (not parsed `Uuid`) on the
+	 *  wire because the analytics property is free-form and adversarial
+	 *  emit could ship a non-UUID value — the handler skips those rows
+	 *  before they reach this struct, but the wire shape is documented
+	 *  as String for forward-compat.
+	 */
+	item_id: string,
+	item_kind: ShareableKind,
+	share_count: number,
+	first_shared_at: string,
+	most_recent_share_at: string,
+	/**
+	 *  `None` when the underlying item was deleted between the
+	 *  `share.created` events firing and this admin query. The handler
+	 *  currently filters those rows out entirely; this field stays
+	 *  `Option` for future-proofing (e.g. a follow-up that surfaces
+	 *  orphaned share activity for cleanup tooling).
+	 */
+	content_preview: ContentPreviewSummary | null,
+};
+
+// Query parameters for `GET /admin/share/viral-content`.
+export type ViralContentQuery = {
+	// RFC3339 timestamp. Defaults to `now - 24h` when absent.
+	since: string | null,
+	/**
+	 *  Minimum `share.created` event count required for a row to be
+	 *  included. Defaults to `config.analytics.viral_share_threshold_24h`
+	 *  when absent.
+	 */
+	min_share_count: number | null,
+	limit: number,
+	offset?: number,
+};
+
+// Response body for `GET /admin/share/viral-content`.
+export type ViralContentResponse = {
+	items: ViralContentItem[],
+	/**
+	 *  Total rows matching the threshold filter, BEFORE pagination
+	 *  (offset/limit). Lets admin UIs render "showing 1-50 of 137".
+	 */
+	total: number,
+	/**
+	 *  The threshold value the handler actually applied (either the
+	 *  query-string `min_share_count` or the config default if absent).
+	 *  Echoed so admin UIs can render the in-effect threshold without
+	 *  reading config.
+	 */
+	threshold_used: number,
+	/**
+	 *  The since-cutoff the handler actually applied (either the
+	 *  query-string `since` or `now - 24h` if absent).
+	 */
+	since: string,
 };
 
 // A complete voice conversation session between a user and their Echo.
@@ -3230,7 +3628,25 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
  * 
  *  One event per user per sweep pass.
  */
-{ HibernatedContentDeleted: { user_id: string; echo_ids: string[]; shard_ids: string[]; deleted_at: string } };
+{ HibernatedContentDeleted: { user_id: string; echo_ids: string[]; shard_ids: string[]; deleted_at: string } } | 
+/**
+ *  A share token was revoked — by an admin via the
+ *  `/admin/share/tokens/{token}/revoke` endpoint, OR purged by the
+ *  daily expiry sweeper. Consumers: the admin dashboard
+ *  `share-tokens` tab (re-fetches the active page on receipt).
+ *  Reference: ME-CSS-001 §6.3 (revocation policy, Lane H Commit 7).
+ */
+{ ShareTokenRevoked: { token: string; 
+/**
+ *  `Some(user_id)` for admin-initiated revoke; `None` for
+ *  sweeper-initiated expiry purge.
+ */
+revoked_by_user_id: string | null; 
+/**
+ *  Free-text reason. `"expired"` for sweeper-initiated;
+ *  admin-supplied otherwise.
+ */
+reason: string; revoked_at: string } };
 
 // Query params for WebSocket connection (JWT token).
 export type WsAuthQuery = {
@@ -3262,4 +3678,17 @@ export type WsEchoEvent = { type: "DiaryEntryCreated"; echo_id: string; diary_id
  */
 content_locale: string } | { type: "DiaryImageReady"; echo_id: string; diary_id: string; image_url: string } | { type: "LifeEventOccurred"; echo_id: string; event_id: string; tick_id: number; 
 // See `DiaryEntryCreated::content_locale`. CC TASK 3 Step 4.
-content_locale: string } | { type: "MoodChanged"; echo_id: string; mood: string; tick_id: number } | { type: "EchoMoved"; echo_id: string; from_location: string; to_location: string } | { type: "PersonaUpdated"; echo_id: string; version: number } | { type: "EchoHibernated"; echo_id: string; reason: string } | { type: "EchoWoken"; echo_id: string } | { type: "EchoWealthChanged"; echo_id: string; old_value: number; new_value: number; reason: string } | { type: "EchoDeleted"; echo_id: string } | { type: "ShardTravelCompleted"; echo_id: string; shard_id: string } | { type: "ShardCreated"; shard_id: string; shard_type: string } | { type: "CommunityMessagePosted"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageEdited"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageDeleted"; channel_id: string; message_id: string; deleted_by: string } | { type: "NotificationCreated"; notification_id: string } | { type: "EchoAvatarReady"; echo_id: string; avatar_url: string } | { type: "Connected"; echo_id: string; message: string } | { type: "Error"; message: string };
+content_locale: string } | { type: "MoodChanged"; echo_id: string; mood: string; tick_id: number } | { type: "EchoMoved"; echo_id: string; from_location: string; to_location: string } | { type: "PersonaUpdated"; echo_id: string; version: number } | { type: "EchoHibernated"; echo_id: string; reason: string } | { type: "EchoWoken"; echo_id: string } | { type: "EchoWealthChanged"; echo_id: string; old_value: number; new_value: number; reason: string } | { type: "EchoDeleted"; echo_id: string } | { type: "ShardTravelCompleted"; echo_id: string; shard_id: string } | { type: "ShardCreated"; shard_id: string; shard_type: string } | { type: "CommunityMessagePosted"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageEdited"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageDeleted"; channel_id: string; message_id: string; deleted_by: string } | { type: "NotificationCreated"; notification_id: string } | { type: "EchoAvatarReady"; echo_id: string; avatar_url: string } | 
+/**
+ *  A share token was revoked — admin-initiated via the
+ *  `/admin/share/tokens/{token}/revoke` endpoint, or sweeper-
+ *  initiated by the daily expiry sweeper. Forwarded to the
+ *  admin dashboard stream only; per-Echo and per-Shard streams
+ *  drop these silently. Lane H Commit 7 / ME-CSS-001 §6.3.
+ */
+{ type: "ShareTokenRevoked"; token: string; 
+/**
+ *  Lowercase string form of the actor's user id, or `None`
+ *  for sweeper-initiated expiry.
+ */
+revoked_by_user_id: string | null; reason: string } | { type: "Connected"; echo_id: string; message: string } | { type: "Error"; message: string };

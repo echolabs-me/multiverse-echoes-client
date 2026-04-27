@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "Cette traduction est fournie à titre de commodité. La version anglaise est le texte légalement faisant autorité.",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
-    "fieldRequired": "Veuillez remplir ce champ."
+    "fieldRequired": "Veuillez remplir ce champ.",
+    "previous": "Précédent"
   },
   "auth": {
     "email": "E-mail",
@@ -140,7 +141,7 @@
     "card3Body": "Il n'y a pas de points, pas de victoire. C'est une simulation de vie autonome. Aborde-la avec curiosité.",
     "understand": "J'ai compris — c'est parti",
     "profileTitle": "Configure ton profil",
-    "bio": "Bio",
+    "bio": "Biographie",
     "bioHint": "Un peu sur toi — l'observateur, pas l'Écho. Affichée sur ton profil communautaire (facultatif, 500 caractères max)",
     "bioCallout": "C'est à propos de toi, pas de ton Écho. Les autres utilisateurs la voient sur ton profil dans la communauté. Ça n'a aucun effet sur la façon dont tes Échos pensent ou se comportent.",
     "timezone": "Fuseau horaire",
@@ -488,7 +489,9 @@
     "shareToSocial": "Partager sur les réseaux sociaux",
     "downloadImage": "Télécharger comme image",
     "previewDisclaimer": "Contenu généré par IA — ne représente pas d'événements ou de personnes réels.",
-    "imageDisclaimer": "Contenu généré par IA — Multiverse Echoes"
+    "imageDisclaimer": "Contenu généré par IA — Multiverse Echoes",
+    "creating": "Création du lien de partage...",
+    "errorCreating": "Impossible de créer le lien. Veuillez réessayer."
   },
   "export": {
     "title": "Exporter l'histoire de l'Écho",
@@ -626,7 +629,7 @@
     "feedbackPriorityLabel": "Définir la priorité",
     "pauseTick": "Mettre en pause le moteur Tick",
     "resumeTick": "Reprendre le moteur Tick",
-    "tickNumber": "Tick #",
+    "tickNumber": "Tick n°",
     "tickDuration": "Durée du Tick",
     "ramUsage": "Utilisation RAM",
     "vramUsage": "Utilisation VRAM",
@@ -679,7 +682,7 @@
     "revenueSubscribers": "Abonnés",
     "revenuePending": "Intégration Stripe en attente",
     "filterAll": "Tout",
-    "feedbackTypeBug": "Bug",
+    "feedbackTypeBug": "Anomalie",
     "feedbackTypeFeatureRequest": "Demande de fonctionnalité",
     "feedbackTypeFrustration": "Frustration",
     "feedbackTypePraise": "Compliment",
@@ -697,7 +700,8 @@
       "demote": "Rétrograder",
       "empty": "Aucun modérateur pour l'instant. Promouvez un utilisateur Standard par son ID.",
       "updatedAt": "Mis à jour"
-    }
+    },
+    "tabShareTokens": "Tokens de partage"
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "Vérifiez et réessayez.",
     "errorGeneric": "Erreur. Réessayez.",
     "errorNetwork": "Service injoignable. Vérifiez votre connexion."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Tokens de partage",
+      "creatorFilterLabel": "ID utilisateur du créateur",
+      "creatorFilterPlaceholder": "p. ex. 0193f9b8-...",
+      "statusFilterLabel": "Statut",
+      "statusAny": "Tous",
+      "statusActive": "Actif",
+      "statusRevoked": "Révoqué",
+      "statusExpired": "Expiré",
+      "applyFilters": "Appliquer les filtres",
+      "colToken": "Token",
+      "colCreatedBy": "Créé par",
+      "colCreatedAt": "Création",
+      "colExpiresAt": "Expire",
+      "colStatus": "Statut",
+      "neverExpires": "Jamais",
+      "alreadyRevoked": "Déjà révoqué",
+      "revoke": "Révoquer",
+      "revokeModalTitle": "Révoquer le token de partage",
+      "revokeModalBody": "Cela invalidera immédiatement le lien de partage. Les destinataires verront la page de lien non trouvé.",
+      "revokeReasonLabel": "Raison de la révocation",
+      "revokeReasonPlaceholder": "Raison enregistrée dans la ligne d'audit…",
+      "revokeConfirm": "Confirmer la révocation",
+      "revokeSuccess": "Token de partage révoqué.",
+      "revokeError": "Impossible de révoquer le token de partage. Veuillez réessayer.",
+      "loadError": "Impossible de charger les tokens de partage. Veuillez réessayer.",
+      "empty": "Aucun token de partage ne correspond aux filtres actuels.",
+      "paginationLabel": "Affichage {{from}}–{{to}} sur {{total}}"
+    }
   }
 }

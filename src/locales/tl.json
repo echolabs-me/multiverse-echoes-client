@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "Ang pagsasalin na ito ay ibinigay para sa kaginhawaan. Ang bersyong Ingles ang siyang legal na awtoritatibong teksto.",
     "openMenu": "Buksan ang menu",
     "closeMenu": "Isara ang menu",
-    "fieldRequired": "Pakipuno ang patlang na ito."
+    "fieldRequired": "Pakipuno ang patlang na ito.",
+    "previous": "Nakaraang"
   },
   "auth": {
     "email": "Email",
@@ -424,7 +425,7 @@
     "deleteAccountGrace": "Nakatakdang burahin ang iyong account. Mayroon kang {{days}} araw para kanselahin ito.",
     "cancelDeletion": "Kanselahin ang Pagbura",
     "deletionCancelled": "Kinansela ang pagbura ng account",
-    "soloMode": "Solo mode",
+    "soloMode": "Solo Mode",
     "soloModeDesc": "Kapag naka-enable, ang iyong mga Echo ay hindi makikipag-ugnayan sa mga Echo mula sa ibang mga user.",
     "prefEchoLifeEvent": "I-echo ang mga kaganapan sa buhay",
     "prefDiary": "Mga update sa talaarawan",
@@ -488,7 +489,9 @@
     "shareToSocial": "Ibahagi sa social media",
     "downloadImage": "I-download bilang imahe",
     "previewDisclaimer": "Nilalaman na gawa ng AI — hindi kumakatawan sa mga totoong kaganapan o tao.",
-    "imageDisclaimer": "Nilalaman na gawa ng AI — Multiverse Echoes"
+    "imageDisclaimer": "Nilalaman na gawa ng AI — Multiverse Echoes",
+    "creating": "Ginagawa ang link ng pagbabahagi...",
+    "errorCreating": "Hindi makagawa ng link. Subukan muli."
   },
   "export": {
     "title": "I-export ang Echo Story",
@@ -697,7 +700,8 @@
       "demote": "Ibaba",
       "empty": "Wala pang Tagapamagitan. Itaas ang isang Standard na user sa pamamagitan ng User ID.",
       "updatedAt": "Na-update"
-    }
+    },
+    "tabShareTokens": "Share Tokens"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "Suriin at subukan muli.",
     "errorGeneric": "May mali. Subukan muli.",
     "errorNetwork": "Hindi maabot ang serbisyo. Suriin ang koneksyon."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Share Tokens",
+      "creatorFilterLabel": "Creator User ID",
+      "creatorFilterPlaceholder": "e.g. 0193f9b8-...",
+      "statusFilterLabel": "Status",
+      "statusAny": "Kahit alin",
+      "statusActive": "Active",
+      "statusRevoked": "Revoked",
+      "statusExpired": "Expired",
+      "applyFilters": "I-apply ang filters",
+      "colToken": "Token",
+      "colCreatedBy": "Ginawa ng",
+      "colCreatedAt": "Ginawa",
+      "colExpiresAt": "Nag-expire",
+      "colStatus": "Status",
+      "neverExpires": "Hindi kailanman",
+      "alreadyRevoked": "Revoked na",
+      "revoke": "Revoke",
+      "revokeModalTitle": "Revoke share token",
+      "revokeModalBody": "Ito ay agad na gagawing invalid ang share link. Makikita ng mga recipients ang share-not-found page.",
+      "revokeReasonLabel": "Dahilan ng revocation",
+      "revokeReasonPlaceholder": "Dahilan na nakatala sa audit row…",
+      "revokeConfirm": "Kumpirmahin ang revoke",
+      "revokeSuccess": "Share token na-revoke.",
+      "revokeError": "Hindi na-revoke ang share token. Mangyaring subukan ulit.",
+      "loadError": "Hindi nai-load ang share tokens. Mangyaring subukan ulit.",
+      "empty": "Walang share tokens na tumutugma sa kasalukuyang filters.",
+      "paginationLabel": "Ipinapakita ang {{from}}–{{to}} ng {{total}}"
+    }
   }
 }

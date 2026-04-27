@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "यह अनुवाद सुविधा के लिए प्रदान किया गया है। अंग्रेजी संस्करण कानूनी रूप से आधिकारिक पाठ है।",
     "openMenu": "मेनू खोलें",
     "closeMenu": "मेनू बंद करें",
-    "fieldRequired": "कृपया यह फ़ील्ड भरें।"
+    "fieldRequired": "कृपया यह फ़ील्ड भरें।",
+    "previous": "पिछला"
   },
   "auth": {
     "email": "ईमेल",
@@ -488,7 +489,9 @@
     "shareToSocial": "सोशल मीडिया पर साझा करो",
     "downloadImage": "चित्र के रूप में डाउनलोड करो",
     "previewDisclaimer": "AI द्वारा निर्मित सामग्री — वास्तविक घटनाओं या लोगों का प्रतिनिधित्व नहीं करती।",
-    "imageDisclaimer": "AI द्वारा निर्मित सामग्री — Multiverse Echoes"
+    "imageDisclaimer": "AI द्वारा निर्मित सामग्री — Multiverse Echoes",
+    "creating": "शेयर लिंक बना रहे हैं...",
+    "errorCreating": "शेयर लिंक नहीं बनाया जा सका। कृपया फिर से प्रयास करें।"
   },
   "export": {
     "title": "गूँज की कहानी निर्यात करो",
@@ -626,7 +629,7 @@
     "feedbackPriorityLabel": "प्राथमिकता सेट करो",
     "pauseTick": "Tick इंजन रोको",
     "resumeTick": "Tick इंजन फिर से चालू करो",
-    "tickNumber": "Tick #",
+    "tickNumber": "टिक #",
     "tickDuration": "Tick अवधि",
     "ramUsage": "RAM उपयोग",
     "vramUsage": "VRAM उपयोग",
@@ -674,7 +677,7 @@
     "triggerBackup": "बैकअप ट्रिगर करो",
     "analyticsLoadFailed": "एनालिटिक्स लोड करने में विफल",
     "revenueCard": "राजस्व (जल्द आ रहा है)",
-    "revenueMrr": "MRR",
+    "revenueMrr": "मासिक आवर्ती राजस्व",
     "revenueChurn": "छोड़ने की दर",
     "revenueSubscribers": "सदस्य",
     "revenuePending": "Stripe एकीकरण लंबित",
@@ -697,7 +700,8 @@
       "demote": "पदावनत करें",
       "empty": "अभी तक कोई मॉडरेटर नहीं है। उपयोगकर्ता आईडी द्वारा एक मानक उपयोगकर्ता को पदोन्नत करें।",
       "updatedAt": "अपडेट किया गया"
-    }
+    },
+    "tabShareTokens": "शेयर टोकन"
   },
   "nav": {
     "dashboard": "डैशबोर्ड",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "जांचें और पुनः प्रयास करें।",
     "errorGeneric": "कुछ गलत हुआ। पुनः प्रयास करें।",
     "errorNetwork": "सेवा तक नहीं पहुँचा। कनेक्शन जांचें।"
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "शेयर टोकन",
+      "creatorFilterLabel": "निर्माता यूजर आईडी",
+      "creatorFilterPlaceholder": "उदा. 0193f9b8-...",
+      "statusFilterLabel": "स्थिति",
+      "statusAny": "कोई भी",
+      "statusActive": "सक्रिय",
+      "statusRevoked": "रद्द किया गया",
+      "statusExpired": "समाप्त",
+      "applyFilters": "फ़िल्टर लागू करें",
+      "colToken": "टोकन",
+      "colCreatedBy": "निर्माता",
+      "colCreatedAt": "बनाया गया",
+      "colExpiresAt": "समाप्त होता है",
+      "colStatus": "स्थिति",
+      "neverExpires": "कभी नहीं",
+      "alreadyRevoked": "पहले से रद्द किया गया",
+      "revoke": "रद्द करें",
+      "revokeModalTitle": "शेयर टोकन रद्द करें",
+      "revokeModalBody": "यह शेयर लिंक को तुरंत अमान्य कर देगा। प्राप्तकर्ताओं को शेयर-नहीं-मिला पृष्ठ दिखेगा।",
+      "revokeReasonLabel": "रद्दीकरण कारण",
+      "revokeReasonPlaceholder": "ऑडिट पंक्ति पर दर्ज कारण…",
+      "revokeConfirm": "रद्द करना की पुष्टि करें",
+      "revokeSuccess": "शेयर टोकन रद्द कर दिया गया।",
+      "revokeError": "शेयर टोकन रद्द करने में विफल। कृपया पुनः प्रयास करें।",
+      "loadError": "शेयर टोकन लोड करने में विफल। कृपया पुनः प्रयास करें।",
+      "empty": "वर्तमान फ़िल्टर से कोई शेयर टोकन नहीं मिला।",
+      "paginationLabel": "{{from}}–{{to}} / {{total}} दिखा रहे हैं"
+    }
   }
 }

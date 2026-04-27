@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "Terjemahan ini disediakan untuk kenyamanan. Versi bahasa Inggris adalah teks yang berlaku secara hukum.",
     "openMenu": "Buka menu",
     "closeMenu": "Tutup menu",
-    "fieldRequired": "Harap isi kolom ini."
+    "fieldRequired": "Harap isi kolom ini.",
+    "previous": "Sebelumnya"
   },
   "auth": {
     "email": "Surest",
@@ -488,7 +489,9 @@
     "shareToSocial": "Bagikan ke media sosial",
     "downloadImage": "Unduh sebagai gambar",
     "previewDisclaimer": "Konten buatan AI — tidak mewakili peristiwa atau orang sungguhan.",
-    "imageDisclaimer": "Konten buatan AI — Multiverse Echoes"
+    "imageDisclaimer": "Konten buatan AI — Multiverse Echoes",
+    "creating": "Membuat tautan berbagi...",
+    "errorCreating": "Gagal membuat tautan. Silakan coba lagi."
   },
   "export": {
     "title": "Ekspor Cerita Echo",
@@ -697,7 +700,8 @@
       "demote": "Turunkan",
       "empty": "Belum ada Moderator. Promosikan pengguna Standar berdasarkan ID Pengguna.",
       "updatedAt": "Diperbarui"
-    }
+    },
+    "tabShareTokens": "Token Berbagi"
   },
   "nav": {
     "dashboard": "Dasbor",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "Periksa dan coba lagi.",
     "errorGeneric": "Terjadi kesalahan. Coba lagi.",
     "errorNetwork": "Tidak bisa menghubungi layanan. Periksa koneksi."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Token Berbagi",
+      "creatorFilterLabel": "ID pengguna pencipta",
+      "creatorFilterPlaceholder": "contoh: 0193f9b8-...",
+      "statusFilterLabel": "Status",
+      "statusAny": "Semua",
+      "statusActive": "Aktif",
+      "statusRevoked": "Dicabut",
+      "statusExpired": "Kadaluarsa",
+      "applyFilters": "Terapkan filter",
+      "colToken": "Token",
+      "colCreatedBy": "Dibuat oleh",
+      "colCreatedAt": "Dibuat",
+      "colExpiresAt": "Kadaluarsa",
+      "colStatus": "Status",
+      "neverExpires": "Tidak pernah",
+      "alreadyRevoked": "Sudah dicabut",
+      "revoke": "Cabut",
+      "revokeModalTitle": "Cabut token berbagi",
+      "revokeModalBody": "Ini akan segera membatalkan tautan berbagi. Penerima akan melihat halaman berbagi-tidak-ditemukan.",
+      "revokeReasonLabel": "Alasan pencabutan",
+      "revokeReasonPlaceholder": "Alasan dicatat pada baris audit…",
+      "revokeConfirm": "Konfirmasi pencabutan",
+      "revokeSuccess": "Token berbagi dicabut.",
+      "revokeError": "Gagal mencabut token berbagi. Silakan coba lagi.",
+      "loadError": "Gagal memuat token berbagi. Silakan coba lagi.",
+      "empty": "Tidak ada token berbagi yang cocok dengan filter saat ini.",
+      "paginationLabel": "Menampilkan {{from}}–{{to}} dari {{total}}"
+    }
   }
 }

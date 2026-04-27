@@ -87,6 +87,19 @@ export function useTickTimer(): TickTimerData {
         return;
       }
 
+      // Lane H Commit 7: admin dashboard share-token revoked. Forwarded
+      // by the dashboard WS only when the connected user is admin
+      // (server-side gate in ws_dashboard_stream). The admin tab
+      // listens via window event and re-fetches the active page.
+      if (event.type === 'ShareTokenRevoked') {
+        window.dispatchEvent(
+          new CustomEvent('me:share-token-revoked', {
+            detail: { token: event.token },
+          }),
+        );
+        return;
+      }
+
       // Any diary entry arrival signals the tick completed.
       if (event.type === 'DiaryEntryCreated') {
         const now = Date.now();

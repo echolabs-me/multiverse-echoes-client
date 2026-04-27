@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "この翻訳は便宜のために提供されるものです。法的権限を持つ正文は英語版です。",
     "openMenu": "メニューを開く",
     "closeMenu": "メニューを閉じる",
-    "fieldRequired": "この項目を入力してください。"
+    "fieldRequired": "この項目を入力してください。",
+    "previous": "前へ"
   },
   "auth": {
     "email": "メール",
@@ -488,7 +489,9 @@
     "shareToSocial": "SNSで共有する",
     "downloadImage": "画像としてダウンロード",
     "previewDisclaimer": "AI生成コンテンツ — 実際の出来事や人物を表現したものではありません。",
-    "imageDisclaimer": "AI生成コンテンツ — マルチバース・エコー"
+    "imageDisclaimer": "AI生成コンテンツ — マルチバース・エコー",
+    "creating": "共有リンクを作成中...",
+    "errorCreating": "共有リンクを作成できませんでした。もう一度お試しください。"
   },
   "export": {
     "title": "Echoストーリーを書き出す",
@@ -697,7 +700,8 @@
       "demote": "降格",
       "empty": "モデレーターはまだいません。ユーザー ID で標準ユーザーを昇格させてください。",
       "updatedAt": "更新日時"
-    }
+    },
+    "tabShareTokens": "共有トークン"
   },
   "nav": {
     "dashboard": "ダッシュボード",
@@ -1234,7 +1238,7 @@
       "explainer": "プレミアムアクション：アクティビティの提案や人間関係のヒント — Echo が実行するか判断します。"
     },
     "heartbeatDaily": "毎日",
-    "echoesSingle": "Echo",
+    "echoesSingle": "エコー",
     "taglineFree": "別の人生をちらりと覗く",
     "taglineStarter": "はじめての別人生",
     "taglineCore": "フル体験",
@@ -1345,7 +1349,7 @@
         "noPending": "保留中のダウングレード判断はありません。",
         "errorGeneric": "ダウングレード詳細の読み込み中にエラーが発生しました。",
         "summary": "{{oldTier}}から{{newTier}}に変更します。確定すると次のことが起こります。",
-        "echoesHeader": "Echoes",
+        "echoesHeader": "エコー",
         "echoesHibernateCount": "{{total}}個のEchoのうち{{count}}個が休止状態になります。",
         "echoesNoneHibernated": "休止状態になるEchoはありません。{{total}}個すべてが{{newTier}}の上限{{cap}}に収まります。",
         "echoesDeletion": "休止中のEchoは確定から90日後に完全に削除されます。スロットを空けて起こすか、それまでにプランを戻さない限り。",
@@ -1361,7 +1365,7 @@
       "pendingList": {
         "title": "削除予定",
         "empty": "削除予定のEchoまたはShardはありません。",
-        "echoLabel": "Echo",
+        "echoLabel": "エコー",
         "shardLabel": "プライベート Shard",
         "deletesOn": "{{date}}に削除",
         "loading": "削除予定を読み込み中…",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "入力内容を確認して再試行。",
     "errorGeneric": "問題が発生。再試行してください。",
     "errorNetwork": "サービスに接続できません。接続を確認して再試行。"
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "共有トークン",
+      "creatorFilterLabel": "クリエイターユーザーID",
+      "creatorFilterPlaceholder": "例：0193f9b8-...",
+      "statusFilterLabel": "ステータス",
+      "statusAny": "すべて",
+      "statusActive": "有効",
+      "statusRevoked": "無効化済み",
+      "statusExpired": "有効期限切れ",
+      "applyFilters": "フィルタを適用",
+      "colToken": "トークン",
+      "colCreatedBy": "作成者",
+      "colCreatedAt": "作成日",
+      "colExpiresAt": "有効期限",
+      "colStatus": "ステータス",
+      "neverExpires": "期限なし",
+      "alreadyRevoked": "既に無効化済み",
+      "revoke": "無効化",
+      "revokeModalTitle": "共有トークンを無効化",
+      "revokeModalBody": "共有リンクが即座に無効になります。受け取り人には「共有が見つかりません」ページが表示されます。",
+      "revokeReasonLabel": "無効化の理由",
+      "revokeReasonPlaceholder": "監査ログに記録される理由…",
+      "revokeConfirm": "無効化を確認",
+      "revokeSuccess": "共有トークンが無効化されました。",
+      "revokeError": "共有トークンの無効化に失敗しました。もう一度お試しください。",
+      "loadError": "共有トークンの読み込みに失敗しました。もう一度お試しください。",
+      "empty": "現在のフィルタに一致する共有トークンはありません。",
+      "paginationLabel": "{{from}}～{{to}} / {{total}}を表示中"
+    }
   }
 }

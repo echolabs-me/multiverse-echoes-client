@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { Tabs, Button, Badge, Spinner, Card } from '../components/index.ts';
 import { useAuthStore } from '../stores/index.ts';
-import { admin } from '../lib/api/endpoints.ts';
+import { admin, adminShare } from '../lib/api/endpoints.ts';
 import { request } from '../lib/api/client.ts';
 import type {
   SystemHealth,
@@ -25,6 +25,7 @@ import type {
   FeedbackPriority,
   ModeratorUserItem,
 } from '../types/api.ts';
+import type { AdminShareTokenSummary } from '../types/generated.ts';
 
 type AdminTab =
   | 'dashboard'
@@ -34,7 +35,10 @@ type AdminTab =
   | 'controls'
   | 'analytics'
   | 'feedback'
-  | 'moderators';
+  | 'moderators'
+  | 'share-tokens';
+
+type ShareTokenStatusFilter = 'any' | 'active' | 'revoked' | 'expired';
 
 export function AdminDashboardPage() {
   const { t } = useTranslation();
@@ -68,6 +72,7 @@ export function AdminDashboardPage() {
     { id: 'controls', label: t('admin.tabControls') },
     { id: 'analytics', label: t('admin.tabAnalytics') },
     { id: 'feedback', label: t('admin.tabFeedback') },
+    { id: 'share-tokens', label: t('admin.tabShareTokens') },
   ];
 
   return (
@@ -99,6 +104,7 @@ export function AdminDashboardPage() {
         {activeTab === 'controls' && <ControlsView />}
         {activeTab === 'analytics' && <AnalyticsView />}
         {activeTab === 'feedback' && <FeedbackQueueView />}
+        {activeTab === 'share-tokens' && <ShareTokensView />}
       </div>
     </div>
   );
@@ -949,6 +955,291 @@ function ModeratorsView() {
           {moderators.length === 0 && (
             <p className="py-8 text-center text-text-muted">{t('admin.moderators.empty')}</p>
           )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// --- Share Tokens View (Lane H Commit 7) ---
+
+const SHARE_TOKENS_PAGE_SIZE = 25;
+
+function ShareTokensView() {
+  const { t } = useTranslation();
+  const [items, setItems] = useState<AdminShareTokenSummary[]>([]);
+  const [total, setTotal] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorKey, setErrorKey] = useState<string | null>(null);
+  // Input-bound state (free typing — does NOT trigger re-fetches).
+  const [creatorInput, setCreatorInput] = useState('');
+  const [statusInput, setStatusInput] = useState<ShareTokenStatusFilter>('any');
+  // Submitted-filter state — fetches read from these. Apply button
+  // copies input → submitted. Keeping the two separate prevents the
+  // every-keystroke re-fetch the unified-state design produced.
+  const [appliedCreator, setAppliedCreator] = useState('');
+  const [appliedStatus, setAppliedStatus] = useState<ShareTokenStatusFilter>('any');
+  const [revokeTarget, setRevokeTarget] = useState<string | null>(null);
+  const [revokeReason, setRevokeReason] = useState('');
+  const [successToast, setSuccessToast] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setIsLoading(true);
+    setErrorKey(null);
+    try {
+      const trimmedCreator = appliedCreator.trim();
+      const resp = await adminShare.listTokens({
+        creator_user_id: trimmedCreator || undefined,
+        status: appliedStatus,
+        limit: SHARE_TOKENS_PAGE_SIZE,
+        offset,
+      });
+      setItems(resp.items);
+      setTotal(Number(resp.total));
+    } catch {
+      setErrorKey('adminShare.tokens.loadError');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [appliedCreator, appliedStatus, offset]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  // Listen for the WS dashboard `ShareTokenRevoked` event so the list
+  // re-syncs without a manual refresh. The hook in useTickTimer
+  // dispatches this event on every revoke (admin or sweeper).
+  useEffect(() => {
+    const handler = () => {
+      void load();
+    };
+    window.addEventListener('me:share-token-revoked', handler);
+    return () => window.removeEventListener('me:share-token-revoked', handler);
+  }, [load]);
+
+  const handleApplyFilters = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAppliedCreator(creatorInput);
+    setAppliedStatus(statusInput);
+    setOffset(0);
+    // The state setters above will trigger the useEffect via the
+    // dependency change — no explicit load() call needed (and
+    // calling it here would race with the still-pending state batch).
+  };
+
+  const handleRevokeConfirm = async () => {
+    if (!revokeTarget || !revokeReason.trim()) return;
+    try {
+      await adminShare.revokeToken(revokeTarget, revokeReason.trim());
+      setRevokeTarget(null);
+      setRevokeReason('');
+      setSuccessToast(t('adminShare.tokens.revokeSuccess'));
+      window.setTimeout(() => setSuccessToast(null), 3000);
+      void load();
+    } catch {
+      setErrorKey('adminShare.tokens.revokeError');
+    }
+  };
+
+  const statusLabel = (s: AdminShareTokenSummary): string => {
+    if (s.revoked_at) return t('adminShare.tokens.statusRevoked');
+    if (s.expires_at && new Date(s.expires_at) < new Date()) {
+      return t('adminShare.tokens.statusExpired');
+    }
+    return t('adminShare.tokens.statusActive');
+  };
+
+  const statusVariant = (
+    s: AdminShareTokenSummary,
+  ): 'danger' | 'warning' | 'success' => {
+    if (s.revoked_at) return 'danger';
+    if (s.expires_at && new Date(s.expires_at) < new Date()) return 'warning';
+    return 'success';
+  };
+
+  const showingFrom = total === 0 ? 0 : offset + 1;
+  const showingTo = Math.min(offset + items.length, total);
+  const hasPrev = offset > 0;
+  const hasNext = offset + items.length < total;
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-lg font-semibold text-text-primary">
+        {t('adminShare.tokens.heading')}
+      </h2>
+
+      <form onSubmit={handleApplyFilters} className="flex flex-wrap items-end gap-3">
+        <label className="flex flex-col text-xs text-text-muted">
+          {t('adminShare.tokens.creatorFilterLabel')}
+          <input
+            type="text"
+            value={creatorInput}
+            onChange={(e) => setCreatorInput(e.target.value)}
+            placeholder={t('adminShare.tokens.creatorFilterPlaceholder')}
+            className="mbs-1 w-72 rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-primary"
+            aria-label={t('adminShare.tokens.creatorFilterLabel')}
+          />
+        </label>
+        <label className="flex flex-col text-xs text-text-muted">
+          {t('adminShare.tokens.statusFilterLabel')}
+          <select
+            value={statusInput}
+            onChange={(e) => setStatusInput(e.target.value as ShareTokenStatusFilter)}
+            className="mbs-1 rounded-md border border-border bg-surface px-2 py-1.5 text-sm text-text-primary"
+            aria-label={t('adminShare.tokens.statusFilterLabel')}
+          >
+            <option value="any">{t('adminShare.tokens.statusAny')}</option>
+            <option value="active">{t('adminShare.tokens.statusActive')}</option>
+            <option value="revoked">{t('adminShare.tokens.statusRevoked')}</option>
+            <option value="expired">{t('adminShare.tokens.statusExpired')}</option>
+          </select>
+        </label>
+        <Button type="submit">{t('adminShare.tokens.applyFilters')}</Button>
+      </form>
+
+      {successToast && (
+        <p className="text-sm text-success" role="status">
+          {successToast}
+        </p>
+      )}
+      {errorKey && (
+        <p className="text-sm text-danger" role="alert">
+          {t(errorKey)}
+        </p>
+      )}
+
+      {isLoading ? (
+        <Spinner />
+      ) : items.length === 0 ? (
+        <p className="py-8 text-center text-text-muted">
+          {t('adminShare.tokens.empty')}
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm" role="table">
+            <thead>
+              <tr className="border-be border-border text-start text-text-muted">
+                <th className="px-3 py-2">{t('adminShare.tokens.colToken')}</th>
+                <th className="px-3 py-2">{t('adminShare.tokens.colCreatedBy')}</th>
+                <th className="px-3 py-2">{t('adminShare.tokens.colCreatedAt')}</th>
+                <th className="px-3 py-2">{t('adminShare.tokens.colExpiresAt')}</th>
+                <th className="px-3 py-2">{t('adminShare.tokens.colStatus')}</th>
+                <th className="px-3 py-2">{t('admin.actions')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((row) => (
+                <tr key={row.token} className="border-be border-border">
+                  <td className="px-3 py-2 font-mono text-xs text-text-primary">
+                    {row.token.slice(0, 8)}…
+                  </td>
+                  <td className="px-3 py-2 font-mono text-xs text-text-secondary">
+                    {row.created_by_user_id.slice(0, 8)}…
+                  </td>
+                  <td className="px-3 py-2 text-text-secondary">
+                    {new Date(row.created_at).toLocaleString()}
+                  </td>
+                  <td className="px-3 py-2 text-text-secondary">
+                    {row.expires_at
+                      ? new Date(row.expires_at).toLocaleString()
+                      : t('adminShare.tokens.neverExpires')}
+                  </td>
+                  <td className="px-3 py-2">
+                    <Badge variant={statusVariant(row)}>{statusLabel(row)}</Badge>
+                  </td>
+                  <td className="px-3 py-2">
+                    {row.revoked_at ? (
+                      <span className="text-xs text-text-muted">
+                        {t('adminShare.tokens.alreadyRevoked')}
+                      </span>
+                    ) : (
+                      <Button
+                        variant="danger"
+                        className="text-xs"
+                        onClick={() => {
+                          setRevokeTarget(row.token);
+                          setRevokeReason('');
+                        }}
+                      >
+                        {t('adminShare.tokens.revoke')}
+                      </Button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="flex items-center justify-between text-xs text-text-muted">
+        <span>
+          {t('adminShare.tokens.paginationLabel', {
+            from: showingFrom,
+            to: showingTo,
+            total,
+          })}
+        </span>
+        <div className="flex gap-1">
+          <Button
+            variant="ghost"
+            disabled={!hasPrev}
+            onClick={() => setOffset(Math.max(0, offset - SHARE_TOKENS_PAGE_SIZE))}
+          >
+            {t('common.previous')}
+          </Button>
+          <Button
+            variant="ghost"
+            disabled={!hasNext}
+            onClick={() => setOffset(offset + SHARE_TOKENS_PAGE_SIZE)}
+          >
+            {t('common.next')}
+          </Button>
+        </div>
+      </div>
+
+      {revokeTarget && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          role="dialog"
+          aria-modal="true"
+        >
+          <Card className="w-full max-w-md">
+            <h3 className="text-base font-semibold text-text-primary">
+              {t('adminShare.tokens.revokeModalTitle')}
+            </h3>
+            <p className="mbs-2 text-sm text-text-secondary">
+              {t('adminShare.tokens.revokeModalBody')}
+            </p>
+            <textarea
+              value={revokeReason}
+              onChange={(e) => setRevokeReason(e.target.value)}
+              placeholder={t('adminShare.tokens.revokeReasonPlaceholder')}
+              className="mbs-3 w-full rounded-md border border-border bg-surface px-2 py-1.5 text-sm text-text-primary"
+              rows={3}
+              aria-label={t('adminShare.tokens.revokeReasonLabel')}
+            />
+            <div className="mbs-3 flex justify-end gap-2">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setRevokeTarget(null);
+                  setRevokeReason('');
+                }}
+              >
+                {t('common.cancel')}
+              </Button>
+              <Button
+                variant="danger"
+                disabled={!revokeReason.trim()}
+                onClick={() => void handleRevokeConfirm()}
+              >
+                {t('adminShare.tokens.revokeConfirm')}
+              </Button>
+            </div>
+          </Card>
         </div>
       )}
     </div>

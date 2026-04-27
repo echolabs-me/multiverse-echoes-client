@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "Terjemahan ini disediakan untuk kemudahan. Versi bahasa Inggeris adalah teks yang berautoriti dari segi undang-undang.",
     "openMenu": "Buka menu",
     "closeMenu": "Tutup menu",
-    "fieldRequired": "Sila isi medan ini."
+    "fieldRequired": "Sila isi medan ini.",
+    "previous": "Sebelumnya"
   },
   "auth": {
     "email": "Emel",
@@ -458,7 +459,7 @@
     "noEchoes": "Multisemesta anda kosong",
     "noEchoesDesc": "Cipta Echo pertama anda dan saksikan kehidupan baharu bermula.",
     "viewDetail": "Lihat perincian",
-    "mood": "Mood",
+    "mood": "Suasana",
     "tick": "Tanda {{tick}}",
     "latestDiaryEmpty": "Kisah Echo anda baru sahaja bermula. Semak semula tidak lama lagi.",
     "nextTick": "Tik tanda seterusnya dalam {{seconds}}s",
@@ -488,7 +489,9 @@
     "shareToSocial": "Kongsi ke media sosial",
     "downloadImage": "Muat turun sebagai imej",
     "previewDisclaimer": "Kandungan dijana AI — tidak mewakili peristiwa atau orang sebenar.",
-    "imageDisclaimer": "Kandungan jana AI — Gema Multiverse"
+    "imageDisclaimer": "Kandungan jana AI — Gema Multiverse",
+    "creating": "Mencipta pautan kongsi...",
+    "errorCreating": "Tidak dapat mencipta pautan. Sila cuba lagi."
   },
   "export": {
     "title": "Eksport Cerita Echo",
@@ -697,7 +700,8 @@
       "demote": "Turun Pangkat",
       "empty": "Tiada Moderator lagi. Naikkan pangkat pengguna Standard dengan ID Pengguna.",
       "updatedAt": "Dikemas kini"
-    }
+    },
+    "tabShareTokens": "Token Kongsi"
   },
   "nav": {
     "dashboard": "Papan Pemuka",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "Semak dan cuba lagi.",
     "errorGeneric": "Sesuatu tidak kena. Cuba lagi.",
     "errorNetwork": "Tidak dapat menghubungi. Semak sambungan."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Token Kongsi",
+      "creatorFilterLabel": "ID pengguna pencipta",
+      "creatorFilterPlaceholder": "cth. 0193f9b8-...",
+      "statusFilterLabel": "Status",
+      "statusAny": "Semua",
+      "statusActive": "Aktif",
+      "statusRevoked": "Dibatalkan",
+      "statusExpired": "Tamat Tempoh",
+      "applyFilters": "Gunakan penapis",
+      "colToken": "Token",
+      "colCreatedBy": "Dibuat oleh",
+      "colCreatedAt": "Dibuat",
+      "colExpiresAt": "Tamat Tempoh",
+      "colStatus": "Status",
+      "neverExpires": "Tidak pernah",
+      "alreadyRevoked": "Sudah dibatalkan",
+      "revoke": "Batalkan",
+      "revokeModalTitle": "Batalkan token kongsi",
+      "revokeModalBody": "Ini akan segera membuat pautan kongsi tidak sah. Penerima akan melihat halaman kongsi-tidak-ditemukan.",
+      "revokeReasonLabel": "Sebab pembatalan",
+      "revokeReasonPlaceholder": "Sebab direkodkan pada baris audit…",
+      "revokeConfirm": "Sahkan pembatalan",
+      "revokeSuccess": "Token kongsi dibatalkan.",
+      "revokeError": "Gagal membatalkan token kongsi. Sila cuba lagi.",
+      "loadError": "Gagal memuatkan token kongsi. Sila cuba lagi.",
+      "empty": "Tiada token kongsi yang sepadan dengan penapis semasa.",
+      "paginationLabel": "Menunjukkan {{from}}–{{to}} daripada {{total}}"
+    }
   }
 }

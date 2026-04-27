@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "تم توفير هذه الترجمة للتسهيل فقط. وتعتبر النسخة الإنجليزية هي النص المعتمد قانوناً.",
     "openMenu": "فتح القائمة",
     "closeMenu": "إغلاق القائمة",
-    "fieldRequired": "يرجى تعبئة هذا الحقل."
+    "fieldRequired": "يرجى تعبئة هذا الحقل.",
+    "previous": "السابق"
   },
   "auth": {
     "email": "البريد الإلكتروني",
@@ -488,7 +489,9 @@
     "shareToSocial": "مشاركة على وسائل التواصل",
     "downloadImage": "تنزيل كصورة",
     "previewDisclaimer": "محتوى مُولَّد بالذكاء الاصطناعي — لا يمثل أحداثًا أو أشخاصًا حقيقيين.",
-    "imageDisclaimer": "محتوى مُولَّد بالذكاء الاصطناعي — Multiverse Echoes"
+    "imageDisclaimer": "محتوى مُولَّد بالذكاء الاصطناعي — Multiverse Echoes",
+    "creating": "جاري إنشاء رابط المشاركة...",
+    "errorCreating": "تعذر إنشاء رابط المشاركة. يرجى المحاولة مرة أخرى."
   },
   "export": {
     "title": "تصدير قصة الصدى",
@@ -697,7 +700,8 @@
       "demote": "تخفيض الرتبة",
       "empty": "لا يوجد مشرفون بعد. قم بترقية مستخدم قياسي عن طريق معرّف المستخدم.",
       "updatedAt": "تم التحديث"
-    }
+    },
+    "tabShareTokens": "رموز المشاركة"
   },
   "nav": {
     "dashboard": "لوحة التحكم",
@@ -1233,8 +1237,8 @@
       "label": "نقاط التأثير",
       "explainer": "إجراءات مميّزة: اقترح أنشطة أو ألمح إلى علاقات — الصدى يقرر التنفيذ."
     },
-    "heartbeatDaily": "Daily",
-    "echoesSingle": "Echo",
+    "heartbeatDaily": "يومي",
+    "echoesSingle": "صدى",
     "taglineFree": "لمحة عن حياة أخرى",
     "taglineStarter": "حيواتك البديلة الأولى",
     "taglineCore": "التجربة الكاملة",
@@ -1310,7 +1314,7 @@
       "16vid16voice": "16 مذكرة فيديو / يوم، 16 مكالمة صوتية / يوم",
       "unlimitedVidVoice": "مذكرات فيديو غير محدودة، مكالمات صوتية غير محدودة"
     },
-    "heartbeatTwiceDaily": "2×",
+    "heartbeatTwiceDaily": "مرتان",
     "heartbeat2hr": "2س",
     "heartbeat30m": "30د",
     "heartbeat15m": "15د",
@@ -1361,7 +1365,7 @@
       "pendingList": {
         "title": "الحذف المعلق",
         "empty": "لا توجد Echoes أو Shards مجدولة للحذف.",
-        "echoLabel": "Echo",
+        "echoLabel": "صدى",
         "shardLabel": "Shard خاص",
         "deletesOn": "يُحذف في {{date}}",
         "loading": "جارٍ تحميل الحذف المعلق…",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "تحقق وحاول مجدداً.",
     "errorGeneric": "حدث خطأ. حاول مجدداً.",
     "errorNetwork": "تعذر الاتصال. تحقق من الاتصال."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "رموز المشاركة",
+      "creatorFilterLabel": "معرّف المستخدم المنشئ",
+      "creatorFilterPlaceholder": "مثال: 0193f9b8-...",
+      "statusFilterLabel": "الحالة",
+      "statusAny": "الكل",
+      "statusActive": "نشط",
+      "statusRevoked": "ملغى",
+      "statusExpired": "منتهي الصلاحية",
+      "applyFilters": "تطبيق المرشحات",
+      "colToken": "الرمز",
+      "colCreatedBy": "أنشأه",
+      "colCreatedAt": "تاريخ الإنشاء",
+      "colExpiresAt": "ينتهي في",
+      "colStatus": "الحالة",
+      "neverExpires": "لا ينتهي أبداً",
+      "alreadyRevoked": "ملغى بالفعل",
+      "revoke": "إلغاء",
+      "revokeModalTitle": "إلغاء رمز المشاركة",
+      "revokeModalBody": "سيؤدي هذا إلى إبطال رابط المشاركة فوراً. سيرى المستقبلون صفحة عدم العثور على المشاركة.",
+      "revokeReasonLabel": "سبب الإلغاء",
+      "revokeReasonPlaceholder": "السبب المسجل في صف التدقيق…",
+      "revokeConfirm": "تأكيد الإلغاء",
+      "revokeSuccess": "تم إلغاء رمز المشاركة.",
+      "revokeError": "فشل إلغاء رمز المشاركة. يرجى المحاولة مرة أخرى.",
+      "loadError": "فشل تحميل رموز المشاركة. يرجى المحاولة مرة أخرى.",
+      "empty": "لا توجد رموز مشاركة مطابقة للمرشحات الحالية.",
+      "paginationLabel": "عرض {{from}}–{{to}} من {{total}}"
+    }
   }
 }

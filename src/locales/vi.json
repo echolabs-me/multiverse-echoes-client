@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "Bản dịch này được cung cấp nhằm mục đích thuận tiện. Bản tiếng Anh là văn bản có giá trị pháp lý.",
     "openMenu": "Mở menu",
     "closeMenu": "Đóng menu",
-    "fieldRequired": "Vui lòng điền vào trường này."
+    "fieldRequired": "Vui lòng điền vào trường này.",
+    "previous": "Trước đó"
   },
   "auth": {
     "email": "Thư điện tử",
@@ -488,7 +489,9 @@
     "shareToSocial": "Chia sẻ lên mạng xã hội",
     "downloadImage": "Tải xuống dưới dạng hình ảnh",
     "previewDisclaimer": "Nội dung do AI tạo — không đại diện cho sự kiện hoặc con người có thật.",
-    "imageDisclaimer": "Nội dung do AI tạo — Multiverse Echoes"
+    "imageDisclaimer": "Nội dung do AI tạo — Multiverse Echoes",
+    "creating": "Đang tạo liên kết chia sẻ...",
+    "errorCreating": "Không thể tạo liên kết. Vui lòng thử lại."
   },
   "export": {
     "title": "Xuất Câu chuyện Echo",
@@ -697,7 +700,8 @@
       "demote": "Giáng chức",
       "empty": "Chưa có Quản trị viên. Thăng chức một người dùng Tiêu chuẩn bằng ID.",
       "updatedAt": "Đã cập nhật"
-    }
+    },
+    "tabShareTokens": "Share Tokens"
   },
   "nav": {
     "dashboard": "Bảng điều khiển",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "Kiểm tra và thử lại.",
     "errorGeneric": "Lỗi xảy ra. Thử lại.",
     "errorNetwork": "Không thể kết nối. Kiểm tra mạng và thử lại."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Share Tokens",
+      "creatorFilterLabel": "ID người tạo",
+      "creatorFilterPlaceholder": "ví dụ: 0193f9b8-...",
+      "statusFilterLabel": "Trạng thái",
+      "statusAny": "Tất cả",
+      "statusActive": "Hoạt động",
+      "statusRevoked": "Đã thu hồi",
+      "statusExpired": "Đã hết hạn",
+      "applyFilters": "Áp dụng bộ lọc",
+      "colToken": "Token",
+      "colCreatedBy": "Được tạo bởi",
+      "colCreatedAt": "Ngày tạo",
+      "colExpiresAt": "Hết hạn",
+      "colStatus": "Trạng thái",
+      "neverExpires": "Không bao giờ",
+      "alreadyRevoked": "Đã được thu hồi",
+      "revoke": "Thu hồi",
+      "revokeModalTitle": "Thu hồi share token",
+      "revokeModalBody": "Hành động này sẽ ngay lập tức vô hiệu hóa liên kết chia sẻ. Người nhận sẽ thấy trang chia sẻ không tìm thấy.",
+      "revokeReasonLabel": "Lý do thu hồi",
+      "revokeReasonPlaceholder": "Lý do được ghi lại trong hàng kiểm tra…",
+      "revokeConfirm": "Xác nhận thu hồi",
+      "revokeSuccess": "Share token đã được thu hồi.",
+      "revokeError": "Không thể thu hồi share token. Vui lòng thử lại.",
+      "loadError": "Không thể tải share tokens. Vui lòng thử lại.",
+      "empty": "Không có share tokens nào phù hợp với bộ lọc hiện tại.",
+      "paginationLabel": "Hiển thị {{from}}–{{to}} của {{total}}"
+    }
   }
 }

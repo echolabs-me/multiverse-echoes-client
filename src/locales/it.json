@@ -68,7 +68,8 @@
     "legalMachineTranslationDisclaimer": "Questa traduzione è fornita per comodità. La versione inglese è il testo legalmente autorevole.",
     "openMenu": "Apri menu",
     "closeMenu": "Chiudi menu",
-    "fieldRequired": "Compila questo campo."
+    "fieldRequired": "Compila questo campo.",
+    "previous": "Precedente"
   },
   "auth": {
     "email": "Email",
@@ -488,7 +489,9 @@
     "shareToSocial": "Condividi sui social media",
     "downloadImage": "Scarica come immagine",
     "previewDisclaimer": "Contenuti generati dall'IA — non rappresentano eventi o persone reali.",
-    "imageDisclaimer": "Contenuti generati dall'IA — Multiverse Echoes"
+    "imageDisclaimer": "Contenuti generati dall'IA — Multiverse Echoes",
+    "creating": "Creazione del link di condivisione...",
+    "errorCreating": "Impossibile creare il link. Riprova."
   },
   "export": {
     "title": "Esporta Storia Echo",
@@ -697,7 +700,8 @@
       "demote": "Degrada",
       "empty": "Nessun moderatore ancora. Promuovi un utente Standard tramite ID utente.",
       "updatedAt": "Aggiornato"
-    }
+    },
+    "tabShareTokens": "Share Token"
   },
   "nav": {
     "dashboard": "Cruscotto",
@@ -1402,5 +1406,36 @@
     "errorBadRequest": "Controlla e riprova.",
     "errorGeneric": "Errore. Riprova.",
     "errorNetwork": "Servizio non raggiungibile. Controlla la connessione."
+  },
+  "adminShare": {
+    "tokens": {
+      "heading": "Share Token",
+      "creatorFilterLabel": "ID utente creatore",
+      "creatorFilterPlaceholder": "es. 0193f9b8-...",
+      "statusFilterLabel": "Stato",
+      "statusAny": "Qualsiasi",
+      "statusActive": "Attivo",
+      "statusRevoked": "Revocato",
+      "statusExpired": "Scaduto",
+      "applyFilters": "Applica filtri",
+      "colToken": "Token",
+      "colCreatedBy": "Creato da",
+      "colCreatedAt": "Creato",
+      "colExpiresAt": "Scade",
+      "colStatus": "Stato",
+      "neverExpires": "Mai",
+      "alreadyRevoked": "Già revocato",
+      "revoke": "Revoca",
+      "revokeModalTitle": "Revoca share token",
+      "revokeModalBody": "Questo invaliderà immediatamente il link di condivisione. I destinatari vedranno la pagina di condivisione non trovata.",
+      "revokeReasonLabel": "Motivo della revoca",
+      "revokeReasonPlaceholder": "Motivo registrato nella riga di audit…",
+      "revokeConfirm": "Conferma revoca",
+      "revokeSuccess": "Share token revocato.",
+      "revokeError": "Impossibile revocare lo share token. Prova di nuovo.",
+      "loadError": "Impossibile caricare gli share token. Prova di nuovo.",
+      "empty": "Nessuno share token corrisponde ai filtri attuali.",
+      "paginationLabel": "Visualizzazione {{from}}–{{to}} di {{total}}"
+    }
   }
 }

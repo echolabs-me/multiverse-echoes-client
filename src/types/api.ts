@@ -865,6 +865,14 @@ export type WsEchoEvent =
   | { type: 'CommunityMessageEdited'; channel_id: string; message_id: string; author_id: string }
   | { type: 'CommunityMessageDeleted'; channel_id: string; message_id: string; deleted_by: string }
   | { type: 'NotificationCreated'; notification_id: string }
+  // Lane H Commit 7: admin-dashboard-only revocation broadcast.
+  // Server filters to admin sockets via the dashboard handler arm.
+  | {
+      type: 'ShareTokenRevoked';
+      token: string;
+      revoked_by_user_id: string | null;
+      reason: string;
+    }
   | { type: 'Connected'; echo_id?: string; message: string }
   | { type: 'Error'; message: string }
   | { type: string; [key: string]: unknown };
