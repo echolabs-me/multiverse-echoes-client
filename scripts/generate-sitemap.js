@@ -16,29 +16,23 @@
  * Usage: node scripts/generate-sitemap.js
  */
 
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-export const BASE = 'https://echolabsme.com';
+
+// Single source of truth for routes + locales. See public-routes.json
+// header comment for the cross-reference contract with prerender.js +
+// worker.js's ROUTE_OG.
+const MANIFEST = JSON.parse(
+  readFileSync(join(__dirname, 'public-routes.json'), 'utf-8'),
+);
+
+export const BASE = MANIFEST.base;
 const OUT = join(__dirname, '..', 'public', 'sitemap.xml');
-
-const LOCALES = [
-  'en', 'zh-Hans', 'zh-Hant', 'hi', 'es', 'ar', 'fr', 'bn', 'pt-BR',
-  'ru', 'ur', 'id', 'de', 'ja', 'vi', 'tr', 'ko', 'tl', 'it', 'th', 'ms',
-];
-
-const ROUTES = [
-  { path: '/home',          changefreq: 'weekly',  priority: '1.0' },
-  { path: '/about',         changefreq: 'monthly', priority: '0.8' },
-  { path: '/plans',         changefreq: 'monthly', priority: '0.9' },
-  { path: '/waitlist',      changefreq: 'weekly',  priority: '0.9' },
-  { path: '/contact',       changefreq: 'yearly',  priority: '0.5' },
-  { path: '/terms',         changefreq: 'yearly',  priority: '0.3' },
-  { path: '/privacy',       changefreq: 'yearly',  priority: '0.3' },
-  { path: '/accessibility', changefreq: 'yearly',  priority: '0.3' },
-];
+const LOCALES = MANIFEST.locales;
+const ROUTES = MANIFEST.routes;
 
 /** Absolute URL for a (locale, route) pair. English lives at the unprefixed
  *  root; every other locale lives at `/{locale}{route}`. Trailing slash is

@@ -1407,6 +1407,60 @@
     "errorGeneric": "Bir hata oluştu. Tekrar deneyin.",
     "errorNetwork": "Servise ulaşılamadı. Bağlantıyı kontrol edin."
   },
+  "userProfile": {
+    "bio": "Biyografi",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "Henüz herkese açık Echoes yok.",
+    "echoesInCommon": "Ortak Echoes",
+    "echoesInCommonEmpty": "Echoes'larınız henüz kesişmedi.",
+    "followButton": "Takip Et",
+    "unfollowButton": "Takibi Bırak",
+    "blockButton": "Engelle",
+    "unblockButton": "Engeli Kaldır",
+    "muteButton": "Sessize Al",
+    "unmuteButton": "Sesi Aç",
+    "privateMessage": "Bu profil gizlidir.",
+    "friendsOnlyMessage": "Daha fazlasını görmek için takip edin.",
+    "notFound": "Kullanıcı bulunamadı.",
+    "errorLoading": "Bu profil yüklenemedi. Lütfen tekrar deneyin.",
+    "actionPending": "Çalışıyor…",
+    "actionFailed": "Bu işlem gerçekleştirilemedi. Lütfen tekrar deneyin.",
+    "foundingEcho": "Kurucu Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "Paylaşım Tokenleri",

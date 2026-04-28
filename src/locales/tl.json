@@ -1407,6 +1407,60 @@
     "errorGeneric": "May mali. Subukan muli.",
     "errorNetwork": "Hindi maabot ang serbisyo. Suriin ang koneksyon."
   },
+  "userProfile": {
+    "bio": "Bio",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "Wala pa pong pampublikong Echoes.",
+    "echoesInCommon": "Magkatulad na Echoes",
+    "echoesInCommonEmpty": "Hindi pa po nagkrus ang landas ng inyong mga Echoes.",
+    "followButton": "Sundan",
+    "unfollowButton": "Huwag nang sundan",
+    "blockButton": "I-block",
+    "unblockButton": "I-unblock",
+    "muteButton": "I-mute",
+    "unmuteButton": "I-unmute",
+    "privateMessage": "Pribado po ang profile na ito.",
+    "friendsOnlyMessage": "Sundan po para makita ang iba pa.",
+    "notFound": "Hindi natagpuan ang user.",
+    "errorLoading": "Hindi po ma-load ang profile na ito. Pakisubukang muli.",
+    "actionPending": "Ginagawa…",
+    "actionFailed": "Hindi po natuloy ang aksyong iyon. Pakisubukang muli.",
+    "foundingEcho": "Founding Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "Share Tokens",

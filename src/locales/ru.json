@@ -1407,6 +1407,60 @@
     "errorGeneric": "Что-то пошло не так. Попробуйте снова.",
     "errorNetwork": "Не удалось связаться. Проверьте подключение."
   },
+  "userProfile": {
+    "bio": "Био",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "Публичных Echoes пока нет.",
+    "echoesInCommon": "Общие Echoes",
+    "echoesInCommonEmpty": "Ваши Echoes ещё не пересекались.",
+    "followButton": "Подписаться",
+    "unfollowButton": "Отписаться",
+    "blockButton": "Заблокировать",
+    "unblockButton": "Разблокировать",
+    "muteButton": "Заглушить",
+    "unmuteButton": "Включить уведомления",
+    "privateMessage": "Этот профиль скрыт.",
+    "friendsOnlyMessage": "Подпишитесь, чтобы увидеть больше.",
+    "notFound": "Пользователь не найден.",
+    "errorLoading": "Не удалось загрузить профиль. Пожалуйста, попробуйте ещё раз.",
+    "actionPending": "Выполняется…",
+    "actionFailed": "Действие не выполнено. Пожалуйста, попробуйте ещё раз.",
+    "foundingEcho": "Основополагающий Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "Токены обмена",

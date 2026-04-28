@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
+const WAITLIST_API = 'https://api.echolabs.me';
+
 export function AboutPage() {
   const { t } = useTranslation();
   // Same source of truth as /waitlist — D1 via the me-waitlist Worker.
@@ -11,7 +13,7 @@ export function AboutPage() {
   const [waitlistTotal, setWaitlistTotal] = useState<number | null>(null);
   useEffect(() => {
     let cancelled = false;
-    fetch('https://api.echolabs.me/waitlist/count')
+    fetch(`${WAITLIST_API}/waitlist/count`)
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
       .then((data: { total?: number }) => {
         if (!cancelled && typeof data.total === 'number') {

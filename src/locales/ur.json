@@ -1407,6 +1407,60 @@
     "errorGeneric": "کچک غلط ہوا۔ دوبارہ کوشش کریں۔",
     "errorNetwork": "سروس تک نہیں پہنچا۔ کنکشن چیک کریں۔"
   },
+  "userProfile": {
+    "bio": "تعارف",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "ابھی تک کوئی عوامی Echoes نہیں ہیں۔",
+    "echoesInCommon": "مشترکہ Echoes",
+    "echoesInCommonEmpty": "آپ کے Echoes ابھی تک ایک دوسرے سے نہیں ملے۔",
+    "followButton": "فالو کریں",
+    "unfollowButton": "ان فالو کریں",
+    "blockButton": "بلاک کریں",
+    "unblockButton": "ان بلاک کریں",
+    "muteButton": "میوٹ کریں",
+    "unmuteButton": "ان میوٹ کریں",
+    "privateMessage": "یہ پروفائل نجی ہے۔",
+    "friendsOnlyMessage": "مزید دیکھنے کے لیے فالو کریں۔",
+    "notFound": "صارف نہیں ملا۔",
+    "errorLoading": "یہ پروفائل لوڈ نہیں ہو سکی۔ براہ کرم دوبارہ کوشش کریں۔",
+    "actionPending": "جاری ہے…",
+    "actionFailed": "یہ عمل مکمل نہیں ہو سکا۔ براہ کرم دوبارہ کوشش کریں۔",
+    "foundingEcho": "بانی Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "شیئر ٹوکن",

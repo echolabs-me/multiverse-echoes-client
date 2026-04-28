@@ -297,6 +297,70 @@ export async function setupMockApi(page: Page) {
   await page.route('**/system/**', (route) =>
     route.fulfill({ status: 200, json: { status: 'running', tick_number: 1042 } }),
   );
+
+  // ME-UXF-001 §8.2 — Public user profile.
+  // The handler maps `?visibility=` → server visibility for the three
+  // a11y test scenarios; ignored otherwise (tests not interested in
+  // gating just call /users/<id> with no query string).
+  await page.route('**/users/*/echoes-in-common', (route) =>
+    route.fulfill({ status: 200, json: [] }),
+  );
+  await page.route('**/users/*/echoes', (route) =>
+    route.fulfill({ status: 200, json: [] }),
+  );
+  await page.route('**/users/*', (route) => {
+    const url = new URL(route.request().url());
+    const visibility =
+      url.searchParams.get('visibility') ?? 'Public';
+    const isMutual =
+      url.searchParams.get('mutual') === 'true' || visibility === 'Public';
+    return route.fulfill({
+      status: 200,
+      json: {
+        user_id: '22222222-2222-2222-2222-222222222222',
+        display_name: 'A11y Bob',
+        bio: visibility === 'Public' ? 'Profile bio.' : null,
+        avatar_url: null,
+        profile_visibility: visibility,
+        account_type: 'Standard',
+        subscription_tier: 'Free',
+        created_at: '2026-01-01T00:00:00Z',
+        mutual_follow: isMutual,
+        is_founding_echo: false,
+      },
+    });
+  });
+
+  // ME-UXF-001 §8.2 — viewer-scoped relationship lookups.
+  await page.route('**/social/following', (route) =>
+    route.fulfill({ status: 200, json: [] }),
+  );
+  await page.route('**/social/blocked', (route) =>
+    route.fulfill({ status: 200, json: [] }),
+  );
+  await page.route('**/social/muted', (route) =>
+    route.fulfill({ status: 200, json: [] }),
+  );
+  // Action endpoints — answer happily so optimistic UI doesn't revert
+  // mid-test.
+  await page.route('**/social/follow/*', (route) =>
+    route.fulfill({
+      status: 200,
+      json: {
+        relationship_id: 'r1',
+        source_user_id: '00000000-0000-0000-0000-000000000001',
+        target_user_id: '22222222-2222-2222-2222-222222222222',
+        relationship_type: 'Follow',
+        created_at: new Date().toISOString(),
+      },
+    }),
+  );
+  await page.route('**/social/block/*', (route) =>
+    route.fulfill({ status: 200, json: { status: 'removed' } }),
+  );
+  await page.route('**/social/mute/*', (route) =>
+    route.fulfill({ status: 200, json: { status: 'removed' } }),
+  );
 }
 
 /** Simulate an authenticated session by setting localStorage tokens. */

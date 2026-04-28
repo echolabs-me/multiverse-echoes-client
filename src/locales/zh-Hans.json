@@ -1407,6 +1407,60 @@
     "errorGeneric": "出了点问题。请重试。",
     "errorNetwork": "无法连接服务。检查网络并重试。"
   },
+  "userProfile": {
+    "bio": "简介",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "暂无公开的 Echoes。",
+    "echoesInCommon": "共同的 Echoes",
+    "echoesInCommonEmpty": "您的 Echoes 尚未交汇。",
+    "followButton": "关注",
+    "unfollowButton": "取消关注",
+    "blockButton": "屏蔽",
+    "unblockButton": "解除屏蔽",
+    "muteButton": "静音",
+    "unmuteButton": "取消静音",
+    "privateMessage": "此个人主页为私密。",
+    "friendsOnlyMessage": "关注后可查看更多。",
+    "notFound": "未找到该用户。",
+    "errorLoading": "无法加载此个人主页,请重试。",
+    "actionPending": "处理中……",
+    "actionFailed": "操作未成功,请重试。",
+    "foundingEcho": "创始 Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "分享令牌",

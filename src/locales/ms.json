@@ -1407,6 +1407,60 @@
     "errorGeneric": "Sesuatu tidak kena. Cuba lagi.",
     "errorNetwork": "Tidak dapat menghubungi. Semak sambungan."
   },
+  "userProfile": {
+    "bio": "Bio",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "Tiada Echoes awam lagi.",
+    "echoesInCommon": "Echoes yang sama",
+    "echoesInCommonEmpty": "Echoes anda belum bertemu lagi.",
+    "followButton": "Ikut",
+    "unfollowButton": "Nyahikut",
+    "blockButton": "Sekat",
+    "unblockButton": "Nyahsekat",
+    "muteButton": "Bisukan",
+    "unmuteButton": "Nyahbisukan",
+    "privateMessage": "Profil ini peribadi.",
+    "friendsOnlyMessage": "Ikut untuk lihat lebih banyak.",
+    "notFound": "Pengguna tidak ditemui.",
+    "errorLoading": "Tidak dapat memuatkan profil ini. Sila cuba lagi.",
+    "actionPending": "Sedang bekerja…",
+    "actionFailed": "Tindakan tersebut tidak berjaya. Sila cuba lagi.",
+    "foundingEcho": "Echo Pengasas"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "Token Kongsi",

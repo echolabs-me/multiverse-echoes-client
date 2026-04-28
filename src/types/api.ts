@@ -33,6 +33,7 @@ import type {
   LifeEventType as _LifeEventType,
   LocationType as _LocationType,
   MarketplaceCategory as _MarketplaceCategory,
+  MarketplaceItem as _MarketplaceItem,
   ModerationActionType as _ModerationActionType,
   NotificationDelivery as _NotificationDelivery,
   PaymentStatus as _PaymentStatus,
@@ -647,21 +648,17 @@ export interface LifeEvent {
 
 // --- Marketplace ---
 
-export interface MarketplaceItem {
-  item_id: string;
-  name: string;
-  description: string;
-  category: MarketplaceCategory;
-  price_cents: number;
-  is_available: boolean;
-  is_limited_time: boolean;
-  available_from: string | null;
-  available_until: string | null;
-  preview_asset: string;
-  creator_id: string | null;
-  content_hash: string;
-  created_at: string;
-}
+// Re-exported from `generated.ts` (Specta from
+// `me_core::models::marketplace::MarketplaceItem`). The Lane E
+// Commit 2.5 schema rationalization deleted the
+// `me_core::models::community::MarketplaceItem` orphan that had
+// previously shaped this re-export — the hand-written interface
+// that lived here mirrored the orphan (price_cents,
+// preview_asset, content_hash, available_from) and never matched
+// any real wire shape. Consumers should prefer
+// `MarketplaceItemResponse` (also from `generated.ts`) for
+// rendering server payloads.
+export type MarketplaceItem = _MarketplaceItem;
 
 // --- User Relationship ---
 

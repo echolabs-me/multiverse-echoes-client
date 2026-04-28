@@ -36,13 +36,13 @@ const DIST = join(__dirname, '..', 'dist');
 const PORT = 4175;
 const BASE = `http://localhost:${PORT}`;
 
-/** 21 live locales. Keep in sync with `client/src/i18n.ts` SUPPORTED_LOCALES. */
-const LOCALES = [
-  'en', 'zh-Hans', 'zh-Hant', 'hi', 'es', 'ar', 'fr', 'bn', 'pt-BR',
-  'ru', 'ur', 'id', 'de', 'ja', 'vi', 'tr', 'ko', 'tl', 'it', 'th', 'ms',
-];
-
-const ROUTES = ['/home', '/about', '/terms', '/privacy', '/waitlist', '/contact', '/accessibility', '/plans'];
+// Single source of truth for routes + locales (shared with generate-sitemap.js).
+// See public-routes.json header comment for the full cross-reference contract.
+const MANIFEST = JSON.parse(
+  readFileSync(join(__dirname, 'public-routes.json'), 'utf-8'),
+);
+const LOCALES = MANIFEST.locales;
+const ROUTES = MANIFEST.routes.map((r) => r.path);
 
 /**
  * English fallback titles for pages where `<Helmet>` hasn't fired during

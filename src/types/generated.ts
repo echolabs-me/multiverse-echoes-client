@@ -196,11 +196,20 @@ export type AdminUpsertItemRequest = {
 	name: string,
 	description: string,
 	item_type: MarketplaceItemType,
+	/**
+	 *  Spec §8.5 top-tab category. Required at upsert time so legacy
+	 *  rows are the only `Uncategorized` source — and those are
+	 *  rewritten by the boot-time backfill.
+	 */
+	category: MarketplaceCategory,
 	rarity: ItemRarity,
 	price_tier_required: SubscriptionTier,
 	price_coins?: number | null,
 	image_url?: string | null,
 	is_available?: boolean | null,
+	is_limited_time?: boolean | null,
+	available_until?: string | null,
+	creator_id?: string | null,
 };
 
 // A single analytics event.
@@ -1092,6 +1101,37 @@ export type Echo = {
 	public_figure_flag?: boolean | null,
 };
 
+/**
+ *  One row in the GET /users/{user_id}/echoes-in-common response.
+ * 
+ *  Each row represents a single `EchoRelationship` in which the viewer's
+ *  Echo and the target user's Echo are paired. The viewer-side and
+ *  target-side fields are normalized — the viewer's Echo is always
+ *  reported under `viewer_echo_*`, regardless of which side held
+ *  `echo_a_id` in the underlying record.
+ * 
+ *  Reference: ME-UXF-001 §8.2 ("Echoes in common" section under Public
+ *  profile rendering).
+ */
+export type EchoInCommonRef = {
+	viewer_echo_id: string,
+	viewer_echo_name: string,
+	target_echo_id: string,
+	target_echo_name: string,
+	/**
+	 *  rfc3339 timestamp from `EchoRelationship.updated_at` — the most
+	 *  recent in-engine update to this relationship. Drives
+	 *  recency-ordering on the client.
+	 */
+	last_interaction_at: string,
+	/**
+	 *  Tick id of the most recent interaction (`last_interaction_tick`).
+	 *  Exposed alongside `last_interaction_at` so callers can sort by
+	 *  engine time without reparsing the rfc3339 string.
+	 */
+	last_interaction_tick: number,
+};
+
 export type EchoListQuery = {
 	limit: number,
 	offset?: number,
@@ -1784,6 +1824,13 @@ export type ItemListQuery = {
 	item_type?: string | null,
 	// Optional rarity filter — case-insensitive match on `ItemRarity`.
 	rarity?: string | null,
+	/**
+	 *  Optional category filter — case-insensitive match on
+	 *  `MarketplaceCategory`. Drives the ME-UXF-001 §8.5 category
+	 *  tabs (lane E Commit 3); item_type and category are
+	 *  independent axes per Lane E Commit 2.5 docstring.
+	 */
+	category?: string | null,
 };
 
 /**
@@ -1834,21 +1881,69 @@ export type ListMessagesQuery = {
 
 export type LocationType = "Residential" | "Commercial" | "Social" | "Workplace" | "Transit" | "Landmark" | "Wilderness";
 
-export type MarketplaceCategory = "DashboardTheme" | "PortraitStyle" | "ExportTemplate" | "ShardAesthetic" | "ScenarioPack" | "SeasonalCosmetic" | "SoundPack";
+export type MarketplaceCategory = "DashboardTheme" | "PortraitStyle" | "ExportTemplate" | "ShardAesthetic" | "ScenarioPack" | "SeasonalCosmetic" | "SoundPack" | 
+/**
+ *  Sentinel for migration safety only. Pre-Lane-E-Commit-2.5 Redb
+ *  rows lack a `category` field; serde defaults to this variant on
+ *  load. The Lane E Commit 2.5 backfill migration walks the table
+ *  once and rewrites every row to a real category derived from
+ *  `item_type`. Post-migration, no production row should carry
+ *  this variant — surfacing it in a UI tab would indicate a row
+ *  that escaped the backfill, which is a bug to investigate.
+ */
+"Uncategorized";
 
+/**
+ *  A catalog entry — one row per item on offer. The same row is returned
+ *  by `GET /marketplace/items` and `GET /marketplace/items/{id}`.
+ */
 export type MarketplaceItem = {
 	item_id: string,
 	name: string,
 	description: string,
+	item_type: MarketplaceItemType,
+	/**
+	 *  Spec §8.5 tab-grouping category. Distinct from `item_type` —
+	 *  `item_type` is the equip-slot (one EchoSkin, one ShardTheme,
+	 *  etc.); `category` is the marketplace-page top-tab the item
+	 *  appears under. Migration backfill maps `item_type → category`
+	 *  per Lane E Commit 2.5; future items set this explicitly at
+	 *  creation. `Uncategorized` is a transient sentinel — see the
+	 *  enum docstring.
+	 */
 	category: MarketplaceCategory,
-	price_cents: number,
+	rarity: ItemRarity,
+	/**
+	 *  Minimum subscription tier required to purchase. Users at this tier
+	 *  or higher can unlock the item. Free-tier items set `Free`.
+	 */
+	price_tier_required: SubscriptionTier,
+	/**
+	 *  Nominal coin price. Zero for beta (tier-gated unlocks); preserved
+	 *  so a future coin economy can layer on without a schema change.
+	 */
+	price_coins?: number,
+	image_url: string | null,
+	/**
+	 *  When false, the item is hidden from listings. Used for soft-retiring
+	 *  seasonal or limited-time items without deleting purchase history.
+	 */
 	is_available: boolean,
-	is_limited_time: boolean,
-	available_from: string | null,
-	available_until: string | null,
-	preview_asset: string,
-	creator_id: string | null,
-	content_hash: string,
+	/**
+	 *  True for seasonal / event drops with a hard expiry. Drives the
+	 *  spec §8.5 countdown timer. Defaults false on legacy rows.
+	 */
+	is_limited_time?: boolean,
+	/**
+	 *  When `is_limited_time`, the moment the item disappears from
+	 *  listings. Clients render a countdown to this instant.
+	 */
+	available_until?: string | null,
+	/**
+	 *  User who authored a creator-economy item, when applicable. None
+	 *  for first-party catalog entries.
+	 */
+	creator_id?: string | null,
 	created_at: string,
 };
 
@@ -1857,11 +1952,30 @@ export type MarketplaceItemResponse = {
 	name: string,
 	description: string,
 	item_type: MarketplaceItemType,
+	/**
+	 *  Spec §8.5 top-tab category. Distinct from `item_type` — see
+	 *  `me_core::models::marketplace::MarketplaceItem` docs.
+	 */
+	category: MarketplaceCategory,
 	rarity: ItemRarity,
 	price_tier_required: SubscriptionTier,
 	price_coins: number,
 	image_url: string | null,
 	is_available: boolean,
+	/**
+	 *  True for seasonal / event drops. Drives the spec §8.5
+	 *  countdown timer.
+	 */
+	is_limited_time: boolean,
+	// When `is_limited_time`, the moment the item disappears. RFC3339.
+	available_until: string | null,
+	/**
+	 *  User who authored a creator-economy item, when applicable.
+	 *  `None` for first-party catalog entries. Wire shape is the Uuid
+	 *  serialised as a string by serde — kept as `Uuid` in Rust to
+	 *  match the codebase convention for ID fields on response DTOs.
+	 */
+	creator_id: string | null,
 	created_at: string,
 };
 
@@ -1878,6 +1992,42 @@ export type MarketplaceItemType =
 "DiaryStyle" | 
 // Profile badge awarded or purchased.
 "Badge";
+
+/**
+ *  Preview asset metadata for a single marketplace item. Drives the
+ *  ME-UXF-001 §8.5 "Preview" button on the catalog grid — the modal
+ *  renders `preview_image_url` (and, when populated by future preview
+ *  infrastructure, the `preview_demo_url`) without requiring the
+ *  caller to purchase first.
+ */
+export type MarketplacePreviewResponse = {
+	item_id: string,
+	/**
+	 *  Static preview image. Falls back to `MarketplaceItem.image_url`
+	 *  when no separate preview asset is configured — that is the
+	 *  spec-defensible v1 surface, not debt: every marketplace item
+	 *  already carries `image_url`, so the catalog tile and the
+	 *  preview modal render the same asset until richer preview
+	 *  infrastructure (animated demos, audio samples) lands.
+	 */
+	preview_image_url: string | null,
+	/**
+	 *  Optional video / animation / audio demo URL. None today; the
+	 *  field exists so a future preview-asset pipeline (e.g.
+	 *  per-cosmetic short-form video clips) can populate it without a
+	 *  DTO version bump.
+	 */
+	preview_demo_url: string | null,
+	/**
+	 *  Always `true` for the v1 authenticated endpoint — flags that
+	 *  the preview is contextualised against the caller's account
+	 *  (so a future variant could render the cosmetic applied to the
+	 *  caller's avatar rather than a generic mannequin). Field is
+	 *  structural for future anonymous-preview flows where this would
+	 *  flip to `false`.
+	 */
+	applied_to_user_dashboard: boolean,
+};
 
 export type MemoryType = "Episodic" | "Semantic" | "Emotional" | "Relationship" | "Summarised";
 
@@ -2318,6 +2468,40 @@ export type PublicProfileResponse = {
 	 *  ME-MIS-001 §7.3.
 	 */
 	is_founding_echo: boolean,
+};
+
+/**
+ *  Profile-type surfaced on public anonymous responses. Strict subset of
+ *  `ProfileVisibility` — `Private` is never exposed because the handler
+ *  returns 404 for Private profiles (leak prevention).
+ */
+export type PublicProfileType = "Public" | "FriendsOnly";
+
+/**
+ *  Response DTO for `GET /public/users/{user_id}`.
+ * 
+ *  Deliberately narrower than `PublicProfileResponse` — designed for
+ *  rendering open-graph / social-preview cards by anonymous crawlers.
+ *  Omits: email, last_active, echo_count, follower_count, shard
+ *  memberships, relationships, internal IDs, account_type, subscription_tier.
+ */
+export type PublicUserOgResponse = {
+	user_id: string,
+	display_name: string,
+	avatar_url: string | null,
+	/**
+	 *  Bio truncated to 200 chars at a word boundary, with an ellipsis
+	 *  appended when truncation occurred. `None` for FriendsOnly
+	 *  profiles and for users with no bio set.
+	 */
+	bio_preview: string | null,
+	/**
+	 *  Year only (`YYYY`). The full `created_at` timestamp is withheld
+	 *  so crawler responses cannot be used to fingerprint an account
+	 *  down to the second.
+	 */
+	joined_year: number,
+	profile_type: PublicProfileType,
 };
 
 export type PurchaseRequest = {
@@ -3278,13 +3462,25 @@ export type User = {
 	share_attribution_default?: boolean,
 };
 
+/**
+ *  One row per (user, item) ownership. A user can own many items; each
+ *  ownership row can optionally be `equipped` to signal the active skin /
+ *  theme / badge. Equipping is per-type: at most one `EchoSkin` can be
+ *  equipped, at most one `ShardTheme`, etc. (The handler enforces this on
+ *  PATCH; the storage layer itself does not.)
+ */
 export type UserInventory = {
 	inventory_id: string,
 	user_id: string,
 	item_id: string,
-	equipped: boolean,
-	equipped_target_id: string | null,
 	acquired_at: string,
+	equipped?: boolean,
+	/**
+	 *  Coin price paid at purchase time. Free-tier grants record `0`.
+	 *  Preserved so `GET /marketplace/inventory` can surface purchase
+	 *  history even if the current item price changes later.
+	 */
+	price_paid_coins?: number,
 };
 
 export type UserPurchase = {

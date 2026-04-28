@@ -1098,6 +1098,40 @@
       }
     }
   },
+  "marketplace": {
+    "pageTitle": "Marketplace",
+    "tabs": {
+      "dashboardTheme": "Dashboard Themes",
+      "portraitStyle": "Portrait Styles",
+      "exportTemplate": "Export Templates",
+      "shardAesthetic": "Shard Aesthetics",
+      "scenarioPack": "Scenario Packs",
+      "seasonalCosmetic": "Seasonal",
+      "soundPack": "Sound Packs",
+      "myInventory": "My Inventory"
+    },
+    "preview": "Preview",
+    "buy": "Buy",
+    "owned": "Owned",
+    "upgradeToUnlock": "Upgrade to unlock",
+    "tierRequired": "Tier required: {{tier}}",
+    "priceCoins": "{{count}} coins",
+    "limitedTimeRemaining": "Ends in {{duration}}",
+    "equip": "Equip",
+    "unequip": "Unequip",
+    "equipped": "Equipped",
+    "notEquipped": "Not equipped",
+    "rarity": {
+      "common": "Common",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary"
+    },
+    "empty": "No items in this category yet.",
+    "emptyInventory": "Your collection is empty. Browse the marketplace to personalise your experience.",
+    "loadError": "Couldn’t load the marketplace. Please try again.",
+    "equipError": "That toggle didn’t go through. Please try again."
+  },
   "website": {
     "hero": {
       "headline": "What if you'd taken a different path?",
@@ -1437,5 +1471,25 @@
     "errorBadRequest": "Please check your submission and try again.",
     "errorGeneric": "Something went wrong. Please try again.",
     "errorNetwork": "Couldn’t reach the contact service. Check your connection and try again."
+  },
+  "userProfile": {
+    "bio": "Bio",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "No public Echoes yet.",
+    "echoesInCommon": "Echoes in common",
+    "echoesInCommonEmpty": "Your Echoes haven’t crossed paths yet.",
+    "followButton": "Follow",
+    "unfollowButton": "Unfollow",
+    "blockButton": "Block",
+    "unblockButton": "Unblock",
+    "muteButton": "Mute",
+    "unmuteButton": "Unmute",
+    "privateMessage": "This profile is private.",
+    "friendsOnlyMessage": "Follow to see more.",
+    "notFound": "User not found.",
+    "errorLoading": "Couldn’t load this profile. Please try again.",
+    "actionPending": "Working…",
+    "actionFailed": "That action didn’t go through. Please try again.",
+    "foundingEcho": "Founding Echo"
   }
 }

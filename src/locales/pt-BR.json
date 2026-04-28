@@ -1407,6 +1407,60 @@
     "errorGeneric": "Algo deu errado. Tente novamente.",
     "errorNetwork": "Sem conexão ao serviço. Verifique e tente novamente."
   },
+  "userProfile": {
+    "bio": "Bio",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "Ainda não há Echoes públicos.",
+    "echoesInCommon": "Echoes em comum",
+    "echoesInCommonEmpty": "Seus Echoes ainda não se cruzaram.",
+    "followButton": "Seguir",
+    "unfollowButton": "Deixar de seguir",
+    "blockButton": "Bloquear",
+    "unblockButton": "Desbloquear",
+    "muteButton": "Silenciar",
+    "unmuteButton": "Reativar som",
+    "privateMessage": "Este perfil é privado.",
+    "friendsOnlyMessage": "Siga para ver mais.",
+    "notFound": "Usuário não encontrado.",
+    "errorLoading": "Não foi possível carregar este perfil. Tente novamente.",
+    "actionPending": "Processando…",
+    "actionFailed": "Essa ação não foi concluída. Tente novamente.",
+    "foundingEcho": "Echo Fundador"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "Tokens de Compartilhamento",

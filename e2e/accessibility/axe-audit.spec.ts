@@ -198,6 +198,75 @@ test('a11y: Search', async ({ page }) => {
   await auditPage(page, 'Search');
 });
 
+// ME-UXF-001 §8.2 — UserProfilePage. Three render branches: Public,
+// FriendsOnly (gated, viewer-not-mutual), Private. The setupMockApi
+// route handler reads `?visibility=` to switch the served profile_visibility
+// field, so each branch is exercised against the same target user_id.
+const TARGET_PROFILE_ID = '22222222-2222-2222-2222-222222222222';
+
+test('a11y: User Profile (Public)', async ({ page }) => {
+  await setupMockApi(page);
+  await page.goto('/');
+  await authenticateUser(page);
+  // No query string → setupMockApi defaults to Public.
+  await page.goto(`/users/${TARGET_PROFILE_ID}`);
+  await page.waitForLoadState('networkidle');
+  await auditPage(page, 'User Profile (Public)');
+});
+
+test('a11y: User Profile (FriendsOnly hidden)', async ({ page }) => {
+  await setupMockApi(page);
+  // Override the /users/* handler to serve FriendsOnly + non-mutual.
+  await page.route('**/users/' + TARGET_PROFILE_ID, (route) =>
+    route.fulfill({
+      status: 200,
+      json: {
+        user_id: TARGET_PROFILE_ID,
+        display_name: 'A11y Bob',
+        bio: null,
+        avatar_url: null,
+        profile_visibility: 'FriendsOnly',
+        account_type: 'Standard',
+        subscription_tier: 'Free',
+        created_at: '2026-01-01T00:00:00Z',
+        mutual_follow: false,
+        is_founding_echo: false,
+      },
+    }),
+  );
+  await page.goto('/');
+  await authenticateUser(page);
+  await page.goto(`/users/${TARGET_PROFILE_ID}`);
+  await page.waitForLoadState('networkidle');
+  await auditPage(page, 'User Profile (FriendsOnly hidden)');
+});
+
+test('a11y: User Profile (Private)', async ({ page }) => {
+  await setupMockApi(page);
+  await page.route('**/users/' + TARGET_PROFILE_ID, (route) =>
+    route.fulfill({
+      status: 200,
+      json: {
+        user_id: TARGET_PROFILE_ID,
+        display_name: 'A11y Bob',
+        bio: null,
+        avatar_url: null,
+        profile_visibility: 'Private',
+        account_type: 'Standard',
+        subscription_tier: 'Free',
+        created_at: '2026-01-01T00:00:00Z',
+        mutual_follow: false,
+        is_founding_echo: false,
+      },
+    }),
+  );
+  await page.goto('/');
+  await authenticateUser(page);
+  await page.goto(`/users/${TARGET_PROFILE_ID}`);
+  await page.waitForLoadState('networkidle');
+  await auditPage(page, 'User Profile (Private)');
+});
+
 test('a11y: Admin Dashboard', async ({ page }) => {
   await setupMockApi(page);
   await page.goto('/');

@@ -1407,6 +1407,60 @@
     "errorGeneric": "कुछ गलत हुआ। पुनः प्रयास करें।",
     "errorNetwork": "सेवा तक नहीं पहुँचा। कनेक्शन जांचें।"
   },
+  "userProfile": {
+    "bio": "बायो",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "अभी तक कोई सार्वजनिक Echoes नहीं हैं।",
+    "echoesInCommon": "समान Echoes",
+    "echoesInCommonEmpty": "आपके Echoes अभी तक एक-दूसरे से नहीं मिले हैं।",
+    "followButton": "फ़ॉलो करें",
+    "unfollowButton": "अनफ़ॉलो करें",
+    "blockButton": "ब्लॉक करें",
+    "unblockButton": "अनब्लॉक करें",
+    "muteButton": "म्यूट करें",
+    "unmuteButton": "अनम्यूट करें",
+    "privateMessage": "यह प्रोफ़ाइल निजी है।",
+    "friendsOnlyMessage": "अधिक देखने के लिए फ़ॉलो करें।",
+    "notFound": "उपयोगकर्ता नहीं मिला।",
+    "errorLoading": "यह प्रोफ़ाइल लोड नहीं हो सकी। कृपया पुनः प्रयास करें।",
+    "actionPending": "प्रोसेस हो रहा है…",
+    "actionFailed": "यह क्रिया पूरी नहीं हो सकी। कृपया पुनः प्रयास करें।",
+    "foundingEcho": "संस्थापक Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "शेयर टोकन",

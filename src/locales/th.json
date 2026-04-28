@@ -1234,7 +1234,7 @@
       "notAvailableOnPlan": "ไม่มีให้ในแพ็กเกจของคุณ"
     },
     "influencePoints": {
-      "label": "Influence Points",
+      "label": "แต้มอิทธิพล",
       "explainer": "แอคชันพรีเมียม: แนะนำกิจกรรมหรือส่งสัญญาณถึงความสัมพันธ์ — เอคโค่ของคุณเป็นผู้ตัดสินใจว่าจะลงมือหรือไม่"
     },
     "heartbeatDaily": "รายวัน",
@@ -1406,6 +1406,60 @@
     "errorBadRequest": "ตรวจสอบและลองอีกครั้ง",
     "errorGeneric": "เกิดข้อผิดพลาด ลองอีกครั้ง",
     "errorNetwork": "เชื่อมต่อไม่ได้ ตรวจสอบการเชื่อมต่อ"
+  },
+  "userProfile": {
+    "bio": "ประวัติ",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "ยังไม่มี Echoes สาธารณะ",
+    "echoesInCommon": "Echoes ที่มีร่วมกัน",
+    "echoesInCommonEmpty": "Echoes ของคุณยังไม่เคยมาบรรจบกัน",
+    "followButton": "ติดตาม",
+    "unfollowButton": "เลิกติดตาม",
+    "blockButton": "บล็อก",
+    "unblockButton": "ปลดบล็อก",
+    "muteButton": "ปิดเสียง",
+    "unmuteButton": "เปิดเสียง",
+    "privateMessage": "โปรไฟล์นี้เป็นแบบส่วนตัว",
+    "friendsOnlyMessage": "ติดตามเพื่อดูเพิ่มเติม",
+    "notFound": "ไม่พบผู้ใช้",
+    "errorLoading": "ไม่สามารถโหลดโปรไฟล์นี้ได้ กรุณาลองอีกครั้ง",
+    "actionPending": "กำลังดำเนินการ…",
+    "actionFailed": "ไม่สามารถดำเนินการได้ กรุณาลองอีกครั้ง",
+    "foundingEcho": "Founding Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
   },
   "adminShare": {
     "tokens": {

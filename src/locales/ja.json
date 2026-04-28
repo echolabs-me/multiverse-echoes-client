@@ -1407,6 +1407,60 @@
     "errorGeneric": "問題が発生。再試行してください。",
     "errorNetwork": "サービスに接続できません。接続を確認して再試行。"
   },
+  "userProfile": {
+    "bio": "自己紹介",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "公開されているEchoesはまだありません。",
+    "echoesInCommon": "共通のEchoes",
+    "echoesInCommonEmpty": "あなたのEchoesはまだ交わっていません。",
+    "followButton": "フォロー",
+    "unfollowButton": "フォロー解除",
+    "blockButton": "ブロック",
+    "unblockButton": "ブロック解除",
+    "muteButton": "ミュート",
+    "unmuteButton": "ミュート解除",
+    "privateMessage": "このプロフィールは非公開です。",
+    "friendsOnlyMessage": "フォローするとさらに表示されます。",
+    "notFound": "ユーザーが見つかりません。",
+    "errorLoading": "このプロフィールを読み込めませんでした。もう一度お試しください。",
+    "actionPending": "処理中…",
+    "actionFailed": "操作を完了できませんでした。もう一度お試しください。",
+    "foundingEcho": "Founding Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "共有トークン",

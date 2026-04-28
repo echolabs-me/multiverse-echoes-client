@@ -58,6 +58,14 @@ import type {
   AdminRevokeShareTokenResponse,
   AdminShareTokenListResponse,
   AdminShareTokenSummary,
+  EchoInCommonRef,
+  InventoryRowResponse,
+  MarketplaceItemResponse,
+  MarketplacePreviewResponse,
+  PublicEchoRef,
+  PublicProfileResponse,
+  PublicUserOgResponse,
+  RelationshipResponse,
   ShareFeedItemRequest,
   ShareFeedItemResponse,
   ViralContentResponse,
@@ -790,4 +798,136 @@ export const waitlist = {
   position: (entryId: string) =>
     request<WaitlistPositionResponse>(`/waitlist/position/${entryId}`),
   count: () => request<WaitlistCountResponse>('/waitlist/count'),
+};
+
+// --- Users (public profile surface) ---
+
+export const users = {
+  getProfile: (userId: string) =>
+    request<PublicProfileResponse>(`/users/${userId}`),
+
+  getPublic: (userId: string) =>
+    request<PublicUserOgResponse>(`/public/users/${userId}`),
+
+  listEchoes: (userId: string, params?: { limit?: number; offset?: number }) => {
+    const query = new URLSearchParams();
+    if (params?.limit !== undefined) query.set('limit', String(params.limit));
+    if (params?.offset !== undefined) query.set('offset', String(params.offset));
+    const qs = query.toString();
+    return request<PublicEchoRef[]>(
+      `/users/${userId}/echoes${qs ? `?${qs}` : ''}`,
+    );
+  },
+
+  // Cross-user "Echoes in common" (ME-UXF-001 §8.2). The server gates
+  // this behind the same visibility rules as listEchoes — viewers
+  // outside the gate get an empty array (NOT 404). Blocked-pair always
+  // returns 404 to avoid leaking existence.
+  echoesInCommon: (userId: string) =>
+    request<EchoInCommonRef[]>(`/users/${userId}/echoes-in-common`),
+
+  // Action affordances (ME-UXF-001 §8.2). Server endpoints live under
+  // `/social/{action}/{user_id}` (POST adds the relationship, DELETE
+  // removes it) — wrappers are namespaced under `users` because that's
+  // the domain the page consumes them from. Mirror endpoints in
+  // `crates/api/src/routes/social.rs::social_router`.
+  follow: (userId: string) =>
+    request<RelationshipResponse>(`/social/follow/${userId}`, { method: 'POST' }),
+
+  unfollow: (userId: string) =>
+    request<{ status: string }>(`/social/follow/${userId}`, { method: 'DELETE' }),
+
+  block: (userId: string) =>
+    request<RelationshipResponse>(`/social/block/${userId}`, { method: 'POST' }),
+
+  unblock: (userId: string) =>
+    request<{ status: string }>(`/social/block/${userId}`, { method: 'DELETE' }),
+
+  mute: (userId: string) =>
+    request<RelationshipResponse>(`/social/mute/${userId}`, { method: 'POST' }),
+
+  unmute: (userId: string) =>
+    request<{ status: string }>(`/social/mute/${userId}`, { method: 'DELETE' }),
+};
+
+// --- Social (viewer-scoped relationship lookups) ---
+//
+// `users.follow` / `users.block` / `users.mute` and their `un*` siblings
+// are user-scoped (POST/DELETE against a specific target user_id).
+// The three list endpoints below are viewer-scoped: they enumerate the
+// authenticated user's OWN outbound relationships of each type. Used by
+// `UserProfilePage` to derive the viewer's relationship state to the
+// target on initial load. Server: `crates/api/src/routes/social.rs`.
+
+export const social = {
+  following: () =>
+    request<RelationshipResponse[]>('/social/following'),
+  blocked: () => request<RelationshipResponse[]>('/social/blocked'),
+  muted: () => request<RelationshipResponse[]>('/social/muted'),
+};
+
+// --- Marketplace ---
+
+type MarketplaceItemsPage = {
+  data: MarketplaceItemResponse[];
+  next_cursor: string | null;
+};
+
+type InventoryPage = {
+  data: InventoryRowResponse[];
+  next_cursor: string | null;
+};
+
+export const marketplace = {
+  list: (params?: {
+    cursor?: string;
+    limit?: number;
+    item_type?: string;
+    rarity?: string;
+    category?: string;
+  }) => {
+    const query = new URLSearchParams();
+    if (params?.cursor) query.set('cursor', params.cursor);
+    if (params?.limit !== undefined) query.set('limit', String(params.limit));
+    if (params?.item_type) query.set('item_type', params.item_type);
+    if (params?.rarity) query.set('rarity', params.rarity);
+    if (params?.category) query.set('category', params.category);
+    const qs = query.toString();
+    return request<MarketplaceItemsPage>(
+      `/marketplace/items${qs ? `?${qs}` : ''}`,
+    );
+  },
+
+  get: (itemId: string) =>
+    request<MarketplaceItemResponse>(`/marketplace/items/${itemId}`),
+
+  preview: (itemId: string) =>
+    request<MarketplacePreviewResponse>(
+      `/marketplace/items/${itemId}/preview`,
+    ),
+
+  purchase: (itemId: string) =>
+    request<InventoryRowResponse>('/marketplace/purchase', {
+      method: 'POST',
+      body: JSON.stringify({ item_id: itemId }),
+    }),
+
+  inventory: (params?: { cursor?: string; limit?: number }) => {
+    const query = new URLSearchParams();
+    if (params?.cursor) query.set('cursor', params.cursor);
+    if (params?.limit !== undefined) query.set('limit', String(params.limit));
+    const qs = query.toString();
+    return request<InventoryPage>(
+      `/marketplace/inventory${qs ? `?${qs}` : ''}`,
+    );
+  },
+
+  equip: (itemId: string, equipped: boolean) =>
+    request<InventoryRowResponse>(
+      `/marketplace/inventory/${itemId}/equip`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ equipped }),
+      },
+    ),
 };

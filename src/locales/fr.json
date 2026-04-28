@@ -727,7 +727,7 @@
     "closeAriaLabel": "Fermer le sélecteur d'Écho"
   },
   "payment": {
-    "title": "Plans",
+    "title": "Forfaits",
     "subtitle": "Choisis le bon plan pour ton multivers.",
     "free": "Gratuit",
     "current": "Actuel",
@@ -1406,6 +1406,60 @@
     "errorBadRequest": "Vérifiez et réessayez.",
     "errorGeneric": "Erreur. Réessayez.",
     "errorNetwork": "Service injoignable. Vérifiez votre connexion."
+  },
+  "userProfile": {
+    "bio": "Bio",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "Pas encore d'Echoes publics.",
+    "echoesInCommon": "Echoes en commun",
+    "echoesInCommonEmpty": "Vos Echoes ne se sont pas encore croisés.",
+    "followButton": "Suivre",
+    "unfollowButton": "Ne plus suivre",
+    "blockButton": "Bloquer",
+    "unblockButton": "Débloquer",
+    "muteButton": "Mettre en sourdine",
+    "unmuteButton": "Réactiver le son",
+    "privateMessage": "Ce profil est privé.",
+    "friendsOnlyMessage": "Suivez pour en voir plus.",
+    "notFound": "Utilisateur introuvable.",
+    "errorLoading": "Impossible de charger ce profil. Veuillez réessayer.",
+    "actionPending": "Traitement en cours…",
+    "actionFailed": "Cette action n’a pas abouti. Veuillez réessayer.",
+    "foundingEcho": "Echo fondateur"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
   },
   "adminShare": {
     "tokens": {

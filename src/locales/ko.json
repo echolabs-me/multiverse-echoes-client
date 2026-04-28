@@ -1407,6 +1407,60 @@
     "errorGeneric": "문제 발생. 다시 시도해 주세요.",
     "errorNetwork": "서비스 연결 불가. 연결 확인 후 다시 시도."
   },
+  "userProfile": {
+    "bio": "소개",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "아직 공개된 Echoes가 없어요.",
+    "echoesInCommon": "공통된 Echoes",
+    "echoesInCommonEmpty": "아직 서로의 Echoes가 마주친 적이 없어요.",
+    "followButton": "팔로우",
+    "unfollowButton": "팔로우 취소",
+    "blockButton": "차단",
+    "unblockButton": "차단 해제",
+    "muteButton": "뮤트",
+    "unmuteButton": "뮤트 해제",
+    "privateMessage": "비공개 프로필이에요.",
+    "friendsOnlyMessage": "더 보려면 팔로우하세요.",
+    "notFound": "사용자를 찾을 수 없어요.",
+    "errorLoading": "프로필을 불러올 수 없어요. 다시 시도해 주세요.",
+    "actionPending": "처리 중…",
+    "actionFailed": "요청을 처리하지 못했어요. 다시 시도해 주세요.",
+    "foundingEcho": "창립 Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "공유 토큰",

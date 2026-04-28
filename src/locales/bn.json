@@ -1407,6 +1407,60 @@
     "errorGeneric": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।",
     "errorNetwork": "সেবায় পৌঁছানো যায়নি। সংযোগ পরীক্ষা করুন।"
   },
+  "userProfile": {
+    "bio": "পরিচিতি",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "এখনও কোনো পাবলিক Echoes নেই।",
+    "echoesInCommon": "সাধারণ Echoes",
+    "echoesInCommonEmpty": "আপনাদের Echoes এখনও পরস্পরের পথ অতিক্রম করেনি।",
+    "followButton": "ফলো করুন",
+    "unfollowButton": "আনফলো করুন",
+    "blockButton": "ব্লক করুন",
+    "unblockButton": "আনব্লক করুন",
+    "muteButton": "মিউট করুন",
+    "unmuteButton": "আনমিউট করুন",
+    "privateMessage": "এই প্রোফাইলটি ব্যক্তিগত।",
+    "friendsOnlyMessage": "আরও দেখতে ফলো করুন।",
+    "notFound": "ব্যবহারকারী খুঁজে পাওয়া যায়নি।",
+    "errorLoading": "এই প্রোফাইলটি লোড করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "actionPending": "কাজ চলছে…",
+    "actionFailed": "সেই কাজটি সম্পন্ন হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "foundingEcho": "ফাউন্ডিং Echo"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "শেয়ার টোকেন",

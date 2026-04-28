@@ -1407,6 +1407,60 @@
     "errorGeneric": "حدث خطأ. حاول مجدداً.",
     "errorNetwork": "تعذر الاتصال. تحقق من الاتصال."
   },
+  "userProfile": {
+    "bio": "نبذة",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "لا توجد Echoes عامة بعد.",
+    "echoesInCommon": "Echoes مشتركة",
+    "echoesInCommonEmpty": "لم تتقاطع Echoes الخاصة بكما بعد.",
+    "followButton": "متابعة",
+    "unfollowButton": "إلغاء المتابعة",
+    "blockButton": "حظر",
+    "unblockButton": "إلغاء الحظر",
+    "muteButton": "كتم",
+    "unmuteButton": "إلغاء الكتم",
+    "privateMessage": "هذا الملف الشخصي خاص.",
+    "friendsOnlyMessage": "تابِع لمشاهدة المزيد.",
+    "notFound": "لم يُعثر على المستخدم.",
+    "errorLoading": "تعذّر تحميل هذا الملف الشخصي. يُرجى المحاولة مرة أخرى.",
+    "actionPending": "جارٍ التنفيذ…",
+    "actionFailed": "لم يتم تنفيذ هذا الإجراء. يُرجى المحاولة مرة أخرى.",
+    "foundingEcho": "Echo مؤسِّس"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "رموز المشاركة",

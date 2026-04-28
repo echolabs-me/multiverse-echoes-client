@@ -28,6 +28,8 @@ import { SettingsPage } from './pages/SettingsPage.tsx';
 import { DeleteAccountPage } from './pages/DeleteAccountPage.tsx';
 import { SearchPage } from './pages/SearchPage.tsx';
 import { EchoConversationPage } from './pages/EchoConversationPage.tsx';
+import { UserProfilePage } from './pages/UserProfilePage.tsx';
+import { MarketplacePage } from './pages/MarketplacePage.tsx';
 import { AdminDashboardPage } from './pages/AdminDashboardPage.tsx';
 import { WaitlistPage } from './pages/WaitlistPage.tsx';
 import { ContactPage } from './pages/ContactPage.tsx';
@@ -193,6 +195,8 @@ export function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
             <Route path="/echoes/:echoId/talk" element={<EchoConversationPage />} />
+            <Route path="/users/:user_id" element={<UserProfilePage />} />
+            <Route path="/marketplace" element={<MarketplacePage />} />
             <Route path="/shards/browse" element={<ShardBrowserPage />} />
             <Route path="/shards/:shardId" element={<ShardViewPage />} />
             <Route path="/feeds/personal" element={<PersonalFeedPage />} />

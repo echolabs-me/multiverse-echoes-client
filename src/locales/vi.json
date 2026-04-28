@@ -1407,6 +1407,60 @@
     "errorGeneric": "Lỗi xảy ra. Thử lại.",
     "errorNetwork": "Không thể kết nối. Kiểm tra mạng và thử lại."
   },
+  "userProfile": {
+    "bio": "Tiểu sử",
+    "echoesHeading": "Echoes",
+    "echoesEmpty": "Chưa có Echoes công khai nào.",
+    "echoesInCommon": "Echoes chung",
+    "echoesInCommonEmpty": "Echoes của bạn vẫn chưa giao thoa.",
+    "followButton": "Theo dõi",
+    "unfollowButton": "Bỏ theo dõi",
+    "blockButton": "Chặn",
+    "unblockButton": "Bỏ chặn",
+    "muteButton": "Tắt tiếng",
+    "unmuteButton": "Bật tiếng",
+    "privateMessage": "Hồ sơ này ở chế độ riêng tư.",
+    "friendsOnlyMessage": "Theo dõi để xem thêm.",
+    "notFound": "Không tìm thấy người dùng.",
+    "errorLoading": "Không thể tải hồ sơ này. Vui lòng thử lại.",
+    "actionPending": "Đang xử lý…",
+    "actionFailed": "Hành động không thành công. Vui lòng thử lại.",
+    "foundingEcho": "Echo Sáng Lập"
+  },
+  "marketplace": {
+    "pageTitle": "",
+    "tabs": {
+      "dashboardTheme": "",
+      "portraitStyle": "",
+      "exportTemplate": "",
+      "shardAesthetic": "",
+      "scenarioPack": "",
+      "seasonalCosmetic": "",
+      "soundPack": "",
+      "myInventory": ""
+    },
+    "preview": "",
+    "buy": "",
+    "owned": "",
+    "upgradeToUnlock": "",
+    "tierRequired": "",
+    "priceCoins": "",
+    "limitedTimeRemaining": "",
+    "equip": "",
+    "unequip": "",
+    "equipped": "",
+    "notEquipped": "",
+    "rarity": {
+      "common": "",
+      "rare": "",
+      "epic": "",
+      "legendary": ""
+    },
+    "empty": "",
+    "emptyInventory": "",
+    "loadError": "",
+    "equipError": ""
+  },
   "adminShare": {
     "tokens": {
       "heading": "Chia sẻ Tokens",
