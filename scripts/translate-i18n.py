@@ -552,8 +552,12 @@ def mode_test() -> int:
     return 0
 
 
-def mode_translate(force: bool, target_locales: list[str]) -> int:
-    """Default + --force + --locale paths. Translate locales in `target_locales`."""
+def mode_translate(force: bool, target_locales: list[str], derive_zh_hant: bool = False) -> int:
+    """Default + --force + --locale paths. Translate locales in `target_locales`.
+
+    `derive_zh_hant` gates the OpenCC s2hk derive step. Default False — the
+    curated `zh-Hant.json` is preserved untouched. See
+    `docs/claude/backlog.md` zh-Hant OpenCC entry for the open design call."""
     en_data = json.loads(EN_LOCALE.read_text(encoding="utf-8"))
 
     failures: list[tuple[str, str]] = []
@@ -594,9 +598,17 @@ def mode_translate(force: bool, target_locales: list[str]) -> int:
             placeholder_warns.append((locale, path_, err))
         print(f"OK ({result['count']} strs, {result['elapsed_s']:>5.1f}s, {write_result['size']:>7} B)")
 
-    # zh-Hant derivation runs after zh-Hans completes.
+    # zh-Hant derivation runs after zh-Hans completes — opt-in via
+    # --derive-zh-hant. Default OFF preserves the curated zh-Hant.json,
+    # which holds HK/TW idiomatic word choices that the OpenCC s2hk derive
+    # would overwrite. See docs/claude/backlog.md zh-Hant OpenCC entry.
     if derived_targets:
-        if "zh-Hans" not in target_locales:
+        if not derive_zh_hant:
+            print(
+                "  zh-Hant   -> SKIP: --derive-zh-hant flag not set; "
+                "curated zh-Hant.json preserved. See docs/claude/backlog.md."
+            )
+        elif "zh-Hans" not in target_locales:
             print("  zh-Hant -> SKIP: zh-Hans must be in target_locales for OpenCC derivation")
             failures.append(("zh-Hant", "zh-Hans not translated this run"))
         else:
@@ -655,6 +667,16 @@ def main() -> None:
         action="store_true",
         help="Print tone guidance per locale before translating.",
     )
+    ap.add_argument(
+        "--derive-zh-hant",
+        action="store_true",
+        help=(
+            "Derive zh-Hant.json from post-translation zh-Hans.json via "
+            "OpenCC s2hk. Default OFF — preserves curated HK/TW idiomatic "
+            "Traditional Chinese. See docs/claude/backlog.md zh-Hant "
+            "OpenCC entry for the open design call."
+        ),
+    )
     args = ap.parse_args()
 
     # Load + validate the tone YAML at startup so a broken table is
@@ -689,7 +711,7 @@ def main() -> None:
     else:
         targets = list(NON_EN_LOCALES)
 
-    sys.exit(mode_translate(args.force, targets))
+    sys.exit(mode_translate(args.force, targets, args.derive_zh_hant))
 
 
 if __name__ == "__main__":

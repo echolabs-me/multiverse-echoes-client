@@ -26,8 +26,10 @@ Run with:
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 from pathlib import Path
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -437,3 +439,86 @@ def test_plural_form_preservation_in_system_prompt() -> None:
         "section — without brand terms there's nothing to preserve "
         "the plural form of"
     )
+
+
+# ---------------------------------------------------------------------------
+# Test 9: --derive-zh-hant default-OFF gate (Backlog #3 defensive guard)
+# ---------------------------------------------------------------------------
+# Mirrors the gate tests in `test_translate_i18n.py` but exercises the
+# adapter-specific call site at translate-i18n-anthropic.py:712. The
+# patch target is `adapter.convert_zh_hant` (the adapter's module-scope
+# alias of the primary's helper) rather than `translate_i18n.convert_zh_hant`,
+# so the test catches a regression in the adapter's plumbing without
+# depending on the primary path.
+def _seed_adapter_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Redirect LOCALES_DIR + EN_LOCALE to a tmp_path with only en.json,
+    so the sidecar loop short-circuits per-locale and the test exercises
+    only the zh-Hant gate."""
+    en_path = tmp_path / "en.json"
+    en_path.write_text(json.dumps({"a": "Hello"}), encoding="utf-8")
+    monkeypatch.setattr(adapter, "LOCALES_DIR", tmp_path)
+    monkeypatch.setattr(adapter, "EN_LOCALE", en_path)
+
+
+def test_adapter_convert_zh_hant_skipped_when_flag_off(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """Adapter `mode_translate(..., derive_zh_hant=False)` MUST NOT call
+    `convert_zh_hant` AND MUST emit the deliberate skip-log line. Patches
+    the adapter's module-scope alias (the same name `mode_translate`
+    resolves at line 712), so a future drift between adapter.convert_zh_hant
+    and the primary's binding would still be observable here."""
+    _seed_adapter_env(tmp_path, monkeypatch)
+
+    convert_mock = MagicMock()
+    monkeypatch.setattr(adapter, "convert_zh_hant", convert_mock)
+
+    rc = adapter.mode_translate(
+        client=MagicMock(),
+        tones={},
+        do_not_translate=[],
+        force=False,
+        target_locales=["zh-Hans", "zh-Hant"],
+        key_filter=None,
+        derive_zh_hant=False,
+    )
+    captured = capsys.readouterr()
+
+    convert_mock.assert_not_called()
+    assert "--derive-zh-hant flag not set" in captured.out, (
+        f"skip-log substring missing from stdout. Got: {captured.out!r}"
+    )
+    assert rc == 0, f"expected clean exit, got rc={rc}"
+
+
+def test_adapter_convert_zh_hant_runs_when_flag_on(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """Adapter `mode_translate(..., derive_zh_hant=True)` MUST call
+    `convert_zh_hant` exactly once with no arguments AND MUST NOT emit
+    the skip-log line."""
+    _seed_adapter_env(tmp_path, monkeypatch)
+
+    convert_mock = MagicMock(return_value={"status": "ok", "size": 1234})
+    monkeypatch.setattr(adapter, "convert_zh_hant", convert_mock)
+
+    rc = adapter.mode_translate(
+        client=MagicMock(),
+        tones={},
+        do_not_translate=[],
+        force=False,
+        target_locales=["zh-Hans", "zh-Hant"],
+        key_filter=None,
+        derive_zh_hant=True,
+    )
+    captured = capsys.readouterr()
+
+    convert_mock.assert_called_once_with()
+    assert "--derive-zh-hant flag not set" not in captured.out, (
+        f"skip-log substring leaked into flag-ON path. Got: {captured.out!r}"
+    )
+    assert rc == 0, f"expected clean exit, got rc={rc}"

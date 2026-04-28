@@ -15,9 +15,11 @@ Run with:
 from __future__ import annotations
 
 import importlib.util
+import json
 import re
 import sys
 from pathlib import Path
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -198,6 +200,82 @@ def test_collect_pairs_walks_nested_dicts_and_lists() -> None:
     assert paths_found[("echoes", "empty")] == ("No echoes yet", None), (
         "missing dict subtree should yield (en_text, None)"
     )
+
+
+# ---------------------------------------------------------------------------
+# Test 5: --derive-zh-hant default-OFF gate (Backlog #3 defensive guard)
+# ---------------------------------------------------------------------------
+# Two tests pin the gate behaviour at the call-site invocation in
+# translate-i18n.py:`mode_translate`. The OpenCC `convert_zh_hant` helper
+# is patched at the module level so the gate decision (call vs skip) is
+# observable without exercising the OpenCC import or hitting any locale
+# files. The `LOCALES_DIR` and `EN_LOCALE` are redirected to a tmp_path
+# containing only `en.json` — every other sidecar locale file is absent,
+# so the loop's "SKIP: locale file not found" branch fires for each and
+# the actual `translate_locale` is never invoked. This isolates the
+# zh-Hant gate from the per-locale translation pipeline.
+def _seed_translate_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Redirect LOCALES_DIR + EN_LOCALE to a tmp_path with only en.json,
+    so the sidecar loop short-circuits per-locale and the test exercises
+    only the zh-Hant gate."""
+    en_path = tmp_path / "en.json"
+    en_path.write_text(json.dumps({"a": "Hello"}), encoding="utf-8")
+    monkeypatch.setattr(translate_i18n, "LOCALES_DIR", tmp_path)
+    monkeypatch.setattr(translate_i18n, "EN_LOCALE", en_path)
+
+
+def test_convert_zh_hant_skipped_when_flag_off(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """`mode_translate(..., derive_zh_hant=False)` MUST NOT call
+    `convert_zh_hant`, AND MUST emit a deliberate skip-log line so a
+    routine fan-out pass surfaces the change in behaviour."""
+    _seed_translate_env(tmp_path, monkeypatch)
+
+    convert_mock = MagicMock()
+    monkeypatch.setattr(translate_i18n, "convert_zh_hant", convert_mock)
+
+    rc = translate_i18n.mode_translate(
+        force=False,
+        target_locales=["zh-Hans", "zh-Hant"],
+        derive_zh_hant=False,
+    )
+    captured = capsys.readouterr()
+
+    convert_mock.assert_not_called()
+    assert "--derive-zh-hant flag not set" in captured.out, (
+        f"skip-log substring missing from stdout. Got: {captured.out!r}"
+    )
+    assert rc == 0, f"expected clean exit, got rc={rc}"
+
+
+def test_convert_zh_hant_runs_when_flag_on(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """`mode_translate(..., derive_zh_hant=True)` MUST call
+    `convert_zh_hant` exactly once with no arguments (matching today's
+    zero-arg signature) AND MUST NOT emit the skip-log line."""
+    _seed_translate_env(tmp_path, monkeypatch)
+
+    convert_mock = MagicMock(return_value={"status": "ok", "size": 1234})
+    monkeypatch.setattr(translate_i18n, "convert_zh_hant", convert_mock)
+
+    rc = translate_i18n.mode_translate(
+        force=False,
+        target_locales=["zh-Hans", "zh-Hant"],
+        derive_zh_hant=True,
+    )
+    captured = capsys.readouterr()
+
+    convert_mock.assert_called_once_with()
+    assert "--derive-zh-hant flag not set" not in captured.out, (
+        f"skip-log substring leaked into flag-ON path. Got: {captured.out!r}"
+    )
+    assert rc == 0, f"expected clean exit, got rc={rc}"
 
 
 if __name__ == "__main__":
