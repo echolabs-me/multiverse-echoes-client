@@ -154,7 +154,7 @@ def test_build_system_prompt_includes_locale_and_tone_fields_verbatim() -> None:
         f"register must appear verbatim; missing from {prompt!r}"
     )
     assert tone_entry["dialect_variant"] in prompt, (
-        f"dialect_variant must appear verbatim"
+        "dialect_variant must appear verbatim"
     )
     # `notes` is YAML-loaded with `>` folded indicator — the loader
     # collapses whitespace; `in` check tolerates leading/trailing whitespace.

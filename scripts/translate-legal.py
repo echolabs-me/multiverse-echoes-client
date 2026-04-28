@@ -180,7 +180,7 @@ def convert_zh_hant(doc_name: str) -> dict:
     character-level Simplified → Hong Kong Traditional conversion.
     """
     try:
-        from opencc import OpenCC  # type: ignore[import-untyped]
+        from opencc import OpenCC
     except ImportError:
         return {"status": "failed", "error": "opencc-python-reimplemented not installed"}
 
@@ -220,7 +220,7 @@ def main() -> None:
     args = ap.parse_args()
 
     docs = [d.strip() for d in args.docs.split(",") if d.strip()]
-    locales = [l.strip() for l in args.locales.split(",") if l.strip()]
+    locales = [loc.strip() for loc in args.locales.split(",") if loc.strip()]
 
     # Health check: fail fast if sidecar isn't reachable.
     try:

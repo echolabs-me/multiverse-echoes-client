@@ -637,7 +637,8 @@ def mode_test(
         for locale, label, err in failures:
             print(f"  {locale} [{label}]: {err}", file=sys.stderr)
         return 2
-    print(f"\nAll {len(SIDECAR_LOCALES) * len(canonical)} (locale × canonical) pairs translated with placeholder parity.")
+    total_pairs = len(SIDECAR_LOCALES) * len(canonical)
+    print(f"\nAll {total_pairs} (locale × canonical) pairs translated with placeholder parity.")
     return 0
 
 
@@ -839,7 +840,9 @@ def main() -> None:
         if not key_filter:
             print("FATAL: --keys parsed to empty set", file=sys.stderr)
             sys.exit(2)
-        print(f"  key filter active: {len(key_filter)} keys ({sorted(key_filter)[:5]}{'...' if len(key_filter) > 5 else ''})")
+        sample = sorted(key_filter)[:5]
+        suffix = "..." if len(key_filter) > 5 else ""
+        print(f"  key filter active: {len(key_filter)} keys ({sample}{suffix})")
 
     sys.exit(mode_translate(
         client,
