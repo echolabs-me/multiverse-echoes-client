@@ -7,7 +7,11 @@ interface ShardState {
   activeShard: Shard | null;
   isLoading: boolean;
 
-  fetchShards: (params?: { type?: string; tags?: string; sort?: string }) => Promise<void>;
+  fetchShards: (params?: {
+    type?: string;
+    tags?: string;
+    sort?: string;
+  }) => Promise<void>;
   fetchShard: (id: string) => Promise<void>;
   setActiveShard: (shard: Shard | null) => void;
 }

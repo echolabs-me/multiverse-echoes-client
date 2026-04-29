@@ -20,10 +20,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Kategori",
-            "Contoh"
-          ],
+          "columns": ["Kategori", "Contoh"],
           "rows": [
             [
               "Data Akun",
@@ -53,10 +50,7 @@
               "Data Analitik",
               "Peristiwa penggunaan fitur (anonim, tersedia opsi untuk keluar)"
             ],
-            [
-              "Data Sesi",
-              "Token akses, token penyegaran, stempel waktu login"
-            ]
+            ["Data Sesi", "Token akses, token penyegaran, stempel waktu login"]
           ]
         }
       ]
@@ -66,17 +60,9 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Tujuan",
-            "Dasar Hukum",
-            "Kontrol Anda"
-          ],
+          "columns": ["Tujuan", "Dasar Hukum", "Kontrol Anda"],
           "rows": [
-            [
-              "Pembuatan akun dan autentikasi",
-              "Kontrak",
-              "Hapus akun"
-            ],
+            ["Pembuatan akun dan autentikasi", "Kontrak", "Hapus akun"],
             [
               "Simulasi gema (pemrosesan persona)",
               "Persetujuan",
@@ -92,26 +78,14 @@
               "Kepentingan Sah",
               "Pengunduran diri komunitas"
             ],
-            [
-              "Moderasi konten dan keamanan",
-              "Kepentingan Sah",
-              "—"
-            ],
-            [
-              "Manajemen langganan",
-              "Kontrak",
-              "Batalkan langganan"
-            ],
+            ["Moderasi konten dan keamanan", "Kepentingan Sah", "—"],
+            ["Manajemen langganan", "Kontrak", "Batalkan langganan"],
             [
               "Analitik dan peningkatan layanan",
               "Kepentingan Sah",
               "Penarikan opsi analitik di Pengaturan"
             ],
-            [
-              "Penegakan dan kepatuhan hukum",
-              "Kewajiban Hukum",
-              "—"
-            ]
+            ["Penegakan dan kepatuhan hukum", "Kewajiban Hukum", "—"]
           ]
         }
       ]
@@ -130,51 +104,24 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Data",
-            "Retensi"
-          ],
+          "columns": ["Data", "Retensi"],
           "rows": [
             [
               "Data akun dan profil",
               "Hingga penghapusan + masa tenggang 30 hari"
             ],
-            [
-              "Persona dan data simulasi",
-              "Hingga Echo atau penghapusan akun"
-            ],
-            [
-              "Pesan komunitas",
-              "1 tahun sejak diposting"
-            ],
+            ["Persona dan data simulasi", "Hingga Echo atau penghapusan akun"],
+            ["Pesan komunitas", "1 tahun sejak diposting"],
             [
               "Token sesi",
               "Akses: 1 jam; Penyegaran: 30 hari; Log masuk: 90 hari"
             ],
-            [
-              "Data analitik",
-              "6 bulan berjalan"
-            ],
-            [
-              "Catatan pembayaran",
-              "7 tahun (persyaratan hukum)"
-            ],
-            [
-              "Catatan moderasi",
-              "3 tahun"
-            ],
-            [
-              "Catatan persetujuan",
-              "Durasi akun + 5 tahun"
-            ],
-            [
-              "Berkas ekspor data",
-              "72 jam setelah pembuatan"
-            ],
-            [
-              "Cadangan terenkripsi",
-              "rotasi bergulir 90 hari"
-            ]
+            ["Data analitik", "6 bulan berjalan"],
+            ["Catatan pembayaran", "7 tahun (persyaratan hukum)"],
+            ["Catatan moderasi", "3 tahun"],
+            ["Catatan persetujuan", "Durasi akun + 5 tahun"],
+            ["Berkas ekspor data", "72 jam setelah pembuatan"],
+            ["Cadangan terenkripsi", "rotasi bergulir 90 hari"]
           ]
         }
       ]
@@ -225,27 +172,15 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Layanan",
-            "Data yang Dibagikan",
-            "Tujuan"
-          ],
+          "columns": ["Layanan", "Data yang Dibagikan", "Tujuan"],
           "rows": [
             [
               "Stripe",
               "Email, metadata penagihan",
               "Pemrosesan pembayaran kartu"
             ],
-            [
-              "NOWPayments",
-              "Jumlah pembayaran",
-              "Pembayaran mata uang kripto"
-            ],
-            [
-              "Xaman",
-              "Alamat dompet",
-              "Pembayaran XRP"
-            ]
+            ["NOWPayments", "Jumlah pembayaran", "Pembayaran mata uang kripto"],
+            ["Xaman", "Alamat dompet", "Pembayaran XRP"]
           ]
         },
         {

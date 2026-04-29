@@ -13,9 +13,17 @@ import { formatTime } from '../lib/formatDate.ts';
 import { DiscordIcon } from './icons/DiscordIcon.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
-import { channels as channelApi, account as accountApi } from '../lib/api/endpoints.ts';
+import {
+  channels as channelApi,
+  account as accountApi,
+} from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
-import type { Channel, ChannelMessage, WsEchoEvent, PollData } from '../types/api.ts';
+import type {
+  Channel,
+  ChannelMessage,
+  WsEchoEvent,
+  PollData,
+} from '../types/api.ts';
 
 const MAX_MESSAGE_LENGTH = 2000;
 
@@ -50,8 +58,12 @@ export function CommunitySidebar() {
   const savedChannelId = localStorage.getItem('community_sidebar_channel');
 
   useEffect(() => {
-    void accountApi.discordStatus()
-      .then((s) => { setDiscordLinked(s.linked); setDiscordUsername(s.discord_username ?? null); })
+    void accountApi
+      .discordStatus()
+      .then((s) => {
+        setDiscordLinked(s.linked);
+        setDiscordUsername(s.discord_username ?? null);
+      })
       .catch(() => setDiscordLinked(false));
 
     const load = async () => {
@@ -74,7 +86,9 @@ export function CommunitySidebar() {
   const loadMessages = useCallback(async () => {
     if (!activeChannel) return;
     try {
-      const page = await channelApi.messages(activeChannel.channel_id, { limit: 30 });
+      const page = await channelApi.messages(activeChannel.channel_id, {
+        limit: 30,
+      });
       const msgs = page.data;
       setMessages(msgs);
       // Mark as read.
@@ -84,7 +98,9 @@ export function CommunitySidebar() {
           msgs[msgs.length - 1]!.message_id,
         );
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }, [activeChannel]);
 
   useEffect(() => {
@@ -94,7 +110,10 @@ export function CommunitySidebar() {
   // Save active channel to localStorage.
   useEffect(() => {
     if (activeChannel) {
-      localStorage.setItem('community_sidebar_channel', activeChannel.channel_id);
+      localStorage.setItem(
+        'community_sidebar_channel',
+        activeChannel.channel_id,
+      );
     }
   }, [activeChannel]);
 
@@ -104,7 +123,9 @@ export function CommunitySidebar() {
   }, [messages]);
 
   // Per-channel WS.
-  const wsPath = activeChannel ? `/ws/channels/${activeChannel.channel_id}/stream` : null;
+  const wsPath = activeChannel
+    ? `/ws/channels/${activeChannel.channel_id}/stream`
+    : null;
   const handleWsEvent = useCallback(
     (event: WsEchoEvent) => {
       if (
@@ -121,22 +142,19 @@ export function CommunitySidebar() {
 
   // Unread tracking via global community WS.
   const [unreadChannels, setUnreadChannels] = useState<Set<string>>(new Set());
-  const handleCommunityEvent = useCallback(
-    (event: WsEchoEvent) => {
-      if (event.type === 'CommunityMessagePosted') {
-        const channelId = (event as { channel_id: string }).channel_id;
-        const current = activeChannelRef.current;
-        if (current && channelId === current.channel_id) return;
-        setUnreadChannels((prev) => {
-          if (prev.has(channelId)) return prev;
-          const next = new Set(prev);
-          next.add(channelId);
-          return next;
-        });
-      }
-    },
-    [],
-  );
+  const handleCommunityEvent = useCallback((event: WsEchoEvent) => {
+    if (event.type === 'CommunityMessagePosted') {
+      const channelId = (event as { channel_id: string }).channel_id;
+      const current = activeChannelRef.current;
+      if (current && channelId === current.channel_id) return;
+      setUnreadChannels((prev) => {
+        if (prev.has(channelId)) return prev;
+        const next = new Set(prev);
+        next.add(channelId);
+        return next;
+      });
+    }
+  }, []);
   useEchoWebSocket('/ws/community/stream', handleCommunityEvent);
 
   // Clear unread when switching channels.
@@ -169,13 +187,23 @@ export function CommunitySidebar() {
 
   const handleImageUpload = async (file: File) => {
     if (!activeChannel) return;
-    if (file.size > 5 * 1024 * 1024) { addToast(t('community.fileTooLarge'), 'danger'); return; }
-    if (!file.type.startsWith('image/')) { addToast(t('community.onlyImages'), 'danger'); return; }
+    if (file.size > 5 * 1024 * 1024) {
+      addToast(t('community.fileTooLarge'), 'danger');
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      addToast(t('community.onlyImages'), 'danger');
+      return;
+    }
     setIsSending(true);
     try {
       const msg = await channelApi.uploadImage(activeChannel.channel_id, file);
       setMessages((prev) => [...prev, msg]);
-    } catch { addToast(t('common.error'), 'danger', { platformLink: true }); } finally { setIsSending(false); }
+    } catch {
+      addToast(t('common.error'), 'danger', { platformLink: true });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handlePollVote = async (msg: ChannelMessage, answerId: number) => {
@@ -188,7 +216,9 @@ export function CommunitySidebar() {
         answer_id: answerId,
       });
       addToast(t('community.voteRecorded'), 'success');
-    } catch { addToast(t('common.error'), 'danger', { platformLink: true }); }
+    } catch {
+      addToast(t('common.error'), 'danger', { platformLink: true });
+    }
   };
 
   const handleCreatePoll = async () => {
@@ -206,7 +236,11 @@ export function CommunitySidebar() {
       setPollOptions(['', '']);
       await loadMessages();
       addToast(t('community.pollCreated'), 'success');
-    } catch { addToast(t('common.error'), 'danger', { platformLink: true }); } finally { setIsSending(false); }
+    } catch {
+      addToast(t('common.error'), 'danger', { platformLink: true });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   // ── Not linked CTA ──
@@ -251,7 +285,9 @@ export function CommunitySidebar() {
             </span>
           </div>
           {discordUsername && (
-            <span className="text-[10px] text-text-secondary">{discordUsername}</span>
+            <span className="text-[10px] text-text-secondary">
+              {discordUsername}
+            </span>
           )}
         </div>
 
@@ -261,14 +297,19 @@ export function CommunitySidebar() {
             onClick={() => setShowChannelPicker(!showChannelPicker)}
             className="flex w-full items-center justify-between rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm text-text-primary transition-colors hover:border-accent/40"
           >
-            <span className="truncate">{activeChannel?.name ?? t('communitySidebar.selectChannel')}</span>
+            <span className="truncate">
+              {activeChannel?.name ?? t('communitySidebar.selectChannel')}
+            </span>
             <span className="flex items-center gap-1">
               {unreadChannels.size > 0 && (
                 <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#5865F2] px-1 text-[9px] font-bold text-white">
                   {unreadChannels.size}
                 </span>
               )}
-              <ChevronDown size={14} className={`text-text-muted transition-transform ${showChannelPicker ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                size={14}
+                className={`text-text-muted transition-transform ${showChannelPicker ? 'rotate-180' : ''}`}
+              />
             </span>
           </button>
           {showChannelPicker && (
@@ -276,7 +317,10 @@ export function CommunitySidebar() {
               {channelList.map((ch) => (
                 <button
                   key={ch.channel_id}
-                  onClick={() => { setActiveChannel(ch); setShowChannelPicker(false); }}
+                  onClick={() => {
+                    setActiveChannel(ch);
+                    setShowChannelPicker(false);
+                  }}
                   className={`flex w-full items-center justify-between px-3 py-1.5 text-start text-sm transition-colors ${
                     activeChannel?.channel_id === ch.channel_id
                       ? 'bg-accent/10 text-accent'
@@ -306,17 +350,25 @@ export function CommunitySidebar() {
           <div className="flex flex-col">
             {messages.map((msg, idx) => {
               const prev = idx > 0 ? messages[idx - 1] : null;
-              const sameAuthor = prev !== null && prev.author_id === msg.author_id;
+              const sameAuthor =
+                prev !== null && prev.author_id === msg.author_id;
               const withinWindow =
                 sameAuthor &&
-                Math.abs(new Date(msg.created_at).getTime() - new Date(prev!.created_at).getTime()) < 7 * 60 * 1000;
+                Math.abs(
+                  new Date(msg.created_at).getTime() -
+                    new Date(prev!.created_at).getTime(),
+                ) <
+                  7 * 60 * 1000;
               const showHeader = !withinWindow;
               const displayName = msg.author_display_name || 'Unknown User';
               const initial = displayName[0]?.toUpperCase() ?? '?';
               const timeStr = formatTime(msg.created_at);
 
               return (
-                <div key={msg.message_id} className={`group/msg text-xs ${showHeader && idx > 0 ? 'mbs-3' : ''}`}>
+                <div
+                  key={msg.message_id}
+                  className={`group/msg text-xs ${showHeader && idx > 0 ? 'mbs-3' : ''}`}
+                >
                   {showHeader ? (
                     <div className="flex items-start gap-2">
                       <div className="mbs-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-accent/20 text-[10px] font-bold text-accent">
@@ -324,10 +376,16 @@ export function CommunitySidebar() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-baseline gap-1.5">
-                          <span className="font-medium text-accent">{displayName}</span>
-                          <span className="text-[10px] text-text-muted">{timeStr}</span>
+                          <span className="font-medium text-accent">
+                            {displayName}
+                          </span>
+                          <span className="text-[10px] text-text-muted">
+                            {timeStr}
+                          </span>
                         </div>
-                        {msg.content && <p className="text-text-primary">{msg.content}</p>}
+                        {msg.content && (
+                          <p className="text-text-primary">{msg.content}</p>
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -335,11 +393,18 @@ export function CommunitySidebar() {
                       <span className="mbs-0.5 hidden w-6 shrink-0 text-center text-[9px] text-text-muted group-hover/line:inline">
                         {timeStr}
                       </span>
-                      {msg.content && <p className="min-w-0 flex-1 text-text-primary">{msg.content}</p>}
+                      {msg.content && (
+                        <p className="min-w-0 flex-1 text-text-primary">
+                          {msg.content}
+                        </p>
+                      )}
                     </div>
                   )}
                   {msg.image_url && (
-                    <button onClick={() => setExpandedImage(msg.image_url)} className="mbs-0.5 block">
+                    <button
+                      onClick={() => setExpandedImage(msg.image_url)}
+                      className="mbs-0.5 block"
+                    >
                       <img
                         src={msg.image_url}
                         alt={t('community.sharedImage')}
@@ -347,28 +412,37 @@ export function CommunitySidebar() {
                       />
                     </button>
                   )}
-                  {msg.poll_data && (() => {
-                    try {
-                      const poll: PollData = JSON.parse(msg.poll_data!);
-                      return (
-                        <div className="mbs-1 rounded-sm border border-accent/30 bg-accent/5 p-2">
-                          <p className="mbe-1 text-xs font-semibold text-text-primary">{poll.question}</p>
-                          <div className="flex flex-col gap-1">
-                            {poll.options.map((opt) => (
-                              <button
-                                key={opt.id}
-                                onClick={() => void handlePollVote(msg, opt.id)}
-                                className="flex items-center justify-between rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary transition-colors hover:border-accent"
-                              >
-                                <span>{opt.text}</span>
-                                <span className="text-text-muted">{opt.votes}</span>
-                              </button>
-                            ))}
+                  {msg.poll_data &&
+                    (() => {
+                      try {
+                        const poll: PollData = JSON.parse(msg.poll_data!);
+                        return (
+                          <div className="mbs-1 rounded-sm border border-accent/30 bg-accent/5 p-2">
+                            <p className="mbe-1 text-xs font-semibold text-text-primary">
+                              {poll.question}
+                            </p>
+                            <div className="flex flex-col gap-1">
+                              {poll.options.map((opt) => (
+                                <button
+                                  key={opt.id}
+                                  onClick={() =>
+                                    void handlePollVote(msg, opt.id)
+                                  }
+                                  className="flex items-center justify-between rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary transition-colors hover:border-accent"
+                                >
+                                  <span>{opt.text}</span>
+                                  <span className="text-text-muted">
+                                    {opt.votes}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    } catch { return null; }
-                  })()}
+                        );
+                      } catch {
+                        return null;
+                      }
+                    })()}
                 </div>
               );
             })}
@@ -418,7 +492,11 @@ export function CommunitySidebar() {
                 <div className="flex-1" />
                 <button
                   type="button"
-                  onClick={() => { setShowPollForm(false); setPollQuestion(''); setPollOptions(['', '']); }}
+                  onClick={() => {
+                    setShowPollForm(false);
+                    setPollQuestion('');
+                    setPollOptions(['', '']);
+                  }}
                   className="rounded-sm px-2 py-0.5 text-[10px] text-text-secondary hover:bg-surface-raised"
                 >
                   {t('common.cancel')}
@@ -426,7 +504,11 @@ export function CommunitySidebar() {
                 <button
                   type="button"
                   onClick={() => void handleCreatePoll()}
-                  disabled={isSending || !pollQuestion.trim() || pollOptions.filter((o) => o.trim()).length < 2}
+                  disabled={
+                    isSending ||
+                    !pollQuestion.trim() ||
+                    pollOptions.filter((o) => o.trim()).length < 2
+                  }
                   className="rounded-sm bg-emerald-600 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-emerald-500 disabled:opacity-50"
                 >
                   {t('community.createPoll')}
@@ -488,7 +570,9 @@ export function CommunitySidebar() {
       )}
       {activeChannel?.is_read_only && (
         <div className="border-bs border-border px-3 py-2">
-          <p className="text-center text-[10px] text-text-secondary">{t('community.announcementsOnly')}</p>
+          <p className="text-center text-[10px] text-text-secondary">
+            {t('community.announcementsOnly')}
+          </p>
         </div>
       )}
 
@@ -506,8 +590,6 @@ export function CommunitySidebar() {
           />
         </button>
       )}
-
     </div>
   );
 }
-

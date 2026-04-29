@@ -18,9 +18,7 @@ export function Sidebar({ children, className = '' }: SidebarProps) {
       } ${className}`}
       aria-label={t('common.sidebar', 'Sidebar navigation')}
     >
-      <div className="flex-1 overflow-y-auto p-2">
-        {!collapsed && children}
-      </div>
+      <div className="flex-1 overflow-y-auto p-2">{!collapsed && children}</div>
       <button
         onClick={() => setCollapsed(!collapsed)}
         className="flex items-center justify-center border-bs border-border p-3 text-text-muted hover:text-text-primary"

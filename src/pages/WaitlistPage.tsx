@@ -35,7 +35,10 @@ async function fetchWaitlistCount(): Promise<CountResponse> {
   return (await res.json()) as CountResponse;
 }
 
-async function signupForWaitlist(email: string, source?: string): Promise<void> {
+async function signupForWaitlist(
+  email: string,
+  source?: string,
+): Promise<void> {
   const res = await fetch(`${WAITLIST_API}/waitlist`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -63,7 +66,8 @@ export function WaitlistPage() {
   const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState<number | null>(null);
 
-  const source = searchParams.get('utm_source') ?? searchParams.get('source') ?? undefined;
+  const source =
+    searchParams.get('utm_source') ?? searchParams.get('source') ?? undefined;
 
   useEffect(() => {
     let cancelled = false;
@@ -98,7 +102,8 @@ export function WaitlistPage() {
         .then((r) => setTotalCount(r.total))
         .catch(() => {});
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : t('waitlist.signupError');
+      const message =
+        err instanceof Error ? err.message : t('waitlist.signupError');
       if (message === 'ALREADY_REGISTERED') {
         setError(t('waitlist.alreadyRegistered'));
       } else {
@@ -113,16 +118,13 @@ export function WaitlistPage() {
     <>
       <Helmet>
         <title>{t('waitlist.metaTitle')}</title>
-        <meta
-          name="description"
-          content={t('waitlist.metaDesc')}
-        />
+        <meta name="description" content={t('waitlist.metaDesc')} />
         <meta property="og:title" content={t('waitlist.ogTitle')} />
+        <meta property="og:description" content={t('waitlist.ogDesc')} />
         <meta
-          property="og:description"
-          content={t('waitlist.ogDesc')}
+          property="og:image"
+          content="https://echolabsme.com/og-image-v2.png"
         />
-        <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
         {/* og:url is emitted path-aware by WebsiteLayout. */}
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -143,7 +145,9 @@ export function WaitlistPage() {
             <p className="text-4xl font-light text-(--accent)">
               {totalCount !== null ? totalCount.toLocaleString() : '—'}
             </p>
-            <p className="mbs-1 text-sm text-(--text-muted)">{t('waitlist.alreadyWaiting')}</p>
+            <p className="mbs-1 text-sm text-(--text-muted)">
+              {t('waitlist.alreadyWaiting')}
+            </p>
           </div>
 
           {/* Signup or success */}
@@ -173,7 +177,9 @@ export function WaitlistPage() {
                   disabled={isSubmitting}
                   className="rounded-md bg-(--accent) px-6 py-3 text-sm font-semibold text-(--canvas) transition-all hover:bg-(--accent-hover) hover:shadow-[0_0_30px_rgba(212,145,92,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isSubmitting ? t('common.loading') : t('waitlist.joinButton')}
+                  {isSubmitting
+                    ? t('common.loading')
+                    : t('waitlist.joinButton')}
                 </button>
               </div>
               {error && (

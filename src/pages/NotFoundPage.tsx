@@ -9,7 +9,11 @@ export function NotFoundPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
       <div className="flex flex-col items-center text-center">
-        <Compass size={48} className="mbe-4 text-text-muted" aria-hidden="true" />
+        <Compass
+          size={48}
+          className="mbe-4 text-text-muted"
+          aria-hidden="true"
+        />
         <h1 className="mbe-2 text-2xl font-bold text-text-primary">
           {t('common.notFoundTitle')}
         </h1>

@@ -20,10 +20,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Categoria",
-            "Esempi"
-          ],
+          "columns": ["Categoria", "Esempi"],
           "rows": [
             [
               "Dati dell'account",
@@ -66,11 +63,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Scopo",
-            "Base giuridica",
-            "Il tuo controllo"
-          ],
+          "columns": ["Scopo", "Base giuridica", "Il tuo controllo"],
           "rows": [
             [
               "Creazione dell'account e autenticazione",
@@ -97,21 +90,13 @@
               "Legittimo interesse",
               "—"
             ],
-            [
-              "Gestione dell'abbonamento",
-              "Contratto",
-              "Annulla l'abbonamento"
-            ],
+            ["Gestione dell'abbonamento", "Contratto", "Annulla l'abbonamento"],
             [
               "Analisi e miglioramento del servizio",
               "Legittimo interesse",
               "Disattivazione analisi nelle Impostazioni"
             ],
-            [
-              "Applicazione e conformità legale",
-              "Obbligo legale",
-              "—"
-            ]
+            ["Applicazione e conformità legale", "Obbligo legale", "—"]
           ]
         }
       ]
@@ -130,10 +115,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Dati",
-            "Ritenzione"
-          ],
+          "columns": ["Dati", "Ritenzione"],
           "rows": [
             [
               "Dati dell'account e del profilo",
@@ -143,38 +125,17 @@
               "Persona e dati di simulazione",
               "Fino a Echo o alla cancellazione dell'account"
             ],
-            [
-              "Messaggi della community",
-              "1 anno dalla pubblicazione"
-            ],
+            ["Messaggi della community", "1 anno dalla pubblicazione"],
             [
               "Token di sessione",
               "Accesso: 1 ora; Aggiornamento: 30 giorni; Log di accesso: 90 giorni"
             ],
-            [
-              "Dati analitici",
-              "6 mesi mobili"
-            ],
-            [
-              "Registri dei pagamenti",
-              "7 anni (obbligo di legge)"
-            ],
-            [
-              "Registri di moderazione",
-              "3 anni"
-            ],
-            [
-              "Registri del consenso",
-              "Durata dell'account + 5 anni"
-            ],
-            [
-              "File di esportazione dati",
-              "72 ore dopo la generazione"
-            ],
-            [
-              "Backup crittografati",
-              "rotazione ciclica di 90 giorni"
-            ]
+            ["Dati analitici", "6 mesi mobili"],
+            ["Registri dei pagamenti", "7 anni (obbligo di legge)"],
+            ["Registri di moderazione", "3 anni"],
+            ["Registri del consenso", "Durata dell'account + 5 anni"],
+            ["File di esportazione dati", "72 ore dopo la generazione"],
+            ["Backup crittografati", "rotazione ciclica di 90 giorni"]
           ]
         }
       ]
@@ -225,11 +186,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Servizio",
-            "Dati condivisi",
-            "Scopo"
-          ],
+          "columns": ["Servizio", "Dati condivisi", "Scopo"],
           "rows": [
             [
               "Stripe",
@@ -241,11 +198,7 @@
               "Importo del pagamento",
               "Pagamenti in criptovaluta"
             ],
-            [
-              "Xaman",
-              "Indirizzo del wallet",
-              "Pagamenti in XRP"
-            ]
+            ["Xaman", "Indirizzo del wallet", "Pagamenti in XRP"]
           ]
         },
         {

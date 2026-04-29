@@ -1,8 +1,18 @@
 import { create } from 'zustand';
-import type { User, LoginRequest, RegisterRequest, RegisterResponse } from '../types/api.ts';
+import type {
+  User,
+  LoginRequest,
+  RegisterRequest,
+  RegisterResponse,
+} from '../types/api.ts';
 import { auth, account } from '../lib/api/endpoints.ts';
 import { useSystemStore } from './useSystemStore.ts';
-import { setTokens, clearTokens, loadStoredTokens, configureApi } from '../lib/api/client.ts';
+import {
+  setTokens,
+  clearTokens,
+  loadStoredTokens,
+  configureApi,
+} from '../lib/api/client.ts';
 import { safeGetItem } from '../lib/safeStorage.ts';
 
 interface AuthState {
@@ -95,7 +105,10 @@ export const useAuthStore = create<AuthState>((set) => {
       set({ isAuthenticated: hasToken });
       // Fetch profile if we have a token
       if (hasToken) {
-        void account.getProfile().then((user) => set({ user })).catch(() => {});
+        void account
+          .getProfile()
+          .then((user) => set({ user }))
+          .catch(() => {});
       }
       // Fetch system config (tick interval etc.) — public endpoint, no auth needed.
       void useSystemStore.getState().fetchHealth();

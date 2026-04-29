@@ -21,7 +21,11 @@ const TIER_LIMITS: Record<string, TierLimits> = {
   Starter: { available: true, dailyConversations: 5, maxMessages: 15 },
   Core: { available: true, dailyConversations: 10, maxMessages: 20 },
   Creator: { available: true, dailyConversations: 20, maxMessages: 50 },
-  GodMode: { available: true, dailyConversations: Infinity, maxMessages: Infinity },
+  GodMode: {
+    available: true,
+    dailyConversations: Infinity,
+    maxMessages: Infinity,
+  },
 };
 
 export function EchoConversationPage() {
@@ -99,7 +103,9 @@ export function EchoConversationPage() {
     const trimmed = input.trim();
     if (!trimmed || !conversationId || isSending) return;
 
-    if (messages.filter((m) => m.role === 'user').length >= limits.maxMessages) {
+    if (
+      messages.filter((m) => m.role === 'user').length >= limits.maxMessages
+    ) {
       setError('conversation.messageLimitReached');
       return;
     }
@@ -131,7 +137,10 @@ export function EchoConversationPage() {
 
       // Detect 202 queued response (has 'status' field instead of normal message fields).
       const isQueued = (r: unknown): boolean =>
-        typeof r === 'object' && r !== null && 'status' in r && (r as Record<string, unknown>).status === 'queued';
+        typeof r === 'object' &&
+        r !== null &&
+        'status' in r &&
+        (r as Record<string, unknown>).status === 'queued';
 
       while (retries < maxRetries && isQueued(echoResponse)) {
         // Show queued message while waiting.
@@ -149,14 +158,19 @@ export function EchoConversationPage() {
         // but keep retrying in the background.
         if (retries === deepThoughtThreshold) {
           setMessages((prev) => {
-            const filtered = prev.filter((m) => !m.message_id.startsWith('queued-'));
-            return [...filtered, {
-              message_id: `queued-deep-${Date.now()}`,
-              conversation_id: conversationId,
-              role: 'echo',
-              content: t('conversation.echoDeepThought'),
-              created_at: new Date().toISOString(),
-            }];
+            const filtered = prev.filter(
+              (m) => !m.message_id.startsWith('queued-'),
+            );
+            return [
+              ...filtered,
+              {
+                message_id: `queued-deep-${Date.now()}`,
+                conversation_id: conversationId,
+                role: 'echo',
+                content: t('conversation.echoDeepThought'),
+                created_at: new Date().toISOString(),
+              },
+            ];
           });
         }
         // Wait then retry silently.
@@ -170,24 +184,35 @@ export function EchoConversationPage() {
       if (retries >= maxRetries && isQueued(echoResponse)) {
         // Still queued after all retries — keep "deep in thought" message visible.
         setMessages((prev) => {
-          const hasDeepThought = prev.some((m) => m.message_id.startsWith('queued-deep-'));
+          const hasDeepThought = prev.some((m) =>
+            m.message_id.startsWith('queued-deep-'),
+          );
           if (hasDeepThought) return prev;
-          const filtered = prev.filter((m) => !m.message_id.startsWith('queued-'));
-          return [...filtered, {
-            message_id: `fallback-${Date.now()}`,
-            conversation_id: conversationId,
-            role: 'echo',
-            content: t('conversation.echoDeepThought'),
-            created_at: new Date().toISOString(),
-          }];
+          const filtered = prev.filter(
+            (m) => !m.message_id.startsWith('queued-'),
+          );
+          return [
+            ...filtered,
+            {
+              message_id: `fallback-${Date.now()}`,
+              conversation_id: conversationId,
+              role: 'echo',
+              content: t('conversation.echoDeepThought'),
+              created_at: new Date().toISOString(),
+            },
+          ];
         });
       } else {
         // Got a real response — replace any queued/deep-thought message.
-        trackEvent('conversation.message_sent', { echo_id: echoId, message_number: userMessageCount + 1 });
+        trackEvent('conversation.message_sent', {
+          echo_id: echoId,
+          message_number: userMessageCount + 1,
+        });
         setMessages((prev) => {
-          const filtered = prev.filter((m) =>
-            !m.message_id.startsWith('queued-') &&
-            !m.message_id.startsWith('fallback-')
+          const filtered = prev.filter(
+            (m) =>
+              !m.message_id.startsWith('queued-') &&
+              !m.message_id.startsWith('fallback-'),
           );
           return [...filtered, echoResponse];
         });
@@ -211,7 +236,9 @@ export function EchoConversationPage() {
         <p className="max-w-md text-center text-text-secondary">
           {t('conversation.tierGateDesc')}
         </p>
-        <Button onClick={() => navigate('/plans')}>{t('conversation.upgrade')}</Button>
+        <Button onClick={() => navigate('/plans')}>
+          {t('conversation.upgrade')}
+        </Button>
         <Button variant="ghost" onClick={() => navigate(-1)}>
           {t('common.back')}
         </Button>
@@ -222,7 +249,8 @@ export function EchoConversationPage() {
   const echoName = activeEcho?.name ?? t('conversation.echo');
   const echoMood = activeEcho?.current_mood ?? '';
   const userMessageCount = messages.filter((m) => m.role === 'user').length;
-  const atLimit = userMessageCount >= limits.maxMessages && isFinite(limits.maxMessages);
+  const atLimit =
+    userMessageCount >= limits.maxMessages && isFinite(limits.maxMessages);
 
   return (
     <div className="flex h-full flex-col">
@@ -236,7 +264,9 @@ export function EchoConversationPage() {
           <ArrowLeft size={20} />
         </button>
         <div className="flex-1">
-          <h1 className="text-lg font-semibold text-text-primary">{echoName}</h1>
+          <h1 className="text-lg font-semibold text-text-primary">
+            {echoName}
+          </h1>
           {echoMood && (
             <p className="text-xs text-text-muted">
               {t('conversation.mood', { mood: getMoodLabel(echoMood) })}
@@ -263,7 +293,10 @@ export function EchoConversationPage() {
       >
         {isLoading && (
           <div className="flex items-center justify-center py-12">
-            <span className="inline-block size-6 animate-spin rounded-full border-2 border-accent border-bs-transparent" role="status">
+            <span
+              className="inline-block size-6 animate-spin rounded-full border-2 border-accent border-bs-transparent"
+              role="status"
+            >
               <span className="sr-only">{t('common.loading')}</span>
             </span>
           </div>
@@ -271,7 +304,9 @@ export function EchoConversationPage() {
 
         {!isLoading && messages.length === 0 && conversationId && (
           <div className="flex flex-col items-center gap-3 pbs-12 text-center">
-            <p className="text-sm text-text-muted">{t('conversation.startPrompt')}</p>
+            <p className="text-sm text-text-muted">
+              {t('conversation.startPrompt')}
+            </p>
           </div>
         )}
 
@@ -336,7 +371,9 @@ export function EchoConversationPage() {
             }
           }}
           placeholder={
-            atLimit ? t('conversation.atLimit') : t('conversation.inputPlaceholder')
+            atLimit
+              ? t('conversation.atLimit')
+              : t('conversation.inputPlaceholder')
           }
           disabled={isSending || atLimit || !conversationId}
           rows={1}

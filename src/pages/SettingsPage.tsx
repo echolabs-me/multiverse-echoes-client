@@ -13,13 +13,7 @@ import {
   ExternalLink,
   MessageSquare,
 } from 'lucide-react';
-import {
-  Card,
-  Badge,
-  Button,
-  Input,
-  Spinner,
-} from '../components/index.ts';
+import { Card, Badge, Button, Input, Spinner } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useThemeStore } from '../stores/useThemeStore.ts';
@@ -63,57 +57,61 @@ export function SettingsPage() {
 
   const tabIds = tabs.map((tab) => tab.id);
   const paramTab = searchParams.get('tab');
-  const initialTab = paramTab && tabIds.includes(paramTab) ? paramTab : 'profile';
+  const initialTab =
+    paramTab && tabIds.includes(paramTab) ? paramTab : 'profile';
   const [activeTab, setActiveTab] = useState(initialTab);
 
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="mx-auto max-w-4xl p-6">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
-          >
-            <ArrowLeft size={16} />
-            {t('common.back')}
-          </button>
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+        >
+          <ArrowLeft size={16} />
+          {t('common.back')}
+        </button>
 
-          <h1 className="mbe-6 text-2xl font-bold text-text-primary">
-            {t('settings.title')}
-          </h1>
+        <h1 className="mbe-6 text-2xl font-bold text-text-primary">
+          {t('settings.title')}
+        </h1>
 
-          {/* Tab navigation */}
-          <div className="mbe-6 flex flex-wrap gap-1 border-be border-border">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => { setActiveTab(tab.id); setSearchParams({ tab: tab.id }); }}
-                  className={`flex items-center gap-1.5 border-be-2 px-3 py-2 text-sm transition-colors ${
-                    activeTab === tab.id
-                      ? 'border-accent text-accent'
-                      : 'border-transparent text-text-secondary hover:text-text-primary'
-                  }`}
-                  role="tab"
-                  aria-selected={activeTab === tab.id}
-                >
-                  <Icon size={14} />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-
-          {activeTab === 'profile' && <ProfileSection />}
-          {activeTab === 'account' && <AccountSection />}
-          {activeTab === 'privacy' && <PrivacySection />}
-          {activeTab === 'notifications' && <NotificationPrefsSection />}
-          {activeTab === 'appearance' && <AppearanceSection />}
-          {activeTab === 'apikeys' && <ApiKeysSection />}
-          {activeTab === 'feedback' && <MyFeedbackSection />}
-          {activeTab === 'danger' && <DangerZoneSection />}
+        {/* Tab navigation */}
+        <div className="mbe-6 flex flex-wrap gap-1 border-be border-border">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setSearchParams({ tab: tab.id });
+                }}
+                className={`flex items-center gap-1.5 border-be-2 px-3 py-2 text-sm transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-accent text-accent'
+                    : 'border-transparent text-text-secondary hover:text-text-primary'
+                }`}
+                role="tab"
+                aria-selected={activeTab === tab.id}
+              >
+                <Icon size={14} />
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
+
+        {activeTab === 'profile' && <ProfileSection />}
+        {activeTab === 'account' && <AccountSection />}
+        {activeTab === 'privacy' && <PrivacySection />}
+        {activeTab === 'notifications' && <NotificationPrefsSection />}
+        {activeTab === 'appearance' && <AppearanceSection />}
+        {activeTab === 'apikeys' && <ApiKeysSection />}
+        {activeTab === 'feedback' && <MyFeedbackSection />}
+        {activeTab === 'danger' && <DangerZoneSection />}
       </div>
+    </div>
   );
 }
 
@@ -130,7 +128,9 @@ function ProfileSection() {
     if (!editName.trim() || editName.trim().length < 3) return;
     setIsSaving(true);
     try {
-      const result = await accountApi.updateProfile({ display_name: editName.trim() });
+      const result = await accountApi.updateProfile({
+        display_name: editName.trim(),
+      });
       // Update local auth store with new display name
       useAuthStore.getState().setUser({
         ...useAuthStore.getState().user!,
@@ -148,10 +148,14 @@ function ProfileSection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.profile')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
+          {t('settings.profile')}
+        </h3>
         <div className="flex flex-col gap-3">
           <div>
-            <label className="text-xs text-text-muted">{t('auth.displayName')}</label>
+            <label className="text-xs text-text-muted">
+              {t('auth.displayName')}
+            </label>
             {isEditing ? (
               <div className="mbs-1 flex gap-2">
                 <input
@@ -161,7 +165,10 @@ function ProfileSection() {
                   maxLength={30}
                   className="flex-1 rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:outline-none"
                 />
-                <Button onClick={() => void handleSave()} disabled={isSaving || editName.trim().length < 3}>
+                <Button
+                  onClick={() => void handleSave()}
+                  disabled={isSaving || editName.trim().length < 3}
+                >
                   {t('common.save')}
                 </Button>
                 <Button variant="secondary" onClick={() => setIsEditing(false)}>
@@ -170,9 +177,14 @@ function ProfileSection() {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <p className="text-sm text-text-primary">{user?.display_name || t('settings.notSet')}</p>
+                <p className="text-sm text-text-primary">
+                  {user?.display_name || t('settings.notSet')}
+                </p>
                 <button
-                  onClick={() => { setEditName(user?.display_name ?? ''); setIsEditing(true); }}
+                  onClick={() => {
+                    setEditName(user?.display_name ?? '');
+                    setIsEditing(true);
+                  }}
                   className="text-xs text-accent hover:text-accent-hover"
                 >
                   {t('common.edit')}
@@ -182,12 +194,17 @@ function ProfileSection() {
           </div>
           <div>
             <label className="text-xs text-text-muted">{t('auth.email')}</label>
-            <p className="text-sm text-text-primary">{user?.email || t('settings.notSet')}</p>
+            <p className="text-sm text-text-primary">
+              {user?.email || t('settings.notSet')}
+            </p>
           </div>
           <div>
-            <label className="text-xs text-text-muted">{t('onboarding.timezone')}</label>
+            <label className="text-xs text-text-muted">
+              {t('onboarding.timezone')}
+            </label>
             <p className="text-sm text-text-primary">
-              {user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone}
+              {user?.timezone ||
+                Intl.DateTimeFormat().resolvedOptions().timeZone}
             </p>
           </div>
         </div>
@@ -205,12 +222,14 @@ function AccountSection() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isChanging, setIsChanging] = useState(false);
-  const [sessions, setSessions] = useState<Array<{
-    session_id: string;
-    created_at: string;
-    last_active: string;
-    current: boolean;
-  }>>([]);
+  const [sessions, setSessions] = useState<
+    Array<{
+      session_id: string;
+      created_at: string;
+      last_active: string;
+      current: boolean;
+    }>
+  >([]);
   const [isLoadingSessions, setIsLoadingSessions] = useState(true);
 
   useEffect(() => {
@@ -228,7 +247,8 @@ function AccountSection() {
     void load();
   }, []);
 
-  const passwordsMismatch = newPassword !== confirmPassword && confirmPassword.length > 0;
+  const passwordsMismatch =
+    newPassword !== confirmPassword && confirmPassword.length > 0;
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || newPassword.length < 12) return;
@@ -311,12 +331,19 @@ function AccountSection() {
               placeholder={t('auth.passwordHint')}
             />
             {passwordsMismatch && (
-              <p className="mbs-1 text-xs text-danger">{t('settings.passwordMismatchChange')}</p>
+              <p className="mbs-1 text-xs text-danger">
+                {t('settings.passwordMismatchChange')}
+              </p>
             )}
           </div>
           <Button
             onClick={() => void handleChangePassword()}
-            disabled={isChanging || !currentPassword || newPassword.length < 12 || newPassword !== confirmPassword}
+            disabled={
+              isChanging ||
+              !currentPassword ||
+              newPassword.length < 12 ||
+              newPassword !== confirmPassword
+            }
           >
             {t('settings.changePassword')}
           </Button>
@@ -331,7 +358,9 @@ function AccountSection() {
         {isLoadingSessions ? (
           <Spinner size="sm" />
         ) : sessions.length === 0 ? (
-          <p className="text-sm text-text-secondary">{t('settings.noSessions')}</p>
+          <p className="text-sm text-text-secondary">
+            {t('settings.noSessions')}
+          </p>
         ) : (
           <div className="flex flex-col gap-2">
             {sessions.map((session) => (
@@ -346,7 +375,8 @@ function AccountSection() {
                       : `Session ${session.session_id.slice(0, 8)}...`}
                   </p>
                   <p className="text-xs text-text-muted">
-                    Last active: {new Date(session.last_active).toLocaleString()}
+                    Last active:{' '}
+                    {new Date(session.last_active).toLocaleString()}
                   </p>
                 </div>
                 {!session.current && (
@@ -401,7 +431,9 @@ function PrivacySection() {
 
   const handleDoNotSellToggle = async () => {
     try {
-      const result = await accountApi.updatePrivacy({ do_not_sell: !doNotSell });
+      const result = await accountApi.updatePrivacy({
+        do_not_sell: !doNotSell,
+      });
       setDoNotSell(result.do_not_sell);
     } catch {
       addToast(t('common.error'), 'danger', { platformLink: true });
@@ -412,7 +444,9 @@ function PrivacySection() {
     setIsExporting(true);
     try {
       const data = await request<Record<string, unknown>>('/account/me/export');
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: 'application/json',
+      });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -430,7 +464,9 @@ function PrivacySection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.privacy')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
+          {t('settings.privacy')}
+        </h3>
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <input
@@ -442,8 +478,12 @@ function PrivacySection() {
               aria-label={t('settings.soloMode')}
             />
             <label htmlFor="solo-mode-toggle">
-              <span className="text-sm text-text-primary">{t('settings.soloMode')}</span>
-              <p className="text-xs text-text-secondary">{t('settings.soloModeDesc')}</p>
+              <span className="text-sm text-text-primary">
+                {t('settings.soloMode')}
+              </span>
+              <p className="text-xs text-text-secondary">
+                {t('settings.soloModeDesc')}
+              </p>
             </label>
           </div>
           <div className="flex items-center gap-3">
@@ -456,7 +496,9 @@ function PrivacySection() {
               aria-label={t('settings.doNotSellLabel')}
             />
             <label htmlFor="do-not-sell-toggle">
-              <span className="text-sm text-text-primary">{t('settings.doNotSellLabel')}</span>
+              <span className="text-sm text-text-primary">
+                {t('settings.doNotSellLabel')}
+              </span>
               <p className="text-xs text-text-secondary">
                 {t('settings.doNotSellDesc')}
               </p>
@@ -472,7 +514,11 @@ function PrivacySection() {
         <p className="mbe-3 text-sm text-text-secondary">
           {t('settings.exportDesc')}
         </p>
-        <Button variant="secondary" onClick={() => void handleExport()} disabled={isExporting}>
+        <Button
+          variant="secondary"
+          onClick={() => void handleExport()}
+          disabled={isExporting}
+        >
           {isExporting ? t('settings.exporting') : t('settings.exportData')}
         </Button>
       </Card>
@@ -514,9 +560,14 @@ function NotificationPrefsSection() {
     void load();
   }, []);
 
-  const updatePref = async (key: keyof NotificationPreferences, value: string) => {
+  const updatePref = async (
+    key: keyof NotificationPreferences,
+    value: string,
+  ) => {
     try {
-      const updated = await accountApi.updateNotificationPreferences({ [key]: value });
+      const updated = await accountApi.updateNotificationPreferences({
+        [key]: value,
+      });
       setPrefs(updated);
     } catch {
       addToast(t('common.error'), 'danger', { platformLink: true });
@@ -527,7 +578,10 @@ function NotificationPrefsSection() {
     return <Spinner size="md" />;
   }
 
-  const categories: Array<{ key: keyof NotificationPreferences; label: string }> = [
+  const categories: Array<{
+    key: keyof NotificationPreferences;
+    label: string;
+  }> = [
     { key: 'echo_life_events', label: t('settings.prefEchoLifeEvent') },
     { key: 'daily_digest', label: t('settings.prefDigest') },
     { key: 'social', label: t('settings.prefFollowers') },
@@ -565,7 +619,9 @@ function NotificationPrefsSection() {
                     aria-label={`${label} preference`}
                   >
                     <option value="InApp">{t('settings.inAppOnly')}</option>
-                    <option value="InAppAndEmail">{t('settings.inAppAndEmail')}</option>
+                    <option value="InAppAndEmail">
+                      {t('settings.inAppAndEmail')}
+                    </option>
                     <option value="Off">{t('settings.off')}</option>
                   </select>
                 )}
@@ -576,7 +632,9 @@ function NotificationPrefsSection() {
       </Card>
 
       <Card>
-        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.sound')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
+          {t('settings.sound')}
+        </h3>
         <SoundSettings />
       </Card>
     </div>
@@ -596,11 +654,15 @@ function SoundSettings() {
           onChange={() => setEnabled(!enabled)}
           className="size-4 rounded-sm border-border accent-accent"
         />
-        <span className="text-sm text-text-primary">{t('settings.soundEnabled')}</span>
+        <span className="text-sm text-text-primary">
+          {t('settings.soundEnabled')}
+        </span>
       </label>
       {enabled && (
         <div className="flex items-center gap-3">
-          <span className="text-sm text-text-secondary">{t('settings.soundVolume')}</span>
+          <span className="text-sm text-text-secondary">
+            {t('settings.soundVolume')}
+          </span>
           <input
             type="range"
             min={0}
@@ -610,7 +672,9 @@ function SoundSettings() {
             className="flex-1 accent-accent"
             aria-label={t('settings.soundVolume')}
           />
-          <span className="text-xs text-text-muted">{Math.round(volume * 100)}%</span>
+          <span className="text-xs text-text-muted">
+            {Math.round(volume * 100)}%
+          </span>
         </div>
       )}
     </div>
@@ -620,15 +684,27 @@ function SoundSettings() {
 // --- Appearance Section ---
 function AppearanceSection() {
   const { t } = useTranslation();
-  const { base, setBase, overrides, activeOverrideId, applyOverride, disable3D, setDisable3D } = useThemeStore();
+  const {
+    base,
+    setBase,
+    overrides,
+    activeOverrideId,
+    applyOverride,
+    disable3D,
+    setDisable3D,
+  } = useThemeStore();
 
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.theme')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
+          {t('settings.theme')}
+        </h3>
         <div className="flex gap-2">
           <Button
-            variant={base === 'dark' && !activeOverrideId ? 'primary' : 'secondary'}
+            variant={
+              base === 'dark' && !activeOverrideId ? 'primary' : 'secondary'
+            }
             onClick={() => {
               applyOverride(null);
               setBase('dark');
@@ -637,7 +713,9 @@ function AppearanceSection() {
             {t('settings.darkMode')}
           </Button>
           <Button
-            variant={base === 'light' && !activeOverrideId ? 'primary' : 'secondary'}
+            variant={
+              base === 'light' && !activeOverrideId ? 'primary' : 'secondary'
+            }
             onClick={() => {
               applyOverride(null);
               setBase('light');
@@ -670,7 +748,9 @@ function AppearanceSection() {
       </Card>
 
       <Card>
-        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.3dEnvironments')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
+          {t('settings.3dEnvironments')}
+        </h3>
         <label className="flex items-center gap-3">
           <input
             type="checkbox"
@@ -756,7 +836,9 @@ function LanguageSettingsCard() {
       addToast(t('common.saved'), 'success');
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      addToast(msg || t('errors.INTERNAL_ERROR'), 'danger', { platformLink: true });
+      addToast(msg || t('errors.INTERNAL_ERROR'), 'danger', {
+        platformLink: true,
+      });
     } finally {
       setSaving(false);
     }
@@ -796,8 +878,12 @@ function ApiKeysSection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mbe-4 text-sm font-semibold text-text-primary">{t('settings.apiKeys')}</h3>
-        <p className="mbe-3 text-sm text-text-secondary">{t('settings.apiKeyComingSoon')}</p>
+        <h3 className="mbe-4 text-sm font-semibold text-text-primary">
+          {t('settings.apiKeys')}
+        </h3>
+        <p className="mbe-3 text-sm text-text-secondary">
+          {t('settings.apiKeyComingSoon')}
+        </p>
         <Button variant="secondary" disabled>
           {t('settings.createApiKey')}
         </Button>
@@ -835,9 +921,7 @@ function DiscordLinkSection() {
         console.error('[DiscordLink] link failed:', err);
       }
       const msg =
-        err instanceof Error && err.message
-          ? err.message
-          : t('common.error');
+        err instanceof Error && err.message ? err.message : t('common.error');
       addToast(msg, 'danger', { platformLink: true });
     }
   };
@@ -853,13 +937,27 @@ function DiscordLinkSection() {
     }
   };
 
-  if (loading) return <Card><Spinner /></Card>;
+  if (loading)
+    return (
+      <Card>
+        <Spinner />
+      </Card>
+    );
 
   return (
     <Card>
       <div className="mbe-4 flex items-center gap-2">
-        <svg width="20" height="16" viewBox="0 0 71 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M60.1 4.9A58.5 58.5 0 0045.4.2a.2.2 0 00-.2.1 40.8 40.8 0 00-1.8 3.7 54 54 0 00-16.2 0A37.4 37.4 0 0025.4.3a.2.2 0 00-.2-.1A58.4 58.4 0 0010.5 5a.2.2 0 00-.1 0C1.5 18.7-.9 32 .3 45.2v.1a58.9 58.9 0 0018 9.1.2.2 0 00.3-.1 42.2 42.2 0 003.6-5.9.2.2 0 00-.1-.3 38.8 38.8 0 01-5.5-2.7.2.2 0 01 0-.4l1.1-.9a.2.2 0 01.2 0 42 42 0 0035.8 0 .2.2 0 01.2 0l1.1.9a.2.2 0 010 .3 36.4 36.4 0 01-5.5 2.7.2.2 0 00-.1.3 47.3 47.3 0 003.6 5.9.2.2 0 00.3.1A58.7 58.7 0 0071 45.3v-.1C72.4 30 68.4 16.8 60.1 5a.2.2 0 00-.1 0zM23.7 37.1c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1zm23.7 0c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1z" fill="#5865F2"/>
+        <svg
+          width="20"
+          height="16"
+          viewBox="0 0 71 55"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M60.1 4.9A58.5 58.5 0 0045.4.2a.2.2 0 00-.2.1 40.8 40.8 0 00-1.8 3.7 54 54 0 00-16.2 0A37.4 37.4 0 0025.4.3a.2.2 0 00-.2-.1A58.4 58.4 0 0010.5 5a.2.2 0 00-.1 0C1.5 18.7-.9 32 .3 45.2v.1a58.9 58.9 0 0018 9.1.2.2 0 00.3-.1 42.2 42.2 0 003.6-5.9.2.2 0 00-.1-.3 38.8 38.8 0 01-5.5-2.7.2.2 0 01 0-.4l1.1-.9a.2.2 0 01.2 0 42 42 0 0035.8 0 .2.2 0 01.2 0l1.1.9a.2.2 0 010 .3 36.4 36.4 0 01-5.5 2.7.2.2 0 00-.1.3 47.3 47.3 0 003.6 5.9.2.2 0 00.3.1A58.7 58.7 0 0071 45.3v-.1C72.4 30 68.4 16.8 60.1 5a.2.2 0 00-.1 0zM23.7 37.1c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1zm23.7 0c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1 6.5 3.2 6.4 7.1c0 3.9-2.8 7.1-6.4 7.1z"
+            fill="#5865F2"
+          />
         </svg>
         <h3 className="text-sm font-semibold text-text-primary">
           {t('settings.discord')}
@@ -874,8 +972,12 @@ function DiscordLinkSection() {
               </span>
             </div>
             <div>
-              <p className="text-sm font-medium text-text-primary">{username}</p>
-              <p className="text-xs text-[#5865F2]">{t('settings.discordLinked')}</p>
+              <p className="text-sm font-medium text-text-primary">
+                {username}
+              </p>
+              <p className="text-xs text-[#5865F2]">
+                {t('settings.discordLinked')}
+              </p>
             </div>
           </div>
           <button
@@ -888,7 +990,8 @@ function DiscordLinkSection() {
       ) : (
         <>
           <p className="mbe-3 text-sm text-text-secondary">
-            Link your Discord account to sync your identity across in-app and Discord communities.
+            Link your Discord account to sync your identity across in-app and
+            Discord communities.
           </p>
           <button
             onClick={() => void handleLink()}
@@ -910,7 +1013,11 @@ function MyFeedbackSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    void feedbackApi.myFeedback().then(setItems).catch(() => {}).finally(() => setLoading(false));
+    void feedbackApi
+      .myFeedback()
+      .then(setItems)
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <Spinner />;
@@ -921,7 +1028,9 @@ function MyFeedbackSection() {
         {t('settings.myFeedback')}
       </h3>
       {items.length === 0 ? (
-        <p className="text-sm text-text-secondary">{t('settings.noFeedbackYet')}</p>
+        <p className="text-sm text-text-secondary">
+          {t('settings.noFeedbackYet')}
+        </p>
       ) : (
         <div className="flex flex-col gap-3">
           {items.map((item) => (
@@ -930,14 +1039,23 @@ function MyFeedbackSection() {
               className="rounded-sm border border-border p-3"
             >
               <div className="mbe-1 flex items-center gap-2 text-xs">
-                <span className="font-medium text-accent">{item.feedback_type}</span>
+                <span className="font-medium text-accent">
+                  {item.feedback_type}
+                </span>
                 <span className="text-text-muted">·</span>
-                <span className={item.status === 'Resolved' ? 'text-success' : 'text-text-muted'}>
+                <span
+                  className={
+                    item.status === 'Resolved'
+                      ? 'text-success'
+                      : 'text-text-muted'
+                  }
+                >
                   {item.status}
                 </span>
                 <span className="text-text-muted">·</span>
                 <span className="text-text-muted">
-                  {t('settings.feedbackSubmitted')} {formatDate(item.created_at)}
+                  {t('settings.feedbackSubmitted')}{' '}
+                  {formatDate(item.created_at)}
                 </span>
               </div>
               <p className="text-sm text-text-primary">{item.user_message}</p>
@@ -984,13 +1102,17 @@ function DangerZoneSection() {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <h3 className="mbe-4 text-sm font-semibold text-danger">{t('settings.dangerZone')}</h3>
+        <h3 className="mbe-4 text-sm font-semibold text-danger">
+          {t('settings.dangerZone')}
+        </h3>
 
         {isPendingDeletion && deletionScheduledAt ? (
           <div className="mbe-4">
             <div className="mbe-3 rounded-md border border-danger/30 bg-danger/10 p-3">
               <p className="text-sm font-medium text-danger">
-                {t('settings.deletionScheduled', { date: formatDate(deletionScheduledAt) })}
+                {t('settings.deletionScheduled', {
+                  date: formatDate(deletionScheduledAt),
+                })}
               </p>
               <p className="mbs-1 text-xs text-text-secondary">
                 {t('settings.deletionScheduledDesc')}
@@ -1001,7 +1123,9 @@ function DangerZoneSection() {
               onClick={() => void handleCancelDeletion()}
               disabled={isCancelling}
             >
-              {isCancelling ? t('settings.cancelling') : t('settings.cancelDeletion')}
+              {isCancelling
+                ? t('settings.cancelling')
+                : t('settings.cancelDeletion')}
             </Button>
           </div>
         ) : (
@@ -1009,7 +1133,10 @@ function DangerZoneSection() {
             <p className="mbe-4 text-sm text-text-secondary">
               {t('settings.deleteAccountWarning')}
             </p>
-            <Button variant="danger" onClick={() => navigate('/settings/delete-account')}>
+            <Button
+              variant="danger"
+              onClick={() => navigate('/settings/delete-account')}
+            >
               {t('settings.deleteAccount')}
             </Button>
           </>
@@ -1067,13 +1194,23 @@ function PendingDeletionsCard() {
           if (!isEchoHibernated(e)) continue;
           const d = echoDeletionDate(e.hibernated_at);
           if (!d) continue;
-          pending.push({ id: e.echo_id, kind: 'echo', name: e.name, deletionDate: d });
+          pending.push({
+            id: e.echo_id,
+            kind: 'echo',
+            name: e.name,
+            deletionDate: d,
+          });
         }
         for (const s of shardsList as Shard[]) {
           if (!isShardArchived(s)) continue;
           const d = shardDeletionDate(s.archive_expires_at);
           if (!d) continue;
-          pending.push({ id: s.shard_id, kind: 'shard', name: s.name, deletionDate: d });
+          pending.push({
+            id: s.shard_id,
+            kind: 'shard',
+            name: s.name,
+            deletionDate: d,
+          });
         }
         pending.sort(
           (a, b) => a.deletionDate.getTime() - b.deletionDate.getTime(),

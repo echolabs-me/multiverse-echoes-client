@@ -51,9 +51,10 @@ const OG_LOCALE: Record<SupportedLocale, string> = {
  * `/home` -> `{ base: '/home', locale: 'en' }` (English lives at the
  * unprefixed root).
  */
-function splitLocale(
-  pathname: string,
-): { base: string; locale: SupportedLocale } {
+function splitLocale(pathname: string): {
+  base: string;
+  locale: SupportedLocale;
+} {
   const match = pathname.match(LOCALE_PATH_PATTERN);
   if (match && (SUPPORTED_LOCALES as readonly string[]).includes(match[1])) {
     // `match[0]` is the full `/xx/` or `/xx` (if end-of-string).

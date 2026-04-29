@@ -95,7 +95,9 @@ export function StoryExportModal({
 
   // Echo selection state
   const [allEchoes, setAllEchoes] = useState<EchoOption[]>([]);
-  const [selectedEchoIds, setSelectedEchoIds] = useState<Set<string>>(new Set([echoId]));
+  const [selectedEchoIds, setSelectedEchoIds] = useState<Set<string>>(
+    new Set([echoId]),
+  );
   const [echoesLoading, setEchoesLoading] = useState(false);
 
   // Download state
@@ -117,9 +119,14 @@ export function StoryExportModal({
       await Promise.all(
         uniqueShardIds.map(async (sid) => {
           try {
-            const shard = await import('../lib/api/endpoints.ts').then((m) => m.shards.get(sid));
+            const shard = await import('../lib/api/endpoints.ts').then((m) =>
+              m.shards.get(sid),
+            );
             const slug = shard.name.toLowerCase().replace(/\s+/g, '-');
-            shardCache.set(sid, t(`shardNames.${slug}`, { defaultValue: shard.name }));
+            shardCache.set(
+              sid,
+              t(`shardNames.${slug}`, { defaultValue: shard.name }),
+            );
           } catch {
             // ignore
           }
@@ -191,10 +198,7 @@ export function StoryExportModal({
       setExportData(result);
 
       // Poll for status updates
-      if (
-        result.status !== 'Complete' &&
-        result.status !== 'Failed'
-      ) {
+      if (result.status !== 'Complete' && result.status !== 'Failed') {
         const pollStatus = async () => {
           try {
             const updated = await account.getExportStatus(result.export_id);
@@ -237,10 +241,16 @@ export function StoryExportModal({
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const disposition = res.headers.get('Content-Disposition');
         const match = disposition?.match(/filename="?([^"]+)"?/);
-        const fallbackName = selectedEchoIds.size > 1
-          ? 'echoes-story'
-          : `${allEchoes.find((e) => selectedEchoIds.has(e.echo_id))?.name ?? echoName}-story`;
-        const ext = selectedFormat === 'json' ? 'json' : selectedFormat === 'pdf' ? 'pdf' : 'txt';
+        const fallbackName =
+          selectedEchoIds.size > 1
+            ? 'echoes-story'
+            : `${allEchoes.find((e) => selectedEchoIds.has(e.echo_id))?.name ?? echoName}-story`;
+        const ext =
+          selectedFormat === 'json'
+            ? 'json'
+            : selectedFormat === 'pdf'
+              ? 'pdf'
+              : 'txt';
         const filename = match?.[1] ?? `${fallbackName}.${ext}`;
         return res.blob().then((blob) => ({ blob, filename }));
       })
@@ -300,7 +310,9 @@ export function StoryExportModal({
           {selectedEchoIds.size > 1
             ? t('export.subtitleMultiple')
             : t('export.subtitle', {
-                name: allEchoes.find((e) => selectedEchoIds.has(e.echo_id))?.name ?? echoName,
+                name:
+                  allEchoes.find((e) => selectedEchoIds.has(e.echo_id))?.name ??
+                  echoName,
               })}
         </p>
 
@@ -362,13 +374,20 @@ export function StoryExportModal({
                 onClick={() => setDateRangeOpen((p) => !p)}
                 className="flex items-center gap-1.5 text-sm font-medium text-text-secondary hover:text-text-primary"
               >
-                {dateRangeOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                {dateRangeOpen ? (
+                  <ChevronDown size={14} />
+                ) : (
+                  <ChevronRight size={14} />
+                )}
                 {t('export.dateRange')}
               </button>
               {dateRangeOpen && (
                 <div className="mbs-2 flex items-center gap-3 rounded-lg border border-border p-3">
                   <div className="flex flex-1 flex-col gap-1">
-                    <label className="text-xs text-text-secondary" htmlFor="export-from">
+                    <label
+                      className="text-xs text-text-secondary"
+                      htmlFor="export-from"
+                    >
                       {t('export.dateFrom')}
                     </label>
                     <input
@@ -380,7 +399,10 @@ export function StoryExportModal({
                     />
                   </div>
                   <div className="flex flex-1 flex-col gap-1">
-                    <label className="text-xs text-text-secondary" htmlFor="export-to">
+                    <label
+                      className="text-xs text-text-secondary"
+                      htmlFor="export-to"
+                    >
                       {t('export.dateTo')}
                     </label>
                     <input
@@ -423,7 +445,9 @@ export function StoryExportModal({
                   <span className="text-text-secondary">{opt.icon}</span>
                   <div className="flex-1">
                     <p className="text-sm font-medium">{t(opt.labelKey)}</p>
-                    <p className="text-xs text-text-secondary">{t(opt.descKey)}</p>
+                    <p className="text-xs text-text-secondary">
+                      {t(opt.descKey)}
+                    </p>
                   </div>
                   {opt.disabled && (
                     <span className="rounded-sm bg-surface-raised px-1.5 py-0.5 text-[10px] font-medium text-text-muted">
@@ -479,7 +503,11 @@ export function StoryExportModal({
                         : 'bg-accent'
                   } me-progress-bar`}
                   ref={(el) => {
-                    if (el) el.style.setProperty('--me-progress', `${progressPercent}%`);
+                    if (el)
+                      el.style.setProperty(
+                        '--me-progress',
+                        `${progressPercent}%`,
+                      );
                   }}
                   role="progressbar"
                   aria-valuenow={progressPercent}
@@ -491,10 +519,7 @@ export function StoryExportModal({
 
               <div className="flex items-center gap-3">
                 {exportData?.status === 'Processing' && (
-                  <Loader
-                    size={16}
-                    className="animate-spin text-accent"
-                  />
+                  <Loader size={16} className="animate-spin text-accent" />
                 )}
                 {exportData?.status === 'Complete' && (
                   <CheckCircle size={16} className="text-success" />
@@ -520,9 +545,13 @@ export function StoryExportModal({
                   ) : (
                     <Download size={16} />
                   )}
-                  {isDownloading ? t('export.downloading') : t('export.download')}
+                  {isDownloading
+                    ? t('export.downloading')
+                    : t('export.download')}
                 </button>
-                <p className="text-center text-xs text-text-secondary">{t('export.downloadHint')}</p>
+                <p className="text-center text-xs text-text-secondary">
+                  {t('export.downloadHint')}
+                </p>
               </div>
             )}
 

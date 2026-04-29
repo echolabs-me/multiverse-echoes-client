@@ -1,4 +1,9 @@
-import { LayoutDashboard, Newspaper, MessageSquare, MoreHorizontal } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Newspaper,
+  MessageSquare,
+  MoreHorizontal,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 
@@ -15,9 +20,17 @@ interface BottomBarProps {
 }
 
 const items: BottomBarItem[] = [
-  { id: 'dashboard', labelKey: 'nav.dashboard', icon: <LayoutDashboard size={20} /> },
+  {
+    id: 'dashboard',
+    labelKey: 'nav.dashboard',
+    icon: <LayoutDashboard size={20} />,
+  },
   { id: 'feeds', labelKey: 'nav.feeds', icon: <Newspaper size={20} /> },
-  { id: 'community', labelKey: 'nav.community', icon: <MessageSquare size={20} /> },
+  {
+    id: 'community',
+    labelKey: 'nav.community',
+    icon: <MessageSquare size={20} />,
+  },
   { id: 'more', labelKey: 'nav.more', icon: <MoreHorizontal size={20} /> },
 ];
 

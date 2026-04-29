@@ -86,14 +86,28 @@ export function MoodHistoryStrip({
             const palette = getMoodPalette(entry.mood);
             const isHovered = hoveredIndex === i;
             const isLatest = i === chronological.length - 1;
-            const pos = i === 0 ? 'first' : i === chronological.length - 1 ? 'last' : 'mid';
+            const pos =
+              i === 0
+                ? 'first'
+                : i === chronological.length - 1
+                  ? 'last'
+                  : 'mid';
 
             const setSegmentVars = (el: HTMLElement | null) => {
               if (!el) return;
               el.style.setProperty('--me-mh-primary', palette.primary);
-              el.style.setProperty('--me-mh-secondary', `${palette.secondary}cc`);
-              el.style.setProperty('--me-mh-primary-60', `${palette.primary}60`);
-              el.style.setProperty('--me-mh-primary-30', `${palette.primary}30`);
+              el.style.setProperty(
+                '--me-mh-secondary',
+                `${palette.secondary}cc`,
+              );
+              el.style.setProperty(
+                '--me-mh-primary-60',
+                `${palette.primary}60`,
+              );
+              el.style.setProperty(
+                '--me-mh-primary-30',
+                `${palette.primary}30`,
+              );
               el.style.setProperty('--me-mh-accent', palette.accent);
               el.style.setProperty('--me-mh-accent-30', `${palette.accent}30`);
               el.style.setProperty('--me-mh-accent-60', `${palette.accent}60`);
@@ -149,11 +163,20 @@ export function MoodHistoryStrip({
                 if (!el) return;
                 el.style.setProperty('--me-mh-primary', palette.primary);
                 el.style.setProperty('--me-mh-accent', palette.accent);
-                el.style.setProperty('--me-mh-accent-60', `${palette.accent}60`);
-                el.style.setProperty('--me-mh-accent-80', `${palette.accent}80`);
+                el.style.setProperty(
+                  '--me-mh-accent-60',
+                  `${palette.accent}60`,
+                );
+                el.style.setProperty(
+                  '--me-mh-accent-80',
+                  `${palette.accent}80`,
+                );
               };
               return (
-                <div key={`dot-${entry.diary_id}`} className="flex flex-1 items-center justify-center">
+                <div
+                  key={`dot-${entry.diary_id}`}
+                  className="flex flex-1 items-center justify-center"
+                >
                   <div
                     ref={setDotVars}
                     data-hovered={isHovered}
@@ -173,7 +196,10 @@ export function MoodHistoryStrip({
           ref={(el) => {
             if (!el) return;
             const palette = getMoodPalette(chronological[hoveredIndex].mood);
-            el.style.setProperty('--me-mh-tooltip-x', `${Math.max(50, Math.min(tooltipX, containerWidth - 50))}px`);
+            el.style.setProperty(
+              '--me-mh-tooltip-x',
+              `${Math.max(50, Math.min(tooltipX, containerWidth - 50))}px`,
+            );
             el.style.setProperty('--me-mh-secondary', palette.secondary);
             el.style.setProperty('--me-mh-primary-50', `${palette.primary}50`);
           }}

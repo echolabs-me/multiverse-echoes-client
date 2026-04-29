@@ -1,7 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Sparkles, X, Send, Trash2, ExternalLink, MessageCircle } from 'lucide-react';
+import {
+  Sparkles,
+  X,
+  Send,
+  Trash2,
+  ExternalLink,
+  MessageCircle,
+} from 'lucide-react';
 import { useOracleStore } from '../stores/useOracleStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import type { OracleMessage } from '../stores/useOracleStore.ts';
@@ -15,7 +22,13 @@ const RATE_LIMITS: Record<string, number> = {
 };
 
 /** Routes where the Oracle FAB should not appear (pre-auth screens). */
-const HIDDEN_ROUTES = ['/language', '/register', '/login', '/verify-pending', '/verified'];
+const HIDDEN_ROUTES = [
+  '/language',
+  '/register',
+  '/login',
+  '/verify-pending',
+  '/verified',
+];
 
 export function OraclePanel() {
   const { t } = useTranslation();
@@ -126,7 +139,9 @@ export function OraclePanel() {
                 <h2 className="text-lg font-semibold text-text-primary">
                   {t('oracle.title')}
                 </h2>
-                <p className="text-xs text-text-secondary">{t('oracle.subtitle')}</p>
+                <p className="text-xs text-text-secondary">
+                  {t('oracle.subtitle')}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -182,9 +197,7 @@ export function OraclePanel() {
               </div>
             )}
 
-            {error && (
-              <p className="text-sm text-danger">{t(error)}</p>
-            )}
+            {error && <p className="text-sm text-danger">{t(error)}</p>}
 
             <div ref={messagesEndRef} />
           </div>
@@ -214,10 +227,7 @@ export function OraclePanel() {
           </div>
 
           {/* Input */}
-          <form
-            onSubmit={handleSubmit}
-            className="flex gap-2 px-4 py-2"
-          >
+          <form onSubmit={handleSubmit} className="flex gap-2 px-4 py-2">
             <input
               ref={inputRef}
               type="text"
@@ -257,9 +267,7 @@ function MessageBubble({
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
         className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
-          isUser
-            ? 'bg-accent text-canvas'
-            : 'bg-surface text-text-primary'
+          isUser ? 'bg-accent text-canvas' : 'bg-surface text-text-primary'
         }`}
       >
         <p className="whitespace-pre-wrap">{message.text}</p>

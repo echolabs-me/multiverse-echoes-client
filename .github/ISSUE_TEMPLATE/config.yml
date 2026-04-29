@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: mailto:privacy@echolabs.me?subject=Security%3A
+    about: Email privacy@echolabs.me — do NOT file security issues publicly.
+  - name: Question or discussion
+    url: https://github.com/echolabs-me/multiverse-echoes-client/discussions
+    about: For general questions, ideas, and conversation, use Discussions.
+  - name: Developer Portal
+    url: https://developers.echolabsme.com
+    about: API reference, modding guide, WebSocket events, SDK docs.

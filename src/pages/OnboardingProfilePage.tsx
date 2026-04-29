@@ -27,14 +27,14 @@ export function OnboardingProfilePage() {
   const navigate = useNavigate();
 
   const avatars = getAvatarColors();
-  const [selectedAvatar, setSelectedAvatar] = useState<string>(AVATAR_TOKENS[0].id);
+  const [selectedAvatar, setSelectedAvatar] = useState<string>(
+    AVATAR_TOKENS[0].id,
+  );
   const [bio, setBio] = useState('');
   // Stable id for the Bio label -> textarea association (WCAG 2.1 Level A,
   // ME-ACC-001). Mirrors the useId pattern used inside Input.tsx itself.
   const bioLabelId = useId();
-  const [timezone] = useState(
-    Intl.DateTimeFormat().resolvedOptions().timeZone,
-  );
+  const [timezone] = useState(Intl.DateTimeFormat().resolvedOptions().timeZone);
 
   function handleContinue() {
     trackEvent('onboarding.step_completed', { step: 'profile' });
@@ -94,8 +94,13 @@ export function OnboardingProfilePage() {
         <div className="mbe-6">
           <div className="rounded-lg border border-accent/30 bg-accent/5 p-4">
             <div className="mbe-3 flex items-center gap-2">
-              <span className="text-base" aria-hidden="true">{'\ud83d\udc64'}</span>
-              <p id={bioLabelId} className="text-sm font-medium text-text-primary">
+              <span className="text-base" aria-hidden="true">
+                {'\ud83d\udc64'}
+              </span>
+              <p
+                id={bioLabelId}
+                className="text-sm font-medium text-text-primary"
+              >
                 {t('onboarding.bio')}
               </p>
             </div>
@@ -112,7 +117,12 @@ export function OnboardingProfilePage() {
               {bio.length}/500
             </p>
             <div className="mbs-2 flex items-start gap-2 rounded-md bg-accent/10 px-3 py-2">
-              <span className="mbs-0.5 text-base leading-none" aria-hidden="true">{'\u2728'}</span>
+              <span
+                className="mbs-0.5 text-base leading-none"
+                aria-hidden="true"
+              >
+                {'\u2728'}
+              </span>
               <p className="text-sm text-text-secondary">
                 {t('onboarding.bioCallout')}
               </p>
@@ -122,7 +132,9 @@ export function OnboardingProfilePage() {
 
         {/* Timezone */}
         <div className="mbe-8 flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-3">
-          <span className="text-base" aria-hidden="true">{'\ud83c\udf10'}</span>
+          <span className="text-base" aria-hidden="true">
+            {'\ud83c\udf10'}
+          </span>
           <div>
             <p className="text-sm font-medium text-text-secondary">
               {t('onboarding.timezone')}

@@ -1,9 +1,4 @@
-import {
-  useState,
-  useRef,
-  type ReactNode,
-  type KeyboardEvent,
-} from 'react';
+import { useState, useRef, type ReactNode, type KeyboardEvent } from 'react';
 
 export interface Tab {
   id: string;
@@ -19,8 +14,16 @@ interface TabsProps {
   className?: string;
 }
 
-export function Tabs({ tabs, defaultTab, activeTab: controlledActiveTab, onTabChange, className = '' }: TabsProps) {
-  const [internalActiveId, setInternalActiveId] = useState(defaultTab ?? tabs[0]?.id ?? '');
+export function Tabs({
+  tabs,
+  defaultTab,
+  activeTab: controlledActiveTab,
+  onTabChange,
+  className = '',
+}: TabsProps) {
+  const [internalActiveId, setInternalActiveId] = useState(
+    defaultTab ?? tabs[0]?.id ?? '',
+  );
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const activeId = controlledActiveTab ?? internalActiveId;
@@ -63,7 +66,9 @@ export function Tabs({ tabs, defaultTab, activeTab: controlledActiveTab, onTabCh
         {tabs.map((tab, i) => (
           <button
             key={tab.id}
-            ref={(el) => { tabRefs.current[i] = el; }}
+            ref={(el) => {
+              tabRefs.current[i] = el;
+            }}
             role="tab"
             id={`tab-${tab.id}`}
             aria-selected={tab.id === activeId}

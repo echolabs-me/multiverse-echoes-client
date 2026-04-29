@@ -8,8 +8,16 @@ const severityConfig: Record<
   ToastSeverity,
   { icon: typeof CheckCircle; bg: string; border: string }
 > = {
-  success: { icon: CheckCircle, bg: 'bg-success/10', border: 'border-success/30' },
-  warning: { icon: AlertCircle, bg: 'bg-warning/10', border: 'border-warning/30' },
+  success: {
+    icon: CheckCircle,
+    bg: 'bg-success/10',
+    border: 'border-success/30',
+  },
+  warning: {
+    icon: AlertCircle,
+    bg: 'bg-warning/10',
+    border: 'border-warning/30',
+  },
   danger: { icon: XCircle, bg: 'bg-danger/10', border: 'border-danger/30' },
   info: { icon: Info, bg: 'bg-info/10', border: 'border-info/30' },
 };

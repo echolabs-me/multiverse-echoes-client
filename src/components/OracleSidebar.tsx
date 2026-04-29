@@ -1,7 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Sparkles, Send, Trash2, ExternalLink, MessageCircle } from 'lucide-react';
+import {
+  Sparkles,
+  Send,
+  Trash2,
+  ExternalLink,
+  MessageCircle,
+} from 'lucide-react';
 import { useOracleStore } from '../stores/useOracleStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import type { OracleMessage } from '../stores/useOracleStore.ts';
@@ -163,9 +169,7 @@ export function OracleSidebar() {
           </div>
         )}
 
-        {error && (
-          <p className="text-xs text-danger">{t(error)}</p>
-        )}
+        {error && <p className="text-xs text-danger">{t(error)}</p>}
 
         <div ref={messagesEndRef} />
       </div>
@@ -246,9 +250,7 @@ function MessageBubble({
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
         className={`max-w-[90%] rounded-lg px-3 py-2 text-xs ${
-          isUser
-            ? 'bg-accent text-canvas'
-            : 'bg-surface text-text-primary'
+          isUser ? 'bg-accent text-canvas' : 'bg-surface text-text-primary'
         }`}
       >
         <p className="whitespace-pre-wrap">{message.text}</p>

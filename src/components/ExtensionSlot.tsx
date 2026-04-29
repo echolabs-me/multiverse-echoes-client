@@ -17,7 +17,11 @@ interface ExtensionSlotProps extends ExtensionProps {
  * Renders all extension components registered to the given slot.
  * If no extensions are registered, renders nothing.
  */
-export function ExtensionSlot({ slot, className, ...props }: ExtensionSlotProps) {
+export function ExtensionSlot({
+  slot,
+  className,
+  ...props
+}: ExtensionSlotProps) {
   const extensions = useSyncExternalStore(
     subscribeExtensions,
     () => getExtensions(slot),

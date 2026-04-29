@@ -183,7 +183,9 @@ export function DowngradeConfirmPage() {
               />
               <div className="flex-1">
                 <p className="text-sm text-text-primary">{loadState.message}</p>
-                <p className="mbs-1 text-xs text-text-muted">{loadState.code}</p>
+                <p className="mbs-1 text-xs text-text-muted">
+                  {loadState.code}
+                </p>
               </div>
               {loadState.canRetry && (
                 <button

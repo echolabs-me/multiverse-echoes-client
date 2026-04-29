@@ -27,3 +27,7 @@ dist-ssr
 /playwright-report/
 /test-results/
 /blob-report/
+
+# Python bytecode caches (scripts/ has .py utilities for i18n)
+__pycache__/
+*.pyc

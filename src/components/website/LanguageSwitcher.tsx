@@ -68,7 +68,10 @@ export function LanguageSwitcher({ onSelect }: LanguageSwitcherProps) {
     localStorage.setItem('locale', code);
     localStorage.setItem('locale_selected', 'true');
     setCookie('locale', code);
-    trackEvent('account.locale_changed', { old_locale: oldLocale, new_locale: code });
+    trackEvent('account.locale_changed', {
+      old_locale: oldLocale,
+      new_locale: code,
+    });
 
     // Change language BEFORE navigating so the destination paints in the new
     // language immediately (otherwise LocaleRoute's effect fires one render
@@ -87,7 +90,10 @@ export function LanguageSwitcher({ onSelect }: LanguageSwitcherProps) {
       {LANGUAGES.map((lang) => (
         <button
           key={lang.code}
-          onPointerDown={(e) => { e.preventDefault(); selectLanguage(lang.code as SupportedLocale); }}
+          onPointerDown={(e) => {
+            e.preventDefault();
+            selectLanguage(lang.code as SupportedLocale);
+          }}
           className={`w-full rounded-md px-3 py-1.5 text-start text-xs transition-colors ${
             i18n.language === lang.code
               ? 'bg-(--accent-subtle) text-(--accent)'

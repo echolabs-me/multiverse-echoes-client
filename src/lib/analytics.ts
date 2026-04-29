@@ -26,7 +26,10 @@ export function setAnalyticsOptOut(value: boolean): void {
 }
 
 /** Track a single analytics event. Batched and flushed automatically. */
-export function trackEvent(name: string, properties?: Record<string, unknown>): void {
+export function trackEvent(
+  name: string,
+  properties?: Record<string, unknown>,
+): void {
   if (optedOut) return;
 
   eventQueue.push({ event_name: name, properties });

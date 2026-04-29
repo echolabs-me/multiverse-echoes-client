@@ -20,10 +20,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Danh mục",
-            "Ví dụ"
-          ],
+          "columns": ["Danh mục", "Ví dụ"],
           "rows": [
             [
               "Dữ liệu tài khoản",
@@ -66,17 +63,9 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Mục đích",
-            "Cơ sở pháp lý",
-            "Quyền kiểm soát của bạn"
-          ],
+          "columns": ["Mục đích", "Cơ sở pháp lý", "Quyền kiểm soát của bạn"],
           "rows": [
-            [
-              "Tạo tài khoản và xác thực",
-              "Hợp đồng",
-              "Xóa tài khoản"
-            ],
+            ["Tạo tài khoản và xác thực", "Hợp đồng", "Xóa tài khoản"],
             [
               "Mô phỏng tiếng vang (xử lý nhân vật)",
               "Sự đồng ý",
@@ -92,26 +81,14 @@
               "Lợi ích hợp pháp",
               "Từ chối tham gia cộng đồng"
             ],
-            [
-              "Kiểm duyệt nội dung và an toàn",
-              "Lợi ích hợp pháp",
-              "—"
-            ],
-            [
-              "Quản lý gói đăng ký",
-              "Hợp đồng",
-              "Hủy đăng ký"
-            ],
+            ["Kiểm duyệt nội dung và an toàn", "Lợi ích hợp pháp", "—"],
+            ["Quản lý gói đăng ký", "Hợp đồng", "Hủy đăng ký"],
             [
               "Phân tích và cải thiện dịch vụ",
               "Lợi ích hợp pháp",
               "Tùy chọn từ chối phân tích trong Cài đặt"
             ],
-            [
-              "Thực thi và tuân thủ pháp luật",
-              "Nghĩa vụ pháp lý",
-              "—"
-            ]
+            ["Thực thi và tuân thủ pháp luật", "Nghĩa vụ pháp lý", "—"]
           ]
         }
       ]
@@ -130,10 +107,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Dữ liệu",
-            "Giữ chân"
-          ],
+          "columns": ["Dữ liệu", "Giữ chân"],
           "rows": [
             [
               "Dữ liệu tài khoản và hồ sơ",
@@ -143,38 +117,17 @@
               "Dữ liệu mô phỏng và chân dung người dùng",
               "Cho đến khi Echo hoặc tài khoản bị xóa"
             ],
-            [
-              "Tin nhắn cộng đồng",
-              "1 năm kể từ khi đăng"
-            ],
+            ["Tin nhắn cộng đồng", "1 năm kể từ khi đăng"],
             [
               "Mã thông báo phiên",
               "Truy cập: 1 giờ; Làm mới: 30 ngày; Nhật ký đăng nhập: 90 ngày"
             ],
-            [
-              "Dữ liệu phân tích",
-              "lũy kế 6 tháng gần nhất"
-            ],
-            [
-              "Hồ sơ thanh toán",
-              "7 năm (yêu cầu pháp lý)"
-            ],
-            [
-              "Nhật ký kiểm duyệt",
-              "3 năm"
-            ],
-            [
-              "Hồ sơ chấp thuận",
-              "Thời hạn tài khoản + 5 năm"
-            ],
-            [
-              "Các tệp xuất dữ liệu",
-              "72 giờ sau khi tạo"
-            ],
-            [
-              "Bản sao lưu được mã hóa",
-              "xoay vòng cuốn chiếu 90 ngày"
-            ]
+            ["Dữ liệu phân tích", "lũy kế 6 tháng gần nhất"],
+            ["Hồ sơ thanh toán", "7 năm (yêu cầu pháp lý)"],
+            ["Nhật ký kiểm duyệt", "3 năm"],
+            ["Hồ sơ chấp thuận", "Thời hạn tài khoản + 5 năm"],
+            ["Các tệp xuất dữ liệu", "72 giờ sau khi tạo"],
+            ["Bản sao lưu được mã hóa", "xoay vòng cuốn chiếu 90 ngày"]
           ]
         }
       ]
@@ -225,11 +178,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Dịch vụ",
-            "Dữ liệu được chia sẻ",
-            "Mục đích"
-          ],
+          "columns": ["Dịch vụ", "Dữ liệu được chia sẻ", "Mục đích"],
           "rows": [
             [
               "Stripe",
@@ -241,11 +190,7 @@
               "Số tiền thanh toán",
               "Thanh toán bằng tiền điện tử"
             ],
-            [
-              "Xaman",
-              "Địa chỉ ví",
-              "Thanh toán bằng XRP"
-            ]
+            ["Xaman", "Địa chỉ ví", "Thanh toán bằng XRP"]
           ]
         },
         {

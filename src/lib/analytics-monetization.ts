@@ -11,7 +11,10 @@ export function trackSubscriptionUpgraded(fromTier: string, toTier: string) {
 }
 
 export function trackSubscriptionDowngraded(fromTier: string, toTier: string) {
-  trackEvent('subscription.downgraded', { from_tier: fromTier, to_tier: toTier });
+  trackEvent('subscription.downgraded', {
+    from_tier: fromTier,
+    to_tier: toTier,
+  });
 }
 
 export function trackSubscriptionCancelled(tier: string) {
@@ -26,7 +29,10 @@ export function trackMarketplaceItemViewed(itemId: string, category: string) {
   trackEvent('marketplace.item_viewed', { item_id: itemId, category });
 }
 
-export function trackMarketplaceItemPurchased(itemId: string, category: string) {
+export function trackMarketplaceItemPurchased(
+  itemId: string,
+  category: string,
+) {
   trackEvent('marketplace.item_purchased', { item_id: itemId, category });
 }
 

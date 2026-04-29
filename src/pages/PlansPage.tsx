@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Check, Settings } from 'lucide-react';
 import { Card, Badge, Tooltip } from '../components/index.ts';
-import { StripeLogo, NowPaymentsLogo, XamanLogo } from '../components/PaymentIcons.tsx';
+import {
+  StripeLogo,
+  NowPaymentsLogo,
+  XamanLogo,
+} from '../components/PaymentIcons.tsx';
 import { payments } from '../lib/api/endpoints.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
@@ -113,38 +117,110 @@ interface AddOnSpec {
 }
 
 const ADD_ONS: AddOnSpec[] = [
-  { key: 'nudge_100_pack', emoji: '💬', nameKey: 'tiers.addOns.nudgePack', descKey: 'tiers.addOns.nudgePackDesc', priceLabel: '$2.99', recurring: false },
-  { key: 'premium_actions_20_pack', emoji: '✨', nameKey: 'tiers.addOns.premiumActionsPack', descKey: 'tiers.addOns.premiumActionsPackDesc', priceLabel: '$3.99', recurring: false },
-  { key: 'speed_boost', emoji: '⚡', nameKey: 'tiers.addOns.speedBoost', descKey: 'tiers.addOns.speedBoostDesc', priceLabel: '$4.99', recurring: true },
-  { key: 'video_voice_boost', emoji: '🎬', nameKey: 'tiers.addOns.videoVoiceBoost', descKey: 'tiers.addOns.videoVoiceBoostDesc', priceLabel: '$3.99', recurring: true },
-  { key: 'extra_echo', emoji: '🎭', nameKey: 'tiers.addOns.extraEcho', descKey: 'tiers.addOns.extraEchoDesc', priceLabel: '$5', recurring: true },
-  { key: 'private_shard', emoji: '🌐', nameKey: 'tiers.addOns.privateShard', descKey: 'tiers.addOns.privateShardDesc', priceLabel: '$4.99', recurring: true },
+  {
+    key: 'nudge_100_pack',
+    emoji: '💬',
+    nameKey: 'tiers.addOns.nudgePack',
+    descKey: 'tiers.addOns.nudgePackDesc',
+    priceLabel: '$2.99',
+    recurring: false,
+  },
+  {
+    key: 'premium_actions_20_pack',
+    emoji: '✨',
+    nameKey: 'tiers.addOns.premiumActionsPack',
+    descKey: 'tiers.addOns.premiumActionsPackDesc',
+    priceLabel: '$3.99',
+    recurring: false,
+  },
+  {
+    key: 'speed_boost',
+    emoji: '⚡',
+    nameKey: 'tiers.addOns.speedBoost',
+    descKey: 'tiers.addOns.speedBoostDesc',
+    priceLabel: '$4.99',
+    recurring: true,
+  },
+  {
+    key: 'video_voice_boost',
+    emoji: '🎬',
+    nameKey: 'tiers.addOns.videoVoiceBoost',
+    descKey: 'tiers.addOns.videoVoiceBoostDesc',
+    priceLabel: '$3.99',
+    recurring: true,
+  },
+  {
+    key: 'extra_echo',
+    emoji: '🎭',
+    nameKey: 'tiers.addOns.extraEcho',
+    descKey: 'tiers.addOns.extraEchoDesc',
+    priceLabel: '$5',
+    recurring: true,
+  },
+  {
+    key: 'private_shard',
+    emoji: '🌐',
+    nameKey: 'tiers.addOns.privateShard',
+    descKey: 'tiers.addOns.privateShardDesc',
+    priceLabel: '$4.99',
+    recurring: true,
+  },
 ];
 
-const ADDON_AVAILABILITY: Record<AddOnKey, Record<TierKey, AddOnAvailability>> = {
+const ADDON_AVAILABILITY: Record<
+  AddOnKey,
+  Record<TierKey, AddOnAvailability>
+> = {
   nudge_100_pack: {
-    Free: 'available', Starter: 'available', Core: 'available', Creator: 'available', GodMode: 'unavailable',
+    Free: 'available',
+    Starter: 'available',
+    Core: 'available',
+    Creator: 'available',
+    GodMode: 'unavailable',
   },
   premium_actions_20_pack: {
-    Free: 'available', Starter: 'available', Core: 'available', Creator: 'available', GodMode: 'unavailable',
+    Free: 'available',
+    Starter: 'available',
+    Core: 'available',
+    Creator: 'available',
+    GodMode: 'unavailable',
   },
   speed_boost: {
-    Free: 'unavailable', Starter: 'available', Core: 'available', Creator: 'available', GodMode: 'unavailable',
+    Free: 'unavailable',
+    Starter: 'available',
+    Core: 'available',
+    Creator: 'available',
+    GodMode: 'unavailable',
   },
   video_voice_boost: {
-    Free: 'unavailable', Starter: 'available', Core: 'available', Creator: 'available', GodMode: 'unavailable',
+    Free: 'unavailable',
+    Starter: 'available',
+    Core: 'available',
+    Creator: 'available',
+    GodMode: 'unavailable',
   },
   extra_echo: {
-    Free: 'unavailable', Starter: 'available', Core: 'available', Creator: 'available', GodMode: 'available',
+    Free: 'unavailable',
+    Starter: 'available',
+    Core: 'available',
+    Creator: 'available',
+    GodMode: 'available',
   },
   private_shard: {
-    Free: 'unavailable', Starter: 'unavailable', Core: 'available', Creator: { included: 1 }, GodMode: { included: 3 },
+    Free: 'unavailable',
+    Starter: 'unavailable',
+    Core: 'available',
+    Creator: { included: 1 },
+    GodMode: { included: 3 },
   },
 };
 
 function formatPrice(cents: number): string {
   const dollars = cents / 100;
-  return dollars.toFixed(2).replace(/\.00$/, '').replace(/(\.[1-9])0$/, '$1');
+  return dollars
+    .toFixed(2)
+    .replace(/\.00$/, '')
+    .replace(/(\.[1-9])0$/, '$1');
 }
 
 export function PlansPage() {
@@ -156,10 +232,14 @@ export function PlansPage() {
   const addToast = useToastStore((s) => s.addToast);
   const [loading, setLoading] = useState<string | null>(null);
 
-  const currentTier: TierKey = (user?.subscription_tier as TierKey | undefined) ?? 'Free';
+  const currentTier: TierKey =
+    (user?.subscription_tier as TierKey | undefined) ?? 'Free';
   const isPaid = currentTier !== 'Free';
 
-  const handleTierPayment = async (tierKey: string, provider: 'nowpayments' | 'xaman') => {
+  const handleTierPayment = async (
+    tierKey: string,
+    provider: 'nowpayments' | 'xaman',
+  ) => {
     setLoading(`${tierKey}-${provider}`);
     try {
       const result =
@@ -211,8 +291,12 @@ export function PlansPage() {
           {t('common.back')}
         </button>
 
-        <h1 className="mbe-2 text-2xl font-bold text-text-primary">{t('payment.title')}</h1>
-        <p className="mbe-8 text-sm text-text-secondary">{t('payment.subtitle')}</p>
+        <h1 className="mbe-2 text-2xl font-bold text-text-primary">
+          {t('payment.title')}
+        </h1>
+        <p className="mbe-8 text-sm text-text-secondary">
+          {t('payment.subtitle')}
+        </p>
 
         {isPaid && (
           <div className="mbe-6">
@@ -222,7 +306,9 @@ export function PlansPage() {
               className="flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-text-primary transition-colors hover:bg-surface-raised disabled:opacity-50"
             >
               <Settings size={16} />
-              {loading === 'manage' ? t('common.loading') : t('payment.manageSubscription')}
+              {loading === 'manage'
+                ? t('common.loading')
+                : t('payment.manageSubscription')}
             </button>
           </div>
         )}
@@ -236,27 +322,45 @@ export function PlansPage() {
               <Card key={tier.key} className={isCurrent ? 'border-accent' : ''}>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-text-primary">{t(tier.nameKey)}</h3>
-                    {isCurrent && <Badge variant="success">{t('payment.current')}</Badge>}
+                    <h3 className="text-lg font-bold text-text-primary">
+                      {t(tier.nameKey)}
+                    </h3>
+                    {isCurrent && (
+                      <Badge variant="success">{t('payment.current')}</Badge>
+                    )}
                     {tier.popular && !isCurrent && (
                       <Badge variant="accent">{t('tiers.mostPopular')}</Badge>
                     )}
                   </div>
                   <p className="text-xl font-semibold text-accent">
-                    {isFree ? t('payment.free') : `$${formatPrice(tier.priceCents)}${t('payment.perMonth')}`}
+                    {isFree
+                      ? t('payment.free')
+                      : `$${formatPrice(tier.priceCents)}${t('payment.perMonth')}`}
                   </p>
                   <ul className="flex flex-col gap-1.5">
                     {tier.featureKeys.map((featureKey) => {
                       const isIpRow =
-                        featureKey.endsWith('ip') || featureKey === 'tiers.features.unlimitedIp';
+                        featureKey.endsWith('ip') ||
+                        featureKey === 'tiers.features.unlimitedIp';
                       return (
-                        <li key={featureKey} className="flex items-start gap-2 text-xs text-text-secondary">
-                          <Check size={14} className="mbs-0.5 shrink-0 text-success" />
+                        <li
+                          key={featureKey}
+                          className="flex items-start gap-2 text-xs text-text-secondary"
+                        >
+                          <Check
+                            size={14}
+                            className="mbs-0.5 shrink-0 text-success"
+                          />
                           <span>
                             {t(featureKey)}
                             {isIpRow && (
-                              <Tooltip content={t('tiers.influencePoints.explainer')} position="top">
-                                <span className="ms-1 cursor-help text-[10px] text-text-muted">ⓘ</span>
+                              <Tooltip
+                                content={t('tiers.influencePoints.explainer')}
+                                position="top"
+                              >
+                                <span className="ms-1 cursor-help text-[10px] text-text-muted">
+                                  ⓘ
+                                </span>
                               </Tooltip>
                             )}
                           </span>
@@ -267,38 +371,55 @@ export function PlansPage() {
 
                   {!isFree && !isCurrent && (
                     <div className="mbs-2 flex flex-col gap-2">
-                      <Tooltip content={t('payment.cardComingSoon')} position="top">
+                      <Tooltip
+                        content={t('payment.cardComingSoon')}
+                        position="top"
+                      >
                         <button
-                          onClick={() => addToast(t('payment.cardComingSoon'), 'info')}
+                          onClick={() =>
+                            addToast(t('payment.cardComingSoon'), 'info')
+                          }
                           className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#635BFF] px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#5851db]"
                         >
                           <StripeLogo height={20} />
-                          <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white/90">{t('common.comingSoon')}</span>
+                          <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white/90">
+                            {t('common.comingSoon')}
+                          </span>
                         </button>
                       </Tooltip>
 
                       <button
-                        onClick={() => void handleTierPayment(tier.stripeKey, 'nowpayments')}
+                        onClick={() =>
+                          void handleTierPayment(tier.stripeKey, 'nowpayments')
+                        }
                         disabled={loading !== null}
                         className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-black px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-neutral-900 disabled:opacity-50"
                       >
                         <NowPaymentsLogo height={16} />
-                        {loading === `${tier.stripeKey}-nowpayments` ? t('payment.subscribing') : t('payment.payWithCrypto')}
+                        {loading === `${tier.stripeKey}-nowpayments`
+                          ? t('payment.subscribing')
+                          : t('payment.payWithCrypto')}
                       </button>
 
                       <button
-                        onClick={() => void handleTierPayment(tier.stripeKey, 'xaman')}
+                        onClick={() =>
+                          void handleTierPayment(tier.stripeKey, 'xaman')
+                        }
                         disabled={loading !== null}
                         className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#3052FF] px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#2744d9] disabled:opacity-50"
                       >
                         <XamanLogo height={16} />
-                        {loading === `${tier.stripeKey}-xaman` ? t('payment.subscribing') : t('payment.payWithXRP')}
+                        {loading === `${tier.stripeKey}-xaman`
+                          ? t('payment.subscribing')
+                          : t('payment.payWithXRP')}
                       </button>
                     </div>
                   )}
 
                   {isCurrent && !isFree && (
-                    <p className="mbs-2 text-center text-xs text-text-secondary">{t('payment.currentPlan')}</p>
+                    <p className="mbs-2 text-center text-xs text-text-secondary">
+                      {t('payment.currentPlan')}
+                    </p>
                   )}
                 </div>
               </Card>
@@ -309,8 +430,12 @@ export function PlansPage() {
         <Card className="mbs-6">
           <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-start">
             <div className="flex flex-col gap-1">
-              <h3 className="text-lg font-bold text-text-primary">{t('tiers.enterprise')}</h3>
-              <p className="text-xs text-text-secondary">{t('tiers.enterpriseDesc')}</p>
+              <h3 className="text-lg font-bold text-text-primary">
+                {t('tiers.enterprise')}
+              </h3>
+              <p className="text-xs text-text-secondary">
+                {t('tiers.enterpriseDesc')}
+              </p>
             </div>
             <button
               onClick={() => navigate('/contact')}
@@ -322,29 +447,43 @@ export function PlansPage() {
         </Card>
 
         <div className="mbs-10">
-          <h2 className="mbe-1 text-xl font-bold text-text-primary">{t('tiers.addOns.title')}</h2>
-          <p className="mbe-4 text-sm text-text-secondary">{t('tiers.enhanceTiers')}</p>
+          <h2 className="mbe-1 text-xl font-bold text-text-primary">
+            {t('tiers.addOns.title')}
+          </h2>
+          <p className="mbe-4 text-sm text-text-secondary">
+            {t('tiers.enhanceTiers')}
+          </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {ADD_ONS.map((addon) => {
               const availability = ADDON_AVAILABILITY[addon.key][currentTier];
               const canBuy = availability === 'available';
-              const isIncluded = typeof availability === 'object' && 'included' in availability;
+              const isIncluded =
+                typeof availability === 'object' && 'included' in availability;
               return (
                 <Card key={addon.key}>
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2">
                       <span className="text-xl">{addon.emoji}</span>
-                      <h3 className="flex-1 text-sm font-bold text-text-primary">{t(addon.nameKey)}</h3>
+                      <h3 className="flex-1 text-sm font-bold text-text-primary">
+                        {t(addon.nameKey)}
+                      </h3>
                     </div>
                     <p className="text-sm font-semibold text-accent">
                       {addon.priceLabel}
                       {addon.recurring ? t('payment.perMonth') : ''}
                     </p>
-                    <p className="text-xs/relaxed text-text-secondary">{t(addon.descKey)}</p>
+                    <p className="text-xs/relaxed text-text-secondary">
+                      {t(addon.descKey)}
+                    </p>
                     {canBuy && (
-                      <Tooltip content={t('payment.cardComingSoon')} position="top">
+                      <Tooltip
+                        content={t('payment.cardComingSoon')}
+                        position="top"
+                      >
                         <button
-                          onClick={() => addToast(t('payment.cardComingSoon'), 'info')}
+                          onClick={() =>
+                            addToast(t('payment.cardComingSoon'), 'info')
+                          }
                           disabled={loading !== null}
                           className="mbs-1 flex w-full items-center justify-center gap-2 rounded-lg bg-[#635BFF] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#5851db] disabled:opacity-50"
                         >
@@ -358,11 +497,15 @@ export function PlansPage() {
                     )}
                     {isIncluded && (
                       <p className="mbs-1 text-xs font-semibold text-success">
-                        {t('tiers.addOns.included', { count: availability.included })}
+                        {t('tiers.addOns.included', {
+                          count: availability.included,
+                        })}
                       </p>
                     )}
                     {availability === 'unavailable' && (
-                      <p className="mbs-1 text-xs text-text-muted italic">{t('tiers.addOns.notAvailableOnPlan')}</p>
+                      <p className="mbs-1 text-xs text-text-muted italic">
+                        {t('tiers.addOns.notAvailableOnPlan')}
+                      </p>
                     )}
                   </div>
                 </Card>

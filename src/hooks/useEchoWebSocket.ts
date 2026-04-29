@@ -82,14 +82,14 @@ export function useEchoWebSocket(
 
     function startPolling() {
       if (pollTimer || !onFallbackPollRef.current) return;
-      
+
       const runPoll = () => {
         if (!onFallbackPollRef.current) return;
         onFallbackPollRef.current();
         pollInterval = Math.min(pollInterval * 2, MAX_FALLBACK_POLL_MS);
         pollTimer = setTimeout(runPoll, pollInterval);
       };
-      
+
       pollTimer = setTimeout(runPoll, pollInterval);
     }
 

@@ -2,7 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Badge, EmptyState, Modal, Spinner, Tabs } from '../components/index.ts';
+import {
+  Badge,
+  EmptyState,
+  Modal,
+  Spinner,
+  Tabs,
+} from '../components/index.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { marketplace } from '../lib/api/endpoints.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
@@ -60,7 +66,10 @@ function categoryTabLabelKey(c: MarketplaceCategory): string {
   }
 }
 
-const RARITY_BADGE_VARIANT: Record<ItemRarity, 'default' | 'accent' | 'success' | 'warning' | 'danger'> = {
+const RARITY_BADGE_VARIANT: Record<
+  ItemRarity,
+  'default' | 'accent' | 'success' | 'warning' | 'danger'
+> = {
   Common: 'default',
   Rare: 'accent',
   Epic: 'warning',
@@ -86,7 +95,10 @@ function tierRank(t: SubscriptionTier): number {
   }
 }
 
-function tierMeets(user: SubscriptionTier, required: SubscriptionTier): boolean {
+function tierMeets(
+  user: SubscriptionTier,
+  required: SubscriptionTier,
+): boolean {
   return tierRank(user) >= tierRank(required);
 }
 
@@ -104,7 +116,10 @@ function formatDuration(remainingMs: number): string {
 }
 
 function CountdownTimer({ availableUntil }: { availableUntil: string }) {
-  const target = useMemo(() => new Date(availableUntil).getTime(), [availableUntil]);
+  const target = useMemo(
+    () => new Date(availableUntil).getTime(),
+    [availableUntil],
+  );
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
@@ -116,7 +131,9 @@ function CountdownTimer({ availableUntil }: { availableUntil: string }) {
   const { t } = useTranslation();
   return (
     <span className="text-xs text-text-muted">
-      {t('marketplace.limitedTimeRemaining', { duration: formatDuration(remaining) })}
+      {t('marketplace.limitedTimeRemaining', {
+        duration: formatDuration(remaining),
+      })}
     </span>
   );
 }
@@ -129,7 +146,13 @@ interface CardProps {
   onBuy: (itemId: string) => void;
 }
 
-function ItemCard({ item, ownedItemIds, userTier, onPreview, onBuy }: CardProps) {
+function ItemCard({
+  item,
+  ownedItemIds,
+  userTier,
+  onPreview,
+  onBuy,
+}: CardProps) {
   const { t } = useTranslation();
   const owned = ownedItemIds.has(item.item_id);
   const tierGate = userTier
@@ -146,11 +169,16 @@ function ItemCard({ item, ownedItemIds, userTier, onPreview, onBuy }: CardProps)
             className="size-16 rounded-md object-cover"
           />
         ) : (
-          <div className="size-16 rounded-md bg-surface-raised" aria-hidden="true" />
+          <div
+            className="size-16 rounded-md bg-surface-raised"
+            aria-hidden="true"
+          />
         )}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <h3 className="truncate text-sm font-medium text-text-primary">{item.name}</h3>
+            <h3 className="truncate text-sm font-medium text-text-primary">
+              {item.name}
+            </h3>
             <Badge variant={RARITY_BADGE_VARIANT[item.rarity]}>
               {t(rarityLabelKey(item.rarity))}
             </Badge>
@@ -160,7 +188,9 @@ function ItemCard({ item, ownedItemIds, userTier, onPreview, onBuy }: CardProps)
           </p>
           {item.price_tier_required !== 'Free' && (
             <p className="text-xs text-text-muted">
-              {t('marketplace.tierRequired', { tier: item.price_tier_required })}
+              {t('marketplace.tierRequired', {
+                tier: item.price_tier_required,
+              })}
             </p>
           )}
           {item.is_limited_time && item.available_until && (
@@ -220,7 +250,9 @@ function InventoryRow({ row, onToggle }: InventoryRowProps) {
     <li className="flex items-center justify-between gap-3 rounded-sm border border-border p-3">
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <span className="truncate text-sm font-medium text-text-primary">{item.name}</span>
+          <span className="truncate text-sm font-medium text-text-primary">
+            {item.name}
+          </span>
           <Badge variant={RARITY_BADGE_VARIANT[item.rarity]}>
             {t(rarityLabelKey(item.rarity))}
           </Badge>
@@ -262,22 +294,19 @@ export function MarketplacePage() {
     [inventory],
   );
 
-  const loadCategory = useCallback(
-    async (category: MarketplaceCategory) => {
-      setIsLoading(true);
-      setLoadError(false);
-      try {
-        const page = await marketplace.list({ category });
-        setItems(page.data);
-      } catch {
-        setItems([]);
-        setLoadError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [],
-  );
+  const loadCategory = useCallback(async (category: MarketplaceCategory) => {
+    setIsLoading(true);
+    setLoadError(false);
+    try {
+      const page = await marketplace.list({ category });
+      setItems(page.data);
+    } catch {
+      setItems([]);
+      setLoadError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   const loadInventory = useCallback(async () => {
     setIsLoading(true);
@@ -340,7 +369,10 @@ export function MarketplacePage() {
       if (!item) return;
       try {
         const row = await marketplace.purchase(itemId);
-        setInventory((prev) => [row, ...prev.filter((r) => r.item_id !== row.item_id)]);
+        setInventory((prev) => [
+          row,
+          ...prev.filter((r) => r.item_id !== row.item_id),
+        ]);
         trackEvent('marketplace.item_purchased', {
           item_id: itemId,
           category: item.category,
@@ -399,7 +431,9 @@ export function MarketplacePage() {
           action={
             <button
               type="button"
-              onClick={() => void loadCategory(activeTabId as MarketplaceCategory)}
+              onClick={() =>
+                void loadCategory(activeTabId as MarketplaceCategory)
+              }
               className="rounded-sm border border-border px-3 py-1 hover:bg-surface-raised"
             >
               {t('common.retry')}
@@ -452,7 +486,11 @@ export function MarketplacePage() {
     return (
       <ul className="space-y-2">
         {inventory.map((row) => (
-          <InventoryRow key={row.inventory_id} row={row} onToggle={handleEquipToggle} />
+          <InventoryRow
+            key={row.inventory_id}
+            row={row}
+            onToggle={handleEquipToggle}
+          />
         ))}
       </ul>
     );

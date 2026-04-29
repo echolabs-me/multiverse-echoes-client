@@ -8,7 +8,9 @@ import { ApiRequestError } from '../lib/api/client.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
 
-const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
+  | string
+  | undefined;
 
 export function RegisterPage() {
   const { t } = useTranslation();
@@ -33,7 +35,12 @@ export function RegisterPage() {
   // Preserve the current URL (with invite code) so /language can send them back.
   if (localStorage.getItem('locale_selected') !== 'true') {
     const returnPath = `/register${window.location.search}`;
-    return <Navigate to={`/language?redirect=${encodeURIComponent(returnPath)}`} replace />;
+    return (
+      <Navigate
+        to={`/language?redirect=${encodeURIComponent(returnPath)}`}
+        replace
+      />
+    );
   }
 
   function validate(): Record<string, string> {
@@ -41,7 +48,8 @@ export function RegisterPage() {
     if (!inviteCode.trim()) errs.inviteCode = t('common.fieldRequired');
     if (!email.trim()) errs.email = t('common.fieldRequired');
     if (password.length < 12) errs.password = t('auth.passwordTooShort');
-    if (password !== confirmPassword) errs.confirmPassword = t('auth.passwordMismatch');
+    if (password !== confirmPassword)
+      errs.confirmPassword = t('auth.passwordMismatch');
     if (displayName.length < 3 || displayName.length > 30)
       errs.displayName = t('auth.displayNameInvalid');
     if (!tosAccepted) errs.tos = t('auth.tosRequired');
@@ -77,7 +85,10 @@ export function RegisterPage() {
         cf_turnstile_response: turnstileToken,
         invite_code: inviteCode,
       });
-      trackEvent('account.registered', { method: 'email', locale: navigator.language });
+      trackEvent('account.registered', {
+        method: 'email',
+        locale: navigator.language,
+      });
 
       if (result.email_verified) {
         // Auto-verified (no email provider) — skip to onboarding.
@@ -121,7 +132,9 @@ export function RegisterPage() {
 
         {/* Closed beta banner — explains why an invite code is needed */}
         <div className="mbe-6 rounded-lg border border-accent/30 bg-accent/5 p-4 text-center">
-          <p className="mbe-3 text-sm text-text-secondary">{t('auth.closedBetaBanner')}</p>
+          <p className="mbe-3 text-sm text-text-secondary">
+            {t('auth.closedBetaBanner')}
+          </p>
           <Link
             to="/waitlist"
             className="inline-block rounded-md bg-accent px-5 py-2 text-sm font-semibold text-canvas transition-colors hover:bg-accent-hover"
@@ -139,14 +152,18 @@ export function RegisterPage() {
             <Input
               label={t('auth.inviteCode')}
               value={inviteCode}
-              onChange={(e) => setInviteCode((e.target as HTMLInputElement).value)}
+              onChange={(e) =>
+                setInviteCode((e.target as HTMLInputElement).value)
+              }
               error={errors.inviteCode}
               placeholder="ME-ABC12345"
               required
               readOnly={!!codeFromUrl}
               autoComplete="off"
             />
-            <p className="mbs-1 text-xs text-text-secondary">{t('auth.inviteCodeHint')}</p>
+            <p className="mbs-1 text-xs text-text-secondary">
+              {t('auth.inviteCodeHint')}
+            </p>
           </div>
 
           <Input
@@ -162,7 +179,9 @@ export function RegisterPage() {
           <Input
             label={t('auth.displayName')}
             value={displayName}
-            onChange={(e) => setDisplayName((e.target as HTMLInputElement).value)}
+            onChange={(e) =>
+              setDisplayName((e.target as HTMLInputElement).value)
+            }
             error={errors.displayName}
             placeholder={t('auth.displayNameHint')}
             required
@@ -174,12 +193,16 @@ export function RegisterPage() {
               label={t('auth.password')}
               type="password"
               value={password}
-              onChange={(e) => setPassword((e.target as HTMLInputElement).value)}
+              onChange={(e) =>
+                setPassword((e.target as HTMLInputElement).value)
+              }
               error={errors.password}
               required
               autoComplete="new-password"
             />
-            <p className="mbs-1 text-xs text-text-muted">{t('auth.passwordHint')}</p>
+            <p className="mbs-1 text-xs text-text-muted">
+              {t('auth.passwordHint')}
+            </p>
             <PasswordStrength password={password} />
           </div>
 
@@ -187,7 +210,9 @@ export function RegisterPage() {
             label={t('auth.confirmPassword')}
             type="password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword((e.target as HTMLInputElement).value)}
+            onChange={(e) =>
+              setConfirmPassword((e.target as HTMLInputElement).value)
+            }
             error={errors.confirmPassword}
             required
             autoComplete="new-password"
@@ -277,7 +302,10 @@ export function RegisterPage() {
   );
 }
 
-function getPasswordStrength(password: string): { level: number; label: string } {
+function getPasswordStrength(password: string): {
+  level: number;
+  label: string;
+} {
   if (!password) return { level: 0, label: '' };
   let score = 0;
   if (password.length >= 12) score += 1;
@@ -292,7 +320,13 @@ function getPasswordStrength(password: string): { level: number; label: string }
   return { level: 4, label: 'auth.strengthStrong' };
 }
 
-const STRENGTH_COLORS = ['', 'bg-danger', 'bg-warning', 'bg-info', 'bg-success'];
+const STRENGTH_COLORS = [
+  '',
+  'bg-danger',
+  'bg-warning',
+  'bg-info',
+  'bg-success',
+];
 
 function PasswordStrength({ password }: { password: string }) {
   const { t } = useTranslation();
@@ -311,7 +345,9 @@ function PasswordStrength({ password }: { password: string }) {
           />
         ))}
       </div>
-      <p className={`mbs-1 text-xs ${level <= 1 ? 'text-danger' : level <= 2 ? 'text-warning' : 'text-text-muted'}`}>
+      <p
+        className={`mbs-1 text-xs ${level <= 1 ? 'text-danger' : level <= 2 ? 'text-warning' : 'text-text-muted'}`}
+      >
         {t(label)}
       </p>
     </div>

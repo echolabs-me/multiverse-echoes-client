@@ -83,7 +83,11 @@ export function OverrideDunningPhaseModal({
   };
 
   return (
-    <Modal open={open} onClose={onClose} title={t('admin.billing.override.title')}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={t('admin.billing.override.title')}
+    >
       <div className="space-y-4">
         <label className="flex flex-col gap-1 text-sm text-text-secondary">
           <span>{t('admin.billing.override.targetPhaseLabel')}</span>

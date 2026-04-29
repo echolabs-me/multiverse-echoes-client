@@ -13,11 +13,7 @@ import {
   Settings,
   CheckCheck,
 } from 'lucide-react';
-import {
-  Button,
-  Spinner,
-  EmptyState,
-} from '../components/index.ts';
+import { Button, Spinner, EmptyState } from '../components/index.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import type { Notification } from '../types/api.ts';
@@ -40,7 +36,10 @@ function getCategoryIcon(category: string) {
 
 function getNavigationTarget(notification: Notification): string | null {
   // Parse notification body or category to determine navigation target
-  if (notification.category === 'echo_life_event' || notification.category === 'echo_diary') {
+  if (
+    notification.category === 'echo_life_event' ||
+    notification.category === 'echo_diary'
+  ) {
     return '/dashboard';
   }
   if (notification.category === 'community_message') {
@@ -92,87 +91,84 @@ export function NotificationsPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="mx-auto max-w-3xl p-6">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
-          >
-            <ArrowLeft size={16} />
-            {t('common.back')}
-          </button>
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+        >
+          <ArrowLeft size={16} />
+          {t('common.back')}
+        </button>
 
-          <div className="mbe-4 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-text-primary">
-              {t('notifications.title')}
-            </h1>
-            {unreadCount > 0 && (
-              <Button
-                variant="ghost"
-                onClick={() => void handleMarkAllRead()}
-              >
-                <CheckCheck size={16} />
-                {t('common.markAllRead')}
-              </Button>
-            )}
-          </div>
-
-          {/* Link to preferences */}
-          <button
-            onClick={() => navigate('/settings')}
-            className="mbe-6 flex items-center gap-1 text-sm text-accent hover:text-accent/80"
-          >
-            <Settings size={14} />
-            {t('notifications.preferencesLink')}
-          </button>
-
-          {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <Spinner size="lg" />
-            </div>
-          ) : notifications.length === 0 ? (
-            <EmptyState
-              title={t('notifications.empty')}
-              description={t('notifications.emptyDesc')}
-            />
-          ) : (
-            <div className="flex flex-col gap-2">
-              {notifications.map((notification) => (
-                <button
-                  key={notification.notification_id}
-                  onClick={() => void handleClick(notification)}
-                  className={`w-full rounded-lg border text-start transition-colors ${
-                    notification.read
-                      ? 'border-border bg-surface'
-                      : 'border-accent/30 bg-accent-subtle'
-                  } p-4 hover:border-accent`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="mbs-0.5">
-                      {getCategoryIcon(notification.category)}
-                    </div>
-                    <div className="flex-1">
-                      <p
-                        className={`text-sm font-medium ${
-                          notification.read ? 'text-text-primary' : 'text-accent'
-                        }`}
-                      >
-                        {notification.title}
-                      </p>
-                      <p className="mbs-0.5 text-sm text-text-secondary">
-                        {notification.body}
-                      </p>
-                      <span className="mbs-1 text-xs text-text-muted">
-                        {new Date(notification.created_at).toLocaleString()}
-                      </span>
-                    </div>
-                    {!notification.read && (
-                      <div className="mbs-1 size-2 shrink-0 rounded-full bg-accent" />
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
+        <div className="mbe-4 flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-text-primary">
+            {t('notifications.title')}
+          </h1>
+          {unreadCount > 0 && (
+            <Button variant="ghost" onClick={() => void handleMarkAllRead()}>
+              <CheckCheck size={16} />
+              {t('common.markAllRead')}
+            </Button>
           )}
         </div>
+
+        {/* Link to preferences */}
+        <button
+          onClick={() => navigate('/settings')}
+          className="mbe-6 flex items-center gap-1 text-sm text-accent hover:text-accent/80"
+        >
+          <Settings size={14} />
+          {t('notifications.preferencesLink')}
+        </button>
+
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <Spinner size="lg" />
+          </div>
+        ) : notifications.length === 0 ? (
+          <EmptyState
+            title={t('notifications.empty')}
+            description={t('notifications.emptyDesc')}
+          />
+        ) : (
+          <div className="flex flex-col gap-2">
+            {notifications.map((notification) => (
+              <button
+                key={notification.notification_id}
+                onClick={() => void handleClick(notification)}
+                className={`w-full rounded-lg border text-start transition-colors ${
+                  notification.read
+                    ? 'border-border bg-surface'
+                    : 'border-accent/30 bg-accent-subtle'
+                } p-4 hover:border-accent`}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="mbs-0.5">
+                    {getCategoryIcon(notification.category)}
+                  </div>
+                  <div className="flex-1">
+                    <p
+                      className={`text-sm font-medium ${
+                        notification.read ? 'text-text-primary' : 'text-accent'
+                      }`}
+                    >
+                      {notification.title}
+                    </p>
+                    <p className="mbs-0.5 text-sm text-text-secondary">
+                      {notification.body}
+                    </p>
+                    <span className="mbs-1 text-xs text-text-muted">
+                      {new Date(notification.created_at).toLocaleString()}
+                    </span>
+                  </div>
+                  {!notification.read && (
+                    <div className="mbs-1 size-2 shrink-0 rounded-full bg-accent" />
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
+    </div>
   );
 }

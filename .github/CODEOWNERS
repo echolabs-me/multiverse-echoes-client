@@ -1,0 +1,7 @@
+# CODEOWNERS for echolabs-me/multiverse-echoes-client
+#
+# Default owner for all files. Once the @echolabs-me/maintainers team is
+# created (org-config operational step, separate from this commit), update
+# this file to reference the team rather than an individual.
+
+* @asiamtm

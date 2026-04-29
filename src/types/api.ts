@@ -465,7 +465,12 @@ export interface ModeratorUserItem {
 
 // --- Feedback ---
 
-export type FeedbackType = 'Bug' | 'FeatureRequest' | 'Frustration' | 'Praise' | 'General';
+export type FeedbackType =
+  | 'Bug'
+  | 'FeatureRequest'
+  | 'Frustration'
+  | 'Praise'
+  | 'General';
 export type FeedbackStatus = 'New' | 'Acknowledged' | 'Resolved' | 'Wontfix';
 export type FeedbackPriority = 'P0' | 'P1' | 'P2' | 'P3' | 'P4';
 
@@ -825,46 +830,144 @@ export type WorldEventPayload =
   | { type: 'DiaryEntryGenerated'; echo_id: string; diary_id: string }
   | { type: 'LifeEventOccurred'; echo_id: string; event_id: string }
   | { type: 'MoodChanged'; echo_id: string; old_mood: string; new_mood: string }
-  | { type: 'EchoInteraction'; echo_a: string; echo_b: string; interaction_type: string; tick_id: number }
+  | {
+      type: 'EchoInteraction';
+      echo_a: string;
+      echo_b: string;
+      interaction_type: string;
+      tick_id: number;
+    }
   | { type: 'EchoHibernated'; echo_id: string; reason: string }
   | { type: 'EchoWoken'; echo_id: string }
   | { type: 'EchoCreated'; echo_id: string; owner_id: string }
   | { type: 'EchoDeleted'; echo_id: string }
-  | { type: 'EchoMoved'; echo_id: string; shard_id: string; from_location: string; to_location: string; arrival_tick: number }
-  | { type: 'EchoWealthChanged'; echo_id: string; old_value: number; new_value: number; reason: string }
+  | {
+      type: 'EchoMoved';
+      echo_id: string;
+      shard_id: string;
+      from_location: string;
+      to_location: string;
+      arrival_tick: number;
+    }
+  | {
+      type: 'EchoWealthChanged';
+      echo_id: string;
+      old_value: number;
+      new_value: number;
+      reason: string;
+    }
   | { type: 'RelationshipFormed'; echo_a: string; echo_b: string }
   | { type: 'ShardTravelCompleted'; echo_id: string; shard_id: string }
-  | { type: 'ShardCreated'; shard_id: string; shard_type: string; owner_id: string }
-  | { type: 'ShardStatusChanged'; shard_id: string; old_status: string; new_status: string }
-  | { type: 'GlobalEventPropagated'; event_id: string; affected_shards: string[] }
+  | {
+      type: 'ShardCreated';
+      shard_id: string;
+      shard_type: string;
+      owner_id: string;
+    }
+  | {
+      type: 'ShardStatusChanged';
+      shard_id: string;
+      old_status: string;
+      new_status: string;
+    }
+  | {
+      type: 'GlobalEventPropagated';
+      event_id: string;
+      affected_shards: string[];
+    }
   | { type: 'PersonaUpdated'; echo_id: string; version: number }
-  | { type: 'CommunityMessagePosted'; channel_id: string; message_id: string; author_id: string }
-  | { type: 'MessageDeleted'; channel_id: string; message_id: string; deleted_by: string }
-  | { type: 'MessageEdited'; channel_id: string; message_id: string; author_id: string }
-  | { type: 'FeedItemGenerated'; feed_item_id: string; echo_id: string; shard_id: string }
+  | {
+      type: 'CommunityMessagePosted';
+      channel_id: string;
+      message_id: string;
+      author_id: string;
+    }
+  | {
+      type: 'MessageDeleted';
+      channel_id: string;
+      message_id: string;
+      deleted_by: string;
+    }
+  | {
+      type: 'MessageEdited';
+      channel_id: string;
+      message_id: string;
+      author_id: string;
+    }
+  | {
+      type: 'FeedItemGenerated';
+      feed_item_id: string;
+      echo_id: string;
+      shard_id: string;
+    }
   | { type: 'NotificationCreated'; user_id: string; notification_id: string }
   | { type: string; [key: string]: unknown };
 
 /** Flat tagged events sent over Echo/Dashboard WS streams (server's WsEchoEvent). */
 export type WsEchoEvent =
-  | { type: 'DiaryEntryCreated'; echo_id: string; diary_id: string; tick_id: number }
-  | { type: 'DiaryImageReady'; echo_id: string; diary_id: string; image_url: string }
-  | { type: 'LifeEventOccurred'; echo_id: string; event_id: string; tick_id: number }
+  | {
+      type: 'DiaryEntryCreated';
+      echo_id: string;
+      diary_id: string;
+      tick_id: number;
+    }
+  | {
+      type: 'DiaryImageReady';
+      echo_id: string;
+      diary_id: string;
+      image_url: string;
+    }
+  | {
+      type: 'LifeEventOccurred';
+      echo_id: string;
+      event_id: string;
+      tick_id: number;
+    }
   | { type: 'MoodChanged'; echo_id: string; mood: string; tick_id: number }
-  | { type: 'EchoMoved'; echo_id: string; from_location: string; to_location: string }
+  | {
+      type: 'EchoMoved';
+      echo_id: string;
+      from_location: string;
+      to_location: string;
+    }
   | { type: 'PersonaUpdated'; echo_id: string; version: number }
   | { type: 'EchoHibernated'; echo_id: string; reason: string }
   | { type: 'EchoWoken'; echo_id: string }
-  | { type: 'EchoWealthChanged'; echo_id: string; old_value: number; new_value: number; reason: string }
+  | {
+      type: 'EchoWealthChanged';
+      echo_id: string;
+      old_value: number;
+      new_value: number;
+      reason: string;
+    }
   | { type: 'EchoDeleted'; echo_id: string }
   | { type: 'ShardTravelCompleted'; echo_id: string; shard_id: string }
   | { type: 'EchoAvatarReady'; echo_id: string; avatar_url: string }
   | { type: 'ShardCreated'; shard_id: string; shard_type: string }
-  | { type: 'CommunityMessagePosted'; channel_id: string; message_id: string; author_id: string }
-  | { type: 'CommunityMessageEdited'; channel_id: string; message_id: string; author_id: string }
-  | { type: 'CommunityMessageDeleted'; channel_id: string; message_id: string; deleted_by: string }
+  | {
+      type: 'CommunityMessagePosted';
+      channel_id: string;
+      message_id: string;
+      author_id: string;
+    }
+  | {
+      type: 'CommunityMessageEdited';
+      channel_id: string;
+      message_id: string;
+      author_id: string;
+    }
+  | {
+      type: 'CommunityMessageDeleted';
+      channel_id: string;
+      message_id: string;
+      deleted_by: string;
+    }
   | { type: 'NotificationCreated'; notification_id: string }
-  | { type: 'PaymentFailed'; provider: _CryptoBillingProvider; attempt_number: number }
+  | {
+      type: 'PaymentFailed';
+      provider: _CryptoBillingProvider;
+      attempt_number: number;
+    }
   | {
       type: 'DunningPhaseChanged';
       provider: _CryptoBillingProvider;

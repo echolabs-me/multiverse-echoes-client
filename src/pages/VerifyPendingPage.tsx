@@ -27,11 +27,7 @@ export function VerifyPendingPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-4 text-center">
-      <Mail
-        size={48}
-        className="mbe-6 text-accent"
-        aria-hidden="true"
-      />
+      <Mail size={48} className="mbe-6 text-accent" aria-hidden="true" />
       <h1 className="mbe-2 text-2xl font-bold text-text-primary">
         {t('auth.verifyTitle')}
       </h1>

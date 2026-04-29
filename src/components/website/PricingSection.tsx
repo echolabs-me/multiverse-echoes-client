@@ -136,7 +136,10 @@ const TIERS: Tier[] = [
       { text: 'tiers.features.3privateShards', type: 'star' },
       { text: 'tiers.features.priorityInference', type: 'star' },
     ],
-    showcase: ['tiers.showcaseText.unlimitedVid', 'tiers.showcaseText.unlimitedVoice'],
+    showcase: [
+      'tiers.showcaseText.unlimitedVid',
+      'tiers.showcaseText.unlimitedVoice',
+    ],
     btnStyle: 'gold',
     iconClass: 'bg-[rgba(201,168,76,0.1)]',
     god: true,
@@ -234,16 +237,61 @@ const ADDON_MATRIX: Record<AddOnKey, Record<TierKey, AddOnAvailability>> = {
 };
 
 const ADD_ONS: AddOn[] = [
-  { key: 'speed_boost', emoji: '⚡', nameKey: 'tiers.addOns.speedBoost', price: '$4.99', recurring: true, descKey: 'tiers.addOns.speedBoostDesc' },
-  { key: 'video_voice_boost', emoji: '🎬', nameKey: 'tiers.addOns.videoVoiceBoost', price: '$3.99', recurring: true, descKey: 'tiers.addOns.videoVoiceBoostDesc' },
-  { key: 'extra_echo', emoji: '🎭', nameKey: 'tiers.addOns.extraEcho', price: '$5', recurring: true, descKey: 'tiers.addOns.extraEchoDesc' },
-  { key: 'nudge_100_pack', emoji: '💬', nameKey: 'tiers.addOns.nudgePack', price: '$2.99', descKey: 'tiers.addOns.nudgePackDesc' },
-  { key: 'premium_actions_20_pack', emoji: '✨', nameKey: 'tiers.addOns.premiumActionsPack', price: '$3.99', descKey: 'tiers.addOns.premiumActionsPackDesc' },
-  { key: 'private_shard', emoji: '🌐', nameKey: 'tiers.addOns.privateShard', price: '$4.99', recurring: true, descKey: 'tiers.addOns.privateShardDesc' },
+  {
+    key: 'speed_boost',
+    emoji: '⚡',
+    nameKey: 'tiers.addOns.speedBoost',
+    price: '$4.99',
+    recurring: true,
+    descKey: 'tiers.addOns.speedBoostDesc',
+  },
+  {
+    key: 'video_voice_boost',
+    emoji: '🎬',
+    nameKey: 'tiers.addOns.videoVoiceBoost',
+    price: '$3.99',
+    recurring: true,
+    descKey: 'tiers.addOns.videoVoiceBoostDesc',
+  },
+  {
+    key: 'extra_echo',
+    emoji: '🎭',
+    nameKey: 'tiers.addOns.extraEcho',
+    price: '$5',
+    recurring: true,
+    descKey: 'tiers.addOns.extraEchoDesc',
+  },
+  {
+    key: 'nudge_100_pack',
+    emoji: '💬',
+    nameKey: 'tiers.addOns.nudgePack',
+    price: '$2.99',
+    descKey: 'tiers.addOns.nudgePackDesc',
+  },
+  {
+    key: 'premium_actions_20_pack',
+    emoji: '✨',
+    nameKey: 'tiers.addOns.premiumActionsPack',
+    price: '$3.99',
+    descKey: 'tiers.addOns.premiumActionsPackDesc',
+  },
+  {
+    key: 'private_shard',
+    emoji: '🌐',
+    nameKey: 'tiers.addOns.privateShard',
+    price: '$4.99',
+    recurring: true,
+    descKey: 'tiers.addOns.privateShardDesc',
+  },
 ];
 
 const ICON_MAP = { check: '✓', x: '✗', star: '★', addon: '✓' };
-const COLOR_MAP = { check: 'text-[#4CAF7D]', x: 'text-(--text-muted) opacity-50', star: 'text-[#C9A84C]', addon: 'text-[#4CAF7D]' };
+const COLOR_MAP = {
+  check: 'text-[#4CAF7D]',
+  x: 'text-(--text-muted) opacity-50',
+  star: 'text-[#C9A84C]',
+  addon: 'text-[#4CAF7D]',
+};
 
 export function PricingSection() {
   const { t } = useTranslation();
@@ -255,7 +303,9 @@ export function PricingSection() {
       <div className="mx-auto max-w-340">
         {/* Header */}
         <div className="mbe-14 text-center">
-          <p className="mbe-6 font-serif text-xs tracking-[4px] text-(--accent) uppercase">{t('website.pricing.eyebrow')}</p>
+          <p className="mbe-6 font-serif text-xs tracking-[4px] text-(--accent) uppercase">
+            {t('website.pricing.eyebrow')}
+          </p>
           <h2 className="mbe-4 font-serif text-4xl font-semibold text-(--text-primary)">
             {t('website.pricing.headline')}
           </h2>
@@ -289,7 +339,9 @@ export function PricingSection() {
               )}
 
               {/* Icon */}
-              <div className={`mbe-5 flex size-10 items-center justify-center rounded-[10px] text-xl ${tier.iconClass}`}>
+              <div
+                className={`mbe-5 flex size-10 items-center justify-center rounded-[10px] text-xl ${tier.iconClass}`}
+              >
                 {tier.icon}
               </div>
 
@@ -301,7 +353,9 @@ export function PricingSection() {
                   className={`ms-2 inline-block size-2.5 rounded-full align-middle ${TIER_DOT_BG[tier.key]}`}
                 />
               </h3>
-              <p className="mbe-5 min-h-9 text-[13px] text-(--text-muted)">{t(tier.tagline)}</p>
+              <p className="mbe-5 min-h-9 text-[13px] text-(--text-muted)">
+                {t(tier.tagline)}
+              </p>
 
               {/* Price */}
               <div className="mbe-6 border-be border-[#1E2A36] pbe-5">
@@ -310,15 +364,23 @@ export function PricingSection() {
                   {tier.price}
                   {tier.cents && <span className="text-xl">{tier.cents}</span>}
                 </div>
-                <p className="mbs-1 text-[13px] text-(--text-muted)">{t(tier.period)}</p>
-                {tier.note && <p className="mbs-1 text-xs font-medium text-(--accent)">{t(tier.note)}</p>}
+                <p className="mbs-1 text-[13px] text-(--text-muted)">
+                  {t(tier.period)}
+                </p>
+                {tier.note && (
+                  <p className="mbs-1 text-xs font-medium text-(--accent)">
+                    {t(tier.note)}
+                  </p>
+                )}
               </div>
 
               {/* Features — first 2 rows are headline specs (bolder, larger) */}
               <ul className="mbe-6 flex flex-1 flex-col gap-1">
                 {tier.features.map((f, idx) => {
                   const isHeadlineSpec = idx < 2;
-                  const isIpRow = f.text.endsWith('ip') || f.text === 'tiers.features.unlimitedIp';
+                  const isIpRow =
+                    f.text.endsWith('ip') ||
+                    f.text === 'tiers.features.unlimitedIp';
                   return (
                     <li
                       key={f.text}
@@ -328,7 +390,11 @@ export function PricingSection() {
                           : 'text-[13px] text-(--text-secondary)'
                       }`}
                     >
-                      <span className={`mbs-0.5 shrink-0 text-sm ${COLOR_MAP[f.type]}`}>{ICON_MAP[f.type]}</span>
+                      <span
+                        className={`mbs-0.5 shrink-0 text-sm ${COLOR_MAP[f.type]}`}
+                      >
+                        {ICON_MAP[f.type]}
+                      </span>
                       <span>
                         {t(f.text)}
                         {f.type === 'addon' && (
@@ -337,8 +403,13 @@ export function PricingSection() {
                           </span>
                         )}
                         {isIpRow && (
-                          <Tooltip content={t('tiers.influencePoints.explainer')} position="top">
-                            <span className="ms-1 cursor-help text-[10px] text-(--text-muted)">ⓘ</span>
+                          <Tooltip
+                            content={t('tiers.influencePoints.explainer')}
+                            position="top"
+                          >
+                            <span className="ms-1 cursor-help text-[10px] text-(--text-muted)">
+                              ⓘ
+                            </span>
                           </Tooltip>
                         )}
                       </span>
@@ -346,8 +417,13 @@ export function PricingSection() {
                   );
                 })}
                 {tier.showcase.map((s) => (
-                  <li key={s} className="flex items-start gap-2 text-[13px] leading-snug text-(--text-secondary)">
-                    <span className={`mbs-0.5 shrink-0 text-sm ${tier.god ? 'text-[#C9A84C]' : 'text-[#4CAF7D]'}`}>
+                  <li
+                    key={s}
+                    className="flex items-start gap-2 text-[13px] leading-snug text-(--text-secondary)"
+                  >
+                    <span
+                      className={`mbs-0.5 shrink-0 text-sm ${tier.god ? 'text-[#C9A84C]' : 'text-[#4CAF7D]'}`}
+                    >
                       {tier.god ? '★' : '✓'}
                     </span>
                     <span>{t(s)}</span>
@@ -366,7 +442,9 @@ export function PricingSection() {
                       : 'border border-[#1E2A36] text-(--text-secondary) hover:border-(--text-secondary) hover:text-(--text-primary)'
                 }`}
               >
-                {tier.price === '0' ? t('tiers.getStarted') : t('tiers.subscribe')}
+                {tier.price === '0'
+                  ? t('tiers.getStarted')
+                  : t('tiers.subscribe')}
               </Link>
             </div>
           ))}
@@ -390,54 +468,94 @@ export function PricingSection() {
           <div className="grid gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
             {ADD_ONS.map((addon) => {
               const availableTierEntries: { key: TierKey; name: string }[] = [];
-              const includedEntries: { key: TierKey; name: string; count: number }[] = [];
+              const includedEntries: {
+                key: TierKey;
+                name: string;
+                count: number;
+              }[] = [];
               TIERS.forEach((tier) => {
                 const availability = ADDON_MATRIX[addon.key][tier.key];
                 if (availability === 'available') {
-                  availableTierEntries.push({ key: tier.key, name: t(tier.nameKey) });
-                } else if (typeof availability === 'object' && 'included' in availability) {
-                  includedEntries.push({ key: tier.key, name: t(tier.nameKey), count: availability.included });
+                  availableTierEntries.push({
+                    key: tier.key,
+                    name: t(tier.nameKey),
+                  });
+                } else if (
+                  typeof availability === 'object' &&
+                  'included' in availability
+                ) {
+                  includedEntries.push({
+                    key: tier.key,
+                    name: t(tier.nameKey),
+                    count: availability.included,
+                  });
                 }
               });
               // Marker strings never appear in real translations — safe to split on.
               const TIERS_MARK = '\u0000TIERS\u0000';
               const TIER_MARK = '\u0000TIER\u0000';
-              const showEligibility = availableTierEntries.length > 0 || includedEntries.length > 0;
+              const showEligibility =
+                availableTierEntries.length > 0 || includedEntries.length > 0;
               return (
                 <div
                   key={addon.nameKey}
                   className="rounded-xl border border-[#1E2A36] bg-[#111920] p-5 transition-all duration-300 hover:bg-[#161E27]"
                 >
                   <div className="mbe-3 text-2xl">{addon.emoji}</div>
-                  <h4 className="mbe-1 text-[15px] font-semibold text-(--text-primary)">{t(addon.nameKey)}</h4>
-                  <p className="mbe-2 text-lg font-bold text-(--accent)">{addon.price}{addon.recurring ? t('payment.perMonth') : ''}</p>
-                  <p className="mbe-3 text-xs/relaxed text-(--text-muted)">{t(addon.descKey)}</p>
+                  <h4 className="mbe-1 text-[15px] font-semibold text-(--text-primary)">
+                    {t(addon.nameKey)}
+                  </h4>
+                  <p className="mbe-2 text-lg font-bold text-(--accent)">
+                    {addon.price}
+                    {addon.recurring ? t('payment.perMonth') : ''}
+                  </p>
+                  <p className="mbe-3 text-xs/relaxed text-(--text-muted)">
+                    {t(addon.descKey)}
+                  </p>
                   {showEligibility && (
                     <div className="border-bs border-(--border) pbs-2.5 text-[11px] leading-snug text-(--text-muted)">
-                      {availableTierEntries.length > 0 && (() => {
-                        const parts = t('tiers.addOns.availableOn', { tiers: TIERS_MARK }).split(TIERS_MARK);
-                        return (
-                          <div>
-                            {parts[0]}
-                            {availableTierEntries.map((e, i) => (
-                              <span key={e.key}>
-                                <span className={`font-medium ${TIER_NAME_TEXT[e.key]}`}>{e.name}</span>
-                                {i < availableTierEntries.length - 1 && ', '}
-                              </span>
-                            ))}
-                            {parts[1] ?? ''}
-                          </div>
-                        );
-                      })()}
+                      {availableTierEntries.length > 0 &&
+                        (() => {
+                          const parts = t('tiers.addOns.availableOn', {
+                            tiers: TIERS_MARK,
+                          }).split(TIERS_MARK);
+                          return (
+                            <div>
+                              {parts[0]}
+                              {availableTierEntries.map((e, i) => (
+                                <span key={e.key}>
+                                  <span
+                                    className={`font-medium ${TIER_NAME_TEXT[e.key]}`}
+                                  >
+                                    {e.name}
+                                  </span>
+                                  {i < availableTierEntries.length - 1 && ', '}
+                                </span>
+                              ))}
+                              {parts[1] ?? ''}
+                            </div>
+                          );
+                        })()}
                       {includedEntries.length > 0 && (
-                        <div className={availableTierEntries.length > 0 ? 'mbs-0.5' : ''}>
+                        <div
+                          className={
+                            availableTierEntries.length > 0 ? 'mbs-0.5' : ''
+                          }
+                        >
                           {t('tiers.addOns.includedPrefix')}{' '}
                           {includedEntries.map((e, i) => {
-                            const parts = t('tiers.addOns.includedOnTier', { count: e.count, tier: TIER_MARK }).split(TIER_MARK);
+                            const parts = t('tiers.addOns.includedOnTier', {
+                              count: e.count,
+                              tier: TIER_MARK,
+                            }).split(TIER_MARK);
                             return (
                               <span key={e.key}>
                                 {parts[0]}
-                                <span className={`font-medium ${TIER_NAME_TEXT[e.key]}`}>{e.name}</span>
+                                <span
+                                  className={`font-medium ${TIER_NAME_TEXT[e.key]}`}
+                                >
+                                  {e.name}
+                                </span>
                                 {parts[1] ?? ''}
                                 {i < includedEntries.length - 1 && ', '}
                               </span>
@@ -467,9 +585,12 @@ export function PricingSection() {
               'tiers.enterpriseFeatures.customHeartbeat',
               'tiers.enterpriseFeatures.dedicatedSupport',
               'tiers.enterpriseFeatures.slaGuarantees',
-              'tiers.enterpriseFeatures.apiAccess'
+              'tiers.enterpriseFeatures.apiAccess',
             ].map((f) => (
-              <span key={f} className="flex items-center gap-1.5 text-[13px] text-(--text-muted)">
+              <span
+                key={f}
+                className="flex items-center gap-1.5 text-[13px] text-(--text-muted)"
+              >
                 <span className="text-[#8B7EC8]">✓</span> {t(f)}
               </span>
             ))}
@@ -484,8 +605,10 @@ export function PricingSection() {
 
         {/* Footer note */}
         <p className="mbs-12 text-center text-[13px] leading-relaxed text-(--text-muted)">
-          {t('tiers.footerNoteLine1')}<br />
-          {t('tiers.footerNoteLine2')}<br />
+          {t('tiers.footerNoteLine1')}
+          <br />
+          {t('tiers.footerNoteLine2')}
+          <br />
           {t('tiers.footerNoteLine3')}
         </p>
       </div>
