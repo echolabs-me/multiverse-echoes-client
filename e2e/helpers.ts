@@ -298,6 +298,170 @@ export async function setupMockApi(page: Page) {
     route.fulfill({ status: 200, json: { status: 'running', tick_number: 1042 } }),
   );
 
+  // ME-UXF-001 §8.5 — Marketplace.
+  //
+  // Stateful in-memory catalog + inventory keyed per `Page` so each
+  // test sees an isolated marketplace world. The catalog is seeded
+  // with three items per category so the tab tests can assert non-
+  // empty grids; the inventory starts empty and grows on purchase.
+  // `equip` flips the row's `equipped` flag and auto-unequips any
+  // sibling already equipped in the same category — mirroring the
+  // server-side rule the real `marketplace.equip` invariant
+  // documents in `crates/api/src/routes/marketplace.rs`.
+  type MockItem = {
+    item_id: string;
+    name: string;
+    description: string;
+    item_type: 'EchoSkin' | 'ShardTheme' | 'DiaryStyle' | 'Badge';
+    category:
+      | 'DashboardTheme'
+      | 'PortraitStyle'
+      | 'ExportTemplate'
+      | 'ShardAesthetic'
+      | 'ScenarioPack'
+      | 'SeasonalCosmetic'
+      | 'SoundPack';
+    rarity: 'Common' | 'Rare' | 'Epic' | 'Legendary';
+    price_tier_required: 'Free' | 'Starter' | 'Core' | 'Creator' | 'GodMode';
+    price_coins: number;
+    image_url: string | null;
+    is_available: boolean;
+    is_limited_time: boolean;
+    available_until: string | null;
+    creator_id: string | null;
+    created_at: string;
+  };
+  type MockInvRow = {
+    inventory_id: string;
+    item_id: string;
+    acquired_at: string;
+    equipped: boolean;
+    price_paid_coins: number;
+    item: MockItem | null;
+  };
+  const CATEGORIES: MockItem['category'][] = [
+    'DashboardTheme',
+    'PortraitStyle',
+    'ExportTemplate',
+    'ShardAesthetic',
+    'ScenarioPack',
+    'SeasonalCosmetic',
+    'SoundPack',
+  ];
+  const catalog: MockItem[] = [];
+  for (const cat of CATEGORIES) {
+    for (let i = 0; i < 3; i++) {
+      const idx = catalog.length + 1;
+      catalog.push({
+        item_id: `item-${cat}-${i}`,
+        name: `${cat} Item ${i}`,
+        description: `Mock item ${idx}`,
+        item_type: 'EchoSkin',
+        category: cat,
+        rarity: 'Common',
+        price_tier_required: i === 2 ? 'Creator' : 'Free',
+        price_coins: 100 * (i + 1),
+        image_url: null,
+        is_available: true,
+        is_limited_time: false,
+        available_until: null,
+        creator_id: null,
+        created_at: '2026-04-01T00:00:00Z',
+      });
+    }
+  }
+  const inventory: MockInvRow[] = [];
+
+  // Glob matching note: Playwright's glob does NOT strip the query
+  // string before matching, so `**/marketplace/items` only matches the
+  // bare path. The endpoints helper appends `?category=...` for
+  // category-filtered requests, so we register a companion glob that
+  // captures the query-string variant (`?` is a single-char wildcard
+  // in playwright glob; `**` after it captures the rest).
+  const respondMarketplaceItems = (
+    route: import('@playwright/test').Route,
+  ) => {
+    if (route.request().method() !== 'GET') return route.fallback();
+    const url = new URL(route.request().url());
+    const category = url.searchParams.get('category');
+    const filtered = category
+      ? catalog.filter((i) => i.category === category)
+      : catalog;
+    return route.fulfill({
+      status: 200,
+      json: { data: filtered, next_cursor: null },
+    });
+  };
+  await page.route('**/marketplace/items', respondMarketplaceItems);
+  await page.route('**/marketplace/items?**', respondMarketplaceItems);
+  await page.route('**/marketplace/items/*/preview', (route) => {
+    const url = new URL(route.request().url());
+    const segments = url.pathname.split('/');
+    const itemId = segments[segments.length - 2]!;
+    // 1×1 transparent PNG data URL — gives the modal-content div
+    // non-zero rendered dimensions so playwright's `toBeVisible()`
+    // assertion can resolve.
+    return route.fulfill({
+      status: 200,
+      json: {
+        item_id: itemId,
+        preview_image_url:
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgAAIAAAUAAen63NgAAAAASUVORK5CYII=',
+        preview_demo_url: null,
+      },
+    });
+  });
+  await page.route('**/marketplace/purchase', async (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    const body = JSON.parse(route.request().postData() ?? '{}');
+    const item = catalog.find((i) => i.item_id === body.item_id);
+    if (!item) {
+      return route.fulfill({ status: 404, json: { error: 'item not found' } });
+    }
+    const row: MockInvRow = {
+      inventory_id: `inv-${item.item_id}`,
+      item_id: item.item_id,
+      acquired_at: new Date().toISOString(),
+      equipped: false,
+      price_paid_coins: item.price_coins,
+      item,
+    };
+    const idx = inventory.findIndex((r) => r.item_id === item.item_id);
+    if (idx >= 0) inventory[idx] = row;
+    else inventory.unshift(row);
+    return route.fulfill({ status: 200, json: row });
+  });
+  const respondInventory = (route: import('@playwright/test').Route) => {
+    if (route.request().method() !== 'GET') return route.fallback();
+    return route.fulfill({
+      status: 200,
+      json: { data: inventory, next_cursor: null },
+    });
+  };
+  await page.route('**/marketplace/inventory', respondInventory);
+  await page.route('**/marketplace/inventory?**', respondInventory);
+  await page.route('**/marketplace/inventory/*/equip', async (route) => {
+    if (route.request().method() !== 'PATCH') return route.fallback();
+    const url = new URL(route.request().url());
+    const segments = url.pathname.split('/');
+    const itemId = segments[segments.length - 2]!;
+    const body = JSON.parse(route.request().postData() ?? '{}');
+    const targetRow = inventory.find((r) => r.item_id === itemId);
+    if (!targetRow) {
+      return route.fulfill({ status: 404, json: { error: 'not in inventory' } });
+    }
+    if (body.equipped === true && targetRow.item) {
+      const cat = targetRow.item.category;
+      for (const r of inventory) {
+        if (r.item_id !== itemId && r.item?.category === cat) {
+          r.equipped = false;
+        }
+      }
+    }
+    targetRow.equipped = !!body.equipped;
+    return route.fulfill({ status: 200, json: targetRow });
+  });
+
   // ME-UXF-001 §8.2 — Public user profile.
   // The handler maps `?visibility=` → server visibility for the three
   // a11y test scenarios; ignored otherwise (tests not interested in
@@ -309,9 +473,19 @@ export async function setupMockApi(page: Page) {
     route.fulfill({ status: 200, json: [] }),
   );
   await page.route('**/users/*', (route) => {
+    // The SPA route `/users/{user_id}` (UserProfilePage) shares its
+    // pathname with the API endpoint of the same shape. Document
+    // navigations must pass through to the Vite dev server's
+    // history-fallback (which serves the SPA shell); only XHR/fetch
+    // calls from the mounted page should be intercepted here. Without
+    // this guard, `page.goto('/users/{id}')` would render the mock
+    // JSON body in the browser as plain text — the SPA never mounts,
+    // and every selector on the page fails.
+    if (route.request().resourceType() === 'document') {
+      return route.fallback();
+    }
     const url = new URL(route.request().url());
-    const visibility =
-      url.searchParams.get('visibility') ?? 'Public';
+    const visibility = url.searchParams.get('visibility') ?? 'Public';
     const isMutual =
       url.searchParams.get('mutual') === 'true' || visibility === 'Public';
     return route.fulfill({
@@ -429,6 +603,31 @@ export async function setupMockApi(page: Page) {
     (route) =>
       route.fulfill({ status: 200, json: { outcome: 'redriven_success' } }),
   );
+
+  // Vite asset bypass — registered LAST so per LIFO ordering it is
+  // checked FIRST. Any URL inside Vite's served-from-source surfaces
+  // (`/src/...`, `/@vite/...`, `/@id/...`, `/@fs/...`, `/node_modules/...`)
+  // forwards directly to the dev server. Without this guard, broader
+  // glob patterns above (e.g. `**/admin/**`, intended for API routes
+  // like `/admin/users`) silently swallow Vite-served TS modules whose
+  // paths happen to contain the same segment (e.g.
+  // `/src/components/admin/billing/X.tsx`), returning JSON for what
+  // the browser parses as a JS module — the script-tag fails its MIME
+  // check, the SPA never mounts, and tests run against an empty
+  // `<div id="root">`. The previously-shipped axe-core suite under
+  // `e2e/accessibility/` was silently passing against blank pages
+  // because an empty body has zero a11y violations; the new
+  // data-testid-keyed suites Lane E Commit 7 introduces surfaced the
+  // load failure through their selector assertions, leading to this
+  // sibling-fix per Rule #14 in the same edit surface. Note: the Lane
+  // C billing-mock additions immediately above are registered BEFORE
+  // these bypass routes so the bypass remains the last-registered
+  // (and therefore first-checked per LIFO) route handler set.
+  await page.route('**/src/**', (route) => route.continue());
+  await page.route('**/@vite/**', (route) => route.continue());
+  await page.route('**/@id/**', (route) => route.continue());
+  await page.route('**/@fs/**', (route) => route.continue());
+  await page.route('**/node_modules/**', (route) => route.continue());
 }
 
 /** Simulate an authenticated session by setting localStorage tokens. */

@@ -217,8 +217,13 @@ test('a11y: User Profile (Public)', async ({ page }) => {
 test('a11y: User Profile (FriendsOnly hidden)', async ({ page }) => {
   await setupMockApi(page);
   // Override the /users/* handler to serve FriendsOnly + non-mutual.
-  await page.route('**/users/' + TARGET_PROFILE_ID, (route) =>
-    route.fulfill({
+  // Document navigations fall through to the SPA shell — see the
+  // comment on the same guard inside `setupMockApi`.
+  await page.route('**/users/' + TARGET_PROFILE_ID, (route) => {
+    if (route.request().resourceType() === 'document') {
+      return route.fallback();
+    }
+    return route.fulfill({
       status: 200,
       json: {
         user_id: TARGET_PROFILE_ID,
@@ -232,8 +237,8 @@ test('a11y: User Profile (FriendsOnly hidden)', async ({ page }) => {
         mutual_follow: false,
         is_founding_echo: false,
       },
-    }),
-  );
+    });
+  });
   await page.goto('/');
   await authenticateUser(page);
   await page.goto(`/users/${TARGET_PROFILE_ID}`);
@@ -243,8 +248,11 @@ test('a11y: User Profile (FriendsOnly hidden)', async ({ page }) => {
 
 test('a11y: User Profile (Private)', async ({ page }) => {
   await setupMockApi(page);
-  await page.route('**/users/' + TARGET_PROFILE_ID, (route) =>
-    route.fulfill({
+  await page.route('**/users/' + TARGET_PROFILE_ID, (route) => {
+    if (route.request().resourceType() === 'document') {
+      return route.fallback();
+    }
+    return route.fulfill({
       status: 200,
       json: {
         user_id: TARGET_PROFILE_ID,
@@ -258,13 +266,48 @@ test('a11y: User Profile (Private)', async ({ page }) => {
         mutual_follow: false,
         is_founding_echo: false,
       },
-    }),
-  );
+    });
+  });
   await page.goto('/');
   await authenticateUser(page);
   await page.goto(`/users/${TARGET_PROFILE_ID}`);
   await page.waitForLoadState('networkidle');
   await auditPage(page, 'User Profile (Private)');
+});
+
+// MarketplacePage (ME-UXF-001 §8.5). Three render branches: default
+// category tab, inventory tab, preview modal open. The preview modal
+// case exercises the dialog's focus-trap + aria-labelledby surface
+// against axe — the wider lane has zero modal a11y coverage at HEAD.
+test('a11y: Marketplace page (default tab)', async ({ page }) => {
+  await setupMockApi(page);
+  await page.goto('/');
+  await authenticateUser(page);
+  await page.goto('/marketplace');
+  await page.waitForLoadState('networkidle');
+  await auditPage(page, 'Marketplace page (default tab)');
+});
+
+test('a11y: Marketplace page (inventory tab)', async ({ page }) => {
+  await setupMockApi(page);
+  await page.goto('/');
+  await authenticateUser(page);
+  await page.goto('/marketplace');
+  await page.waitForLoadState('networkidle');
+  await page.getByTestId('marketplace-tab-my-inventory').click();
+  await page.waitForLoadState('networkidle');
+  await auditPage(page, 'Marketplace page (inventory tab)');
+});
+
+test('a11y: Marketplace page (preview modal open)', async ({ page }) => {
+  await setupMockApi(page);
+  await page.goto('/');
+  await authenticateUser(page);
+  await page.goto('/marketplace');
+  await page.waitForLoadState('networkidle');
+  await page.getByTestId('marketplace-item-preview').first().click();
+  await expect(page.getByTestId('marketplace-preview-modal-root')).toBeVisible();
+  await auditPage(page, 'Marketplace page (preview modal open)');
 });
 
 test('a11y: Admin Dashboard', async ({ page }) => {

@@ -134,43 +134,51 @@ export function UserProfilePage() {
 
   if (!userId) {
     return (
-      <main id="main-content" className="p-6">
-        <EmptyState title={t('userProfile.notFound')} />
+      <main id="main-content" data-testid="profile-page-root" className="p-6">
+        <div data-testid="profile-not-found">
+          <EmptyState title={t('userProfile.notFound')} />
+        </div>
       </main>
     );
   }
 
   if (isLoading) {
     return (
-      <main id="main-content" className="p-6">
-        <Spinner />
+      <main id="main-content" data-testid="profile-page-root" className="p-6">
+        <div data-testid="profile-loading">
+          <Spinner />
+        </div>
       </main>
     );
   }
 
   if (error === 'load-failed') {
     return (
-      <main id="main-content" className="p-6">
-        <EmptyState
-          title={t('userProfile.errorLoading')}
-          action={
-            <button
-              type="button"
-              onClick={() => void loadData()}
-              className="rounded-sm border px-3 py-1 hover:bg-white/5"
-            >
-              {t('common.retry')}
-            </button>
-          }
-        />
+      <main id="main-content" data-testid="profile-page-root" className="p-6">
+        <div data-testid="profile-load-failed">
+          <EmptyState
+            title={t('userProfile.errorLoading')}
+            action={
+              <button
+                type="button"
+                onClick={() => void loadData()}
+                className="rounded-sm border px-3 py-1 hover:bg-white/5"
+              >
+                {t('common.retry')}
+              </button>
+            }
+          />
+        </div>
       </main>
     );
   }
 
   if (error === 'not-found' || !profile || !view) {
     return (
-      <main id="main-content" className="p-6">
-        <EmptyState title={t('userProfile.notFound')} />
+      <main id="main-content" data-testid="profile-page-root" className="p-6">
+        <div data-testid="profile-not-found">
+          <EmptyState title={t('userProfile.notFound')} />
+        </div>
       </main>
     );
   }
@@ -178,20 +186,29 @@ export function UserProfilePage() {
   const showFullProfile = view === 'Public' || view === 'FriendsOnlyVisible';
 
   return (
-    <main id="main-content" className="mx-auto max-w-4xl p-6">
+    <main
+      id="main-content"
+      data-testid="profile-page-root"
+      className="mx-auto max-w-4xl p-6"
+    >
       {/* Hero — display_name + avatar always rendered (visible in every
           view state). Bio + Founding Echo badge gated behind
           showFullProfile. */}
       <header className="mbe-6 flex items-center gap-4">
-        <Avatar
-          src={profile.avatar_url ?? undefined}
-          alt={profile.display_name}
-          size="lg"
-        />
+        <div data-testid="profile-avatar">
+          <Avatar
+            src={profile.avatar_url ?? undefined}
+            alt={profile.display_name}
+            size="lg"
+          />
+        </div>
         <div>
-          <h1 className="text-2xl font-bold">{profile.display_name}</h1>
+          <h1 data-testid="profile-display-name" className="text-2xl font-bold">
+            {profile.display_name}
+          </h1>
           {profile.is_founding_echo && showFullProfile && (
             <span
+              data-testid="profile-founding-echo-badge"
               className="mbs-1 inline-block rounded-sm bg-amber-200/30 px-2 py-0.5 text-xs text-amber-200"
               aria-label={t('userProfile.foundingEcho')}
             >
@@ -228,7 +245,9 @@ export function UserProfilePage() {
           {profile.bio && (
             <section className="mbs-6">
               <h2 className="sr-only">{t('userProfile.bio')}</h2>
-              <p className="whitespace-pre-wrap">{profile.bio}</p>
+              <p data-testid="profile-bio" className="whitespace-pre-wrap">
+                {profile.bio}
+              </p>
             </section>
           )}
 
@@ -239,7 +258,10 @@ export function UserProfilePage() {
             {echoes.length === 0 ? (
               <EmptyState title={t('userProfile.echoesEmpty')} />
             ) : (
-              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <ul
+                data-testid="profile-echoes-list"
+                className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+              >
                 {echoes.map((e) => (
                   <li
                     key={e.echo_id}
@@ -265,7 +287,10 @@ export function UserProfilePage() {
             {echoesInCommon.length === 0 ? (
               <EmptyState title={t('userProfile.echoesInCommonEmpty')} />
             ) : (
-              <ul className="space-y-2">
+              <ul
+                data-testid="profile-echoes-in-common-list"
+                className="space-y-2"
+              >
                 {echoesInCommon.map((row) => (
                   <li
                     key={`${row.viewer_echo_id}::${row.target_echo_id}`}
@@ -291,11 +316,16 @@ export function UserProfilePage() {
           </section>
         </>
       ) : view === 'FriendsOnlyHidden' ? (
-        <p className="mbs-6 opacity-80">
+        <p
+          data-testid="profile-friends-only-message"
+          className="mbs-6 opacity-80"
+        >
           {t('userProfile.friendsOnlyMessage')}
         </p>
       ) : (
-        <p className="mbs-6 opacity-80">{t('userProfile.privateMessage')}</p>
+        <p data-testid="profile-private-message" className="mbs-6 opacity-80">
+          {t('userProfile.privateMessage')}
+        </p>
       )}
     </main>
   );
@@ -331,6 +361,9 @@ function ActionRow(props: ActionRowProps) {
     <div className="flex flex-wrap gap-2">
       <button
         type="button"
+        data-testid={
+          rel.following ? 'profile-action-unfollow' : 'profile-action-follow'
+        }
         onClick={rel.following ? onUnfollow : onFollow}
         disabled={pending === 'following'}
         aria-pressed={rel.following}
@@ -348,6 +381,9 @@ function ActionRow(props: ActionRowProps) {
         <>
           <button
             type="button"
+            data-testid={
+              rel.blocked ? 'profile-action-unblock' : 'profile-action-block'
+            }
             onClick={rel.blocked ? onUnblock : onBlock}
             disabled={pending === 'blocked'}
             aria-pressed={rel.blocked}
@@ -359,6 +395,9 @@ function ActionRow(props: ActionRowProps) {
           </button>
           <button
             type="button"
+            data-testid={
+              rel.muted ? 'profile-action-unmute' : 'profile-action-mute'
+            }
             onClick={rel.muted ? onUnmute : onMute}
             disabled={pending === 'muted'}
             aria-pressed={rel.muted}

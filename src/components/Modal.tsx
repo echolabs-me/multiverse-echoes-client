@@ -8,6 +8,7 @@ interface ModalProps {
   title: string;
   children: ReactNode;
   className?: string;
+  closeTestId?: string;
 }
 
 export function Modal({
@@ -16,6 +17,7 @@ export function Modal({
   title,
   children,
   className = '',
+  closeTestId,
 }: ModalProps) {
   const { t } = useTranslation();
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -68,6 +70,7 @@ export function Modal({
         </h2>
         <button
           onClick={onClose}
+          data-testid={closeTestId}
           className="transition-color-opacity rounded-md p-1 text-text-muted hover:text-text-primary"
           aria-label={t('common.close')}
         >

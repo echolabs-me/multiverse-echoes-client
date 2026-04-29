@@ -302,6 +302,33 @@ test.describe.serial('live flow (echolabsme.com)', () => {
     expect(replyText.length, 'echo reply must contain characters').toBeGreaterThan(0);
   });
 
+  test('5.5. user profile route loads against real backend', async ({
+    page,
+  }) => {
+    // Self-view sanity check for the /users/{user_id} SPA route added in
+    // Lane E Commit 2 + Commit 1a (`GET /public/users/{user_id}` is a
+    // separate OG-router consumer; the SPA hits `GET /users/{user_id}`).
+    // Self-view is treated as Public per UserProfilePage's render
+    // branches, so the test asserts the public surface (display name,
+    // bio if present) renders without depending on the visibility
+    // gating logic.
+    const state = loadState();
+    test.skip(!state.userId, 'no user id — skip (test 1 likely failed)');
+    await login(page, state.testEmail, state.testPassword);
+
+    await page.goto(`/users/${state.userId}`);
+
+    // The page consumes `data-testid="profile-page-root"` (Lane E
+    // Commit 7-4 sibling-fix). Wait for the root to mount, then assert
+    // the display-name surface matches the registered name.
+    await expect(page.getByTestId('profile-page-root')).toBeVisible({
+      timeout: 30_000,
+    });
+    await expect(page.getByTestId('profile-display-name')).toHaveText(
+      state.testDisplayName,
+    );
+  });
+
   test('6. delete Echo', async ({ page }) => {
     const state = loadState();
     test.skip(!state.echoId, 'no echo id — skip');

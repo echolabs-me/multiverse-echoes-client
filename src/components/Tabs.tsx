@@ -4,6 +4,7 @@ export interface Tab {
   id: string;
   label: string;
   content?: ReactNode;
+  testId?: string;
 }
 
 interface TabsProps {
@@ -71,6 +72,7 @@ export function Tabs({
             }}
             role="tab"
             id={`tab-${tab.id}`}
+            data-testid={tab.testId}
             aria-selected={tab.id === activeId}
             aria-controls={`panel-${tab.id}`}
             tabIndex={tab.id === activeId ? 0 : -1}

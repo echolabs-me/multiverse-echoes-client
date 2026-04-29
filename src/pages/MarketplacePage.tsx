@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -160,7 +160,10 @@ function ItemCard({
     : false;
 
   return (
-    <article className="rounded-lg border border-border bg-surface p-4">
+    <article
+      data-testid={`marketplace-item-card-${item.item_id}`}
+      className="rounded-lg border border-border bg-surface p-4"
+    >
       <div className="flex items-start gap-3">
         {item.image_url ? (
           <img
@@ -201,6 +204,7 @@ function ItemCard({
       <div className="mbs-3 flex flex-wrap gap-2">
         <button
           type="button"
+          data-testid="marketplace-item-preview"
           onClick={() => onPreview(item.item_id)}
           className="rounded-sm border border-border px-3 py-1 text-sm hover:bg-surface-raised"
         >
@@ -213,6 +217,7 @@ function ItemCard({
         ) : tierGate ? (
           <button
             type="button"
+            data-testid="marketplace-item-buy"
             onClick={() => onBuy(item.item_id)}
             className="rounded-sm border border-accent px-3 py-1 text-sm text-accent hover:bg-accent-subtle"
           >
@@ -221,6 +226,7 @@ function ItemCard({
         ) : (
           <Link
             to="/plans"
+            data-testid="marketplace-item-buy-upgrade-link"
             className="rounded-sm border border-border px-3 py-1 text-sm hover:bg-surface-raised"
           >
             {t('marketplace.upgradeToUnlock')}
@@ -240,14 +246,20 @@ function InventoryRow({ row, onToggle }: InventoryRowProps) {
   const { t } = useTranslation();
   if (!row.item) {
     return (
-      <li className="rounded-sm border border-border p-3 text-sm text-text-muted">
+      <li
+        data-testid={`marketplace-inventory-row-${row.item_id}`}
+        className="rounded-sm border border-border p-3 text-sm text-text-muted"
+      >
         {row.item_id}
       </li>
     );
   }
   const item = row.item;
   return (
-    <li className="flex items-center justify-between gap-3 rounded-sm border border-border p-3">
+    <li
+      data-testid={`marketplace-inventory-row-${item.item_id}`}
+      className="flex items-center justify-between gap-3 rounded-sm border border-border p-3"
+    >
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <span className="truncate text-sm font-medium text-text-primary">
@@ -263,6 +275,7 @@ function InventoryRow({ row, onToggle }: InventoryRowProps) {
       </div>
       <button
         type="button"
+        data-testid="marketplace-inventory-equip-toggle"
         onClick={() => onToggle(item.item_id, !row.equipped)}
         aria-pressed={row.equipped}
         className="rounded-sm border border-border px-3 py-1 text-sm hover:bg-surface-raised"
@@ -336,13 +349,20 @@ export function MarketplacePage() {
     void loadInventory();
   }, [loadInventory]);
 
-  // Fire the analytics browse event once per page mount.
+  // Fire the analytics browse event once per page mount, with the
+  // initial tab the user landed on. Ref-guarded so the hook can list
+  // `activeTabId` in its deps (satisfying react-hooks/exhaustive-deps)
+  // while still firing exactly once — the second invocation, after a
+  // tab switch, finds `browseFiredRef.current === true` and returns
+  // before re-emitting. This shape replaces an earlier
+  // `eslint-disable-next-line react-hooks/exhaustive-deps` that
+  // omitted `activeTabId` from the dep array.
+  const browseFiredRef = useRef(false);
   useEffect(() => {
+    if (browseFiredRef.current) return;
+    browseFiredRef.current = true;
     trackEvent('marketplace.browse', { category_filter: activeTabId });
-    // Intentionally omit activeTabId from the dep array — we want
-    // mount-only, not per-tab-switch.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeTabId]);
 
   const handlePreview = useCallback(
     async (itemId: string) => {
@@ -411,35 +431,72 @@ export function MarketplacePage() {
     [inventory, addToast, t, loadInventory],
   );
 
+  // Map enum value to kebab-case suffix for `marketplace-tab-{slug}`
+  // testId. Matches the i18n-key half but in kebab-case so it reads
+  // identically to other lane data-testids in the codebase.
+  const categoryTabTestIdSlug = (c: MarketplaceCategory): string => {
+    switch (c) {
+      case 'DashboardTheme':
+        return 'dashboard-theme';
+      case 'PortraitStyle':
+        return 'portrait-style';
+      case 'ExportTemplate':
+        return 'export-template';
+      case 'ShardAesthetic':
+        return 'shard-aesthetic';
+      case 'ScenarioPack':
+        return 'scenario-pack';
+      case 'SeasonalCosmetic':
+        return 'seasonal-cosmetic';
+      case 'SoundPack':
+        return 'sound-pack';
+      case 'Uncategorized':
+        return 'dashboard-theme';
+    }
+  };
+
   const tabs = useMemo(() => {
     const categoryTabs = CATEGORY_TABS.map((c) => ({
       id: c,
       label: t(categoryTabLabelKey(c)),
+      testId: `marketplace-tab-${categoryTabTestIdSlug(c)}`,
     }));
     return [
       ...categoryTabs,
-      { id: INVENTORY_TAB_ID, label: t('marketplace.tabs.myInventory') },
+      {
+        id: INVENTORY_TAB_ID,
+        label: t('marketplace.tabs.myInventory'),
+        testId: 'marketplace-tab-my-inventory',
+      },
     ];
   }, [t]);
 
   const renderCategoryPanel = () => {
-    if (isLoading) return <Spinner />;
+    if (isLoading) {
+      return (
+        <div data-testid="marketplace-loading">
+          <Spinner />
+        </div>
+      );
+    }
     if (loadError) {
       return (
-        <EmptyState
-          title={t('marketplace.loadError')}
-          action={
-            <button
-              type="button"
-              onClick={() =>
-                void loadCategory(activeTabId as MarketplaceCategory)
-              }
-              className="rounded-sm border border-border px-3 py-1 hover:bg-surface-raised"
-            >
-              {t('common.retry')}
-            </button>
-          }
-        />
+        <div data-testid="marketplace-load-error">
+          <EmptyState
+            title={t('marketplace.loadError')}
+            action={
+              <button
+                type="button"
+                onClick={() =>
+                  void loadCategory(activeTabId as MarketplaceCategory)
+                }
+                className="rounded-sm border border-border px-3 py-1 hover:bg-surface-raised"
+              >
+                {t('common.retry')}
+              </button>
+            }
+          />
+        </div>
       );
     }
     if (items.length === 0) {
@@ -463,21 +520,29 @@ export function MarketplacePage() {
   };
 
   const renderInventoryPanel = () => {
-    if (isLoading) return <Spinner />;
+    if (isLoading) {
+      return (
+        <div data-testid="marketplace-loading">
+          <Spinner />
+        </div>
+      );
+    }
     if (loadError) {
       return (
-        <EmptyState
-          title={t('marketplace.loadError')}
-          action={
-            <button
-              type="button"
-              onClick={() => void loadInventory()}
-              className="rounded-sm border border-border px-3 py-1 hover:bg-surface-raised"
-            >
-              {t('common.retry')}
-            </button>
-          }
-        />
+        <div data-testid="marketplace-load-error">
+          <EmptyState
+            title={t('marketplace.loadError')}
+            action={
+              <button
+                type="button"
+                onClick={() => void loadInventory()}
+                className="rounded-sm border border-border px-3 py-1 hover:bg-surface-raised"
+              >
+                {t('common.retry')}
+              </button>
+            }
+          />
+        </div>
       );
     }
     if (inventory.length === 0) {
@@ -497,36 +562,46 @@ export function MarketplacePage() {
   };
 
   return (
-    <main id="main-content" className="mx-auto max-w-5xl p-6">
+    <main
+      id="main-content"
+      data-testid="marketplace-page-root"
+      className="mx-auto max-w-5xl p-6"
+    >
       <header className="mbe-6">
         <h1 className="text-2xl font-bold">{t('marketplace.pageTitle')}</h1>
       </header>
-      <Tabs
-        tabs={tabs.map((tab) => ({
-          id: tab.id,
-          label: tab.label,
-          content:
-            tab.id === activeTabId
-              ? tab.id === INVENTORY_TAB_ID
-                ? renderInventoryPanel()
-                : renderCategoryPanel()
-              : undefined,
-        }))}
-        activeTab={activeTabId}
-        onTabChange={setActiveTabId}
-      />
+      <div data-testid="marketplace-tabs-root">
+        <Tabs
+          tabs={tabs.map((tab) => ({
+            id: tab.id,
+            label: tab.label,
+            testId: tab.testId,
+            content:
+              tab.id === activeTabId
+                ? tab.id === INVENTORY_TAB_ID
+                  ? renderInventoryPanel()
+                  : renderCategoryPanel()
+                : undefined,
+          }))}
+          activeTab={activeTabId}
+          onTabChange={setActiveTabId}
+        />
+      </div>
       <Modal
         open={previewState.open}
         onClose={() => setPreviewState({ open: false, data: null, name: '' })}
         title={previewState.name}
+        closeTestId="marketplace-preview-modal-close"
       >
-        {previewState.data?.preview_image_url && (
-          <img
-            src={previewState.data.preview_image_url}
-            alt={previewState.name}
-            className="w-full rounded-md"
-          />
-        )}
+        <div data-testid="marketplace-preview-modal-root">
+          {previewState.data?.preview_image_url && (
+            <img
+              src={previewState.data.preview_image_url}
+              alt={previewState.name}
+              className="w-full rounded-md"
+            />
+          )}
+        </div>
       </Modal>
     </main>
   );

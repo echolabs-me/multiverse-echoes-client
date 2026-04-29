@@ -66,6 +66,7 @@ test.describe('Reduced Motion', () => {
 
   test('no keyframe animations running on Dashboard', async ({ page }) => {
     await setupMockApi(page);
+    await page.goto('/');
     await authenticateUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
@@ -101,6 +102,7 @@ test.describe('Reduced Motion', () => {
 
   test('tick pulse is disabled', async ({ page }) => {
     await setupMockApi(page);
+    await page.goto('/');
     await authenticateUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
@@ -126,6 +128,7 @@ test.describe('Reduced Motion', () => {
 
   test('3D portrait shows 2D static fallback', async ({ page }) => {
     await setupMockApi(page);
+    await page.goto('/');
     await authenticateUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
@@ -156,6 +159,7 @@ test.describe('Reduced Motion', () => {
 
   test('Shard environment shows static fallback', async ({ page }) => {
     await setupMockApi(page);
+    await page.goto('/');
     await authenticateUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
@@ -210,6 +214,7 @@ test.describe('axe-core WCAG 2.1 AA re-audit (post Phase 5)', () => {
   for (const { path, name } of AUTH_PAGES) {
     test(`a11y re-audit: ${name}`, async ({ page }) => {
       await setupMockApi(page);
+      await page.goto('/');
       await authenticateUser(page);
       await page.goto(path);
       await page.waitForLoadState('networkidle');
@@ -223,6 +228,7 @@ test.describe('axe-core WCAG 2.1 AA re-audit (post Phase 5)', () => {
 test.describe('Structural polish checks', () => {
   test('skip link target exists on Dashboard', async ({ page }) => {
     await setupMockApi(page);
+    await page.goto('/');
     await authenticateUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
@@ -241,6 +247,7 @@ test.describe('Structural polish checks', () => {
 
   test('all images have alt text', async ({ page }) => {
     await setupMockApi(page);
+    await page.goto('/');
     await authenticateUser(page);
     await page.goto('/dashboard');
     await page.waitForLoadState('networkidle');
@@ -261,6 +268,7 @@ test.describe('Structural polish checks', () => {
 
   test('logical tab order on Settings', async ({ page }) => {
     await setupMockApi(page);
+    await page.goto('/');
     await authenticateUser(page);
     await page.goto('/settings');
     await page.waitForLoadState('networkidle');

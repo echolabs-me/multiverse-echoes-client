@@ -52,7 +52,7 @@ export function ErrorFallback() {
         <button
           type="button"
           onClick={() => window.location.reload()}
-          className="text-accent-fg rounded-md bg-accent px-4 py-2 text-sm font-medium hover:bg-accent/90"
+          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-canvas hover:bg-accent/90"
         >
           {t('errors.appCrashed.reload')}
         </button>

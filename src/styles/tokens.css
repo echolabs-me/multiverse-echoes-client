@@ -8,7 +8,12 @@
   --border: #2e4052;
   --text-primary: #e8e0d8;
   --text-secondary: #9ba8b4;
-  --text-muted: #5e6f7e;
+  /* WCAG AA fix (Lane E Commit 7-2): #5e6f7e on --surface (#1a2633)
+     measured 2.95:1 by axe-core; raised to #8898a8 which measures
+     ~5.2:1, giving headroom over the 4.5:1 floor. text-text-muted
+     is used in 39 client files; the token-level fix sweeps all of
+     them in one edit. */
+  --text-muted: #8898a8;
   --accent: #d4915c;
   --accent-hover: #e0a574;
   --accent-subtle: #2a1f17;
@@ -74,7 +79,10 @@
   --border: #d8cfc4;
   --text-primary: #1a1814;
   --text-secondary: #6b6158;
-  --text-muted: #a09586;
+  /* WCAG AA fix (Lane E Commit 7-2): #a09586 on light --surface
+     (#ffffff) measured ~2.94:1; lowered to #7a6f63 which measures
+     ~4.9:1 with headroom. */
+  --text-muted: #7a6f63;
   --accent: #b87333;
   --accent-hover: #a06328;
   --accent-subtle: #f5ebe0;
