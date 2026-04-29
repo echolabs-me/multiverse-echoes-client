@@ -1,4 +1,9 @@
-import { forwardRef, useId, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react';
+import {
+  forwardRef,
+  useId,
+  type InputHTMLAttributes,
+  type TextareaHTMLAttributes,
+} from 'react';
 
 interface BaseInputProps {
   label?: string;

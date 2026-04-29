@@ -20,10 +20,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Catégorie",
-            "Exemples"
-          ],
+          "columns": ["Catégorie", "Exemples"],
           "rows": [
             [
               "Données du compte",
@@ -66,11 +63,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Objectif",
-            "Base légale",
-            "Votre contrôle"
-          ],
+          "columns": ["Objectif", "Base légale", "Votre contrôle"],
           "rows": [
             [
               "Création de compte et authentification",
@@ -92,26 +85,14 @@
               "Intérêt légitime",
               "Désistement communautaire"
             ],
-            [
-              "Modération du contenu et sécurité",
-              "Intérêt légitime",
-              "—"
-            ],
-            [
-              "Gestion des abonnements",
-              "Contrat",
-              "Résilier l'abonnement"
-            ],
+            ["Modération du contenu et sécurité", "Intérêt légitime", "—"],
+            ["Gestion des abonnements", "Contrat", "Résilier l'abonnement"],
             [
               "Analyses et amélioration du service",
               "Intérêt légitime",
               "Désactivation des analyses dans les Paramètres"
             ],
-            [
-              "Application et conformité légale",
-              "Obligation légale",
-              "—"
-            ]
+            ["Application et conformité légale", "Obligation légale", "—"]
           ]
         }
       ]
@@ -130,10 +111,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Données",
-            "Rétention"
-          ],
+          "columns": ["Données", "Rétention"],
           "rows": [
             [
               "Données du compte et du profil",
@@ -143,38 +121,20 @@
               "Persona et données de simulation",
               "Jusqu'à Echo ou la suppression du compte"
             ],
-            [
-              "Messages de la communauté",
-              "1 an après la publication"
-            ],
+            ["Messages de la communauté", "1 an après la publication"],
             [
               "Jetons de session",
               "Accès : 1 heure ; Actualisation : 30 jours ; Journaux de connexion : 90 jours"
             ],
-            [
-              "Données analytiques",
-              "6 mois glissants"
-            ],
-            [
-              "Historiques de paiement",
-              "7 ans (obligation légale)"
-            ],
-            [
-              "Historiques de modération",
-              "3 ans"
-            ],
-            [
-              "Registres de consentement",
-              "Durée du compte + 5 ans"
-            ],
+            ["Données analytiques", "6 mois glissants"],
+            ["Historiques de paiement", "7 ans (obligation légale)"],
+            ["Historiques de modération", "3 ans"],
+            ["Registres de consentement", "Durée du compte + 5 ans"],
             [
               "Fichiers d'exportation de données",
               "72 heures après la génération"
             ],
-            [
-              "Sauvegardes chiffrées",
-              "rotation glissante de 90 jours"
-            ]
+            ["Sauvegardes chiffrées", "rotation glissante de 90 jours"]
           ]
         }
       ]
@@ -225,11 +185,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Service",
-            "Données partagées",
-            "Objectif"
-          ],
+          "columns": ["Service", "Données partagées", "Objectif"],
           "rows": [
             [
               "Stripe",
@@ -241,11 +197,7 @@
               "Montant du paiement",
               "Paiements en cryptomonnaies"
             ],
-            [
-              "Xaman",
-              "Adresse du portefeuille",
-              "Paiements XRP"
-            ]
+            ["Xaman", "Adresse du portefeuille", "Paiements XRP"]
           ]
         },
         {

@@ -39,7 +39,9 @@ describe('echoDeletionDate', () => {
 
 describe('isEchoHibernated', () => {
   it('returns true when hibernated_at is a timestamp string', () => {
-    expect(isEchoHibernated({ hibernated_at: '2026-01-15T12:00:00Z' })).toBe(true);
+    expect(isEchoHibernated({ hibernated_at: '2026-01-15T12:00:00Z' })).toBe(
+      true,
+    );
   });
 
   it('returns false when hibernated_at is null', () => {

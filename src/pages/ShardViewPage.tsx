@@ -14,7 +14,11 @@ import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
-import { shards as shardApi, echoes as echoApi, feeds } from '../lib/api/endpoints.ts';
+import {
+  shards as shardApi,
+  echoes as echoApi,
+  feeds,
+} from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { formatDate, formatDeletionDate } from '../lib/formatDate.ts';
 import { isShardArchived, shardDeletionDate } from '../lib/hibernation.ts';
@@ -48,7 +52,8 @@ export function ShardViewPage() {
       ]);
       setShardEchoes(echoesResult);
       setShardFeed(feedResult.data);
-      if (shardId) trackEvent('feed.viewed', { variant: 'shard', shard_id: shardId });
+      if (shardId)
+        trackEvent('feed.viewed', { variant: 'shard', shard_id: shardId });
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +71,10 @@ export function ShardViewPage() {
     if (!shardId || !selectedEchoId) return;
     try {
       await echoApi.travel(selectedEchoId, shardId);
-      trackEvent('echo.travel_initiated', { echo_id: selectedEchoId, destination_shard: shardId });
+      trackEvent('echo.travel_initiated', {
+        echo_id: selectedEchoId,
+        destination_shard: shardId,
+      });
       setTravelModal(false);
       // Show inline confirmation (same pattern as nudge — toast may be behind dialog)
       setTravelConfirmed(true);
@@ -82,9 +90,7 @@ export function ShardViewPage() {
   };
 
   // Eligible echoes for travel: active, not already in this shard
-  const eligibleEchoes = echoList.filter(
-    (e) => e.status === 'Active',
-  );
+  const eligibleEchoes = echoList.filter((e) => e.status === 'Active');
 
   if (isLoading) {
     return (
@@ -100,7 +106,11 @@ export function ShardViewPage() {
         <EmptyState
           title={t('shardView.shardNotFound')}
           description=""
-          action={<Button onClick={() => navigate('/dashboard')}>{t('common.back')}</Button>}
+          action={
+            <Button onClick={() => navigate('/dashboard')}>
+              {t('common.back')}
+            </Button>
+          }
         />
       </div>
     );
@@ -134,8 +144,12 @@ export function ShardViewPage() {
 
           {/* Shard header */}
           <div className="mbe-6">
-            <h1 className="text-2xl font-bold text-text-primary">{activeShard.name}</h1>
-            <p className="mbs-1 text-sm text-text-secondary">{activeShard.description}</p>
+            <h1 className="text-2xl font-bold text-text-primary">
+              {activeShard.name}
+            </h1>
+            <p className="mbs-1 text-sm text-text-secondary">
+              {activeShard.description}
+            </p>
             <div className="mbs-2 flex items-center gap-3 text-sm text-text-muted">
               <Badge
                 variant={
@@ -146,7 +160,9 @@ export function ShardViewPage() {
                       : 'default'
                 }
               >
-                {t(`shardView.status${activeShard.status}`, { defaultValue: activeShard.status })}
+                {t(`shardView.status${activeShard.status}`, {
+                  defaultValue: activeShard.status,
+                })}
               </Badge>
               <span>
                 {t('shardView.capacity', {
@@ -154,7 +170,11 @@ export function ShardViewPage() {
                   max: activeShard.max_active_echoes,
                 })}
               </span>
-              <span>{t(`shardView.type${activeShard.shard_type}`, { defaultValue: activeShard.shard_type })}</span>
+              <span>
+                {t(`shardView.type${activeShard.shard_type}`, {
+                  defaultValue: activeShard.shard_type,
+                })}
+              </span>
             </div>
           </div>
 
@@ -163,7 +183,9 @@ export function ShardViewPage() {
               client-side computation) so the countdown cannot drift
               from the DataLifecycleEnforcer's delete decision. */}
           {(() => {
-            const archiveDeletion = shardDeletionDate(activeShard.archive_expires_at);
+            const archiveDeletion = shardDeletionDate(
+              activeShard.archive_expires_at,
+            );
             if (!isShardArchived(activeShard) || !archiveDeletion) return null;
             return (
               <div
@@ -171,7 +193,11 @@ export function ShardViewPage() {
                 role="status"
                 aria-live="polite"
               >
-                <Archive size={18} className="mbs-0.5 shrink-0" aria-hidden="true" />
+                <Archive
+                  size={18}
+                  className="mbs-0.5 shrink-0"
+                  aria-hidden="true"
+                />
                 <span className="flex-1">
                   {t('tiers.deletion.shardArchivedBanner', {
                     date: formatDeletionDate(archiveDeletion),
@@ -204,10 +230,7 @@ export function ShardViewPage() {
               </h2>
             </div>
             {shardEchoes.length === 0 ? (
-              <EmptyState
-                title={t('shardView.echoesEmpty')}
-                description=""
-              />
+              <EmptyState title={t('shardView.echoesEmpty')} description="" />
             ) : (
               <div className="grid gap-3 sm:grid-cols-2">
                 {shardEchoes.map((echo) => (
@@ -221,13 +244,21 @@ export function ShardViewPage() {
                         {echo.name[0]}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-text-primary">{echo.name}</p>
-                        <p className="text-xs text-text-secondary">{getMoodLabel(echo.current_mood)}</p>
+                        <p className="text-sm font-medium text-text-primary">
+                          {echo.name}
+                        </p>
+                        <p className="text-xs text-text-secondary">
+                          {getMoodLabel(echo.current_mood)}
+                        </p>
                       </div>
                       <Badge
-                        variant={echo.status === 'Active' ? 'success' : 'default'}
+                        variant={
+                          echo.status === 'Active' ? 'success' : 'default'
+                        }
                       >
-                        {t(`shardView.status${echo.status}`, { defaultValue: echo.status })}
+                        {t(`shardView.status${echo.status}`, {
+                          defaultValue: echo.status,
+                        })}
                       </Badge>
                     </div>
                   </Card>
@@ -239,11 +270,15 @@ export function ShardViewPage() {
           {/* Recent activity from shard feed */}
           {shardFeed.length > 0 && (
             <section className="mbe-6">
-              <h2 className="mbe-3 text-lg font-semibold text-text-primary">{t('shardView.recentActivity')}</h2>
+              <h2 className="mbe-3 text-lg font-semibold text-text-primary">
+                {t('shardView.recentActivity')}
+              </h2>
               <div className="flex flex-col gap-2">
                 {shardFeed.slice(0, 20).map((item) => (
                   <Card key={item.item_id} variant="compact">
-                    <p className="text-sm font-medium text-text-primary">{item.title}</p>
+                    <p className="text-sm font-medium text-text-primary">
+                      {item.title}
+                    </p>
                     <p className="text-sm text-text-secondary">{item.body}</p>
                     <span className="text-xs text-text-muted">
                       {formatDate(item.created_at)}

@@ -38,7 +38,11 @@ export function ForgotPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
       <div className="w-full max-w-md">
         <div className="mbe-8 flex flex-col items-center">
-          <Sparkles size={32} className="mbe-3 text-accent" aria-hidden="true" />
+          <Sparkles
+            size={32}
+            className="mbe-3 text-accent"
+            aria-hidden="true"
+          />
           <h1 className="text-2xl font-bold text-text-primary">
             {t('auth.forgotPasswordTitle')}
           </h1>
@@ -47,7 +51,10 @@ export function ForgotPasswordPage() {
         {submitted ? (
           <div className="rounded-lg bg-surface p-6 text-center">
             <p className="text-text-primary">{t('auth.forgotPasswordSent')}</p>
-            <Link to="/login" className="mbs-4 inline-block text-sm text-accent hover:text-accent-hover">
+            <Link
+              to="/login"
+              className="mbs-4 inline-block text-sm text-accent hover:text-accent-hover"
+            >
               {t('auth.backToLogin')}
             </Link>
           </div>
@@ -72,7 +79,9 @@ export function ForgotPasswordPage() {
               />
 
               {error && (
-                <p className="text-sm text-danger" role="alert">{error}</p>
+                <p className="text-sm text-danger" role="alert">
+                  {error}
+                </p>
               )}
 
               <Button type="submit" disabled={isSubmitting}>

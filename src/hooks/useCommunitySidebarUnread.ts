@@ -17,7 +17,8 @@ export function useCommunitySidebarUnread(): boolean {
   useEffect(() => {
     const handler = () => setHasUnread(false);
     window.addEventListener('community-sidebar-opened', handler);
-    return () => window.removeEventListener('community-sidebar-opened', handler);
+    return () =>
+      window.removeEventListener('community-sidebar-opened', handler);
   }, []);
 
   return hasUnread;

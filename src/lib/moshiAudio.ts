@@ -51,7 +51,10 @@ export class MoshiAudioBridge {
    *   If the caller does async work (health polling) before calling connect(),
    *   the gesture context expires. Pass a pre-created AudioContext to avoid this.
    */
-  async connect(wsUrl: string, preCreatedAudioCtx?: AudioContext): Promise<void> {
+  async connect(
+    wsUrl: string,
+    preCreatedAudioCtx?: AudioContext,
+  ): Promise<void> {
     // 1. Use pre-created AudioContext or create a new one
     if (preCreatedAudioCtx) {
       this.audioCtx = preCreatedAudioCtx;
@@ -70,7 +73,9 @@ export class MoshiAudioBridge {
     this.nextPlayTime = this.audioCtx.currentTime;
 
     // 2. Set up Opus decoder worker
-    this.decoderWorker = new Worker('/assets/opus-recorder/decoderWorker.min.js');
+    this.decoderWorker = new Worker(
+      '/assets/opus-recorder/decoderWorker.min.js',
+    );
     this.decoderWorker.postMessage({
       command: 'init',
       decoderSampleRate: SAMPLE_RATE,
@@ -96,7 +101,10 @@ export class MoshiAudioBridge {
 
     await new Promise<void>((resolve, reject) => {
       // Long timeout: Moshi model may still be loading even after sidecar is up
-      const timeout = setTimeout(() => reject(new Error('WebSocket connection timeout')), 120000);
+      const timeout = setTimeout(
+        () => reject(new Error('WebSocket connection timeout')),
+        120000,
+      );
 
       this.ws!.onopen = () => {
         clearTimeout(timeout);
@@ -172,19 +180,20 @@ export class MoshiAudioBridge {
     });
 
     // When encoder produces Ogg Opus pages, send to WebSocket
-    (this.recorder as { ondataavailable: (data: ArrayBuffer) => void }).ondataavailable =
-      (oggPage: ArrayBuffer) => {
-        if (this.ws?.readyState === WebSocket.OPEN && !this.isMuted) {
-          const frame = new Uint8Array(oggPage.byteLength + 1);
-          frame[0] = 1; // audio kind byte
-          frame.set(new Uint8Array(oggPage), 1);
-          this.ws.send(frame.buffer);
-        }
-      };
+    (
+      this.recorder as { ondataavailable: (data: ArrayBuffer) => void }
+    ).ondataavailable = (oggPage: ArrayBuffer) => {
+      if (this.ws?.readyState === WebSocket.OPEN && !this.isMuted) {
+        const frame = new Uint8Array(oggPage.byteLength + 1);
+        frame[0] = 1; // audio kind byte
+        frame.set(new Uint8Array(oggPage), 1);
+        this.ws.send(frame.buffer);
+      }
+    };
 
-    await (this.recorder as { start: (stream: MediaStream) => Promise<void> }).start(
-      this.mediaStream,
-    );
+    await (
+      this.recorder as { start: (stream: MediaStream) => Promise<void> }
+    ).start(this.mediaStream);
   }
 
   /** Schedule PCM playback via AudioContext buffer source. */
@@ -199,7 +208,10 @@ export class MoshiAudioBridge {
     source.buffer = buffer;
     source.connect(this.gainNode);
 
-    const startTime = Math.max(this.audioCtx.currentTime + 0.01, this.nextPlayTime);
+    const startTime = Math.max(
+      this.audioCtx.currentTime + 0.01,
+      this.nextPlayTime,
+    );
     source.start(startTime);
     this.nextPlayTime = startTime + buffer.duration;
   }
@@ -221,7 +233,9 @@ export class MoshiAudioBridge {
     if (this.recorder) {
       try {
         await (this.recorder as { stop: () => Promise<void> }).stop();
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
       this.recorder = null;
     }
 

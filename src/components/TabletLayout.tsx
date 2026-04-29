@@ -70,10 +70,18 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
       {/* ── RIGHT: Oracle + Community tabs (280px fixed) ── */}
       <aside className="flex w-70 shrink-0 flex-col border-s border-border/50 bg-canvas">
         {/* Tab bar */}
-        <div className="flex shrink-0 border-be border-border/50" role="tablist">
+        <div
+          className="flex shrink-0 border-be border-border/50"
+          role="tablist"
+        >
           <div
             onClick={selectOracle}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectOracle(); } }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectOracle();
+              }
+            }}
             className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold tracking-wider uppercase transition-colors ${
               activeTab === 'oracle'
                 ? 'border-be-2 border-accent text-accent'
@@ -88,7 +96,12 @@ export function TabletLayout({ showEchoPanes }: TabletLayoutProps) {
           </div>
           <div
             onClick={selectCommunity}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCommunity(); } }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectCommunity();
+              }
+            }}
             className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold tracking-wider uppercase transition-colors ${
               activeTab === 'community'
                 ? 'border-be-2 border-accent text-accent'

@@ -20,19 +20,10 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Kategori",
-            "Contoh-contoh"
-          ],
+          "columns": ["Kategori", "Contoh-contoh"],
           "rows": [
-            [
-              "Data Akaun",
-              "Alamat e-mel, nama paparan, kata laluan terhasy"
-            ],
-            [
-              "Data Profil",
-              "Bio, pemilihan avatar, zon masa, pilihan bahasa"
-            ],
+            ["Data Akaun", "Alamat e-mel, nama paparan, kata laluan terhasy"],
+            ["Data Profil", "Bio, pemilihan avatar, zon masa, pilihan bahasa"],
             [
               "Data Persona",
               "Persona gema, gesaan 'andaikata', umur semasa penciptaan"
@@ -53,10 +44,7 @@
               "Data Analitik",
               "Acara penggunaan ciri (tanpa nama, pilihan keluar tersedia)"
             ],
-            [
-              "Data Sesi",
-              "Token akses, token penyegaran, cap masa log masuk"
-            ]
+            ["Data Sesi", "Token akses, token penyegaran, cap masa log masuk"]
           ]
         }
       ]
@@ -66,17 +54,9 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Tujuan",
-            "Asas Undang-undang",
-            "Kawalan Anda"
-          ],
+          "columns": ["Tujuan", "Asas Undang-undang", "Kawalan Anda"],
           "rows": [
-            [
-              "Penciptaan akaun dan pengesahan",
-              "Kontrak",
-              "Padam akaun"
-            ],
+            ["Penciptaan akaun dan pengesahan", "Kontrak", "Padam akaun"],
             [
               "Simulasi gema (pemprosesan persona)",
               "Keizinan",
@@ -87,21 +67,9 @@
               "Kepentingan Sah",
               "Togol Mod Solo"
             ],
-            [
-              "Mesej komuniti",
-              "Kepentingan Sah",
-              "Penolakan komuniti"
-            ],
-            [
-              "Moderasi kandungan dan keselamatan",
-              "Kepentingan Sah",
-              "—"
-            ],
-            [
-              "Pengurusan langganan",
-              "Kontrak",
-              "Batal langganan"
-            ],
+            ["Mesej komuniti", "Kepentingan Sah", "Penolakan komuniti"],
+            ["Moderasi kandungan dan keselamatan", "Kepentingan Sah", "—"],
+            ["Pengurusan langganan", "Kontrak", "Batal langganan"],
             [
               "Analitik dan penambahbaikan perkhidmatan",
               "Kepentingan Sah",
@@ -130,51 +98,24 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Data",
-            "Pengekalan"
-          ],
+          "columns": ["Data", "Pengekalan"],
           "rows": [
             [
               "Data akaun dan profil",
               "Sehingga penghapusan + tempoh bertenang 30 hari"
             ],
-            [
-              "Persona dan data simulasi",
-              "Sehingga Echo atau pemadaman akaun"
-            ],
-            [
-              "Mesej komuniti",
-              "1 tahun dari tarikh hantaran"
-            ],
+            ["Persona dan data simulasi", "Sehingga Echo atau pemadaman akaun"],
+            ["Mesej komuniti", "1 tahun dari tarikh hantaran"],
             [
               "Token sesi",
               "Akses: 1 jam; Segarkan: 30 hari; Log log masuk: 90 hari"
             ],
-            [
-              "Data analitik",
-              "6 bulan bergulung"
-            ],
-            [
-              "Rekod pembayaran",
-              "7 tahun (keperluan undang-undang)"
-            ],
-            [
-              "Rekod penyederhanaan",
-              "3 tahun"
-            ],
-            [
-              "Rekod keizinan",
-              "Tempoh akaun + 5 tahun"
-            ],
-            [
-              "Fail eksport data",
-              "72 jam selepas penjanaan"
-            ],
-            [
-              "Sandaran tersulit",
-              "putaran bergulung 90 hari"
-            ]
+            ["Data analitik", "6 bulan bergulung"],
+            ["Rekod pembayaran", "7 tahun (keperluan undang-undang)"],
+            ["Rekod penyederhanaan", "3 tahun"],
+            ["Rekod keizinan", "Tempoh akaun + 5 tahun"],
+            ["Fail eksport data", "72 jam selepas penjanaan"],
+            ["Sandaran tersulit", "putaran bergulung 90 hari"]
           ]
         }
       ]
@@ -225,27 +166,15 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Perkhidmatan",
-            "Data Dikongsi",
-            "Tujuan"
-          ],
+          "columns": ["Perkhidmatan", "Data Dikongsi", "Tujuan"],
           "rows": [
             [
               "Stripe",
               "E-mel, metadata pengebilan",
               "Pemprosesan pembayaran kad"
             ],
-            [
-              "NOWPayments",
-              "Jumlah pembayaran",
-              "Pembayaran mata wang kripto"
-            ],
-            [
-              "Xaman",
-              "Alamat dompet",
-              "Pembayaran XRP"
-            ]
+            ["NOWPayments", "Jumlah pembayaran", "Pembayaran mata wang kripto"],
+            ["Xaman", "Alamat dompet", "Pembayaran XRP"]
           ]
         },
         {

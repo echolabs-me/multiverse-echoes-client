@@ -42,47 +42,47 @@ export function DeleteAccountPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="mx-auto max-w-xl p-6">
-          <button
-            onClick={() => navigate('/settings')}
-            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
-          >
-            <ArrowLeft size={16} />
-            {t('common.back')}
-          </button>
+        <button
+          onClick={() => navigate('/settings')}
+          className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+        >
+          <ArrowLeft size={16} />
+          {t('common.back')}
+        </button>
 
-          <Card>
-            <div className="mbe-4 flex items-center gap-2 text-danger">
-              <AlertTriangle size={20} />
-              <h1 className="text-lg font-bold">{t('settings.deleteAccount')}</h1>
-            </div>
+        <Card>
+          <div className="mbe-4 flex items-center gap-2 text-danger">
+            <AlertTriangle size={20} />
+            <h1 className="text-lg font-bold">{t('settings.deleteAccount')}</h1>
+          </div>
 
-            <p className="mbe-4 text-sm text-text-secondary">
-              {t('settings.deleteAccountWarning')}
-            </p>
+          <p className="mbe-4 text-sm text-text-secondary">
+            {t('settings.deleteAccountWarning')}
+          </p>
 
-            <div className="mbe-4">
-              <Input
-                label={t('settings.deleteAccountConfirm')}
-                value={confirmText}
-                onChange={(e) => setConfirmText(e.target.value)}
-                placeholder="DELETE"
-              />
-            </div>
+          <div className="mbe-4">
+            <Input
+              label={t('settings.deleteAccountConfirm')}
+              value={confirmText}
+              onChange={(e) => setConfirmText(e.target.value)}
+              placeholder="DELETE"
+            />
+          </div>
 
-            <div className="flex gap-2">
-              <Button
-                variant="danger"
-                onClick={() => void handleDelete()}
-                disabled={confirmText !== 'DELETE' || isDeleting}
-              >
-                {t('settings.deleteAccount')}
-              </Button>
-              <Button variant="secondary" onClick={handleCancel}>
-                {t('settings.cancelDeletion')}
-              </Button>
-            </div>
-          </Card>
-        </div>
+          <div className="flex gap-2">
+            <Button
+              variant="danger"
+              onClick={() => void handleDelete()}
+              disabled={confirmText !== 'DELETE' || isDeleting}
+            >
+              {t('settings.deleteAccount')}
+            </Button>
+            <Button variant="secondary" onClick={handleCancel}>
+              {t('settings.cancelDeletion')}
+            </Button>
+          </div>
+        </Card>
       </div>
+    </div>
   );
 }

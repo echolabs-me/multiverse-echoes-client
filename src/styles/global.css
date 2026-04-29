@@ -10,7 +10,8 @@
 
 /* Desktop: no coarse pointer at 768px+, OR any device at 1440px+ */
 @custom-variant desktop {
-  @media (min-width: 1440px), (min-width: 768px) and (not (any-pointer: coarse)) {
+  @media (min-width: 1440px),
+    (min-width: 768px) and (not (any-pointer: coarse)) {
     @slot;
   }
 }
@@ -19,11 +20,10 @@
 @utility scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
-
-
-
 
 /* Tablet split-view panel slide animations */
 .animate-slide-in-left {
@@ -33,12 +33,20 @@
   animation: slide-in-right 200ms ease forwards;
 }
 @keyframes slide-in-left {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 @keyframes slide-in-right {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 /* CDS-001 §4.1 — Font stacks */
@@ -81,8 +89,8 @@
   font-weight: 400;
   font-display: swap;
   src: url('../assets/fonts/Inter-Regular-Cyrillic.woff2') format('woff2');
-  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
-    U+FE2E-FE2F;
+  unicode-range:
+    U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 
 @font-face {
@@ -91,8 +99,8 @@
   font-weight: 500;
   font-display: swap;
   src: url('../assets/fonts/Inter-Medium-Cyrillic.woff2') format('woff2');
-  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
-    U+FE2E-FE2F;
+  unicode-range:
+    U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 
 @font-face {
@@ -101,8 +109,8 @@
   font-weight: 600;
   font-display: swap;
   src: url('../assets/fonts/Inter-SemiBold-Cyrillic.woff2') format('woff2');
-  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
-    U+FE2E-FE2F;
+  unicode-range:
+    U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 
 @font-face {
@@ -111,8 +119,8 @@
   font-weight: 700;
   font-display: swap;
   src: url('../assets/fonts/Inter-Bold-Cyrillic.woff2') format('woff2');
-  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
-    U+FE2E-FE2F;
+  unicode-range:
+    U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 
 @font-face {
@@ -130,8 +138,8 @@
   font-display: swap;
   src: url('../assets/fonts/JetBrainsMono-Regular-Cyrillic.woff2')
     format('woff2');
-  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
-    U+FE2E-FE2F;
+  unicode-range:
+    U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
 }
 
 /* ──────────────────────────────────────────────────────────────────
@@ -161,8 +169,9 @@
   font-weight: 400;
   font-display: swap;
   src: url('../assets/fonts/NotoSansSC-Regular.woff2') format('woff2');
-  unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF,
-    U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+  unicode-range:
+    U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF,
+    U+FE30-FE4F, U+FF00-FFEF;
 }
 @font-face {
   font-family: 'Noto Sans SC';
@@ -170,8 +179,9 @@
   font-weight: 500;
   font-display: swap;
   src: url('../assets/fonts/NotoSansSC-Medium.woff2') format('woff2');
-  unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF,
-    U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+  unicode-range:
+    U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF,
+    U+FE30-FE4F, U+FF00-FFEF;
 }
 @font-face {
   font-family: 'Noto Sans SC';
@@ -179,8 +189,9 @@
   font-weight: 600;
   font-display: swap;
   src: url('../assets/fonts/NotoSansSC-SemiBold.woff2') format('woff2');
-  unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF,
-    U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+  unicode-range:
+    U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF,
+    U+FE30-FE4F, U+FF00-FFEF;
 }
 @font-face {
   font-family: 'Noto Sans SC';
@@ -188,8 +199,9 @@
   font-weight: 700;
   font-display: swap;
   src: url('../assets/fonts/NotoSansSC-Bold.woff2') format('woff2');
-  unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF,
-    U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+  unicode-range:
+    U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF,
+    U+FE30-FE4F, U+FF00-FFEF;
 }
 
 /* Noto Sans Devanagari — Hindi and related languages.
@@ -236,8 +248,8 @@
   font-weight: 400;
   font-display: swap;
   src: url('../assets/fonts/NotoSansArabic-Regular.woff2') format('woff2');
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF,
-    U+FE70-FEFF;
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
 }
 @font-face {
   font-family: 'Noto Sans Arabic';
@@ -245,8 +257,8 @@
   font-weight: 500;
   font-display: swap;
   src: url('../assets/fonts/NotoSansArabic-Medium.woff2') format('woff2');
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF,
-    U+FE70-FEFF;
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
 }
 @font-face {
   font-family: 'Noto Sans Arabic';
@@ -254,8 +266,8 @@
   font-weight: 600;
   font-display: swap;
   src: url('../assets/fonts/NotoSansArabic-SemiBold.woff2') format('woff2');
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF,
-    U+FE70-FEFF;
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
 }
 @font-face {
   font-family: 'Noto Sans Arabic';
@@ -263,8 +275,8 @@
   font-weight: 700;
   font-display: swap;
   src: url('../assets/fonts/NotoSansArabic-Bold.woff2') format('woff2');
-  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF,
-    U+FE70-FEFF;
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 /* ── Noto Sans Bengali (bn) ── */
@@ -308,8 +320,9 @@
   font-weight: 400;
   font-display: swap;
   src: url('../assets/fonts/NotoSansJP-Regular.woff2') format('woff2');
-  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
-    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+  unicode-range:
+    U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+3200-32FF,
+    U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
 }
 @font-face {
   font-family: 'Noto Sans JP';
@@ -317,8 +330,9 @@
   font-weight: 500;
   font-display: swap;
   src: url('../assets/fonts/NotoSansJP-Medium.woff2') format('woff2');
-  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
-    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+  unicode-range:
+    U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+3200-32FF,
+    U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
 }
 @font-face {
   font-family: 'Noto Sans JP';
@@ -326,8 +340,9 @@
   font-weight: 600;
   font-display: swap;
   src: url('../assets/fonts/NotoSansJP-SemiBold.woff2') format('woff2');
-  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
-    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+  unicode-range:
+    U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+3200-32FF,
+    U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
 }
 @font-face {
   font-family: 'Noto Sans JP';
@@ -335,8 +350,9 @@
   font-weight: 700;
   font-display: swap;
   src: url('../assets/fonts/NotoSansJP-Bold.woff2') format('woff2');
-  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
-    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+  unicode-range:
+    U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+3200-32FF,
+    U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
 }
 
 /* ── Noto Sans KR (ko) ── */
@@ -346,8 +362,8 @@
   font-weight: 400;
   font-display: swap;
   src: url('../assets/fonts/NotoSansKR-Regular.woff2') format('woff2');
-  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
-    U+D7B0-D7FF;
+  unicode-range:
+    U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF, U+D7B0-D7FF;
 }
 @font-face {
   font-family: 'Noto Sans KR';
@@ -355,8 +371,8 @@
   font-weight: 500;
   font-display: swap;
   src: url('../assets/fonts/NotoSansKR-Medium.woff2') format('woff2');
-  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
-    U+D7B0-D7FF;
+  unicode-range:
+    U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF, U+D7B0-D7FF;
 }
 @font-face {
   font-family: 'Noto Sans KR';
@@ -364,8 +380,8 @@
   font-weight: 600;
   font-display: swap;
   src: url('../assets/fonts/NotoSansKR-SemiBold.woff2') format('woff2');
-  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
-    U+D7B0-D7FF;
+  unicode-range:
+    U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF, U+D7B0-D7FF;
 }
 @font-face {
   font-family: 'Noto Sans KR';
@@ -373,8 +389,8 @@
   font-weight: 700;
   font-display: swap;
   src: url('../assets/fonts/NotoSansKR-Bold.woff2') format('woff2');
-  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
-    U+D7B0-D7FF;
+  unicode-range:
+    U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF, U+D7B0-D7FF;
 }
 
 /* ── Noto Sans Thai (th) ── */
@@ -412,7 +428,8 @@
 }
 
 /* Base styles */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -443,7 +460,8 @@ body {
    * Noto Sans families handle CJK / Devanagari / Arabic via the @font-face
    * unicode-range declarations above, and finally the system fallbacks catch
    * anything not yet loaded (or any glyphs outside all the ranges above). */
-  font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR',
+  font-family:
+    'Inter', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR',
     'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Arabic',
     'Noto Sans Thai', system-ui, sans-serif;
   background-color: var(--canvas);
@@ -486,20 +504,20 @@ pre {
  *
  * Extend the selector list when adding new directional icons.
  * ────────────────────────────────────────────────────────────────── */
-[dir="rtl"] svg.lucide-arrow-left,
-[dir="rtl"] svg.lucide-arrow-right,
-[dir="rtl"] svg.lucide-chevron-left,
-[dir="rtl"] svg.lucide-chevron-right,
-[dir="rtl"] svg.lucide-chevrons-left,
-[dir="rtl"] svg.lucide-chevrons-right,
-[dir="rtl"] svg.lucide-move-left,
-[dir="rtl"] svg.lucide-move-right,
-[dir="rtl"] svg.lucide-send,
-[dir="rtl"] svg.lucide-send-horizontal,
-[dir="rtl"] svg.lucide-corner-up-left,
-[dir="rtl"] svg.lucide-corner-up-right,
-[dir="rtl"] svg.lucide-undo,
-[dir="rtl"] svg.lucide-redo {
+[dir='rtl'] svg.lucide-arrow-left,
+[dir='rtl'] svg.lucide-arrow-right,
+[dir='rtl'] svg.lucide-chevron-left,
+[dir='rtl'] svg.lucide-chevron-right,
+[dir='rtl'] svg.lucide-chevrons-left,
+[dir='rtl'] svg.lucide-chevrons-right,
+[dir='rtl'] svg.lucide-move-left,
+[dir='rtl'] svg.lucide-move-right,
+[dir='rtl'] svg.lucide-send,
+[dir='rtl'] svg.lucide-send-horizontal,
+[dir='rtl'] svg.lucide-corner-up-left,
+[dir='rtl'] svg.lucide-corner-up-right,
+[dir='rtl'] svg.lucide-undo,
+[dir='rtl'] svg.lucide-redo {
   transform: scaleX(-1);
 }
 
@@ -674,10 +692,15 @@ pre {
 
 @keyframes me-diary-glow {
   0% {
-    box-shadow: 0 0 12px 2px var(--mood-secondary, var(--accent-subtle)), 0 0 24px 4px color-mix(in srgb, var(--mood-primary, var(--accent)) 12%, transparent);
+    box-shadow:
+      0 0 12px 2px var(--mood-secondary, var(--accent-subtle)),
+      0 0 24px 4px
+        color-mix(in srgb, var(--mood-primary, var(--accent)) 12%, transparent);
   }
   100% {
-    box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent;
+    box-shadow:
+      0 0 0 0 transparent,
+      0 0 0 0 transparent;
   }
 }
 
@@ -749,8 +772,13 @@ pre {
 }
 
 @keyframes tick-digit-breathe {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.82; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.82;
+  }
 }
 
 /* Ambient bar — contained, pointer-events disabled, no overflow bleed */
@@ -785,8 +813,12 @@ pre {
 }
 
 @keyframes tick-heartbeat-sweep {
-  0% { --sweep: -10%; }
-  100% { --sweep: 110%; }
+  0% {
+    --sweep: -10%;
+  }
+  100% {
+    --sweep: 110%;
+  }
 }
 
 /* Double-pulse heartbeat rhythm: thump-thump... pause... thump-thump */
@@ -796,29 +828,52 @@ pre {
 }
 
 @keyframes tick-double-pulse {
-  0%   { opacity: 0.2; }
-  15%  { opacity: 0.9; }
-  25%  { opacity: 0.3; }
-  35%  { opacity: 0.7; }
-  50%  { opacity: 0.2; }
-  100% { opacity: 0.2; }
+  0% {
+    opacity: 0.2;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  35% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
 
 /* Flash on arrival — warm white fade */
 .tick-bar-flash {
-  background: linear-gradient(90deg, rgba(245, 220, 192, 0.7), rgba(255, 255, 255, 0.9), rgba(245, 220, 192, 0.7));
+  background: linear-gradient(
+    90deg,
+    rgba(245, 220, 192, 0.7),
+    rgba(255, 255, 255, 0.9),
+    rgba(245, 220, 192, 0.7)
+  );
   animation: tick-bar-flash 0.8s ease-out forwards;
 }
 
 @keyframes tick-bar-flash {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ── Action toolbar button effects ── */
 
 .action-btn:hover {
-  box-shadow: 0 0 12px rgba(212, 145, 92, 0.15), 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 12px rgba(212, 145, 92, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.2);
   transform: translateY(-1px);
 }
 
@@ -832,7 +887,9 @@ pre {
 }
 
 .action-btn-primary:hover {
-  box-shadow: 0 0 16px rgba(212, 145, 92, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 16px rgba(212, 145, 92, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.2);
   transform: translateY(-1px);
 }
 
@@ -848,46 +905,94 @@ pre {
  * — CSSOM writes are not subject to style-src. */
 
 /* Staggered me-fade-up: class + optional data-delay attribute. */
-.me-fade-up { animation: me-fade-up 1.2s ease-out both; }
-.me-fade-up[data-delay="150"] { animation-delay: 150ms; }
-.me-fade-up[data-delay="300"] { animation-delay: 300ms; }
-.me-fade-up[data-delay="450"] { animation-delay: 450ms; }
-.me-fade-up[data-delay="600"] { animation-delay: 600ms; }
-.me-fade-up[data-delay="900"] { animation-delay: 900ms; }
-.me-fade-up.me-anim-none { animation: none; }
+.me-fade-up {
+  animation: me-fade-up 1.2s ease-out both;
+}
+.me-fade-up[data-delay='150'] {
+  animation-delay: 150ms;
+}
+.me-fade-up[data-delay='300'] {
+  animation-delay: 300ms;
+}
+.me-fade-up[data-delay='450'] {
+  animation-delay: 450ms;
+}
+.me-fade-up[data-delay='600'] {
+  animation-delay: 600ms;
+}
+.me-fade-up[data-delay='900'] {
+  animation-delay: 900ms;
+}
+.me-fade-up.me-anim-none {
+  animation: none;
+}
 
 /* Bounce-delay helpers (typing indicator dots). */
-.me-bounce-delay-0 { animation-delay: 0ms; }
-.me-bounce-delay-150 { animation-delay: 150ms; }
-.me-bounce-delay-300 { animation-delay: 300ms; }
+.me-bounce-delay-0 {
+  animation-delay: 0ms;
+}
+.me-bounce-delay-150 {
+  animation-delay: 150ms;
+}
+.me-bounce-delay-300 {
+  animation-delay: 300ms;
+}
 
 /* Radial glow variants used on hero / section backgrounds. */
 .me-hero-glow {
-  background: radial-gradient(circle, rgba(212, 145, 92, 0.1) 0%, transparent 65%);
+  background: radial-gradient(
+    circle,
+    rgba(212, 145, 92, 0.1) 0%,
+    transparent 65%
+  );
   animation: me-breathe 8s ease-in-out infinite;
 }
 .me-radial-glow-ambient {
-  background: radial-gradient(circle, rgba(212, 145, 92, 0.08) 0%, transparent 65%);
+  background: radial-gradient(
+    circle,
+    rgba(212, 145, 92, 0.08) 0%,
+    transparent 65%
+  );
 }
 
 /* Static backgrounds for prerendered pages. */
-.me-hero-bg { background-image: url('/screenshots/App_Page_Full_Capture.jpeg'); }
-.me-shard-bg-tokyo { background-image: url('/images/shard-tokyo.png'); }
-.me-shard-bg-australia { background-image: url('/images/shard-australia.png'); }
-.me-shard-bg-florence { background-image: url('/images/shard-florence.png'); }
+.me-hero-bg {
+  background-image: url('/screenshots/App_Page_Full_Capture.jpeg');
+}
+.me-shard-bg-tokyo {
+  background-image: url('/images/shard-tokyo.png');
+}
+.me-shard-bg-australia {
+  background-image: url('/images/shard-australia.png');
+}
+.me-shard-bg-florence {
+  background-image: url('/images/shard-florence.png');
+}
 
 /* Progress bar width from --me-progress (0-100%). Set via ref.setProperty. */
-.me-progress-bar { width: var(--me-progress, 0%); }
+.me-progress-bar {
+  width: var(--me-progress, 0%);
+}
 
 /* Dynamic-color helpers that read a CSS custom property set by the component.
  * Use with ref.current.style.setProperty('--me-mood-color', value). */
-.me-mood-bg { background-color: var(--me-mood-color, currentColor); }
-.me-mood-fg { color: var(--me-mood-color, currentColor); }
-.me-mood-border-soft { border: 1.5px solid var(--me-mood-border, currentColor); }
+.me-mood-bg {
+  background-color: var(--me-mood-color, currentColor);
+}
+.me-mood-fg {
+  color: var(--me-mood-color, currentColor);
+}
+.me-mood-border-soft {
+  border: 1.5px solid var(--me-mood-border, currentColor);
+}
 
 /* Shard/Echo 3D theme color (portrait, environment). */
-.me-theme-fg { color: var(--me-theme-color, currentColor); }
-.me-theme-ring { border: 2px solid var(--me-theme-ring-color, transparent); }
+.me-theme-fg {
+  color: var(--me-theme-color, currentColor);
+}
+.me-theme-ring {
+  border: 2px solid var(--me-theme-ring-color, transparent);
+}
 
 /* TickTimer neon text-shadow states. */
 .me-neon-glow {
@@ -900,7 +1005,9 @@ pre {
     0 0 8px rgba(107, 175, 122, 0.5),
     0 0 20px rgba(107, 175, 122, 0.2);
 }
-.me-neon-glow-soft { text-shadow: 0 0 6px rgba(212, 145, 92, 0.15); }
+.me-neon-glow-soft {
+  text-shadow: 0 0 6px rgba(212, 145, 92, 0.15);
+}
 
 /* TickTimer ambient glow — opacity + box-shadow tint set via CSS vars. */
 .tick-bar-ambient-glow {
@@ -962,7 +1069,9 @@ pre {
 }
 
 /* Diary entry pre-arrival state — starts invisible, animation reveals. */
-.me-diary-pre-arrival { opacity: 0; }
+.me-diary-pre-arrival {
+  opacity: 0;
+}
 
 /* EchoSidebar EchoCard: mood-colour glow shadow + left edge stripe. */
 .me-echo-card-mood-edge {
@@ -974,7 +1083,9 @@ pre {
   border: 1.5px solid var(--me-mood-ring, transparent);
 }
 /* Mood dot solid fill. */
-.me-mood-dot { background-color: var(--me-mood-color, currentColor); }
+.me-mood-dot {
+  background-color: var(--me-mood-color, currentColor);
+}
 
 /* Community pulse row — glow shadow + mood-coloured left border. */
 .me-community-row {
@@ -993,18 +1104,24 @@ pre {
   opacity: 1;
   box-shadow: none;
 }
-.me-mh-segment[data-hovered="true"] {
+.me-mh-segment[data-hovered='true'] {
   height: 120px;
   box-shadow:
     0 0 20px var(--me-mh-primary-60, transparent),
     0 4px 12px var(--me-mh-primary-30, transparent);
 }
-.me-mh-strip[data-any-hovered="true"] .me-mh-segment[data-hovered="false"] {
+.me-mh-strip[data-any-hovered='true'] .me-mh-segment[data-hovered='false'] {
   opacity: 0.45;
 }
-.me-mh-segment[data-pos="first"] { border-radius: 12px 2px 2px 12px; }
-.me-mh-segment[data-pos="last"]  { border-radius: 2px 12px 12px 2px; }
-.me-mh-segment[data-pos="mid"]   { border-radius: 2px; }
+.me-mh-segment[data-pos='first'] {
+  border-radius: 12px 2px 2px 12px;
+}
+.me-mh-segment[data-pos='last'] {
+  border-radius: 2px 12px 12px 2px;
+}
+.me-mh-segment[data-pos='mid'] {
+  border-radius: 2px;
+}
 
 .me-mh-inner-glow {
   background: linear-gradient(
@@ -1019,7 +1136,9 @@ pre {
   text-shadow: 0 1px 3px var(--me-mh-secondary, transparent);
   opacity: 0.6;
 }
-.me-mh-label[data-hovered="true"] { opacity: 1; }
+.me-mh-label[data-hovered='true'] {
+  opacity: 1;
+}
 
 .me-mh-playhead {
   background-color: var(--me-mh-accent, currentColor);
@@ -1037,14 +1156,14 @@ pre {
   opacity: 0.7;
   box-shadow: none;
 }
-.me-mh-dot[data-hovered="true"] {
+.me-mh-dot[data-hovered='true'] {
   width: 10px;
   height: 10px;
   background-color: var(--me-mh-accent, currentColor);
   opacity: 1;
   box-shadow: 0 0 8px var(--me-mh-accent-80, transparent);
 }
-.me-mh-dot[data-latest="true"] {
+.me-mh-dot[data-latest='true'] {
   width: 8px;
   height: 8px;
   background-color: var(--me-mh-accent, currentColor);
@@ -1068,7 +1187,9 @@ pre {
 }
 
 /* Dynamic avatar tint — --me-avatar-bg falls back to --accent. */
-.me-avatar-tint { background-color: var(--me-avatar-bg, var(--accent)); }
+.me-avatar-tint {
+  background-color: var(--me-avatar-bg, var(--accent));
+}
 
 /* 3D overlay translate that reads --me-translate-x / --me-translate-y (px).
  * Used by LanguageSelectionPage rotating cards. */
@@ -1079,12 +1200,22 @@ pre {
 /* ─── Marketing site: classes previously defined inline in HomePage.tsx ─── */
 
 @keyframes me-breathe {
-  0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-  50%      { opacity: 0.7; transform: translate(-50%, -50%) scale(1.08); }
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
 }
 
 @keyframes me-reveal-fallback {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Scroll-triggered reveal — JS adds .revealed via IntersectionObserver.
@@ -1093,7 +1224,9 @@ pre {
 .section-reveal {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
   animation: me-reveal-fallback 0.6s ease-out 2s both;
 }
 .section-reveal.revealed {
@@ -1147,20 +1280,24 @@ pre {
   border: 1px solid rgba(212, 145, 92, 0.15);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.me-lang-tile[data-reduced="true"] {
-  transition: border-color 0.2s, box-shadow 0.2s;
+.me-lang-tile[data-reduced='true'] {
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
-.me-lang-tile[data-expanded="true"] {
+.me-lang-tile[data-expanded='true'] {
   z-index: 10;
   border-color: #d4915c;
   box-shadow: 0 0 24px rgba(212, 145, 92, 0.2);
 }
-.me-lang-tile[data-expanded="true"][data-reduced="false"] {
+.me-lang-tile[data-expanded='true'][data-reduced='false'] {
   transform: scale(1.25);
 }
 
 /* Shared: pointer-events: none on a decorative layer. */
-.me-no-pointer { pointer-events: none; }
+.me-no-pointer {
+  pointer-events: none;
+}
 
 /* Language-selection circle tiles — 20 fixed positions by data-idx.
  * Hardcoded so the prerendered HTML (flag page at /) ships no inline
@@ -1175,63 +1312,179 @@ pre {
    added as the 21st locale — the old 20-slot layout left the last flag
    (Malay after the zh-Hant insert shifted it to idx=20) with no position
    rule and it defaulted to the container centre. */
-.me-circle-pos[data-idx="0"]  { left: calc(50% + 0px);        top: calc(50% + -260px); }
-.me-circle-pos[data-idx="1"]  { left: calc(50% + 76.64px);    top: calc(50% + -248.45px); }
-.me-circle-pos[data-idx="2"]  { left: calc(50% + 146.46px);   top: calc(50% + -214.82px); }
-.me-circle-pos[data-idx="3"]  { left: calc(50% + 203.28px);   top: calc(50% + -162.11px); }
-.me-circle-pos[data-idx="4"]  { left: calc(50% + 242.03px);   top: calc(50% + -94.99px); }
-.me-circle-pos[data-idx="5"]  { left: calc(50% + 259.27px);   top: calc(50% + -19.43px); }
-.me-circle-pos[data-idx="6"]  { left: calc(50% + 253.48px);   top: calc(50% + 57.86px); }
-.me-circle-pos[data-idx="7"]  { left: calc(50% + 225.17px);   top: calc(50% + 130.00px); }
-.me-circle-pos[data-idx="8"]  { left: calc(50% + 176.84px);   top: calc(50% + 190.59px); }
-.me-circle-pos[data-idx="9"]  { left: calc(50% + 112.81px);   top: calc(50% + 234.25px); }
-.me-circle-pos[data-idx="10"] { left: calc(50% + 38.75px);    top: calc(50% + 257.10px); }
-.me-circle-pos[data-idx="11"] { left: calc(50% + -38.75px);   top: calc(50% + 257.10px); }
-.me-circle-pos[data-idx="12"] { left: calc(50% + -112.81px);  top: calc(50% + 234.25px); }
-.me-circle-pos[data-idx="13"] { left: calc(50% + -176.84px);  top: calc(50% + 190.59px); }
-.me-circle-pos[data-idx="14"] { left: calc(50% + -225.17px);  top: calc(50% + 130.00px); }
-.me-circle-pos[data-idx="15"] { left: calc(50% + -253.48px);  top: calc(50% + 57.86px); }
-.me-circle-pos[data-idx="16"] { left: calc(50% + -259.27px);  top: calc(50% + -19.43px); }
-.me-circle-pos[data-idx="17"] { left: calc(50% + -242.03px);  top: calc(50% + -94.99px); }
-.me-circle-pos[data-idx="18"] { left: calc(50% + -203.28px);  top: calc(50% + -162.11px); }
-.me-circle-pos[data-idx="19"] { left: calc(50% + -146.46px);  top: calc(50% + -214.82px); }
-.me-circle-pos[data-idx="20"] { left: calc(50% + -76.64px);   top: calc(50% + -248.45px); }
+.me-circle-pos[data-idx='0'] {
+  left: calc(50% + 0px);
+  top: calc(50% + -260px);
+}
+.me-circle-pos[data-idx='1'] {
+  left: calc(50% + 76.64px);
+  top: calc(50% + -248.45px);
+}
+.me-circle-pos[data-idx='2'] {
+  left: calc(50% + 146.46px);
+  top: calc(50% + -214.82px);
+}
+.me-circle-pos[data-idx='3'] {
+  left: calc(50% + 203.28px);
+  top: calc(50% + -162.11px);
+}
+.me-circle-pos[data-idx='4'] {
+  left: calc(50% + 242.03px);
+  top: calc(50% + -94.99px);
+}
+.me-circle-pos[data-idx='5'] {
+  left: calc(50% + 259.27px);
+  top: calc(50% + -19.43px);
+}
+.me-circle-pos[data-idx='6'] {
+  left: calc(50% + 253.48px);
+  top: calc(50% + 57.86px);
+}
+.me-circle-pos[data-idx='7'] {
+  left: calc(50% + 225.17px);
+  top: calc(50% + 130px);
+}
+.me-circle-pos[data-idx='8'] {
+  left: calc(50% + 176.84px);
+  top: calc(50% + 190.59px);
+}
+.me-circle-pos[data-idx='9'] {
+  left: calc(50% + 112.81px);
+  top: calc(50% + 234.25px);
+}
+.me-circle-pos[data-idx='10'] {
+  left: calc(50% + 38.75px);
+  top: calc(50% + 257.1px);
+}
+.me-circle-pos[data-idx='11'] {
+  left: calc(50% + -38.75px);
+  top: calc(50% + 257.1px);
+}
+.me-circle-pos[data-idx='12'] {
+  left: calc(50% + -112.81px);
+  top: calc(50% + 234.25px);
+}
+.me-circle-pos[data-idx='13'] {
+  left: calc(50% + -176.84px);
+  top: calc(50% + 190.59px);
+}
+.me-circle-pos[data-idx='14'] {
+  left: calc(50% + -225.17px);
+  top: calc(50% + 130px);
+}
+.me-circle-pos[data-idx='15'] {
+  left: calc(50% + -253.48px);
+  top: calc(50% + 57.86px);
+}
+.me-circle-pos[data-idx='16'] {
+  left: calc(50% + -259.27px);
+  top: calc(50% + -19.43px);
+}
+.me-circle-pos[data-idx='17'] {
+  left: calc(50% + -242.03px);
+  top: calc(50% + -94.99px);
+}
+.me-circle-pos[data-idx='18'] {
+  left: calc(50% + -203.28px);
+  top: calc(50% + -162.11px);
+}
+.me-circle-pos[data-idx='19'] {
+  left: calc(50% + -146.46px);
+  top: calc(50% + -214.82px);
+}
+.me-circle-pos[data-idx='20'] {
+  left: calc(50% + -76.64px);
+  top: calc(50% + -248.45px);
+}
 
 /* Floating animation for language tiles */
 @keyframes me-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .me-lang-float {
   animation: me-float 6s ease-in-out infinite;
 }
-.me-lang-float[data-idx="0"] { animation-delay: -0s; }
-.me-lang-float[data-idx="1"] { animation-delay: -0.3s; }
-.me-lang-float[data-idx="2"] { animation-delay: -0.6s; }
-.me-lang-float[data-idx="3"] { animation-delay: -0.9s; }
-.me-lang-float[data-idx="4"] { animation-delay: -1.2s; }
-.me-lang-float[data-idx="5"] { animation-delay: -1.5s; }
-.me-lang-float[data-idx="6"] { animation-delay: -1.8s; }
-.me-lang-float[data-idx="7"] { animation-delay: -2.1s; }
-.me-lang-float[data-idx="8"] { animation-delay: -2.4s; }
-.me-lang-float[data-idx="9"] { animation-delay: -2.7s; }
-.me-lang-float[data-idx="10"] { animation-delay: -3.0s; }
-.me-lang-float[data-idx="11"] { animation-delay: -3.3s; }
-.me-lang-float[data-idx="12"] { animation-delay: -3.6s; }
-.me-lang-float[data-idx="13"] { animation-delay: -3.9s; }
-.me-lang-float[data-idx="14"] { animation-delay: -4.2s; }
-.me-lang-float[data-idx="15"] { animation-delay: -4.5s; }
-.me-lang-float[data-idx="16"] { animation-delay: -4.8s; }
-.me-lang-float[data-idx="17"] { animation-delay: -5.1s; }
-.me-lang-float[data-idx="18"] { animation-delay: -5.4s; }
-.me-lang-float[data-idx="19"] { animation-delay: -5.7s; }
-.me-lang-float[data-idx="20"] { animation-delay: -5.85s; } /* phase between idx 19 and 0 on the cycle, matching circle order */
+.me-lang-float[data-idx='0'] {
+  animation-delay: -0s;
+}
+.me-lang-float[data-idx='1'] {
+  animation-delay: -0.3s;
+}
+.me-lang-float[data-idx='2'] {
+  animation-delay: -0.6s;
+}
+.me-lang-float[data-idx='3'] {
+  animation-delay: -0.9s;
+}
+.me-lang-float[data-idx='4'] {
+  animation-delay: -1.2s;
+}
+.me-lang-float[data-idx='5'] {
+  animation-delay: -1.5s;
+}
+.me-lang-float[data-idx='6'] {
+  animation-delay: -1.8s;
+}
+.me-lang-float[data-idx='7'] {
+  animation-delay: -2.1s;
+}
+.me-lang-float[data-idx='8'] {
+  animation-delay: -2.4s;
+}
+.me-lang-float[data-idx='9'] {
+  animation-delay: -2.7s;
+}
+.me-lang-float[data-idx='10'] {
+  animation-delay: -3s;
+}
+.me-lang-float[data-idx='11'] {
+  animation-delay: -3.3s;
+}
+.me-lang-float[data-idx='12'] {
+  animation-delay: -3.6s;
+}
+.me-lang-float[data-idx='13'] {
+  animation-delay: -3.9s;
+}
+.me-lang-float[data-idx='14'] {
+  animation-delay: -4.2s;
+}
+.me-lang-float[data-idx='15'] {
+  animation-delay: -4.5s;
+}
+.me-lang-float[data-idx='16'] {
+  animation-delay: -4.8s;
+}
+.me-lang-float[data-idx='17'] {
+  animation-delay: -5.1s;
+}
+.me-lang-float[data-idx='18'] {
+  animation-delay: -5.4s;
+}
+.me-lang-float[data-idx='19'] {
+  animation-delay: -5.7s;
+}
+.me-lang-float[data-idx='20'] {
+  animation-delay: -5.85s;
+} /* phase between idx 19 and 0 on the cycle, matching circle order */
 
 /* Softer hero glow used on the language-selection page (70% fade vs the
  * default 65%). Animated via me-breathe, same keyframes as .me-hero-glow. */
 .me-hero-glow-soft {
-  background: radial-gradient(circle, rgba(212, 145, 92, 0.08) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(212, 145, 92, 0.08) 0%,
+    transparent 70%
+  );
   animation: me-breathe 8s ease-in-out infinite;
 }
-.me-hero-glow-soft.me-anim-none { animation: none; }
+.me-hero-glow-soft.me-anim-none {
+  animation: none;
+}

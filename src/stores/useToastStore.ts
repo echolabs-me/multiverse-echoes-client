@@ -25,7 +25,11 @@ export interface ToastItem {
 
 interface ToastState {
   toasts: ToastItem[];
-  addToast: (message: string, severity?: ToastSeverity, options?: ToastOptions) => void;
+  addToast: (
+    message: string,
+    severity?: ToastSeverity,
+    options?: ToastOptions,
+  ) => void;
   removeToast: (id: string) => void;
 }
 

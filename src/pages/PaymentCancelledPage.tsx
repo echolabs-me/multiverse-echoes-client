@@ -10,8 +10,12 @@ export function PaymentCancelledPage() {
     <div className="flex min-h-screen items-center justify-center bg-canvas">
       <div className="mx-auto max-w-md p-6 text-center">
         <XCircle size={48} className="mx-auto mbe-4 text-text-muted" />
-        <h1 className="mbe-2 text-2xl font-bold text-text-primary">{t('payment.cancelledTitle')}</h1>
-        <p className="mbe-6 text-sm text-text-secondary">{t('payment.cancelledDesc')}</p>
+        <h1 className="mbe-2 text-2xl font-bold text-text-primary">
+          {t('payment.cancelledTitle')}
+        </h1>
+        <p className="mbe-6 text-sm text-text-secondary">
+          {t('payment.cancelledDesc')}
+        </p>
 
         <div className="mbs-6 flex flex-col gap-3">
           <button

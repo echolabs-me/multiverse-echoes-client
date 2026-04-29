@@ -92,8 +92,7 @@ export const auth = {
       body: JSON.stringify(data),
     }),
 
-  logout: () =>
-    request<MessageResponse>('/auth/logout', { method: 'POST' }),
+  logout: () => request<MessageResponse>('/auth/logout', { method: 'POST' }),
 };
 
 // --- Echoes ---
@@ -167,23 +166,32 @@ export const echoes = {
     const token = getAccessToken();
     const headers: Record<string, string> = {};
     if (token) headers['Authorization'] = `Bearer ${token}`;
-    const resp = await fetch(`${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate`, {
-      method: 'POST',
-      headers,
-    });
+    const resp = await fetch(
+      `${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate`,
+      {
+        method: 'POST',
+        headers,
+      },
+    );
     if (!resp.ok) throw new Error(await resp.text());
     return resp.blob();
   },
 
   /** Start async video narration. Returns cached video blob (200) or job_id (202). */
-  narrateVideoStart: async (echoId: string, entryId: string): Promise<{ cached: Blob } | { jobId: string }> => {
+  narrateVideoStart: async (
+    echoId: string,
+    entryId: string,
+  ): Promise<{ cached: Blob } | { jobId: string }> => {
     const token = getAccessToken();
     const headers: Record<string, string> = {};
     if (token) headers['Authorization'] = `Bearer ${token}`;
-    const resp = await fetch(`${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate/video`, {
-      method: 'POST',
-      headers,
-    });
+    const resp = await fetch(
+      `${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate/video`,
+      {
+        method: 'POST',
+        headers,
+      },
+    );
     if (!resp.ok) throw new Error(await resp.text());
     if (resp.status === 200) return { cached: await resp.blob() };
     const body = await resp.json();
@@ -191,24 +199,39 @@ export const echoes = {
   },
 
   /** Poll video generation status. */
-  narrateVideoStatus: async (echoId: string, entryId: string, jobId: string): Promise<{ status: string; progress?: number; error?: string }> => {
-    return request(`/echoes/${echoId}/diary/${entryId}/narrate/video/status/${jobId}`);
+  narrateVideoStatus: async (
+    echoId: string,
+    entryId: string,
+    jobId: string,
+  ): Promise<{ status: string; progress?: number; error?: string }> => {
+    return request(
+      `/echoes/${echoId}/diary/${entryId}/narrate/video/status/${jobId}`,
+    );
   },
 
   /** Fetch completed video. */
-  narrateVideoResult: async (echoId: string, entryId: string, jobId: string): Promise<Blob> => {
+  narrateVideoResult: async (
+    echoId: string,
+    entryId: string,
+    jobId: string,
+  ): Promise<Blob> => {
     const token = getAccessToken();
     const headers: Record<string, string> = {};
     if (token) headers['Authorization'] = `Bearer ${token}`;
-    const resp = await fetch(`${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate/video/result/${jobId}`, {
-      headers,
-    });
+    const resp = await fetch(
+      `${getBaseUrl()}/echoes/${echoId}/diary/${entryId}/narrate/video/result/${jobId}`,
+      {
+        headers,
+      },
+    );
     if (!resp.ok) throw new Error(await resp.text());
     return resp.blob();
   },
 
   regenerateAvatar: (echoId: string) =>
-    request<EchoResponse>(`/echoes/${echoId}/avatar/regenerate`, { method: 'POST' }),
+    request<EchoResponse>(`/echoes/${echoId}/avatar/regenerate`, {
+      method: 'POST',
+    }),
 
   startVoiceSession: (echoId: string) =>
     request<{
@@ -220,7 +243,10 @@ export const echoes = {
     }>(`/echoes/${echoId}/voice/start`, { method: 'POST' }),
 
   stopVoiceSession: (echoId: string, nonce?: number) =>
-    request<void>(`/echoes/${echoId}/voice/stop${nonce ? `?nonce=${nonce}` : ''}`, { method: 'POST' }),
+    request<void>(
+      `/echoes/${echoId}/voice/stop${nonce ? `?nonce=${nonce}` : ''}`,
+      { method: 'POST' },
+    ),
 
   voiceStatus: (echoId: string) =>
     request<{
@@ -253,7 +279,8 @@ export const shards = {
   // cast and so the type system catches future drift.
   get: (shardId: string) => request<ShardDetail>(`/shards/${shardId}`),
 
-  echoes: (shardId: string) => request<EchoResponse[]>(`/shards/${shardId}/echoes`),
+  echoes: (shardId: string) =>
+    request<EchoResponse[]>(`/shards/${shardId}/echoes`),
 };
 
 // --- Feeds ---
@@ -328,7 +355,10 @@ export const channels = {
 
   get: (channelId: string) => request<Channel>(`/channels/${channelId}`),
 
-  messages: (channelId: string, params?: { cursor?: string; limit?: number }) => {
+  messages: (
+    channelId: string,
+    params?: { cursor?: string; limit?: number },
+  ) => {
     const query = new URLSearchParams();
     if (params?.cursor) query.set('cursor', params.cursor);
     if (params?.limit) query.set('limit', String(params.limit));
@@ -344,7 +374,11 @@ export const channels = {
       body: JSON.stringify(data),
     }),
 
-  editMessage: (channelId: string, messageId: string, data: EditMessageRequest) =>
+  editMessage: (
+    channelId: string,
+    messageId: string,
+    data: EditMessageRequest,
+  ) =>
     request<ChannelMessage>(`/channels/${channelId}/messages/${messageId}`, {
       method: 'PATCH',
       body: JSON.stringify(data),
@@ -355,7 +389,10 @@ export const channels = {
       method: 'DELETE',
     }),
 
-  uploadImage: async (channelId: string, file: File): Promise<ChannelMessage> => {
+  uploadImage: async (
+    channelId: string,
+    file: File,
+  ): Promise<ChannelMessage> => {
     const { getAccessToken, getBaseUrl } = await import('../api/client.ts');
     const form = new FormData();
     form.append('file', file);
@@ -368,13 +405,23 @@ export const channels = {
     return resp.json() as Promise<ChannelMessage>;
   },
 
-  pollVote: (channelId: string, data: { discord_message_id: string; discord_channel_id: string; answer_id: number }) =>
+  pollVote: (
+    channelId: string,
+    data: {
+      discord_message_id: string;
+      discord_channel_id: string;
+      answer_id: number;
+    },
+  ) =>
     request<{ voted: boolean }>(`/channels/${channelId}/poll-vote`, {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
-  createPoll: (channelId: string, data: { question: string; options: string[] }) =>
+  createPoll: (
+    channelId: string,
+    data: { question: string; options: string[] },
+  ) =>
     request<{ created: boolean }>(`/channels/${channelId}/poll`, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -384,8 +431,7 @@ export const channels = {
 // --- Account ---
 
 export const account = {
-  getProfile: () =>
-    request<import('../../types/api.ts').User>('/account/me'),
+  getProfile: () => request<import('../../types/api.ts').User>('/account/me'),
 
   updateProfile: (data: { display_name?: string; locale?: string }) =>
     request<{ message: string; display_name: string; locale?: string }>(
@@ -397,10 +443,19 @@ export const account = {
     ),
 
   getPrivacy: () =>
-    request<{ solo_mode: boolean; do_not_sell: boolean; analytics_opt_out: boolean }>('/account/me/privacy'),
+    request<{
+      solo_mode: boolean;
+      do_not_sell: boolean;
+      analytics_opt_out: boolean;
+    }>('/account/me/privacy'),
 
   updatePrivacy: (data: { solo_mode?: boolean; do_not_sell?: boolean }) =>
-    request<{ solo_mode: boolean; do_not_sell: boolean; analytics_opt_out: boolean; updated_at: string }>('/account/me/privacy', {
+    request<{
+      solo_mode: boolean;
+      do_not_sell: boolean;
+      analytics_opt_out: boolean;
+      updated_at: string;
+    }>('/account/me/privacy', {
       method: 'PATCH',
       body: JSON.stringify(data),
     }),
@@ -439,21 +494,34 @@ export const account = {
     request<MessageResponse>('/account/me/delete/cancel', { method: 'POST' }),
 
   getSessions: () =>
-    request<Array<{ session_id: string; created_at: string; last_active: string; current: boolean }>>('/account/me/sessions'),
+    request<
+      Array<{
+        session_id: string;
+        created_at: string;
+        last_active: string;
+        current: boolean;
+      }>
+    >('/account/me/sessions'),
 
   revokeSession: (sessionId: string) =>
-    request<MessageResponse>(`/account/me/sessions/${sessionId}`, { method: 'DELETE' }),
+    request<MessageResponse>(`/account/me/sessions/${sessionId}`, {
+      method: 'DELETE',
+    }),
 
   linkDiscord: () =>
-    request<{ auth_url: string }>('/account/me/discord/link', { method: 'POST' }),
+    request<{ auth_url: string }>('/account/me/discord/link', {
+      method: 'POST',
+    }),
 
   unlinkDiscord: () =>
     request<MessageResponse>('/account/me/discord/link', { method: 'DELETE' }),
 
   discordStatus: () =>
-    request<{ linked: boolean; discord_user_id?: string; discord_username?: string }>(
-      '/account/me/discord',
-    ),
+    request<{
+      linked: boolean;
+      discord_user_id?: string;
+      discord_username?: string;
+    }>('/account/me/discord'),
 };
 
 // --- API Keys ---
@@ -468,7 +536,9 @@ export const apiKeys = {
     }),
 
   revoke: (keyId: string) =>
-    request<MessageResponse>(`/account/me/api-keys/${keyId}`, { method: 'DELETE' }),
+    request<MessageResponse>(`/account/me/api-keys/${keyId}`, {
+      method: 'DELETE',
+    }),
 };
 
 // --- Conversations ---
@@ -481,7 +551,9 @@ export const conversations = {
 
   /** Find an active conversation (last message < 30min ago) or create a new one. */
   findActive: (echoId: string) =>
-    request<ActiveConversationResponse>(`/echoes/${echoId}/conversations/active`),
+    request<ActiveConversationResponse>(
+      `/echoes/${echoId}/conversations/active`,
+    ),
 
   list: (echoId: string) =>
     request<Conversation[]>(`/echoes/${echoId}/conversations`),
@@ -565,16 +637,24 @@ export const admin = {
   getUser: (userId: string) => request<AdminUser>(`/admin/users/${userId}`),
 
   suspendUser: (userId: string) =>
-    request<MessageResponse>(`/admin/users/${userId}/suspend`, { method: 'POST' }),
+    request<MessageResponse>(`/admin/users/${userId}/suspend`, {
+      method: 'POST',
+    }),
 
   unsuspendUser: (userId: string) =>
-    request<MessageResponse>(`/admin/users/${userId}/unsuspend`, { method: 'POST' }),
+    request<MessageResponse>(`/admin/users/${userId}/unsuspend`, {
+      method: 'POST',
+    }),
 
   shards: () => request<Shard[]>('/shards'),
 
   feedback: () => request<FeedbackEntry[]>('/admin/feedback'),
 
-  updateFeedbackStatus: (feedbackId: string, status: string, resolutionNotes?: string) =>
+  updateFeedbackStatus: (
+    feedbackId: string,
+    status: string,
+    resolutionNotes?: string,
+  ) =>
     request<FeedbackEntry>(`/admin/feedback/${feedbackId}/status`, {
       method: 'POST',
       body: JSON.stringify({ status, resolution_notes: resolutionNotes }),
@@ -592,9 +672,14 @@ export const admin = {
     }),
 
   tickStatus: () => request<{ paused: boolean }>('/admin/tick/status'),
-  tickPause: () => request<{ paused: boolean }>('/admin/tick/pause', { method: 'POST' }),
-  tickResume: () => request<{ paused: boolean }>('/admin/tick/resume', { method: 'POST' }),
-  triggerTick: () => request<{ message: string; tick_id: number }>('/system/tick', { method: 'POST' }),
+  tickPause: () =>
+    request<{ paused: boolean }>('/admin/tick/pause', { method: 'POST' }),
+  tickResume: () =>
+    request<{ paused: boolean }>('/admin/tick/resume', { method: 'POST' }),
+  triggerTick: () =>
+    request<{ message: string; tick_id: number }>('/system/tick', {
+      method: 'POST',
+    }),
 
   listModerators: () => request<ModeratorUserItem[]>('/admin/moderators'),
 
@@ -623,7 +708,8 @@ export const adminShare = {
     if (params?.min_share_count !== undefined)
       query.set('min_share_count', String(params.min_share_count));
     if (params?.limit !== undefined) query.set('limit', String(params.limit));
-    if (params?.offset !== undefined) query.set('offset', String(params.offset));
+    if (params?.offset !== undefined)
+      query.set('offset', String(params.offset));
     const qs = query.toString();
     return request<ViralContentResponse>(
       `/admin/share/viral-content${qs ? `?${qs}` : ''}`,
@@ -638,11 +724,13 @@ export const adminShare = {
     offset?: number;
   }) => {
     const query = new URLSearchParams();
-    if (params?.creator_user_id) query.set('creator_user_id', params.creator_user_id);
+    if (params?.creator_user_id)
+      query.set('creator_user_id', params.creator_user_id);
     if (params?.item_kind) query.set('item_kind', params.item_kind);
     if (params?.status) query.set('status', params.status);
     if (params?.limit !== undefined) query.set('limit', String(params.limit));
-    if (params?.offset !== undefined) query.set('offset', String(params.offset));
+    if (params?.offset !== undefined)
+      query.set('offset', String(params.offset));
     const qs = query.toString();
     return request<AdminShareTokenListResponse>(
       `/admin/share/tokens${qs ? `?${qs}` : ''}`,
@@ -761,10 +849,13 @@ export const subscription = {
     request<DowngradeSessionView>('/subscription/downgrade/pending'),
 
   pickIncludedShard: (sessionId: string, shardId: string) =>
-    request<DowngradeSessionView>('/subscription/downgrade/pick-included-shard', {
-      method: 'POST',
-      body: JSON.stringify({ session_id: sessionId, shard_id: shardId }),
-    }),
+    request<DowngradeSessionView>(
+      '/subscription/downgrade/pick-included-shard',
+      {
+        method: 'POST',
+        body: JSON.stringify({ session_id: sessionId, shard_id: shardId }),
+      },
+    ),
 
   shardDecision: (sessionId: string, shardId: string, decision: string) =>
     request<DowngradeSessionView>('/subscription/downgrade/shard-decision', {
@@ -857,10 +948,14 @@ export const users = {
   getPublic: (userId: string) =>
     request<PublicUserOgResponse>(`/public/users/${userId}`),
 
-  listEchoes: (userId: string, params?: { limit?: number; offset?: number }) => {
+  listEchoes: (
+    userId: string,
+    params?: { limit?: number; offset?: number },
+  ) => {
     const query = new URLSearchParams();
     if (params?.limit !== undefined) query.set('limit', String(params.limit));
-    if (params?.offset !== undefined) query.set('offset', String(params.offset));
+    if (params?.offset !== undefined)
+      query.set('offset', String(params.offset));
     const qs = query.toString();
     return request<PublicEchoRef[]>(
       `/users/${userId}/echoes${qs ? `?${qs}` : ''}`,
@@ -880,16 +975,24 @@ export const users = {
   // the domain the page consumes them from. Mirror endpoints in
   // `crates/api/src/routes/social.rs::social_router`.
   follow: (userId: string) =>
-    request<RelationshipResponse>(`/social/follow/${userId}`, { method: 'POST' }),
+    request<RelationshipResponse>(`/social/follow/${userId}`, {
+      method: 'POST',
+    }),
 
   unfollow: (userId: string) =>
-    request<{ status: string }>(`/social/follow/${userId}`, { method: 'DELETE' }),
+    request<{ status: string }>(`/social/follow/${userId}`, {
+      method: 'DELETE',
+    }),
 
   block: (userId: string) =>
-    request<RelationshipResponse>(`/social/block/${userId}`, { method: 'POST' }),
+    request<RelationshipResponse>(`/social/block/${userId}`, {
+      method: 'POST',
+    }),
 
   unblock: (userId: string) =>
-    request<{ status: string }>(`/social/block/${userId}`, { method: 'DELETE' }),
+    request<{ status: string }>(`/social/block/${userId}`, {
+      method: 'DELETE',
+    }),
 
   mute: (userId: string) =>
     request<RelationshipResponse>(`/social/mute/${userId}`, { method: 'POST' }),
@@ -908,8 +1011,7 @@ export const users = {
 // target on initial load. Server: `crates/api/src/routes/social.rs`.
 
 export const social = {
-  following: () =>
-    request<RelationshipResponse[]>('/social/following'),
+  following: () => request<RelationshipResponse[]>('/social/following'),
   blocked: () => request<RelationshipResponse[]>('/social/blocked'),
   muted: () => request<RelationshipResponse[]>('/social/muted'),
 };
@@ -950,9 +1052,7 @@ export const marketplace = {
     request<MarketplaceItemResponse>(`/marketplace/items/${itemId}`),
 
   preview: (itemId: string) =>
-    request<MarketplacePreviewResponse>(
-      `/marketplace/items/${itemId}/preview`,
-    ),
+    request<MarketplacePreviewResponse>(`/marketplace/items/${itemId}/preview`),
 
   purchase: (itemId: string) =>
     request<InventoryRowResponse>('/marketplace/purchase', {
@@ -971,11 +1071,8 @@ export const marketplace = {
   },
 
   equip: (itemId: string, equipped: boolean) =>
-    request<InventoryRowResponse>(
-      `/marketplace/inventory/${itemId}/equip`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify({ equipped }),
-      },
-    ),
+    request<InventoryRowResponse>(`/marketplace/inventory/${itemId}/equip`, {
+      method: 'PATCH',
+      body: JSON.stringify({ equipped }),
+    }),
 };

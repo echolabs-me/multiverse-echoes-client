@@ -28,7 +28,11 @@ export function PaymentSuccessPage() {
         try {
           const result = await payments.getStatus(paymentId);
           setStatus(result.status);
-          if (result.status === 'Finished' || result.status === 'Failed' || result.status === 'Expired') {
+          if (
+            result.status === 'Finished' ||
+            result.status === 'Failed' ||
+            result.status === 'Expired'
+          ) {
             setPolling(false);
             return;
           }
@@ -48,7 +52,8 @@ export function PaymentSuccessPage() {
   }, [paymentId]);
 
   const isConfirmed = status === 'Finished';
-  const isPending = status === 'Pending' || status === 'Confirming' || status === 'Confirmed';
+  const isPending =
+    status === 'Pending' || status === 'Confirming' || status === 'Confirmed';
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-canvas">
@@ -56,20 +61,37 @@ export function PaymentSuccessPage() {
         {isConfirmed ? (
           <>
             <CheckCircle size={48} className="mx-auto mbe-4 text-success" />
-            <h1 className="mbe-2 text-2xl font-bold text-text-primary">{t('payment.successTitle')}</h1>
-            <p className="mbe-6 text-sm text-text-secondary">{t('payment.successDesc')}</p>
+            <h1 className="mbe-2 text-2xl font-bold text-text-primary">
+              {t('payment.successTitle')}
+            </h1>
+            <p className="mbe-6 text-sm text-text-secondary">
+              {t('payment.successDesc')}
+            </p>
           </>
         ) : isPending && polling ? (
           <>
-            <Loader2 size={48} className="mx-auto mbe-4 animate-spin text-accent" />
-            <h1 className="mbe-2 text-2xl font-bold text-text-primary">{t('payment.successPending')}</h1>
-            <p className="mbe-6 text-sm text-text-secondary">{t('payment.successPendingDesc')}</p>
-            <p className="text-xs text-text-muted">{t('payment.checkingStatus')}</p>
+            <Loader2
+              size={48}
+              className="mx-auto mbe-4 animate-spin text-accent"
+            />
+            <h1 className="mbe-2 text-2xl font-bold text-text-primary">
+              {t('payment.successPending')}
+            </h1>
+            <p className="mbe-6 text-sm text-text-secondary">
+              {t('payment.successPendingDesc')}
+            </p>
+            <p className="text-xs text-text-muted">
+              {t('payment.checkingStatus')}
+            </p>
           </>
         ) : (
           <>
-            <h1 className="mbe-2 text-2xl font-bold text-text-primary">{t('payment.successPending')}</h1>
-            <p className="mbe-6 text-sm text-text-secondary">{t('payment.successPendingDesc')}</p>
+            <h1 className="mbe-2 text-2xl font-bold text-text-primary">
+              {t('payment.successPending')}
+            </h1>
+            <p className="mbe-6 text-sm text-text-secondary">
+              {t('payment.successPendingDesc')}
+            </p>
           </>
         )}
 

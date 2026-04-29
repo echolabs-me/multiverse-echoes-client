@@ -13,7 +13,14 @@
  */
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, useMemo, useState, useEffect, useCallback, Suspense } from 'react';
+import {
+  useRef,
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+  Suspense,
+} from 'react';
 import * as THREE from 'three';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useGpuAvailable } from '@/hooks/useGpuAvailable';
@@ -83,10 +90,7 @@ function BirthParticles({ onComplete }: { onComplete: () => void }) {
   const startTime = useRef<number | null>(null);
   const completed = useRef(false);
 
-  const positions = useMemo(
-    () => new Float32Array(START_POSITIONS),
-    [],
-  );
+  const positions = useMemo(() => new Float32Array(START_POSITIONS), []);
 
   const sizes = useMemo(() => {
     const arr = new Float32Array(PARTICLE_COUNT);
@@ -156,14 +160,8 @@ function BirthParticles({ onComplete }: { onComplete: () => void }) {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
-        <bufferAttribute
-          attach="attributes-size"
-          args={[sizes, 1]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-size" args={[sizes, 1]} />
       </bufferGeometry>
       <pointsMaterial
         color="#d4915c"

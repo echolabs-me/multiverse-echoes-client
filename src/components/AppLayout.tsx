@@ -31,7 +31,10 @@ import { MoodParticles } from './MoodParticles.tsx';
 import { BillingBanner } from './BillingBanner.tsx';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
 import { isTabletDevice } from '../lib/deviceDetect.ts';
-import type { BillingHealthResponse, DunningPhase } from '../types/generated.ts';
+import type {
+  BillingHealthResponse,
+  DunningPhase,
+} from '../types/generated.ts';
 
 /**
  * Derive a single effective dunning phase from a `BillingHealthResponse`.
@@ -70,16 +73,49 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
   const unreadCount = useNotificationStore((s) => s.unreadCount);
 
   const allItems: NavItem[] = [
-    { id: 'dashboard', labelKey: 'nav.dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
-    { id: 'shards', labelKey: 'nav.browseShards', icon: <Compass size={20} />, path: '/shards/browse' },
-    { id: 'community', labelKey: 'communitySidebar.title', icon: <DiscordIcon size={20} />, path: '/community' },
-    { id: 'search', labelKey: 'common.search', icon: <Search size={20} />, path: '/search' },
-    { id: 'notifications', labelKey: 'nav.notifications', icon: <Bell size={20} />, path: '/notifications', badge: unreadCount },
-    { id: 'settings', labelKey: 'nav.settings', icon: <Settings size={20} />, path: '/settings' },
+    {
+      id: 'dashboard',
+      labelKey: 'nav.dashboard',
+      icon: <LayoutDashboard size={20} />,
+      path: '/dashboard',
+    },
+    {
+      id: 'shards',
+      labelKey: 'nav.browseShards',
+      icon: <Compass size={20} />,
+      path: '/shards/browse',
+    },
+    {
+      id: 'community',
+      labelKey: 'communitySidebar.title',
+      icon: <DiscordIcon size={20} />,
+      path: '/community',
+    },
+    {
+      id: 'search',
+      labelKey: 'common.search',
+      icon: <Search size={20} />,
+      path: '/search',
+    },
+    {
+      id: 'notifications',
+      labelKey: 'nav.notifications',
+      icon: <Bell size={20} />,
+      path: '/notifications',
+      badge: unreadCount,
+    },
+    {
+      id: 'settings',
+      labelKey: 'nav.settings',
+      icon: <Settings size={20} />,
+      path: '/settings',
+    },
   ];
 
   // On tablet, Community lives in the right tab panel — remove from nav
-  const items = isTablet ? allItems.filter((i) => i.id !== 'community') : allItems;
+  const items = isTablet
+    ? allItems.filter((i) => i.id !== 'community')
+    : allItems;
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -102,7 +138,9 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
                 aria-current={isActive(item.path) ? 'page' : undefined}
               >
                 {item.icon}
-                <span className="text-[9px] leading-tight font-medium">{t(item.labelKey, item.id)}</span>
+                <span className="text-[9px] leading-tight font-medium">
+                  {t(item.labelKey, item.id)}
+                </span>
                 {item.badge != null && item.badge > 0 && (
                   <span className="absolute inset-e-0.5 inset-bs-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-0.5 text-[9px] font-bold text-canvas">
                     {item.badge > 99 ? '99+' : item.badge}
@@ -122,7 +160,9 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
           className="flex w-full flex-col items-center gap-0.5 rounded-lg px-1 py-2 text-text-muted transition-colors hover:bg-surface-raised hover:text-danger"
         >
           <LogOut size={20} />
-          <span className="text-[9px] leading-tight font-medium">{t('auth.logout')}</span>
+          <span className="text-[9px] leading-tight font-medium">
+            {t('auth.logout')}
+          </span>
         </button>
       </div>
     </aside>
@@ -132,7 +172,13 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
 /**
  * Wraps children in the mood-reactive gradient + particle layer.
  */
-function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: React.ReactNode }) {
+function MoodAtmosphereWrapper({
+  show,
+  children,
+}: {
+  show: boolean;
+  children: React.ReactNode;
+}) {
   const palette = useMoodPaletteStore((s) => s.palette);
 
   return (
@@ -142,7 +188,10 @@ function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: Re
           <div
             ref={(el) => {
               if (el) {
-                el.style.setProperty('--me-bg-gradient-from', palette.gradientFrom);
+                el.style.setProperty(
+                  '--me-bg-gradient-from',
+                  palette.gradientFrom,
+                );
                 el.style.setProperty('--me-bg-gradient-to', palette.gradientTo);
               }
             }}
@@ -154,9 +203,7 @@ function MoodAtmosphereWrapper({ show, children }: { show: boolean; children: Re
           </div>
         </>
       )}
-      <div className="flex min-h-0 flex-1">
-        {children}
-      </div>
+      <div className="flex min-h-0 flex-1">{children}</div>
     </div>
   );
 }
@@ -243,8 +290,9 @@ export function AppLayout() {
     };
   }, []);
 
-  const showEchoPanes = location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/');
-
+  const showEchoPanes =
+    location.pathname === '/dashboard' ||
+    location.pathname.startsWith('/echoes/');
 
   // Auth guard
   if (!isAuthenticated) {
@@ -252,10 +300,31 @@ export function AppLayout() {
   }
 
   const mobileNavItems: NavItem[] = [
-    { id: 'dashboard', labelKey: 'nav.dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
-    { id: 'search', labelKey: 'common.search', icon: <Search size={20} />, path: '/search' },
-    { id: 'notifications', labelKey: 'nav.notifications', icon: <Bell size={20} />, path: '/notifications', badge: unreadCount },
-    { id: 'oracle', labelKey: 'oracle.title', icon: <Sparkles size={20} />, path: '' },
+    {
+      id: 'dashboard',
+      labelKey: 'nav.dashboard',
+      icon: <LayoutDashboard size={20} />,
+      path: '/dashboard',
+    },
+    {
+      id: 'search',
+      labelKey: 'common.search',
+      icon: <Search size={20} />,
+      path: '/search',
+    },
+    {
+      id: 'notifications',
+      labelKey: 'nav.notifications',
+      icon: <Bell size={20} />,
+      path: '/notifications',
+      badge: unreadCount,
+    },
+    {
+      id: 'oracle',
+      labelKey: 'oracle.title',
+      icon: <Sparkles size={20} />,
+      path: '',
+    },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -272,7 +341,12 @@ export function AppLayout() {
       {/* Top bar — logo + mobile hamburger */}
       <header className="relative flex h-14 shrink-0 items-center justify-between gap-2 overflow-hidden border-be border-border bg-surface px-4">
         <div className="flex min-w-0 shrink-0 items-center gap-2">
-          <img src="/logo.png" alt="" aria-hidden="true" className="size-8 shrink-0 rounded-sm" />
+          <img
+            src="/logo.png"
+            alt=""
+            aria-hidden="true"
+            className="size-8 shrink-0 rounded-sm"
+          />
           <span className="hidden truncate text-lg font-bold text-accent md:inline">
             {t('app.title')}
           </span>
@@ -304,15 +378,38 @@ export function AppLayout() {
           <nav>
             <ul className="flex flex-col gap-1">
               {[
-                { labelKey: 'nav.dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
-                { labelKey: 'nav.browseShards', path: '/shards/browse', icon: <Compass size={20} /> },
-                { labelKey: 'common.search', path: '/search', icon: <Search size={20} /> },
-                { labelKey: 'nav.notifications', path: '/notifications', icon: <Bell size={20} /> },
-                { labelKey: 'nav.settings', path: '/settings', icon: <Settings size={20} /> },
+                {
+                  labelKey: 'nav.dashboard',
+                  path: '/dashboard',
+                  icon: <LayoutDashboard size={20} />,
+                },
+                {
+                  labelKey: 'nav.browseShards',
+                  path: '/shards/browse',
+                  icon: <Compass size={20} />,
+                },
+                {
+                  labelKey: 'common.search',
+                  path: '/search',
+                  icon: <Search size={20} />,
+                },
+                {
+                  labelKey: 'nav.notifications',
+                  path: '/notifications',
+                  icon: <Bell size={20} />,
+                },
+                {
+                  labelKey: 'nav.settings',
+                  path: '/settings',
+                  icon: <Settings size={20} />,
+                },
               ].map((item) => (
                 <li key={item.path}>
                   <button
-                    onClick={() => { navigate(item.path); setMobileNavOpen(false); }}
+                    onClick={() => {
+                      navigate(item.path);
+                      setMobileNavOpen(false);
+                    }}
                     className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm ${
                       isActive(item.path)
                         ? 'bg-accent-subtle font-medium text-accent'
@@ -336,7 +433,6 @@ export function AppLayout() {
         {/* We use a single layout tree to prevent `<Outlet />` unmounting on resize. */}
         <div className="flex flex-1 overflow-hidden">
           <MoodAtmosphereWrapper show={!isMobileViewport && showEchoPanes}>
-            
             {/* ═══ TABLET LEFT PANES ═══ */}
             {!isMobileViewport && isTablet && showEchoPanes && (
               <>
@@ -465,8 +561,6 @@ export function AppLayout() {
           </div>
         </dialog>
       )}
-
-
     </div>
   );
 }
@@ -480,7 +574,12 @@ function TabletRightSidebar() {
       <div className="flex shrink-0 border-be border-border/50" role="tablist">
         <div
           onClick={() => setActiveTab('oracle')}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveTab('oracle'); } }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setActiveTab('oracle');
+            }
+          }}
           className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold tracking-wider uppercase transition-colors ${
             activeTab === 'oracle'
               ? 'border-be-2 border-accent text-accent'
@@ -495,7 +594,12 @@ function TabletRightSidebar() {
         </div>
         <div
           onClick={() => setActiveTab('community')}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveTab('community'); } }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setActiveTab('community');
+            }
+          }}
           className={`flex flex-1 cursor-pointer items-center justify-center gap-2 py-3 text-xs font-semibold tracking-wider uppercase transition-colors ${
             activeTab === 'community'
               ? 'border-be-2 border-accent text-accent'
@@ -515,7 +619,6 @@ function TabletRightSidebar() {
     </aside>
   );
 }
-
 
 const DESKTOP_PULSE_KEY = 'desktop-pulse-open';
 
@@ -546,10 +649,11 @@ function DesktopPulseSection() {
         <span className="text-[11px] font-semibold tracking-wider text-accent/70 uppercase">
           {t('communityFeed.title')}
         </span>
-        {open
-          ? <ChevronDown size={12} className="text-text-muted" />
-          : <ChevronRight size={12} className="text-text-muted" />
-        }
+        {open ? (
+          <ChevronDown size={12} className="text-text-muted" />
+        ) : (
+          <ChevronRight size={12} className="text-text-muted" />
+        )}
       </button>
       {open && (
         <div className="max-h-50 overflow-y-auto px-2 pbe-2">

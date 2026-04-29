@@ -18,7 +18,13 @@ import { echoes as echoApi } from '../lib/api/endpoints.ts';
 import { VoiceAudioBridge } from '../lib/voiceAudio.ts';
 import type { VoicePipelineState } from '../lib/voiceAudio.ts';
 
-type SessionState = 'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking' | 'error';
+type SessionState =
+  | 'idle'
+  | 'connecting'
+  | 'listening'
+  | 'thinking'
+  | 'speaking'
+  | 'error';
 
 interface VoiceSessionModalProps {
   echoId: string;
@@ -56,7 +62,9 @@ export function VoiceSessionModal({
   const bridgeRef = useRef<VoiceAudioBridge | null>(null);
   const sessionNonceRef = useRef<number | undefined>(undefined);
   const cleanupDoneRef = useRef(false);
-  const durationTimerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const durationTimerRef = useRef<ReturnType<typeof setInterval> | undefined>(
+    undefined,
+  );
   const sessionDurationRef = useRef<number>(900);
   const remoteAudioRef = useRef<HTMLAudioElement | null>(null);
   // Pre-bridge resources — held here so cleanup() can release the mic and
@@ -102,7 +110,9 @@ export function VoiceSessionModal({
 
     try {
       await echoApi.stopVoiceSession(echoId, sessionNonceRef.current);
-    } catch { /* best effort */ }
+    } catch {
+      /* best effort */
+    }
     sessionNonceRef.current = undefined;
 
     // cleanupDoneRef stays true — the guard at the top of cleanup() is meant
@@ -111,8 +121,10 @@ export function VoiceSessionModal({
   }, [echoId]);
 
   useEffect(() => {
-    return () => { void cleanup(); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      void cleanup();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startSession = useCallback(async () => {
@@ -154,8 +166,13 @@ export function VoiceSessionModal({
       for (let i = 0; i < 30; i++) {
         try {
           const resp = await fetch(`${baseUrl}/voice/health`);
-          if (resp.ok) { ready = true; break; }
-        } catch { /* not ready */ }
+          if (resp.ok) {
+            ready = true;
+            break;
+          }
+        } catch {
+          /* not ready */
+        }
         await new Promise((r) => setTimeout(r, 500));
       }
       if (!ready) {
@@ -181,14 +198,22 @@ export function VoiceSessionModal({
             return url;
           });
         },
-        onError: (msg) => { setError(msg); setState('error'); },
+        onError: (msg) => {
+          setError(msg);
+          setState('error');
+        },
         onClose: () => {},
       });
 
       bridgeRef.current = bridge;
 
       const wsBase = baseUrl.replace(/^http/, 'ws');
-      await bridge.connect(`${wsBase}${voice_ws_url}`, remoteAudioRef.current!, preAudioCtx, preMicStream);
+      await bridge.connect(
+        `${wsBase}${voice_ws_url}`,
+        remoteAudioRef.current!,
+        preAudioCtx,
+        preMicStream,
+      );
 
       // Bridge now owns these — disconnect() will release them.
       preMicStreamRef.current = null;
@@ -207,14 +232,13 @@ export function VoiceSessionModal({
           void endSession();
         }
       }, 1000);
-
     } catch (err) {
       const msg = err instanceof Error ? err.message : t('voice.error');
       setError(msg);
       setState('error');
       void cleanup();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [echoId, cleanup, t]);
 
   const endSession = useCallback(async () => {
@@ -274,32 +298,50 @@ export function VoiceSessionModal({
       )}
 
       {/* Duration warning */}
-      {showDurationWarning && remainingSeconds !== null && remainingSeconds > 0 && (
-        <div className="absolute inset-s-4 inset-bs-4 flex items-center gap-2 rounded-lg bg-yellow-500/20 px-3 py-2 text-sm text-yellow-400">
-          <Clock size={16} />
-          {t('voice.durationWarning', 'Call ends in {{time}}', { time: formatTime(remainingSeconds) })}
-        </div>
-      )}
+      {showDurationWarning &&
+        remainingSeconds !== null &&
+        remainingSeconds > 0 && (
+          <div className="absolute inset-s-4 inset-bs-4 flex items-center gap-2 rounded-lg bg-yellow-500/20 px-3 py-2 text-sm text-yellow-400">
+            <Clock size={16} />
+            {t('voice.durationWarning', 'Call ends in {{time}}', {
+              time: formatTime(remainingSeconds),
+            })}
+          </div>
+        )}
 
       {/* Timer (always visible during call) */}
-      {remainingSeconds !== null && state !== 'idle' && state !== 'error' && !showDurationWarning && (
-        <div className="text-text-tertiary absolute inset-s-4 inset-bs-4 flex items-center gap-2 text-sm">
-          <Clock size={14} />
-          {formatTime(remainingSeconds)}
-        </div>
-      )}
+      {remainingSeconds !== null &&
+        state !== 'idle' &&
+        state !== 'error' &&
+        !showDurationWarning && (
+          <div className="text-text-tertiary absolute inset-s-4 inset-bs-4 flex items-center gap-2 text-sm">
+            <Clock size={14} />
+            {formatTime(remainingSeconds)}
+          </div>
+        )}
 
       {/* Echo name */}
-      <h2 className="mbe-6 text-xl font-semibold text-text-primary">{echoName}</h2>
+      <h2 className="mbe-6 text-xl font-semibold text-text-primary">
+        {echoName}
+      </h2>
 
       {/* Portrait / LivePortrait video */}
       <div
         className={`relative mbe-6 size-48 overflow-hidden rounded-full border-4 transition-all duration-300 ${stateColor}`}
       >
         {videoFrame ? (
-          <img src={videoFrame} alt={echoName} className="size-full object-cover" />
+          <img
+            src={videoFrame}
+            alt={echoName}
+            className="size-full object-cover"
+          />
         ) : avatarUrl ? (
-          <img src={avatarUrl} alt={echoName} className="size-full object-cover" loading="eager" />
+          <img
+            src={avatarUrl}
+            alt={echoName}
+            className="size-full object-cover"
+            loading="eager"
+          />
         ) : (
           <div className="flex size-full items-center justify-center bg-surface-raised text-4xl font-bold text-text-secondary">
             {echoName[0]}
@@ -326,23 +368,38 @@ export function VoiceSessionModal({
       </div>
 
       {/* State label */}
-      <p className={`mbe-4 text-sm ${state === 'error' ? 'text-red-400' : 'text-text-secondary'}`}>
+      <p
+        className={`mbe-4 text-sm ${state === 'error' ? 'text-red-400' : 'text-text-secondary'}`}
+      >
         {stateLabel}
       </p>
 
       {/* Transcript / subtitles */}
-      {transcript && (state === 'listening' || state === 'thinking' || state === 'speaking') && (
-        <div
-          ref={transcriptRef}
-          className="mbe-4 max-h-48 max-w-md overflow-y-auto rounded-lg bg-surface-raised px-4 py-2 text-sm text-text-secondary"
-        >
-          {transcript.split('\n').filter(Boolean).map((line, i) => (
-            <p key={i} className={line.startsWith('[You]') ? 'text-text-tertiary' : 'text-accent'}>
-              {line}
-            </p>
-          ))}
-        </div>
-      )}
+      {transcript &&
+        (state === 'listening' ||
+          state === 'thinking' ||
+          state === 'speaking') && (
+          <div
+            ref={transcriptRef}
+            className="mbe-4 max-h-48 max-w-md overflow-y-auto rounded-lg bg-surface-raised px-4 py-2 text-sm text-text-secondary"
+          >
+            {transcript
+              .split('\n')
+              .filter(Boolean)
+              .map((line, i) => (
+                <p
+                  key={i}
+                  className={
+                    line.startsWith('[You]')
+                      ? 'text-text-tertiary'
+                      : 'text-accent'
+                  }
+                >
+                  {line}
+                </p>
+              ))}
+          </div>
+        )}
 
       {/* Controls */}
       <div className="flex items-center gap-4">
@@ -355,7 +412,10 @@ export function VoiceSessionModal({
             {t('voice.startCall')}
           </Button>
         ) : state === 'connecting' ? (
-          <Button disabled className="flex items-center gap-2 rounded-full px-6 py-3 opacity-50">
+          <Button
+            disabled
+            className="flex items-center gap-2 rounded-full px-6 py-3 opacity-50"
+          >
             <Loader2 size={20} className="animate-spin" />
             {t('voice.connectingShort')}
           </Button>
@@ -364,7 +424,9 @@ export function VoiceSessionModal({
             <button
               onClick={toggleMute}
               className={`rounded-full p-4 ${
-                isMuted ? 'bg-red-500/20 text-red-400' : 'bg-surface-raised text-text-primary'
+                isMuted
+                  ? 'bg-red-500/20 text-red-400'
+                  : 'bg-surface-raised text-text-primary'
               }`}
               aria-label={isMuted ? t('voice.unmute') : t('voice.mute')}
             >

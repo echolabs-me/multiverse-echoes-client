@@ -35,7 +35,10 @@ export function AboutPage() {
         <meta name="description" content={t('website.about.metaDesc')} />
         <meta property="og:title" content={t('website.about.title')} />
         <meta property="og:description" content={t('website.about.metaDesc')} />
-        <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
+        <meta
+          property="og:image"
+          content="https://echolabsme.com/og-image-v2.png"
+        />
         {/* og:url is emitted path-aware by WebsiteLayout. */}
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -49,7 +52,9 @@ export function AboutPage() {
           </h1>
 
           <section className="mbe-12">
-            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.originTitle')}</h2>
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">
+              {t('website.about.originTitle')}
+            </h2>
             <p className="mbe-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.originP1')}
             </p>
@@ -59,7 +64,9 @@ export function AboutPage() {
           </section>
 
           <section className="mbe-12">
-            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.buildTitle')}</h2>
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">
+              {t('website.about.buildTitle')}
+            </h2>
             <p className="mbe-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.buildP1')}
             </p>
@@ -69,11 +76,15 @@ export function AboutPage() {
           </section>
 
           <section className="mbe-12">
-            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.stackTitle')}</h2>
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">
+              {t('website.about.stackTitle')}
+            </h2>
             <div className="rounded-xl border border-(--border) bg-(--surface) p-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <h3 className="mbe-2 text-sm font-semibold text-(--accent)">{t('website.about.stackEngine')}</h3>
+                  <h3 className="mbe-2 text-sm font-semibold text-(--accent)">
+                    {t('website.about.stackEngine')}
+                  </h3>
                   <ul className="space-y-1 text-sm text-(--text-secondary)">
                     <li>{t('website.about.stackEngine1')}</li>
                     <li>{t('website.about.stackEngine2')}</li>
@@ -83,7 +94,9 @@ export function AboutPage() {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="mbe-2 text-sm font-semibold text-(--accent)">{t('website.about.stackClient')}</h3>
+                  <h3 className="mbe-2 text-sm font-semibold text-(--accent)">
+                    {t('website.about.stackClient')}
+                  </h3>
                   <ul className="space-y-1 text-sm text-(--text-secondary)">
                     <li>{t('website.about.stackClient1')}</li>
                     <li>{t('website.about.stackClient2')}</li>
@@ -97,7 +110,9 @@ export function AboutPage() {
           </section>
 
           <section className="mbe-12">
-            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.visionTitle')}</h2>
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">
+              {t('website.about.visionTitle')}
+            </h2>
             <p className="mbe-4 leading-relaxed text-(--text-secondary)">
               {t('website.about.visionP1')}
             </p>
@@ -107,17 +122,25 @@ export function AboutPage() {
           </section>
 
           <section className="mbe-12">
-            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">{t('website.about.numbersTitle')}</h2>
+            <h2 className="mbe-4 text-xl font-medium text-(--text-primary)">
+              {t('website.about.numbersTitle')}
+            </h2>
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="text-center">
                 <p className="text-3xl font-light text-(--accent)">95,000</p>
-                <p className="mbs-1 text-sm text-(--text-muted)">{t('website.about.numbersCode')}</p>
+                <p className="mbs-1 text-sm text-(--text-muted)">
+                  {t('website.about.numbersCode')}
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-light text-(--accent)">
-                  {waitlistTotal !== null ? waitlistTotal.toLocaleString() : '—'}
+                  {waitlistTotal !== null
+                    ? waitlistTotal.toLocaleString()
+                    : '—'}
                 </p>
-                <p className="mbs-1 text-sm text-(--text-muted)">{t('website.about.numbersWaitlist')}</p>
+                <p className="mbs-1 text-sm text-(--text-muted)">
+                  {t('website.about.numbersWaitlist')}
+                </p>
               </div>
             </div>
           </section>

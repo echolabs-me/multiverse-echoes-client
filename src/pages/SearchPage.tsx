@@ -17,9 +17,22 @@ import { trackEvent } from '../lib/analytics.ts';
 import { formatDate } from '../lib/formatDate.ts';
 import type { SearchResult } from '../types/api.ts';
 
-type ContentType = 'all' | 'Echo' | 'DiaryEntry' | 'LifeEvent' | 'Shard' | 'Message';
+type ContentType =
+  | 'all'
+  | 'Echo'
+  | 'DiaryEntry'
+  | 'LifeEvent'
+  | 'Shard'
+  | 'Message';
 
-const CONTENT_TYPES: ContentType[] = ['all', 'Echo', 'DiaryEntry', 'LifeEvent', 'Shard', 'Message'];
+const CONTENT_TYPES: ContentType[] = [
+  'all',
+  'Echo',
+  'DiaryEntry',
+  'LifeEvent',
+  'Shard',
+  'Message',
+];
 
 const RECENT_SEARCHES_KEY = 'me_recent_searches';
 const MAX_RECENT = 5;
@@ -36,7 +49,10 @@ function getRecentSearches(): string[] {
 function saveRecentSearch(query: string) {
   const recent = getRecentSearches().filter((s) => s !== query);
   recent.unshift(query);
-  localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(recent.slice(0, MAX_RECENT)));
+  localStorage.setItem(
+    RECENT_SEARCHES_KEY,
+    JSON.stringify(recent.slice(0, MAX_RECENT)),
+  );
 }
 
 function clearRecentSearches() {
@@ -67,13 +83,16 @@ export function SearchPage() {
   const initialScope = searchParams.get('scope') as ContentType | null;
 
   const [query, setQuery] = useState(initialQuery);
-  const [activeType, setActiveType] = useState<ContentType>(initialScope ?? 'all');
+  const [activeType, setActiveType] = useState<ContentType>(
+    initialScope ?? 'all',
+  );
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-  const [recentSearches, setRecentSearches] = useState<string[]>(getRecentSearches);
+  const [recentSearches, setRecentSearches] =
+    useState<string[]>(getRecentSearches);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -155,7 +174,10 @@ export function SearchPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-    trackEvent('search.performed', { query_length: query.trim().length, scope: activeType });
+    trackEvent('search.performed', {
+      query_length: query.trim().length,
+      scope: activeType,
+    });
     setSearchParams({ q: query.trim() });
     void performSearch(query.trim());
   };
@@ -167,7 +189,10 @@ export function SearchPage() {
   };
 
   const handleResultClick = (result: SearchResult) => {
-    trackEvent('search.result_clicked', { result_type: result.result_type, result_id: result.id });
+    trackEvent('search.result_clicked', {
+      result_type: result.result_type,
+      result_id: result.id,
+    });
     switch (result.result_type) {
       case 'Echo':
         navigate(`/echoes/${result.id}`);
@@ -193,14 +218,23 @@ export function SearchPage() {
     return acc;
   }, {});
 
-  function highlightSnippet(text: string | undefined | null, q: string): React.ReactNode {
+  function highlightSnippet(
+    text: string | undefined | null,
+    q: string,
+  ): React.ReactNode {
     if (!text) return '';
     if (!q.trim()) return text;
-    const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const regex = new RegExp(
+      `(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`,
+      'gi',
+    );
     const parts = text.split(regex);
     return parts.map((part, i) =>
       regex.test(part) ? (
-        <mark key={i} className="rounded-sm bg-accent/30 px-0.5 text-text-primary">
+        <mark
+          key={i}
+          className="rounded-sm bg-accent/30 px-0.5 text-text-primary"
+        >
           {part}
         </mark>
       ) : (
@@ -245,7 +279,11 @@ export function SearchPage() {
         {/* Filters row */}
         <div className="mbe-4 flex flex-wrap items-center gap-2">
           {/* Content type tabs */}
-          <div className="flex gap-1" role="tablist" aria-label={t('search.filterByType')}>
+          <div
+            className="flex gap-1"
+            role="tablist"
+            aria-label={t('search.filterByType')}
+          >
             {CONTENT_TYPES.map((type) => (
               <button
                 key={type}
@@ -265,7 +303,11 @@ export function SearchPage() {
 
           {/* Date filters */}
           <div className="ms-auto flex items-center gap-2">
-            <Calendar size={14} className="text-text-muted" aria-hidden="true" />
+            <Calendar
+              size={14}
+              className="text-text-muted"
+              aria-hidden="true"
+            />
             <input
               type="date"
               value={dateFrom}
@@ -328,7 +370,10 @@ export function SearchPage() {
         {/* Loading */}
         {isLoading && (
           <div className="flex items-center justify-center py-12">
-            <span className="inline-block size-6 animate-spin rounded-full border-2 border-accent border-bs-transparent" role="status">
+            <span
+              className="inline-block size-6 animate-spin rounded-full border-2 border-accent border-bs-transparent"
+              role="status"
+            >
               <span className="sr-only">{t('common.loading')}</span>
             </span>
           </div>

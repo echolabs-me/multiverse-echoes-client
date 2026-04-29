@@ -67,7 +67,10 @@ function notify() {
 }
 
 /** Register a component extension into a named slot. */
-export function registerExtension(slot: SlotName, registration: ExtensionRegistration): void {
+export function registerExtension(
+  slot: SlotName,
+  registration: ExtensionRegistration,
+): void {
   const existing = registry[slot].findIndex((r) => r.id === registration.id);
   if (existing >= 0) {
     registry[slot][existing] = registration;
@@ -87,7 +90,9 @@ export function unregisterExtension(slot: SlotName, id: string): boolean {
 }
 
 /** Get all extensions registered in a slot. */
-export function getExtensions(slot: SlotName): readonly ExtensionRegistration[] {
+export function getExtensions(
+  slot: SlotName,
+): readonly ExtensionRegistration[] {
   return registry[slot];
 }
 

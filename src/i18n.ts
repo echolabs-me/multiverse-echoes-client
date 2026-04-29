@@ -20,9 +20,27 @@ import { safeGetItem, safeSetItem } from './lib/safeStorage.ts';
  * Reference: docs/claude/i18n-multilingual-tasks.md CC TASK 4 Part B.
  */
 export const SUPPORTED_LOCALES = [
-  'en', 'zh-Hans', 'zh-Hant', 'hi', 'es', 'ar', 'fr',
-  'bn', 'pt-BR', 'ru', 'ur', 'id', 'de',
-  'ja', 'vi', 'tr', 'ko', 'tl', 'it', 'th', 'ms',
+  'en',
+  'zh-Hans',
+  'zh-Hant',
+  'hi',
+  'es',
+  'ar',
+  'fr',
+  'bn',
+  'pt-BR',
+  'ru',
+  'ur',
+  'id',
+  'de',
+  'ja',
+  'vi',
+  'tr',
+  'ko',
+  'tl',
+  'it',
+  'th',
+  'ms',
 ] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
@@ -67,7 +85,10 @@ const localeLoaders = import.meta.glob('./locales/*.json') as Record<
 function resolveInitialLocale(): SupportedLocale {
   if (typeof window === 'undefined') return 'en';
   const pathMatch = window.location.pathname.match(LOCALE_PATH_PATTERN);
-  if (pathMatch && (SUPPORTED_LOCALES as readonly string[]).includes(pathMatch[1])) {
+  if (
+    pathMatch &&
+    (SUPPORTED_LOCALES as readonly string[]).includes(pathMatch[1])
+  ) {
     // Persist so deep-link users don't re-enter the flag page on later visits.
     safeSetItem('locale', pathMatch[1]);
     safeSetItem('locale_selected', 'true');
@@ -161,16 +182,20 @@ i18n.on('languageChanged', (newLocale: string) => {
 // applied before the snapshot. No-ops under SSR.
 if (typeof window !== 'undefined') {
   (window as unknown as { __i18nLocaleReady?: string }).__i18nLocaleReady =
-    i18n.hasResourceBundle(i18n.language, 'translation') ? i18n.language : undefined;
+    i18n.hasResourceBundle(i18n.language, 'translation')
+      ? i18n.language
+      : undefined;
   i18n.on('loaded', () => {
     const cur = i18n.language;
     if (i18n.hasResourceBundle(cur, 'translation')) {
-      (window as unknown as { __i18nLocaleReady?: string }).__i18nLocaleReady = cur;
+      (window as unknown as { __i18nLocaleReady?: string }).__i18nLocaleReady =
+        cur;
     }
   });
   i18n.on('languageChanged', (lng: string) => {
     if (i18n.hasResourceBundle(lng, 'translation')) {
-      (window as unknown as { __i18nLocaleReady?: string }).__i18nLocaleReady = lng;
+      (window as unknown as { __i18nLocaleReady?: string }).__i18nLocaleReady =
+        lng;
     }
   });
 }

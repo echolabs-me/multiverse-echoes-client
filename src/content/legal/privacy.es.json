@@ -20,10 +20,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Categoría",
-            "Ejemplos"
-          ],
+          "columns": ["Categoría", "Ejemplos"],
           "rows": [
             [
               "Datos de la cuenta",
@@ -66,11 +63,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Propósito",
-            "Base legal",
-            "Tu control"
-          ],
+          "columns": ["Propósito", "Base legal", "Tu control"],
           "rows": [
             [
               "Creación de cuenta y autenticación",
@@ -92,16 +85,8 @@
               "Interés legítimo",
               "Exclusión comunitaria"
             ],
-            [
-              "Moderación de contenido y seguridad",
-              "Interés legítimo",
-              "—"
-            ],
-            [
-              "Gestión de suscripciones",
-              "Contrato",
-              "Cancelar suscripción"
-            ],
+            ["Moderación de contenido y seguridad", "Interés legítimo", "—"],
+            ["Gestión de suscripciones", "Contrato", "Cancelar suscripción"],
             [
               "Análisis y mejora del servicio",
               "Interés legítimo",
@@ -130,10 +115,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Datos",
-            "Retención"
-          ],
+          "columns": ["Datos", "Retención"],
           "rows": [
             [
               "Datos de la cuenta y del perfil",
@@ -143,38 +125,20 @@
               "Persona y datos de simulación",
               "Hasta que se elimine Echo o la cuenta"
             ],
-            [
-              "Mensajes de la comunidad",
-              "1 año desde la publicación"
-            ],
+            ["Mensajes de la comunidad", "1 año desde la publicación"],
             [
               "Tokens de sesión",
               "Acceso: 1 hora; Actualización: 30 días; Registros de inicio de sesión: 90 días"
             ],
-            [
-              "Datos analíticos",
-              "6 meses móviles"
-            ],
-            [
-              "Registros de pago",
-              "7 años (requisito legal)"
-            ],
-            [
-              "Registros de moderación",
-              "3 años"
-            ],
-            [
-              "Registros de consentimiento",
-              "Duración de la cuenta + 5 años"
-            ],
+            ["Datos analíticos", "6 meses móviles"],
+            ["Registros de pago", "7 años (requisito legal)"],
+            ["Registros de moderación", "3 años"],
+            ["Registros de consentimiento", "Duración de la cuenta + 5 años"],
             [
               "Archivos de exportación de datos",
               "72 horas después de la generación"
             ],
-            [
-              "Copias de seguridad cifradas",
-              "rotación continua de 90 días"
-            ]
+            ["Copias de seguridad cifradas", "rotación continua de 90 días"]
           ]
         }
       ]
@@ -225,27 +189,15 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Servicio",
-            "Datos compartidos",
-            "Propósito"
-          ],
+          "columns": ["Servicio", "Datos compartidos", "Propósito"],
           "rows": [
             [
               "Stripe",
               "Correo electrónico, metadatos de facturación",
               "Procesamiento de pagos con tarjeta"
             ],
-            [
-              "NOWPayments",
-              "Monto del pago",
-              "Pagos con criptomonedas"
-            ],
-            [
-              "Xaman",
-              "Dirección de la billetera",
-              "Pagos con XRP"
-            ]
+            ["NOWPayments", "Monto del pago", "Pagos con criptomonedas"],
+            ["Xaman", "Dirección de la billetera", "Pagos con XRP"]
           ]
         },
         {

@@ -12,12 +12,12 @@ import i18n from '../i18n';
 const HINTS_PER_MOOD = 8;
 
 const SHARD_THEMES: Record<string, { key: string; count: number }> = {
-  cyber:       { key: 'cyber', count: 4 },
-  tokyo:       { key: 'tokyo', count: 4 },
+  cyber: { key: 'cyber', count: 4 },
+  tokyo: { key: 'tokyo', count: 4 },
   renaissance: { key: 'renaissance', count: 4 },
-  florence:    { key: 'florence', count: 4 },
-  outback:     { key: 'outback', count: 4 },
-  australia:   { key: 'australia', count: 4 },
+  florence: { key: 'florence', count: 4 },
+  outback: { key: 'outback', count: 4 },
+  australia: { key: 'australia', count: 4 },
 };
 
 /**
@@ -25,12 +25,28 @@ const SHARD_THEMES: Record<string, { key: string; count: number }> = {
  * palette keys. Fuzzy alias matching covers common LLM variations.
  */
 const MOOD_ALIASES: Record<string, string> = {
-  happy: 'happy', joyful: 'happy', content: 'content', satisfied: 'content',
-  sad: 'sad', lonely: 'sad', melancholy: 'melancholy', nostalgic: 'melancholy',
-  angry: 'angry', frustrated: 'angry', anxious: 'anxious', nervous: 'anxious',
-  worried: 'anxious', calm: 'calm', peaceful: 'calm', serene: 'calm',
-  excited: 'excited', energetic: 'excited', elated: 'excited',
-  contemplative: 'contemplative', curious: 'contemplative', reflective: 'contemplative',
+  happy: 'happy',
+  joyful: 'happy',
+  content: 'content',
+  satisfied: 'content',
+  sad: 'sad',
+  lonely: 'sad',
+  melancholy: 'melancholy',
+  nostalgic: 'melancholy',
+  angry: 'angry',
+  frustrated: 'angry',
+  anxious: 'anxious',
+  nervous: 'anxious',
+  worried: 'anxious',
+  calm: 'calm',
+  peaceful: 'calm',
+  serene: 'calm',
+  excited: 'excited',
+  energetic: 'excited',
+  elated: 'excited',
+  contemplative: 'contemplative',
+  curious: 'contemplative',
+  reflective: 'contemplative',
   neutral: 'neutral',
 };
 

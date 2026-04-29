@@ -1,5 +1,12 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, Outlet, useParams } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+  useParams,
+} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LOCALES, type SupportedLocale } from './i18n.ts';
@@ -119,113 +126,137 @@ export function App() {
         <SkipLink />
         <ToastContainer />
         <ErrorBoundary>
-        <Routes>
-          {/* Root: flag page for first-touch visitors; return visitors skip
+          <Routes>
+            {/* Root: flag page for first-touch visitors; return visitors skip
               it and go straight to their remembered locale's home. */}
-          <Route
-            path="/"
-            element={
-              hasSelectedLocale() ? (
-                <Navigate to={rememberedHome()} replace />
-              ) : (
-                <LanguageSelectionPage />
-              )
-            }
-          />
+            <Route
+              path="/"
+              element={
+                hasSelectedLocale() ? (
+                  <Navigate to={rememberedHome()} replace />
+                ) : (
+                  <LanguageSelectionPage />
+                )
+              }
+            />
 
-          {/* Public website routes — English (unprefixed). */}
-          <Route element={<WebsiteLayout />}>
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/terms" element={<TermsPage />} />
-            <Route path="/privacy" element={<PrivacyPolicyPage />} />
-            <Route path="/waitlist" element={<WaitlistPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/accessibility" element={<AccessibilityPage />} />
-            <Route path="/plans" element={<PlansPage />} />
-          </Route>
+            {/* Public website routes — English (unprefixed). */}
+            <Route element={<WebsiteLayout />}>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/waitlist" element={<WaitlistPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/accessibility" element={<AccessibilityPage />} />
+              <Route path="/plans" element={<PlansPage />} />
+            </Route>
 
-          {/* Public website routes — locale-prefixed (e.g. /es/home, /zh-Hant/plans).
+            {/* Public website routes — locale-prefixed (e.g. /es/home, /zh-Hant/plans).
               English lives at the unprefixed root above per convention; the
               other 20 locales live here. LocaleRoute validates the :locale
               param and calls i18n.changeLanguage on client-side navigation. */}
-          <Route path="/:locale" element={<LocaleRoute />}>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route element={<WebsiteLayout />}>
-              <Route path="home" element={<HomePage />} />
-              <Route path="about" element={<AboutPage />} />
-              <Route path="terms" element={<TermsPage />} />
-              <Route path="privacy" element={<PrivacyPolicyPage />} />
-              <Route path="waitlist" element={<WaitlistPage />} />
-              <Route path="contact" element={<ContactPage />} />
-              <Route path="accessibility" element={<AccessibilityPage />} />
-              <Route path="plans" element={<PlansPage />} />
+            <Route path="/:locale" element={<LocaleRoute />}>
+              <Route index element={<Navigate to="home" replace />} />
+              <Route element={<WebsiteLayout />}>
+                <Route path="home" element={<HomePage />} />
+                <Route path="about" element={<AboutPage />} />
+                <Route path="terms" element={<TermsPage />} />
+                <Route path="privacy" element={<PrivacyPolicyPage />} />
+                <Route path="waitlist" element={<WaitlistPage />} />
+                <Route path="contact" element={<ContactPage />} />
+                <Route path="accessibility" element={<AccessibilityPage />} />
+                <Route path="plans" element={<PlansPage />} />
+              </Route>
             </Route>
-          </Route>
 
-          {/* Legacy routes — redirect to new paths */}
-          <Route path="/language" element={<Navigate to="/" replace />} />
-          <Route path="/terms-of-service" element={<Navigate to="/terms" replace />} />
-          <Route path="/privacy-policy" element={<Navigate to="/privacy" replace />} />
+            {/* Legacy routes — redirect to new paths */}
+            <Route path="/language" element={<Navigate to="/" replace />} />
+            <Route
+              path="/terms-of-service"
+              element={<Navigate to="/terms" replace />}
+            />
+            <Route
+              path="/privacy-policy"
+              element={<Navigate to="/privacy" replace />}
+            />
 
-          {/* Pre-auth routes — no app shell. Wrapped in NoIndexLayout so every
+            {/* Pre-auth routes — no app shell. Wrapped in NoIndexLayout so every
               sign-up/sign-in/onboarding/payment URL carries
               `<meta name="robots" content="noindex, nofollow">`. Without this,
               Googlebot follows external backlinks into these routes and files
               them as low-quality duplicates of the home page (they share the
               SPA index.html pre-hydration), which surfaces in Search Console
               as "Crawled – currently not indexed." */}
-          <Route element={<NoIndexLayout />}>
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/verify-pending" element={<VerifyPendingPage />} />
-            <Route path="/verified" element={<VerifiedPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/onboarding/welcome" element={<OnboardingWelcomePage />} />
-            <Route path="/onboarding/profile" element={<OnboardingProfilePage />} />
-            <Route path="/onboarding/create-echo" element={<EchoCreationPage />} />
-            <Route path="/payment/success" element={<PaymentSuccessPage />} />
-            <Route path="/payment/cancelled" element={<PaymentCancelledPage />} />
-            <Route path="/tip" element={<TipPage />} />
-          </Route>
+            <Route element={<NoIndexLayout />}>
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/verify-pending" element={<VerifyPendingPage />} />
+              <Route path="/verified" element={<VerifiedPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route
+                path="/onboarding/welcome"
+                element={<OnboardingWelcomePage />}
+              />
+              <Route
+                path="/onboarding/profile"
+                element={<OnboardingProfilePage />}
+              />
+              <Route
+                path="/onboarding/create-echo"
+                element={<EchoCreationPage />}
+              />
+              <Route path="/payment/success" element={<PaymentSuccessPage />} />
+              <Route
+                path="/payment/cancelled"
+                element={<PaymentCancelledPage />}
+              />
+              <Route path="/tip" element={<TipPage />} />
+            </Route>
 
-          {/* App shell routes — NavSidebar + Oracle sidebar */}
-          <Route element={<AppLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
-            <Route path="/echoes/:echoId/talk" element={<EchoConversationPage />} />
-            <Route path="/users/:user_id" element={<UserProfilePage />} />
-            <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/shards/browse" element={<ShardBrowserPage />} />
-            <Route path="/shards/:shardId" element={<ShardViewPage />} />
-            <Route path="/feeds/personal" element={<PersonalFeedPage />} />
-            <Route path="/feeds/social" element={<SocialFeedPage />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route path="/settings/delete-account" element={<DeleteAccountPage />} />
-            {/* ME-MIS-001 §5.2 Surface C — the informed-consent
+            {/* App shell routes — NavSidebar + Oracle sidebar */}
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/echoes/:echoId" element={<EchoDetailPage />} />
+              <Route
+                path="/echoes/:echoId/talk"
+                element={<EchoConversationPage />}
+              />
+              <Route path="/users/:user_id" element={<UserProfilePage />} />
+              <Route path="/marketplace" element={<MarketplacePage />} />
+              <Route path="/shards/browse" element={<ShardBrowserPage />} />
+              <Route path="/shards/:shardId" element={<ShardViewPage />} />
+              <Route path="/feeds/personal" element={<PersonalFeedPage />} />
+              <Route path="/feeds/social" element={<SocialFeedPage />} />
+              <Route path="/community" element={<CommunityPage />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/admin" element={<AdminDashboardPage />} />
+              <Route
+                path="/settings/delete-account"
+                element={<DeleteAccountPage />}
+              />
+              {/* ME-MIS-001 §5.2 Surface C — the informed-consent
                 screen gates entry to the per-shard decision flow.
                 DowngradeChoicePage itself checks for `?consented=1`
                 and redirects here if missing, so even a direct URL
                 hit to /downgrade-choice funnels through this page
                 first. */}
-            <Route
-              path="/subscription/downgrade-confirm"
-              element={<DowngradeConfirmPage />}
-            />
-            <Route
-              path="/subscription/downgrade-choice"
-              element={<DowngradeChoicePage />}
-            />
-          </Route>
+              <Route
+                path="/subscription/downgrade-confirm"
+                element={<DowngradeConfirmPage />}
+              />
+              <Route
+                path="/subscription/downgrade-choice"
+                element={<DowngradeChoicePage />}
+              />
+            </Route>
 
-          {/* 404 catch-all */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+            {/* 404 catch-all */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
         </ErrorBoundary>
       </BrowserRouter>
     </HelmetProvider>

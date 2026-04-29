@@ -64,7 +64,8 @@ export function LanguageSelectionPage() {
 
   // Detect touch device and small screens
   useEffect(() => {
-    const checkTouch = () => setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    const checkTouch = () =>
+      setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
     const checkSize = () => setUseGrid(window.innerWidth < 640);
     checkTouch();
     checkSize();
@@ -79,12 +80,16 @@ export function LanguageSelectionPage() {
       localStorage.setItem('locale', code);
       localStorage.setItem('locale_selected', 'true');
       document.cookie = `locale=${code};path=/;max-age=31536000;SameSite=Lax`;
-      trackEvent('account.locale_changed', { old_locale: oldLocale, new_locale: code });
+      trackEvent('account.locale_changed', {
+        old_locale: oldLocale,
+        new_locale: code,
+      });
       // Respect an explicit `?redirect=` (used by pass-through sign-in flows)
       // otherwise default to the locale-prefixed home: English stays at
       // `/home`, every other supported locale lives at `/{locale}/home`.
       const redirectParam = searchParams.get('redirect');
-      const target = redirectParam ?? applyLocalePrefix('/home', code as SupportedLocale);
+      const target =
+        redirectParam ?? applyLocalePrefix('/home', code as SupportedLocale);
       navigate(target);
     },
     [i18n, navigate, searchParams],
@@ -195,7 +200,9 @@ export function LanguageSelectionPage() {
                       isCircle
                       onClick={() => handleClick(lang.code)}
                       onKeyDown={(e) => handleKeyDown(e, lang.code)}
-                      onMouseEnter={() => !isTouch && setExpandedCode(lang.code)}
+                      onMouseEnter={() =>
+                        !isTouch && setExpandedCode(lang.code)
+                      }
                       onMouseLeave={() => !isTouch && setExpandedCode(null)}
                     />
                   </div>

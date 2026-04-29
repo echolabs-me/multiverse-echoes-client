@@ -7,7 +7,9 @@ import { Button, Input } from '../components/index.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
 
-const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
+  | string
+  | undefined;
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -102,7 +104,10 @@ export function LoginPage() {
           </Button>
 
           <p className="text-end text-sm">
-            <Link to="/forgot-password" className="text-accent hover:text-accent-hover">
+            <Link
+              to="/forgot-password"
+              className="text-accent hover:text-accent-hover"
+            >
               {t('auth.forgotPassword')}
             </Link>
           </p>

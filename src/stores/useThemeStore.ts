@@ -1,5 +1,9 @@
 import { create } from 'zustand';
-import { safeGetItem, safeRemoveItem, safeSetItem } from '../lib/safeStorage.ts';
+import {
+  safeGetItem,
+  safeRemoveItem,
+  safeSetItem,
+} from '../lib/safeStorage.ts';
 
 /**
  * Theme override — a set of CSS custom property overrides applied on top of
@@ -102,7 +106,7 @@ export const useThemeStore = create<ThemeState>((set, get) => {
   const allOverrides = [...BUILTIN_THEMES];
 
   const initialOverride = initialOverrideId
-    ? allOverrides.find((o) => o.id === initialOverrideId) ?? null
+    ? (allOverrides.find((o) => o.id === initialOverrideId) ?? null)
     : null;
 
   applyTheme(initialBase, initialOverride);
@@ -118,10 +122,11 @@ export const useThemeStore = create<ThemeState>((set, get) => {
     setBase: (base) => {
       const state = get();
       const override = state.activeOverrideId
-        ? state.overrides.find((o) => o.id === state.activeOverrideId) ?? null
+        ? (state.overrides.find((o) => o.id === state.activeOverrideId) ?? null)
         : null;
       // If override targets a different base, clear it
-      const effectiveOverride = override && override.base === base ? override : null;
+      const effectiveOverride =
+        override && override.base === base ? override : null;
       applyTheme(base, effectiveOverride);
       set({
         base,
@@ -162,7 +167,8 @@ export const useThemeStore = create<ThemeState>((set, get) => {
       const state = get();
       set({
         overrides: state.overrides.filter((o) => o.id !== id),
-        activeOverrideId: state.activeOverrideId === id ? null : state.activeOverrideId,
+        activeOverrideId:
+          state.activeOverrideId === id ? null : state.activeOverrideId,
       });
       if (state.activeOverrideId === id) {
         applyTheme(state.base, null);

@@ -12,7 +12,8 @@ const variantClasses: Record<ButtonVariant, string> = {
     'bg-accent text-canvas hover:bg-accent-hover focus-visible:ring-accent',
   secondary:
     'bg-surface text-text-primary border border-border hover:bg-surface-raised',
-  ghost: 'bg-transparent text-text-secondary hover:bg-surface hover:text-text-primary',
+  ghost:
+    'bg-transparent text-text-secondary hover:bg-surface hover:text-text-primary',
   danger: 'bg-danger text-canvas hover:opacity-90',
 };
 
