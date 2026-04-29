@@ -1,0 +1,1237 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* Tablet: any coarse pointer (touchscreen) between 768px and 1439px */
+@custom-variant tablet {
+  @media (min-width: 768px) and (any-pointer: coarse) and (max-width: 1439px) {
+    @slot;
+  }
+}
+
+/* Desktop: no coarse pointer at 768px+, OR any device at 1440px+ */
+@custom-variant desktop {
+  @media (min-width: 1440px), (min-width: 768px) and (not (any-pointer: coarse)) {
+    @slot;
+  }
+}
+
+/* Hide scrollbar but keep scroll functionality */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+
+
+
+/* Tablet split-view panel slide animations */
+.animate-slide-in-left {
+  animation: slide-in-left 200ms ease forwards;
+}
+.animate-slide-in-right {
+  animation: slide-in-right 200ms ease forwards;
+}
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* CDS-001 §4.1 — Font stacks */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-Bold.woff2') format('woff2');
+}
+
+/* Cyrillic subsets — ACC-001 §7.5 */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-Regular-Cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-Medium-Cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-SemiBold-Cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-Bold-Cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/JetBrainsMono-Regular-Cyrillic.woff2')
+    format('woff2');
+  unicode-range: U+0400-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F,
+    U+FE2E-FE2F;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+ * Noto Sans subsets for non-Latin scripts (CC TASK 4 Part C).
+ *
+ * Each family is loaded lazily via `unicode-range` — the browser only
+ * downloads the woff2 when a character in that range appears on screen.
+ * English/Latin users pay zero bandwidth for Chinese/Hindi/Arabic fonts.
+ *
+ * `font-display: swap` guarantees first paint uses the system fallback
+ * while the woff2 downloads; switches in atomically once ready. This
+ * matches the Inter behaviour above and prevents FOIT.
+ *
+ * Actual woff2 binaries live at `../assets/fonts/` and are documented
+ * in `client/src/assets/fonts/README.md`. If a file is missing, the
+ * browser will transparently fall through to `system-ui` / `sans-serif`
+ * in the body font stack (below).
+ * ────────────────────────────────────────────────────────────────── */
+
+/* Noto Sans SC — Simplified Chinese.
+ * Unicode ranges cover: CJK Unified Ideographs (main), CJK Extension A,
+ * CJK Radicals Supplement, CJK Symbols & Punctuation, Halfwidth/Fullwidth
+ * forms, and General Punctuation used in Chinese typography. */
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansSC-Regular.woff2') format('woff2');
+  unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF,
+    U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansSC-Medium.woff2') format('woff2');
+  unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF,
+    U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansSC-SemiBold.woff2') format('woff2');
+  unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF,
+    U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noto Sans SC';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansSC-Bold.woff2') format('woff2');
+  unicode-range: U+2E80-2EFF, U+3000-303F, U+3400-4DBF, U+4E00-9FFF,
+    U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+}
+
+/* Noto Sans Devanagari — Hindi and related languages.
+ * Unicode range: Devanagari block + Devanagari Extended. */
+@font-face {
+  font-family: 'Noto Sans Devanagari';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansDevanagari-Regular.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+A8E0-A8FF, U+1CD0-1CFF;
+}
+@font-face {
+  font-family: 'Noto Sans Devanagari';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansDevanagari-Medium.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+A8E0-A8FF, U+1CD0-1CFF;
+}
+@font-face {
+  font-family: 'Noto Sans Devanagari';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansDevanagari-SemiBold.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+A8E0-A8FF, U+1CD0-1CFF;
+}
+@font-face {
+  font-family: 'Noto Sans Devanagari';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansDevanagari-Bold.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+A8E0-A8FF, U+1CD0-1CFF;
+}
+
+/* Noto Sans Arabic — Modern Standard Arabic and related languages.
+ * Unicode ranges: Arabic + Arabic Supplement + Arabic Extended-A + Arabic
+ * Presentation Forms-A and B (shaped forms). */
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansArabic-Regular.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF,
+    U+FE70-FEFF;
+}
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansArabic-Medium.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF,
+    U+FE70-FEFF;
+}
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansArabic-SemiBold.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF,
+    U+FE70-FEFF;
+}
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansArabic-Bold.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF,
+    U+FE70-FEFF;
+}
+
+/* ── Noto Sans Bengali (bn) ── */
+@font-face {
+  font-family: 'Noto Sans Bengali';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansBengali-Regular.woff2') format('woff2');
+  unicode-range: U+0980-09FF;
+}
+@font-face {
+  font-family: 'Noto Sans Bengali';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansBengali-Medium.woff2') format('woff2');
+  unicode-range: U+0980-09FF;
+}
+@font-face {
+  font-family: 'Noto Sans Bengali';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansBengali-SemiBold.woff2') format('woff2');
+  unicode-range: U+0980-09FF;
+}
+@font-face {
+  font-family: 'Noto Sans Bengali';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansBengali-Bold.woff2') format('woff2');
+  unicode-range: U+0980-09FF;
+}
+
+/* ── Noto Sans JP (ja) ── */
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansJP-Regular.woff2') format('woff2');
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
+    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansJP-Medium.woff2') format('woff2');
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
+    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansJP-SemiBold.woff2') format('woff2');
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
+    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansJP-Bold.woff2') format('woff2');
+  unicode-range: U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF,
+    U+3200-32FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
+}
+
+/* ── Noto Sans KR (ko) ── */
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansKR-Regular.woff2') format('woff2');
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
+    U+D7B0-D7FF;
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansKR-Medium.woff2') format('woff2');
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
+    U+D7B0-D7FF;
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansKR-SemiBold.woff2') format('woff2');
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
+    U+D7B0-D7FF;
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansKR-Bold.woff2') format('woff2');
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7AF,
+    U+D7B0-D7FF;
+}
+
+/* ── Noto Sans Thai (th) ── */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansThai-Regular.woff2') format('woff2');
+  unicode-range: U+0E00-0E7F;
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansThai-Medium.woff2') format('woff2');
+  unicode-range: U+0E00-0E7F;
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansThai-SemiBold.woff2') format('woff2');
+  unicode-range: U+0E00-0E7F;
+}
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/NotoSansThai-Bold.woff2') format('woff2');
+  unicode-range: U+0E00-0E7F;
+}
+
+/* Base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Anchor scrolls land below the fixed nav bar (h-16 = 64px + 16px gap) */
+html {
+  scroll-padding-top: 80px;
+}
+
+/* App shell routes (dashboard, echo detail, etc.) use internal panel
+   scrolling — overflow:hidden on the root prevents double scrollbars.
+   Public website routes (/, /home, /about, /terms, /privacy) need
+   normal document scrolling, so this is scoped via a body class that
+   AppLayout applies instead of being set globally. */
+body.app-shell {
+  overflow: hidden;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  /* Font stack ordered so the browser's unicode-range resolution picks the
+   * right family per codepoint: Inter handles Latin + Cyrillic, then the
+   * Noto Sans families handle CJK / Devanagari / Arabic via the @font-face
+   * unicode-range declarations above, and finally the system fallbacks catch
+   * anything not yet loaded (or any glyphs outside all the ranges above). */
+  font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR',
+    'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Arabic',
+    'Noto Sans Thai', system-ui, sans-serif;
+  background-color: var(--canvas);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+#root {
+  height: 100%;
+}
+
+code,
+pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Focus visible — ACC-001 §4.2 */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+ * RTL icon mirroring (CC TASK 4 Part D Step 12).
+ *
+ * Lucide icons render as `<svg class="lucide lucide-<kebab-name>">`.
+ * Under `[dir="rtl"]`, directional icons (back/forward arrows and
+ * chevrons) must mirror so a "back" affordance still points toward
+ * the previous page from the reader's perspective. Non-directional
+ * icons (check, user, bell, etc.) stay untouched.
+ *
+ * `scaleX(-1)` is preferred over `rotate(180deg)` because arrows
+ * remain vertically oriented after mirroring.
+ *
+ * Extend the selector list when adding new directional icons.
+ * ────────────────────────────────────────────────────────────────── */
+[dir="rtl"] svg.lucide-arrow-left,
+[dir="rtl"] svg.lucide-arrow-right,
+[dir="rtl"] svg.lucide-chevron-left,
+[dir="rtl"] svg.lucide-chevron-right,
+[dir="rtl"] svg.lucide-chevrons-left,
+[dir="rtl"] svg.lucide-chevrons-right,
+[dir="rtl"] svg.lucide-move-left,
+[dir="rtl"] svg.lucide-move-right,
+[dir="rtl"] svg.lucide-send,
+[dir="rtl"] svg.lucide-send-horizontal,
+[dir="rtl"] svg.lucide-corner-up-left,
+[dir="rtl"] svg.lucide-corner-up-right,
+[dir="rtl"] svg.lucide-undo,
+[dir="rtl"] svg.lucide-redo {
+  transform: scaleX(-1);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--accent-subtle);
+  color: var(--text-primary);
+}
+
+/* Scrollbar styling (dark mode) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Tailwind v4 theme configuration — maps CSS tokens to Tailwind utilities */
+@theme {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  /* Transition durations — CDS-001 §7.2 (maps tokens for Tailwind) */
+  --duration-fast: var(--duration-fast);
+  --duration-normal: var(--duration-normal);
+  --duration-slow: var(--duration-slow);
+
+  /* Tick pulse animation — CDS-001 §7.3 */
+  --animate-tick-pulse: tick-pulse 1s ease-out forwards;
+  --animate-fade-up: me-fade-up 1.2s ease-out both;
+  --animate-fade-in: me-fade-in var(--duration-normal) ease-out forwards;
+  --animate-fade-out: me-fade-out var(--duration-fast) ease-in forwards;
+  --animate-slide-in: me-slide-in var(--duration-normal) ease-out forwards;
+  --animate-modal-in: me-modal-in var(--duration-normal) ease-out forwards;
+  --animate-modal-out: me-modal-out var(--duration-fast) ease-in forwards;
+  --animate-diary-arrive: me-diary-arrive 600ms ease-out forwards;
+  --animate-diary-glow: me-diary-glow 3s ease-out forwards;
+  --animate-nudge-ripple: me-nudge-ripple 600ms ease-out forwards;
+  --animate-nudge-pulse: me-nudge-pulse 800ms ease-out forwards;
+
+  /* Mood atmosphere colours — set dynamically via useMoodAtmosphere hook */
+  --color-mood-primary: var(--mood-primary);
+  --color-mood-secondary: var(--mood-secondary);
+  --color-mood-accent: var(--mood-accent);
+}
+
+/* Tick pulse: barely-perceptible ripple. Max opacity 5%. */
+@keyframes tick-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(212, 145, 92, 0.05);
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(212, 145, 92, 0);
+    opacity: 0;
+  }
+}
+
+/* CDS-001 §7.2 — Standard transition keyframes */
+@keyframes me-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes me-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes me-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes me-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes me-modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes me-modal-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* Diary entry arrival — Phase 6B Step 10 */
+@keyframes me-diary-arrive {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.005);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes me-diary-glow {
+  0% {
+    box-shadow: 0 0 12px 2px var(--mood-secondary, var(--accent-subtle)), 0 0 24px 4px color-mix(in srgb, var(--mood-primary, var(--accent)) 12%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent;
+  }
+}
+
+/* Nudge ripple — Phase 6B Step 14 */
+@keyframes me-nudge-ripple {
+  0% {
+    box-shadow: 0 0 0 0 var(--mood-primary, var(--accent));
+    opacity: 0.6;
+  }
+  100% {
+    box-shadow: 0 0 0 20px transparent;
+    opacity: 0;
+  }
+}
+
+@keyframes me-nudge-pulse {
+  0% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+}
+
+/* Feed item highlight glow — CDS-001 §7.2 */
+@keyframes me-highlight-glow {
+  0% {
+    background-color: var(--accent-subtle);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* CDS-001 §7.2 — Standard transition classes (durations via tokens, auto-zero for reduced motion) */
+.transition-color-opacity {
+  transition-property: color, background-color, border-color, opacity;
+  transition-duration: var(--duration-fast);
+  transition-timing-function: ease;
+}
+
+.transition-page {
+  transition-property: opacity, transform;
+  transition-duration: var(--duration-slow);
+  transition-timing-function: ease-in-out;
+}
+
+/* Reduced motion: disable all keyframe animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Tick Timer — heartbeat monitor + ambient bar ── */
+
+/* Digit/text breathing — subtle opacity pulse */
+.tick-digit-breathe {
+  animation: tick-digit-breathe 2s ease-in-out infinite;
+}
+
+@keyframes tick-digit-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.82; }
+}
+
+/* Ambient bar — contained, pointer-events disabled, no overflow bleed */
+.tick-bar {
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Bar fill — feathered right edge */
+.tick-bar-fill {
+  background: linear-gradient(90deg, #d4915c 0%, #f5dcc0 85%, transparent 100%);
+  transition: width 1s linear;
+}
+
+/* ECG heartbeat sweep — bright spike travels left→right */
+.tick-bar-heartbeat-sweep {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent calc(var(--sweep, 0%) - 8%),
+    rgba(212, 145, 92, 0.15) calc(var(--sweep, 0%) - 5%),
+    rgba(212, 145, 92, 0.3) calc(var(--sweep, 0%) - 3%),
+    rgba(245, 220, 192, 0.9) calc(var(--sweep, 0%) - 1%),
+    #fff var(--sweep, 0%),
+    rgba(245, 220, 192, 0.9) calc(var(--sweep, 0%) + 1%),
+    rgba(212, 145, 92, 0.3) calc(var(--sweep, 0%) + 3%),
+    rgba(212, 145, 92, 0.15) calc(var(--sweep, 0%) + 5%),
+    transparent calc(var(--sweep, 0%) + 8%),
+    transparent 100%
+  );
+  animation: tick-heartbeat-sweep 1.8s ease-in-out infinite;
+}
+
+@keyframes tick-heartbeat-sweep {
+  0% { --sweep: -10%; }
+  100% { --sweep: 110%; }
+}
+
+/* Double-pulse heartbeat rhythm: thump-thump... pause... thump-thump */
+.tick-bar-double-pulse {
+  background: rgba(212, 145, 92, 0.15);
+  animation: tick-double-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tick-double-pulse {
+  0%   { opacity: 0.2; }
+  15%  { opacity: 0.9; }
+  25%  { opacity: 0.3; }
+  35%  { opacity: 0.7; }
+  50%  { opacity: 0.2; }
+  100% { opacity: 0.2; }
+}
+
+/* Flash on arrival — warm white fade */
+.tick-bar-flash {
+  background: linear-gradient(90deg, rgba(245, 220, 192, 0.7), rgba(255, 255, 255, 0.9), rgba(245, 220, 192, 0.7));
+  animation: tick-bar-flash 0.8s ease-out forwards;
+}
+
+@keyframes tick-bar-flash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Action toolbar button effects ── */
+
+.action-btn:hover {
+  box-shadow: 0 0 12px rgba(212, 145, 92, 0.15), 0 1px 3px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.action-btn-primary {
+  box-shadow: 0 0 8px rgba(212, 145, 92, 0.2);
+}
+
+.action-btn-primary:hover {
+  box-shadow: 0 0 16px rgba(212, 145, 92, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.action-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 0 8px rgba(212, 145, 92, 0.2);
+}
+
+/* ═══ Phase 6D Step 1 — CSP unsafe-inline elimination ═══
+ * Helpers that replace inline style={} props so Content-Security-Policy
+ * style-src can drop 'unsafe-inline'. Dynamic values flow through CSS
+ * custom properties set via element.style.setProperty in refs/effects
+ * — CSSOM writes are not subject to style-src. */
+
+/* Staggered me-fade-up: class + optional data-delay attribute. */
+.me-fade-up { animation: me-fade-up 1.2s ease-out both; }
+.me-fade-up[data-delay="150"] { animation-delay: 150ms; }
+.me-fade-up[data-delay="300"] { animation-delay: 300ms; }
+.me-fade-up[data-delay="450"] { animation-delay: 450ms; }
+.me-fade-up[data-delay="600"] { animation-delay: 600ms; }
+.me-fade-up[data-delay="900"] { animation-delay: 900ms; }
+.me-fade-up.me-anim-none { animation: none; }
+
+/* Bounce-delay helpers (typing indicator dots). */
+.me-bounce-delay-0 { animation-delay: 0ms; }
+.me-bounce-delay-150 { animation-delay: 150ms; }
+.me-bounce-delay-300 { animation-delay: 300ms; }
+
+/* Radial glow variants used on hero / section backgrounds. */
+.me-hero-glow {
+  background: radial-gradient(circle, rgba(212, 145, 92, 0.1) 0%, transparent 65%);
+  animation: me-breathe 8s ease-in-out infinite;
+}
+.me-radial-glow-ambient {
+  background: radial-gradient(circle, rgba(212, 145, 92, 0.08) 0%, transparent 65%);
+}
+
+/* Static backgrounds for prerendered pages. */
+.me-hero-bg { background-image: url('/screenshots/App_Page_Full_Capture.jpeg'); }
+.me-shard-bg-tokyo { background-image: url('/images/shard-tokyo.png'); }
+.me-shard-bg-australia { background-image: url('/images/shard-australia.png'); }
+.me-shard-bg-florence { background-image: url('/images/shard-florence.png'); }
+
+/* Progress bar width from --me-progress (0-100%). Set via ref.setProperty. */
+.me-progress-bar { width: var(--me-progress, 0%); }
+
+/* Dynamic-color helpers that read a CSS custom property set by the component.
+ * Use with ref.current.style.setProperty('--me-mood-color', value). */
+.me-mood-bg { background-color: var(--me-mood-color, currentColor); }
+.me-mood-fg { color: var(--me-mood-color, currentColor); }
+.me-mood-border-soft { border: 1.5px solid var(--me-mood-border, currentColor); }
+
+/* Shard/Echo 3D theme color (portrait, environment). */
+.me-theme-fg { color: var(--me-theme-color, currentColor); }
+.me-theme-ring { border: 2px solid var(--me-theme-ring-color, transparent); }
+
+/* TickTimer neon text-shadow states. */
+.me-neon-glow {
+  text-shadow:
+    0 0 8px rgba(212, 145, 92, 0.5),
+    0 0 20px rgba(212, 145, 92, 0.2);
+}
+.me-neon-glow-success {
+  text-shadow:
+    0 0 8px rgba(107, 175, 122, 0.5),
+    0 0 20px rgba(107, 175, 122, 0.2);
+}
+.me-neon-glow-soft { text-shadow: 0 0 6px rgba(212, 145, 92, 0.15); }
+
+/* TickTimer ambient glow — opacity + box-shadow tint set via CSS vars. */
+.tick-bar-ambient-glow {
+  opacity: var(--me-glow-opacity, 0);
+  box-shadow: 0 0 6px 1px rgba(212, 145, 92, var(--me-glow-shadow-color, 0));
+}
+
+/* Mood-palette gradient background (AppLayout ambient). */
+.me-mood-gradient {
+  background: linear-gradient(
+    180deg,
+    var(--me-bg-gradient-from, transparent) 0%,
+    var(--me-bg-gradient-to, transparent) 100%
+  );
+}
+
+/* MoodHistoryStrip — each segment keeps its own dynamic width + colour. */
+.me-mood-segment {
+  width: var(--me-mood-width, 0%);
+  background-color: var(--me-mood-color, currentColor);
+}
+.me-mood-segment-divider {
+  left: var(--me-mood-left, 0%);
+  background-color: var(--me-mood-border, rgba(255, 255, 255, 0.12));
+}
+.me-mood-tooltip-pos {
+  left: var(--me-tooltip-left, 50%);
+  transform: translateX(-50%);
+}
+
+/* 3D portrait overlay — theme-coloured border (2px solid with colour + 44 alpha). */
+.me-portrait-ring {
+  border: 2px solid var(--me-theme-border, transparent);
+}
+/* Static 2D fallback portrait (gradient + 1px border from theme). */
+.me-theme-fallback {
+  background: linear-gradient(
+    135deg,
+    var(--me-theme-grad-start, transparent),
+    var(--me-theme-grad-end, transparent)
+  );
+  border: 1px solid var(--me-theme-border, transparent);
+}
+
+/* Dynamic soft border (1.5px). */
+.me-border-soft {
+  border: 1.5px solid var(--me-mood-border, transparent);
+}
+
+/* Selected-state shadow used on EchoCreationPage shard tiles. */
+.me-selected-shadow {
+  box-shadow: 0 0 16px 2px var(--accent-subtle);
+}
+
+/* Static life-event amber glow card. */
+.me-life-event-card {
+  box-shadow: 0 0 14px 3px rgba(243, 156, 18, 0.12);
+  border-left: 3px solid rgba(243, 156, 18, 0.4);
+}
+
+/* Diary entry pre-arrival state — starts invisible, animation reveals. */
+.me-diary-pre-arrival { opacity: 0; }
+
+/* EchoSidebar EchoCard: mood-colour glow shadow + left edge stripe. */
+.me-echo-card-mood-edge {
+  box-shadow: 0 0 14px 3px var(--me-mood-shadow, transparent);
+  border-left: 3px solid var(--me-mood-edge, transparent);
+}
+/* Avatar 1.5px ring tinted by mood. */
+.me-avatar-ring {
+  border: 1.5px solid var(--me-mood-ring, transparent);
+}
+/* Mood dot solid fill. */
+.me-mood-dot { background-color: var(--me-mood-color, currentColor); }
+
+/* Community pulse row — glow shadow + mood-coloured left border. */
+.me-community-row {
+  box-shadow: 0 0 10px 2px var(--me-mood-shadow, transparent);
+  border-left-color: var(--me-mood-edge, transparent);
+}
+
+/* ─── MoodHistoryStrip: segment bar, dots, tooltip ─── */
+.me-mh-segment {
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    var(--me-mh-primary, currentColor),
+    var(--me-mh-secondary, currentColor)
+  );
+  opacity: 1;
+  box-shadow: none;
+}
+.me-mh-segment[data-hovered="true"] {
+  height: 120px;
+  box-shadow:
+    0 0 20px var(--me-mh-primary-60, transparent),
+    0 4px 12px var(--me-mh-primary-30, transparent);
+}
+.me-mh-strip[data-any-hovered="true"] .me-mh-segment[data-hovered="false"] {
+  opacity: 0.45;
+}
+.me-mh-segment[data-pos="first"] { border-radius: 12px 2px 2px 12px; }
+.me-mh-segment[data-pos="last"]  { border-radius: 2px 12px 12px 2px; }
+.me-mh-segment[data-pos="mid"]   { border-radius: 2px; }
+
+.me-mh-inner-glow {
+  background: linear-gradient(
+    to bottom,
+    var(--me-mh-accent-30, transparent),
+    transparent 60%
+  );
+}
+
+.me-mh-label {
+  color: var(--me-mh-accent, currentColor);
+  text-shadow: 0 1px 3px var(--me-mh-secondary, transparent);
+  opacity: 0.6;
+}
+.me-mh-label[data-hovered="true"] { opacity: 1; }
+
+.me-mh-playhead {
+  background-color: var(--me-mh-accent, currentColor);
+  box-shadow: 0 0 8px var(--me-mh-accent-80, transparent);
+}
+.me-mh-playhead-ping {
+  background-color: var(--me-mh-accent, currentColor);
+  opacity: 0.3;
+}
+
+.me-mh-dot {
+  width: 5px;
+  height: 5px;
+  background-color: var(--me-mh-primary, currentColor);
+  opacity: 0.7;
+  box-shadow: none;
+}
+.me-mh-dot[data-hovered="true"] {
+  width: 10px;
+  height: 10px;
+  background-color: var(--me-mh-accent, currentColor);
+  opacity: 1;
+  box-shadow: 0 0 8px var(--me-mh-accent-80, transparent);
+}
+.me-mh-dot[data-latest="true"] {
+  width: 8px;
+  height: 8px;
+  background-color: var(--me-mh-accent, currentColor);
+  box-shadow: 0 0 6px var(--me-mh-accent-60, transparent);
+}
+
+.me-mh-tooltip {
+  top: -8px;
+  transform: translate(-50%, -100%);
+  left: var(--me-mh-tooltip-x, 50%);
+  background-color: var(--me-mh-secondary, transparent);
+  border: 1px solid var(--me-mh-primary-50, transparent);
+  backdrop-filter: blur(8px);
+}
+
+/* Modal / overlay transforms pinned to the viewport centre. */
+.me-centered-absolute {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Dynamic avatar tint — --me-avatar-bg falls back to --accent. */
+.me-avatar-tint { background-color: var(--me-avatar-bg, var(--accent)); }
+
+/* 3D overlay translate that reads --me-translate-x / --me-translate-y (px).
+ * Used by LanguageSelectionPage rotating cards. */
+.me-translate {
+  transform: translate(var(--me-translate-x, 0), var(--me-translate-y, 0));
+}
+
+/* ─── Marketing site: classes previously defined inline in HomePage.tsx ─── */
+
+@keyframes me-breathe {
+  0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.7; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+@keyframes me-reveal-fallback {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll-triggered reveal — JS adds .revealed via IntersectionObserver.
+ * CSS fallback: if JS fails or observer never fires, content becomes
+ * visible after 2s via animation so pages are never blank. */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  animation: me-reveal-fallback 0.6s ease-out 2s both;
+}
+.section-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  animation: none;
+}
+
+.me-btn-primary {
+  color: var(--canvas);
+  background: var(--accent);
+  letter-spacing: 0.06em;
+  transition: all 0.3s ease;
+}
+.me-btn-primary:hover {
+  background: #e0a06a;
+  box-shadow: 0 0 30px rgba(212, 145, 92, 0.15);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .me-fade-up,
+  .me-hero-glow {
+    animation: none;
+  }
+}
+
+/* ─── LanguageSelectionPage: dynamic-scale helpers ─── */
+
+/* Adaptive subheader — three centred slots with rotating phrases 2 and 3.
+ * min-inline-size sizes each slot to fit the majority of "Choose your
+ * language" translations in a single line. A handful of the longest
+ * Latin-diacritic phrases (German / Vietnamese / Tagalog) push a few ch
+ * beyond this minimum; the paragraph is text-align: center with natural
+ * inline flow so any pulse only affects the paragraph's own edges — the
+ * flag circle below lives in a fixed-size container unaffected by
+ * subheader width. */
+.me-adaptive-slot {
+  min-inline-size: 14ch;
+}
+
+/* Language tile — scale + border set via data-expanded / data-reduced. */
+.me-lang-tile {
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(212, 145, 92, 0.15);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.me-lang-tile[data-reduced="true"] {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.me-lang-tile[data-expanded="true"] {
+  z-index: 10;
+  border-color: #d4915c;
+  box-shadow: 0 0 24px rgba(212, 145, 92, 0.2);
+}
+.me-lang-tile[data-expanded="true"][data-reduced="false"] {
+  transform: scale(1.25);
+}
+
+/* Shared: pointer-events: none on a decorative layer. */
+.me-no-pointer { pointer-events: none; }
+
+/* Language-selection circle tiles — 20 fixed positions by data-idx.
+ * Hardcoded so the prerendered HTML (flag page at /) ships no inline
+ * style attributes — CSP style-src without unsafe-inline. */
+.me-circle-pos {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+/* 21 positions on a 260 px radius circle (360° / 21 ≈ 17.14° per slot).
+   idx=0 at 12 o'clock, walking clockwise. Regenerated when zh-Hant was
+   added as the 21st locale — the old 20-slot layout left the last flag
+   (Malay after the zh-Hant insert shifted it to idx=20) with no position
+   rule and it defaulted to the container centre. */
+.me-circle-pos[data-idx="0"]  { left: calc(50% + 0px);        top: calc(50% + -260px); }
+.me-circle-pos[data-idx="1"]  { left: calc(50% + 76.64px);    top: calc(50% + -248.45px); }
+.me-circle-pos[data-idx="2"]  { left: calc(50% + 146.46px);   top: calc(50% + -214.82px); }
+.me-circle-pos[data-idx="3"]  { left: calc(50% + 203.28px);   top: calc(50% + -162.11px); }
+.me-circle-pos[data-idx="4"]  { left: calc(50% + 242.03px);   top: calc(50% + -94.99px); }
+.me-circle-pos[data-idx="5"]  { left: calc(50% + 259.27px);   top: calc(50% + -19.43px); }
+.me-circle-pos[data-idx="6"]  { left: calc(50% + 253.48px);   top: calc(50% + 57.86px); }
+.me-circle-pos[data-idx="7"]  { left: calc(50% + 225.17px);   top: calc(50% + 130.00px); }
+.me-circle-pos[data-idx="8"]  { left: calc(50% + 176.84px);   top: calc(50% + 190.59px); }
+.me-circle-pos[data-idx="9"]  { left: calc(50% + 112.81px);   top: calc(50% + 234.25px); }
+.me-circle-pos[data-idx="10"] { left: calc(50% + 38.75px);    top: calc(50% + 257.10px); }
+.me-circle-pos[data-idx="11"] { left: calc(50% + -38.75px);   top: calc(50% + 257.10px); }
+.me-circle-pos[data-idx="12"] { left: calc(50% + -112.81px);  top: calc(50% + 234.25px); }
+.me-circle-pos[data-idx="13"] { left: calc(50% + -176.84px);  top: calc(50% + 190.59px); }
+.me-circle-pos[data-idx="14"] { left: calc(50% + -225.17px);  top: calc(50% + 130.00px); }
+.me-circle-pos[data-idx="15"] { left: calc(50% + -253.48px);  top: calc(50% + 57.86px); }
+.me-circle-pos[data-idx="16"] { left: calc(50% + -259.27px);  top: calc(50% + -19.43px); }
+.me-circle-pos[data-idx="17"] { left: calc(50% + -242.03px);  top: calc(50% + -94.99px); }
+.me-circle-pos[data-idx="18"] { left: calc(50% + -203.28px);  top: calc(50% + -162.11px); }
+.me-circle-pos[data-idx="19"] { left: calc(50% + -146.46px);  top: calc(50% + -214.82px); }
+.me-circle-pos[data-idx="20"] { left: calc(50% + -76.64px);   top: calc(50% + -248.45px); }
+
+/* Floating animation for language tiles */
+@keyframes me-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.me-lang-float {
+  animation: me-float 6s ease-in-out infinite;
+}
+.me-lang-float[data-idx="0"] { animation-delay: -0s; }
+.me-lang-float[data-idx="1"] { animation-delay: -0.3s; }
+.me-lang-float[data-idx="2"] { animation-delay: -0.6s; }
+.me-lang-float[data-idx="3"] { animation-delay: -0.9s; }
+.me-lang-float[data-idx="4"] { animation-delay: -1.2s; }
+.me-lang-float[data-idx="5"] { animation-delay: -1.5s; }
+.me-lang-float[data-idx="6"] { animation-delay: -1.8s; }
+.me-lang-float[data-idx="7"] { animation-delay: -2.1s; }
+.me-lang-float[data-idx="8"] { animation-delay: -2.4s; }
+.me-lang-float[data-idx="9"] { animation-delay: -2.7s; }
+.me-lang-float[data-idx="10"] { animation-delay: -3.0s; }
+.me-lang-float[data-idx="11"] { animation-delay: -3.3s; }
+.me-lang-float[data-idx="12"] { animation-delay: -3.6s; }
+.me-lang-float[data-idx="13"] { animation-delay: -3.9s; }
+.me-lang-float[data-idx="14"] { animation-delay: -4.2s; }
+.me-lang-float[data-idx="15"] { animation-delay: -4.5s; }
+.me-lang-float[data-idx="16"] { animation-delay: -4.8s; }
+.me-lang-float[data-idx="17"] { animation-delay: -5.1s; }
+.me-lang-float[data-idx="18"] { animation-delay: -5.4s; }
+.me-lang-float[data-idx="19"] { animation-delay: -5.7s; }
+.me-lang-float[data-idx="20"] { animation-delay: -5.85s; } /* phase between idx 19 and 0 on the cycle, matching circle order */
+
+/* Softer hero glow used on the language-selection page (70% fade vs the
+ * default 65%). Animated via me-breathe, same keyframes as .me-hero-glow. */
+.me-hero-glow-soft {
+  background: radial-gradient(circle, rgba(212, 145, 92, 0.08) 0%, transparent 70%);
+  animation: me-breathe 8s ease-in-out infinite;
+}
+.me-hero-glow-soft.me-anim-none { animation: none; }

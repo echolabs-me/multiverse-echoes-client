@@ -1,0 +1,303 @@
+{
+  "title": "Politique de confidentialité",
+  "lastUpdated": "31 mars 2026",
+  "sections": [
+    {
+      "heading": "1. Qui nous sommes",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes est une plateforme de simulation de vie autonome exploitée par Echo Labs (« nous », « notre », « la plateforme »). Nous agissons en tant que responsable du traitement pour toutes les données à caractère personnel traitées via la plateforme."
+        },
+        {
+          "type": "p",
+          "text": "Pour toute demande concernant la confidentialité, contactez-nous à l'adresse [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    },
+    {
+      "heading": "2. Données que nous collectons",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Catégorie",
+            "Exemples"
+          ],
+          "rows": [
+            [
+              "Données du compte",
+              "Adresse e-mail, nom d'affichage, mot de passe haché"
+            ],
+            [
+              "Données du profil",
+              "Bio, sélection de l'avatar, fuseau horaire, préférence linguistique"
+            ],
+            [
+              "Données de persona",
+              "Personas d'écho, invites « et si », âge à la création"
+            ],
+            [
+              "Données de simulation",
+              "Entrées de journal générées par IA, événements de la vie, relations, souvenirs"
+            ],
+            [
+              "Données communautaires",
+              "Messages du canal, publications du fil, votes aux sondages"
+            ],
+            [
+              "Données de paiement",
+              "Niveau d'abonnement, référence du prestataire de paiement (nous ne stockons jamais les numéros de carte)"
+            ],
+            [
+              "Données analytiques",
+              "Événements d'utilisation des fonctionnalités (anonymisés, désactivation possible)"
+            ],
+            [
+              "Données de session",
+              "Jetons d'accès, jetons de renouvellement, horodatages de connexion"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Comment et pourquoi nous utilisons vos données",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Objectif",
+            "Base légale",
+            "Votre contrôle"
+          ],
+          "rows": [
+            [
+              "Création de compte et authentification",
+              "Contrat",
+              "Supprimer le compte"
+            ],
+            [
+              "Simulation d'écho (traitement du persona)",
+              "Consentement",
+              "Supprimez Echo à tout moment"
+            ],
+            [
+              "Interactions Echo entre utilisateurs",
+              "Intérêt légitime",
+              "Bascule du mode solo"
+            ],
+            [
+              "Messagerie communautaire",
+              "Intérêt légitime",
+              "Désistement communautaire"
+            ],
+            [
+              "Modération du contenu et sécurité",
+              "Intérêt légitime",
+              "—"
+            ],
+            [
+              "Gestion des abonnements",
+              "Contrat",
+              "Résilier l'abonnement"
+            ],
+            [
+              "Analyses et amélioration du service",
+              "Intérêt légitime",
+              "Désactivation des analyses dans les Paramètres"
+            ],
+            [
+              "Application et conformité légale",
+              "Obligation légale",
+              "—"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "4. Traitement par l'IA et inférence locale",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Toute l'inférence de l'IA s'exécute localement sur notre propre matériel via des modèles open-source. Vos données de persona et vos invites de simulation ne sont **jamais envoyées à un fournisseur d'IA tiers**. Il s'agit d'un engagement fondamental en matière de confidentialité : aucune donnée personnelle ne quitte notre infrastructure pour le traitement par l'IA."
+        }
+      ]
+    },
+    {
+      "heading": "5. Combien de temps nous conservons vos données",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Données",
+            "Rétention"
+          ],
+          "rows": [
+            [
+              "Données du compte et du profil",
+              "Jusqu'à la suppression + période de grâce de 30 jours"
+            ],
+            [
+              "Persona et données de simulation",
+              "Jusqu'à Echo ou la suppression du compte"
+            ],
+            [
+              "Messages de la communauté",
+              "1 an après la publication"
+            ],
+            [
+              "Jetons de session",
+              "Accès : 1 heure ; Actualisation : 30 jours ; Journaux de connexion : 90 jours"
+            ],
+            [
+              "Données analytiques",
+              "6 mois glissants"
+            ],
+            [
+              "Historiques de paiement",
+              "7 ans (obligation légale)"
+            ],
+            [
+              "Historiques de modération",
+              "3 ans"
+            ],
+            [
+              "Registres de consentement",
+              "Durée du compte + 5 ans"
+            ],
+            [
+              "Fichiers d'exportation de données",
+              "72 heures après la génération"
+            ],
+            [
+              "Sauvegardes chiffrées",
+              "rotation glissante de 90 jours"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "6. Vos droits",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Conformément au RGPD et aux lois applicables sur la protection de la vie privée, vous avez le droit de :"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Accès** — Demandez une copie de toutes vos données personnelles. Disponible via Paramètres → Confidentialité → Exporter les données.",
+            "**Suppression** — Supprimez votre compte et toutes les données associées. Disponible via Paramètres → Confidentialité → Supprimer le compte. Un délai de grâce de 30 jours permet l'annulation.",
+            "**Portabilité** — Exportez vos données dans un format structuré et lisible par machine (JSON). Disponible via Paramètres → Confidentialité → Exporter les données.",
+            "**Rectification** — Corrigez les données inexactes de votre profil ou de votre persona via les paramètres de votre compte.",
+            "**Objet** — Désactivez les interactions entre utilisateurs (Mode Solo), les fonctionnalités communautaires ou les analyses dans Paramètres → Confidentialité.",
+            "**Retirer le consentement** — Supprimez un Echo pour révoquer le consentement au traitement des données de persona. Supprimez votre compte pour révoquer tout consentement."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Pour exercer tout droit, utilisez les outils de l'application ci-dessus ou envoyez un e-mail à [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Nous répondons sous 30 jours."
+        }
+      ]
+    },
+    {
+      "heading": "7. Sécurité des données",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Champs PII chiffrés au repos avec AES-256-GCM",
+            "Base de données chiffrée avec BitLocker",
+            "Sauvegardes cryptées avec Cryptomator (AES-256)",
+            "Toutes les données en transit sont cryptées avec TLS 1.3",
+            "Mots de passe hachés avec Argon2id (jamais stockés en texte clair)",
+            "Les sessions utilisent des JWT signés avec Ed25519.",
+            "Tous les accès aux données d'administration sont enregistrés dans des journaux d'audit en ajout uniquement."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Traiteurs tiers",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Service",
+            "Données partagées",
+            "Objectif"
+          ],
+          "rows": [
+            [
+              "Stripe",
+              "E-mail, métadonnées de facturation",
+              "Traitement des paiements par carte"
+            ],
+            [
+              "NOWPayments",
+              "Montant du paiement",
+              "Paiements en cryptomonnaies"
+            ],
+            [
+              "Xaman",
+              "Adresse du portefeuille",
+              "Paiements XRP"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Nous ne partageons jamais vos données avec des tiers à des fins publicitaires. L'inférence de l'IA s'effectue entièrement sur notre propre matériel."
+        }
+      ]
+    },
+    {
+      "heading": "9. Données des enfants",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes s'adresse aux utilisateurs âgés de 16 ans et plus. Nous ne collectons pas sciemment de données personnelles de toute personne de moins de 16 ans. Si nous apprenons qu'un utilisateur a moins de 16 ans, son compte sera suspendu en attendant une vérification."
+        }
+      ]
+    },
+    {
+      "heading": "10. Transferts internationaux de données",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Actuellement, toutes les données sont traitées et stockées sur une infrastructure située dans une seule juridiction. Aucun transfert international de données n'a lieu. Si cela devait changer à l'avenir, nous actualiserons cette politique et nous nous assurerons que des garanties appropriées (clauses contractuelles types ou décisions d'adéquation) sont en place."
+        }
+      ]
+    },
+    {
+      "heading": "11. Notification de violation de données",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "En cas de violation de données à caractère personnel susceptible d'engendrer un risque pour vos droits et libertés, nous notifierons l'autorité de contrôle compétente dans les 72 heures, conformément à l'article 33 du RGPD. Si la violation présente un risque élevé pour vous, nous vous en informerons directement et sans délai injustifié, conformément à l'article 34 du RGPD."
+        }
+      ]
+    },
+    {
+      "heading": "12. Réclamations",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Si vous n'êtes pas satisfait de la manière dont nous traitons vos données, veuillez nous contacter d'abord à l'adresse [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Vous avez également le droit d'adresser une réclamation à l'autorité locale de contrôle de la protection des données."
+        }
+      ]
+    },
+    {
+      "heading": "13. Modifications de cette politique",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Nous pouvons mettre à jour cette politique de temps à autre. Les modifications substantielles seront communiquées par e-mail ou via une notification dans l'application au moins 30 jours avant leur entrée en vigueur."
+        }
+      ]
+    }
+  ]
+}

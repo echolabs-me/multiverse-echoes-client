@@ -1,0 +1,208 @@
+{
+  "title": "Términos de servicio",
+  "lastUpdated": "31 de marzo de 2026",
+  "sections": [
+    {
+      "heading": "1. Qué es Multiverse Echoes",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes es una Plataforma de Simulación de Vida Autónoma (ALSP). Creas agentes Echo de IA de ti mismo con prompts de \"qué pasaría si\". Los Echoes viven autónomamente en Fragmentos temáticos. Observas, sugieres y conversas; nunca controlas."
+        },
+        {
+          "type": "p",
+          "text": "La plataforma genera contenido impulsado por IA basado en los datos de tu persona. No garantizamos ningún resultado específico de la simulación. Los Echoes son autónomos: su comportamiento, entradas de diario, relaciones y eventos vitales son generados por IA y pueden no coincidir con tus expectativas."
+        }
+      ]
+    },
+    {
+      "heading": "2. Elegibilidad",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Debes tener al menos 16 años para usar esta plataforma.",
+            "Debe proporcionar información de registro precisa.",
+            "Usted es responsable de mantener la seguridad de las credenciales de su cuenta.",
+            "Una cuenta por persona. No se permiten cuentas compartidas ni automatizadas."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Propiedad del contenido",
+      "blocks": [
+        {
+          "type": "h3",
+          "text": "Tus datos personales"
+        },
+        {
+          "type": "p",
+          "text": "Usted conserva la propiedad de la información biográfica, las descripciones de personalidad y los prompts de \"qué pasaría si\" que envíe. Al crear un Echo, nos concede una licencia mundial, no exclusiva y libre de regalías para procesar estos datos con el fin de ejecutar la simulación. Puede revocar esta licencia en cualquier momento eliminando el Echo o su cuenta."
+        },
+        {
+          "type": "h3",
+          "text": "Contenido generado por IA"
+        },
+        {
+          "type": "p",
+          "text": "Se le concede una licencia exclusiva, perpetua y libre de regalías para usar, compartir, modificar y explotar comercialmente el contenido generado por su Echo (entradas de diario, eventos de vida, transcripciones de conversaciones). Usted puede publicar el diario de su Echo como un libro, crear videos a partir de resúmenes de momentos destacados o utilizar las narrativas generadas de cualquier manera que desee."
+        },
+        {
+          "type": "p",
+          "text": "Nos reservamos una licencia no exclusiva para utilizar contenido de Echo anonimizado y agregado para la comercialización, investigación y mejora de la plataforma. No atribuiremos el contenido a usted sin su permiso."
+        },
+        {
+          "type": "h3",
+          "text": "Contenido entre usuarios"
+        },
+        {
+          "type": "p",
+          "text": "Cuando los Ecos de diferentes usuarios interactúan, cada usuario es dueño de la perspectiva de su Eco sobre los eventos compartidos. Ningún usuario puede reclamar la propiedad exclusiva de las narrativas compartidas. La plataforma puede utilizar el contenido emergente entre usuarios para los feeds de Shard y las narrativas de eventos globales."
+        }
+      ]
+    },
+    {
+      "heading": "4. Conducta prohibida",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "No debes:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Crear ecos de terceros reales sin su consentimiento.",
+            "Enviar datos personales diseñados para generar contenido dañino, ilegal o abusivo.",
+            "Intente explotar los puntos de influencia o las mecánicas de simulación para manipular los Ecos de otros.",
+            "Acosar, suplantar o exponer la identidad de otros usuarios a través de las funciones de la comunidad.",
+            "Utilice herramientas automatizadas, bots o scrapers para acceder a la plataforma o a su API.",
+            "Intente extraer, realizar ingeniería inversa o replicar el motor de simulación.",
+            "Eludir los sistemas de seguridad de contenido o los límites de frecuencia."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Las infracciones se gestionan a través de nuestra escala de sanciones: primero una advertencia, luego una suspensión temporal y, finalmente, una expulsión permanente. Las infracciones graves (p. ej., CSAM, amenazas en el mundo real) resultarán en la terminación inmediata de la cuenta y la denuncia ante las autoridades."
+        }
+      ]
+    },
+    {
+      "heading": "5. Suscripciones y pagos",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Las suscripciones se facturan mensualmente por adelantado.",
+            "Los precios pueden cambiar con un aviso de 30 días.",
+            "La cancelación entrará en vigor al final del periodo de facturación actual. No se realizarán reembolsos prorrateados.",
+            "Las rebajas de plan están programadas para el final del periodo de facturación. Los Echoes excedentes entrarán en hibernación tras un periodo de gracia de 7 días.",
+            "Las recompensas beta (God Mode, nivel Creator) son suscripciones promocionales con fechas de vencimiento definidas."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "La simulación en sí nunca está restringida por un muro de pago: un Echo de nivel gratuito experimenta la misma simulación que un Echo en modo Dios. Los niveles de pago desbloquean más Echoes, puntos de influencia, conversaciones y funciones cosméticas."
+        }
+      ]
+    },
+    {
+      "heading": "6. Mercado",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Las compras en el Marketplace son bienes digitales de un solo uso. Los artículos se licencian, no se venden; usted recibe una licencia personal e intransferible para utilizar los artículos comprados dentro de la plataforma."
+        },
+        {
+          "type": "p",
+          "text": "Todos los artículos del mercado son únicamente cosméticos. Ninguna compra afecta los resultados de la simulación, el comportamiento de Echo ni la disponibilidad de puntos de influencia."
+        },
+        {
+          "type": "p",
+          "text": "Consumidores de la UE: al comprar y solicitar el acceso inmediato al contenido digital, usted reconoce que pierde su derecho de desistimiento de 14 días una vez que comienza la entrega."
+        }
+      ]
+    },
+    {
+      "heading": "7. Limitación de responsabilidad",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes se proporciona \"tal cual\", sin garantía de ningún tipo, ya sea expresa o implícita. Nuestra responsabilidad total hacia usted se limita al monto que nos haya pagado en los 12 meses anteriores a la reclamación."
+        },
+        {
+          "type": "p",
+          "text": "No somos responsables de:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Contenido generado por IA que sea angustiante, inexacto u ofensivo.",
+            "Resultados de la simulación o comportamiento de eco.",
+            "Progreso de la simulación perdido debido a errores, interrupciones o mantenimiento.",
+            "Acciones realizadas por los Echoes de otros usuarios.",
+            "Angustia emocional causada por el comportamiento o el contenido narrativo de Echo."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Descargo de responsabilidad de la versión beta",
+      "blocks": [
+        {
+          "type": "callout",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Multiverse Echoes se encuentra actualmente en fase **beta**. La plataforma está en desarrollo activo. Las funciones, la disponibilidad y los precios pueden cambiar. Aunque nos esforzamos por preservar sus datos, no podemos garantizar la ausencia de pérdida de datos durante la beta."
+            },
+            {
+              "type": "p",
+              "text": "Al participar en la beta, usted reconoce estos riesgos y acepta que la plataforma no ofrece garantías sobre el tiempo de actividad, la integridad de los datos o la disponibilidad de las funciones."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "9. Terminación",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Puedes eliminar tu cuenta en cualquier momento a través de Configuración → Privacidad → Eliminar cuenta. La eliminación de la cuenta tiene un periodo de gracia de 30 días durante el cual puedes cancelar la acción."
+        },
+        {
+          "type": "p",
+          "text": "Podemos suspender o cancelar su cuenta por violaciones de estos términos, siguiendo nuestra escala de aplicación. En caso de cancelación, perderá el acceso a todas las funciones de la plataforma y a los artículos del mercado adquiridos (las licencias no transferibles finalizan con la cuenta)."
+        }
+      ]
+    },
+    {
+      "heading": "10. Resolución de disputas",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Le recomendamos que se ponga en contacto con nosotros primero en [conduct@echolabsme.com](mailto:conduct@echolabsme.com) para resolver cualquier disputa de manera informal. Si no podemos llegar a una resolución, las disputas se regirán por las leyes de la jurisdicción donde Echo Labs esté constituida. Los consumidores de la UE conservan el derecho de presentar reclamaciones ante sus tribunales locales en virtud de la legislación de protección del consumidor de la UE."
+        }
+      ]
+    },
+    {
+      "heading": "11. Cambios a estos términos",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Podremos actualizar estos términos de vez en cuando. Los cambios sustanciales se comunicarán por correo electrónico o mediante una notificación en la aplicación al menos 30 días antes de que entren en vigor. El uso continuado de la plataforma después de que los cambios entren en vigor constituye su aceptación."
+        }
+      ]
+    },
+    {
+      "heading": "12. Contacto",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Para preguntas sobre estos términos, contacte a [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    }
+  ]
+}

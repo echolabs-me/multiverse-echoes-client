@@ -1,0 +1,64 @@
+# Vocabulary that must NEVER be translated. Preserved verbatim in all
+# locales (in the source script — Latin / English form), never
+# transliterated, never localised, never pluralised differently from
+# the listed forms.
+#
+# Loaded by client/scripts/translate-i18n-anthropic.py at startup and
+# injected into the per-locale Anthropic system prompt as a
+# CRITICAL "do not translate" instruction. Same list applied to ALL
+# 20 non-English locales identically — the platform's brand identity
+# is locale-independent.
+#
+# Mirrors the i18n-tone.yaml schema-validated-at-startup pattern.
+# Future updates land in separate commits as the product vocabulary
+# grows.
+#
+# Reference: ME-UXF-001 §8.2 brand-term invariants, post-Lane E
+# Commit 2 fix folded same-commit per Rule #14 (initial 17bd345
+# translated brand vocabulary in ~60 places across 18 locales; the
+# revert + this YAML config + adapter fix collectively restore
+# brand integrity).
+
+# Core platform-vocabulary nouns. The product itself ("Multiverse
+# Echoes") and its primary entities (Echo / Shard / Tick / Diary).
+# These are proper nouns in the product's vocabulary and translating
+# them breaks brand recognition + cross-locale documentation lookups.
+product_nouns:
+  - "Multiverse Echoes"
+  - "Echoes"
+  - "Echo"
+  - "Shards"
+  - "Shard"
+  - "Tick"
+  - "Diaries"
+  - "Diary"
+
+# Brand / technical terms — third-party brand names used in copy
+# (mostly the AI/infra stack referenced in About-page descriptions).
+# Localising "Rust" or "Gemma" gives wrong-looking results; these are
+# proper nouns in their own right.
+brand_technical_terms:
+  - "FLUX.2"
+  - "VoxCPM2"
+  - "Gemma"
+  - "MuseTalk"
+  - "Rust"
+  - "vLLM"
+  # Lane E Commit 3: "Marketplace" is the platform's product-vocabulary
+  # term for the §8.5 catalog page (parallel to "Echo" / "Shard"). The
+  # standalone page title stays in English across all 20 non-English
+  # locales so cross-locale screenshots and screen-share support remain
+  # consistent. Sub-keys (e.g. "Dashboard Themes") are generic English
+  # nouns and translate normally — only the bare token "Marketplace"
+  # is preserved.
+  - "Marketplace"
+
+# Shard proper nouns — each Shard's name is a stylised label that
+# carries narrative weight ("Cyber-Tokyo 2045" is a deliberate
+# English-flavoured cyberpunk label, not a translatable string).
+# Localising these breaks the Shard-name SEO + cross-locale screen-
+# share consistency.
+shard_proper_nouns:
+  - "Cyber-Tokyo 2045"
+  - "Nomad Australia"
+  - "Renaissance Florence"

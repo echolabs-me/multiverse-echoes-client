@@ -1,0 +1,98 @@
+{
+  "title": "Erklärung zur Barrierefreiheit",
+  "lastUpdated": "31. März 2026",
+  "sections": [
+    {
+      "heading": "Unser Engagement",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes setzt sich dafür ein, unsere Plattform für alle zugänglich zu machen. Wir streben die Konformität mit dem Standard der **Web Content Accessibility Guidelines (WCAG) 2.1 Level AA** an. Barrierefreiheit ist bei uns kein nachträglicher Gedanke – sie ist von Anfang an in unser Designsystem, unsere Komponentenbibliothek und unsere Testing-Pipeline integriert."
+        }
+      ]
+    },
+    {
+      "heading": "Was wir getan haben",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "**Tastaturnavigation** — Alle interaktiven Elemente sind über die Tab-Taste erreichbar. Fokusindikatoren sind sichtbar (2px Akzent-Umrandung). Skip-Links ermöglichen das Überspringen der Navigation. Eine logische Tab-Reihenfolge wird durchgehend eingehalten.",
+            "**Unterstützung für Screenreader** — Durchgehend wird semantisches HTML (Überschriften, Listen, Tabellen, Orientierungspunkte) verwendet. Alle Bilder verfügen über beschreibende Alternativtexte. Interaktive Elemente besitzen ARIA-Labels. Dynamische Inhaltsaktualisierungen werden über `aria-live`-Regionen angekündigt.",
+            "**Farbkontrast** — Alle Texte und interaktiven Elemente erfüllen die Kontrastverhältnisse gemäß WCAG 2.1 AA (4,5:1 für normalen Text, 3:1 für großen Text). Informationen werden niemals allein durch Farben vermittelt.",
+            "**Reduzierte Bewegung** — Alle Animationen berücksichtigen die Betriebssystemeinstellung `prefers-reduced-motion`. Wenn diese aktiviert ist, werden Animationen deaktiviert oder durch statische Alternativen ersetzt. Die Echo-Startanimation zeigt einen statischen Bildschirm. Der Tick-Puls ist vollständig deaktiviert.",
+            "**Touch-Ziele** — Alle interaktiven Elemente erfüllen die Mindestgröße von 44x44px für Touch-Ziele.",
+            "**Textskalierung** — Die Benutzeroberfläche bleibt bei einem Browser-Zoom von 200 % ohne horizontales Scrollen oder abgeschnittenen Inhalt nutzbar.",
+            "**Dunkle und helle Modi** — Beide Farbschemata sind mit kontrastgeprüften Paletten gestaltet. Nutzer können ihre bevorzugte Einstellung in den Einstellungen wählen.",
+            "**Automatisierte Tests** — Wir führen im Rahmen unserer End-to-End-Testsuite axe-core-Barrierefreiheitsprüfungen auf allen Seiten durch. Es sind keine kritischen oder schwerwiegenden Verstöße zulässig."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3D-Inhalte und Alternativen",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Einige Funktionen beinhalten 3D-Visualisierungen (Echo-Porträts, Shard-Umgebungen). Diese sind immer von 2D-Fallbacks begleitet, für Geräte, die WebGL nicht unterstützen, oder wenn eine reduzierte Bewegung aktiviert ist. Keine Informationen werden ausschließlich durch 3D-Inhalte vermittelt."
+        }
+      ]
+    },
+    {
+      "heading": "Audio",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Soundeffekte sind optional und standardmäßig deaktiviert. Es werden keine Informationen ausschließlich über Audio übermittelt – alle Benachrichtigungen verfügen über visuelle Indikatoren. Der Sound kann in den Einstellungen ein- und ausgeschaltet und die Lautstärke angepasst werden."
+        }
+      ]
+    },
+    {
+      "heading": "Bekannte Lücken",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Wir sind uns der folgenden Bereiche bewusst, in denen wir noch keine vollständige Compliance erreicht haben:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Manuelle Screenreader-Tests** — Wir führen automatisierte Tests mit axe-core durch, haben jedoch noch keine umfassenden manuellen Tests mit NVDA, JAWS oder VoiceOver abgeschlossen. Dies ist vor dem öffentlichen Start geplant.",
+            "**Videountertitel** — Die Funktionen für den Videoexport (Highlight-Reels) enthalten noch keine Untertitel. Dies wird mit der Einführung der Videofunktionen behoben.",
+            "**Rechts-nach-links-Sprachen (RTL)** — Die Benutzeroberfläche verwendet CSS-logische Eigenschaften zur Vorbereitung auf die RTL-Unterstützung, aber das RTL-Layout wurde noch nicht vollständig getestet.",
+            "**Sprachen außer Englisch** — Derzeit wird nur Englisch unterstützt. Weitere Sprachen sind nach dem Start geplant. Die Internationalisierungsarchitektur ist vorhanden (632 externalisierte Zeichenfolgen)."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Feedback und Kontakt",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Wenn Sie auf eine Barriere in der Barrierefreiheit stoßen oder Verbesserungsvorschläge haben, kontaktieren Sie uns bitte:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "E-Mail: [conduct@echolabsme.com](mailto:conduct@echolabsme.com)",
+            "In-App: nutzen Sie den Oracle-Assistenten oder das Feedback-Formular in den Einstellungen"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Wir nehmen Feedback zur Barrierefreiheit ernst und streben eine Antwort innerhalb von 5 Werktagen an."
+        }
+      ]
+    },
+    {
+      "heading": "Konformitätsstatus",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes ist **teilweise konform** mit WCAG 2.1 Level AA. „Teilweise konform“ bedeutet, dass einige Teile des Inhalts nicht vollständig dem Barrierefreiheitsstandard entsprechen, wie im Abschnitt „Bekannte Lücken“ oben beschrieben. Wir arbeiten aktiv daran, diese Lücken zu schließen."
+        }
+      ]
+    }
+  ]
+}

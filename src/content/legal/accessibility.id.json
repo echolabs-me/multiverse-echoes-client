@@ -1,0 +1,98 @@
+{
+  "title": "Pernyataan Aksesibilitas",
+  "lastUpdated": "31 Maret 2026",
+  "sections": [
+    {
+      "heading": "Komitmen kami",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes berkomitmen untuk membuat platform kami dapat diakses oleh semua orang. Kami menargetkan kepatuhan terhadap standar **Web Content Accessibility Guidelines (WCAG) 2.1 Level AA**. Aksesibilitas bukanlah sebuah pemikiran setelahnya — hal ini terintegrasi ke dalam sistem desain, pustaka komponen, dan jalur pengujian kami sejak awal."
+        }
+      ]
+    },
+    {
+      "heading": "Apa yang telah kami lakukan",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "**Navigasi keyboard** — Semua elemen interaktif dapat diakses melalui tombol Tab. Indikator fokus terlihat (garis tepi aksen 2px). Tautan lompat disediakan untuk melewati navigasi. Urutan tab yang logis tetap terjaga di seluruh bagian.",
+            "**Dukungan pembaca layar** — HTML semantik (heading, daftar, tabel, landmark) digunakan di seluruh bagian. Semua gambar memiliki teks alt yang deskriptif. Elemen interaktif memiliki label ARIA. Pembaruan konten dinamis diumumkan melalui wilayah `aria-live`.",
+            "**Kontras warna** — Semua teks dan elemen interaktif memenuhi rasio kontras WCAG 2.1 AA (4,5:1 untuk teks normal, 3:1 untuk teks besar). Informasi tidak pernah disampaikan hanya melalui warna.",
+            "**Pengurangan gerakan** — Semua animasi mematuhi pengaturan sistem operasi `prefers-reduced-motion`. Saat diaktifkan, animasi dinonaktifkan atau diganti dengan alternatif statis. Animasi kemunculan Echo menampilkan layar statis. Denyut centang dinonaktifkan sepenuhnya.",
+            "**Target sentuhan** — Semua elemen interaktif memenuhi ukuran target sentuhan minimum 44x44px.",
+            "**Penskalaan teks** — Antarmuka tetap dapat digunakan pada zoom browser 200% tanpa penggulungan horizontal atau konten yang terpotong.",
+            "**Mode gelap dan terang** — Kedua skema warna dirancang dengan palet yang telah diuji kontrasnya. Pengguna dapat memilih preferensi mereka di Pengaturan.",
+            "**Pengujian otomatis** — Kami menjalankan audit aksesibilitas axe-core pada semua halaman sebagai bagian dari rangkaian pengujian end-to-end kami. Tidak diperbolehkan ada pelanggaran kritis atau serius."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Konten 3D dan alternatifnya",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Beberapa fitur mencakup visualisasi 3D (potret Echo, lingkungan Shard). Fitur-fitur ini selalu disertai dengan fallback 2D untuk perangkat yang tidak mendukung WebGL, atau ketika opsi pengurangan gerakan diaktifkan. Tidak ada informasi yang disampaikan secara eksklusif melalui konten 3D."
+        }
+      ]
+    },
+    {
+      "heading": "Audio",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Efek suara bersifat opsional dan dinonaktifkan secara default. Tidak ada informasi yang disampaikan hanya melalui audio — semua notifikasi memiliki indikator visual. Suara dapat diaktifkan atau dinonaktifkan dan volumenya dapat disesuaikan di Pengaturan."
+        }
+      ]
+    },
+    {
+      "heading": "Kesenjangan yang diketahui",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kami menyadari bidang-bidang berikut di mana kami belum mencapai kepatuhan penuh:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Pengujian pembaca layar manual** — Kami memiliki pengujian otomatis dengan axe-core tetapi belum menyelesaikan pengujian manual yang komprehensif dengan NVDA, JAWS, atau VoiceOver. Hal ini direncanakan sebelum peluncuran publik.",
+            "**Keterangan video** — Fitur ekspor video (highlight reels) belum menyertakan keterangan. Hal ini akan ditangani saat fitur video diluncurkan.",
+            "**Bahasa kanan-ke-kiri (RTL)** — Antarmuka menggunakan properti logis CSS sebagai persiapan untuk dukungan RTL, namun tata letak RTL belum diuji sepenuhnya.",
+            "**Bahasa selain Inggris** — Saat ini hanya bahasa Inggris yang didukung. Bahasa tambahan direncanakan setelah peluncuran. Arsitektur internasionalisasi sudah tersedia (632 string eksternal)."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Umpan balik dan kontak",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Jika Anda menemukan hambatan aksesibilitas atau memiliki saran untuk perbaikan, silakan hubungi kami:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Email: [conduct@echolabsme.com](mailto:conduct@echolabsme.com)",
+            "Di dalam aplikasi: gunakan asisten Oracle atau formulir umpan balik di Pengaturan"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Kami menanggapi masukan aksesibilitas dengan serius dan bertujuan untuk merespons dalam 5 hari kerja."
+        }
+      ]
+    },
+    {
+      "heading": "Status kesesuaian",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes **sebagian selaras** dengan WCAG 2.1 Level AA. “Sebagian selaras” berarti beberapa bagian dari konten tidak sepenuhnya memenuhi standar aksesibilitas, sebagaimana diuraikan dalam bagian Celah yang Diketahui di atas. Kami sedang berupaya aktif untuk mengatasi celah-celah tersebut."
+        }
+      ]
+    }
+  ]
+}

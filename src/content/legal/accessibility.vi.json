@@ -1,0 +1,98 @@
+{
+  "title": "Tuyên bố về khả năng tiếp cận",
+  "lastUpdated": "31 tháng 3 năm 2026",
+  "sections": [
+    {
+      "heading": "Cam kết của chúng tôi",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes cam kết làm cho nền tảng của chúng tôi có thể tiếp cận được với tất cả mọi người. Chúng tôi hướng tới việc tuân thủ tiêu chuẩn **Hướng dẫn Truy cập Nội dung Web (WCAG) 2.1 Cấp độ AA**. Khả năng tiếp cận không phải là một yếu tố bổ sung sau cùng — nó được tích hợp vào hệ thống thiết kế, thư viện thành phần và quy trình kiểm thử của chúng tôi ngay từ đầu."
+        }
+      ]
+    },
+    {
+      "heading": "Những gì chúng tôi đã làm",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "**Điều hướng bằng bàn phím** — Tất cả các thành phần tương tác đều có thể truy cập được thông qua phím Tab. Các chỉ báo tiêu điểm hiển thị rõ ràng (đường viền nhấn mạnh 2px). Các liên kết bỏ qua (skip links) được cung cấp để bỏ qua phần điều hướng. Thứ tự tab logic được duy trì xuyên suốt.",
+            "**Hỗ trợ trình đọc màn hình** — HTML ngữ nghĩa (tiêu đề, danh sách, bảng, mốc đánh dấu) được sử dụng xuyên suốt. Tất cả hình ảnh đều có văn bản thay thế mô tả. Các yếu tố tương tác có nhãn ARIA. Các cập nhật nội dung động được thông báo qua các vùng `aria-live`.",
+            "**Độ tương phản màu sắc** — Tất cả văn bản và các yếu tố tương tác đều đáp ứng tỷ lệ tương phản WCAG 2.1 AA (4,5:1 đối với văn bản bình thường, 3:1 đối với văn bản lớn). Thông tin không bao giờ chỉ được truyền tải bằng màu sắc.",
+            "**Giảm chuyển động** — Tất cả các hiệu ứng hoạt họa đều tuân thủ thiết lập `prefers-reduced-motion` của hệ điều hành. Khi được bật, các hiệu ứng hoạt họa sẽ bị tắt hoặc được thay thế bằng các phương án tĩnh. Hiệu ứng hoạt họa khởi tạo Echo sẽ hiển thị một màn hình tĩnh. Hiệu ứng nhịp đập của dấu tích sẽ bị tắt hoàn toàn.",
+            "**Vùng chạm** — Tất cả các yếu tố tương tác đều đáp ứng kích thước vùng chạm tối thiểu là 44x44px.",
+            "**Thu phóng văn bản** — Giao diện vẫn có thể sử dụng được ở mức thu phóng trình duyệt 200% mà không bị cuộn ngang hoặc mất nội dung.",
+            "**Chế độ tối và sáng** — Cả hai bảng màu đều được thiết kế với các dải màu đã qua kiểm tra độ tương phản. Người dùng có thể chọn tùy chọn theo sở thích trong phần Cài đặt.",
+            "**Kiểm thử tự động** — Chúng tôi chạy các cuộc kiểm tra khả năng truy cập axe-core trên tất cả các trang như một phần của bộ kiểm thử end-to-end. Không chấp nhận bất kỳ vi phạm nghiêm trọng hoặc đặc biệt nghiêm trọng nào."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Nội dung 3D và các phương án thay thế",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Một số tính năng bao gồm hình ảnh trực quan 3D (chân dung Echo, môi trường Shard). Những nội dung này luôn đi kèm với các phương án dự phòng 2D cho các thiết bị không hỗ trợ WebGL, hoặc khi chế độ giảm chuyển động được bật. Không có thông tin nào được truyền tải độc quyền thông qua nội dung 3D."
+        }
+      ]
+    },
+    {
+      "heading": "Âm thanh",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hiệu ứng âm thanh là tùy chọn và được tắt theo mặc định. Không có thông tin nào chỉ được truyền tải qua âm thanh — tất cả các thông báo đều có chỉ báo trực quan. Âm thanh có thể được bật/tắt và điều chỉnh âm lượng trong phần Cài đặt."
+        }
+      ]
+    },
+    {
+      "heading": "Các lỗ hổng đã biết",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Chúng tôi nhận thức được những lĩnh vực sau đây mà chúng tôi vẫn chưa đạt được sự tuân thủ đầy đủ:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Kiểm thử trình đọc màn hình thủ công** — Chúng tôi đã thực hiện kiểm thử tự động với axe-core nhưng chưa hoàn tất kiểm thử thủ công toàn diện với NVDA, JAWS hoặc VoiceOver. Việc này được lên kế hoạch thực hiện trước khi ra mắt chính thức.",
+            "**Phụ đề video** — Các tính năng xuất video (video highlight) hiện chưa bao gồm phụ đề. Vấn đề này sẽ được giải quyết khi các tính năng video chính thức ra mắt.",
+            "**Các ngôn ngữ viết từ phải sang trái (RTL)** — Giao diện sử dụng các thuộc tính logic của CSS để chuẩn bị cho việc hỗ trợ RTL, nhưng bố cục RTL vẫn chưa được kiểm thử đầy đủ.",
+            "**Các ngôn ngữ ngoài tiếng Anh** — Hiện tại chỉ hỗ trợ tiếng Anh. Các ngôn ngữ bổ sung dự kiến sẽ được cập nhật sau khi ra mắt. Kiến trúc quốc tế hóa đã sẵn sàng (632 chuỗi ký tự được tách biệt)."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Phản hồi và liên hệ",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Nếu bạn gặp rào cản về khả năng tiếp cận hoặc có đề xuất cải thiện, vui lòng liên hệ với chúng tôi:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Email: [conduct@echolabsme.com](mailto:conduct@echolabsme.com)",
+            "Trong ứng dụng: sử dụng trợ lý Oracle hoặc biểu mẫu phản hồi trong Cài đặt"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Chúng tôi ghi nhận nghiêm túc các phản hồi về khả năng tiếp cận và đặt mục tiêu phản hồi trong vòng 5 ngày làm việc."
+        }
+      ]
+    },
+    {
+      "heading": "Trạng thái tuân thủ",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes **tuân thủ một phần** tiêu chuẩn WCAG 2.1 Cấp độ AA. “Tuân thủ một phần” có nghĩa là một số phần của nội dung không hoàn toàn tuân thủ tiêu chuẩn về khả năng truy cập, như đã nêu trong phần Các lỗ hổng đã biết ở trên. Chúng tôi đang tích cực làm việc để khắc phục những lỗ hổng này."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "title": "Ketentuan Layanan",
+  "lastUpdated": "31 Maret 2026",
+  "sections": [
+    {
+      "heading": "1. Apa itu Multiverse Echoes",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes adalah Platform Simulasi Kehidupan Otonom (ALSP). Anda menciptakan agen Echo AI dari diri Anda dengan perintah “bagaimana jika”. Echo hidup secara otonom dalam Shard bertema. Anda mengamati, memberi arahan, dan bercakap-cakap — Anda tidak pernah mengendalikan."
+        },
+        {
+          "type": "p",
+          "text": "Platform ini menghasilkan konten berbasis AI berdasarkan data persona Anda. Kami tidak menjamin hasil simulasi tertentu. Echoes bersifat otonom — perilaku, entri buku harian, hubungan, dan peristiwa kehidupan mereka dihasilkan oleh AI dan mungkin tidak sesuai dengan harapan Anda."
+        }
+      ]
+    },
+    {
+      "heading": "2. Kelayakan",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Anda harus berusia minimal 16 tahun untuk menggunakan platform ini.",
+            "Anda harus memberikan informasi pendaftaran yang akurat.",
+            "Anda bertanggung jawab untuk menjaga keamanan kredensial akun Anda.",
+            "Satu akun per orang. Akun bersama atau otomatis tidak diperbolehkan."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Kepemilikan konten",
+      "blocks": [
+        {
+          "type": "h3",
+          "text": "Data persona Anda"
+        },
+        {
+          "type": "p",
+          "text": "Anda tetap memiliki hak milik atas informasi biografis, deskripsi kepribadian, dan prompt pengandaian yang Anda kirimkan. Dengan membuat Echo, Anda memberikan kami lisensi non-eksklusif, bebas royalti, dan berlaku di seluruh dunia untuk memproses data ini guna menjalankan simulasi. Anda dapat mencabut lisensi ini kapan saja dengan menghapus Echo atau akun Anda."
+        },
+        {
+          "type": "h3",
+          "text": "Konten buatan AI"
+        },
+        {
+          "type": "p",
+          "text": "Anda diberikan lisensi eksklusif, abadi, dan bebas royalti untuk menggunakan, membagikan, memodifikasi, dan mengeksploitasi secara komersial konten yang dihasilkan oleh Echo Anda (entri buku harian, peristiwa kehidupan, transkrip percakapan). Anda dapat menerbitkan buku harian Echo Anda sebagai buku, membuat video dari cuplikan sorotan, atau menggunakan narasi yang dihasilkan dengan cara apa pun yang Anda pilih."
+        },
+        {
+          "type": "p",
+          "text": "Kami memegang lisensi non-eksklusif untuk menggunakan konten Echo yang anonim dan diagregasi untuk pemasaran, penelitian, dan peningkatan platform. Kami tidak akan menghubungkan konten tersebut kepada Anda tanpa izin Anda."
+        },
+        {
+          "type": "h3",
+          "text": "Konten lintas pengguna"
+        },
+        {
+          "type": "p",
+          "text": "Ketika Echo dari pengguna yang berbeda berinteraksi, setiap pengguna memiliki perspektif Echo mereka terhadap peristiwa yang dibagikan. Tidak ada pengguna yang dapat mengklaim kepemilikan eksklusif atas narasi bersama. Platform dapat menggunakan konten emergen lintas pengguna untuk feed Shard dan narasi peristiwa global."
+        }
+      ]
+    },
+    {
+      "heading": "4. Perilaku yang dilarang",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Anda tidak boleh:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Buat Echoes dari pihak ketiga yang nyata tanpa persetujuan mereka.",
+            "Kirimkan data persona yang dirancang untuk menghasilkan konten berbahaya, ilegal, atau kasar.",
+            "Berusaha mengeksploitasi poin pengaruh atau mekanik simulasi untuk memanipulasi Echo orang lain.",
+            "Melecehkan, meniru identitas, atau menyebarkan data pribadi pengguna lain melalui fitur komunitas.",
+            "Gunakan alat otomatis, bot, atau scraper untuk mengakses platform atau API-nya.",
+            "Upaya untuk mengekstrak, merekayasa balik, atau mereplikasi mesin simulasi.",
+            "Mengakali sistem keamanan konten atau batas kecepatan."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Pelanggaran ditangani melalui tingkatan penegakan kami: peringatan pertama, kemudian penangguhan sementara, lalu pemblokiran permanen. Pelanggaran berat (misalnya, CSAM, ancaman dunia nyata) akan berakibat pada pemutusan akun segera dan pelaporan kepada pihak berwenang."
+        }
+      ]
+    },
+    {
+      "heading": "5. Langganan dan pembayaran",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Langganan ditagih setiap bulan di muka.",
+            "Harga dapat berubah dengan pemberitahuan 30 hari sebelumnya.",
+            "Pembatalan berlaku pada akhir periode penagihan saat ini. Tidak ada pengembalian dana prorata.",
+            "Penurunan paket dijadwalkan pada akhir periode penagihan. Kelebihan Echoes akan dihibernasi setelah masa tenggang 7 hari.",
+            "Hadiah beta (God Mode, tingkatan Creator) adalah langganan promosi dengan tanggal kedaluwarsa yang telah ditentukan."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Simulasi itu sendiri tidak pernah dibatasi paywall — Echo tingkat Gratis mengalami simulasi yang sama dengan Echo Mode Dewa. Tingkatan berbayar membuka lebih banyak Echo, poin pengaruh, percakapan, dan fitur kosmetik."
+        }
+      ]
+    },
+    {
+      "heading": "6. Marketplace",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Pembelian di Marketplace adalah barang digital sekali beli. Item dilisensikan, bukan dijual — Anda menerima lisensi pribadi yang tidak dapat dipindahtangankan untuk menggunakan item yang dibeli di dalam platform."
+        },
+        {
+          "type": "p",
+          "text": "Semua item marketplace hanya bersifat kosmetik. Tidak ada pembelian yang memengaruhi hasil simulasi, perilaku Echo, atau ketersediaan poin pengaruh."
+        },
+        {
+          "type": "p",
+          "text": "Konsumen UE: dengan membeli dan meminta akses segera ke konten digital, Anda mengakui bahwa Anda kehilangan hak pembatalan 14 hari setelah pengiriman dimulai."
+        }
+      ]
+    },
+    {
+      "heading": "7. Batasan tanggung jawab",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes disediakan “sebagaimana adanya” tanpa jaminan apa pun, baik tersurat maupun tersirat. Total tanggung jawab kami kepada Anda terbatas pada jumlah yang telah Anda bayarkan kepada kami dalam 12 bulan sebelum klaim diajukan."
+        },
+        {
+          "type": "p",
+          "text": "Kami tidak bertanggung jawab atas:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Konten buatan AI yang menyedihkan, tidak akurat, atau menyinggung.",
+            "Hasil simulasi atau perilaku Echo.",
+            "Kehilangan progres simulasi karena bug, gangguan, atau pemeliharaan.",
+            "Tindakan yang dilakukan oleh Echo pengguna lain.",
+            "Tekanan emosional yang disebabkan oleh perilaku Echo atau konten narasi."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Penafian beta",
+      "blocks": [
+        {
+          "type": "callout",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "Multiverse Echoes saat ini berada dalam tahap **beta**. Platform ini sedang dalam pengembangan aktif. Fitur, ketersediaan, dan harga dapat berubah. Meskipun kami berupaya menjaga data Anda, kami tidak dapat menjamin terhadap kehilangan data selama masa beta."
+            },
+            {
+              "type": "p",
+              "text": "Dengan berpartisipasi dalam beta ini, Anda mengakui risiko-risiko tersebut dan menyetujui bahwa platform tidak memberikan jaminan mengenai waktu aktif, integritas data, atau ketersediaan fitur."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "9. Pengakhiran",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Anda dapat menghapus akun Anda kapan saja melalui Pengaturan → Privasi → Hapus Akun. Penghapusan akun mengikuti masa tenggang 30 hari di mana Anda dapat membatalkannya."
+        },
+        {
+          "type": "p",
+          "text": "Kami dapat menangguhkan atau menghentikan akun Anda karena pelanggaran terhadap ketentuan ini, mengikuti tingkatan penegakan kami. Setelah penghentian, Anda akan kehilangan akses ke semua fitur platform dan item pasar yang telah dibeli (lisensi yang tidak dapat dipindahtangankan akan berakhir bersamaan dengan akun tersebut)."
+        }
+      ]
+    },
+    {
+      "heading": "10. Penyelesaian sengketa",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kami menyarankan Anda untuk menghubungi kami terlebih dahulu di [conduct@echolabsme.com](mailto:conduct@echolabsme.com) untuk menyelesaikan setiap perselisihan secara informal. Jika kami tidak dapat mencapai resolusi, perselisihan akan diatur oleh hukum yurisdiksi tempat Echo Labs didirikan. Konsumen UE tetap memiliki hak untuk mengajukan klaim di pengadilan setempat mereka berdasarkan hukum perlindungan konsumen UE."
+        }
+      ]
+    },
+    {
+      "heading": "11. Perubahan pada ketentuan ini",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kami dapat memperbarui ketentuan ini dari waktu ke waktu. Perubahan material akan dikomunikasikan melalui email atau notifikasi dalam aplikasi setidaknya 30 hari sebelum berlaku. Penggunaan platform yang berkelanjutan setelah perubahan berlaku merupakan bentuk penerimaan."
+        }
+      ]
+    },
+    {
+      "heading": "12. Kontak",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Untuk pertanyaan mengenai persyaratan ini, hubungi [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    }
+  ]
+}

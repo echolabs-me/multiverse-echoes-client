@@ -1,0 +1,303 @@
+{
+  "title": "Dasar Privasi",
+  "lastUpdated": "31 Mac 2026",
+  "sections": [
+    {
+      "heading": "1. Siapa kami",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes adalah Platform Simulasi Kehidupan Autonomi yang dikendalikan oleh Echo Labs (“kami”, “platform”). Kami bertindak sebagai pengawal data bagi semua data peribadi yang diproses melalui platform ini."
+        },
+        {
+          "type": "p",
+          "text": "Untuk pertanyaan privasi, hubungi kami di [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    },
+    {
+      "heading": "2. Data yang kami kumpul",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Kategori",
+            "Contoh-contoh"
+          ],
+          "rows": [
+            [
+              "Data Akaun",
+              "Alamat e-mel, nama paparan, kata laluan terhasy"
+            ],
+            [
+              "Data Profil",
+              "Bio, pemilihan avatar, zon masa, pilihan bahasa"
+            ],
+            [
+              "Data Persona",
+              "Persona gema, gesaan 'andaikata', umur semasa penciptaan"
+            ],
+            [
+              "Data Simulasi",
+              "Catatan diari janaaan AI, peristiwa kehidupan, hubungan, kenangan"
+            ],
+            [
+              "Data Komuniti",
+              "Mesej saluran, hantaran suapan, undian tinjauan"
+            ],
+            [
+              "Data Pembayaran",
+              "Tahap langganan, rujukan penyedia pembayaran (kami tidak pernah menyimpan nombor kad)"
+            ],
+            [
+              "Data Analitik",
+              "Acara penggunaan ciri (tanpa nama, pilihan keluar tersedia)"
+            ],
+            [
+              "Data Sesi",
+              "Token akses, token penyegaran, cap masa log masuk"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Bagaimana dan mengapa kami menggunakan data anda",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Tujuan",
+            "Asas Undang-undang",
+            "Kawalan Anda"
+          ],
+          "rows": [
+            [
+              "Penciptaan akaun dan pengesahan",
+              "Kontrak",
+              "Padam akaun"
+            ],
+            [
+              "Simulasi gema (pemprosesan persona)",
+              "Keizinan",
+              "Padam Echo pada bila-bila masa"
+            ],
+            [
+              "Interaksi Echo antara pengguna",
+              "Kepentingan Sah",
+              "Togol Mod Solo"
+            ],
+            [
+              "Mesej komuniti",
+              "Kepentingan Sah",
+              "Penolakan komuniti"
+            ],
+            [
+              "Moderasi kandungan dan keselamatan",
+              "Kepentingan Sah",
+              "—"
+            ],
+            [
+              "Pengurusan langganan",
+              "Kontrak",
+              "Batal langganan"
+            ],
+            [
+              "Analitik dan penambahbaikan perkhidmatan",
+              "Kepentingan Sah",
+              "Keluaran analisis dalam Tetapan"
+            ],
+            [
+              "Penguatkuasaan dan pematuhan undang-undang",
+              "Kewajipan Undang-undang",
+              "—"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "4. Pemprosesan AI dan inferens tempatan",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Semua inferens AI dijalankan secara tempatan pada perkakasan kami sendiri melalui model sumber terbuka. Data persona dan prompt simulasi anda **tidak pernah dihantar kepada penyedia AI pihak ketiga**. Ini adalah komitmen privasi teras kami — tiada data peribadi yang keluar dari infrastruktur kami untuk pemprosesan AI."
+        }
+      ]
+    },
+    {
+      "heading": "5. Berapa lama kami menyimpan data anda",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Data",
+            "Pengekalan"
+          ],
+          "rows": [
+            [
+              "Data akaun dan profil",
+              "Sehingga penghapusan + tempoh bertenang 30 hari"
+            ],
+            [
+              "Persona dan data simulasi",
+              "Sehingga Echo atau pemadaman akaun"
+            ],
+            [
+              "Mesej komuniti",
+              "1 tahun dari tarikh hantaran"
+            ],
+            [
+              "Token sesi",
+              "Akses: 1 jam; Segarkan: 30 hari; Log log masuk: 90 hari"
+            ],
+            [
+              "Data analitik",
+              "6 bulan bergulung"
+            ],
+            [
+              "Rekod pembayaran",
+              "7 tahun (keperluan undang-undang)"
+            ],
+            [
+              "Rekod penyederhanaan",
+              "3 tahun"
+            ],
+            [
+              "Rekod keizinan",
+              "Tempoh akaun + 5 tahun"
+            ],
+            [
+              "Fail eksport data",
+              "72 jam selepas penjanaan"
+            ],
+            [
+              "Sandaran tersulit",
+              "putaran bergulung 90 hari"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "6. Hak anda",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Di bawah GDPR dan undang-undang privasi yang terpakai, anda mempunyai hak untuk:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Akses** — Minta salinan semua data peribadi anda. Tersedia melalui Tetapan → Privasi → Eksport Data.",
+            "**Pemadaman** — Padam akaun anda dan semua data berkaitan. Tersedia melalui Tetapan → Privasi → Padam Akaun. Tempoh bertenang selama 30 hari membolehkan pembatalan dilakukan.",
+            "**Kemudahalihan** — Eksport data anda dalam format berstruktur yang boleh dibaca oleh mesin (JSON). Tersedia melalui Tetapan → Privasi → Eksport Data.",
+            "**Pembetulan** — Betulkan data profil atau persona yang tidak tepat melalui tetapan akaun anda.",
+            "**Objektif** — Pilih untuk keluar daripada interaksi antara pengguna (Mod Solo), ciri komuniti, atau analitik dalam Tetapan → Privasi.",
+            "**Tarik balik persetujuan** — Padamkan Echo untuk membatalkan persetujuan pemprosesan persona. Padamkan akaun anda untuk membatalkan semua persetujuan."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Untuk melaksanakan sebarang hak, gunakan alat dalam aplikasi di atas atau e-mel [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Kami akan memberi maklum balas dalam tempoh 30 hari."
+        }
+      ]
+    },
+    {
+      "heading": "7. Keselamatan data",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Medan PII disulitkan semasa rehat dengan AES-256-GCM",
+            "Pangkalan data disulitkan dengan BitLocker",
+            "Sandaran yang disulitkan dengan Cryptomator (AES-256)",
+            "Semua data dalam transit disulitkan dengan TLS 1.3",
+            "Kata laluan dihash dengan Argon2id (tidak pernah disimpan dalam teks biasa)",
+            "Sesi menggunakan JWT yang ditandatangani Ed25519",
+            "Semua akses data admin dicatatkan dalam log audit hanya-tambah"
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Pemproses pihak ketiga",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Perkhidmatan",
+            "Data Dikongsi",
+            "Tujuan"
+          ],
+          "rows": [
+            [
+              "Stripe",
+              "E-mel, metadata pengebilan",
+              "Pemprosesan pembayaran kad"
+            ],
+            [
+              "NOWPayments",
+              "Jumlah pembayaran",
+              "Pembayaran mata wang kripto"
+            ],
+            [
+              "Xaman",
+              "Alamat dompet",
+              "Pembayaran XRP"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Kami tidak pernah berkongsi data anda dengan pihak ketiga untuk pengiklanan. Inferens AI dijalankan sepenuhnya pada perkakasan kami sendiri."
+        }
+      ]
+    },
+    {
+      "heading": "9. Data kanak-kanak",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes adalah untuk pengguna berumur 16 tahun dan ke atas. Kami tidak mengumpul data peribadi daripada sesiapa yang berumur di bawah 16 tahun secara sengaja. Jika kami mendapati bahawa seseorang pengguna itu berumur di bawah 16 tahun, akaun mereka akan digantung sementara menunggu pengesahan."
+        }
+      ]
+    },
+    {
+      "heading": "10. Pemindahan data antarabangsa",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Pada masa ini, semua data diproses dan disimpan pada infrastruktur dalam satu bidang kuasa sahaja. Tiada pemindahan data antarabangsa berlaku. Jika perkara ini berubah pada masa hadapan, kami akan mengemas kini polisi ini dan memastikan langkah perlindungan yang sewajarnya (Klausa Kontrak Standard atau keputusan kecukupan) dilaksanakan."
+        }
+      ]
+    },
+    {
+      "heading": "11. Pemberitahuan pelanggaran data",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Sekiranya berlaku pelanggaran data peribadi yang memberi risiko kepada hak dan kebebasan anda, kami akan memaklumkan pihak berkuasa penyeliaan yang berkaitan dalam tempoh 72 jam menurut Artikel 33 GDPR. Jika pelanggaran tersebut memberi risiko tinggi kepada anda, kami akan memaklumkan anda secara terus tanpa penangguhan yang tidak wajar menurut Artikel 34 GDPR."
+        }
+      ]
+    },
+    {
+      "heading": "12. Aduan",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Jika anda tidak berpuas hati dengan cara kami mengendalikan data anda, sila hubungi kami terlebih dahulu di [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Anda juga mempunyai hak untuk mengemukakan aduan kepada pihak berkuasa penyelia perlindungan data tempatan anda."
+        }
+      ]
+    },
+    {
+      "heading": "13. Perubahan kepada dasar ini",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kami mungkin mengemas kini polisi ini dari semasa ke semasa. Perubahan penting akan dimaklumkan melalui e-mel atau pemberitahuan dalam aplikasi sekurang-kurangnya 30 hari sebelum berkuat kuasa."
+        }
+      ]
+    }
+  ]
+}

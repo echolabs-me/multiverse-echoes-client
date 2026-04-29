@@ -1,0 +1,303 @@
+{
+  "title": "Gizlilik Politikası",
+  "lastUpdated": "31 Mart 2026",
+  "sections": [
+    {
+      "heading": "1. Biz kimiz",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes, Echo Labs (“biz”, “bize”, “platform”) tarafından işletilen bir Otonom Yaşam Simülasyon Platformu'dur. Platform aracılığıyla işlenen tüm kişisel veriler için veri sorumlusu olarak hareket etmekteyiz."
+        },
+        {
+          "type": "p",
+          "text": "Gizlilikle ilgili sorularınız için bizimle [conduct@echolabsme.com](mailto:conduct@echolabsme.com) adresinden iletişime geçin."
+        }
+      ]
+    },
+    {
+      "heading": "2. Topladığımız veriler",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Kategori",
+            "Örnekler"
+          ],
+          "rows": [
+            [
+              "Hesap Verileri",
+              "E-posta adresi, görünen ad, özetlenmiş şifre"
+            ],
+            [
+              "Profil Verileri",
+              "Biyografi, avatar seçimi, saat dilimi, dil tercihi"
+            ],
+            [
+              "Kişilik Verileri",
+              "Yankı personaları, \"ya şöyle olsaydı\" istemleri, oluşturulma yaşı"
+            ],
+            [
+              "Simülasyon Verileri",
+              "Yapay zeka tarafından oluşturulmuş günlük girişleri, yaşam olayları, ilişkiler, anılar"
+            ],
+            [
+              "Topluluk Verileri",
+              "Kanal mesajları, akış gönderileri, anket oyları"
+            ],
+            [
+              "Ödeme Verileri",
+              "Abonelik katmanı, ödeme sağlayıcı referansı (kart numaralarını asla saklamayız)"
+            ],
+            [
+              "Analiz Verileri",
+              "Özellik kullanım etkinlikleri (anonimleştirilmiş, ayrılma seçeneği mevcut)"
+            ],
+            [
+              "Oturum Verileri",
+              "Erişim belirteçleri, yenileme belirteçleri, giriş zaman damgaları"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Verilerinizi nasıl ve neden kullandığımız",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Amaç",
+            "Hukuki Dayanak",
+            "Kontrolünüzde"
+          ],
+          "rows": [
+            [
+              "Hesap oluşturma ve kimlik doğrulama",
+              "Sözleşme",
+              "Hesabı sil"
+            ],
+            [
+              "Yankı simülasyonu (persona işleme)",
+              "Rıza",
+              "Echo'yu istediğiniz zaman silin"
+            ],
+            [
+              "Kullanıcılar arası Echo etkileşimleri",
+              "Meşru Menfaat",
+              "Solo Modu anahtarı"
+            ],
+            [
+              "Topluluk mesajlaşması",
+              "Meşru Menfaat",
+              "Topluluktan ayrılma"
+            ],
+            [
+              "İçerik moderasyonu ve güvenlik",
+              "Meşru Menfaat",
+              "—"
+            ],
+            [
+              "Abonelik yönetimi",
+              "Sözleşme",
+              "Aboneliği iptal et"
+            ],
+            [
+              "Analizler ve hizmet iyileştirme",
+              "Meşru Menfaat",
+              "Ayarlar'da analizleri devre dışı bırakma"
+            ],
+            [
+              "Uygulama ve yasal uyum",
+              "Yasal Yükümlülük",
+              "—"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "4. Yapay zeka işleme ve yerel çıkarım",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Tüm yapay zeka çıkarımları, açık kaynaklı modeller aracılığıyla kendi donanımımızda yerel olarak çalışır. Kişilik verileriniz ve simülasyon istemleriniz **asla üçüncü taraf bir yapay zeka sağlayıcısına gönderilmez**. Bu, temel bir gizlilik taahhüdüdür; yapay zeka işlemleri için hiçbir kişisel veri altyapımızdan dışarı çıkmaz."
+        }
+      ]
+    },
+    {
+      "heading": "5. Verilerinizi ne kadar süreyle sakladığımız",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Veri",
+            "Elde tutma"
+          ],
+          "rows": [
+            [
+              "Hesap ve profil verileri",
+              "Silinene kadar + 30 günlük ek süre"
+            ],
+            [
+              "Persona ve simülasyon verileri",
+              "Echo veya hesap silinene kadar"
+            ],
+            [
+              "Topluluk mesajları",
+              "paylaşımdan 1 yıl sonra"
+            ],
+            [
+              "Oturum jetonları",
+              "Erişim: 1 saat; Yenileme: 30 gün; Giriş günlükleri: 90 gün"
+            ],
+            [
+              "Analiz verileri",
+              "6 aylık hareketli ortalama"
+            ],
+            [
+              "Ödeme kayıtları",
+              "7 yıl (yasal gereklilik)"
+            ],
+            [
+              "Moderasyon kayıtları",
+              "3 yıl"
+            ],
+            [
+              "Rıza kayıtları",
+              "Hesap süresi + 5 yıl"
+            ],
+            [
+              "Veri dışa aktarma dosyaları",
+              "üretimden 72 saat sonra"
+            ],
+            [
+              "Şifrelenmiş yedekler",
+              "90 günlük döngüsel rotasyon"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "6. Haklarınız",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "GDPR ve yürürlükteki gizlilik yasaları uyarınca aşağıdaki haklara sahipsiniz:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Erişim** — Tüm kişisel verilerinizin bir kopyasını talep edin. Ayarlar → Gizlilik → Verileri Dışa Aktar üzerinden erişilebilir.",
+            "**Silme** — Hesabınızı ve ilgili tüm verileri silin. Ayarlar → Gizlilik → Hesabı Sil üzerinden erişilebilir. 30 günlük bir cayma süresi iptale olanak tanır.",
+            "**Taşınabilirlik** — Verilerinizi yapılandırılmış, makine tarafından okunabilir bir formatta (JSON) dışa aktarın. Ayarlar → Gizlilik → Verileri Dışa Aktar yoluyla erişilebilir.",
+            "**Düzeltme** — Hesap ayarlarınız üzerinden yanlış profil veya persona verilerini düzeltin.",
+            "**İtiraz Et** — Ayarlar → Gizlilik bölümünden kullanıcılar arası etkileşimlerden (Solo Mod), topluluk özelliklerinden veya analizlerden ayrılın.",
+            "**Rızayı geri çekme** — Persona işleme rızasını iptal etmek için bir Echo'yu silin. Tüm rızaları iptal etmek için hesabınızı silin."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Herhangi bir hakkınızı kullanmak için yukarıdaki uygulama içi araçları kullanın veya [conduct@echolabsme.com](mailto:conduct@echolabsme.com) adresine e-posta gönderin. 30 gün içinde yanıt veririz."
+        }
+      ]
+    },
+    {
+      "heading": "7. Veri güvenliği",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "PII alanları AES-256-GCM ile bekleme durumunda şifrelenmiştir",
+            "BitLocker ile şifrelenmiş veritabanı",
+            "Cryptomator (AES-256) ile şifrelenmiş yedekler",
+            "Aktarımdaki tüm veriler TLS 1.3 ile şifrelenmiştir",
+            "Argon2id ile hashlenmiş şifreler (asla düz metin olarak saklanmaz)",
+            "Oturumlar, Ed25519 ile imzalanmış JWT'ler kullanır.",
+            "Tüm yönetici veri erişimleri, yalnızca ekleme yapılabilen denetim günlüklerine kaydedilir."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Üçüncü taraf işlemciler",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Hizmet",
+            "Paylaşılan Veriler",
+            "Amaç"
+          ],
+          "rows": [
+            [
+              "Stripe",
+              "E-posta, faturalandırma meta verileri",
+              "Kart ödeme işlemleri"
+            ],
+            [
+              "NOWPayments",
+              "Ödeme tutarı",
+              "Kripto para ödemeleri"
+            ],
+            [
+              "Xaman",
+              "Cüzdan adresi",
+              "XRP ödemeleri"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Verilerinizi reklam amacıyla asla üçüncü taraflarla paylaşmayız. Yapay zeka çıkarımları tamamen kendi donanımımız üzerinde çalışır."
+        }
+      ]
+    },
+    {
+      "heading": "9. Çocukların verileri",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes, 16 yaş ve üzeri kullanıcılar içindir. 16 yaşın altındaki kişilerden bilerek kişisel veri toplamıyoruz. Bir kullanıcının 16 yaşın altında olduğunu öğrenirsek, hesabı doğrulama yapılana kadar askıya alınacaktır."
+        }
+      ]
+    },
+    {
+      "heading": "10. Uluslararası veri transferleri",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Şu anda tüm veriler, tek bir yargı alanındaki altyapı üzerinde işlenmekte ve saklanmaktadır. Herhangi bir uluslararası veri aktarımı gerçekleşmemektedir. Gelecekte bu durum değişirse, bu politikayı güncelleyecek ve uygun güvencelerin (Standart Sözleşme Maddeleri veya yeterlilik kararları) mevcut olmasını sağlayacağız."
+        }
+      ]
+    },
+    {
+      "heading": "11. Veri ihlali bildirimi",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hak ve özgürlükleriniz için risk oluşturabilecek bir kişisel veri ihlali durumunda, GDPR Madde 33 uyarınca ilgili denetim makamını 72 saat içinde bilgilendireceğiz. İhlalin sizin için yüksek risk oluşturması durumunda, GDPR Madde 34 uyarınca sizi gecikmeksizin doğrudan bilgilendireceğiz."
+        }
+      ]
+    },
+    {
+      "heading": "12. Şikayetler",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Verilerinizi işleme şeklimizden memnun değilseniz, lütfen önce [conduct@echolabsme.com](mailto:conduct@echolabsme.com) adresinden bizimle iletişime geçin. Ayrıca, yerel veri koruma denetim makamına şikayette bulunma hakkına da sahipsiniz."
+        }
+      ]
+    },
+    {
+      "heading": "13. Bu politikadaki değişiklikler",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Bu politikayı zaman zaman güncelleyebiliriz. Önemli değişiklikler, yürürlüğe girmeden en az 30 gün önce e-posta veya uygulama içi bildirim yoluyla iletilecektir."
+        }
+      ]
+    }
+  ]
+}

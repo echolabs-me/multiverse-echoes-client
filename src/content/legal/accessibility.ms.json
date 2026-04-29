@@ -1,0 +1,98 @@
+{
+  "title": "Kenyataan Kebolehcapaian",
+  "lastUpdated": "31 Mac 2026",
+  "sections": [
+    {
+      "heading": "Komitmen kami",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes komited untuk menjadikan platform kami boleh dicapai oleh semua orang. Kami menyasarkan pematuhan terhadap standard **Web Content Accessibility Guidelines (WCAG) 2.1 Tahap AA**. Kebolehcapaian bukanlah satu pertimbangan kemudian — ia disepadukan ke dalam sistem reka bentuk, perpustakaan komponen, dan saluran ujian kami sejak dari awal lagi."
+        }
+      ]
+    },
+    {
+      "heading": "Apa yang telah kami lakukan",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "**Navigasi papan kekunci** — Semua elemen interaktif boleh dicapai melalui kekunci Tab. Penunjuk fokus adalah kelihatan (garis luar aksen 2px). Pautan pintas disediakan untuk melangkau navigasi. Urutan tab yang logik dikekalkan di seluruh bahagian.",
+            "**Sokongan pembaca skrin** — HTML semantik (tajuk, senarai, jadual, tanda tempat) digunakan di seluruh laman. Semua imej mempunyai teks alt yang deskriptif. Elemen interaktif mempunyai label ARIA. Kemas kini kandungan dinamik diumumkan melalui kawasan `aria-live`.",
+            "**Kontras warna** — Semua teks dan elemen interaktif memenuhi nisbah kontras WCAG 2.1 AA (4.5:1 untuk teks biasa, 3:1 untuk teks besar). Maklumat tidak pernah disampaikan melalui warna sahaja.",
+            "**Pengurangan gerakan** — Semua animasi mematuhi tetapan sistem operasi `prefers-reduced-motion`. Apabila diaktifkan, animasi akan dinyahaktifkan atau digantikan dengan alternatif statik. Animasi kelahiran Echo akan memaparkan skrin statik. Denyutan tanda semak dinyahaktifkan sepenuhnya.",
+            "**Sasaran sentuhan** — Semua elemen interaktif memenuhi saiz sasaran sentuhan minimum 44x44px.",
+            "**Penskalaan teks** — Antara muka tetap boleh digunakan pada zum pelayar 200% tanpa tatalan mendatar atau kandungan terpotong.",
+            "**Mod gelap dan terang** — Kedua-dua skema warna direka dengan palet yang telah diuji kontrasnya. Pengguna boleh memilih pilihan mereka dalam Tetapan.",
+            "**Ujian automatik** — Kami menjalankan audit aksesibiliti axe-core pada semua halaman sebagai sebahagian daripada set ujian hujung-ke-hujung kami. Sifar pelanggaran kritikal atau serius dibenarkan."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Kandungan 3D dan alternatif",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Beberapa ciri termasuk visualisasi 3D (potret Echo, persekitaran Shard). Ini sentiasa disertakan dengan sandaran 2D untuk peranti yang tidak menyokong WebGL, atau apabila gerakan dikurangkan diaktifkan. Tiada maklumat yang disampaikan secara eksklusif melalui kandungan 3D."
+        }
+      ]
+    },
+    {
+      "heading": "Audio",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kesan bunyi adalah pilihan dan dinyahaktifkan secara lalai. Tiada maklumat yang disampaikan melalui audio sahaja — semua pemberitahuan mempunyai penunjuk visual. Bunyi boleh ditukar dan kelantangan boleh dilaraskan dalam Tetapan."
+        }
+      ]
+    },
+    {
+      "heading": "Jurang yang diketahui",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Kami menyedari bidang-bidang berikut di mana kami masih belum mencapai pematuhan penuh:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Ujian pembaca skrin manual** — Kami mempunyai ujian automatik dengan axe-core tetapi belum melengkapkan ujian manual yang komprehensif dengan NVDA, JAWS, atau VoiceOver. Ini dirancang sebelum pelancaran awam.",
+            "**Sari kata video** — Ciri eksport video (sorotan video) masih belum menyertakan sari kata. Perkara ini akan ditangani apabila ciri video dilancarkan.",
+            "**Bahasa kanan-ke-kiri (RTL)** — Antara muka ini menggunakan sifat logik CSS sebagai persediaan untuk sokongan RTL, tetapi susun atur RTL masih belum diuji sepenuhnya.",
+            "**Bahasa selain bahasa Inggeris** — Pada masa ini hanya bahasa Inggeris yang disokong. Bahasa tambahan dirancang selepas pelancaran. Seni bina antarabangsa telah tersedia (632 rentetan luaran)."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Maklum balas dan hubungi",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Jika anda menghadapi halangan aksesibiliti atau mempunyai cadangan untuk penambahbaikan, sila hubungi kami:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "Emel: [conduct@echolabsme.com](mailto:conduct@echolabsme.com)",
+            "Dalam aplikasi: gunakan pembantu Oracle atau borang maklum balas dalam Tetapan"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Kami memandang serius maklum balas mengenai kebolehcapaian dan menyasarkan untuk memberi maklum balas dalam tempoh 5 hari bekerja."
+        }
+      ]
+    },
+    {
+      "heading": "Status pematuhan",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes adalah **patuh sebahagian** dengan WCAG 2.1 Tahap AA. “Patuh sebahagian” bermaksud beberapa bahagian kandungan tidak mematuhi sepenuhnya standard kebolehcapaian, seperti yang digariskan dalam bahagian Jurang Diketahui di atas. Kami sedang berusaha secara aktif untuk menyelesaikan jurang ini."
+        }
+      ]
+    }
+  ]
+}

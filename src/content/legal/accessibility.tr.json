@@ -1,0 +1,98 @@
+{
+  "title": "Erişilebilirlik Bildirimi",
+  "lastUpdated": "31 Mart 2026",
+  "sections": [
+    {
+      "heading": "Taahhüdümüz",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes, platformumuzu herkes için erişilebilir kılmaya kararlıdır. **Web İçeriği Erişilebilirlik Yönergeleri (WCAG) 2.1 Seviye AA** standardına uygunluğu hedefliyoruz. Erişilebilirlik sonradan eklenen bir düşünce değil; tasarım sistemimize, bileşen kütüphanemize ve test sürecimize en başından itibaren entegre edilmiştir."
+        }
+      ]
+    },
+    {
+      "heading": "Neler yaptık",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "**Klavye navigasyonu** — Tüm etkileşimli öğelere Tab tuşu ile erişilebilir. Odak göstergeleri görünürdür (2px vurgu çerçevesi). Navigasyonu atlamak için geçiş bağlantıları sağlanmıştır. Tüm bölümlerde mantıksal sekme sırası korunmuştur.",
+            "**Ekran okuyucu desteği** — Genelinde anlamsal HTML (başlıklar, listeler, tablolar, işaretçiler) kullanılmıştır. Tüm görseller açıklayıcı alt metinlere sahiptir. Etkileşimli öğeler ARIA etiketlerine sahiptir. Dinamik içerik güncellemeleri `aria-live` bölgeleri aracılığıyla duyurulur.",
+            "**Renk kontrastı** — Tüm metinler ve etkileşimli öğeler WCAG 2.1 AA kontrast oranlarını karşılar (normal metinler için 4,5:1, büyük metinler için 3:1). Bilgiler asla sadece renk yoluyla aktarılmaz.",
+            "**Azaltılmış hareket** — Tüm animasyonlar, işletim sistemindeki `prefers-reduced-motion` ayarına uyar. Bu ayar etkinleştirildiğinde, animasyonlar devre dışı bırakılır veya statik alternatiflerle değiştirilir. Echo başlangıç animasyonunda statik bir ekran gösterilir. İşaretleme (tick) nabız efekti tamamen devre dışı bırakılır.",
+            "**Dokunma hedefleri** — Tüm etkileşimli öğeler, minimum 44x44px dokunma hedefi boyutunu karşılar.",
+            "**Metin ölçeklendirme** — Arayüz, %200 tarayıcı yakınlaştırmasında yatay kaydırma gerekmeden veya içerik kesilmeden kullanılabilir kalır.",
+            "**Koyu ve açık modlar** — Her iki renk şeması da kontrast testinden geçmiş paletlerle tasarlanmıştır. Kullanıcılar tercihlerini Ayarlar'dan seçebilirler.",
+            "**Otomatik testler** — Uçtan uca test paketimizin bir parçası olarak tüm sayfalarda axe-core erişilebilirlik denetimleri gerçekleştiriyoruz. Hiçbir kritik veya ciddi ihlale izin verilmez."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3B içerik ve alternatifler",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Bazı özellikler 3D görselleştirmeler (Echo portreleri, Shard ortamları) içerir. Bunlara, WebGL'yi desteklemeyen cihazlar veya hareket azaltma seçeneği etkinleştirildiğinde 2D alternatifler her zaman eşlik eder. Hiçbir bilgi yalnızca 3D içerik aracılığıyla aktarılmaz."
+        }
+      ]
+    },
+    {
+      "heading": "Ses",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ses efektleri isteğe bağlıdır ve varsayılan olarak kapalıdır. Yalnızca ses yoluyla herhangi bir bilgi aktarılmaz; tüm bildirimlerin görsel göstergeleri vardır. Ses, Ayarlar'dan açılıp kapatılabilir ve ses seviyesi ayarlanabilir."
+        }
+      ]
+    },
+    {
+      "heading": "Bilinen boşluklar",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Henüz tam uyum sağlamadığımız aşağıdaki alanların farkındayız:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Manuel ekran okuyucu testleri** — axe-core ile otomatik testlerimiz mevcut ancak NVDA, JAWS veya VoiceOver ile kapsamlı manuel testleri henüz tamamlamadık. Bu işlemlerin halka açık lansmandan önce yapılması planlanmaktadır.",
+            "**Video altyazıları** — Video dışa aktarma özellikleri (öne çıkan anlar) henüz altyazıları içermemektedir. Bu durum, video özellikleri yayına girdiğinde çözülecektir.",
+            "**Sağdan sola (RTL) diller** — Arayüz, RTL desteği hazırlığı kapsamında CSS mantıksal özelliklerini kullanmaktadır, ancak RTL düzeni henüz tam olarak test edilmemiştir.",
+            "**İngilizce dışındaki diller** — Şu an için yalnızca İngilizce desteklenmektedir. Lansman sonrası ek diller planlanmaktadır. Uluslararasılaştırma mimarisi hazır durumdadır (632 dışsallaştırılmış dizgi)."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Geri bildirim ve iletişim",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Bir erişilebilirlik engeliyle karşılaşırsanız veya iyileştirme önerileriniz varsa, lütfen bizimle iletişime geçin:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "E-posta: [conduct@echolabsme.com](mailto:conduct@echolabsme.com)",
+            "Uygulama içinde: Oracle asistanını veya Ayarlar'daki geri bildirim formunu kullanın"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Erişilebilirlik geri bildirimlerini ciddiye alıyoruz ve 5 iş günü içerisinde yanıt vermeyi hedefliyoruz."
+        }
+      ]
+    },
+    {
+      "heading": "Uyumluluk durumu",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes, WCAG 2.1 Seviye AA ile **kısmen uyumludur**. “Kısmen uyumlu”, içeriğin bazı bölümlerinin, yukarıdaki Bilinen Eksikler bölümünde belirtildiği üzere erişilebilirlik standardına tam olarak uymadığı anlamına gelir. Bu eksiklikleri gidermek için aktif olarak çalışıyoruz."
+        }
+      ]
+    }
+  ]
+}

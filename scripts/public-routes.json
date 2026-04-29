@@ -1,0 +1,19 @@
+{
+  "$schema": "Single source of truth for public website routes + supported locales. Consumed by client/scripts/generate-sitemap.js (sitemap.xml emission) and client/scripts/prerender.js (per-locale Playwright capture). Cross-referenced by workers/og-router/worker.js's ROUTE_OG (which keeps a hand-maintained subset for crawler-served meta tags — Cloudflare Workers cannot import JSON at module-init under the current wrangler.toml configuration). Updating this file is the single touch-point for adding a new public route to both the sitemap and the prerender matrix; ROUTE_OG must be updated by hand in the same commit and the cross-link comment in worker.js calls that out.",
+  "base": "https://echolabsme.com",
+  "locales": [
+    "en", "zh-Hans", "zh-Hant", "hi", "es", "ar", "fr", "bn", "pt-BR",
+    "ru", "ur", "id", "de", "ja", "vi", "tr", "ko", "tl", "it", "th", "ms"
+  ],
+  "routes": [
+    { "path": "/home",          "changefreq": "weekly",  "priority": "1.0" },
+    { "path": "/about",         "changefreq": "monthly", "priority": "0.8" },
+    { "path": "/plans",         "changefreq": "monthly", "priority": "0.9" },
+    { "path": "/waitlist",      "changefreq": "weekly",  "priority": "0.9" },
+    { "path": "/contact",       "changefreq": "yearly",  "priority": "0.5" },
+    { "path": "/terms",         "changefreq": "yearly",  "priority": "0.3" },
+    { "path": "/privacy",       "changefreq": "yearly",  "priority": "0.3" },
+    { "path": "/accessibility", "changefreq": "yearly",  "priority": "0.3" }
+  ],
+  "crawlerOgRoutes": ["/", "/home", "/about", "/terms", "/privacy", "/pricing"]
+}

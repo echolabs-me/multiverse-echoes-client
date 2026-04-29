@@ -1,0 +1,303 @@
+{
+  "title": "Informativa sulla privacy",
+  "lastUpdated": "31 marzo 2026",
+  "sections": [
+    {
+      "heading": "1. Chi siamo",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes è una piattaforma di simulazione della vita autonoma gestita da Echo Labs (“noi”, “la piattaforma”). Agiamo come titolari del trattamento per tutti i dati personali elaborati tramite la piattaforma."
+        },
+        {
+          "type": "p",
+          "text": "Per richieste relative alla privacy, contattateci all'indirizzo [conduct@echolabsme.com](mailto:conduct@echolabsme.com)."
+        }
+      ]
+    },
+    {
+      "heading": "2. Dati che raccogliamo",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Categoria",
+            "Esempi"
+          ],
+          "rows": [
+            [
+              "Dati dell'account",
+              "Indirizzo email, nome visualizzato, password hashata"
+            ],
+            [
+              "Dati del profilo",
+              "Bio, selezione dell'avatar, fuso orario, preferenza di lingua"
+            ],
+            [
+              "Dati Personali",
+              "Persona echo, prompt ipotetici, età alla creazione"
+            ],
+            [
+              "Dati di simulazione",
+              "Diari generati dall'IA, eventi della vita, relazioni, ricordi"
+            ],
+            [
+              "Dati della community",
+              "Messaggi del canale, post del feed, voti dei sondaggi"
+            ],
+            [
+              "Dati di pagamento",
+              "Livello di abbonamento, riferimento del fornitore di pagamento (non archiviamo mai i numeri delle carte)"
+            ],
+            [
+              "Dati analitici",
+              "Eventi di utilizzo delle funzionalità (anonimizzati, possibilità di opt-out)"
+            ],
+            [
+              "Dati della sessione",
+              "Token di accesso, token di aggiornamento, timestamp di accesso"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3. Come e perché utilizziamo i tuoi dati",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Scopo",
+            "Base giuridica",
+            "Il tuo controllo"
+          ],
+          "rows": [
+            [
+              "Creazione dell'account e autenticazione",
+              "Contratto",
+              "Elimina account"
+            ],
+            [
+              "Simulazione dell'eco (elaborazione della persona)",
+              "Consenso",
+              "Elimina Echo in qualsiasi momento"
+            ],
+            [
+              "Interazioni Echo tra utenti",
+              "Legittimo interesse",
+              "Interruttore Modalità Solo"
+            ],
+            [
+              "Messaggistica della community",
+              "Legittimo interesse",
+              "Opt-out della community"
+            ],
+            [
+              "Moderazione dei contenuti e sicurezza",
+              "Legittimo interesse",
+              "—"
+            ],
+            [
+              "Gestione dell'abbonamento",
+              "Contratto",
+              "Annulla l'abbonamento"
+            ],
+            [
+              "Analisi e miglioramento del servizio",
+              "Legittimo interesse",
+              "Disattivazione analisi nelle Impostazioni"
+            ],
+            [
+              "Applicazione e conformità legale",
+              "Obbligo legale",
+              "—"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "4. Elaborazione AI e inferenza locale",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Tutta l'inferenza dell'IA viene eseguita localmente sul nostro hardware tramite modelli open-source. I tuoi dati personali e i prompt di simulazione **non vengono mai inviati a un fornitore di IA terzo**. Questo è un impegno fondamentale per la privacy: nessun dato personale lascia la nostra infrastruttura per l'elaborazione dell'IA."
+        }
+      ]
+    },
+    {
+      "heading": "5. Per quanto tempo conserviamo i tuoi dati",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Dati",
+            "Ritenzione"
+          ],
+          "rows": [
+            [
+              "Dati dell'account e del profilo",
+              "Fino all'eliminazione + periodo di grazia di 30 giorni"
+            ],
+            [
+              "Persona e dati di simulazione",
+              "Fino a Echo o alla cancellazione dell'account"
+            ],
+            [
+              "Messaggi della community",
+              "1 anno dalla pubblicazione"
+            ],
+            [
+              "Token di sessione",
+              "Accesso: 1 ora; Aggiornamento: 30 giorni; Log di accesso: 90 giorni"
+            ],
+            [
+              "Dati analitici",
+              "6 mesi mobili"
+            ],
+            [
+              "Registri dei pagamenti",
+              "7 anni (obbligo di legge)"
+            ],
+            [
+              "Registri di moderazione",
+              "3 anni"
+            ],
+            [
+              "Registri del consenso",
+              "Durata dell'account + 5 anni"
+            ],
+            [
+              "File di esportazione dati",
+              "72 ore dopo la generazione"
+            ],
+            [
+              "Backup crittografati",
+              "rotazione ciclica di 90 giorni"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "6. I tuoi diritti",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ai sensi del GDPR e delle leggi sulla privacy applicabili, hai il diritto di:"
+        },
+        {
+          "type": "ul",
+          "items": [
+            "**Accesso** — Richiedi una copia di tutti i tuoi dati personali. Disponibile tramite Impostazioni → Privacy → Esporta dati.",
+            "**Cancellazione** — Elimina il tuo account e tutti i dati associati. Disponibile tramite Impostazioni → Privacy → Elimina account. Un periodo di grazia di 30 giorni consente l'annullamento.",
+            "**Portabilità** — Esporta i tuoi dati in un formato strutturato e leggibile da macchina (JSON). Disponibile in Impostazioni → Privacy → Esporta dati.",
+            "**Rettifica** — Correggi i dati inaccurati del profilo o della persona tramite le impostazioni del tuo account.",
+            "**Oggetto** — Disattiva le interazioni tra utenti (Modalità Solo), le funzioni della community o l'analisi in Impostazioni → Privacy.",
+            "**Revoca del consenso** — Elimina un Echo per revocare il consenso al trattamento della persona. Elimina il tuo account per revocare tutti i consensi."
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Per esercitare qualsiasi diritto, utilizza gli strumenti nell'app sopra indicati o invia un'e-mail a [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Risponderemo entro 30 giorni."
+        }
+      ]
+    },
+    {
+      "heading": "7. Sicurezza dei dati",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Campi PII crittografati a riposo con AES-256-GCM",
+            "Database crittografato con BitLocker",
+            "Backup crittografati con Cryptomator (AES-256)",
+            "Tutti i dati in transito sono crittografati con TLS 1.3",
+            "Password hashate con Argon2id (mai memorizzate in testo in chiaro)",
+            "Le sessioni utilizzano JWT firmati con Ed25519",
+            "Tutti gli accessi ai dati amministrativi sono registrati in log di audit solo in appendice."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "8. Elaboratori terzi",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Servizio",
+            "Dati condivisi",
+            "Scopo"
+          ],
+          "rows": [
+            [
+              "Stripe",
+              "Email, metadati di fatturazione",
+              "Elaborazione dei pagamenti con carta"
+            ],
+            [
+              "NOWPayments",
+              "Importo del pagamento",
+              "Pagamenti in criptovaluta"
+            ],
+            [
+              "Xaman",
+              "Indirizzo del wallet",
+              "Pagamenti in XRP"
+            ]
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Non condividiamo mai i tuoi dati con terze parti per scopi pubblicitari. L'inferenza dell'IA viene eseguita interamente sul nostro hardware."
+        }
+      ]
+    },
+    {
+      "heading": "9. Dati dei minori",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Multiverse Echoes è rivolto a utenti di età superiore ai 16 anni. Non raccogliamo consapevolmente dati personali di persone minori di 16 anni. Se veniamo a conoscenza del fatto che un utente ha meno di 16 anni, il suo account sarà sospeso in attesa di verifica."
+        }
+      ]
+    },
+    {
+      "heading": "10. Trasferimenti internazionali di dati",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Attualmente, tutti i dati vengono elaborati e archiviati su infrastrutture in un'unica giurisdizione. Non avvengono trasferimenti internazionali di dati. Qualora ciò dovesse cambiare in futuro, aggiorneremo la presente informativa e garantiremo l'adozione di adeguate misure di salvaguardia (Clausole Contrattuali Standard o decisioni di adeguatezza)."
+        }
+      ]
+    },
+    {
+      "heading": "11. Notifica di violazione dei dati",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "In caso di violazione dei dati personali che comporti un rischio per i tuoi diritti e le tue libertà, notificheremo l'autorità di controllo competente entro 72 ore ai sensi dell'Articolo 33 del GDPR. Se la violazione comporta un rischio elevo per te, ti notificheremo direttamente senza indebiti ritardi ai sensi dell'Articolo 34 del GDPR."
+        }
+      ]
+    },
+    {
+      "heading": "12. Reclami",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Se non sei soddisfatto del modo in cui gestiamo i tuoi dati, ti preghiamo di contattarci prima all'indirizzo [conduct@echolabsme.com](mailto:conduct@echolabsme.com). Hai inoltre il diritto di presentare un reclamo all'autorità di controllo per la protezione dei dati locale."
+        }
+      ]
+    },
+    {
+      "heading": "13. Modifiche a questa informativa",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Potremmo aggiornare questa informativa di volta in volta. Eventuali modifiche sostanziali saranno comunicate via email o tramite notifica nell'app almeno 30 giorni prima dell'entrata in vigore."
+        }
+      ]
+    }
+  ]
+}
