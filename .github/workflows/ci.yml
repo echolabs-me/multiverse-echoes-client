@@ -1,5 +1,13 @@
 name: CI
 
+# CI scope (public repo): gates that don't require the Multiverse Echoes engine API.
+# Backend-dependent test suites — E2E flows, authenticated-route accessibility audits —
+# run in the private monorepo's CI against the same client/ source (synchronized via
+# the mirror workflow). The corresponding test files (client/e2e/) remain in this repo
+# for contributor reference and for contributors running locally against their own
+# engine deployment. See https://developers.echolabsme.com/getting-started for engine
+# access via API key.
+
 on:
   push:
     branches: ["**"]
@@ -63,6 +71,8 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
       - run: npm run build
       - name: Check bundle size
         run: |
@@ -72,40 +82,6 @@ jobs:
           if [ "$DIST_SIZE" -gt "$MAX_SIZE_KB" ]; then
             echo "::warning::Bundle size ${DIST_SIZE}KB exceeds budget of ${MAX_SIZE_KB}KB"
           fi
-
-  e2e:
-    name: E2E Tests
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-      - name: Run E2E tests
-        run: npx playwright test
-        continue-on-error: false
-
-  accessibility:
-    name: Accessibility Audit
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-      - name: Run axe-core accessibility audit
-        run: npx playwright test --project=accessibility
-        continue-on-error: false
 
   pseudo-localisation:
     name: Pseudo-Localisation
