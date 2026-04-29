@@ -20,19 +20,10 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Kategorie",
-            "Beispiele"
-          ],
+          "columns": ["Kategorie", "Beispiele"],
           "rows": [
-            [
-              "Kontodaten",
-              "E-Mail-Adresse, Anzeigename, gehashtes Passwort"
-            ],
-            [
-              "Profildaten",
-              "Bio, Avatar-Auswahl, Zeitzone, Spracheinstellung"
-            ],
+            ["Kontodaten", "E-Mail-Adresse, Anzeigename, gehashtes Passwort"],
+            ["Profildaten", "Bio, Avatar-Auswahl, Zeitzone, Spracheinstellung"],
             [
               "Persona-Daten",
               "Echo-Personas, What-if-Prompts, Alter bei der Erstellung"
@@ -53,10 +44,7 @@
               "Analysedaten",
               "Funktionsnutzungsereignisse (anonymisiert, Opt-out möglich)"
             ],
-            [
-              "Sitzungsdaten",
-              "Zugriffstoken, Refresh-Token, Login-Zeitstempel"
-            ]
+            ["Sitzungsdaten", "Zugriffstoken, Refresh-Token, Login-Zeitstempel"]
           ]
         }
       ]
@@ -66,11 +54,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Zweck",
-            "Rechtsgrundlage",
-            "Deine Kontrolle"
-          ],
+          "columns": ["Zweck", "Rechtsgrundlage", "Deine Kontrolle"],
           "rows": [
             [
               "Kontoerstellung und Authentifizierung",
@@ -92,16 +76,8 @@
               "Berechtigtes Interesse",
               "Community-Opt-out"
             ],
-            [
-              "Inhaltsmoderation und Sicherheit",
-              "Berechtigtes Interesse",
-              "—"
-            ],
-            [
-              "Abonnementverwaltung",
-              "Vertrag",
-              "Abonnement kündigen"
-            ],
+            ["Inhaltsmoderation und Sicherheit", "Berechtigtes Interesse", "—"],
+            ["Abonnementverwaltung", "Vertrag", "Abonnement kündigen"],
             [
               "Analysen und Serviceverbesserung",
               "Berechtigtes Interesse",
@@ -130,10 +106,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Daten",
-            "Einbehaltung"
-          ],
+          "columns": ["Daten", "Einbehaltung"],
           "rows": [
             [
               "Konto- und Profildaten",
@@ -143,38 +116,17 @@
               "Persona- und Simulationsdaten",
               "Bis zum Echo oder zur Kontolöschung"
             ],
-            [
-              "Community-Nachrichten",
-              "1 Jahr nach der Veröffentlichung"
-            ],
+            ["Community-Nachrichten", "1 Jahr nach der Veröffentlichung"],
             [
               "Sitzungs-Token",
               "Zugriff: 1 Stunde; Aktualisierung: 30 Tage; Login-Protokolle: 90 Tage"
             ],
-            [
-              "Analysedaten",
-              "6 Monate rollierend"
-            ],
-            [
-              "Zahlungsbelege",
-              "7 Jahre (gesetzliche Anforderung)"
-            ],
-            [
-              "Moderationsprotokolle",
-              "3 Jahre"
-            ],
-            [
-              "Einwilligungsnachweise",
-              "Laufzeit des Kontos + 5 Jahre"
-            ],
-            [
-              "Datenexportdateien",
-              "72 Stunden nach der Generierung"
-            ],
-            [
-              "Verschlüsselte Backups",
-              "rollierende 90-Tage-Rotation"
-            ]
+            ["Analysedaten", "6 Monate rollierend"],
+            ["Zahlungsbelege", "7 Jahre (gesetzliche Anforderung)"],
+            ["Moderationsprotokolle", "3 Jahre"],
+            ["Einwilligungsnachweise", "Laufzeit des Kontos + 5 Jahre"],
+            ["Datenexportdateien", "72 Stunden nach der Generierung"],
+            ["Verschlüsselte Backups", "rollierende 90-Tage-Rotation"]
           ]
         }
       ]
@@ -225,27 +177,15 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Service",
-            "Geteilte Daten",
-            "Zweck"
-          ],
+          "columns": ["Service", "Geteilte Daten", "Zweck"],
           "rows": [
             [
               "Stripe",
               "E-Mail, Abrechnungsmetadaten",
               "Kartenzahlungsabwicklung"
             ],
-            [
-              "NOWPayments",
-              "Zahlungsbetrag",
-              "Kryptowährungszahlungen"
-            ],
-            [
-              "Xaman",
-              "Wallet-Adresse",
-              "XRP-Zahlungen"
-            ]
+            ["NOWPayments", "Zahlungsbetrag", "Kryptowährungszahlungen"],
+            ["Xaman", "Wallet-Adresse", "XRP-Zahlungen"]
           ]
         },
         {

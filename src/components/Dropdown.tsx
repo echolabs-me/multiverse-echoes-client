@@ -129,7 +129,9 @@ export function Dropdown({
           {items.map((item, i) => (
             <button
               key={item.id}
-              ref={(el) => { itemRefs.current[i] = el; }}
+              ref={(el) => {
+                itemRefs.current[i] = el;
+              }}
               role="option"
               aria-selected={focusIndex === i}
               aria-disabled={item.disabled}

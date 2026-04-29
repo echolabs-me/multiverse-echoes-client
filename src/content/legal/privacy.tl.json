@@ -20,10 +20,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Kategorya",
-            "Mga Halimbawa"
-          ],
+          "columns": ["Kategorya", "Mga Halimbawa"],
           "rows": [
             [
               "Datos ng Account",
@@ -66,11 +63,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Layunin",
-            "Legal na Batayan",
-            "Iyong Kontrol"
-          ],
+          "columns": ["Layunin", "Legal na Batayan", "Iyong Kontrol"],
           "rows": [
             [
               "Paglikha ng account at pagpapatunay",
@@ -92,11 +85,7 @@
               "Ligal na Interes",
               "Pag-alis sa komunidad"
             ],
-            [
-              "Moderasyon ng nilalaman at kaligtasan",
-              "Ligal na Interes",
-              "—"
-            ],
+            ["Moderasyon ng nilalaman at kaligtasan", "Ligal na Interes", "—"],
             [
               "Pamamahala ng subscription",
               "Kontrata",
@@ -107,11 +96,7 @@
               "Ligal na Interes",
               "Opt-out ng Analytics sa Settings"
             ],
-            [
-              "Pagpapatupad at pagsunod sa batas",
-              "Legal na Obligasyon",
-              "—"
-            ]
+            ["Pagpapatupad at pagsunod sa batas", "Legal na Obligasyon", "—"]
           ]
         }
       ]
@@ -130,10 +115,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Datos",
-            "Pagpapanatili"
-          ],
+          "columns": ["Datos", "Pagpapanatili"],
           "rows": [
             [
               "Datos ng account at profile",
@@ -143,38 +125,17 @@
               "Persona at data ng simulasyon",
               "Hanggang sa Echo o pagbura ng account"
             ],
-            [
-              "Mga mensahe ng komunidad",
-              "1 taon mula nang i-post"
-            ],
+            ["Mga mensahe ng komunidad", "1 taon mula nang i-post"],
             [
               "Mga session token",
               "Akses: 1 oras; Refresh: 30 araw; Mga log ng login: 90 araw"
             ],
-            [
-              "Datos ng analytics",
-              "6 na buwang rolling"
-            ],
-            [
-              "Mga rekord ng pagbabayad",
-              "7 taon (legal na kinakailangan)"
-            ],
-            [
-              "Mga rekord ng moderasyon",
-              "3 taon"
-            ],
-            [
-              "Mga rekord ng pahintulot",
-              "Tagal ng account + 5 taon"
-            ],
-            [
-              "Mga file ng export ng data",
-              "72 oras matapos mabuo"
-            ],
-            [
-              "Mga encrypted na backup",
-              "90-araw na rolling rotation"
-            ]
+            ["Datos ng analytics", "6 na buwang rolling"],
+            ["Mga rekord ng pagbabayad", "7 taon (legal na kinakailangan)"],
+            ["Mga rekord ng moderasyon", "3 taon"],
+            ["Mga rekord ng pahintulot", "Tagal ng account + 5 taon"],
+            ["Mga file ng export ng data", "72 oras matapos mabuo"],
+            ["Mga encrypted na backup", "90-araw na rolling rotation"]
           ]
         }
       ]
@@ -225,11 +186,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Serbisyo",
-            "Ibinahaging Datos",
-            "Layunin"
-          ],
+          "columns": ["Serbisyo", "Ibinahaging Datos", "Layunin"],
           "rows": [
             [
               "Stripe",
@@ -241,11 +198,7 @@
               "Halaga ng bayad",
               "Mga pagbabayad gamit ang cryptocurrency"
             ],
-            [
-              "Xaman",
-              "Address ng wallet",
-              "Mga pagbabayad gamit ang XRP"
-            ]
+            ["Xaman", "Address ng wallet", "Mga pagbabayad gamit ang XRP"]
           ]
         },
         {

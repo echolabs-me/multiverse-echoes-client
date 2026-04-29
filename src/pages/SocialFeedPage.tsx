@@ -28,52 +28,60 @@ export function SocialFeedPage() {
   }, [fetchSocialFeed]);
 
   // Sort by significance descending
-  const sortedFeed = [...socialFeed].sort((a, b) => b.significance - a.significance);
+  const sortedFeed = [...socialFeed].sort(
+    (a, b) => b.significance - a.significance,
+  );
   const paginatedFeed = sortedFeed.slice(0, page * PAGE_SIZE);
   const hasMore = paginatedFeed.length < sortedFeed.length;
 
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="mx-auto max-w-3xl p-6">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
-          >
-            <ArrowLeft size={16} />
-            {t('common.back')}
-          </button>
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+        >
+          <ArrowLeft size={16} />
+          {t('common.back')}
+        </button>
 
-          <h1 className="mbe-4 text-2xl font-bold text-text-primary">
-            {t('feeds.socialTitle')}
-          </h1>
+        <h1 className="mbe-4 text-2xl font-bold text-text-primary">
+          {t('feeds.socialTitle')}
+        </h1>
 
-          {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <Spinner size="lg" />
-            </div>
-          ) : socialFeed.length === 0 ? (
-            <EmptyState
-              title={t('feeds.socialEmpty')}
-              description={t('feeds.socialEmptyDesc')}
-            />
-          ) : (
-            <div className="flex flex-col gap-3">
-              {paginatedFeed.map((item) => (
-                <SocialFeedCard
-                  key={item.item_id}
-                  item={item}
-                  onEchoClick={(id) => navigate(`/echoes/${id}`)}
-                />
-              ))}
-              {hasMore && (
-                <Button variant="ghost" onClick={() => { setPage((p) => p + 1); trackEvent('feed.scrolled', { variant: 'social' }); }}>
-                  {t('common.loadMore')}
-                </Button>
-              )}
-            </div>
-          )}
-        </div>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <Spinner size="lg" />
+          </div>
+        ) : socialFeed.length === 0 ? (
+          <EmptyState
+            title={t('feeds.socialEmpty')}
+            description={t('feeds.socialEmptyDesc')}
+          />
+        ) : (
+          <div className="flex flex-col gap-3">
+            {paginatedFeed.map((item) => (
+              <SocialFeedCard
+                key={item.item_id}
+                item={item}
+                onEchoClick={(id) => navigate(`/echoes/${id}`)}
+              />
+            ))}
+            {hasMore && (
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setPage((p) => p + 1);
+                  trackEvent('feed.scrolled', { variant: 'social' });
+                }}
+              >
+                {t('common.loadMore')}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
+    </div>
   );
 }
 
@@ -106,7 +114,11 @@ function SocialFeedCard({
               >
                 {item.title}
               </button>
-              <Badge variant="default">{t(`feedTypes.${item.item_type}`, { defaultValue: item.item_type.replace('_', ' ') })}</Badge>
+              <Badge variant="default">
+                {t(`feedTypes.${item.item_type}`, {
+                  defaultValue: item.item_type.replace('_', ' '),
+                })}
+              </Badge>
             </div>
             <p className="mbs-1 text-sm text-text-secondary">{item.body}</p>
             <div className="mbs-1 flex items-center gap-2 text-xs text-text-muted">

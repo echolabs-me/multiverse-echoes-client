@@ -19,7 +19,11 @@ const TIER_LIMITS: Record<string, TierLimits> = {
   Starter: { available: true, dailyConversations: 5, maxMessages: 15 },
   Core: { available: true, dailyConversations: 10, maxMessages: 20 },
   Creator: { available: true, dailyConversations: 20, maxMessages: 50 },
-  GodMode: { available: true, dailyConversations: Infinity, maxMessages: Infinity },
+  GodMode: {
+    available: true,
+    dailyConversations: Infinity,
+    maxMessages: Infinity,
+  },
 };
 
 interface EchoConversationPanelProps {
@@ -31,7 +35,13 @@ interface EchoConversationPanelProps {
   resumeConversationId?: string;
 }
 
-export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, resumeConversationId }: EchoConversationPanelProps) {
+export function EchoConversationPanel({
+  echoId,
+  echoName,
+  echoMood,
+  onClose,
+  resumeConversationId,
+}: EchoConversationPanelProps) {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
 
@@ -99,110 +109,146 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
   }, [conversationId, isLoading]);
 
   const userMessageCount = messages.filter((m) => m.role === 'user').length;
-  const atLimit = userMessageCount >= limits.maxMessages && isFinite(limits.maxMessages);
+  const atLimit =
+    userMessageCount >= limits.maxMessages && isFinite(limits.maxMessages);
 
-  const handleSend = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmed = input.trim();
-    if (!trimmed || !conversationId || isSending) return;
+  const handleSend = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      const trimmed = input.trim();
+      if (!trimmed || !conversationId || isSending) return;
 
-    if (messages.filter((m) => m.role === 'user').length >= limits.maxMessages) {
-      setError('conversation.messageLimitReached');
-      return;
-    }
+      if (
+        messages.filter((m) => m.role === 'user').length >= limits.maxMessages
+      ) {
+        setError('conversation.messageLimitReached');
+        return;
+      }
 
-    setInput('');
-    setIsSending(true);
-    setError(null);
+      setInput('');
+      setIsSending(true);
+      setError(null);
 
-    // Optimistic user message
-    const optimisticUserMsg: ConversationMessage = {
-      message_id: `temp-${Date.now()}`,
-      conversation_id: conversationId,
-      role: 'user',
-      content: trimmed,
-      created_at: new Date().toISOString(),
-    };
-    setMessages((prev) => [...prev, optimisticUserMsg]);
-
-    try {
-      let retries = 0;
-      const maxRetries = 8;
-      const deepThoughtThreshold = 6;
-      let echoResponse = await conversations.sendMessage(conversationId, {
+      // Optimistic user message
+      const optimisticUserMsg: ConversationMessage = {
+        message_id: `temp-${Date.now()}`,
+        conversation_id: conversationId,
+        role: 'user',
         content: trimmed,
-      });
+        created_at: new Date().toISOString(),
+      };
+      setMessages((prev) => [...prev, optimisticUserMsg]);
 
-      const isQueued = (r: unknown): boolean =>
-        typeof r === 'object' && r !== null && 'status' in r && (r as Record<string, unknown>).status === 'queued';
-
-      while (retries < maxRetries && isQueued(echoResponse)) {
-        if (retries === 0) {
-          const queuedMsg: ConversationMessage = {
-            message_id: `queued-${Date.now()}`,
-            conversation_id: conversationId,
-            role: 'echo',
-            content: t('conversation.echoQueued'),
-            created_at: new Date().toISOString(),
-          };
-          setMessages((prev) => [...prev, queuedMsg]);
-        }
-        if (retries === deepThoughtThreshold) {
-          setMessages((prev) => {
-            const filtered = prev.filter((m) => !m.message_id.startsWith('queued-'));
-            return [...filtered, {
-              message_id: `queued-deep-${Date.now()}`,
-              conversation_id: conversationId,
-              role: 'echo',
-              content: t('conversation.echoDeepThought'),
-              created_at: new Date().toISOString(),
-            }];
-          });
-        }
-        await new Promise((r) => setTimeout(r, 15_000));
-        retries++;
-        echoResponse = await conversations.sendMessage(conversationId, {
+      try {
+        let retries = 0;
+        const maxRetries = 8;
+        const deepThoughtThreshold = 6;
+        let echoResponse = await conversations.sendMessage(conversationId, {
           content: trimmed,
         });
-      }
 
-      if (retries >= maxRetries && isQueued(echoResponse)) {
-        setMessages((prev) => {
-          const hasDeepThought = prev.some((m) => m.message_id.startsWith('queued-deep-'));
-          if (hasDeepThought) return prev;
-          const filtered = prev.filter((m) => !m.message_id.startsWith('queued-'));
-          return [...filtered, {
-            message_id: `fallback-${Date.now()}`,
-            conversation_id: conversationId,
-            role: 'echo',
-            content: t('conversation.echoDeepThought'),
-            created_at: new Date().toISOString(),
-          }];
-        });
-      } else {
-        trackEvent('conversation.message_sent', { echo_id: echoId, message_number: userMessageCount + 1 });
-        setMessages((prev) => {
-          const filtered = prev.filter((m) =>
-            !m.message_id.startsWith('queued-') &&
-            !m.message_id.startsWith('fallback-')
-          );
-          return [...filtered, echoResponse];
-        });
+        const isQueued = (r: unknown): boolean =>
+          typeof r === 'object' &&
+          r !== null &&
+          'status' in r &&
+          (r as Record<string, unknown>).status === 'queued';
+
+        while (retries < maxRetries && isQueued(echoResponse)) {
+          if (retries === 0) {
+            const queuedMsg: ConversationMessage = {
+              message_id: `queued-${Date.now()}`,
+              conversation_id: conversationId,
+              role: 'echo',
+              content: t('conversation.echoQueued'),
+              created_at: new Date().toISOString(),
+            };
+            setMessages((prev) => [...prev, queuedMsg]);
+          }
+          if (retries === deepThoughtThreshold) {
+            setMessages((prev) => {
+              const filtered = prev.filter(
+                (m) => !m.message_id.startsWith('queued-'),
+              );
+              return [
+                ...filtered,
+                {
+                  message_id: `queued-deep-${Date.now()}`,
+                  conversation_id: conversationId,
+                  role: 'echo',
+                  content: t('conversation.echoDeepThought'),
+                  created_at: new Date().toISOString(),
+                },
+              ];
+            });
+          }
+          await new Promise((r) => setTimeout(r, 15_000));
+          retries++;
+          echoResponse = await conversations.sendMessage(conversationId, {
+            content: trimmed,
+          });
+        }
+
+        if (retries >= maxRetries && isQueued(echoResponse)) {
+          setMessages((prev) => {
+            const hasDeepThought = prev.some((m) =>
+              m.message_id.startsWith('queued-deep-'),
+            );
+            if (hasDeepThought) return prev;
+            const filtered = prev.filter(
+              (m) => !m.message_id.startsWith('queued-'),
+            );
+            return [
+              ...filtered,
+              {
+                message_id: `fallback-${Date.now()}`,
+                conversation_id: conversationId,
+                role: 'echo',
+                content: t('conversation.echoDeepThought'),
+                created_at: new Date().toISOString(),
+              },
+            ];
+          });
+        } else {
+          trackEvent('conversation.message_sent', {
+            echo_id: echoId,
+            message_number: userMessageCount + 1,
+          });
+          setMessages((prev) => {
+            const filtered = prev.filter(
+              (m) =>
+                !m.message_id.startsWith('queued-') &&
+                !m.message_id.startsWith('fallback-'),
+            );
+            return [...filtered, echoResponse];
+          });
+        }
+      } catch (err) {
+        const detail = err instanceof Error ? err.message : 'Unknown error';
+        setError(t('conversation.errorSending', { detail }));
+      } finally {
+        setIsSending(false);
       }
-    } catch (err) {
-      const detail = err instanceof Error ? err.message : 'Unknown error';
-      setError(t('conversation.errorSending', { detail }));
-    } finally {
-      setIsSending(false);
-    }
-  }, [input, conversationId, isSending, messages, limits.maxMessages, t, echoId, userMessageCount]);
+    },
+    [
+      input,
+      conversationId,
+      isSending,
+      messages,
+      limits.maxMessages,
+      t,
+      echoId,
+      userMessageCount,
+    ],
+  );
 
   return (
     <div className="flex h-full flex-col border-s border-border bg-canvas">
       {/* Header */}
       <header className="flex items-center gap-3 border-be border-border bg-surface px-4 py-3">
         <div className="flex-1">
-          <h2 className="text-sm font-semibold text-text-primary">{echoName}</h2>
+          <h2 className="text-sm font-semibold text-text-primary">
+            {echoName}
+          </h2>
           <p className="text-xs text-text-secondary">
             {echoMood
               ? t('conversation.mood', { mood: getMoodLabel(echoMood) })
@@ -236,7 +282,10 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
       >
         {isLoading && (
           <div className="flex items-center justify-center py-8">
-            <span className="inline-block size-5 animate-spin rounded-full border-2 border-accent border-bs-transparent" role="status">
+            <span
+              className="inline-block size-5 animate-spin rounded-full border-2 border-accent border-bs-transparent"
+              role="status"
+            >
               <span className="sr-only">{t('common.loading')}</span>
             </span>
           </div>
@@ -244,7 +293,9 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
 
         {!isLoading && messages.length === 0 && conversationId && (
           <div className="flex flex-col items-center gap-2 pbs-8 text-center">
-            <p className="text-xs text-text-secondary">{t('conversation.startPrompt')}</p>
+            <p className="text-xs text-text-secondary">
+              {t('conversation.startPrompt')}
+            </p>
           </div>
         )}
 
@@ -310,7 +361,9 @@ export function EchoConversationPanel({ echoId, echoName, echoMood, onClose, res
             }
           }}
           placeholder={
-            atLimit ? t('conversation.atLimit') : t('conversation.inputPlaceholder')
+            atLimit
+              ? t('conversation.atLimit')
+              : t('conversation.inputPlaceholder')
           }
           disabled={isSending || atLimit || !conversationId}
           rows={1}

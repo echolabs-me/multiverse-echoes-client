@@ -38,7 +38,9 @@ export function OnboardingWelcomePage() {
   const isLastCard = currentCard === cards.length - 1;
 
   function handleNext() {
-    trackEvent('onboarding.step_completed', { step: `welcome_${currentCard + 1}` });
+    trackEvent('onboarding.step_completed', {
+      step: `welcome_${currentCard + 1}`,
+    });
     if (isLastCard) {
       navigate('/onboarding/profile');
     } else {
@@ -65,7 +67,10 @@ export function OnboardingWelcomePage() {
       </Card>
 
       {/* Progress dots */}
-      <div className="mbe-6 flex gap-2" aria-label={`Card ${currentCard + 1} of ${cards.length}`}>
+      <div
+        className="mbe-6 flex gap-2"
+        aria-label={`Card ${currentCard + 1} of ${cards.length}`}
+      >
         {cards.map((_, i) => (
           <div
             key={i}

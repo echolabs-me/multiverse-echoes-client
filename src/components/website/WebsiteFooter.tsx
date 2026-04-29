@@ -20,8 +20,9 @@ export function WebsiteFooter() {
   }, [location.pathname, location.hash]);
 
   const currentLangName =
-    new Intl.DisplayNames([i18n.language], { type: 'language' }).of(i18n.language) ??
-    i18n.language;
+    new Intl.DisplayNames([i18n.language], { type: 'language' }).of(
+      i18n.language,
+    ) ?? i18n.language;
 
   // Click-outside closes the language dropdown (matches the header's
   // behaviour so both affordances feel the same).
@@ -51,12 +52,18 @@ export function WebsiteFooter() {
           {/* Brand */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="Multiverse Echoes" className="size-8 rounded-md object-contain" />
+              <img
+                src="/logo.png"
+                alt="Multiverse Echoes"
+                className="size-8 rounded-md object-contain"
+              />
               <span className="text-sm font-semibold tracking-wider text-(--text-primary)">
                 Multiverse Echoes
               </span>
             </div>
-            <p className="text-xs text-(--text-muted)">{t('website.footer.copyright')}</p>
+            <p className="text-xs text-(--text-muted)">
+              {t('website.footer.copyright')}
+            </p>
           </div>
 
           {/* Links */}
@@ -68,32 +75,56 @@ export function WebsiteFooter() {
             >
               {t('website.nav.home')}
             </Link>
-            <Link to="/home#features" className="text-sm text-(--text-secondary) hover:text-(--text-primary)">
+            <Link
+              to="/home#features"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
               {t('website.nav.features')}
             </Link>
-            <Link to="/home#pricing" className="text-sm text-(--text-secondary) hover:text-(--text-primary)">
+            <Link
+              to="/home#pricing"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
               {t('website.nav.pricing')}
             </Link>
-            <Link to="/about" className="text-sm text-(--text-secondary) hover:text-(--text-primary)">
+            <Link
+              to="/about"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
               {t('website.nav.about')}
             </Link>
-            <Link to="/contact" className="text-sm text-(--text-secondary) hover:text-(--text-primary)">
+            <Link
+              to="/contact"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
               {t('website.nav.contact')}
             </Link>
-            <Link to="/waitlist" className="text-sm text-(--text-secondary) hover:text-(--text-primary)">
+            <Link
+              to="/waitlist"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
               {t('auth.joinWaitlist')}
             </Link>
           </div>
 
           {/* Legal */}
           <div className="flex flex-col gap-2">
-            <Link to="/terms" className="text-sm text-(--text-secondary) hover:text-(--text-primary)">
+            <Link
+              to="/terms"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
               {t('website.footer.terms')}
             </Link>
-            <Link to="/privacy" className="text-sm text-(--text-secondary) hover:text-(--text-primary)">
+            <Link
+              to="/privacy"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
               {t('website.footer.privacy')}
             </Link>
-            <Link to="/accessibility" className="text-sm text-(--text-secondary) hover:text-(--text-primary)">
+            <Link
+              to="/accessibility"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
               {t('website.footer.accessibility')}
             </Link>
             <a
@@ -130,8 +161,8 @@ export function WebsiteFooter() {
               </svg>
               Discord
             </a>
-            <div 
-              ref={langWrapRef} 
+            <div
+              ref={langWrapRef}
               className="relative"
               onBlur={(e) => {
                 if (!e.currentTarget.contains(e.relatedTarget)) {

@@ -60,8 +60,7 @@ export const useEchoStore = create<EchoState>((set, get) => ({
     await echoes.delete(id);
     set({
       echoList: get().echoList.filter((e) => e.echo_id !== id),
-      activeEcho:
-        get().activeEcho?.echo_id === id ? null : get().activeEcho,
+      activeEcho: get().activeEcho?.echo_id === id ? null : get().activeEcho,
     });
   },
 
@@ -93,9 +92,7 @@ export const useEchoStore = create<EchoState>((set, get) => ({
       // — do NOT overlay a client-side clock value.
       const updated = await echoes.hibernate(id);
       set({
-        echoList: get().echoList.map((e) =>
-          e.echo_id === id ? updated : e,
-        ),
+        echoList: get().echoList.map((e) => (e.echo_id === id ? updated : e)),
         activeEcho:
           get().activeEcho?.echo_id === id ? updated : get().activeEcho,
       });
@@ -134,9 +131,7 @@ export const useEchoStore = create<EchoState>((set, get) => ({
     try {
       const updated = await echoes.wake(id);
       set({
-        echoList: get().echoList.map((e) =>
-          e.echo_id === id ? updated : e,
-        ),
+        echoList: get().echoList.map((e) => (e.echo_id === id ? updated : e)),
         activeEcho:
           get().activeEcho?.echo_id === id ? updated : get().activeEcho,
       });

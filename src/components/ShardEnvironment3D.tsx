@@ -131,8 +131,30 @@ function generateBuildings(
   return buildings;
 }
 
-const CYBER_BUILDINGS = generateBuildings(12, 100, 1.2, 0, 1, 3, -4, 4, 0.4, 0.3);
-const FLORENCE_BUILDINGS = generateBuildings(6, 200, 2, 0, 1.5, 1.5, -5, 3, 0.8, 0.5);
+const CYBER_BUILDINGS = generateBuildings(
+  12,
+  100,
+  1.2,
+  0,
+  1,
+  3,
+  -4,
+  4,
+  0.4,
+  0.3,
+);
+const FLORENCE_BUILDINGS = generateBuildings(
+  6,
+  200,
+  2,
+  0,
+  1.5,
+  1.5,
+  -5,
+  3,
+  0.8,
+  0.5,
+);
 
 // --- Particle field (floating atmospheric particles) ---
 
@@ -169,10 +191,7 @@ function ParticleField({
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
         color={color}
@@ -242,11 +261,7 @@ function NomadAustraliaEnvironment() {
       {/* Distant horizon ridge */}
       <mesh position={[0, -0.5, -8]}>
         <boxGeometry args={[20, 0.5, 0.3]} />
-        <meshStandardMaterial
-          color="#6b4423"
-          transparent
-          opacity={0.5}
-        />
+        <meshStandardMaterial color="#6b4423" transparent opacity={0.5} />
       </mesh>
       {/* Heat shimmer particles (dust) */}
       <ParticleField count={40} color="#c4783c" seed={400} />
@@ -334,9 +349,7 @@ function EnvironmentScene({ theme }: { theme: ShardTheme }) {
       {theme === 'cyber-tokyo' && <CyberTokyoEnvironment />}
       {theme === 'nomad-australia' && <NomadAustraliaEnvironment />}
       {theme === 'renaissance-florence' && <RenaissanceEnvironment />}
-      {(theme === 'personal' || theme === 'default') && (
-        <PersonalEnvironment />
-      )}
+      {(theme === 'personal' || theme === 'default') && <PersonalEnvironment />}
     </>
   );
 }

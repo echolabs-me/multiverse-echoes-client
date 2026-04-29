@@ -42,8 +42,14 @@ export function TickTimer() {
     }
     if (ambientRef.current) {
       const el = ambientRef.current;
-      el.style.setProperty('--me-progress', isGenerating ? '100%' : `${progress * 100}%`);
-      el.style.setProperty('--me-glow-opacity', String(isGenerating ? 0.5 : glowOpacity));
+      el.style.setProperty(
+        '--me-progress',
+        isGenerating ? '100%' : `${progress * 100}%`,
+      );
+      el.style.setProperty(
+        '--me-glow-opacity',
+        String(isGenerating ? 0.5 : glowOpacity),
+      );
       el.style.setProperty('--me-glow-shadow-color', String(glowColor));
     }
   }, [progress, isGenerating, glowOpacity, glowColor]);
@@ -74,29 +80,29 @@ export function TickTimer() {
 
         {isGenerating || isWaiting ? (
           <>
-            <span
-              className="tick-digit-breathe me-neon-glow hidden text-sm/tight font-semibold text-accent sm:inline"
-            >
-              {isWaiting ? t('tickTimer.nextTick', { time: timeDisplay }) : t('tickTimer.generating')}
+            <span className="tick-digit-breathe me-neon-glow hidden text-sm/tight font-semibold text-accent sm:inline">
+              {isWaiting
+                ? t('tickTimer.nextTick', { time: timeDisplay })
+                : t('tickTimer.generating')}
             </span>
-            <span
-              className="tick-digit-breathe me-neon-glow text-sm/tight font-semibold text-accent sm:hidden"
-            >
-              {isWaiting ? t('tickTimer.nextTick', { time: timeDisplay }) : t('tickTimer.generatingShort')}
+            <span className="tick-digit-breathe me-neon-glow text-sm/tight font-semibold text-accent sm:hidden">
+              {isWaiting
+                ? t('tickTimer.nextTick', { time: timeDisplay })
+                : t('tickTimer.generatingShort')}
             </span>
           </>
         ) : (
           <>
             <span
               className={`tick-digit-breathe text-xl leading-none font-semibold tracking-wide tabular-nums sm:text-2xl ${
-                isArrived ? 'me-neon-glow-success text-success' : 'me-neon-glow text-text-primary'
+                isArrived
+                  ? 'me-neon-glow-success text-success'
+                  : 'me-neon-glow text-text-primary'
               }`}
             >
               {timeDisplay}
             </span>
-            <span
-              className="me-neon-glow-soft hidden text-xs leading-none text-text-secondary sm:inline"
-            >
+            <span className="me-neon-glow-soft hidden text-xs leading-none text-text-secondary sm:inline">
               {isArrived
                 ? t('tickTimer.arrived')
                 : t('tickTimer.untilNextHeartbeat')}
@@ -140,9 +146,7 @@ export function TickTimer() {
         )}
 
         {/* Flash on arrival */}
-        {isArrived && (
-          <div className="tick-bar-flash absolute inset-0" />
-        )}
+        {isArrived && <div className="tick-bar-flash absolute inset-0" />}
 
         {/* Ambient upward glow — contained within the bar's overflow:hidden parent */}
         <div

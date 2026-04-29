@@ -20,7 +20,10 @@
  * by `Intl.NumberFormat` per its own rounding behaviour (banker's
  * rounding on most engines). Callers should pass integer cents.
  */
-export function formatUsdCents(cents: number, locale: string = 'en-US'): string {
+export function formatUsdCents(
+  cents: number,
+  locale: string = 'en-US',
+): string {
   const dollars = cents / 100;
   return new Intl.NumberFormat(locale, {
     style: 'currency',

@@ -130,13 +130,16 @@ function EchoCard({
               aria-label={echo.current_mood}
             />
           )}
-          <span className={`truncate text-sm font-medium ${isActive ? 'text-accent' : 'text-text-primary'}`}>
+          <span
+            className={`truncate text-sm font-medium ${isActive ? 'text-accent' : 'text-text-primary'}`}
+          >
             {echo.name}
           </span>
         </div>
         {/* Row 2: mood + tick */}
         <p className="truncate ps-4.5 text-[11px] text-text-secondary">
-          {getMoodLabel(echo.current_mood)} · {t('echoSidebar.tick', { tick: echo.current_tick })}
+          {getMoodLabel(echo.current_mood)} ·{' '}
+          {t('echoSidebar.tick', { tick: echo.current_tick })}
         </p>
         {/* Row 3: hibernation banner > travelling indicator > diary preview */}
         {hibernated && deletionDate ? (
@@ -183,8 +186,14 @@ function SortableEchoItem({
   latestDiaryShardId: string | null;
   onClick: () => void;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: echo.echo_id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: echo.echo_id });
 
   // dnd-kit gives us dynamic transform/transition strings — write them via
   // CSSOM (ref + setProperty) rather than the React `style` prop so the page
@@ -226,7 +235,9 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
   const { echoId } = useParams<{ echoId: string }>();
   const { echoList, fetchEchoes, reorderEchoes } = useEchoStore();
   const { shardList, fetchShards } = useShardStore();
-  const [diaryPreviews, setDiaryPreviews] = useState<Record<string, { snippet: string; shardId: string | null; tick: number }>>({});
+  const [diaryPreviews, setDiaryPreviews] = useState<
+    Record<string, { snippet: string; shardId: string | null; tick: number }>
+  >({});
 
   useEffect(() => {
     if (echoList.length === 0) void fetchEchoes();
@@ -242,26 +253,38 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
     for (const echo of echoList) {
       const cached = diaryPreviews[echo.echo_id];
       if (cached !== undefined && cached.tick === echo.current_tick) continue;
-      void echoApi.diary(echo.echo_id, 1).then((page) => {
-        const entry = page.data[0];
-        setDiaryPreviews((prev) => ({
-          ...prev,
-          [echo.echo_id]: {
-            snippet: entry ? entry.content.slice(0, 120) : '',
-            shardId: entry?.shard_id ?? null,
-            tick: echo.current_tick,
-          },
-        }));
-      }).catch(() => {
-        setDiaryPreviews((prev) => ({ ...prev, [echo.echo_id]: { snippet: '', shardId: null, tick: echo.current_tick } }));
-      });
+      void echoApi
+        .diary(echo.echo_id, 1)
+        .then((page) => {
+          const entry = page.data[0];
+          setDiaryPreviews((prev) => ({
+            ...prev,
+            [echo.echo_id]: {
+              snippet: entry ? entry.content.slice(0, 120) : '',
+              shardId: entry?.shard_id ?? null,
+              tick: echo.current_tick,
+            },
+          }));
+        })
+        .catch(() => {
+          setDiaryPreviews((prev) => ({
+            ...prev,
+            [echo.echo_id]: {
+              snippet: '',
+              shardId: null,
+              tick: echo.current_tick,
+            },
+          }));
+        });
     }
   }, [echoList, diaryPreviews]);
 
   const shardNameMap = new Map(shardList.map((s) => [s.shard_id, s.name]));
 
   // Determine active echo: from URL param or from dashboard's selected echo.
-  const activeId = echoId ?? (location.pathname === '/dashboard' ? echoList[0]?.echo_id : undefined);
+  const activeId =
+    echoId ??
+    (location.pathname === '/dashboard' ? echoList[0]?.echo_id : undefined);
 
   const handleClick = useCallback(
     (echo: EchoResponse) => {
@@ -291,9 +314,10 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
 
   return (
     <aside
-      className={forceVisible
-        ? "flex min-h-0 w-full flex-1 flex-col bg-transparent"
-        : "hidden h-full w-50 flex-col border-e border-border/50 bg-transparent md:flex lg:w-58"
+      className={
+        forceVisible
+          ? 'flex min-h-0 w-full flex-1 flex-col bg-transparent'
+          : 'hidden h-full w-50 flex-col border-e border-border/50 bg-transparent md:flex lg:w-58'
       }
       aria-label={t('echoSidebar.title')}
     >
@@ -314,7 +338,9 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
                 }}
                 className="me-mood-dot size-2.5 shrink-0 rounded-full"
               />
-              <span className="text-xs text-text-secondary">{getMoodLabel(mood)}</span>
+              <span className="text-xs text-text-secondary">
+                {getMoodLabel(mood)}
+              </span>
             </div>
           ))}
         </div>
@@ -336,9 +362,14 @@ export function EchoSidebar({ forceVisible }: { forceVisible?: boolean } = {}) {
                   key={echo.echo_id}
                   echo={echo}
                   isActive={echo.echo_id === activeId}
-                  shardName={shardNameMap.get(echo.current_shard_id) ?? t('echoSidebar.unknownShard')}
+                  shardName={
+                    shardNameMap.get(echo.current_shard_id) ??
+                    t('echoSidebar.unknownShard')
+                  }
                   latestDiary={diaryPreviews[echo.echo_id]?.snippet || null}
-                  latestDiaryShardId={diaryPreviews[echo.echo_id]?.shardId ?? null}
+                  latestDiaryShardId={
+                    diaryPreviews[echo.echo_id]?.shardId ?? null
+                  }
                   onClick={() => handleClick(echo)}
                 />
               ))}
@@ -395,7 +426,11 @@ export function MobileEchoSwitcher() {
           {activeEcho && (
             <span
               ref={(el) => {
-                if (el) el.style.setProperty('--me-mood-color', getMoodColor(activeEcho.current_mood));
+                if (el)
+                  el.style.setProperty(
+                    '--me-mood-color',
+                    getMoodColor(activeEcho.current_mood),
+                  );
               }}
               className="me-mood-dot size-2 shrink-0 rounded-full"
             />
@@ -436,43 +471,50 @@ export function MobileEchoSwitcher() {
                 const echoHibernated = isEchoHibernated(echo);
                 const echoDeletion = echoDeletionDate(echo.hibernated_at);
                 return (
-                <li key={echo.echo_id}>
-                  <button
-                    onClick={() => {
-                      navigate(`/echoes/${echo.echo_id}`);
-                      setIsOpen(false);
-                    }}
-                    className={`flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-start transition-colors ${
-                      echo.echo_id === echoId
-                        ? 'bg-accent-subtle text-accent'
-                        : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
-                    }`}
-                  >
-                    <span
-                      ref={(el) => {
-                        if (el) el.style.setProperty('--me-mood-color', getMoodColor(echo.current_mood));
+                  <li key={echo.echo_id}>
+                    <button
+                      onClick={() => {
+                        navigate(`/echoes/${echo.echo_id}`);
+                        setIsOpen(false);
                       }}
-                      className="me-mood-dot size-2.5 shrink-0 rounded-full"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm/tight font-medium">{echo.name}</p>
-                      <p className="truncate text-[11px] leading-tight text-text-muted">
-                        {shardNameMap.get(echo.current_shard_id) ?? t('echoSidebar.unknownShard')}
-                      </p>
-                      {echoHibernated && echoDeletion && (
-                        <p
-                          className="truncate text-[11px] leading-tight font-medium text-warning"
-                          role="status"
-                          aria-live="polite"
-                        >
-                          {t('tiers.deletion.echoDeletesOn', {
-                            date: formatDeletionDate(echoDeletion),
-                          })}
+                      className={`flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-start transition-colors ${
+                        echo.echo_id === echoId
+                          ? 'bg-accent-subtle text-accent'
+                          : 'text-text-secondary hover:bg-surface-raised hover:text-text-primary'
+                      }`}
+                    >
+                      <span
+                        ref={(el) => {
+                          if (el)
+                            el.style.setProperty(
+                              '--me-mood-color',
+                              getMoodColor(echo.current_mood),
+                            );
+                        }}
+                        className="me-mood-dot size-2.5 shrink-0 rounded-full"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm/tight font-medium">
+                          {echo.name}
                         </p>
-                      )}
-                    </div>
-                  </button>
-                </li>
+                        <p className="truncate text-[11px] leading-tight text-text-muted">
+                          {shardNameMap.get(echo.current_shard_id) ??
+                            t('echoSidebar.unknownShard')}
+                        </p>
+                        {echoHibernated && echoDeletion && (
+                          <p
+                            className="truncate text-[11px] leading-tight font-medium text-warning"
+                            role="status"
+                            aria-live="polite"
+                          >
+                            {t('tiers.deletion.echoDeletesOn', {
+                              date: formatDeletionDate(echoDeletion),
+                            })}
+                          </p>
+                        )}
+                      </div>
+                    </button>
+                  </li>
                 );
               })}
             </ul>

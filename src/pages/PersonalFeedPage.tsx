@@ -40,59 +40,72 @@ export function PersonalFeedPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="mx-auto max-w-3xl p-6">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="mbe-4 flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary"
+        >
+          <ArrowLeft size={16} />
+          {t('common.back')}
+        </button>
+
+        <h1 className="mbe-4 text-2xl font-bold text-text-primary">
+          {t('feeds.personalTitle')}
+        </h1>
+
+        {/* Echo filter */}
+        <div className="mbe-6 flex items-center gap-2">
+          <Filter size={16} className="text-text-muted" aria-hidden="true" />
+          <select
+            value={selectedEchoId}
+            onChange={(e) => {
+              setSelectedEchoId(e.target.value);
+              setPage(1);
+            }}
+            className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
+            aria-label={t('feeds.filterByEcho')}
           >
-            <ArrowLeft size={16} />
-            {t('common.back')}
-          </button>
-
-          <h1 className="mbe-4 text-2xl font-bold text-text-primary">
-            {t('feeds.personalTitle')}
-          </h1>
-
-          {/* Echo filter */}
-          <div className="mbe-6 flex items-center gap-2">
-            <Filter size={16} className="text-text-muted" aria-hidden="true" />
-            <select
-              value={selectedEchoId}
-              onChange={(e) => { setSelectedEchoId(e.target.value); setPage(1); }}
-              className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:outline-none"
-              aria-label={t('feeds.filterByEcho')}
-            >
-              <option value="">{t('feeds.allEchoes')}</option>
-              {echoList.map((echo) => (
-                <option key={echo.echo_id} value={echo.echo_id}>
-                  {echo.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <Spinner size="lg" />
-            </div>
-          ) : personalFeed.length === 0 ? (
-            <EmptyState
-              title={t('feeds.personalEmpty')}
-              description={t('feeds.personalEmptyDesc')}
-            />
-          ) : (
-            <div className="flex flex-col gap-3">
-              {paginatedFeed.map((item) => (
-                <FeedItemCard key={item.item_id} item={item} onEchoClick={(id) => navigate(`/echoes/${id}`)} />
-              ))}
-              {hasMore && (
-                <Button variant="ghost" onClick={() => { setPage((p) => p + 1); trackEvent('feed.scrolled', { variant: 'personal' }); }}>
-                  {t('common.loadMore')}
-                </Button>
-              )}
-            </div>
-          )}
+            <option value="">{t('feeds.allEchoes')}</option>
+            {echoList.map((echo) => (
+              <option key={echo.echo_id} value={echo.echo_id}>
+                {echo.name}
+              </option>
+            ))}
+          </select>
         </div>
+
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <Spinner size="lg" />
+          </div>
+        ) : personalFeed.length === 0 ? (
+          <EmptyState
+            title={t('feeds.personalEmpty')}
+            description={t('feeds.personalEmptyDesc')}
+          />
+        ) : (
+          <div className="flex flex-col gap-3">
+            {paginatedFeed.map((item) => (
+              <FeedItemCard
+                key={item.item_id}
+                item={item}
+                onEchoClick={(id) => navigate(`/echoes/${id}`)}
+              />
+            ))}
+            {hasMore && (
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setPage((p) => p + 1);
+                  trackEvent('feed.scrolled', { variant: 'personal' });
+                }}
+              >
+                {t('common.loadMore')}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
+    </div>
   );
 }
 
@@ -125,7 +138,11 @@ function FeedItemCard({
               >
                 {item.title}
               </button>
-              <Badge variant="default">{t(`feedTypes.${item.item_type}`, { defaultValue: item.item_type.replace('_', ' ') })}</Badge>
+              <Badge variant="default">
+                {t(`feedTypes.${item.item_type}`, {
+                  defaultValue: item.item_type.replace('_', ' '),
+                })}
+              </Badge>
             </div>
             <p className="mbs-1 text-sm text-text-secondary">{item.body}</p>
             <div className="mbs-1 flex items-center gap-2">

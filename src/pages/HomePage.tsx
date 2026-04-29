@@ -23,7 +23,7 @@ export function HomePage() {
   // failures can't trigger re-renders that break scroll animations.
   const isAuthenticated = useAuthStore.getState().isAuthenticated;
   const ctaTo = isAuthenticated ? '/dashboard' : '/register';
-  
+
   const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -43,9 +43,13 @@ export function HomePage() {
   // Scroll-triggered reveal via IntersectionObserver.
   // Uses requestAnimationFrame to ensure DOM is painted before observing.
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
     if (prefersReduced) {
-      document.querySelectorAll('.section-reveal').forEach((el) => el.classList.add('revealed'));
+      document
+        .querySelectorAll('.section-reveal')
+        .forEach((el) => el.classList.add('revealed'));
       return;
     }
     let obs: IntersectionObserver | null = null;
@@ -77,13 +81,19 @@ export function HomePage() {
         <meta name="description" content={t('website.home.metaDesc')} />
         <meta property="og:title" content={t('website.home.ogTitle')} />
         <meta property="og:description" content={t('website.home.ogDesc')} />
-        <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
+        <meta
+          property="og:image"
+          content="https://echolabsme.com/og-image-v2.png"
+        />
         {/* og:url is emitted path-aware by WebsiteLayout so it matches the
             active locale's URL (/es/home, /ja/plans, …). Don't hardcode here. */}
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@EchoLabsME" />
-        <meta name="twitter:image" content="https://echolabsme.com/og-image-v2.png" />
+        <meta
+          name="twitter:image"
+          content="https://echolabsme.com/og-image-v2.png"
+        />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -166,8 +176,18 @@ export function HomePage() {
           <p className="text-xs tracking-[0.2em] text-(--text-muted)">
             {t('website.home.scrollExplore')}
           </p>
-          <svg className="size-4 animate-bounce text-(--text-muted)" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          <svg
+            className="size-4 animate-bounce text-(--text-muted)"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </div>
       </section>
@@ -273,18 +293,30 @@ export function HomePage() {
           <div className="section-reveal grid gap-8 sm:grid-cols-3">
             <div className="rounded-xl border border-(--border) bg-(--surface) p-6">
               <div className="mbe-3 text-2xl">🎥</div>
-              <h3 className="mbe-1 font-medium text-(--text-primary)">{t('website.features.videoTitle')}</h3>
-              <p className="text-sm text-(--text-secondary)">{t('website.features.videoDesc')}</p>
+              <h3 className="mbe-1 font-medium text-(--text-primary)">
+                {t('website.features.videoTitle')}
+              </h3>
+              <p className="text-sm text-(--text-secondary)">
+                {t('website.features.videoDesc')}
+              </p>
             </div>
             <div className="rounded-xl border border-(--border) bg-(--surface) p-6">
               <div className="mbe-3 text-2xl">🌐</div>
-              <h3 className="mbe-1 font-medium text-(--text-primary)">{t('website.features.languagesTitle')}</h3>
-              <p className="text-sm text-(--text-secondary)">{t('website.features.languagesDesc')}</p>
+              <h3 className="mbe-1 font-medium text-(--text-primary)">
+                {t('website.features.languagesTitle')}
+              </h3>
+              <p className="text-sm text-(--text-secondary)">
+                {t('website.features.languagesDesc')}
+              </p>
             </div>
             <div className="rounded-xl border border-(--border) bg-(--surface) p-6">
               <div className="mbe-3 text-2xl">💞</div>
-              <h3 className="mbe-1 font-medium text-(--text-primary)">{t('website.features.relationshipsTitle')}</h3>
-              <p className="text-sm text-(--text-secondary)">{t('website.features.relationshipsDesc')}</p>
+              <h3 className="mbe-1 font-medium text-(--text-primary)">
+                {t('website.features.relationshipsTitle')}
+              </h3>
+              <p className="text-sm text-(--text-secondary)">
+                {t('website.features.relationshipsDesc')}
+              </p>
             </div>
           </div>
         </div>
@@ -358,11 +390,15 @@ export function HomePage() {
               {waitlistCount !== null ? waitlistCount.toLocaleString() : '—'}
             </p>
             <p className="text-sm text-(--text-secondary)">
-              {waitlistCount !== null 
-                ? t('website.social.waitlistCount', { count: waitlistCount.toLocaleString() })
+              {waitlistCount !== null
+                ? t('website.social.waitlistCount', {
+                    count: waitlistCount.toLocaleString(),
+                  })
                 : t('website.social.waitlistCount', { count: 'Many' })}
             </p>
-            <p className="mbs-4 text-xs text-(--text-muted) italic">{t('website.social.builtBy')}</p>
+            <p className="mbs-4 text-xs text-(--text-muted) italic">
+              {t('website.social.builtBy')}
+            </p>
           </div>
         </div>
       </section>
@@ -405,10 +441,11 @@ export function HomePage() {
           >
             {t('website.finalCta.cta')}
           </Link>
-          <p className="mbs-6 text-sm text-(--text-muted)">{t('website.finalCta.noCreditCard')}</p>
+          <p className="mbs-6 text-sm text-(--text-muted)">
+            {t('website.finalCta.noCreditCard')}
+          </p>
         </div>
       </section>
-
     </>
   );
 }

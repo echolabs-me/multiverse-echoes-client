@@ -291,7 +291,9 @@ export function UserProfilePage() {
           </section>
         </>
       ) : view === 'FriendsOnlyHidden' ? (
-        <p className="mbs-6 opacity-80">{t('userProfile.friendsOnlyMessage')}</p>
+        <p className="mbs-6 opacity-80">
+          {t('userProfile.friendsOnlyMessage')}
+        </p>
       ) : (
         <p className="mbs-6 opacity-80">{t('userProfile.privateMessage')}</p>
       )}

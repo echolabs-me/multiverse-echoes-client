@@ -20,10 +20,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Categoria",
-            "Exemplos"
-          ],
+          "columns": ["Categoria", "Exemplos"],
           "rows": [
             [
               "Dados da Conta",
@@ -66,17 +63,9 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Objetivo",
-            "Base Legal",
-            "Seu Controle"
-          ],
+          "columns": ["Objetivo", "Base Legal", "Seu Controle"],
           "rows": [
-            [
-              "Criação de conta e autenticação",
-              "Contrato",
-              "Excluir conta"
-            ],
+            ["Criação de conta e autenticação", "Contrato", "Excluir conta"],
             [
               "Simulação de eco (processamento de persona)",
               "Consentimento",
@@ -92,26 +81,14 @@
               "Interesse Legítimo",
               "Opt-out da comunidade"
             ],
-            [
-              "Moderação de conteúdo e segurança",
-              "Interesse Legítimo",
-              "—"
-            ],
-            [
-              "Gerenciamento de assinatura",
-              "Contrato",
-              "Cancelar assinatura"
-            ],
+            ["Moderação de conteúdo e segurança", "Interesse Legítimo", "—"],
+            ["Gerenciamento de assinatura", "Contrato", "Cancelar assinatura"],
             [
               "Análise e melhoria do serviço",
               "Interesse Legítimo",
               "Desativar análise nas Configurações"
             ],
-            [
-              "Aplicação e conformidade legal",
-              "Obrigação Legal",
-              "—"
-            ]
+            ["Aplicação e conformidade legal", "Obrigação Legal", "—"]
           ]
         }
       ]
@@ -130,10 +107,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Dados",
-            "Retenção"
-          ],
+          "columns": ["Dados", "Retenção"],
           "rows": [
             [
               "Dados da conta e do perfil",
@@ -143,38 +117,17 @@
               "Dados de persona e de simulação",
               "Até o Echo ou a exclusão da conta"
             ],
-            [
-              "Mensagens da comunidade",
-              "1 ano após a postagem"
-            ],
+            ["Mensagens da comunidade", "1 ano após a postagem"],
             [
               "Tokens de sessão",
               "Acesso: 1 hora; Atualização: 30 dias; Logs de login: 90 dias"
             ],
-            [
-              "Dados de análise",
-              "6 meses móveis"
-            ],
-            [
-              "Registros de pagamento",
-              "7 anos (exigência legal)"
-            ],
-            [
-              "Registros de moderação",
-              "3 anos"
-            ],
-            [
-              "Registros de consentimento",
-              "Duração da conta + 5 anos"
-            ],
-            [
-              "Arquivos de exportação de dados",
-              "72 horas após a geração"
-            ],
-            [
-              "Backups criptografados",
-              "rotação rolante de 90 dias"
-            ]
+            ["Dados de análise", "6 meses móveis"],
+            ["Registros de pagamento", "7 anos (exigência legal)"],
+            ["Registros de moderação", "3 anos"],
+            ["Registros de consentimento", "Duração da conta + 5 anos"],
+            ["Arquivos de exportação de dados", "72 horas após a geração"],
+            ["Backups criptografados", "rotação rolante de 90 dias"]
           ]
         }
       ]
@@ -225,11 +178,7 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Serviço",
-            "Dados Compartilhados",
-            "Objetivo"
-          ],
+          "columns": ["Serviço", "Dados Compartilhados", "Objetivo"],
           "rows": [
             [
               "Stripe",
@@ -241,11 +190,7 @@
               "Valor do pagamento",
               "Pagamentos com criptomoedas"
             ],
-            [
-              "Xamã",
-              "Endereço da carteira",
-              "Pagamentos em XRP"
-            ]
+            ["Xamã", "Endereço da carteira", "Pagamentos em XRP"]
           ]
         },
         {

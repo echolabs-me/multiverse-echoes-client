@@ -49,7 +49,10 @@ export function ResetPasswordPage() {
       <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
         <div className="w-full max-w-md text-center">
           <p className="text-text-secondary">{t('auth.resetTokenMissing')}</p>
-          <Link to="/forgot-password" className="mbs-4 inline-block text-accent hover:text-accent-hover">
+          <Link
+            to="/forgot-password"
+            className="mbs-4 inline-block text-accent hover:text-accent-hover"
+          >
             {t('auth.requestNewReset')}
           </Link>
         </div>
@@ -61,7 +64,11 @@ export function ResetPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
       <div className="w-full max-w-md">
         <div className="mbe-8 flex flex-col items-center">
-          <Sparkles size={32} className="mbe-3 text-accent" aria-hidden="true" />
+          <Sparkles
+            size={32}
+            className="mbe-3 text-accent"
+            aria-hidden="true"
+          />
           <h1 className="text-2xl font-bold text-text-primary">
             {t('auth.resetPasswordTitle')}
           </h1>
@@ -69,8 +76,12 @@ export function ResetPasswordPage() {
 
         {success ? (
           <div className="rounded-lg bg-surface p-6 text-center">
-            <p className="text-text-primary">{t('auth.resetPasswordSuccess')}</p>
-            <p className="mbs-2 text-sm text-text-secondary">{t('auth.redirectingToLogin')}</p>
+            <p className="text-text-primary">
+              {t('auth.resetPasswordSuccess')}
+            </p>
+            <p className="mbs-2 text-sm text-text-secondary">
+              {t('auth.redirectingToLogin')}
+            </p>
           </div>
         ) : (
           <form
@@ -82,7 +93,9 @@ export function ResetPasswordPage() {
               label={t('auth.newPassword')}
               type="password"
               value={password}
-              onChange={(e) => setPassword((e.target as HTMLInputElement).value)}
+              onChange={(e) =>
+                setPassword((e.target as HTMLInputElement).value)
+              }
               required
               autoComplete="new-password"
             />
@@ -91,13 +104,17 @@ export function ResetPasswordPage() {
               label={t('auth.confirmPassword')}
               type="password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword((e.target as HTMLInputElement).value)}
+              onChange={(e) =>
+                setConfirmPassword((e.target as HTMLInputElement).value)
+              }
               required
               autoComplete="new-password"
             />
 
             {error && (
-              <p className="text-sm text-danger" role="alert">{error}</p>
+              <p className="text-sm text-danger" role="alert">
+                {error}
+              </p>
             )}
 
             <Button type="submit" disabled={isSubmitting}>

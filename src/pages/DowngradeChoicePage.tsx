@@ -75,17 +75,14 @@ export function DowngradeChoicePage() {
   const [loadState, setLoadState] = useState<LoadState>({ kind: 'loading' });
   const [mutating, setMutating] = useState<boolean>(false);
 
-  const applySession = useCallback(
-    async (session: DowngradeSessionView) => {
-      const ids = session.pending_decisions.map((d) => d.shard_id);
-      if (session.picked_included_shard_id) {
-        ids.push(session.picked_included_shard_id);
-      }
-      const shardNames = await fetchShardNames(ids);
-      setLoadState({ kind: 'ready', session, shards: shardNames });
-    },
-    [],
-  );
+  const applySession = useCallback(async (session: DowngradeSessionView) => {
+    const ids = session.pending_decisions.map((d) => d.shard_id);
+    if (session.picked_included_shard_id) {
+      ids.push(session.picked_included_shard_id);
+    }
+    const shardNames = await fetchShardNames(ids);
+    setLoadState({ kind: 'ready', session, shards: shardNames });
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -102,7 +99,9 @@ export function DowngradeChoicePage() {
         }
         const code = err instanceof ApiRequestError ? err.code : 'UNKNOWN';
         const message =
-          err instanceof ApiRequestError ? err.message : t('tiers.downgrade.errorGeneric');
+          err instanceof ApiRequestError
+            ? err.message
+            : t('tiers.downgrade.errorGeneric');
         setLoadState({ kind: 'error', code, message });
       }
     })();
@@ -115,11 +114,16 @@ export function DowngradeChoicePage() {
     async (sessionId: string, shardId: string) => {
       setMutating(true);
       try {
-        const updated = await subscription.pickIncludedShard(sessionId, shardId);
+        const updated = await subscription.pickIncludedShard(
+          sessionId,
+          shardId,
+        );
         await applySession(updated);
       } catch (err) {
         const message =
-          err instanceof ApiRequestError ? err.message : t('tiers.downgrade.errorGeneric');
+          err instanceof ApiRequestError
+            ? err.message
+            : t('tiers.downgrade.errorGeneric');
         addToast(message, 'danger', { platformLink: true });
       } finally {
         setMutating(false);
@@ -132,11 +136,17 @@ export function DowngradeChoicePage() {
     async (sessionId: string, shardId: string, decision: string) => {
       setMutating(true);
       try {
-        const updated = await subscription.shardDecision(sessionId, shardId, decision);
+        const updated = await subscription.shardDecision(
+          sessionId,
+          shardId,
+          decision,
+        );
         await applySession(updated);
       } catch (err) {
         const message =
-          err instanceof ApiRequestError ? err.message : t('tiers.downgrade.errorGeneric');
+          err instanceof ApiRequestError
+            ? err.message
+            : t('tiers.downgrade.errorGeneric');
         addToast(message, 'danger', { platformLink: true });
       } finally {
         setMutating(false);
@@ -155,7 +165,9 @@ export function DowngradeChoicePage() {
         navigate('/dashboard');
       } catch (err) {
         const message =
-          err instanceof ApiRequestError ? err.message : t('tiers.downgrade.errorGeneric');
+          err instanceof ApiRequestError
+            ? err.message
+            : t('tiers.downgrade.errorGeneric');
         addToast(message, 'danger', { platformLink: true });
       } finally {
         setMutating(false);
@@ -172,7 +184,9 @@ export function DowngradeChoicePage() {
         navigate(-1);
       } catch (err) {
         const message =
-          err instanceof ApiRequestError ? err.message : t('tiers.downgrade.errorGeneric');
+          err instanceof ApiRequestError
+            ? err.message
+            : t('tiers.downgrade.errorGeneric');
         addToast(message, 'danger', { platformLink: true });
       } finally {
         setMutating(false);
@@ -219,7 +233,9 @@ export function DowngradeChoicePage() {
               <AlertTriangle size={20} className="mbs-0.5 text-danger" />
               <div>
                 <p className="text-sm text-text-primary">{loadState.message}</p>
-                <p className="mbs-1 text-xs text-text-muted">{loadState.code}</p>
+                <p className="mbs-1 text-xs text-text-muted">
+                  {loadState.code}
+                </p>
               </div>
             </div>
           </Card>
@@ -246,7 +262,11 @@ interface ChoiceSurfaceProps {
   shardNames: ShardNameMap;
   mutating: boolean;
   onPickIncluded: (sessionId: string, shardId: string) => void;
-  onShardDecision: (sessionId: string, shardId: string, decision: string) => void;
+  onShardDecision: (
+    sessionId: string,
+    shardId: string,
+    decision: string,
+  ) => void;
   onCommit: (sessionId: string) => void;
   onCancel: (sessionId: string) => void;
 }
@@ -269,9 +289,7 @@ function ChoiceSurface({
     session.state === STATE_EXPIRED ||
     session.state === STATE_CANCELLED
   ) {
-    return (
-      <EmptyState title={t('tiers.downgrade.sessionExpired')} />
-    );
+    return <EmptyState title={t('tiers.downgrade.sessionExpired')} />;
   }
 
   if (session.state === STATE_PICKING_INCLUDED) {
@@ -300,7 +318,9 @@ function ChoiceSurface({
                 <Button
                   variant="primary"
                   disabled={mutating}
-                  onClick={() => onPickIncluded(session.session_id, entry.shard_id)}
+                  onClick={() =>
+                    onPickIncluded(session.session_id, entry.shard_id)
+                  }
                 >
                   {t('tiers.downgrade.keepIncluded')}
                 </Button>
@@ -343,7 +363,9 @@ function ChoiceSurface({
         <Card className="mbe-4" variant="compact">
           <p className="text-xs text-text-muted">
             {t('tiers.downgrade.keepingIncluded', {
-              shard: shardNames[session.picked_included_shard_id] ?? session.picked_included_shard_id,
+              shard:
+                shardNames[session.picked_included_shard_id] ??
+                session.picked_included_shard_id,
             })}
           </p>
         </Card>
@@ -420,7 +442,9 @@ function ShardDecisionRow({
     <Card variant="compact">
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between gap-4">
-          <span className="text-sm font-medium text-text-primary">{shardName}</span>
+          <span className="text-sm font-medium text-text-primary">
+            {shardName}
+          </span>
           {entry.decision !== DECISION_UNDECIDED && (
             <span className="text-xs text-accent">{selectedLabel}</span>
           )}
@@ -434,7 +458,9 @@ function ShardDecisionRow({
             {t('tiers.downgrade.buyAddon')}
           </Button>
           <Button
-            variant={isSelected(DECISION_UPGRADE_BACK) ? 'primary' : 'secondary'}
+            variant={
+              isSelected(DECISION_UPGRADE_BACK) ? 'primary' : 'secondary'
+            }
             disabled={mutating}
             onClick={() => onDecision(DECISION_UPGRADE_BACK)}
           >
@@ -449,7 +475,9 @@ function ShardDecisionRow({
           </Button>
         </div>
         {isSelected(DECISION_ARCHIVE) && (
-          <p className="text-xs text-danger">{t('tiers.downgrade.archiveWarning')}</p>
+          <p className="text-xs text-danger">
+            {t('tiers.downgrade.archiveWarning')}
+          </p>
         )}
       </div>
     </Card>

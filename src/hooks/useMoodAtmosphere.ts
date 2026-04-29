@@ -188,7 +188,10 @@ export function useMoodAtmosphere(
     el.style.setProperty('--mood-primary', palette.primary);
     el.style.setProperty('--mood-secondary', palette.secondary);
     el.style.setProperty('--mood-accent', palette.accent);
-    el.style.setProperty('--mood-particle-speed', String(palette.particleSpeed));
+    el.style.setProperty(
+      '--mood-particle-speed',
+      String(palette.particleSpeed),
+    );
   }, [containerRef, palette]);
 
   return palette;

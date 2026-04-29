@@ -33,7 +33,9 @@ export function echoDeletionDate(
   );
 }
 
-export function isEchoHibernated(echo: Pick<EchoResponse, 'hibernated_at'>): boolean {
+export function isEchoHibernated(
+  echo: Pick<EchoResponse, 'hibernated_at'>,
+): boolean {
   return echo.hibernated_at !== null && echo.hibernated_at !== undefined;
 }
 

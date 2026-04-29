@@ -20,15 +20,9 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Kategori",
-            "Örnekler"
-          ],
+          "columns": ["Kategori", "Örnekler"],
           "rows": [
-            [
-              "Hesap Verileri",
-              "E-posta adresi, görünen ad, özetlenmiş şifre"
-            ],
+            ["Hesap Verileri", "E-posta adresi, görünen ad, özetlenmiş şifre"],
             [
               "Profil Verileri",
               "Biyografi, avatar seçimi, saat dilimi, dil tercihi"
@@ -66,17 +60,9 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Amaç",
-            "Hukuki Dayanak",
-            "Kontrolünüzde"
-          ],
+          "columns": ["Amaç", "Hukuki Dayanak", "Kontrolünüzde"],
           "rows": [
-            [
-              "Hesap oluşturma ve kimlik doğrulama",
-              "Sözleşme",
-              "Hesabı sil"
-            ],
+            ["Hesap oluşturma ve kimlik doğrulama", "Sözleşme", "Hesabı sil"],
             [
               "Yankı simülasyonu (persona işleme)",
               "Rıza",
@@ -87,31 +73,15 @@
               "Meşru Menfaat",
               "Solo Modu anahtarı"
             ],
-            [
-              "Topluluk mesajlaşması",
-              "Meşru Menfaat",
-              "Topluluktan ayrılma"
-            ],
-            [
-              "İçerik moderasyonu ve güvenlik",
-              "Meşru Menfaat",
-              "—"
-            ],
-            [
-              "Abonelik yönetimi",
-              "Sözleşme",
-              "Aboneliği iptal et"
-            ],
+            ["Topluluk mesajlaşması", "Meşru Menfaat", "Topluluktan ayrılma"],
+            ["İçerik moderasyonu ve güvenlik", "Meşru Menfaat", "—"],
+            ["Abonelik yönetimi", "Sözleşme", "Aboneliği iptal et"],
             [
               "Analizler ve hizmet iyileştirme",
               "Meşru Menfaat",
               "Ayarlar'da analizleri devre dışı bırakma"
             ],
-            [
-              "Uygulama ve yasal uyum",
-              "Yasal Yükümlülük",
-              "—"
-            ]
+            ["Uygulama ve yasal uyum", "Yasal Yükümlülük", "—"]
           ]
         }
       ]
@@ -130,51 +100,24 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Veri",
-            "Elde tutma"
-          ],
+          "columns": ["Veri", "Elde tutma"],
           "rows": [
-            [
-              "Hesap ve profil verileri",
-              "Silinene kadar + 30 günlük ek süre"
-            ],
+            ["Hesap ve profil verileri", "Silinene kadar + 30 günlük ek süre"],
             [
               "Persona ve simülasyon verileri",
               "Echo veya hesap silinene kadar"
             ],
-            [
-              "Topluluk mesajları",
-              "paylaşımdan 1 yıl sonra"
-            ],
+            ["Topluluk mesajları", "paylaşımdan 1 yıl sonra"],
             [
               "Oturum jetonları",
               "Erişim: 1 saat; Yenileme: 30 gün; Giriş günlükleri: 90 gün"
             ],
-            [
-              "Analiz verileri",
-              "6 aylık hareketli ortalama"
-            ],
-            [
-              "Ödeme kayıtları",
-              "7 yıl (yasal gereklilik)"
-            ],
-            [
-              "Moderasyon kayıtları",
-              "3 yıl"
-            ],
-            [
-              "Rıza kayıtları",
-              "Hesap süresi + 5 yıl"
-            ],
-            [
-              "Veri dışa aktarma dosyaları",
-              "üretimden 72 saat sonra"
-            ],
-            [
-              "Şifrelenmiş yedekler",
-              "90 günlük döngüsel rotasyon"
-            ]
+            ["Analiz verileri", "6 aylık hareketli ortalama"],
+            ["Ödeme kayıtları", "7 yıl (yasal gereklilik)"],
+            ["Moderasyon kayıtları", "3 yıl"],
+            ["Rıza kayıtları", "Hesap süresi + 5 yıl"],
+            ["Veri dışa aktarma dosyaları", "üretimden 72 saat sonra"],
+            ["Şifrelenmiş yedekler", "90 günlük döngüsel rotasyon"]
           ]
         }
       ]
@@ -225,27 +168,15 @@
       "blocks": [
         {
           "type": "table",
-          "columns": [
-            "Hizmet",
-            "Paylaşılan Veriler",
-            "Amaç"
-          ],
+          "columns": ["Hizmet", "Paylaşılan Veriler", "Amaç"],
           "rows": [
             [
               "Stripe",
               "E-posta, faturalandırma meta verileri",
               "Kart ödeme işlemleri"
             ],
-            [
-              "NOWPayments",
-              "Ödeme tutarı",
-              "Kripto para ödemeleri"
-            ],
-            [
-              "Xaman",
-              "Cüzdan adresi",
-              "XRP ödemeleri"
-            ]
+            ["NOWPayments", "Ödeme tutarı", "Kripto para ödemeleri"],
+            ["Xaman", "Cüzdan adresi", "XRP ödemeleri"]
           ]
         },
         {

@@ -146,7 +146,10 @@ export function ContactPage() {
         <meta name="description" content={t('contact.metaDesc')} />
         <meta property="og:title" content={t('contact.metaTitle')} />
         <meta property="og:description" content={t('contact.metaDesc')} />
-        <meta property="og:image" content="https://echolabsme.com/og-image-v2.png" />
+        <meta
+          property="og:image"
+          content="https://echolabsme.com/og-image-v2.png"
+        />
         {/* og:url is emitted path-aware by WebsiteLayout. */}
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -191,9 +194,7 @@ export function ContactPage() {
                 label={t('contact.labelName')}
                 type="text"
                 value={name}
-                onChange={(e) =>
-                  setName((e.target as HTMLInputElement).value)
-                }
+                onChange={(e) => setName((e.target as HTMLInputElement).value)}
                 required
                 maxLength={100}
                 autoComplete="name"
@@ -204,9 +205,7 @@ export function ContactPage() {
                 label={t('contact.labelEmail')}
                 type="email"
                 value={email}
-                onChange={(e) =>
-                  setEmail((e.target as HTMLInputElement).value)
-                }
+                onChange={(e) => setEmail((e.target as HTMLInputElement).value)}
                 required
                 maxLength={254}
                 autoComplete="email"
@@ -273,10 +272,7 @@ export function ContactPage() {
               )}
 
               {error && (
-                <p
-                  className="text-sm text-(--danger,#dc2626)"
-                  role="alert"
-                >
+                <p className="text-sm text-(--danger,#dc2626)" role="alert">
                   {error}
                 </p>
               )}
@@ -297,10 +293,7 @@ export function ContactPage() {
               {t('website.nav.about')}
             </Link>
             {' · '}
-            <Link
-              to="/waitlist"
-              className="text-(--accent) hover:underline"
-            >
+            <Link to="/waitlist" className="text-(--accent) hover:underline">
               {t('auth.joinWaitlist')}
             </Link>
           </div>

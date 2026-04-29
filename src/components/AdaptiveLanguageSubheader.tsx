@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { SUPPORTED_LOCALES, RTL_LOCALES, type SupportedLocale } from '../i18n.ts';
+import {
+  SUPPORTED_LOCALES,
+  RTL_LOCALES,
+  type SupportedLocale,
+} from '../i18n.ts';
 import { useReducedMotion } from '../hooks/useReducedMotion.ts';
 import {
   detectShippedLocale,

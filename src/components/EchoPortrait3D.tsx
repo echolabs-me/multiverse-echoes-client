@@ -191,8 +191,10 @@ function StaticFallback({
   size: 'sm' | 'md' | 'lg';
 }) {
   const theme = getMoodTheme(mood);
-  const sizeClass = size === 'lg' ? 'h-24 w-24' : size === 'md' ? 'h-20 w-20' : 'h-14 w-14';
-  const textSize = size === 'lg' ? 'text-4xl' : size === 'md' ? 'text-3xl' : 'text-xl';
+  const sizeClass =
+    size === 'lg' ? 'h-24 w-24' : size === 'md' ? 'h-20 w-20' : 'h-14 w-14';
+  const textSize =
+    size === 'lg' ? 'text-4xl' : size === 'md' ? 'text-3xl' : 'text-xl';
 
   const setThemeVars = (el: HTMLElement | null) => {
     if (!el) return;
@@ -241,7 +243,8 @@ export function EchoPortrait3D({
   const reducedMotion = useReducedMotion();
   const gpuAvailable = useGpuAvailable();
 
-  const sizeClass = size === 'lg' ? 'h-24 w-24' : size === 'md' ? 'h-20 w-20' : 'h-14 w-14';
+  const sizeClass =
+    size === 'lg' ? 'h-24 w-24' : size === 'md' ? 'h-20 w-20' : 'h-14 w-14';
   const theme = getMoodTheme(mood);
 
   // If an AI-generated portrait exists, show it with a mood-tinted border.
@@ -249,7 +252,8 @@ export function EchoPortrait3D({
     return (
       <div
         ref={(el) => {
-          if (el) el.style.setProperty('--me-theme-border', `${theme.primary}44`);
+          if (el)
+            el.style.setProperty('--me-theme-border', `${theme.primary}44`);
         }}
         className={`me-portrait-ring ${sizeClass} shrink-0 overflow-hidden rounded-xl`}
         role="img"
@@ -278,7 +282,9 @@ export function EchoPortrait3D({
       role="img"
       aria-label={`${name} portrait, mood: ${mood}`}
     >
-      <Suspense fallback={<StaticFallback name={name} mood={mood} size={size} />}>
+      <Suspense
+        fallback={<StaticFallback name={name} mood={mood} size={size} />}
+      >
         <Canvas
           camera={{ position: [0, 0.2, 2], fov: 40 }}
           dpr={[1, 1.5]}
@@ -287,10 +293,7 @@ export function EchoPortrait3D({
           frameloop="always"
         >
           <color attach="background" args={[getMoodTheme(mood).ambient]} />
-          <fog
-            attach="fog"
-            args={[getMoodTheme(mood).ambient, 2, 5]}
-          />
+          <fog attach="fog" args={[getMoodTheme(mood).ambient, 2, 5]} />
           <PainterlyLighting mood={mood} />
           <SilhouetteMesh mood={mood} />
         </Canvas>

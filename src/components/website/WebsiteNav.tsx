@@ -26,7 +26,10 @@ export function WebsiteNav() {
   useEffect(() => {
     if (!langOpen) return;
     function onDocClick(e: MouseEvent) {
-      if (langWrapRef.current && !langWrapRef.current.contains(e.target as Node)) {
+      if (
+        langWrapRef.current &&
+        !langWrapRef.current.contains(e.target as Node)
+      ) {
         setLangOpen(false);
       }
     }
@@ -61,12 +64,15 @@ export function WebsiteNav() {
   }, [location.pathname, location.hash]);
 
   const enterTo = isAuthenticated ? '/dashboard' : '/login';
-  const enterLabel = isAuthenticated ? t('website.nav.dashboard') : t('website.nav.enter');
+  const enterLabel = isAuthenticated
+    ? t('website.nav.dashboard')
+    : t('website.nav.enter');
   const showWaitlistCta = !isAuthenticated;
 
   const currentLangName =
-    new Intl.DisplayNames([i18n.language], { type: 'language' }).of(i18n.language) ??
-    i18n.language;
+    new Intl.DisplayNames([i18n.language], { type: 'language' }).of(
+      i18n.language,
+    ) ?? i18n.language;
 
   const linkClass =
     'font-serif text-sm tracking-wider transition-colors ' +
@@ -107,10 +113,16 @@ export function WebsiteNav() {
           <Link to="/home" onClick={handleHomeClick} className={linkClass}>
             {t('website.nav.home')}
           </Link>
-          <button onClick={() => scrollToSection('features')} className={linkClass}>
+          <button
+            onClick={() => scrollToSection('features')}
+            className={linkClass}
+          >
             {t('website.nav.features')}
           </button>
-          <button onClick={() => scrollToSection('pricing')} className={linkClass}>
+          <button
+            onClick={() => scrollToSection('pricing')}
+            className={linkClass}
+          >
             {t('website.nav.pricing')}
           </button>
           <Link to="/about" className={linkClass}>
@@ -135,8 +147,8 @@ export function WebsiteNav() {
             </Link>
           )}
 
-          <div 
-            ref={langWrapRef} 
+          <div
+            ref={langWrapRef}
             className="relative"
             onBlur={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget)) {
@@ -225,7 +237,9 @@ export function WebsiteNav() {
               <Globe size={13} />
               <span>{currentLangName}</span>
             </button>
-            {langOpen && <LanguageSwitcher onSelect={() => setLangOpen(false)} />}
+            {langOpen && (
+              <LanguageSwitcher onSelect={() => setLangOpen(false)} />
+            )}
 
             <Link
               to={showWaitlistCta ? '/waitlist' : enterTo}

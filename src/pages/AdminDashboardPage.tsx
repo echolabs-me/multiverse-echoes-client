@@ -75,8 +75,12 @@ export function AdminDashboardPage() {
       <div className="flex min-h-screen items-center justify-center bg-canvas">
         <div className="text-center">
           <Shield size={48} className="mx-auto mbe-4 text-danger" />
-          <h1 className="text-xl font-semibold text-text-primary">{t('admin.accessDenied')}</h1>
-          <p className="mbs-2 text-text-secondary">{t('admin.accessDeniedDesc')}</p>
+          <h1 className="text-xl font-semibold text-text-primary">
+            {t('admin.accessDenied')}
+          </h1>
+          <p className="mbs-2 text-text-secondary">
+            {t('admin.accessDeniedDesc')}
+          </p>
           <Button className="mbs-4" onClick={() => navigate('/dashboard')}>
             {t('common.back')}
           </Button>
@@ -104,7 +108,9 @@ export function AdminDashboardPage() {
       <header className="border-be border-border bg-surface px-6 py-4">
         <div className="flex items-center gap-3">
           <Shield size={24} className="text-accent" />
-          <h1 className="text-xl font-semibold text-text-primary">{t('admin.title')}</h1>
+          <h1 className="text-xl font-semibold text-text-primary">
+            {t('admin.title')}
+          </h1>
         </div>
       </header>
 
@@ -157,14 +163,54 @@ function DashboardView() {
 
   const metrics = health
     ? [
-        { label: t('admin.tickNumber'), value: String(health.tick_number), icon: <Activity size={16} /> },
-        { label: t('admin.tickDuration'), value: `${String(health.tick_duration_ms)}ms`, icon: <Clock size={16} />, warn: health.tick_duration_ms > 5000 },
-        { label: t('admin.ramUsage'), value: `${String(health.ram_usage_mb)} MB`, icon: <Database size={16} />, warn: health.ram_usage_mb > 4096 },
-        { label: t('admin.vramUsage'), value: health.vram_total_mb > 0 ? `${String(health.vram_usage_mb)} / ${String(health.vram_total_mb)} MB` : `${String(health.vram_usage_mb)} MB`, icon: <Database size={16} />, warn: health.vram_total_mb > 0 && (health.vram_usage_mb / health.vram_total_mb) > 0.9 },
-        { label: t('admin.activeEchoes'), value: String(health.active_echoes), icon: <Users size={16} /> },
-        { label: t('admin.hibernatedEchoes'), value: String(health.hibernated_echoes), icon: <Users size={16} /> },
-        { label: t('admin.totalUsers'), value: String(health.total_users), icon: <Users size={16} /> },
-        { label: t('admin.totalShards'), value: String(health.total_shards), icon: <Globe size={16} /> },
+        {
+          label: t('admin.tickNumber'),
+          value: String(health.tick_number),
+          icon: <Activity size={16} />,
+        },
+        {
+          label: t('admin.tickDuration'),
+          value: `${String(health.tick_duration_ms)}ms`,
+          icon: <Clock size={16} />,
+          warn: health.tick_duration_ms > 5000,
+        },
+        {
+          label: t('admin.ramUsage'),
+          value: `${String(health.ram_usage_mb)} MB`,
+          icon: <Database size={16} />,
+          warn: health.ram_usage_mb > 4096,
+        },
+        {
+          label: t('admin.vramUsage'),
+          value:
+            health.vram_total_mb > 0
+              ? `${String(health.vram_usage_mb)} / ${String(health.vram_total_mb)} MB`
+              : `${String(health.vram_usage_mb)} MB`,
+          icon: <Database size={16} />,
+          warn:
+            health.vram_total_mb > 0 &&
+            health.vram_usage_mb / health.vram_total_mb > 0.9,
+        },
+        {
+          label: t('admin.activeEchoes'),
+          value: String(health.active_echoes),
+          icon: <Users size={16} />,
+        },
+        {
+          label: t('admin.hibernatedEchoes'),
+          value: String(health.hibernated_echoes),
+          icon: <Users size={16} />,
+        },
+        {
+          label: t('admin.totalUsers'),
+          value: String(health.total_users),
+          icon: <Users size={16} />,
+        },
+        {
+          label: t('admin.totalShards'),
+          value: String(health.total_shards),
+          icon: <Globe size={16} />,
+        },
       ]
     : [];
 
@@ -175,10 +221,14 @@ function DashboardView() {
         {metrics.map((m) => (
           <Card key={m.label}>
             <div className="flex items-center gap-2">
-              <span className={m.warn ? 'text-danger' : 'text-text-muted'}>{m.icon}</span>
+              <span className={m.warn ? 'text-danger' : 'text-text-muted'}>
+                {m.icon}
+              </span>
               <div>
                 <p className="text-xs text-text-muted">{m.label}</p>
-                <p className={`text-lg font-semibold ${m.warn ? 'text-danger' : 'text-text-primary'}`}>
+                <p
+                  className={`text-lg font-semibold ${m.warn ? 'text-danger' : 'text-text-primary'}`}
+                >
                   {m.value}
                 </p>
               </div>
@@ -186,7 +236,6 @@ function DashboardView() {
           </Card>
         ))}
       </div>
-
     </div>
   );
 }
@@ -206,7 +255,12 @@ function ReportsView() {
         const r = await admin.reports();
         // Sort by priority (T3 first) then by created_at
         r.sort((a, b) => {
-          const priorityOrder: Record<string, number> = { P0: 0, P1: 1, P2: 2, P3: 3 };
+          const priorityOrder: Record<string, number> = {
+            P0: 0,
+            P1: 1,
+            P2: 2,
+            P3: 3,
+          };
           const pa = priorityOrder[a.priority] ?? 99;
           const pb = priorityOrder[b.priority] ?? 99;
           if (pa !== pb) return pa - pb;
@@ -226,7 +280,12 @@ function ReportsView() {
     if (!resolveId || !resolveNotes.trim()) return;
     try {
       await admin.resolveReport(resolveId, {
-        action: resolveAction as 'Quarantine' | 'Warn' | 'Suspend' | 'Dismiss' | 'Restore',
+        action: resolveAction as
+          | 'Quarantine'
+          | 'Warn'
+          | 'Suspend'
+          | 'Dismiss'
+          | 'Restore',
         notes: resolveNotes,
       });
       setReports((prev) => prev.filter((r) => r.report_id !== resolveId));
@@ -252,29 +311,43 @@ function ReportsView() {
         {t('admin.reportQueue')} ({reports.length})
       </h3>
       {reports.length === 0 ? (
-        <p className="py-8 text-center text-text-muted">{t('admin.noReports')}</p>
+        <p className="py-8 text-center text-text-muted">
+          {t('admin.noReports')}
+        </p>
       ) : (
         reports.map((report) => (
           <Card key={report.report_id}>
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <Badge variant={priorityColors[report.priority] as 'danger' | 'warning' | 'default'}>
+                  <Badge
+                    variant={
+                      priorityColors[report.priority] as
+                        | 'danger'
+                        | 'warning'
+                        | 'default'
+                    }
+                  >
                     {report.priority}
                   </Badge>
                   <span className="text-sm font-medium text-text-primary">
                     {report.target_type}: {report.target_id.slice(0, 8)}
                   </span>
                 </div>
-                <p className="mbs-1 text-sm text-text-secondary">{report.reason}</p>
+                <p className="mbs-1 text-sm text-text-secondary">
+                  {report.reason}
+                </p>
                 {report.details && (
-                  <p className="mbs-1 text-xs text-text-muted">{report.details}</p>
+                  <p className="mbs-1 text-xs text-text-muted">
+                    {report.details}
+                  </p>
                 )}
                 <div className="mbs-2 flex items-center gap-3 text-xs text-text-muted">
                   <span>{new Date(report.created_at).toLocaleString()}</span>
                   <span className="flex items-center gap-1">
                     <Clock size={10} />
-                    {t('admin.slaDeadline')}: {new Date(report.sla_deadline).toLocaleString()}
+                    {t('admin.slaDeadline')}:{' '}
+                    {new Date(report.sla_deadline).toLocaleString()}
                   </span>
                 </div>
               </div>
@@ -287,7 +360,9 @@ function ReportsView() {
                     className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
                     aria-label={t('admin.selectAction')}
                   >
-                    <option value="Quarantine">{t('admin.actionQuarantine')}</option>
+                    <option value="Quarantine">
+                      {t('admin.actionQuarantine')}
+                    </option>
                     <option value="Warn">{t('admin.actionWarn')}</option>
                     <option value="Suspend">{t('admin.actionSuspend')}</option>
                     <option value="Dismiss">{t('admin.actionDismiss')}</option>
@@ -310,13 +385,21 @@ function ReportsView() {
                     >
                       {t('common.confirm')}
                     </Button>
-                    <Button variant="ghost" onClick={() => setResolveId(null)} className="text-xs">
+                    <Button
+                      variant="ghost"
+                      onClick={() => setResolveId(null)}
+                      className="text-xs"
+                    >
                       {t('common.cancel')}
                     </Button>
                   </div>
                 </div>
               ) : (
-                <Button variant="secondary" onClick={() => setResolveId(report.report_id)} className="text-xs">
+                <Button
+                  variant="secondary"
+                  onClick={() => setResolveId(report.report_id)}
+                  className="text-xs"
+                >
                   {t('admin.resolve')}
                 </Button>
               )}
@@ -373,7 +456,10 @@ function UsersView() {
     <div className="space-y-4">
       <form onSubmit={handleSearch} className="flex gap-2">
         <div className="relative flex-1">
-          <Search size={16} className="absolute inset-s-3 inset-bs-1/2 -translate-y-1/2 text-text-muted" />
+          <Search
+            size={16}
+            className="absolute inset-s-3 inset-bs-1/2 -translate-y-1/2 text-text-muted"
+          />
           <input
             type="text"
             value={searchQuery}
@@ -404,7 +490,9 @@ function UsersView() {
             <tbody>
               {users.map((u) => (
                 <tr key={u.user_id} className="border-be border-border">
-                  <td className="px-3 py-2 text-text-primary">{u.display_name}</td>
+                  <td className="px-3 py-2 text-text-primary">
+                    {u.display_name}
+                  </td>
                   <td className="px-3 py-2 text-text-secondary">{u.email}</td>
                   <td className="px-3 py-2">
                     <Badge variant="default">{u.subscription_tier}</Badge>
@@ -422,12 +510,18 @@ function UsersView() {
                       {u.account_status}
                     </Badge>
                   </td>
-                  <td className="px-3 py-2 text-text-secondary">{u.echo_count}</td>
+                  <td className="px-3 py-2 text-text-secondary">
+                    {u.echo_count}
+                  </td>
                   <td className="px-3 py-2">
                     <Button
-                      variant={u.account_status === 'Suspended' ? 'primary' : 'danger'}
+                      variant={
+                        u.account_status === 'Suspended' ? 'primary' : 'danger'
+                      }
                       className="text-xs"
-                      onClick={() => void handleSuspendToggle(u.user_id, u.account_status)}
+                      onClick={() =>
+                        void handleSuspendToggle(u.user_id, u.account_status)
+                      }
                     >
                       {u.account_status === 'Suspended'
                         ? t('admin.unsuspend')
@@ -439,7 +533,9 @@ function UsersView() {
             </tbody>
           </table>
           {users.length === 0 && (
-            <p className="py-8 text-center text-text-muted">{t('common.noResults')}</p>
+            <p className="py-8 text-center text-text-muted">
+              {t('common.noResults')}
+            </p>
           )}
         </div>
       )}
@@ -482,26 +578,42 @@ function ShardsView() {
           </thead>
           <tbody>
             {shards.map((s) => {
-              const capacityPct = s.max_active_echoes > 0 ? (s.current_active_count / s.max_active_echoes) * 100 : 0;
+              const capacityPct =
+                s.max_active_echoes > 0
+                  ? (s.current_active_count / s.max_active_echoes) * 100
+                  : 0;
               return (
                 <tr key={s.shard_id} className="border-be border-border">
                   <td className="px-3 py-2 text-text-primary">{s.name}</td>
-                  <td className="px-3 py-2 text-text-secondary">{s.shard_type}</td>
+                  <td className="px-3 py-2 text-text-secondary">
+                    {s.shard_type}
+                  </td>
                   <td className="px-3 py-2">
-                    <Badge variant={s.status === 'Active' ? 'success' : 'default'}>
+                    <Badge
+                      variant={s.status === 'Active' ? 'success' : 'default'}
+                    >
                       {s.status}
                     </Badge>
                   </td>
                   <td className="px-3 py-2">
                     <div className="flex items-center gap-2">
-                      <span className={capacityPct > 90 ? 'text-danger' : 'text-text-secondary'}>
+                      <span
+                        className={
+                          capacityPct > 90
+                            ? 'text-danger'
+                            : 'text-text-secondary'
+                        }
+                      >
                         {s.current_active_count} / {s.max_active_echoes}
                       </span>
                       <div className="h-2 w-16 overflow-hidden rounded-full bg-surface-raised">
                         <div
                           ref={(el) => {
                             if (el) {
-                              el.style.setProperty('--me-progress', `${Math.min(capacityPct, 100)}%`);
+                              el.style.setProperty(
+                                '--me-progress',
+                                `${Math.min(capacityPct, 100)}%`,
+                              );
                             }
                           }}
                           className={`me-progress-bar h-full rounded-full transition-all ${
@@ -521,7 +633,9 @@ function ShardsView() {
           </tbody>
         </table>
         {shards.length === 0 && (
-          <p className="py-8 text-center text-text-muted">{t('common.noResults')}</p>
+          <p className="py-8 text-center text-text-muted">
+            {t('common.noResults')}
+          </p>
         )}
       </div>
     </div>
@@ -535,7 +649,11 @@ function ControlsView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    void admin.tickStatus().then((s) => setPaused(s.paused)).catch(() => {}).finally(() => setLoading(false));
+    void admin
+      .tickStatus()
+      .then((s) => setPaused(s.paused))
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const handleToggle = async () => {
@@ -547,7 +665,9 @@ function ControlsView() {
         const r = await admin.tickPause();
         setPaused(r.paused);
       }
-    } catch { /* */ }
+    } catch {
+      /* */
+    }
   };
 
   if (loading) return <Spinner />;
@@ -555,7 +675,9 @@ function ControlsView() {
   return (
     <div className="space-y-6">
       <Card>
-        <h3 className="mbe-3 text-sm font-semibold text-text-secondary">{t('admin.tickControl')}</h3>
+        <h3 className="mbe-3 text-sm font-semibold text-text-secondary">
+          {t('admin.tickControl')}
+        </h3>
         <div className="flex items-center gap-4">
           <Badge variant={paused ? 'warning' : 'success'}>
             {paused ? 'Paused' : 'Running'}
@@ -574,14 +696,20 @@ function ControlsView() {
         )}
       </Card>
       <Card>
-        <h3 className="mbe-3 text-sm font-semibold text-text-secondary">{t('admin.manualTick')}</h3>
-        <p className="mbe-3 text-xs text-text-muted">{t('admin.manualTickDesc')}</p>
+        <h3 className="mbe-3 text-sm font-semibold text-text-secondary">
+          {t('admin.manualTick')}
+        </h3>
+        <p className="mbe-3 text-xs text-text-muted">
+          {t('admin.manualTickDesc')}
+        </p>
         <Button
           variant="secondary"
           onClick={async () => {
             try {
               await admin.triggerTick();
-            } catch { /* */ }
+            } catch {
+              /* */
+            }
           }}
         >
           {t('admin.triggerTick')}
@@ -613,7 +741,9 @@ function AnalyticsView() {
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await request<AnalyticsSummary>('/admin/analytics/summary');
+        const data = await request<AnalyticsSummary>(
+          '/admin/analytics/summary',
+        );
         setSummary(data);
       } catch {
         // Will show empty state
@@ -625,14 +755,40 @@ function AnalyticsView() {
   }, []);
 
   if (isLoading) return <Spinner />;
-  if (!summary) return <p className="py-8 text-center text-text-muted">{t('admin.analyticsLoadFailed')}</p>;
+  if (!summary)
+    return (
+      <p className="py-8 text-center text-text-muted">
+        {t('admin.analyticsLoadFailed')}
+      </p>
+    );
 
   const metrics = [
-    { label: 'DAU (Daily Active Users)', value: String(summary.dau), icon: <Users size={16} /> },
-    { label: 'Registrations (7d)', value: String(summary.registrations_7d), icon: <Users size={16} /> },
-    { label: 'Echo Creations (7d)', value: String(summary.echo_creations_7d), icon: <Activity size={16} /> },
-    { label: 'Diary Views (today)', value: String(summary.diary_views_today), icon: <Activity size={16} /> },
-    { label: 'Content Flagged (7d)', value: String(summary.safety_flagged_7d), icon: <AlertTriangle size={16} />, warn: summary.safety_flagged_7d > 0 },
+    {
+      label: 'DAU (Daily Active Users)',
+      value: String(summary.dau),
+      icon: <Users size={16} />,
+    },
+    {
+      label: 'Registrations (7d)',
+      value: String(summary.registrations_7d),
+      icon: <Users size={16} />,
+    },
+    {
+      label: 'Echo Creations (7d)',
+      value: String(summary.echo_creations_7d),
+      icon: <Activity size={16} />,
+    },
+    {
+      label: 'Diary Views (today)',
+      value: String(summary.diary_views_today),
+      icon: <Activity size={16} />,
+    },
+    {
+      label: 'Content Flagged (7d)',
+      value: String(summary.safety_flagged_7d),
+      icon: <AlertTriangle size={16} />,
+      warn: summary.safety_flagged_7d > 0,
+    },
   ];
 
   return (
@@ -641,10 +797,14 @@ function AnalyticsView() {
         {metrics.map((m) => (
           <Card key={m.label}>
             <div className="flex items-center gap-2">
-              <span className={m.warn ? 'text-danger' : 'text-text-muted'}>{m.icon}</span>
+              <span className={m.warn ? 'text-danger' : 'text-text-muted'}>
+                {m.icon}
+              </span>
               <div>
                 <p className="text-xs text-text-muted">{m.label}</p>
-                <p className={`text-lg font-semibold ${m.warn ? 'text-danger' : 'text-text-primary'}`}>
+                <p
+                  className={`text-lg font-semibold ${m.warn ? 'text-danger' : 'text-text-primary'}`}
+                >
                   {m.value}
                 </p>
               </div>
@@ -664,7 +824,10 @@ function AnalyticsView() {
 // recharts time-series, the snapshot history table with CSV export, and
 // the dunning queue with client-side filtering.
 
-const PHASE_VARIANT: Record<DunningPhase, 'success' | 'info' | 'warning' | 'danger' | 'default'> = {
+const PHASE_VARIANT: Record<
+  DunningPhase,
+  'success' | 'info' | 'warning' | 'danger' | 'default'
+> = {
   active: 'success',
   renewal_pending: 'info',
   renewal_imminent: 'warning',
@@ -711,7 +874,9 @@ function exportSnapshotsCsv(items: AdminRevenueSnapshotItem[]): void {
     const str = String(v);
     return /["\n\r,]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
   };
-  const csv = [header, ...rows].map((r) => r.map(escape).join(',')).join('\r\n');
+  const csv = [header, ...rows]
+    .map((r) => r.map(escape).join(','))
+    .join('\r\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -732,7 +897,9 @@ function BillingView() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [filterPhase, setFilterPhase] = useState<DunningPhase | 'all'>('all');
   const [filterUserId, setFilterUserId] = useState<string>('');
-  const [filterProvider, setFilterProvider] = useState<CryptoBillingProvider | 'all'>('all');
+  const [filterProvider, setFilterProvider] = useState<
+    CryptoBillingProvider | 'all'
+  >('all');
   const [overrideTarget, setOverrideTarget] = useState<{
     userId: string;
     provider: CryptoBillingProvider;
@@ -753,7 +920,9 @@ function BillingView() {
         const msg = err instanceof Error ? err.message : String(err);
         setLoadError(msg);
         setLoading(false);
-        addToast(t('admin.billing.error.loadFailed'), 'danger', { platformLink: true });
+        addToast(t('admin.billing.error.loadFailed'), 'danger', {
+          platformLink: true,
+        });
       });
   }, [addToast, t]);
 
@@ -787,7 +956,9 @@ function BillingView() {
             filterUserId === '' ||
             d.user_id.toLowerCase().includes(filterUserId.toLowerCase()),
         )
-        .filter((d) => filterProvider === 'all' || d.provider === filterProvider),
+        .filter(
+          (d) => filterProvider === 'all' || d.provider === filterProvider,
+        ),
     [dunning, filterPhase, filterUserId, filterProvider],
   );
 
@@ -811,38 +982,56 @@ function BillingView() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-semibold text-text-primary">{t('admin.billing.heading')}</h2>
+      <h2 className="text-lg font-semibold text-text-primary">
+        {t('admin.billing.heading')}
+      </h2>
 
       {/* KPI cards */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
         <Card>
-          <p className="text-xs text-text-muted">{t('admin.billing.kpi.mrr')}</p>
+          <p className="text-xs text-text-muted">
+            {t('admin.billing.kpi.mrr')}
+          </p>
           <p className="text-lg font-semibold text-text-primary">
             {formatUsdCents(latest?.mrr_usd_cents ?? 0)}
           </p>
         </Card>
         <Card>
-          <p className="text-xs text-text-muted">{t('admin.billing.kpi.totalSubscribers')}</p>
+          <p className="text-xs text-text-muted">
+            {t('admin.billing.kpi.totalSubscribers')}
+          </p>
           <p className="text-lg font-semibold text-text-primary">
             {latest?.paid_subscribers_total ?? 0}
           </p>
         </Card>
         <Card>
-          <p className="text-xs text-text-muted">{t('admin.billing.kpi.churnDelta')}</p>
-          <p className="text-lg font-semibold text-text-primary">{churnDelta}</p>
           <p className="text-xs text-text-muted">
-            {t('admin.billing.kpi.subtitle.churnSincePrev', { count: churnSincePrev })}
+            {t('admin.billing.kpi.churnDelta')}
+          </p>
+          <p className="text-lg font-semibold text-text-primary">
+            {churnDelta}
+          </p>
+          <p className="text-xs text-text-muted">
+            {t('admin.billing.kpi.subtitle.churnSincePrev', {
+              count: churnSincePrev,
+            })}
           </p>
         </Card>
         <Card>
-          <p className="text-xs text-text-muted">{t('admin.billing.kpi.newSubs')}</p>
+          <p className="text-xs text-text-muted">
+            {t('admin.billing.kpi.newSubs')}
+          </p>
           <p className="text-lg font-semibold text-text-primary">{newSubs}</p>
           <p className="text-xs text-text-muted">
-            {t('admin.billing.kpi.subtitle.newSincePrev', { count: newSincePrev })}
+            {t('admin.billing.kpi.subtitle.newSincePrev', {
+              count: newSincePrev,
+            })}
           </p>
         </Card>
         <Card>
-          <p className="text-xs text-text-muted">{t('admin.billing.kpi.dunningActive')}</p>
+          <p className="text-xs text-text-muted">
+            {t('admin.billing.kpi.dunningActive')}
+          </p>
           <p className="text-lg font-semibold text-text-primary">
             {latest?.dunning_active_count ?? 0}
           </p>
@@ -940,44 +1129,76 @@ function BillingView() {
           </div>
         </div>
         {snapshots.length === 0 ? (
-          <p className="py-8 text-center text-text-muted">{t('admin.billing.snapshots.empty')}</p>
+          <p className="py-8 text-center text-text-muted">
+            {t('admin.billing.snapshots.empty')}
+          </p>
         ) : (
           <div className="max-h-96 overflow-x-auto overflow-y-auto">
             <table className="w-full text-sm" role="table">
               <thead className="sticky inset-bs-0 bg-surface">
                 <tr className="border-be border-border text-start text-text-muted">
-                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.period')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.mrr')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.subscribers')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.perTier')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.newSubs')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.churned')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.dunningActive')}</th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.snapshots.col.period')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.snapshots.col.mrr')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.snapshots.col.subscribers')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.snapshots.col.perTier')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.snapshots.col.newSubs')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.snapshots.col.churned')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.snapshots.col.dunningActive')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {snapshots.map((s) => (
                   <tr key={s.snapshot_id} className="border-be border-border">
-                    <td className="px-3 py-2 text-text-primary">{s.period_start.slice(0, 10)}</td>
-                    <td className="px-3 py-2 text-text-primary">{formatUsdCents(s.mrr_usd_cents)}</td>
-                    <td className="px-3 py-2 text-text-secondary">{s.paid_subscribers_total}</td>
+                    <td className="px-3 py-2 text-text-primary">
+                      {s.period_start.slice(0, 10)}
+                    </td>
+                    <td className="px-3 py-2 text-text-primary">
+                      {formatUsdCents(s.mrr_usd_cents)}
+                    </td>
+                    <td className="px-3 py-2 text-text-secondary">
+                      {s.paid_subscribers_total}
+                    </td>
                     <td className="px-3 py-2 text-xs text-text-muted">
                       <span className="me-2">
-                        {t('admin.billing.tier.starter')}: {s.paid_subscribers_by_tier.starter}
+                        {t('admin.billing.tier.starter')}:{' '}
+                        {s.paid_subscribers_by_tier.starter}
                       </span>
                       <span className="me-2">
-                        {t('admin.billing.tier.core')}: {s.paid_subscribers_by_tier.core}
+                        {t('admin.billing.tier.core')}:{' '}
+                        {s.paid_subscribers_by_tier.core}
                       </span>
                       <span className="me-2">
-                        {t('admin.billing.tier.creator')}: {s.paid_subscribers_by_tier.creator}
+                        {t('admin.billing.tier.creator')}:{' '}
+                        {s.paid_subscribers_by_tier.creator}
                       </span>
                       <span>
-                        {t('admin.billing.tier.godMode')}: {s.paid_subscribers_by_tier.god_mode}
+                        {t('admin.billing.tier.godMode')}:{' '}
+                        {s.paid_subscribers_by_tier.god_mode}
                       </span>
                     </td>
-                    <td className="px-3 py-2 text-text-secondary">{s.new_subscribers_count}</td>
-                    <td className="px-3 py-2 text-text-secondary">{s.churned_subscribers_count}</td>
-                    <td className="px-3 py-2 text-text-secondary">{s.dunning_active_count}</td>
+                    <td className="px-3 py-2 text-text-secondary">
+                      {s.new_subscribers_count}
+                    </td>
+                    <td className="px-3 py-2 text-text-secondary">
+                      {s.churned_subscribers_count}
+                    </td>
+                    <td className="px-3 py-2 text-text-secondary">
+                      {s.dunning_active_count}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -996,11 +1217,15 @@ function BillingView() {
             <span>{t('admin.billing.dunning.filter.phaseLabel')}</span>
             <select
               value={filterPhase}
-              onChange={(e) => setFilterPhase(e.target.value as DunningPhase | 'all')}
+              onChange={(e) =>
+                setFilterPhase(e.target.value as DunningPhase | 'all')
+              }
               className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
               aria-label={t('admin.billing.dunning.filter.phaseLabel')}
             >
-              <option value="all">{t('admin.billing.dunning.filter.phaseAll')}</option>
+              <option value="all">
+                {t('admin.billing.dunning.filter.phaseAll')}
+              </option>
               {DUNNING_PHASE_OPTIONS.map((p) => (
                 <option key={p} value={p}>
                   {t(`admin.billing.dunning.phase.${dunningPhaseI18nKey(p)}`)}
@@ -1021,31 +1246,51 @@ function BillingView() {
             <select
               value={filterProvider}
               onChange={(e) =>
-                setFilterProvider(e.target.value as CryptoBillingProvider | 'all')
+                setFilterProvider(
+                  e.target.value as CryptoBillingProvider | 'all',
+                )
               }
               className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
               aria-label={t('admin.billing.dunning.filter.providerLabel')}
             >
-              <option value="all">{t('admin.billing.dunning.filter.providerAll')}</option>
+              <option value="all">
+                {t('admin.billing.dunning.filter.providerAll')}
+              </option>
               <option value="nowpayments">nowpayments</option>
               <option value="xaman">xaman</option>
             </select>
           </label>
         </div>
         {filteredDunning.length === 0 ? (
-          <p className="py-8 text-center text-text-muted">{t('admin.billing.dunning.empty')}</p>
+          <p className="py-8 text-center text-text-muted">
+            {t('admin.billing.dunning.empty')}
+          </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm" role="table">
               <thead>
                 <tr className="border-be border-border text-start text-text-muted">
-                  <th className="px-3 py-2">{t('admin.billing.dunning.col.user')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.dunning.col.provider')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.dunning.col.phase')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.dunning.col.periodEnd')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.dunning.col.graceUntil')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.dunning.col.lastNotified')}</th>
-                  <th className="px-3 py-2">{t('admin.billing.dunning.col.actions')}</th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.dunning.col.user')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.dunning.col.provider')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.dunning.col.phase')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.dunning.col.periodEnd')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.dunning.col.graceUntil')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.dunning.col.lastNotified')}
+                  </th>
+                  <th className="px-3 py-2">
+                    {t('admin.billing.dunning.col.actions')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -1062,7 +1307,9 @@ function BillingView() {
                     </td>
                     <td className="px-3 py-2">
                       <Badge variant={PHASE_VARIANT[d.phase]}>
-                        {t(`admin.billing.dunning.phase.${dunningPhaseI18nKey(d.phase)}`)}
+                        {t(
+                          `admin.billing.dunning.phase.${dunningPhaseI18nKey(d.phase)}`,
+                        )}
                       </Badge>
                     </td>
                     <td className="px-3 py-2 text-text-secondary">
@@ -1139,23 +1386,37 @@ function FeedbackQueueView() {
   const [filterStatus, setFilterStatus] = useState<string>('all');
 
   const load = useCallback(() => {
-    void admin.feedback().then(setItems).catch(() => {}).finally(() => setLoading(false));
+    void admin
+      .feedback()
+      .then(setItems)
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
-  const handleStatus = async (id: string, status: FeedbackStatus, notes?: string) => {
+  const handleStatus = async (
+    id: string,
+    status: FeedbackStatus,
+    notes?: string,
+  ) => {
     try {
       await admin.updateFeedbackStatus(id, status, notes);
       load();
-    } catch { /* toast in future */ }
+    } catch {
+      /* toast in future */
+    }
   };
 
   const handlePriority = async (id: string, priority: FeedbackPriority) => {
     try {
       await admin.updateFeedbackPriority(id, priority);
       load();
-    } catch { /* toast in future */ }
+    } catch {
+      /* toast in future */
+    }
   };
 
   const filtered = items.filter((i) => {
@@ -1166,7 +1427,10 @@ function FeedbackQueueView() {
 
   if (loading) return <Spinner />;
 
-  const typeBadgeColor: Record<string, 'danger' | 'warning' | 'success' | 'default'> = {
+  const typeBadgeColor: Record<
+    string,
+    'danger' | 'warning' | 'success' | 'default'
+  > = {
     Bug: 'danger',
     Frustration: 'warning',
     FeatureRequest: 'default',
@@ -1176,7 +1440,9 @@ function FeedbackQueueView() {
 
   return (
     <div>
-      <h2 className="mbe-4 text-lg font-semibold text-text-primary">{t('admin.feedbackQueue')}</h2>
+      <h2 className="mbe-4 text-lg font-semibold text-text-primary">
+        {t('admin.feedbackQueue')}
+      </h2>
 
       <div className="mbe-4 flex gap-3">
         <select
@@ -1184,10 +1450,16 @@ function FeedbackQueueView() {
           onChange={(e) => setFilterType(e.target.value)}
           className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
         >
-          <option value="all">{t('admin.feedbackType')}: {t('admin.filterAll')}</option>
+          <option value="all">
+            {t('admin.feedbackType')}: {t('admin.filterAll')}
+          </option>
           <option value="Bug">{t('admin.feedbackTypeBug')}</option>
-          <option value="FeatureRequest">{t('admin.feedbackTypeFeatureRequest')}</option>
-          <option value="Frustration">{t('admin.feedbackTypeFrustration')}</option>
+          <option value="FeatureRequest">
+            {t('admin.feedbackTypeFeatureRequest')}
+          </option>
+          <option value="Frustration">
+            {t('admin.feedbackTypeFrustration')}
+          </option>
           <option value="Praise">{t('admin.feedbackTypePraise')}</option>
           <option value="General">{t('admin.feedbackTypeGeneral')}</option>
         </select>
@@ -1196,9 +1468,13 @@ function FeedbackQueueView() {
           onChange={(e) => setFilterStatus(e.target.value)}
           className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
         >
-          <option value="all">{t('admin.feedbackStatus')}: {t('admin.filterAll')}</option>
+          <option value="all">
+            {t('admin.feedbackStatus')}: {t('admin.filterAll')}
+          </option>
           <option value="New">{t('admin.feedbackStatusNew')}</option>
-          <option value="Acknowledged">{t('admin.feedbackStatusAcknowledged')}</option>
+          <option value="Acknowledged">
+            {t('admin.feedbackStatusAcknowledged')}
+          </option>
           <option value="Resolved">{t('admin.feedbackStatusResolved')}</option>
           <option value="Wontfix">{t('admin.feedbackStatusWontfix')}</option>
         </select>
@@ -1213,19 +1489,30 @@ function FeedbackQueueView() {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="mbe-1 flex items-center gap-2">
-                    <Badge variant={typeBadgeColor[item.feedback_type] ?? 'default'}>
+                    <Badge
+                      variant={typeBadgeColor[item.feedback_type] ?? 'default'}
+                    >
                       {item.feedback_type}
                     </Badge>
-                    <Badge variant={item.status === 'New' ? 'warning' : 'default'}>
+                    <Badge
+                      variant={item.status === 'New' ? 'warning' : 'default'}
+                    >
                       {item.status}
                     </Badge>
-                    {item.priority && <Badge variant="danger">{item.priority}</Badge>}
+                    {item.priority && (
+                      <Badge variant="danger">{item.priority}</Badge>
+                    )}
                   </div>
-                  <p className="text-sm text-text-primary">{item.user_message}</p>
-                  <p className="mbs-1 text-xs text-text-muted italic">{item.structured_summary}</p>
+                  <p className="text-sm text-text-primary">
+                    {item.user_message}
+                  </p>
+                  <p className="mbs-1 text-xs text-text-muted italic">
+                    {item.structured_summary}
+                  </p>
                   <p className="mbs-1 text-xs text-text-muted">
                     {t('admin.feedbackScreen')}: {item.context.screen}
-                    {item.context.echo_id && ` · Echo: ${item.context.echo_id.slice(0, 8)}…`}
+                    {item.context.echo_id &&
+                      ` · Echo: ${item.context.echo_id.slice(0, 8)}…`}
                   </p>
                   {item.github_issue_url && (
                     <p className="mbs-1 text-xs">
@@ -1240,7 +1527,9 @@ function FeedbackQueueView() {
                     </p>
                   )}
                   {item.resolution_notes && (
-                    <p className="mbs-1 text-xs text-success">{t('admin.resolutionPrefix')}: {item.resolution_notes}</p>
+                    <p className="mbs-1 text-xs text-success">
+                      {t('admin.resolutionPrefix')}: {item.resolution_notes}
+                    </p>
                   )}
                   <p className="mbs-1 text-xs text-text-muted">
                     {new Date(item.created_at).toLocaleString()}
@@ -1250,7 +1539,9 @@ function FeedbackQueueView() {
                   {item.status === 'New' && (
                     <Button
                       variant="secondary"
-                      onClick={() => void handleStatus(item.feedback_id, 'Acknowledged')}
+                      onClick={() =>
+                        void handleStatus(item.feedback_id, 'Acknowledged')
+                      }
                     >
                       {t('admin.feedbackAcknowledge')}
                     </Button>
@@ -1259,8 +1550,15 @@ function FeedbackQueueView() {
                     <Button
                       variant="secondary"
                       onClick={() => {
-                        const notes = prompt(t('admin.feedbackResolutionNotes'));
-                        if (notes !== null) void handleStatus(item.feedback_id, 'Resolved', notes);
+                        const notes = prompt(
+                          t('admin.feedbackResolutionNotes'),
+                        );
+                        if (notes !== null)
+                          void handleStatus(
+                            item.feedback_id,
+                            'Resolved',
+                            notes,
+                          );
                       }}
                     >
                       {t('admin.feedbackResolve')}
@@ -1269,7 +1567,11 @@ function FeedbackQueueView() {
                   <select
                     value={item.priority ?? ''}
                     onChange={(e) => {
-                      if (e.target.value) void handlePriority(item.feedback_id, e.target.value as FeedbackPriority);
+                      if (e.target.value)
+                        void handlePriority(
+                          item.feedback_id,
+                          e.target.value as FeedbackPriority,
+                        );
                     }}
                     className="rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary"
                   >
@@ -1360,7 +1662,10 @@ function ModeratorsView() {
     <div className="space-y-4">
       <form onSubmit={(e) => void handlePromote(e)} className="flex gap-2">
         <div className="relative flex-1">
-          <Users size={16} className="absolute inset-s-3 inset-bs-1/2 -translate-y-1/2 text-text-muted" />
+          <Users
+            size={16}
+            className="absolute inset-s-3 inset-bs-1/2 -translate-y-1/2 text-text-muted"
+          />
           <input
             type="text"
             value={promoteUserId}
@@ -1395,7 +1700,9 @@ function ModeratorsView() {
             <tbody>
               {moderators.map((m) => (
                 <tr key={m.user_id} className="border-be border-border">
-                  <td className="px-3 py-2 text-text-primary">{m.display_name}</td>
+                  <td className="px-3 py-2 text-text-primary">
+                    {m.display_name}
+                  </td>
                   <td className="px-3 py-2 text-text-secondary">{m.email}</td>
                   <td className="px-3 py-2 text-text-secondary">
                     {new Date(m.updated_at).toLocaleString()}
@@ -1433,7 +1740,9 @@ function ModeratorsView() {
             </tbody>
           </table>
           {moderators.length === 0 && (
-            <p className="py-8 text-center text-text-muted">{t('admin.moderators.empty')}</p>
+            <p className="py-8 text-center text-text-muted">
+              {t('admin.moderators.empty')}
+            </p>
           )}
         </div>
       )}
@@ -1459,7 +1768,8 @@ function ShareTokensView() {
   // copies input → submitted. Keeping the two separate prevents the
   // every-keystroke re-fetch the unified-state design produced.
   const [appliedCreator, setAppliedCreator] = useState('');
-  const [appliedStatus, setAppliedStatus] = useState<ShareTokenStatusFilter>('any');
+  const [appliedStatus, setAppliedStatus] =
+    useState<ShareTokenStatusFilter>('any');
   const [revokeTarget, setRevokeTarget] = useState<string | null>(null);
   const [revokeReason, setRevokeReason] = useState('');
   const [successToast, setSuccessToast] = useState<string | null>(null);
@@ -1550,7 +1860,10 @@ function ShareTokensView() {
         {t('adminShare.tokens.heading')}
       </h2>
 
-      <form onSubmit={handleApplyFilters} className="flex flex-wrap items-end gap-3">
+      <form
+        onSubmit={handleApplyFilters}
+        className="flex flex-wrap items-end gap-3"
+      >
         <label className="flex flex-col text-xs text-text-muted">
           {t('adminShare.tokens.creatorFilterLabel')}
           <input
@@ -1566,14 +1879,22 @@ function ShareTokensView() {
           {t('adminShare.tokens.statusFilterLabel')}
           <select
             value={statusInput}
-            onChange={(e) => setStatusInput(e.target.value as ShareTokenStatusFilter)}
+            onChange={(e) =>
+              setStatusInput(e.target.value as ShareTokenStatusFilter)
+            }
             className="mbs-1 rounded-md border border-border bg-surface px-2 py-1.5 text-sm text-text-primary"
             aria-label={t('adminShare.tokens.statusFilterLabel')}
           >
             <option value="any">{t('adminShare.tokens.statusAny')}</option>
-            <option value="active">{t('adminShare.tokens.statusActive')}</option>
-            <option value="revoked">{t('adminShare.tokens.statusRevoked')}</option>
-            <option value="expired">{t('adminShare.tokens.statusExpired')}</option>
+            <option value="active">
+              {t('adminShare.tokens.statusActive')}
+            </option>
+            <option value="revoked">
+              {t('adminShare.tokens.statusRevoked')}
+            </option>
+            <option value="expired">
+              {t('adminShare.tokens.statusExpired')}
+            </option>
           </select>
         </label>
         <Button type="submit">{t('adminShare.tokens.applyFilters')}</Button>
@@ -1602,10 +1923,18 @@ function ShareTokensView() {
             <thead>
               <tr className="border-be border-border text-start text-text-muted">
                 <th className="px-3 py-2">{t('adminShare.tokens.colToken')}</th>
-                <th className="px-3 py-2">{t('adminShare.tokens.colCreatedBy')}</th>
-                <th className="px-3 py-2">{t('adminShare.tokens.colCreatedAt')}</th>
-                <th className="px-3 py-2">{t('adminShare.tokens.colExpiresAt')}</th>
-                <th className="px-3 py-2">{t('adminShare.tokens.colStatus')}</th>
+                <th className="px-3 py-2">
+                  {t('adminShare.tokens.colCreatedBy')}
+                </th>
+                <th className="px-3 py-2">
+                  {t('adminShare.tokens.colCreatedAt')}
+                </th>
+                <th className="px-3 py-2">
+                  {t('adminShare.tokens.colExpiresAt')}
+                </th>
+                <th className="px-3 py-2">
+                  {t('adminShare.tokens.colStatus')}
+                </th>
                 <th className="px-3 py-2">{t('admin.actions')}</th>
               </tr>
             </thead>
@@ -1627,7 +1956,9 @@ function ShareTokensView() {
                       : t('adminShare.tokens.neverExpires')}
                   </td>
                   <td className="px-3 py-2">
-                    <Badge variant={statusVariant(row)}>{statusLabel(row)}</Badge>
+                    <Badge variant={statusVariant(row)}>
+                      {statusLabel(row)}
+                    </Badge>
                   </td>
                   <td className="px-3 py-2">
                     {row.revoked_at ? (
@@ -1666,7 +1997,9 @@ function ShareTokensView() {
           <Button
             variant="ghost"
             disabled={!hasPrev}
-            onClick={() => setOffset(Math.max(0, offset - SHARE_TOKENS_PAGE_SIZE))}
+            onClick={() =>
+              setOffset(Math.max(0, offset - SHARE_TOKENS_PAGE_SIZE))
+            }
           >
             {t('common.previous')}
           </Button>

@@ -45,10 +45,18 @@ interface ShareModalProps {
  * resolvable until revocation (Lane H Commit 7). This matches the design
  * intent: a "share" is a discrete user action, not a per-item identifier.
  */
-export function ShareModal({ open, onClose, title, body, itemId }: ShareModalProps) {
+export function ShareModal({
+  open,
+  onClose,
+  title,
+  body,
+  itemId,
+}: ShareModalProps) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
-  const [shareData, setShareData] = useState<ShareFeedItemResponse | null>(null);
+  const [shareData, setShareData] = useState<ShareFeedItemResponse | null>(
+    null,
+  );
   const dialogRef = useRef<HTMLDialogElement>(null);
   const { create, isLoading, error } = useCreateShare();
 
@@ -188,9 +196,15 @@ export function ShareModal({ open, onClose, title, body, itemId }: ShareModalPro
 
         {/* Preview card */}
         <div className="mbe-4 rounded-lg border border-border bg-surface p-4">
-          <p className="line-clamp-2 text-sm font-medium text-text-primary">{title}</p>
-          <p className="mbs-1 line-clamp-3 text-xs text-text-secondary">{body}</p>
-          <p className="mbs-2 text-[10px] text-text-secondary">{t('share.previewDisclaimer')}</p>
+          <p className="line-clamp-2 text-sm font-medium text-text-primary">
+            {title}
+          </p>
+          <p className="mbs-1 line-clamp-3 text-xs text-text-secondary">
+            {body}
+          </p>
+          <p className="mbs-2 text-[10px] text-text-secondary">
+            {t('share.previewDisclaimer')}
+          </p>
         </div>
 
         {/* Loading state — replaces the action buttons section while the
@@ -234,17 +248,18 @@ export function ShareModal({ open, onClose, title, body, itemId }: ShareModalPro
             <span>{copied ? t('common.copied') : t('share.copyLink')}</span>
           </button>
 
-          {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
-            <button
-              onClick={() => void handleNativeShare()}
-              disabled={actionsDisabled}
-              data-testid="share-modal-native"
-              className="flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-start text-sm transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <Share2 size={18} className="text-text-secondary" />
-              <span>{t('share.shareToSocial')}</span>
-            </button>
-          )}
+          {typeof navigator !== 'undefined' &&
+            typeof navigator.share === 'function' && (
+              <button
+                onClick={() => void handleNativeShare()}
+                disabled={actionsDisabled}
+                data-testid="share-modal-native"
+                className="flex w-full items-center gap-3 rounded-lg border border-border px-4 py-3 text-start text-sm transition-colors hover:bg-surface focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Share2 size={18} className="text-text-secondary" />
+                <span>{t('share.shareToSocial')}</span>
+              </button>
+            )}
 
           <button
             onClick={handleDownloadImage}

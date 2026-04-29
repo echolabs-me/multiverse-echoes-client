@@ -86,7 +86,10 @@ export class VoiceAudioBridge {
     this.ws.binaryType = 'arraybuffer';
 
     await new Promise<void>((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error('WebSocket timeout')), 30000);
+      const timeout = setTimeout(
+        () => reject(new Error('WebSocket timeout')),
+        30000,
+      );
 
       this.ws!.onopen = () => {
         clearTimeout(timeout);
@@ -111,7 +114,9 @@ export class VoiceAudioBridge {
             } else if (msg.type === 'text' && msg.data) {
               this.callbacks.onText(msg.data);
             } else if (msg.type === 'video' && msg.data) {
-              const raw = Uint8Array.from(atob(msg.data), (c) => c.charCodeAt(0));
+              const raw = Uint8Array.from(atob(msg.data), (c) =>
+                c.charCodeAt(0),
+              );
               const blob = new Blob([raw], { type: 'image/jpeg' });
               this.callbacks.onVideoFrame(blob);
             } else if (msg.type === 'state' && msg.state) {
@@ -167,7 +172,9 @@ export class VoiceAudioBridge {
           this.remoteAudio.play().catch((e) => {
             if (import.meta.env.DEV) {
               // eslint-disable-next-line no-console -- autoplay failures are silent to the user; dev-only log helps diagnose browser policy blocks during local WebRTC testing
-              console.error(`[voice] ${ts()} Audio play() FAILED: ${e.message}`);
+              console.error(
+                `[voice] ${ts()} Audio play() FAILED: ${e.message}`,
+              );
             }
           });
         }
@@ -177,7 +184,9 @@ export class VoiceAudioBridge {
 
       if (msg.sessionDescription) {
         await this.pc.setRemoteDescription(
-          new RTCSessionDescription(msg.sessionDescription as RTCSessionDescriptionInit),
+          new RTCSessionDescription(
+            msg.sessionDescription as RTCSessionDescriptionInit,
+          ),
         );
       }
 
@@ -185,13 +194,15 @@ export class VoiceAudioBridge {
       await this.pc.setLocalDescription(answer);
 
       if (this.ws?.readyState === WebSocket.OPEN) {
-        this.ws.send(JSON.stringify({
-          type: 'webrtc_answer',
-          sessionDescription: {
-            sdp: this.pc.localDescription?.sdp,
-            type: 'answer',
-          },
-        }));
+        this.ws.send(
+          JSON.stringify({
+            type: 'webrtc_answer',
+            sessionDescription: {
+              sdp: this.pc.localDescription?.sdp,
+              type: 'answer',
+            },
+          }),
+        );
       }
     } catch (e) {
       if (import.meta.env.DEV) {
@@ -205,14 +216,16 @@ export class VoiceAudioBridge {
   private async startMicCapture(preCreatedStream?: MediaStream): Promise<void> {
     // connect() already claimed ownership of preCreatedStream into this.mediaStream.
     if (!this.mediaStream) {
-      this.mediaStream = preCreatedStream ?? await navigator.mediaDevices.getUserMedia({
-        audio: {
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
-        },
-      });
+      this.mediaStream =
+        preCreatedStream ??
+        (await navigator.mediaDevices.getUserMedia({
+          audio: {
+            channelCount: 1,
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+          },
+        }));
     }
 
     // @ts-expect-error - opus-recorder has no types
@@ -227,19 +240,20 @@ export class VoiceAudioBridge {
       numberOfChannels: 1,
     });
 
-    (this.recorder as { ondataavailable: (data: ArrayBuffer) => void }).ondataavailable =
-      (oggPage: ArrayBuffer) => {
-        if (this.ws?.readyState === WebSocket.OPEN) {
-          const frame = new Uint8Array(oggPage.byteLength + 1);
-          frame[0] = 0x01;
-          frame.set(new Uint8Array(oggPage), 1);
-          this.ws.send(frame.buffer);
-        }
-      };
+    (
+      this.recorder as { ondataavailable: (data: ArrayBuffer) => void }
+    ).ondataavailable = (oggPage: ArrayBuffer) => {
+      if (this.ws?.readyState === WebSocket.OPEN) {
+        const frame = new Uint8Array(oggPage.byteLength + 1);
+        frame[0] = 0x01;
+        frame.set(new Uint8Array(oggPage), 1);
+        this.ws.send(frame.buffer);
+      }
+    };
 
-    await (this.recorder as { start: (stream: MediaStream) => Promise<void> }).start(
-      this.mediaStream,
-    );
+    await (
+      this.recorder as { start: (stream: MediaStream) => Promise<void> }
+    ).start(this.mediaStream);
   }
 
   sendEndOfUtterance(): void {
@@ -272,7 +286,9 @@ export class VoiceAudioBridge {
     if (this.recorder) {
       try {
         await (this.recorder as { stop: () => Promise<void> }).stop();
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
       this.recorder = null;
     }
 

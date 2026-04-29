@@ -65,7 +65,10 @@ const legalLoaders = import.meta.glob('../content/legal/*.json') as Record<
   () => Promise<{ default: LegalDoc }>
 >;
 
-async function loadLegalDoc(docName: LegalDocName, locale: string): Promise<LegalDoc> {
+async function loadLegalDoc(
+  docName: LegalDocName,
+  locale: string,
+): Promise<LegalDoc> {
   // English returns synchronously from the eager-loaded fallback map.
   if (locale === 'en') return EN_FALLBACKS[docName];
 
@@ -97,7 +100,10 @@ function renderInline(text: string): ReactNode {
     }
     if (part.startsWith('`') && part.endsWith('`')) {
       return (
-        <code key={i} className="rounded-sm bg-(--surface) px-1 py-0.5 text-[0.9em]">
+        <code
+          key={i}
+          className="rounded-sm bg-(--surface) px-1 py-0.5 text-[0.9em]"
+        >
           {part.slice(1, -1)}
         </code>
       );
@@ -111,7 +117,9 @@ function renderInline(text: string): ReactNode {
           key={i}
           href={href}
           className="text-(--accent) hover:text-(--accent-hover)"
-          {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          {...(isExternal
+            ? { target: '_blank', rel: 'noopener noreferrer' }
+            : {})}
         >
           {label}
         </a>
@@ -131,7 +139,10 @@ function renderBlock(block: Block, index: number): ReactNode {
       );
     case 'h3':
       return (
-        <h3 key={index} className="mbs-3 mbe-1 text-sm font-semibold text-(--text-primary)">
+        <h3
+          key={index}
+          className="mbs-3 mbe-1 text-sm font-semibold text-(--text-primary)"
+        >
           {renderInline(block.text)}
         </h3>
       );
@@ -199,7 +210,10 @@ interface LegalDocumentProps {
   metaDescription: string;
 }
 
-export function LegalDocument({ docName, metaDescription }: LegalDocumentProps) {
+export function LegalDocument({
+  docName,
+  metaDescription,
+}: LegalDocumentProps) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
@@ -218,7 +232,8 @@ export function LegalDocument({ docName, metaDescription }: LegalDocumentProps) 
       const sig = `${docName}-${locale}`;
       setReady(sig);
       if (typeof window !== 'undefined') {
-        (window as unknown as { __legalDocReady?: string }).__legalDocReady = sig;
+        (window as unknown as { __legalDocReady?: string }).__legalDocReady =
+          sig;
       }
     });
     return () => {
@@ -239,7 +254,10 @@ export function LegalDocument({ docName, metaDescription }: LegalDocumentProps) 
   const showEnglishOnlyBanner = locale !== 'en' && isEnglishBody;
 
   // Meta title for this doc localises automatically via the rendered `doc`.
-  const metaTitle = useMemo(() => `${doc.title} — Multiverse Echoes`, [doc.title]);
+  const metaTitle = useMemo(
+    () => `${doc.title} — Multiverse Echoes`,
+    [doc.title],
+  );
 
   return (
     <article
