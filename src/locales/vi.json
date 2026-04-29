@@ -613,6 +613,7 @@
     "tabControls": "Điều khiển",
     "tabAnalytics": "Phân tích",
     "tabFeedback": "Phản hồi",
+    "tabBilling": "Thanh toán",
     "feedbackQueue": "Hàng đợi phản hồi",
     "noFeedback": "Chưa có phản hồi nào được gửi.",
     "feedbackType": "Loại",
@@ -676,11 +677,6 @@
     "backupControl": "Sao lưu Cơ sở dữ liệu",
     "triggerBackup": "Kích hoạt Sao lưu",
     "analyticsLoadFailed": "Không tải được phân tích",
-    "revenueCard": "Doanh thu (Sắp ra mắt)",
-    "revenueMrr": "Doanh thu định kỳ hàng tháng",
-    "revenueChurn": "Tỷ lệ rời bỏ",
-    "revenueSubscribers": "Người đăng ký",
-    "revenuePending": "Đang chờ tích hợp Stripe",
     "filterAll": "Tất cả",
     "feedbackTypeBug": "Lỗi",
     "feedbackTypeFeatureRequest": "Yêu cầu tính năng",
@@ -700,6 +696,98 @@
       "demote": "Giáng chức",
       "empty": "Chưa có Quản trị viên. Thăng chức một người dùng Tiêu chuẩn bằng ID.",
       "updatedAt": "Đã cập nhật"
+    },
+    "billing": {
+      "heading": "Tình trạng thanh toán",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "Người đăng ký trả phí",
+        "churnDelta": "Hủy (gần nhất)",
+        "newSubs": "Mới (gần nhất)",
+        "dunningActive": "Dunning hoạt động",
+        "subtitle": {
+          "churnSincePrev": "{{count}} kể từ lần chụp trước",
+          "newSincePrev": "{{count}} kể từ lần chụp trước"
+        }
+      },
+      "tier": {
+        "starter": "Starter",
+        "core": "Core",
+        "creator": "Creator",
+        "godMode": "God Mode"
+      },
+      "charts": {
+        "mrrTrend": "Xu hướng MRR",
+        "subscriberGrowth": "Tăng trưởng người đăng ký",
+        "churnOverTime": "Hủy theo thời gian",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "Người đăng ký",
+          "churn": "Hủy"
+        }
+      },
+      "snapshots": {
+        "heading": "Ảnh chụp doanh thu",
+        "exportCsv": "Xuất CSV",
+        "col": {
+          "period": "Kỳ",
+          "mrr": "MRR",
+          "subscribers": "Người đăng ký",
+          "perTier": "Theo gói",
+          "newSubs": "Mới",
+          "churned": "Hủy",
+          "dunningActive": "Dunning hoạt động"
+        },
+        "empty": "Chưa có ảnh chụp doanh thu nào."
+      },
+      "dunning": {
+        "heading": "Hàng đợi Dunning",
+        "filter": {
+          "phaseLabel": "Giai đoạn",
+          "phaseAll": "Tất cả giai đoạn",
+          "userIdPlaceholder": "Chuỗi User ID...",
+          "providerLabel": "Nhà cung cấp",
+          "providerAll": "Tất cả nhà cung cấp"
+        },
+        "col": {
+          "user": "Người dùng",
+          "provider": "Nhà cung cấp",
+          "phase": "Giai đoạn",
+          "periodEnd": "Kỳ kết thúc",
+          "graceUntil": "Ân hạn đến",
+          "lastNotified": "Thông báo lần cuối",
+          "actions": "Hành động"
+        },
+        "phase": {
+          "active": "Hoạt động",
+          "renewalPending": "Đang chờ gia hạn",
+          "renewalImminent": "Gia hạn sắp tới",
+          "gracePeriod": "Thời gian ân hạn",
+          "lapsed": "Đã hết hạn"
+        },
+        "empty": "Không có hàng dunning nào.",
+        "overrideAction": "Ghi đè"
+      },
+      "error": {
+        "loadFailed": "Không thể tải dữ liệu thanh toán."
+      },
+      "override": {
+        "title": "Ghi đè giai đoạn thu hồi",
+        "targetPhaseLabel": "Giai đoạn đích",
+        "reasonLabel": "Lý do ghi đè",
+        "reasonPlaceholder": "Lý do áp dụng ghi đè này (nhật ký kiểm tra)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Áp dụng ghi đè",
+        "cancelButton": "Hủy",
+        "successToast": "Ghi đè giai đoạn thu hồi đã được áp dụng.",
+        "errorPrefix": "Ghi đè thất bại"
+      },
+      "snapshot": {
+        "triggerButton": "Tạo ảnh chụp",
+        "insertedToast": "Ảnh chụp doanh thu đã được tạo.",
+        "alreadyExistsToast": "Ảnh chụp đã tồn tại cho {{period}}.",
+        "errorPrefix": "Tạo ảnh chụp thất bại"
+      }
     },
     "tabShareTokens": "Chia sẻ Tokens"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "Thanh toán của bạn đã bị hủy. Bạn có thể thử lại từ trang Gói cước.",
     "backToPlans": "Quay lại Gói dịch vụ",
     "backToDashboard": "Quay lại Bảng điều khiển",
-    "renewBanner": "Gói đăng ký {{tier}} của bạn sẽ hết hạn sau {{days}} ngày.",
-    "expiredBanner": "Gói đăng ký của bạn đã hết hạn. Bạn đã được chuyển sang gói Miễn phí.",
-    "renew": "Gia hạn",
     "tipTitle": "Hỗ trợ Dự án",
     "tipDesc": "Hãy giúp duy trì hoạt động của Multiverse Echoes. Các khoản đóng góp sẽ được chuyển trực tiếp cho việc phát triển.",
     "tipAmount": "Số tiền",
@@ -762,7 +847,14 @@
     "tipMaximum": "Tiền tip tối đa là {{currency}}{{max}}",
     "provider": "Phương thức thanh toán",
     "cryptoUnavailable": "Thanh toán bằng tiền điện tử tạm thời không khả dụng. Vui lòng thử lại sau hoặc sử dụng thanh toán bằng thẻ.",
-    "checkingStatus": "Đang kiểm tra trạng thái thanh toán..."
+    "checkingStatus": "Đang kiểm tra trạng thái thanh toán...",
+    "banner": {
+      "renewalPending": "Gói đăng ký của bạn sẽ sớm gia hạn. Xác nhận phương thức thanh toán để tránh bị gián đoạn.",
+      "renewalImminent": "Gói đăng ký của bạn sẽ gia hạn trong 24 giờ. Hãy xác nhận phương thức thanh toán ngay bây giờ.",
+      "gracePeriod": "Thanh toán của bạn chưa hoàn tất. Cập nhật phương thức thanh toán trước khi gói đăng ký hết hạn.",
+      "paymentFailed": "Lần thanh toán gần nhất của bạn không thành công. Cập nhật phương thức thanh toán để giữ gói đăng ký hoạt động.",
+      "updatePaymentMethod": "Cập nhật phương thức thanh toán"
+    }
   },
   "waitlist": {
     "heroTitle": "Cuộc sống của bạn sẽ ra sao nếu bạn đưa ra những lựa chọn khác?",

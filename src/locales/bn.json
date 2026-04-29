@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "মাল্টিভার্স ইকোজ",
+    "title": "Multiverse Echoes",
     "tagline": "স্বয়ংশাসিত জীবন সিমুলেশন প্ল্যাটফর্ম"
   },
   "tickTimer": {
@@ -613,6 +613,7 @@
     "tabControls": "নিয়ন্ত্রণসমূহ",
     "tabAnalytics": "বিশ্লেষণ (Analytics)",
     "tabFeedback": "মতামত",
+    "tabBilling": "বিলিং",
     "feedbackQueue": "ফিডব্যাক কিউ",
     "noFeedback": "এখন পর্যন্ত কোনো প্রতিক্রিয়া জমা দেওয়া হয়নি।",
     "feedbackType": "টাইপ করুন",
@@ -676,11 +677,6 @@
     "backupControl": "ডেটাবেস ব্যাকআপ",
     "triggerBackup": "ব্যাকআপ শুরু করুন",
     "analyticsLoadFailed": "অ্যানালিটিক্স লোড করতে ব্যর্থ হয়েছে",
-    "revenueCard": "রাজস্ব (শীঘ্রই আসছে)",
-    "revenueMrr": "মাসিক পুনরাবৃত্ত আয় (MRR)",
-    "revenueChurn": "চার্ন রেট",
-    "revenueSubscribers": "সাবস্ক্রাইবারগণ",
-    "revenuePending": "স্ট্রাইপ ইন্টিগ্রেশন পেন্ডিং",
     "filterAll": "সবাই",
     "feedbackTypeBug": "পোকামাকড়",
     "feedbackTypeFeatureRequest": "ফিচার রিকোয়েস্ট",
@@ -700,6 +696,98 @@
       "demote": "ডিমোট করুন",
       "empty": "এখনও কোনো মডারেটর নেই। ব্যবহারকারী আইডি দিয়ে একজন স্ট্যান্ডার্ড ব্যবহারকারীকে প্রমোট করুন।",
       "updatedAt": "আপডেট হয়েছে"
+    },
+    "billing": {
+      "heading": "বিলিং স্বাস্থ্য",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "পেইড সাবস্ক্রাইবার",
+        "churnDelta": "চার্ন হয়েছে (সর্বশেষ)",
+        "newSubs": "নতুন (সর্বশেষ)",
+        "dunningActive": "ডানিং সক্রিয়",
+        "subtitle": {
+          "churnSincePrev": "পূর্ববর্তী স্ন্যাপশট থেকে {{count}}",
+          "newSincePrev": "পূর্ববর্তী স্ন্যাপশট থেকে {{count}}"
+        }
+      },
+      "tier": {
+        "starter": "স্টার্টার",
+        "core": "কোর",
+        "creator": "ক্রিয়েটর",
+        "godMode": "গড মোড"
+      },
+      "charts": {
+        "mrrTrend": "MRR ট্রেন্ড",
+        "subscriberGrowth": "সাবস্ক্রাইবার বৃদ্ধি",
+        "churnOverTime": "সময়ের সাথে চার্ন",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "সাবস্ক্রাইবার",
+          "churn": "চার্ন হয়েছে"
+        }
+      },
+      "snapshots": {
+        "heading": "রাজস্ব স্ন্যাপশট",
+        "exportCsv": "CSV এক্সপোর্ট করুন",
+        "col": {
+          "period": "সময়কাল",
+          "mrr": "MRR",
+          "subscribers": "সাবস্ক্রাইবার",
+          "perTier": "টায়ার অনুযায়ী",
+          "newSubs": "নতুন",
+          "churned": "চার্ন হয়েছে",
+          "dunningActive": "ডানিং সক্রিয়"
+        },
+        "empty": "এখনো কোনো রাজস্ব স্ন্যাপশট নেই।"
+      },
+      "dunning": {
+        "heading": "ডানিং কিউ",
+        "filter": {
+          "phaseLabel": "পর্যায়",
+          "phaseAll": "সব পর্যায়",
+          "userIdPlaceholder": "ইউজার ID সাবস্ট্রিং...",
+          "providerLabel": "প্রোভাইডার",
+          "providerAll": "সব প্রোভাইডার"
+        },
+        "col": {
+          "user": "ইউজার",
+          "provider": "প্রোভাইডার",
+          "phase": "পর্যায়",
+          "periodEnd": "সময়কাল শেষ",
+          "graceUntil": "গ্রেস পর্যন্ত",
+          "lastNotified": "শেষ বিজ্ঞপ্তি",
+          "actions": "ক্রিয়াকলাপ"
+        },
+        "phase": {
+          "active": "সক্রিয়",
+          "renewalPending": "নবায়ন অপেক্ষমাণ",
+          "renewalImminent": "নবায়ন আসন্ন",
+          "gracePeriod": "গ্রেস পিরিয়ড",
+          "lapsed": "মেয়াদ উত্তীর্ণ"
+        },
+        "empty": "কোনো ডানিং সারি নেই।",
+        "overrideAction": "ওভাররাইড করুন"
+      },
+      "error": {
+        "loadFailed": "বিলিং ডেটা লোড করতে ব্যর্থ হয়েছে।"
+      },
+      "override": {
+        "title": "ডানিং পর্যায় ওভাররাইড করুন",
+        "targetPhaseLabel": "লক্ষ্য পর্যায়",
+        "reasonLabel": "ওভাররাইডের কারণ",
+        "reasonPlaceholder": "এই ওভাররাইড কেন প্রয়োগ করা হচ্ছে (অডিট লগ)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "ওভাররাইড প্রয়োগ করুন",
+        "cancelButton": "বাতিল করুন",
+        "successToast": "ডানিং পর্যায় ওভাররাইড প্রয়োগ করা হয়েছে।",
+        "errorPrefix": "ওভাররাইড ব্যর্থ"
+      },
+      "snapshot": {
+        "triggerButton": "স্ন্যাপশট ট্রিগার করুন",
+        "insertedToast": "রাজস্ব স্ন্যাপশট তৈরি করা হয়েছে।",
+        "alreadyExistsToast": "{{period}} এর জন্য স্ন্যাপশট ইতিমধ্যে বিদ্যমান।",
+        "errorPrefix": "স্ন্যাপশট ট্রিগার ব্যর্থ"
+      }
     },
     "tabShareTokens": "শেয়ার টোকেন"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "আপনার পেমেন্ট বাতিল করা হয়েছে। আপনি প্ল্যানস (Plans) পেজ থেকে আবার চেষ্টা করতে পারেন।",
     "backToPlans": "পরিকল্পনায় ফিরে যান",
     "backToDashboard": "ড্যাশবোর্ডে ফিরে যান",
-    "renewBanner": "আপনার {{tier}} সাবস্ক্রিপশন {{days}} দিনের মধ্যে শেষ হবে।",
-    "expiredBanner": "আপনার সাবস্ক্রিপশন শেষ হয়ে গেছে। আপনাকে ফ্রি টিয়ারে স্থানান্তরিত করা হয়েছে।",
-    "renew": "নবায়ন করুন",
     "tipTitle": "প্রকল্পটিকে সমর্থন করুন",
     "tipDesc": "Multiverse Echoes-কে সচল রাখতে সাহায্য করুন। টিপস সরাসরি ডেভেলপমেন্টের কাজে ব্যবহৃত হবে।",
     "tipAmount": "পরিমাণ",
@@ -762,7 +847,14 @@
     "tipMaximum": "সর্বোচ্চ টিপস হলো {{currency}}{{max}}",
     "provider": "পেমেন্ট পদ্ধতি",
     "cryptoUnavailable": "ক্রিপ্টো পেমেন্ট সাময়িকভাবে অনুপলব্ধ। অনুগ্রহ করে পরে আবার চেষ্টা করুন অথবা কার্ড পেমেন্ট ব্যবহার করুন।",
-    "checkingStatus": "পেমেন্টের স্ট্যাটাস যাচাই করা হচ্ছে..."
+    "checkingStatus": "পেমেন্টের স্ট্যাটাস যাচাই করা হচ্ছে...",
+    "banner": {
+      "renewalPending": "আপনার সাবস্ক্রিপশন শীঘ্রই নবায়ন হবে। বাধা এড়াতে আপনার পেমেন্ট পদ্ধতি নিশ্চিত করুন।",
+      "renewalImminent": "আপনার সাবস্ক্রিপশন ২৪ ঘন্টার মধ্যে নবায়ন হবে। এখনই আপনার পেমেন্ট পদ্ধতি নিশ্চিত করুন।",
+      "gracePeriod": "আপনার পেমেন্ট সম্পন্ন হয়নি। সাবস্ক্রিপশন শেষ হওয়ার আগে আপনার পেমেন্ট পদ্ধতি আপডেট করুন।",
+      "paymentFailed": "আপনার শেষ পেমেন্ট প্রচেষ্টা ব্যর্থ হয়েছে। সাবস্ক্রিপশন সক্রিয় রাখতে আপনার পেমেন্ট পদ্ধতি আপডেট করুন।",
+      "updatePaymentMethod": "পেমেন্ট পদ্ধতি আপডেট করুন"
+    }
   },
   "waitlist": {
     "heroTitle": "আপনি যদি ভিন্ন পছন্দ করতেন, তবে আপনার জীবন কেমন হতো?",
@@ -1135,17 +1227,17 @@
       "terms": "শর্তাবলী",
       "privacy": "গোপনীয়তা",
       "contact": "যোগাযোগ করুন",
-      "copyright": "© ২০২৬ ইকোল্যাবসএমই পিটিই লিমিটেড",
+      "copyright": "© 2026 EchoLabsME Pte. Ltd.",
       "accessibility": "প্রবেশযোগ্যতা",
       "status": "স্ট্যাটাস"
     },
     "legalBanner": "এই পৃষ্ঠাটি বর্তমানে শুধুমাত্র ইংরেজিতে উপলব্ধ। পেশাদার অনুবাদ প্রক্রিয়া চলছে।",
     "languagePage": {
-      "title": "মাল্টিভার্স ইকোজ",
+      "title": "Multiverse Echoes",
       "selectPrompt": "আপনার পছন্দের ভাষাটি নির্বাচন করুন"
     },
     "pricing": {
-      "eyebrow": "ইকোল্যাবসএমই",
+      "eyebrow": "EchoLabsME",
       "headline": "আপনার মাল্টিভার্স বেছে নিন",
       "subheadline": "প্রতিটি টিয়ার আরও বিকল্প জীবন, দ্রুত হৃদস্পন্দন এবং আপনার ইকো-দের সাথে গভীরতর সংযোগ খুলে দেয়।"
     },
@@ -1166,8 +1258,8 @@
       "stackEngine4": "VoxCPM2 (কণ্ঠ সংশ্লেষণ)",
       "stackEngine5": "MuseTalk + LivePortrait (ভিডিও)",
       "stackClient": "ক্লায়েন্ট",
-      "stackClient1": "রিঅ্যাক্ট ১৯ + টাইপস্ক্রিপ্ট ৬",
-      "stackClient2": "টেইলউইন্ড সিএসএস ভি৪",
+      "stackClient1": "React 19 + TypeScript 6",
+      "stackClient2": "Tailwind CSS v4",
       "stackClient3": "২০ ভাষায় i18n",
       "stackClient4": "রিয়েল-টাইম WebSocket ফিড",
       "stackClient5": "NLLB-200 অনুবাদ সাইডকার",
@@ -1238,7 +1330,7 @@
       "explainer": "প্রিমিয়াম অ্যাকশন: কার্যকলাপ প্রস্তাব করুন বা সম্পর্কের ইঙ্গিত দিন — পদক্ষেপ নেবে কিনা তা ইকোই ঠিক করে।"
     },
     "heartbeatDaily": "দৈনিক",
-    "echoesSingle": "ইকো",
+    "echoesSingle": "Echo",
     "taglineFree": "আরেকটি জীবনের আভাস",
     "taglineStarter": "আপনার প্রথম বিকল্প জীবনগুলো",
     "taglineCore": "সম্পূর্ণ অভিজ্ঞতা",
@@ -1314,7 +1406,7 @@
       "16vid16voice": "১৬টি ভিডিও ডায়েরি / দিন, ১৬টি ভয়েস কল / দিন",
       "unlimitedVidVoice": "সীমাহীন ভিডিও ডায়েরি, সীমাহীন ভয়েস কল"
     },
-    "heartbeatTwiceDaily": "২×",
+    "heartbeatTwiceDaily": "2×",
     "heartbeat2hr": "2ঘ",
     "heartbeat30m": "30মি",
     "heartbeat15m": "15মি",
@@ -1349,7 +1441,7 @@
         "noPending": "কোনো বিচারাধীন ডাউনগ্রেড সিদ্ধান্ত নেই।",
         "errorGeneric": "আপনার ডাউনগ্রেড বিবরণ লোড করতে কিছু ভুল হয়েছে।",
         "summary": "আপনি {{oldTier}} থেকে {{newTier}}-এ যাচ্ছেন। নিশ্চিত করার পর যা ঘটবে তা এখানে।",
-        "echoesHeader": "ইকোজ",
+        "echoesHeader": "Echoes",
         "echoesHibernateCount": "আপনার {{total}} Echo-এর মধ্যে {{count}}টি হাইবারনেট হবে।",
         "echoesNoneHibernated": "কোনো Echo হাইবারনেট হবে না। সব {{total}}টি {{newTier}}-এর {{cap}} সীমার মধ্যে।",
         "echoesDeletion": "হাইবারনেট করা Echoes নিশ্চিতকরণের 90 দিন পর স্থায়ীভাবে মুছে যায়, যদি না আপনি একটি স্লট খালি করে সেগুলিকে জাগান বা তার আগে আবার আপগ্রেড করেন।",
@@ -1365,7 +1457,7 @@
       "pendingList": {
         "title": "বিচারাধীন মুছে ফেলা",
         "empty": "মুছে ফেলার জন্য নির্ধারিত কোনো Echo বা Shard নেই।",
-        "echoLabel": "ইকো",
+        "echoLabel": "Echo",
         "shardLabel": "ব্যক্তিগত Shard",
         "deletesOn": "{{date}} তারিখে মুছে যাবে",
         "loading": "বিচারাধীন মুছে ফেলা লোড হচ্ছে…",

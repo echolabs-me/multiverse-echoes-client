@@ -19,9 +19,11 @@ import type {
   ConflictStyle as _ConflictStyle,
   ConsentType as _ConsentType,
   ConversationRole as _ConversationRole,
+  CryptoBillingProvider as _CryptoBillingProvider,
   DowngradeSession as _DowngradeSession,
   DowngradeSessionState as _DowngradeSessionState,
   DowngradeSessionView as _DowngradeSessionView,
+  DunningPhase as _DunningPhase,
   EchoResponse as _EchoResponse,
   EconomicModel as _EconomicModel,
   EchoRelationshipType as _EchoRelationshipType,
@@ -862,6 +864,13 @@ export type WsEchoEvent =
   | { type: 'CommunityMessageEdited'; channel_id: string; message_id: string; author_id: string }
   | { type: 'CommunityMessageDeleted'; channel_id: string; message_id: string; deleted_by: string }
   | { type: 'NotificationCreated'; notification_id: string }
+  | { type: 'PaymentFailed'; provider: _CryptoBillingProvider; attempt_number: number }
+  | {
+      type: 'DunningPhaseChanged';
+      provider: _CryptoBillingProvider;
+      from: _DunningPhase;
+      to: _DunningPhase;
+    }
   // Lane H Commit 7: admin-dashboard-only revocation broadcast.
   // Server filters to admin sockets via the dashboard handler arm.
   | {

@@ -3,6 +3,7 @@ import { useSystemStore } from '../stores/useSystemStore.ts';
 import { useEchoWebSocket } from './useEchoWebSocket.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
+import { useBillingHealth } from '../stores/useBillingHealth.ts';
 import type { WsEchoEvent } from '../types/api.ts';
 
 export type TickTimerState = 'counting_down' | 'generating' | 'arrived' | 'waiting';
@@ -84,6 +85,25 @@ export function useTickTimer(): TickTimerData {
       // Real-time notification refresh.
       if (event.type === 'NotificationCreated') {
         void useNotificationStore.getState().fetchNotifications();
+        return;
+      }
+
+      // Lane C billing-health WS forwarding. The dunning driver ticks
+      // hourly, so `DunningPhaseChanged` is the slow authoritative
+      // signal; `PaymentFailed` fires immediately on every failed
+      // attempt and lets the banner surface the failure ahead of the
+      // next driver pass. ME-MIS-001 §5.4.5.
+      if (event.type === 'PaymentFailed') {
+        useBillingHealth.getState().recordPaymentFailed();
+        return;
+      }
+      if (event.type === 'DunningPhaseChanged') {
+        // Narrowing collapses against WsEchoEvent's catch-all `{ type:
+        // string; [key: string]: unknown }` arm — same precedent as
+        // `event.last_tick_at as number` above. Extract<> pulls the
+        // typed shape so `to` lands as the proper enum.
+        const e = event as Extract<WsEchoEvent, { type: 'DunningPhaseChanged' }>;
+        useBillingHealth.getState().setPhase(e.to);
         return;
       }
 

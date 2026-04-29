@@ -613,6 +613,7 @@
     "tabControls": "नियंत्रण",
     "tabAnalytics": "एनालिटिक्स",
     "tabFeedback": "प्रतिक्रिया",
+    "tabBilling": "बिलिंग",
     "feedbackQueue": "प्रतिक्रिया क़तार",
     "noFeedback": "अभी तक कोई प्रतिक्रिया नहीं भेजी गई।",
     "feedbackType": "प्रकार",
@@ -629,7 +630,7 @@
     "feedbackPriorityLabel": "प्राथमिकता सेट करो",
     "pauseTick": "Tick इंजन रोको",
     "resumeTick": "Tick इंजन फिर से चालू करो",
-    "tickNumber": "टिक #",
+    "tickNumber": "Tick #",
     "tickDuration": "Tick अवधि",
     "ramUsage": "RAM उपयोग",
     "vramUsage": "VRAM उपयोग",
@@ -676,11 +677,6 @@
     "backupControl": "डेटाबेस बैकअप",
     "triggerBackup": "बैकअप ट्रिगर करो",
     "analyticsLoadFailed": "एनालिटिक्स लोड करने में विफल",
-    "revenueCard": "राजस्व (जल्द आ रहा है)",
-    "revenueMrr": "मासिक आवर्ती राजस्व",
-    "revenueChurn": "छोड़ने की दर",
-    "revenueSubscribers": "सदस्य",
-    "revenuePending": "Stripe एकीकरण लंबित",
     "filterAll": "सभी",
     "feedbackTypeBug": "बग",
     "feedbackTypeFeatureRequest": "सुविधा अनुरोध",
@@ -700,6 +696,98 @@
       "demote": "पदावनत करें",
       "empty": "अभी तक कोई मॉडरेटर नहीं है। उपयोगकर्ता आईडी द्वारा एक मानक उपयोगकर्ता को पदोन्नत करें।",
       "updatedAt": "अपडेट किया गया"
+    },
+    "billing": {
+      "heading": "बिलिंग स्वास्थ्य",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "भुगतान करने वाले सदस्य",
+        "churnDelta": "रद्द किए गए (नवीनतम)",
+        "newSubs": "नए (नवीनतम)",
+        "dunningActive": "डनिंग सक्रिय",
+        "subtitle": {
+          "churnSincePrev": "पिछले स्नैपशॉट के बाद से {{count}}",
+          "newSincePrev": "पिछले स्नैपशॉट के बाद से {{count}}"
+        }
+      },
+      "tier": {
+        "starter": "स्टार्टर",
+        "core": "कोर",
+        "creator": "क्रिएटर",
+        "godMode": "गॉड मोड"
+      },
+      "charts": {
+        "mrrTrend": "MRR ट्रेंड",
+        "subscriberGrowth": "सदस्य वृद्धि",
+        "churnOverTime": "समय के साथ चर्न",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "सदस्य",
+          "churn": "रद्द किए गए"
+        }
+      },
+      "snapshots": {
+        "heading": "राजस्व स्नैपशॉट",
+        "exportCsv": "CSV निर्यात करें",
+        "col": {
+          "period": "अवधि",
+          "mrr": "MRR",
+          "subscribers": "सदस्य",
+          "perTier": "प्रति स्तर",
+          "newSubs": "नए",
+          "churned": "रद्द किए गए",
+          "dunningActive": "डनिंग सक्रिय"
+        },
+        "empty": "अभी तक कोई राजस्व स्नैपशॉट नहीं है।"
+      },
+      "dunning": {
+        "heading": "डनिंग कतार",
+        "filter": {
+          "phaseLabel": "चरण",
+          "phaseAll": "सभी चरण",
+          "userIdPlaceholder": "उपयोगकर्ता ID सबस्ट्रिंग...",
+          "providerLabel": "प्रदाता",
+          "providerAll": "सभी प्रदाता"
+        },
+        "col": {
+          "user": "उपयोगकर्ता",
+          "provider": "प्रदाता",
+          "phase": "चरण",
+          "periodEnd": "अवधि समाप्त",
+          "graceUntil": "तक अनुमति",
+          "lastNotified": "अंतिम सूचना",
+          "actions": "कार्य"
+        },
+        "phase": {
+          "active": "सक्रिय",
+          "renewalPending": "नवीकरण लंबित",
+          "renewalImminent": "नवीकरण आसन्न",
+          "gracePeriod": "अनुग्रह अवधि",
+          "lapsed": "समाप्त"
+        },
+        "empty": "कोई डनिंग पंक्तियां नहीं।",
+        "overrideAction": "ओवरराइड करें"
+      },
+      "error": {
+        "loadFailed": "बिलिंग डेटा लोड करने में विफल।"
+      },
+      "override": {
+        "title": "डनिंग चरण ओवरराइड करें",
+        "targetPhaseLabel": "लक्ष्य चरण",
+        "reasonLabel": "ओवरराइड का कारण",
+        "reasonPlaceholder": "यह ओवरराइड क्यों लागू किया जा रहा है (ऑडिट लॉग)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "ओवरराइड लागू करें",
+        "cancelButton": "रद्द करें",
+        "successToast": "डनिंग चरण ओवरराइड लागू हो गया।",
+        "errorPrefix": "ओवरराइड विफल"
+      },
+      "snapshot": {
+        "triggerButton": "स्नैपशॉट ट्रिगर करें",
+        "insertedToast": "राजस्व स्नैपशॉट जेनरेट हो गया।",
+        "alreadyExistsToast": "{{period}} के लिए स्नैपशॉट पहले से मौजूद है।",
+        "errorPrefix": "स्नैपशॉट ट्रिगर विफल"
+      }
     },
     "tabShareTokens": "शेयर टोकन"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "तुम्हारा भुगतान रद्द हो गया। प्लान पेज से फिर कोशिश कर सकते हो।",
     "backToPlans": "प्लान पर वापस",
     "backToDashboard": "डैशबोर्ड पर वापस",
-    "renewBanner": "तुम्हारी {{tier}} सदस्यता {{days}} दिन में समाप्त हो रही है।",
-    "expiredBanner": "तुम्हारी सदस्यता समाप्त हो चुकी है। तुम्हें निःशुल्क टियर पर ले जाया गया है।",
-    "renew": "नवीनीकरण करो",
     "tipTitle": "परियोजना का समर्थन करो",
     "tipDesc": "Multiverse Echoes को चालू रखने में मदद करो। टिप सीधे विकास में जाती है।",
     "tipAmount": "राशि",
@@ -762,7 +847,14 @@
     "tipMaximum": "अधिकतम टिप {{currency}}{{max}} है",
     "provider": "भुगतान विधि",
     "cryptoUnavailable": "क्रिप्टो भुगतान अस्थायी रूप से अनुपलब्ध है। कृपया बाद में फिर कोशिश करें या कार्ड भुगतान का उपयोग करें।",
-    "checkingStatus": "भुगतान स्थिति जाँच रहे हैं…"
+    "checkingStatus": "भुगतान स्थिति जाँच रहे हैं…",
+    "banner": {
+      "renewalPending": "आपकी सदस्यता जल्द ही नवीनीकृत होगी। बाधा से बचने के लिए अपनी भुगतान विधि की पुष्टि करें।",
+      "renewalImminent": "आपकी सदस्यता 24 घंटे के भीतर नवीनीकृत होगी। अभी अपनी भुगतान विधि की पुष्टि करें।",
+      "gracePeriod": "आपका भुगतान पूरा नहीं हुआ। सदस्यता समाप्त होने से पहले अपनी भुगतान विधि अपडेट करें।",
+      "paymentFailed": "आपका पिछला भुगतान प्रयास विफल रहा। अपनी सदस्यता सक्रिय रखने के लिए भुगतान विधि अपडेट करें।",
+      "updatePaymentMethod": "भुगतान विधि अपडेट करें"
+    }
   },
   "waitlist": {
     "heroTitle": "अगर तुमने अलग-अलग चुनाव किए होते, तो तुम्हारी ज़िंदगी कैसी दिखती?",

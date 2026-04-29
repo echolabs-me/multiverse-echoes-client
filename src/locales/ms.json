@@ -459,7 +459,7 @@
     "noEchoes": "Multisemesta anda kosong",
     "noEchoesDesc": "Cipta Echo pertama anda dan saksikan kehidupan baharu bermula.",
     "viewDetail": "Lihat perincian",
-    "mood": "Suasana",
+    "mood": "Mood",
     "tick": "Tanda {{tick}}",
     "latestDiaryEmpty": "Kisah Echo anda baru sahaja bermula. Semak semula tidak lama lagi.",
     "nextTick": "Tik tanda seterusnya dalam {{seconds}}s",
@@ -613,6 +613,7 @@
     "tabControls": "Kawalan",
     "tabAnalytics": "Analitik",
     "tabFeedback": "Maklum balas",
+    "tabBilling": "Pengebilan",
     "feedbackQueue": "Barisan Maklum Balas",
     "noFeedback": "Tiada maklum balas dihantar lagi.",
     "feedbackType": "Taip",
@@ -676,11 +677,6 @@
     "backupControl": "Sandaran Pangkalan Data",
     "triggerBackup": "Tetik Sandaran",
     "analyticsLoadFailed": "Gagal memuatkan analitik",
-    "revenueCard": "Hasil (Akan Datang)",
-    "revenueMrr": "MRR",
-    "revenueChurn": "Kadar Kehilangan Pelanggan",
-    "revenueSubscribers": "Langganan",
-    "revenuePending": "Integrasi Stripe sedang tertangguh",
     "filterAll": "Semua",
     "feedbackTypeBug": "Pepijat",
     "feedbackTypeFeatureRequest": "Permintaan Ciri",
@@ -700,6 +696,98 @@
       "demote": "Turun Pangkat",
       "empty": "Tiada Moderator lagi. Naikkan pangkat pengguna Standard dengan ID Pengguna.",
       "updatedAt": "Dikemas kini"
+    },
+    "billing": {
+      "heading": "Kesihatan Pengebilan",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "Pelanggan Berbayar",
+        "churnDelta": "Terlepas (terkini)",
+        "newSubs": "Baru (terkini)",
+        "dunningActive": "Pengingatau Aktif",
+        "subtitle": {
+          "churnSincePrev": "{{count}} sejak tangkapan sebelumnya",
+          "newSincePrev": "{{count}} sejak tangkapan sebelumnya"
+        }
+      },
+      "tier": {
+        "starter": "Pemula",
+        "core": "Teras",
+        "creator": "Kreator",
+        "godMode": "Mod Dewa"
+      },
+      "charts": {
+        "mrrTrend": "Aliran MRR",
+        "subscriberGrowth": "Pertumbuhan Pelanggan",
+        "churnOverTime": "Churn Sepanjang Masa",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "Pelanggan",
+          "churn": "Terlepas"
+        }
+      },
+      "snapshots": {
+        "heading": "Tangkapan Hasil",
+        "exportCsv": "Eksport CSV",
+        "col": {
+          "period": "Tempoh",
+          "mrr": "MRR",
+          "subscribers": "Pelanggan",
+          "perTier": "Setiap Tingkat",
+          "newSubs": "Baru",
+          "churned": "Terlepas",
+          "dunningActive": "Pengingatau Aktif"
+        },
+        "empty": "Tiada tangkapan hasil lagi."
+      },
+      "dunning": {
+        "heading": "Antrian Pengingatau",
+        "filter": {
+          "phaseLabel": "Fasa",
+          "phaseAll": "Semua fasa",
+          "userIdPlaceholder": "Substring ID Pengguna...",
+          "providerLabel": "Pembekal",
+          "providerAll": "Semua pembekal"
+        },
+        "col": {
+          "user": "Pengguna",
+          "provider": "Pembekal",
+          "phase": "Fasa",
+          "periodEnd": "Tempoh Tamat",
+          "graceUntil": "Kelas Sehingga",
+          "lastNotified": "Dimaklumkan Terakhir",
+          "actions": "Tindakan"
+        },
+        "phase": {
+          "active": "Aktif",
+          "renewalPending": "Pembaruan Menunggu",
+          "renewalImminent": "Pembaruan Akan Tiba",
+          "gracePeriod": "Tempoh Kelas",
+          "lapsed": "Tamat Tempoh"
+        },
+        "empty": "Tiada baris pengingatau.",
+        "overrideAction": "Ketepikan"
+      },
+      "error": {
+        "loadFailed": "Gagal memuatkan data pengebilan."
+      },
+      "override": {
+        "title": "Ketepikan fasa dunning",
+        "targetPhaseLabel": "Fasa sasaran",
+        "reasonLabel": "Sebab ketepikan",
+        "reasonPlaceholder": "Mengapa ketepikan ini digunakan (log audit)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Gunakan ketepikan",
+        "cancelButton": "Batal",
+        "successToast": "Ketepikan fasa dunning telah digunakan.",
+        "errorPrefix": "Ketepikan gagal"
+      },
+      "snapshot": {
+        "triggerButton": "Cipta snapshot",
+        "insertedToast": "Snapshot hasil dijana.",
+        "alreadyExistsToast": "Snapshot sudah wujud untuk {{period}}.",
+        "errorPrefix": "Penciptaan snapshot gagal"
+      }
     },
     "tabShareTokens": "Token Kongsi"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "Pembayaran anda telah dibatalkan. Anda boleh cuba lagi dari halaman Pelan.",
     "backToPlans": "Kembali ke Pelan",
     "backToDashboard": "Kembali ke Papan Pemuka",
-    "renewBanner": "Langganan {{tier}} anda akan tamat dalam {{days}} hari.",
-    "expiredBanner": "Langganan anda telah tamat tempoh. Anda telah dipindahkan ke pelan Percuma.",
-    "renew": "Perbaharui",
     "tipTitle": "Sokong Projek Ini",
     "tipDesc": "Bantu kekalkan operasi Multiverse Echoes. Tip akan disalurkan terus kepada pembangunan.",
     "tipAmount": "Jumlah",
@@ -762,7 +847,14 @@
     "tipMaximum": "Tip maksimum ialah {{currency}}{{max}}",
     "provider": "Kaedah pembayaran",
     "cryptoUnavailable": "Pembayaran kripto tidak tersedia buat sementara waktu. Sila cuba lagi kemudian atau gunakan pembayaran kad.",
-    "checkingStatus": "Menyemak status pembayaran..."
+    "checkingStatus": "Menyemak status pembayaran...",
+    "banner": {
+      "renewalPending": "Langganan anda akan diperbaharui tidak lama lagi. Sahkan kaedah pembayaran anda untuk mengelakkan gangguan.",
+      "renewalImminent": "Langganan anda akan diperbaharui dalam masa 24 jam. Sahkan kaedah pembayaran anda sekarang.",
+      "gracePeriod": "Pembayaran anda tidak berjaya. Kemas kini kaedah pembayaran anda sebelum langganan anda tamat.",
+      "paymentFailed": "Cubaan pembayaran terakhir anda gagal. Kemas kini kaedah pembayaran anda untuk mengekalkan langganan.",
+      "updatePaymentMethod": "Kemas kini kaedah pembayaran"
+    }
   },
   "waitlist": {
     "heroTitle": "Bagaimanakah rupa hidup anda jika anda membuat pilihan yang berbeza?",

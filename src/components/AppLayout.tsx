@@ -19,15 +19,34 @@ import {
 import { DiscordIcon } from './icons/DiscordIcon.tsx';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
+import { useBillingHealth } from '../stores/useBillingHealth.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { billing } from '../lib/api/endpoints.ts';
 import { OracleSidebar } from './OracleSidebar.tsx';
 import { CommunitySidebar } from './CommunitySidebar.tsx';
 import { TickTimer } from './TickTimer.tsx';
 import { EchoSidebar } from './EchoSidebar.tsx';
 import { CommunityPulseCard } from './CommunityPulseCard.tsx';
 import { MoodParticles } from './MoodParticles.tsx';
+import { BillingBanner } from './BillingBanner.tsx';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
 import { isTabletDevice } from '../lib/deviceDetect.ts';
+import type { BillingHealthResponse, DunningPhase } from '../types/generated.ts';
+
+/**
+ * Derive a single effective dunning phase from a `BillingHealthResponse`.
+ * Worst-case wins so the banner reflects the most urgent state across
+ * all crypto providers. `Lapsed` is excluded from banner rendering
+ * because re-enabling the subscription requires a fresh checkout, not
+ * a "fix payment method" prompt — the user is already on Free tier.
+ */
+function deriveBannerPhase(resp: BillingHealthResponse): DunningPhase | null {
+  const phases = new Set(resp.crypto_states.map((s) => s.phase));
+  if (phases.has('grace_period')) return 'grace_period';
+  if (phases.has('renewal_imminent')) return 'renewal_imminent';
+  if (phases.has('renewal_pending')) return 'renewal_pending';
+  return null;
+}
 
 interface NavItem {
   id: string;
@@ -203,6 +222,27 @@ export function AppLayout() {
     return () => clearInterval(interval);
   }, []);
 
+  // Initial billing-health fetch on AppLayout mount. Establishes the
+  // baseline dunning phase before any WS events fire; subsequent
+  // `DunningPhaseChanged` / `PaymentFailed` events from the dashboard
+  // stream keep the store in sync. ME-MIS-001 §5.4.5.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const resp = await billing.getMyHealth();
+        if (cancelled) return;
+        useBillingHealth.getState().setPhase(deriveBannerPhase(resp));
+      } catch {
+        // Banner stays dormant on fetch failure — better to under-warn
+        // than to render a stale banner. WS events recover on reconnect.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const showEchoPanes = location.pathname === '/dashboard' || location.pathname.startsWith('/echoes/');
 
 
@@ -250,6 +290,13 @@ export function AppLayout() {
           </button>
         </div>
       </header>
+
+      {/* Persistent billing banner — renders nothing when the
+          authenticated user has no urgent dunning state. Lives above
+          the mobile nav drawer so it survives drawer toggles, and
+          above <main> so it appears on every authenticated route.
+          ME-UXF-001 §14.5. */}
+      <BillingBanner />
 
       {/* Mobile nav drawer */}
       {mobileNavOpen && (

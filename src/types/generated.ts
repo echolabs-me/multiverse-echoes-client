@@ -41,6 +41,13 @@ export type ActiveConversationResponse = {
 	messages: ConversationMessageResponse[],
 };
 
+export type AdminDunningStatesResponse = {
+	items: BillingHealthDunningState[],
+	total: number,
+	limit: number,
+	offset: number,
+};
+
 /**
  *  Query parameters for `GET /admin/echoes`. Defaults: `limit = 50`
  *  (via `default_admin_limit`), `offset = 0`. Validated loudly at the
@@ -133,9 +140,69 @@ export type AdminEnforcementActionSummary = {
  */
 export type AdminEnforcementActionTarget = { kind: "user"; user_id: string } | { kind: "echo"; echo_id: string; owner_user_id: string | null } | { kind: "shard"; shard_id: string; owner_user_id: string | null };
 
+/**
+ *  Request body for `POST /admin/billing/dunning-states/{user_id}/{provider}/override`.
+ * 
+ *  `override_reason` is required, 1..=500 chars (cap pinned to
+ *  [`me_core::models::billing::OVERRIDE_REASON_MAX_CHARS`] — the
+ *  validator macro requires a literal so the `500` here is duplicated
+ *  at compile time and held in sync via a `const _ = assert!(...)` pin
+ *  in `crates/core/src/models/billing.rs`).
+ */
+export type AdminOverrideDunningStateRequest = {
+	target_phase: DunningPhase,
+	override_reason: string,
+};
+
+/**
+ *  Response body for the admin dunning override endpoint. Echoes the
+ *  transition the audit log just received so the client can confirm
+ *  the row landed (including the recorded `override_reason`) without
+ *  an additional `list_for_user` round-trip.
+ */
+export type AdminOverrideDunningStateResponse = {
+	user_id: string,
+	provider: CryptoBillingProvider,
+	from_phase: DunningPhase,
+	to_phase: DunningPhase,
+	transition_id: string,
+	occurred_at: string,
+	/**
+	 *  Operator-supplied reason recorded on the
+	 *  `BillingStateTransition::reason` audit row. Echoed verbatim so
+	 *  the client can confirm the audit-log payload landed.
+	 */
+	override_reason: string,
+};
+
 export type AdminPagination = {
 	limit: number,
 	offset?: number,
+};
+
+/**
+ *  Wire-side projection of `me_core::models::billing::RevenueSnapshot`
+ *  for OpenAPI emission. Same architectural reason as
+ *  `BillingHealthDunningState` — me-core can't carry utoipa.
+ */
+export type AdminRevenueSnapshotItem = {
+	snapshot_id: string,
+	period_start: string,
+	period_end: string,
+	mrr_usd_cents: number,
+	paid_subscribers_total: number,
+	paid_subscribers_by_tier: AdminTierCountBreakdown,
+	new_subscribers_count: number,
+	churned_subscribers_count: number,
+	dunning_active_count: number,
+	created_at: string,
+};
+
+export type AdminRevenueSnapshotsResponse = {
+	items: AdminRevenueSnapshotItem[],
+	total: number,
+	limit: number,
+	offset: number,
 };
 
 // Body for `POST /admin/share/tokens/{token}/revoke`.
@@ -190,6 +257,22 @@ export type AdminShareTokenSummary = {
 	revoked_by_user_id: string | null,
 	revocation_reason: string | null,
 };
+
+export type AdminTierCountBreakdown = {
+	starter: number,
+	core: number,
+	creator: number,
+	god_mode: number,
+};
+
+/**
+ *  Response body for the admin manual snapshot trigger endpoint.
+ *  Tagged enum: `outcome` discriminates the "fresh insert" branch from
+ *  the "already-exists no-op" branch so the client can decide whether
+ *  to refresh the snapshot list or surface a "snapshot already exists"
+ *  toast.
+ */
+export type AdminTriggerRevenueSnapshotResponse = { outcome: "inserted"; snapshot: AdminRevenueSnapshotItem } | { outcome: "already_exists"; period_start: string };
 
 export type AdminUpsertItemRequest = {
 	item_id?: string | null,
@@ -389,6 +472,91 @@ export type BetaParticipation = {
  *  didn't accept until after open beta opened is still `ClosedBeta`.
  */
 export type BetaTier = "ClosedBeta" | "OpenBeta";
+
+/**
+ *  Pagination query for the two admin list endpoints. Mirrors
+ *  `AdminPagination` in `crate::routes::admin` so the validation
+ *  helper can be reused. Defaults: `limit=50`, `offset=0`. Hard ceiling
+ *  500 (matches `ADMIN_LIST_MAX_LIMIT`).
+ */
+export type BillingAdminPagination = {
+	limit: number,
+	offset?: number,
+};
+
+/**
+ *  Wire-side projection of `me_core::models::billing::DunningState`.
+ *  The DTO duplicates the model's shape so the OpenAPI document gets
+ *  proper schema descriptions without dragging utoipa into me-core
+ *  (architectural invariant — same pattern as `AdminEnforcementActionTarget`).
+ */
+export type BillingHealthDunningState = {
+	user_id: string,
+	provider: CryptoBillingProvider,
+	subscription_started_at: string,
+	current_period_end: string,
+	phase: DunningPhase,
+	grace_period_expires_at: string | null,
+	last_notified_at: string | null,
+	last_notification_phase: DunningPhase | null,
+	created_at: string,
+	updated_at: string,
+};
+
+/**
+ *  Response shape for `GET /me/billing-health`. Reference: ME-API-001
+ *  §4.3 (Lane C Commit 2 amendment).
+ */
+export type BillingHealthResponse = {
+	/**
+	 *  Per-(user, provider) dunning rows. Empty for users with no
+	 *  crypto subscription history. Ordered ascending by provider.
+	 */
+	crypto_states: BillingHealthDunningState[],
+	// Stripe access derived from `User` local state.
+	stripe_status: BillingHealthStripeStatus,
+	/**
+	 *  Earliest `current_period_end` across crypto providers AND
+	 *  `User.subscription_expires_at`, whichever is sooner. `None`
+	 *  when the caller has no active paid subscription.
+	 */
+	upcoming_renewal: string | null,
+	// `true` if any of `crypto_states` is in `GracePeriod`.
+	in_grace_period: boolean,
+	/**
+	 *  Earliest `grace_period_expires_at` across `crypto_states` whose
+	 *  phase is `GracePeriod`. `None` when not in grace.
+	 */
+	grace_period_ends_at: string | null,
+};
+
+/**
+ *  Stripe access status mirror exposed on the billing-health
+ *  response. Derived from local `User` state — `subscription_tier` +
+ *  `stripe_subscription_id` — without calling Stripe. The full
+ *  classification (`Active`/`Revoked`/`Ambiguous`/`Unknown`) lives in
+ *  `crate::routes::payments` and is fed by webhook updates; this
+ *  derived view is the cheap self-service approximation.
+ * 
+ *  `None` means the user has never linked a Stripe subscription
+ *  (crypto-only or Free tier).
+ */
+export type BillingHealthStripeStatus = "none" | "active" | "revoked";
+
+/**
+ *  Append-only audit log entry for a billing state transition.
+ * 
+ *  Never mutated after insert.
+ */
+export type BillingStateTransition = {
+	transition_id: string,
+	user_id: string,
+	provider: CryptoBillingProvider,
+	from_phase: DunningPhase | null,
+	to_phase: DunningPhase,
+	reason: TransitionReason,
+	occurred_at: string,
+};
 
 /**
  *  GDPR Article 33 breach record-keeping.
@@ -815,6 +983,9 @@ export type CreateReportRequest = {
 	details: string | null,
 };
 
+// Crypto payment provider for which the application drives dunning.
+export type CryptoBillingProvider = "nowpayments" | "xaman";
+
 export type DataAccessLog = {
 	log_id: string,
 	accessor_id: string,
@@ -1004,6 +1175,62 @@ export type DowngradeSessionView = {
 	state: string,
 	picked_included_shard_id: string | null,
 	pending_decisions: PendingDecisionEntry[],
+};
+
+/**
+ *  Dunning phase for a single (user, provider) crypto subscription.
+ * 
+ *  Phase transitions are linear by default; payment receipt resets to
+ *  `Active`. `Lapsed` is terminal until a new subscription period starts.
+ */
+export type DunningPhase = 
+// Subscription is current; > 7d remaining on the period.
+"active" | 
+// 7d window before period end. First user notification sent.
+"renewal_pending" | 
+// 1d window before period end. Final user notification sent.
+"renewal_imminent" | 
+// Period ended without renewal payment. Grace clock running.
+"grace_period" | 
+/**
+ *  Grace expired. Auto-downgrade triggered. No further action until
+ *  a new period starts.
+ */
+"lapsed";
+
+/**
+ *  Per-user-per-provider dunning state. Crypto providers only.
+ * 
+ *  At most one row per (user_id, provider) pair at any time. When a
+ *  subscription renews, the row is updated in-place to reset
+ *  `phase = Active`.
+ */
+export type DunningState = {
+	user_id: string,
+	provider: CryptoBillingProvider,
+	subscription_started_at: string,
+	current_period_end: string,
+	phase: DunningPhase,
+	/**
+	 *  Set when grace period begins (i.e., on transition to
+	 *  `GracePeriod`). `None` when phase is not `GracePeriod`. Cleared
+	 *  on payment receipt.
+	 */
+	grace_period_expires_at: string | null,
+	/**
+	 *  Idempotency: timestamp of the most recent notification dispatch
+	 *  for this row. `None` until any notification has been sent for
+	 *  the current period.
+	 */
+	last_notified_at: string | null,
+	/**
+	 *  Idempotency: the phase that was active when `last_notified_at`
+	 *  was set. Used to avoid double-notifying when the dunning task
+	 *  runs more frequently than the phase boundaries.
+	 */
+	last_notification_phase: DunningPhase | null,
+	created_at: string,
+	updated_at: string,
 };
 
 export type Echo = {
@@ -2551,6 +2778,38 @@ export type RestoreEchoRequest = {
 	reason: string,
 };
 
+/**
+ *  Aggregate revenue snapshot for a closed time period (typically one
+ *  UTC day).
+ */
+export type RevenueSnapshot = {
+	snapshot_id: string,
+	// Inclusive period start (UTC day boundary).
+	period_start: string,
+	// Exclusive period end (UTC day boundary).
+	period_end: string,
+	/**
+	 *  Monthly recurring revenue at `period_end`, USD cents. Stripe +
+	 *  crypto active subscriptions normalised to monthly.
+	 */
+	mrr_usd_cents: number,
+	paid_subscribers_total: number,
+	paid_subscribers_by_tier: TierCountBreakdown,
+	// Subscribers whose first paid period started inside the window.
+	new_subscribers_count: number,
+	/**
+	 *  Subscribers whose final paid period ended inside the window
+	 *  without renewal.
+	 */
+	churned_subscribers_count: number,
+	/**
+	 *  Number of (user, provider) `DunningState` rows in any
+	 *  non-`Active`, non-`Lapsed` phase at `period_end`.
+	 */
+	dunning_active_count: number,
+	created_at: string,
+};
+
 export type SearchQuery = {
 	q: string,
 	cursor?: string | null,
@@ -3179,6 +3438,14 @@ export type TickStateResponse = {
 	paused: boolean,
 };
 
+// Per-tier paid-subscriber count breakdown. Free tier excluded.
+export type TierCountBreakdown = {
+	starter: number,
+	core: number,
+	creator: number,
+	god_mode: number,
+};
+
 /**
  *  Per-tier quota snapshot served by `GET /subscription/tier-limits`.
  * 
@@ -3248,6 +3515,30 @@ export type TierLimits = {
 	 */
 	api_key_limit: number | null,
 };
+
+/**
+ *  Reason for a billing state transition. Distinct from
+ *  `EnforcementAction` — these are policy-mechanical or
+ *  admin-overridden state changes, NOT punitive enforcement.
+ */
+export type TransitionReason = 
+/**
+ *  Automatic state-machine progression (e.g., 7d-before-end →
+ *  `RenewalPending`).
+ */
+{ kind: "policy_transition" } | 
+// User payment received; phase reset to `Active`.
+{ kind: "payment_received"; payment_id: string } | 
+/**
+ *  Admin manually overrode the dunning state. Captured for audit.
+ *  `override_reason` is required, 1..=500 chars (cap pinned to
+ *  [`OVERRIDE_REASON_MAX_CHARS`]). The reason is operator-supplied
+ *  free-text and surfaces in the audit log via
+ *  `BillingStateTransitionRepository::list_for_user`.
+ */
+{ kind: "admin_override"; admin_id: string; override_reason: string } | 
+// User cancelled their subscription explicitly.
+{ kind: "subscription_cancelled" };
 
 export type TravelRequest = {
 	destination_shard_id: string,
@@ -3826,6 +4117,35 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
  */
 { HibernatedContentDeleted: { user_id: string; echo_ids: string[]; shard_ids: string[]; deleted_at: string } } | 
 /**
+ *  Crypto subscription payment attempt failed (NOWPayments or Xaman
+ *  webhook resolved a `PaymentRecord` to `PaymentStatus::Failed`).
+ *  Stripe payment failures are NOT emitted here — Stripe owns its own
+ *  dunning state machine via `subscription.status`.
+ * 
+ *  Emitted from `crates/api/src/routes/payments.rs` after the Redb
+ *  status write commits, before the handler returns. `attempt_number`
+ *  is the cumulative count of `Failed` payment rows for this
+ *  `(user_id, provider)` pair, including the row that just landed.
+ *  Reference: ME-MIS-001 §5.4.
+ */
+{ PaymentFailed: { user_id: string; provider: CryptoBillingProvider; attempt_number: number } } | 
+/**
+ *  Dunning state machine moved a `(user_id, provider)` row from one
+ *  phase to another. Emitted exactly once per persisted transition
+ *  by the periodic dunning driver (Lane C Commit 2,
+ *  `crates/api/src/billing/dunning_driver.rs`) after the new
+ *  `DunningState` row + `BillingStateTransition` audit row both
+ *  commit. Reference: ME-MIS-001 §5.4.
+ */
+{ DunningPhaseChanged: { user_id: string; provider: CryptoBillingProvider; from: DunningPhase; to: DunningPhase } } | 
+/**
+ *  Daily revenue snapshot generator just persisted a new
+ *  `RevenueSnapshot` for the given UTC date. `snapshot_date` is the
+ *  inclusive `period_start` day. Admin-only consumer. Reference:
+ *  ME-MIS-001 §5.4.
+ */
+{ RevenueSnapshotGenerated: { snapshot_date: string } } | 
+/**
  *  A share token was revoked — by an admin via the
  *  `/admin/share/tokens/{token}/revoke` endpoint, OR purged by the
  *  daily expiry sweeper. Consumers: the admin dashboard
@@ -3887,4 +4207,26 @@ content_locale: string } | { type: "MoodChanged"; echo_id: string; mood: string;
  *  Lowercase string form of the actor's user id, or `None`
  *  for sweeper-initiated expiry.
  */
-revoked_by_user_id: string | null; reason: string } | { type: "Connected"; echo_id: string; message: string } | { type: "Error"; message: string };
+revoked_by_user_id: string | null; reason: string } | { type: "Connected"; echo_id: string; message: string } | { type: "Error"; message: string } | 
+/**
+ *  Lane C billing health — emitted on the dashboard stream when a
+ *  crypto payment fails for the connected user. `provider` is
+ *  either `nowpayments` or `xaman`. `attempt_number` is the
+ *  cumulative count of `Failed` payments for this `(user, provider)`
+ *  pair (Stripe is excluded — Stripe owns its own dunning).
+ *  Reference: ME-MIS-001 §5.4.
+ */
+{ type: "PaymentFailed"; provider: CryptoBillingProvider; attempt_number: number } | 
+/**
+ *  Lane C billing health — emitted on the dashboard stream when
+ *  the dunning state machine moves a `(user, provider)` row from
+ *  one phase to another. Reference: ME-MIS-001 §5.4.
+ */
+{ type: "DunningPhaseChanged"; provider: CryptoBillingProvider; from: DunningPhase; to: DunningPhase } | 
+/**
+ *  Lane C billing health — emitted on the dashboard stream for
+ *  admin connections when the daily revenue snapshot has been
+ *  generated. Non-admin connections never see this variant.
+ *  Reference: ME-MIS-001 §5.4.
+ */
+{ type: "RevenueSnapshotGenerated"; snapshot_date: string };

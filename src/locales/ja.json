@@ -613,6 +613,7 @@
     "tabControls": "操作方法",
     "tabAnalytics": "分析",
     "tabFeedback": "フィードバック",
+    "tabBilling": "請求",
     "feedbackQueue": "フィードバックキュー",
     "noFeedback": "まだフィードバックは送信されていません。",
     "feedbackType": "タイプ",
@@ -676,11 +677,6 @@
     "backupControl": "データベースバックアップ",
     "triggerBackup": "バックアップを実行",
     "analyticsLoadFailed": "アナリティクスの読み込みに失敗しました",
-    "revenueCard": "収益（近日公開）",
-    "revenueMrr": "MRR",
-    "revenueChurn": "解約率",
-    "revenueSubscribers": "購読者",
-    "revenuePending": "Stripe連携待ち",
     "filterAll": "すべて",
     "feedbackTypeBug": "バグ",
     "feedbackTypeFeatureRequest": "機能リクエスト",
@@ -700,6 +696,98 @@
       "demote": "降格",
       "empty": "モデレーターはまだいません。ユーザー ID で標準ユーザーを昇格させてください。",
       "updatedAt": "更新日時"
+    },
+    "billing": {
+      "heading": "請求状況",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "有料サブスクライバー",
+        "churnDelta": "解約数（最新）",
+        "newSubs": "新規（最新）",
+        "dunningActive": "督促中",
+        "subtitle": {
+          "churnSincePrev": "前回のスナップショット以降 {{count}} 件",
+          "newSincePrev": "前回のスナップショット以降 {{count}} 件"
+        }
+      },
+      "tier": {
+        "starter": "スターター",
+        "core": "コア",
+        "creator": "クリエイター",
+        "godMode": "ゴッドモード"
+      },
+      "charts": {
+        "mrrTrend": "MRRトレンド",
+        "subscriberGrowth": "サブスクライバー成長",
+        "churnOverTime": "解約推移",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "サブスクライバー",
+          "churn": "解約"
+        }
+      },
+      "snapshots": {
+        "heading": "売上スナップショット",
+        "exportCsv": "CSVをエクスポート",
+        "col": {
+          "period": "期間",
+          "mrr": "MRR",
+          "subscribers": "サブスクライバー",
+          "perTier": "プラン別",
+          "newSubs": "新規",
+          "churned": "解約",
+          "dunningActive": "督促中"
+        },
+        "empty": "売上スナップショットがありません。"
+      },
+      "dunning": {
+        "heading": "督促キュー",
+        "filter": {
+          "phaseLabel": "段階",
+          "phaseAll": "すべての段階",
+          "userIdPlaceholder": "ユーザーID（部分一致）...",
+          "providerLabel": "プロバイダー",
+          "providerAll": "すべてのプロバイダー"
+        },
+        "col": {
+          "user": "ユーザー",
+          "provider": "プロバイダー",
+          "phase": "段階",
+          "periodEnd": "期間終了",
+          "graceUntil": "猶予期限",
+          "lastNotified": "最後の通知",
+          "actions": "アクション"
+        },
+        "phase": {
+          "active": "有効",
+          "renewalPending": "更新待機中",
+          "renewalImminent": "更新間近",
+          "gracePeriod": "猶予期間",
+          "lapsed": "失効"
+        },
+        "empty": "督促対象なし。",
+        "overrideAction": "オーバーライド"
+      },
+      "error": {
+        "loadFailed": "請求データの読み込みに失敗しました。"
+      },
+      "override": {
+        "title": "ダニング段階をオーバーライド",
+        "targetPhaseLabel": "対象段階",
+        "reasonLabel": "オーバーライド理由",
+        "reasonPlaceholder": "このオーバーライドを適用する理由（監査ログ）…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "オーバーライドを適用",
+        "cancelButton": "キャンセル",
+        "successToast": "ダニング段階のオーバーライドが適用されました。",
+        "errorPrefix": "オーバーライド失敗"
+      },
+      "snapshot": {
+        "triggerButton": "スナップショットを生成",
+        "insertedToast": "収益スナップショットが生成されました。",
+        "alreadyExistsToast": "{{period}}のスナップショットは既に存在します。",
+        "errorPrefix": "スナップショット生成失敗"
+      }
     },
     "tabShareTokens": "共有トークン"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "お支払いがキャンセルされました。プランページから再度お試しください。",
     "backToPlans": "プランに戻る",
     "backToDashboard": "ダッシュボードに戻る",
-    "renewBanner": "{{tier}}プランのサブスクリプションは、あと{{days}}日で期限が切れます。",
-    "expiredBanner": "サブスクリプションの期限が切れました。無料プランに移行されました。",
-    "renew": "更新",
     "tipTitle": "プロジェクトを支援する",
     "tipDesc": "Multiverse Echoesの運営をサポートしてください。チップは直接開発費に充てられます。",
     "tipAmount": "金額",
@@ -762,7 +847,14 @@
     "tipMaximum": "チップの上限は{{currency}}{{max}}です",
     "provider": "支払い方法",
     "cryptoUnavailable": "暗号資産による支払いは一時的にご利用いただけません。後で再度お試しいただくか、カード決済をご利用ください。",
-    "checkingStatus": "支払い状況を確認しています..."
+    "checkingStatus": "支払い状況を確認しています...",
+    "banner": {
+      "renewalPending": "サブスクリプションがまもなく更新されます。中断を避けるため、お支払い方法を確認してください。",
+      "renewalImminent": "サブスクリプションは24時間以内に更新されます。今すぐお支払い方法を確認してください。",
+      "gracePeriod": "お支払いが完了しませんでした。サブスクリプションが失効する前にお支払い方法を更新してください。",
+      "paymentFailed": "前回のお支払いが失敗しました。サブスクリプションを維持するために、お支払い方法を更新してください。",
+      "updatePaymentMethod": "お支払い方法を更新"
+    }
   },
   "waitlist": {
     "heroTitle": "もし違う選択をしていたら、あなたの人生はどうなっていたでしょうか。",
@@ -1238,7 +1330,7 @@
       "explainer": "プレミアムアクション：アクティビティの提案や人間関係のヒント — Echo が実行するか判断します。"
     },
     "heartbeatDaily": "毎日",
-    "echoesSingle": "エコー",
+    "echoesSingle": "Echo",
     "taglineFree": "別の人生をちらりと覗く",
     "taglineStarter": "はじめての別人生",
     "taglineCore": "フル体験",
@@ -1349,7 +1441,7 @@
         "noPending": "保留中のダウングレード判断はありません。",
         "errorGeneric": "ダウングレード詳細の読み込み中にエラーが発生しました。",
         "summary": "{{oldTier}}から{{newTier}}に変更します。確定すると次のことが起こります。",
-        "echoesHeader": "エコー",
+        "echoesHeader": "Echoes",
         "echoesHibernateCount": "{{total}}個のEchoのうち{{count}}個が休止状態になります。",
         "echoesNoneHibernated": "休止状態になるEchoはありません。{{total}}個すべてが{{newTier}}の上限{{cap}}に収まります。",
         "echoesDeletion": "休止中のEchoは確定から90日後に完全に削除されます。スロットを空けて起こすか、それまでにプランを戻さない限り。",
@@ -1365,7 +1457,7 @@
       "pendingList": {
         "title": "削除予定",
         "empty": "削除予定のEchoまたはShardはありません。",
-        "echoLabel": "エコー",
+        "echoLabel": "Echo",
         "shardLabel": "プライベート Shard",
         "deletesOn": "{{date}}に削除",
         "loading": "削除予定を読み込み中…",

@@ -613,6 +613,7 @@
     "tabControls": "عناصر التحكم",
     "tabAnalytics": "التحليلات",
     "tabFeedback": "الملاحظات",
+    "tabBilling": "الفواتير",
     "feedbackQueue": "قائمة الملاحظات",
     "noFeedback": "لم تُقدَّم أي ملاحظات بعد.",
     "feedbackType": "النوع",
@@ -676,11 +677,6 @@
     "backupControl": "نسخ احتياطي لقاعدة البيانات",
     "triggerBackup": "إطلاق النسخ الاحتياطي",
     "analyticsLoadFailed": "فشل تحميل التحليلات",
-    "revenueCard": "الإيرادات (قريبًا)",
-    "revenueMrr": "الإيرادات الشهرية المتكررة",
-    "revenueChurn": "معدل التخارج",
-    "revenueSubscribers": "المشتركون",
-    "revenuePending": "في انتظار تكامل Stripe",
     "filterAll": "الكل",
     "feedbackTypeBug": "خلل",
     "feedbackTypeFeatureRequest": "طلب ميزة",
@@ -700,6 +696,98 @@
       "demote": "تخفيض الرتبة",
       "empty": "لا يوجد مشرفون بعد. قم بترقية مستخدم قياسي عن طريق معرّف المستخدم.",
       "updatedAt": "تم التحديث"
+    },
+    "billing": {
+      "heading": "صحة الفواتير",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "المشتركون المدفوعون",
+        "churnDelta": "الغادرون (الأخيرون)",
+        "newSubs": "جديد (الأخيرون)",
+        "dunningActive": "المحاولات النشطة",
+        "subtitle": {
+          "churnSincePrev": "{{count}} منذ اللقطة السابقة",
+          "newSincePrev": "{{count}} منذ اللقطة السابقة"
+        }
+      },
+      "tier": {
+        "starter": "مبتدئ",
+        "core": "أساسي",
+        "creator": "منشئ",
+        "godMode": "وضع الإله"
+      },
+      "charts": {
+        "mrrTrend": "اتجاه MRR",
+        "subscriberGrowth": "نمو المشتركين",
+        "churnOverTime": "الغادرون عبر الوقت",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "المشتركون",
+          "churn": "الغادرون"
+        }
+      },
+      "snapshots": {
+        "heading": "لقطات الإيرادات",
+        "exportCsv": "تصدير CSV",
+        "col": {
+          "period": "الفترة",
+          "mrr": "MRR",
+          "subscribers": "المشتركون",
+          "perTier": "حسب المستوى",
+          "newSubs": "جديد",
+          "churned": "الغادرون",
+          "dunningActive": "المحاولات النشطة"
+        },
+        "empty": "لا توجد لقطات إيرادات حتى الآن."
+      },
+      "dunning": {
+        "heading": "قائمة المحاولات",
+        "filter": {
+          "phaseLabel": "المرحلة",
+          "phaseAll": "جميع المراحل",
+          "userIdPlaceholder": "جزء معرف المستخدم...",
+          "providerLabel": "المزود",
+          "providerAll": "جميع المزودين"
+        },
+        "col": {
+          "user": "المستخدم",
+          "provider": "المزود",
+          "phase": "المرحلة",
+          "periodEnd": "انتهاء الفترة",
+          "graceUntil": "الإمهال حتى",
+          "lastNotified": "آخر إشعار",
+          "actions": "Actions"
+        },
+        "phase": {
+          "active": "نشط",
+          "renewalPending": "تجديد قيد الانتظار",
+          "renewalImminent": "تجديد وشيك",
+          "gracePeriod": "فترة الإمهال",
+          "lapsed": "منتهية الصلاحية"
+        },
+        "empty": "لا توجد صفوف محاولات.",
+        "overrideAction": "Override"
+      },
+      "error": {
+        "loadFailed": "فشل تحميل بيانات الفواتير."
+      },
+      "override": {
+        "title": "Override dunning phase",
+        "targetPhaseLabel": "Target phase",
+        "reasonLabel": "Override reason",
+        "reasonPlaceholder": "Why this override is being applied (audit log)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Apply override",
+        "cancelButton": "Cancel",
+        "successToast": "Dunning phase override applied.",
+        "errorPrefix": "Override failed"
+      },
+      "snapshot": {
+        "triggerButton": "Trigger snapshot",
+        "insertedToast": "Revenue snapshot generated.",
+        "alreadyExistsToast": "Snapshot already exists for {{period}}.",
+        "errorPrefix": "Snapshot trigger failed"
+      }
     },
     "tabShareTokens": "رموز المشاركة"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "تم إلغاء الدفع. يمكنك المحاولة مرة أخرى من صفحة الخطط.",
     "backToPlans": "العودة إلى الخطط",
     "backToDashboard": "العودة إلى لوحة التحكم",
-    "renewBanner": "ينتهي اشتراك {{tier}} خلال {{days}} يومًا.",
-    "expiredBanner": "انتهى اشتراكك. تم نقلك إلى الخطة المجانية.",
-    "renew": "تجديد",
     "tipTitle": "ادعم المشروع",
     "tipDesc": "ساعد في إبقاء Multiverse Echoes قيد التشغيل. تذهب الإكراميات مباشرة للتطوير.",
     "tipAmount": "المبلغ",
@@ -762,7 +847,14 @@
     "tipMaximum": "الحد الأقصى للإكرامية {{currency}}{{max}}",
     "provider": "طريقة الدفع",
     "cryptoUnavailable": "الدفع بالعملة المشفرة غير متاح مؤقتًا. حاول لاحقًا أو استخدم الدفع بالبطاقة.",
-    "checkingStatus": "جارٍ التحقق من حالة الدفع…"
+    "checkingStatus": "جارٍ التحقق من حالة الدفع…",
+    "banner": {
+      "renewalPending": "اشتراكك سيتجدد قريبًا. أكّد طريقة الدفع الخاصة بك لتجنّب الانقطاع.",
+      "renewalImminent": "اشتراكك سيتجدد خلال 24 ساعة. أكّد طريقة الدفع الخاصة بك الآن.",
+      "gracePeriod": "لم يتم إتمام دفعتك. حدّث طريقة الدفع قبل انتهاء اشتراكك.",
+      "paymentFailed": "فشلت محاولة الدفع الأخيرة. حدّث طريقة الدفع للحفاظ على اشتراكك نشطًا.",
+      "updatePaymentMethod": "تحديث طريقة الدفع"
+    }
   },
   "waitlist": {
     "heroTitle": "كيف ستبدو حياتك لو اتخذت قرارات مختلفة؟",
@@ -1237,8 +1329,8 @@
       "label": "نقاط التأثير",
       "explainer": "إجراءات مميّزة: اقترح أنشطة أو ألمح إلى علاقات — الصدى يقرر التنفيذ."
     },
-    "heartbeatDaily": "يومي",
-    "echoesSingle": "صدى",
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo",
     "taglineFree": "لمحة عن حياة أخرى",
     "taglineStarter": "حيواتك البديلة الأولى",
     "taglineCore": "التجربة الكاملة",
@@ -1314,7 +1406,7 @@
       "16vid16voice": "16 مذكرة فيديو / يوم، 16 مكالمة صوتية / يوم",
       "unlimitedVidVoice": "مذكرات فيديو غير محدودة، مكالمات صوتية غير محدودة"
     },
-    "heartbeatTwiceDaily": "مرتان",
+    "heartbeatTwiceDaily": "2×",
     "heartbeat2hr": "2س",
     "heartbeat30m": "30د",
     "heartbeat15m": "15د",
@@ -1365,7 +1457,7 @@
       "pendingList": {
         "title": "الحذف المعلق",
         "empty": "لا توجد Echoes أو Shards مجدولة للحذف.",
-        "echoLabel": "صدى",
+        "echoLabel": "Echo",
         "shardLabel": "Shard خاص",
         "deletesOn": "يُحذف في {{date}}",
         "loading": "جارٍ تحميل الحذف المعلق…",

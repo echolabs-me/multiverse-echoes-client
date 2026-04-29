@@ -141,7 +141,7 @@
     "card3Body": "Il n'y a pas de points, pas de victoire. C'est une simulation de vie autonome. Aborde-la avec curiosité.",
     "understand": "J'ai compris — c'est parti",
     "profileTitle": "Configure ton profil",
-    "bio": "Biographie",
+    "bio": "Bio",
     "bioHint": "Un peu sur toi — l'observateur, pas l'Écho. Affichée sur ton profil communautaire (facultatif, 500 caractères max)",
     "bioCallout": "C'est à propos de toi, pas de ton Écho. Les autres utilisateurs la voient sur ton profil dans la communauté. Ça n'a aucun effet sur la façon dont tes Échos pensent ou se comportent.",
     "timezone": "Fuseau horaire",
@@ -613,6 +613,7 @@
     "tabControls": "Contrôles",
     "tabAnalytics": "Analyse",
     "tabFeedback": "Retours",
+    "tabBilling": "Facturation",
     "feedbackQueue": "File des retours",
     "noFeedback": "Aucun retour envoyé pour l'instant.",
     "feedbackType": "Type",
@@ -629,7 +630,7 @@
     "feedbackPriorityLabel": "Définir la priorité",
     "pauseTick": "Mettre en pause le moteur Tick",
     "resumeTick": "Reprendre le moteur Tick",
-    "tickNumber": "Tick n°",
+    "tickNumber": "Tick #",
     "tickDuration": "Durée du Tick",
     "ramUsage": "Utilisation RAM",
     "vramUsage": "Utilisation VRAM",
@@ -676,13 +677,8 @@
     "backupControl": "Sauvegarde de la base de données",
     "triggerBackup": "Déclencher la sauvegarde",
     "analyticsLoadFailed": "Échec du chargement des analyses",
-    "revenueCard": "Revenus (bientôt disponible)",
-    "revenueMrr": "MRR",
-    "revenueChurn": "Taux d'attrition",
-    "revenueSubscribers": "Abonnés",
-    "revenuePending": "Intégration Stripe en attente",
     "filterAll": "Tout",
-    "feedbackTypeBug": "Anomalie",
+    "feedbackTypeBug": "Bug",
     "feedbackTypeFeatureRequest": "Demande de fonctionnalité",
     "feedbackTypeFrustration": "Frustration",
     "feedbackTypePraise": "Compliment",
@@ -700,6 +696,98 @@
       "demote": "Rétrograder",
       "empty": "Aucun modérateur pour l'instant. Promouvez un utilisateur Standard par son ID.",
       "updatedAt": "Mis à jour"
+    },
+    "billing": {
+      "heading": "Santé de la facturation",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "Abonnés payants",
+        "churnDelta": "Désabonnements (dernier)",
+        "newSubs": "Nouveaux (dernier)",
+        "dunningActive": "Relance active",
+        "subtitle": {
+          "churnSincePrev": "{{count}} depuis l'instantané précédent",
+          "newSincePrev": "{{count}} depuis l'instantané précédent"
+        }
+      },
+      "tier": {
+        "starter": "Starter",
+        "core": "Core",
+        "creator": "Creator",
+        "godMode": "God Mode"
+      },
+      "charts": {
+        "mrrTrend": "Tendance MRR",
+        "subscriberGrowth": "Croissance des abonnés",
+        "churnOverTime": "Désabonnements dans le temps",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "Abonnés",
+          "churn": "Désabonnés"
+        }
+      },
+      "snapshots": {
+        "heading": "Instantanés de revenus",
+        "exportCsv": "Exporter CSV",
+        "col": {
+          "period": "Période",
+          "mrr": "MRR",
+          "subscribers": "Abonnés",
+          "perTier": "Par niveau",
+          "newSubs": "Nouveaux",
+          "churned": "Désabonnés",
+          "dunningActive": "Relance active"
+        },
+        "empty": "Aucun instantané de revenus pour le moment."
+      },
+      "dunning": {
+        "heading": "File de relance",
+        "filter": {
+          "phaseLabel": "Phase",
+          "phaseAll": "Toutes les phases",
+          "userIdPlaceholder": "Sous-chaîne d'ID utilisateur...",
+          "providerLabel": "Prestataire",
+          "providerAll": "Tous les prestataires"
+        },
+        "col": {
+          "user": "Utilisateur",
+          "provider": "Prestataire",
+          "phase": "Phase",
+          "periodEnd": "Fin de période",
+          "graceUntil": "Délai jusqu'au",
+          "lastNotified": "Dernière notification",
+          "actions": "Actions"
+        },
+        "phase": {
+          "active": "Actif",
+          "renewalPending": "Renouvellement en attente",
+          "renewalImminent": "Renouvellement imminent",
+          "gracePeriod": "Période de grâce",
+          "lapsed": "Expiré"
+        },
+        "empty": "Aucune ligne de relance.",
+        "overrideAction": "Remplacer"
+      },
+      "error": {
+        "loadFailed": "Impossible de charger les données de facturation."
+      },
+      "override": {
+        "title": "Remplacer la phase de relance",
+        "targetPhaseLabel": "Phase cible",
+        "reasonLabel": "Raison du remplacement",
+        "reasonPlaceholder": "Pourquoi ce remplacement est appliqué (journal d'audit)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Appliquer le remplacement",
+        "cancelButton": "Annuler",
+        "successToast": "Remplacement de phase de relance appliqué.",
+        "errorPrefix": "Échec du remplacement"
+      },
+      "snapshot": {
+        "triggerButton": "Générer un snapshot",
+        "insertedToast": "Snapshot de revenu généré.",
+        "alreadyExistsToast": "Un snapshot existe déjà pour {{period}}.",
+        "errorPrefix": "Échec de la génération du snapshot"
+      }
     },
     "tabShareTokens": "Tokens de partage"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "Ton paiement a été annulé. Tu peux réessayer depuis la page des plans.",
     "backToPlans": "Retour aux plans",
     "backToDashboard": "Retour au tableau de bord",
-    "renewBanner": "Ton abonnement {{tier}} expire dans {{days}} jours.",
-    "expiredBanner": "Ton abonnement a expiré. Tu as été déplacé vers le plan gratuit.",
-    "renew": "Renouveler",
     "tipTitle": "Soutiens le projet",
     "tipDesc": "Aide à faire tourner Multiverse Echoes. Les pourboires vont directement au développement.",
     "tipAmount": "Montant",
@@ -762,7 +847,14 @@
     "tipMaximum": "Le pourboire maximum est de {{currency}}{{max}}",
     "provider": "Mode de paiement",
     "cryptoUnavailable": "Les paiements en crypto sont temporairement indisponibles. Réessaie plus tard ou utilise le paiement par carte.",
-    "checkingStatus": "Vérification du statut du paiement…"
+    "checkingStatus": "Vérification du statut du paiement…",
+    "banner": {
+      "renewalPending": "Ton abonnement se renouvelle bientôt. Confirme ton moyen de paiement pour éviter toute interruption.",
+      "renewalImminent": "Ton abonnement se renouvelle dans 24 heures. Confirme ton moyen de paiement maintenant.",
+      "gracePeriod": "Ton paiement n'a pas abouti. Mets à jour ton moyen de paiement avant l'expiration de ton abonnement.",
+      "paymentFailed": "Ta dernière tentative de paiement a échoué. Mets à jour ton moyen de paiement pour garder ton abonnement actif.",
+      "updatePaymentMethod": "Mettre à jour le moyen de paiement"
+    }
   },
   "waitlist": {
     "heroTitle": "À quoi ressemblerait ta vie si tu avais fait d'autres choix ?",

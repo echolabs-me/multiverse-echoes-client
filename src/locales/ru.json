@@ -613,6 +613,7 @@
     "tabControls": "Управление",
     "tabAnalytics": "Аналитика",
     "tabFeedback": "Обратная связь",
+    "tabBilling": "Биллинг",
     "feedbackQueue": "Очередь отзывов",
     "noFeedback": "Отзывы еще не отправлены.",
     "feedbackType": "Тип",
@@ -676,11 +677,6 @@
     "backupControl": "Резервное копирование базы данных",
     "triggerBackup": "Запустить резервное копирование",
     "analyticsLoadFailed": "Не удалось загрузить аналитику",
-    "revenueCard": "Доход (Скоро будет)",
-    "revenueMrr": "MRR",
-    "revenueChurn": "Коэффициент оттока",
-    "revenueSubscribers": "Подписчики",
-    "revenuePending": "Ожидание интеграции со Stripe",
     "filterAll": "Все",
     "feedbackTypeBug": "Ошибка",
     "feedbackTypeFeatureRequest": "Запрос на новую функцию",
@@ -700,6 +696,98 @@
       "demote": "Понизить",
       "empty": "Модераторов пока нет. Повысьте обычного пользователя по его ID.",
       "updatedAt": "Обновлено"
+    },
+    "billing": {
+      "heading": "Состояние биллинга",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "Платные подписчики",
+        "churnDelta": "Отток (последний)",
+        "newSubs": "Новые (последний)",
+        "dunningActive": "Дннинг активен",
+        "subtitle": {
+          "churnSincePrev": "{{count}} с момента последнего снимка",
+          "newSincePrev": "{{count}} с момента последнего снимка"
+        }
+      },
+      "tier": {
+        "starter": "Starter",
+        "core": "Core",
+        "creator": "Creator",
+        "godMode": "God Mode"
+      },
+      "charts": {
+        "mrrTrend": "Тренд MRR",
+        "subscriberGrowth": "Рост подписчиков",
+        "churnOverTime": "Отток во времени",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "Подписчики",
+          "churn": "Отток"
+        }
+      },
+      "snapshots": {
+        "heading": "Снимки выручки",
+        "exportCsv": "Экспорт CSV",
+        "col": {
+          "period": "Период",
+          "mrr": "MRR",
+          "subscribers": "Подписчики",
+          "perTier": "По уровню",
+          "newSubs": "Новые",
+          "churned": "Отток",
+          "dunningActive": "Дннинг активен"
+        },
+        "empty": "Снимков выручки еще нет."
+      },
+      "dunning": {
+        "heading": "Очередь дннинга",
+        "filter": {
+          "phaseLabel": "Этап",
+          "phaseAll": "Все этапы",
+          "userIdPlaceholder": "Часть ID пользователя...",
+          "providerLabel": "Провайдер",
+          "providerAll": "Все провайдеры"
+        },
+        "col": {
+          "user": "Пользователь",
+          "provider": "Провайдер",
+          "phase": "Этап",
+          "periodEnd": "Период заканчивается",
+          "graceUntil": "Льгота до",
+          "lastNotified": "Последнее уведомление",
+          "actions": "Действия"
+        },
+        "phase": {
+          "active": "Активный",
+          "renewalPending": "Продление в ожидании",
+          "renewalImminent": "Продление неминуемо",
+          "gracePeriod": "Период льготы",
+          "lapsed": "Истекший"
+        },
+        "empty": "Нет строк дннинга.",
+        "overrideAction": "Переопределить"
+      },
+      "error": {
+        "loadFailed": "Ошибка загрузки данных биллинга."
+      },
+      "override": {
+        "title": "Переопределить этап взыскания",
+        "targetPhaseLabel": "Целевой этап",
+        "reasonLabel": "Причина переопределения",
+        "reasonPlaceholder": "Причина применения этого переопределения (журнал аудита)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Применить переопределение",
+        "cancelButton": "Отмена",
+        "successToast": "Переопределение этапа взыскания применено.",
+        "errorPrefix": "Ошибка переопределения"
+      },
+      "snapshot": {
+        "triggerButton": "Создать снимок",
+        "insertedToast": "Снимок выручки создан.",
+        "alreadyExistsToast": "Снимок уже существует за период {{period}}.",
+        "errorPrefix": "Ошибка создания снимка"
+      }
     },
     "tabShareTokens": "Токены обмена"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "Ваш платеж был отменен. Вы можете попробовать снова на странице «Тарифы».",
     "backToPlans": "Вернуться к тарифным планам",
     "backToDashboard": "Вернуться на панель управления",
-    "renewBanner": "Срок действия вашей подписки {{tier}} истекает через {{days}} дн.",
-    "expiredBanner": "Срок действия вашей подписки истек. Вы переведены на бесплатный тариф.",
-    "renew": "Обновить",
     "tipTitle": "Поддержите проект",
     "tipDesc": "Помогите поддерживать работу Multiverse Echoes. Все пожертвования идут напрямую на разработку.",
     "tipAmount": "Сумма",
@@ -762,7 +847,14 @@
     "tipMaximum": "Максимальный размер чаевых {{currency}}{{max}}",
     "provider": "Способ оплаты",
     "cryptoUnavailable": "Криптоплатежи временно недоступны. Пожалуйста, попробуйте позже или воспользуйтесь оплатой картой.",
-    "checkingStatus": "Проверка статуса платежа..."
+    "checkingStatus": "Проверка статуса платежа...",
+    "banner": {
+      "renewalPending": "Ваша подписка скоро продлевается. Подтвердите способ оплаты, чтобы избежать прерывания.",
+      "renewalImminent": "Ваша подписка продлится в течение 24 часов. Подтвердите способ оплаты сейчас.",
+      "gracePeriod": "Ваш платёж не прошёл. Обновите способ оплаты до окончания подписки.",
+      "paymentFailed": "Последняя попытка оплаты не удалась. Обновите способ оплаты, чтобы сохранить подписку активной.",
+      "updatePaymentMethod": "Обновить способ оплаты"
+    }
   },
   "waitlist": {
     "heroTitle": "Какой была бы ваша жизнь, если бы вы сделали другой выбор?",
@@ -1237,8 +1329,8 @@
       "label": "Очки Влияния",
       "explainer": "Премиум-действия: предложите активность или намекните на отношения — Эхо само решает, действовать ли."
     },
-    "heartbeatDaily": "Ежедневно",
-    "echoesSingle": "Эхо",
+    "heartbeatDaily": "Daily",
+    "echoesSingle": "Echo",
     "taglineFree": "Заглянуть в другую жизнь",
     "taglineStarter": "Ваши первые альтернативные жизни",
     "taglineCore": "Полный опыт",
@@ -1349,7 +1441,7 @@
         "noPending": "Нет ожидающих решений по понижению тарифа.",
         "errorGeneric": "Произошла ошибка при загрузке деталей понижения тарифа.",
         "summary": "Вы переходите с {{oldTier}} на {{newTier}}. Вот что произойдёт после подтверждения.",
-        "echoesHeader": "Эхо",
+        "echoesHeader": "Echoes",
         "echoesHibernateCount": "{{count}} из ваших {{total}} Echo перейдут в спящий режим.",
         "echoesNoneHibernated": "Ни один Echo не перейдёт в спящий режим. Все {{total}} помещаются в лимит {{cap}} для {{newTier}}.",
         "echoesDeletion": "Echo в спящем режиме удаляются безвозвратно через 90 дней после подтверждения, если только вы не разбудите их, освободив слот, или не повысите тариф обратно до этого срока.",
@@ -1365,7 +1457,7 @@
       "pendingList": {
         "title": "Ожидающие удаления",
         "empty": "Нет Echo или Shard, запланированных для удаления.",
-        "echoLabel": "Эхо",
+        "echoLabel": "Echo",
         "shardLabel": "Приватный Shard",
         "deletesOn": "Удаление {{date}}",
         "loading": "Загружаем ожидающие удаления…",

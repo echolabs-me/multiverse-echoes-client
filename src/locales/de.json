@@ -613,6 +613,7 @@
     "tabControls": "Steuerungen",
     "tabAnalytics": "Analysen",
     "tabFeedback": "Feedback",
+    "tabBilling": "Abrechnung",
     "feedbackQueue": "Feedback-Warteschlange",
     "noFeedback": "Noch kein Feedback eingereicht.",
     "feedbackType": "Typ",
@@ -676,11 +677,6 @@
     "backupControl": "Datenbank-Backup",
     "triggerBackup": "Backup auslösen",
     "analyticsLoadFailed": "Analytics konnten nicht geladen werden",
-    "revenueCard": "Umsatz (Demnächst)",
-    "revenueMrr": "MRR",
-    "revenueChurn": "Abwanderungsquote",
-    "revenueSubscribers": "Abonnenten",
-    "revenuePending": "Ausstehende Stripe-Integration",
     "filterAll": "Alle",
     "feedbackTypeBug": "Käfer",
     "feedbackTypeFeatureRequest": "Funktionsanfrage",
@@ -700,6 +696,98 @@
       "demote": "Herabstufen",
       "empty": "Noch keine Moderatoren. Befördern Sie einen Standard-Benutzer per Benutzer-ID.",
       "updatedAt": "Aktualisiert"
+    },
+    "billing": {
+      "heading": "Abrechnungsstatus",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "Bezahlte Abonnenten",
+        "churnDelta": "Abgewandert (aktuell)",
+        "newSubs": "Neu (aktuell)",
+        "dunningActive": "Dunning aktiv",
+        "subtitle": {
+          "churnSincePrev": "{{count}} seit letztem Snapshot",
+          "newSincePrev": "{{count}} seit letztem Snapshot"
+        }
+      },
+      "tier": {
+        "starter": "Starter",
+        "core": "Core",
+        "creator": "Creator",
+        "godMode": "God Mode"
+      },
+      "charts": {
+        "mrrTrend": "MRR-Trend",
+        "subscriberGrowth": "Abonnentenwachstum",
+        "churnOverTime": "Abwanderung über Zeit",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "Abonnenten",
+          "churn": "Abgewandert"
+        }
+      },
+      "snapshots": {
+        "heading": "Umsatz-Snapshots",
+        "exportCsv": "CSV exportieren",
+        "col": {
+          "period": "Zeitraum",
+          "mrr": "MRR",
+          "subscribers": "Abonnenten",
+          "perTier": "Pro Tier",
+          "newSubs": "Neu",
+          "churned": "Abgewandert",
+          "dunningActive": "Dunning aktiv"
+        },
+        "empty": "Noch keine Umsatz-Snapshots vorhanden."
+      },
+      "dunning": {
+        "heading": "Dunning-Warteschlange",
+        "filter": {
+          "phaseLabel": "Phase",
+          "phaseAll": "Alle Phasen",
+          "userIdPlaceholder": "Benutzer-ID-Teilstring...",
+          "providerLabel": "Anbieter",
+          "providerAll": "Alle Anbieter"
+        },
+        "col": {
+          "user": "Benutzer",
+          "provider": "Anbieter",
+          "phase": "Phase",
+          "periodEnd": "Zeitraum endet",
+          "graceUntil": "Kulanzfrist bis",
+          "lastNotified": "Zuletzt benachrichtigt",
+          "actions": "Aktionen"
+        },
+        "phase": {
+          "active": "Aktiv",
+          "renewalPending": "Erneuerung ausstehend",
+          "renewalImminent": "Erneuerung unmittelbar bevorstehend",
+          "gracePeriod": "Kulanzfrist",
+          "lapsed": "Abgelaufen"
+        },
+        "empty": "Keine Dunning-Einträge.",
+        "overrideAction": "Überschreiben"
+      },
+      "error": {
+        "loadFailed": "Abrechnungsdaten konnten nicht geladen werden."
+      },
+      "override": {
+        "title": "Dunning-Phase überschreiben",
+        "targetPhaseLabel": "Zielphase",
+        "reasonLabel": "Grund für Überschreibung",
+        "reasonPlaceholder": "Grund für diese Überschreibung (Audit-Log)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Überschreibung anwenden",
+        "cancelButton": "Abbrechen",
+        "successToast": "Dunning-Phase-Überschreibung angewendet.",
+        "errorPrefix": "Überschreibung fehlgeschlagen"
+      },
+      "snapshot": {
+        "triggerButton": "Snapshot auslösen",
+        "insertedToast": "Revenue-Snapshot generiert.",
+        "alreadyExistsToast": "Snapshot für {{period}} existiert bereits.",
+        "errorPrefix": "Snapshot-Auslösung fehlgeschlagen"
+      }
     },
     "tabShareTokens": "Share-Tokens"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "Ihre Zahlung wurde abgebrochen. Sie können es auf der Seite „Tarife“ erneut versuchen.",
     "backToPlans": "Zurück zu den Tarifen",
     "backToDashboard": "Zurück zum Dashboard",
-    "renewBanner": "Ihr {{tier}}-Abonnement läuft in {{days}} Tagen ab.",
-    "expiredBanner": "Ihr Abonnement ist abgelaufen. Sie wurden in die kostenlose Version verschoben.",
-    "renew": "Erneuern",
     "tipTitle": "Unterstützen Sie das Projekt",
     "tipDesc": "Helfen Sie dabei, Multiverse Echoes am Laufen zu halten. Trinkgelder fließen direkt in die Entwicklung.",
     "tipAmount": "Betrag",
@@ -762,7 +847,14 @@
     "tipMaximum": "Maximales Trinkgeld ist {{currency}}{{max}}",
     "provider": "Zahlungsart",
     "cryptoUnavailable": "Krypto-Zahlungen vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut oder nutzen Sie die Kartenzahlung.",
-    "checkingStatus": "Zahlungsstatus wird geprüft..."
+    "checkingStatus": "Zahlungsstatus wird geprüft...",
+    "banner": {
+      "renewalPending": "Dein Abonnement wird bald verlängert. Bestätige deine Zahlungsmethode, um eine Unterbrechung zu vermeiden.",
+      "renewalImminent": "Dein Abonnement wird innerhalb von 24 Stunden verlängert. Bestätige jetzt deine Zahlungsmethode.",
+      "gracePeriod": "Deine Zahlung ist fehlgeschlagen. Aktualisiere deine Zahlungsmethode, bevor dein Abonnement abläuft.",
+      "paymentFailed": "Dein letzter Zahlungsversuch ist fehlgeschlagen. Aktualisiere deine Zahlungsmethode, um dein Abonnement aktiv zu halten.",
+      "updatePaymentMethod": "Zahlungsmethode aktualisieren"
+    }
   },
   "waitlist": {
     "heroTitle": "Wie sähe dein Leben aus, wenn du dich anders entschieden hättest?",
@@ -1160,11 +1252,11 @@
       "buildP2": "Die Engine läuft auf einer einzigen NVIDIA B200 GPU. Sie verarbeitet 500 autonome Echo-Leben alle 9 Minuten — jeweils mit Tagebucheinträgen, KI-generierten Filmszenen, Sprachsynthese und lippensynchroner Videoerzählung. Alles in 20 Sprachen.",
       "stackTitle": "Der Tech-Stack",
       "stackEngine": "Engine",
-      "stackEngine1": "Rust (ECS-Architektur)",
-      "stackEngine2": "Gemma 4 31B (lokales LLM)",
-      "stackEngine3": "FLUX.2 Klein (Bildgenerierung)",
-      "stackEngine4": "VoxCPM2 (Sprachsynthese)",
-      "stackEngine5": "MuseTalk + LivePortrait (Video)",
+      "stackEngine1": "Rust (ECS architecture)",
+      "stackEngine2": "Gemma 4 31B (local LLM)",
+      "stackEngine3": "FLUX.2 Klein (image gen)",
+      "stackEngine4": "VoxCPM2 (voice synthesis)",
+      "stackEngine5": "MuseTalk + LivePortrait (video)",
       "stackClient": "Client",
       "stackClient1": "React 19 + TypeScript 6",
       "stackClient2": "Tailwind CSS v4",

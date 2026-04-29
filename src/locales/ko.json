@@ -613,6 +613,7 @@
     "tabControls": "조작법",
     "tabAnalytics": "분석",
     "tabFeedback": "피드백",
+    "tabBilling": "결제",
     "feedbackQueue": "피드백 대기열",
     "noFeedback": "아직 제출된 피드백이 없습니다.",
     "feedbackType": "유형",
@@ -676,11 +677,6 @@
     "backupControl": "데이터베이스 백업",
     "triggerBackup": "백업 실행",
     "analyticsLoadFailed": "분석 데이터를 불러오지 못했습니다",
-    "revenueCard": "수익 (출시 예정)",
-    "revenueMrr": "월간 반복 매출 (MRR)",
-    "revenueChurn": "이탈률",
-    "revenueSubscribers": "구독자",
-    "revenuePending": "Stripe 연동 대기 중",
     "filterAll": "모두",
     "feedbackTypeBug": "벌레",
     "feedbackTypeFeatureRequest": "기능 요청",
@@ -700,6 +696,98 @@
       "demote": "강등",
       "empty": "아직 중재자가 없습니다. 사용자 ID로 표준 사용자를 승격하세요.",
       "updatedAt": "업데이트됨"
+    },
+    "billing": {
+      "heading": "결제 상태",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "유료 구독자",
+        "churnDelta": "이탈 (최신)",
+        "newSubs": "신규 (최신)",
+        "dunningActive": "회수 중",
+        "subtitle": {
+          "churnSincePrev": "이전 스냅샷 이후 {{count}}",
+          "newSincePrev": "이전 스냅샷 이후 {{count}}"
+        }
+      },
+      "tier": {
+        "starter": "스타터",
+        "core": "코어",
+        "creator": "크리에이터",
+        "godMode": "갓 모드"
+      },
+      "charts": {
+        "mrrTrend": "MRR 추이",
+        "subscriberGrowth": "구독자 증가",
+        "churnOverTime": "시간별 이탈",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "구독자",
+          "churn": "이탈"
+        }
+      },
+      "snapshots": {
+        "heading": "수익 스냅샷",
+        "exportCsv": "CSV 내보내기",
+        "col": {
+          "period": "기간",
+          "mrr": "MRR",
+          "subscribers": "구독자",
+          "perTier": "티어별",
+          "newSubs": "신규",
+          "churned": "이탈",
+          "dunningActive": "회수 중"
+        },
+        "empty": "수익 스냅샷이 없습니다."
+      },
+      "dunning": {
+        "heading": "회수 대기열",
+        "filter": {
+          "phaseLabel": "단계",
+          "phaseAll": "모든 단계",
+          "userIdPlaceholder": "사용자 ID 부분 문자열...",
+          "providerLabel": "공급자",
+          "providerAll": "모든 공급자"
+        },
+        "col": {
+          "user": "사용자",
+          "provider": "공급자",
+          "phase": "단계",
+          "periodEnd": "기간 종료",
+          "graceUntil": "유예 기한",
+          "lastNotified": "마지막 알림",
+          "actions": "작업"
+        },
+        "phase": {
+          "active": "활성",
+          "renewalPending": "갱신 대기 중",
+          "renewalImminent": "갱신 임박",
+          "gracePeriod": "유예 기간",
+          "lapsed": "만료됨"
+        },
+        "empty": "회수 행이 없습니다.",
+        "overrideAction": "재정의"
+      },
+      "error": {
+        "loadFailed": "결제 데이터를 불러올 수 없습니다."
+      },
+      "override": {
+        "title": "회수 단계 재정의",
+        "targetPhaseLabel": "대상 단계",
+        "reasonLabel": "재정의 사유",
+        "reasonPlaceholder": "이 재정의가 적용되는 이유 (감사 로그)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "재정의 적용",
+        "cancelButton": "취소",
+        "successToast": "회수 단계 재정의가 적용되었습니다.",
+        "errorPrefix": "재정의 실패"
+      },
+      "snapshot": {
+        "triggerButton": "스냅샷 생성",
+        "insertedToast": "수익 스냅샷이 생성되었습니다.",
+        "alreadyExistsToast": "{{period}}에 대한 스냅샷이 이미 존재합니다.",
+        "errorPrefix": "스냅샷 생성 실패"
+      }
     },
     "tabShareTokens": "공유 토큰"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "결제가 취소되었습니다. 요금제 페이지에서 다시 시도해 주세요.",
     "backToPlans": "요금제로 돌아가기",
     "backToDashboard": "대시보드로 돌아가기",
-    "renewBanner": "{{tier}} 구독이 {{days}}일 후에 만료됩니다.",
-    "expiredBanner": "구독이 만료되었습니다. 무료 요금제로 전환되었습니다.",
-    "renew": "갱신",
     "tipTitle": "프로젝트 후원하기",
     "tipDesc": "Multiverse Echoes의 운영을 도와주세요. 후원금은 개발비로 직접 사용됩니다.",
     "tipAmount": "금액",
@@ -762,7 +847,14 @@
     "tipMaximum": "최대 팁 금액은 {{currency}}{{max}}입니다.",
     "provider": "결제 방법",
     "cryptoUnavailable": "암호화폐 결제를 일시적으로 이용하실 수 없습니다. 나중에 다시 시도하시거나 카드 결제를 이용해 주세요.",
-    "checkingStatus": "결제 상태를 확인 중입니다..."
+    "checkingStatus": "결제 상태를 확인 중입니다...",
+    "banner": {
+      "renewalPending": "구독이 곧 갱신됩니다. 중단을 피하려면 결제 수단을 확인하세요.",
+      "renewalImminent": "구독이 24시간 이내에 갱신됩니다. 지금 결제 수단을 확인하세요.",
+      "gracePeriod": "결제가 완료되지 않았습니다. 구독이 만료되기 전에 결제 수단을 업데이트하세요.",
+      "paymentFailed": "마지막 결제 시도가 실패했습니다. 구독을 활성 상태로 유지하려면 결제 수단을 업데이트하세요.",
+      "updatePaymentMethod": "결제 수단 업데이트"
+    }
   },
   "waitlist": {
     "heroTitle": "만약 다른 선택을 했다면 당신의 삶은 어떤 모습이었을까요?",

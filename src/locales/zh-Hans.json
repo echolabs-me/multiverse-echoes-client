@@ -613,6 +613,7 @@
     "tabControls": "控制",
     "tabAnalytics": "分析",
     "tabFeedback": "反馈",
+    "tabBilling": "账单",
     "feedbackQueue": "反馈队列",
     "noFeedback": "尚未提交任何反馈。",
     "feedbackType": "类型",
@@ -676,11 +677,6 @@
     "backupControl": "数据库备份",
     "triggerBackup": "触发备份",
     "analyticsLoadFailed": "加载分析数据失败",
-    "revenueCard": "收入(即将推出)",
-    "revenueMrr": "月度经常性收入",
-    "revenueChurn": "流失率",
-    "revenueSubscribers": "订阅者",
-    "revenuePending": "等待 Stripe 集成",
     "filterAll": "全部",
     "feedbackTypeBug": "缺陷",
     "feedbackTypeFeatureRequest": "功能请求",
@@ -700,6 +696,98 @@
       "demote": "降级",
       "empty": "尚无版主。按用户 ID 提升一名标准用户。",
       "updatedAt": "更新时间"
+    },
+    "billing": {
+      "heading": "账单健康状况",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "付费订阅者",
+        "churnDelta": "流失（最近）",
+        "newSubs": "新增（最近）",
+        "dunningActive": "催收进行中",
+        "subtitle": {
+          "churnSincePrev": "自上次快照以来 {{count}} 个",
+          "newSincePrev": "自上次快照以来 {{count}} 个"
+        }
+      },
+      "tier": {
+        "starter": "入门版",
+        "core": "核心版",
+        "creator": "创作者版",
+        "godMode": "上帝模式"
+      },
+      "charts": {
+        "mrrTrend": "MRR 趋势",
+        "subscriberGrowth": "订阅者增长",
+        "churnOverTime": "流失趋势",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "订阅者",
+          "churn": "流失"
+        }
+      },
+      "snapshots": {
+        "heading": "收入快照",
+        "exportCsv": "导出 CSV",
+        "col": {
+          "period": "周期",
+          "mrr": "MRR",
+          "subscribers": "订阅者",
+          "perTier": "按版本",
+          "newSubs": "新增",
+          "churned": "流失",
+          "dunningActive": "催收进行中"
+        },
+        "empty": "暂无收入快照。"
+      },
+      "dunning": {
+        "heading": "催收队列",
+        "filter": {
+          "phaseLabel": "阶段",
+          "phaseAll": "所有阶段",
+          "userIdPlaceholder": "用户 ID 子串...",
+          "providerLabel": "供应商",
+          "providerAll": "所有供应商"
+        },
+        "col": {
+          "user": "用户",
+          "provider": "供应商",
+          "phase": "阶段",
+          "periodEnd": "周期结束",
+          "graceUntil": "宽限至",
+          "lastNotified": "最后通知",
+          "actions": "操作"
+        },
+        "phase": {
+          "active": "进行中",
+          "renewalPending": "待续期",
+          "renewalImminent": "续期迫在眉睫",
+          "gracePeriod": "宽限期",
+          "lapsed": "已失效"
+        },
+        "empty": "无催收记录。",
+        "overrideAction": "覆盖"
+      },
+      "error": {
+        "loadFailed": "加载账单数据失败。"
+      },
+      "override": {
+        "title": "覆盖催款阶段",
+        "targetPhaseLabel": "目标阶段",
+        "reasonLabel": "覆盖原因",
+        "reasonPlaceholder": "应用此覆盖的原因（审计日志）…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "应用覆盖",
+        "cancelButton": "取消",
+        "successToast": "催款阶段覆盖已应用。",
+        "errorPrefix": "覆盖失败"
+      },
+      "snapshot": {
+        "triggerButton": "生成快照",
+        "insertedToast": "收入快照已生成。",
+        "alreadyExistsToast": "{{period}} 的快照已存在。",
+        "errorPrefix": "快照生成失败"
+      }
     },
     "tabShareTokens": "分享令牌"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "你的支付已取消。可以从方案页重新尝试。",
     "backToPlans": "返回方案",
     "backToDashboard": "返回仪表盘",
-    "renewBanner": "你的 {{tier}} 订阅将在 {{days}} 天后到期。",
-    "expiredBanner": "你的订阅已过期,已被切换到免费方案。",
-    "renew": "续订",
     "tipTitle": "支持项目",
     "tipDesc": "帮助 Multiverse Echoes 继续运行。打赏将直接用于开发。",
     "tipAmount": "金额",
@@ -762,7 +847,14 @@
     "tipMaximum": "最大打赏为 {{currency}}{{max}}",
     "provider": "支付方式",
     "cryptoUnavailable": "加密支付暂时不可用,请稍后再试或使用银行卡支付。",
-    "checkingStatus": "正在查询支付状态…"
+    "checkingStatus": "正在查询支付状态…",
+    "banner": {
+      "renewalPending": "你的订阅即将续费。请确认你的付款方式以避免中断。",
+      "renewalImminent": "你的订阅将在 24 小时内续费。请立即确认你的付款方式。",
+      "gracePeriod": "你的付款未成功。请在订阅失效前更新你的付款方式。",
+      "paymentFailed": "你的上次付款尝试失败。请更新你的付款方式以保持订阅活跃。",
+      "updatePaymentMethod": "更新付款方式"
+    }
   },
   "waitlist": {
     "heroTitle": "如果你做出不一样的选择,你的人生会是什么样?",

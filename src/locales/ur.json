@@ -613,6 +613,7 @@
     "tabControls": "کنٹرولز",
     "tabAnalytics": "تجزیات",
     "tabFeedback": "تاثرات",
+    "tabBilling": "بلنگ",
     "feedbackQueue": "فیڈ بیک کیو",
     "noFeedback": "ابھی تک کوئی فیڈ بیک جمع نہیں کرایا گیا۔",
     "feedbackType": "ٹائپ کریں",
@@ -676,11 +677,6 @@
     "backupControl": "ڈیٹا بیس بیک اپ",
     "triggerBackup": "بیک اپ شروع کریں",
     "analyticsLoadFailed": "اینالٹکس لوڈ کرنے میں ناکامی ہوئی",
-    "revenueCard": "آمدنی (جلد آ رہا ہے)",
-    "revenueMrr": "ایم آر آر",
-    "revenueChurn": "چرن ریٹ",
-    "revenueSubscribers": "سکرائبرز",
-    "revenuePending": "اسٹرائپ انٹیگریشن زیرِ التواء ہے",
     "filterAll": "تمام",
     "feedbackTypeBug": "کیڑا",
     "feedbackTypeFeatureRequest": "فیچر کی درخواست",
@@ -700,6 +696,98 @@
       "demote": "تنزیل کریں",
       "empty": "ابھی تک کوئی ماڈریٹر نہیں۔ صارف ID کے ذریعے ایک معیاری صارف کو ترقی دیں۔",
       "updatedAt": "اپ ڈیٹ ہوا"
+    },
+    "billing": {
+      "heading": "بلنگ کی صحت",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "ادا شدہ رکن",
+        "churnDelta": "منسوخ شدہ (تازہ ترین)",
+        "newSubs": "نیا (تازہ ترین)",
+        "dunningActive": "ڈننگ فعال",
+        "subtitle": {
+          "churnSincePrev": "{{count}} سابقہ سنیپ شاٹ کے بعد سے",
+          "newSincePrev": "{{count}} سابقہ سنیپ شاٹ کے بعد سے"
+        }
+      },
+      "tier": {
+        "starter": "سٹارٹر",
+        "core": "کور",
+        "creator": "تخلیق کار",
+        "godMode": "خدائی موڈ"
+      },
+      "charts": {
+        "mrrTrend": "MRR رجحان",
+        "subscriberGrowth": "رکن کی ترقی",
+        "churnOverTime": "وقت کے ساتھ منسوخی",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "رکن",
+          "churn": "منسوخ شدہ"
+        }
+      },
+      "snapshots": {
+        "heading": "آمدنی کی تصویریں",
+        "exportCsv": "CSV برآمد کریں",
+        "col": {
+          "period": "مدتِ عمل",
+          "mrr": "MRR",
+          "subscribers": "رکن",
+          "perTier": "ہر درجہ کے لحاظ سے",
+          "newSubs": "نیا",
+          "churned": "منسوخ شدہ",
+          "dunningActive": "ڈننگ فعال"
+        },
+        "empty": "ابھی کوئی آمدنی کی تصویریں نہیں ہیں۔"
+      },
+      "dunning": {
+        "heading": "ڈننگ قطار",
+        "filter": {
+          "phaseLabel": "مرحلہ",
+          "phaseAll": "تمام مراحل",
+          "userIdPlaceholder": "صارف ID کی تفصیل...",
+          "providerLabel": "فراہم کار",
+          "providerAll": "تمام فراہم کار"
+        },
+        "col": {
+          "user": "صارف",
+          "provider": "فراہم کار",
+          "phase": "مرحلہ",
+          "periodEnd": "مدتِ عمل ختم",
+          "graceUntil": "رحمت تک",
+          "lastNotified": "آخری اطلاع",
+          "actions": "اقدامات"
+        },
+        "phase": {
+          "active": "فعال",
+          "renewalPending": "تجدید زیرِ التوا",
+          "renewalImminent": "تجدید قریب الوقوع",
+          "gracePeriod": "رحمت کی مدتِ عمل",
+          "lapsed": "ختم شدہ"
+        },
+        "empty": "کوئی ڈننگ قطار نہیں ہے۔",
+        "overrideAction": "نیا تعین کریں"
+      },
+      "error": {
+        "loadFailed": "بلنگ ڈیٹا لوڈ کرنے میں ناکام۔"
+      },
+      "override": {
+        "title": "ڈننگ مرحلہ نیا تعین کریں",
+        "targetPhaseLabel": "ہدف مرحلہ",
+        "reasonLabel": "نیا تعین کی وجہ",
+        "reasonPlaceholder": "یہ نیا تعین کیوں لاگو کیا جا رہا ہے (آڈٹ لاگ)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "نیا تعین لاگو کریں",
+        "cancelButton": "منسوخ کریں",
+        "successToast": "ڈننگ مرحلہ نیا تعین لاگو ہو گیا۔",
+        "errorPrefix": "نیا تعین ناکام"
+      },
+      "snapshot": {
+        "triggerButton": "سنیپ شاٹ شروع کریں",
+        "insertedToast": "آمدن کی سنیپ شاٹ تیار ہو گئی۔",
+        "alreadyExistsToast": "{{period}} کے لیے سنیپ شاٹ پہلے سے موجود ہے۔",
+        "errorPrefix": "سنیپ شاٹ شروع کرنا ناکام"
+      }
     },
     "tabShareTokens": "شیئر ٹوکن"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "آپ کی ادائیگی منسوخ کر دی گئی ہے۔ آپ پلانز (Plans) کے صفحے سے دوبارہ کوشش کر سکتے ہیں۔",
     "backToPlans": "منصوبوں پر واپس جائیں",
     "backToDashboard": "ڈیش بورڈ پر واپس جائیں",
-    "renewBanner": "آپ کی {{tier}} سبسکرپشن {{days}} دنوں میں ختم ہو جائے گی۔",
-    "expiredBanner": "آپ کی سبسکرپشن ختم ہو چکی ہے۔ آپ کو فری ٹیر (مفت پلان) پر منتقل کر دیا گیا ہے۔",
-    "renew": "تجدید کریں",
     "tipTitle": "پروجیکٹ کی حمایت کریں",
     "tipDesc": "Multiverse Echoes کو جاری رکھنے میں مدد کریں۔ عطیات براہِ راست ڈویلپمنٹ کے لیے استعمال ہوں گے۔",
     "tipAmount": "رقم",
@@ -762,7 +847,14 @@
     "tipMaximum": "زیادہ سے زیادہ ٹپ {{currency}}{{max}} ہے",
     "provider": "طریقہ ادائیگی",
     "cryptoUnavailable": "کرپٹو ادائیگیز عارضی طور پر دستیاب نہیں ہیں۔ براہ کرم بعد میں دوبارہ کوشش کریں یا کارڈ کے ذریعے ادائیگی کریں۔",
-    "checkingStatus": "ادائیگی کی صورتحال چیک کی جا رہی ہے..."
+    "checkingStatus": "ادائیگی کی صورتحال چیک کی جا رہی ہے...",
+    "banner": {
+      "renewalPending": "آپ کی سبسکرپشن جلد ہی تجدید ہوگی۔ رکاوٹ سے بچنے کے لیے اپنا ادائیگی کا طریقہ تصدیق کریں۔",
+      "renewalImminent": "آپ کی سبسکرپشن 24 گھنٹوں کے اندر تجدید ہوگی۔ ابھی اپنا ادائیگی کا طریقہ تصدیق کریں۔",
+      "gracePeriod": "آپ کی ادائیگی مکمل نہیں ہوئی۔ سبسکرپشن ختم ہونے سے پہلے اپنا ادائیگی کا طریقہ اپ ڈیٹ کریں۔",
+      "paymentFailed": "آپ کی آخری ادائیگی کی کوشش ناکام ہوگئی۔ سبسکرپشن فعال رکھنے کے لیے اپنا ادائیگی کا طریقہ اپ ڈیٹ کریں۔",
+      "updatePaymentMethod": "ادائیگی کا طریقہ اپ ڈیٹ کریں"
+    }
   },
   "waitlist": {
     "heroTitle": "اگر آپ نے مختلف فیصلے کیے ہوتے تو آپ کی زندگی کیسی ہوتی؟",

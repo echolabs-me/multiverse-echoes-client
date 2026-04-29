@@ -800,6 +800,54 @@ export const waitlist = {
   count: () => request<WaitlistCountResponse>('/waitlist/count'),
 };
 
+// --- Billing health (Lane C Commit 2 — ME-MIS-001 §5.4) ---
+
+import type {
+  BillingHealthResponse,
+  AdminDunningStatesResponse,
+  AdminRevenueSnapshotsResponse,
+  AdminOverrideDunningStateRequest,
+  AdminOverrideDunningStateResponse,
+  AdminTriggerRevenueSnapshotResponse,
+  CryptoBillingProvider,
+} from '../../types/generated.ts';
+
+/** Self-service billing health for the authenticated user. */
+export const billing = {
+  getMyHealth: () => request<BillingHealthResponse>('/me/billing-health'),
+};
+
+/** Admin-only billing health endpoints. Caller must already hold an
+ *  Admin-tier bearer; non-admin requests get 403 from `AdminContext`. */
+export const adminBilling = {
+  listDunningStates: (limit = 50, offset = 0) =>
+    request<AdminDunningStatesResponse>(
+      `/admin/billing/dunning-states?limit=${limit}&offset=${offset}`,
+    ),
+  listRevenueSnapshots: (limit = 50, offset = 0) =>
+    request<AdminRevenueSnapshotsResponse>(
+      `/admin/billing/revenue-snapshots?limit=${limit}&offset=${offset}`,
+    ),
+  /** Force-set the dunning phase outside the policy state machine.
+   *  Reference: ME-MIS-001 §5.4.6 (Lane C Commit 5). */
+  overrideDunningState: (
+    userId: string,
+    provider: CryptoBillingProvider,
+    body: AdminOverrideDunningStateRequest,
+  ) =>
+    request<AdminOverrideDunningStateResponse>(
+      `/admin/billing/dunning-states/${userId}/${provider}/override`,
+      { method: 'POST', body: JSON.stringify(body) },
+    ),
+  /** Manually invoke the daily revenue-snapshot generator. Idempotent
+   *  within the UTC day. Reference: ME-MIS-001 §5.4.6 (Lane C Commit 5). */
+  triggerRevenueSnapshot: () =>
+    request<AdminTriggerRevenueSnapshotResponse>(
+      '/admin/billing/revenue-snapshots/trigger',
+      { method: 'POST' },
+    ),
+};
+
 // --- Users (public profile surface) ---
 
 export const users = {

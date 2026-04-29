@@ -613,6 +613,7 @@
     "tabControls": "Kontrol",
     "tabAnalytics": "Analitik",
     "tabFeedback": "Umpan balik",
+    "tabBilling": "Tagihan",
     "feedbackQueue": "Antrean Umpan Balik",
     "noFeedback": "Belum ada masukan yang dikirimkan.",
     "feedbackType": "Ketik",
@@ -676,11 +677,6 @@
     "backupControl": "Cadangan Database",
     "triggerBackup": "Picu Cadangan",
     "analyticsLoadFailed": "Gagal memuat analitik",
-    "revenueCard": "Pendapatan (Segera Hadir)",
-    "revenueMrr": "MRR",
-    "revenueChurn": "Tingkat Churn",
-    "revenueSubscribers": "Pelanggan",
-    "revenuePending": "Integrasi Stripe tertunda",
     "filterAll": "Semua",
     "feedbackTypeBug": "Kutu",
     "feedbackTypeFeatureRequest": "Permintaan Fitur",
@@ -700,6 +696,98 @@
       "demote": "Turunkan",
       "empty": "Belum ada Moderator. Promosikan pengguna Standar berdasarkan ID Pengguna.",
       "updatedAt": "Diperbarui"
+    },
+    "billing": {
+      "heading": "Kesehatan Penagihan",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "Pelanggan Berbayar",
+        "churnDelta": "Churn (terbaru)",
+        "newSubs": "Baru (terbaru)",
+        "dunningActive": "Dunning Aktif",
+        "subtitle": {
+          "churnSincePrev": "{{count}} sejak snapshot sebelumnya",
+          "newSincePrev": "{{count}} sejak snapshot sebelumnya"
+        }
+      },
+      "tier": {
+        "starter": "Starter",
+        "core": "Core",
+        "creator": "Creator",
+        "godMode": "God Mode"
+      },
+      "charts": {
+        "mrrTrend": "Tren MRR",
+        "subscriberGrowth": "Pertumbuhan Pelanggan",
+        "churnOverTime": "Churn Seiring Waktu",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "Pelanggan",
+          "churn": "Churn"
+        }
+      },
+      "snapshots": {
+        "heading": "Snapshot Pendapatan",
+        "exportCsv": "Ekspor CSV",
+        "col": {
+          "period": "Periode",
+          "mrr": "MRR",
+          "subscribers": "Pelanggan",
+          "perTier": "Per Tier",
+          "newSubs": "Baru",
+          "churned": "Churn",
+          "dunningActive": "Dunning Aktif"
+        },
+        "empty": "Belum ada snapshot pendapatan."
+      },
+      "dunning": {
+        "heading": "Antrian Dunning",
+        "filter": {
+          "phaseLabel": "Fase",
+          "phaseAll": "Semua fase",
+          "userIdPlaceholder": "Substring User ID...",
+          "providerLabel": "Penyedia",
+          "providerAll": "Semua penyedia"
+        },
+        "col": {
+          "user": "Pengguna",
+          "provider": "Penyedia",
+          "phase": "Fase",
+          "periodEnd": "Periode Berakhir",
+          "graceUntil": "Masa Tenggang Hingga",
+          "lastNotified": "Notifikasi Terakhir",
+          "actions": "Tindakan"
+        },
+        "phase": {
+          "active": "Aktif",
+          "renewalPending": "Pembaruan Tertunda",
+          "renewalImminent": "Pembaruan Akan Datang",
+          "gracePeriod": "Masa Tenggang",
+          "lapsed": "Kadaluarsa"
+        },
+        "empty": "Tidak ada baris dunning.",
+        "overrideAction": "Ganti"
+      },
+      "error": {
+        "loadFailed": "Gagal memuat data penagihan."
+      },
+      "override": {
+        "title": "Ganti fase dunning",
+        "targetPhaseLabel": "Fase target",
+        "reasonLabel": "Alasan penggantian",
+        "reasonPlaceholder": "Mengapa penggantian ini diterapkan (audit log)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Terapkan penggantian",
+        "cancelButton": "Batal",
+        "successToast": "Penggantian fase dunning diterapkan.",
+        "errorPrefix": "Penggantian gagal"
+      },
+      "snapshot": {
+        "triggerButton": "Buat snapshot",
+        "insertedToast": "Snapshot pendapatan dibuat.",
+        "alreadyExistsToast": "Snapshot sudah ada untuk {{period}}.",
+        "errorPrefix": "Pembuatan snapshot gagal"
+      }
     },
     "tabShareTokens": "Token Berbagi"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "Pembayaran Anda dibatalkan. Anda dapat mencoba lagi dari halaman Paket.",
     "backToPlans": "Kembali ke Paket",
     "backToDashboard": "Kembali ke Dasbor",
-    "renewBanner": "Langganan {{tier}} Anda akan berakhir dalam {{days}} hari.",
-    "expiredBanner": "Langganan Anda telah berakhir. Anda telah dipindahkan ke paket Gratis.",
-    "renew": "Perbarui",
     "tipTitle": "Dukung Proyek Ini",
     "tipDesc": "Bantu jaga Multiverse Echoes tetap berjalan. Tip akan langsung disalurkan untuk pengembangan.",
     "tipAmount": "Jumlah",
@@ -762,7 +847,14 @@
     "tipMaximum": "Tip maksimum adalah {{currency}}{{max}}",
     "provider": "Metode pembayaran",
     "cryptoUnavailable": "Pembayaran kripto sementara tidak tersedia. Silakan coba lagi nanti atau gunakan pembayaran kartu.",
-    "checkingStatus": "Memeriksa status pembayaran..."
+    "checkingStatus": "Memeriksa status pembayaran...",
+    "banner": {
+      "renewalPending": "Langganan Anda akan diperbarui segera. Konfirmasikan metode pembayaran Anda untuk menghindari gangguan.",
+      "renewalImminent": "Langganan Anda akan diperbarui dalam 24 jam. Konfirmasikan metode pembayaran Anda sekarang.",
+      "gracePeriod": "Pembayaran Anda tidak berhasil. Perbarui metode pembayaran Anda sebelum langganan Anda berakhir.",
+      "paymentFailed": "Upaya pembayaran terakhir Anda gagal. Perbarui metode pembayaran Anda untuk menjaga langganan tetap aktif.",
+      "updatePaymentMethod": "Perbarui metode pembayaran"
+    }
   },
   "waitlist": {
     "heroTitle": "Akan seperti apa hidupmu jika kamu membuat pilihan yang berbeda?",

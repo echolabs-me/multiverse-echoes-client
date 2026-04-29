@@ -613,6 +613,7 @@
     "tabControls": "Controls",
     "tabAnalytics": "Analytics",
     "tabFeedback": "Feedback",
+    "tabBilling": "Billing",
     "tabModerators": "Moderators",
     "tabShareTokens": "Share Tokens",
     "moderators": {
@@ -686,11 +687,6 @@
     "backupControl": "Database Backup",
     "triggerBackup": "Trigger Backup",
     "analyticsLoadFailed": "Failed to load analytics",
-    "revenueCard": "Revenue (Coming Soon)",
-    "revenueMrr": "MRR",
-    "revenueChurn": "Churn Rate",
-    "revenueSubscribers": "Subscribers",
-    "revenuePending": "Pending Stripe integration",
     "filterAll": "All",
     "feedbackTypeBug": "Bug",
     "feedbackTypeFeatureRequest": "Feature Request",
@@ -701,7 +697,99 @@
     "feedbackStatusAcknowledged": "Acknowledged",
     "feedbackStatusResolved": "Resolved",
     "feedbackStatusWontfix": "Won't Fix",
-    "resolutionPrefix": "Resolution"
+    "resolutionPrefix": "Resolution",
+    "billing": {
+      "heading": "Billing Health",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "Paid Subscribers",
+        "churnDelta": "Churned (latest)",
+        "newSubs": "New (latest)",
+        "dunningActive": "Dunning Active",
+        "subtitle": {
+          "churnSincePrev": "{{count}} since prior snapshot",
+          "newSincePrev": "{{count}} since prior snapshot"
+        }
+      },
+      "tier": {
+        "starter": "Starter",
+        "core": "Core",
+        "creator": "Creator",
+        "godMode": "God Mode"
+      },
+      "charts": {
+        "mrrTrend": "MRR Trend",
+        "subscriberGrowth": "Subscriber Growth",
+        "churnOverTime": "Churn Over Time",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "Subscribers",
+          "churn": "Churned"
+        }
+      },
+      "snapshots": {
+        "heading": "Revenue Snapshots",
+        "exportCsv": "Export CSV",
+        "col": {
+          "period": "Period",
+          "mrr": "MRR",
+          "subscribers": "Subscribers",
+          "perTier": "Per Tier",
+          "newSubs": "New",
+          "churned": "Churned",
+          "dunningActive": "Dunning Active"
+        },
+        "empty": "No revenue snapshots yet."
+      },
+      "dunning": {
+        "heading": "Dunning Queue",
+        "filter": {
+          "phaseLabel": "Phase",
+          "phaseAll": "All phases",
+          "userIdPlaceholder": "User ID substring...",
+          "providerLabel": "Provider",
+          "providerAll": "All providers"
+        },
+        "col": {
+          "user": "User",
+          "provider": "Provider",
+          "phase": "Phase",
+          "periodEnd": "Period Ends",
+          "graceUntil": "Grace Until",
+          "lastNotified": "Last Notified",
+          "actions": "Actions"
+        },
+        "phase": {
+          "active": "Active",
+          "renewalPending": "Renewal Pending",
+          "renewalImminent": "Renewal Imminent",
+          "gracePeriod": "Grace Period",
+          "lapsed": "Lapsed"
+        },
+        "empty": "No dunning rows.",
+        "overrideAction": "Override"
+      },
+      "override": {
+        "title": "Override dunning phase",
+        "targetPhaseLabel": "Target phase",
+        "reasonLabel": "Override reason",
+        "reasonPlaceholder": "Why this override is being applied (audit log)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Apply override",
+        "cancelButton": "Cancel",
+        "successToast": "Dunning phase override applied.",
+        "errorPrefix": "Override failed"
+      },
+      "snapshot": {
+        "triggerButton": "Trigger snapshot",
+        "insertedToast": "Revenue snapshot generated.",
+        "alreadyExistsToast": "Snapshot already exists for {{period}}.",
+        "errorPrefix": "Snapshot trigger failed"
+      },
+      "error": {
+        "loadFailed": "Failed to load billing data."
+      }
+    }
   },
   "adminShare": {
     "tokens": {
@@ -778,9 +866,6 @@
     "cancelledDesc": "Your payment was cancelled. You can try again from the Plans page.",
     "backToPlans": "Back to Plans",
     "backToDashboard": "Back to Dashboard",
-    "renewBanner": "Your {{tier}} subscription expires in {{days}} days.",
-    "expiredBanner": "Your subscription has expired. You've been moved to the Free tier.",
-    "renew": "Renew",
     "tipTitle": "Support the Project",
     "tipDesc": "Help keep Multiverse Echoes running. Tips go directly to development.",
     "tipAmount": "Amount",
@@ -793,7 +878,14 @@
     "tipMaximum": "Maximum tip is {{currency}}{{max}}",
     "provider": "Payment method",
     "cryptoUnavailable": "Crypto payments temporarily unavailable. Please try again later or use card payment.",
-    "checkingStatus": "Checking payment status..."
+    "checkingStatus": "Checking payment status...",
+    "banner": {
+      "renewalPending": "Your subscription renews soon. Confirm your payment method to avoid interruption.",
+      "renewalImminent": "Your subscription renews within 24 hours. Confirm your payment method now.",
+      "gracePeriod": "Your payment didn't go through. Update your payment method before your subscription lapses.",
+      "paymentFailed": "Your last payment attempt failed. Update your payment method to keep your subscription active.",
+      "updatePaymentMethod": "Update payment method"
+    }
   },
   "waitlist": {
     "heroTitle": "What would your life look like if you'd made different choices?",

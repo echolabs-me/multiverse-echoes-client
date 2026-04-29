@@ -425,7 +425,7 @@
     "deleteAccountGrace": "Nakatakdang burahin ang iyong account. Mayroon kang {{days}} araw para kanselahin ito.",
     "cancelDeletion": "Kanselahin ang Pagbura",
     "deletionCancelled": "Kinansela ang pagbura ng account",
-    "soloMode": "Solo Mode",
+    "soloMode": "Solo mode",
     "soloModeDesc": "Kapag naka-enable, ang iyong mga Echo ay hindi makikipag-ugnayan sa mga Echo mula sa ibang mga user.",
     "prefEchoLifeEvent": "I-echo ang mga kaganapan sa buhay",
     "prefDiary": "Mga update sa talaarawan",
@@ -613,6 +613,7 @@
     "tabControls": "Mga Kontrol",
     "tabAnalytics": "Analitika",
     "tabFeedback": "Tugon",
+    "tabBilling": "Pagbabayad",
     "feedbackQueue": "Pila ng Feedback",
     "noFeedback": "Wala pang isinumiteng feedback.",
     "feedbackType": "Uri",
@@ -676,11 +677,6 @@
     "backupControl": "Backup ng Database",
     "triggerBackup": "Simulan ang Backup",
     "analyticsLoadFailed": "Hindi nag-load ang analytics",
-    "revenueCard": "Kita (Malapit na)",
-    "revenueMrr": "MRR",
-    "revenueChurn": "Antas ng Pag-alis ng Customer",
-    "revenueSubscribers": "Mga Subscriber",
-    "revenuePending": "Kasalukuyang hinihintay ang Stripe integration",
     "filterAll": "Lahat",
     "feedbackTypeBug": "Surot",
     "feedbackTypeFeatureRequest": "Kahilingan para sa Tampok",
@@ -700,6 +696,98 @@
       "demote": "Ibaba",
       "empty": "Wala pang Tagapamagitan. Itaas ang isang Standard na user sa pamamagitan ng User ID.",
       "updatedAt": "Na-update"
+    },
+    "billing": {
+      "heading": "Kalusugan ng Billing",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "Bayad na Subscribers",
+        "churnDelta": "Nawala (pinakabago)",
+        "newSubs": "Bago (pinakabago)",
+        "dunningActive": "Dunning Aktibo",
+        "subtitle": {
+          "churnSincePrev": "{{count}} mula sa nakaraang snapshot",
+          "newSincePrev": "{{count}} mula sa nakaraang snapshot"
+        }
+      },
+      "tier": {
+        "starter": "Starter",
+        "core": "Core",
+        "creator": "Creator",
+        "godMode": "God Mode"
+      },
+      "charts": {
+        "mrrTrend": "MRR Trend",
+        "subscriberGrowth": "Paglaki ng Subscribers",
+        "churnOverTime": "Churn Sa Paglipas ng Panahon",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "Subscribers",
+          "churn": "Nawala"
+        }
+      },
+      "snapshots": {
+        "heading": "Revenue Snapshots",
+        "exportCsv": "I-export ang CSV",
+        "col": {
+          "period": "Panahon",
+          "mrr": "MRR",
+          "subscribers": "Subscribers",
+          "perTier": "Per Tier",
+          "newSubs": "Bago",
+          "churned": "Nawala",
+          "dunningActive": "Dunning Aktibo"
+        },
+        "empty": "Walang revenue snapshots pa."
+      },
+      "dunning": {
+        "heading": "Dunning Queue",
+        "filter": {
+          "phaseLabel": "Phase",
+          "phaseAll": "Lahat ng phases",
+          "userIdPlaceholder": "User ID substring...",
+          "providerLabel": "Provider",
+          "providerAll": "Lahat ng providers"
+        },
+        "col": {
+          "user": "User",
+          "provider": "Provider",
+          "phase": "Phase",
+          "periodEnd": "Pagtatapos ng Panahon",
+          "graceUntil": "Grace Hanggang",
+          "lastNotified": "Huling Abiso",
+          "actions": "Mga Aksyon"
+        },
+        "phase": {
+          "active": "Aktibo",
+          "renewalPending": "Pagpapabago ay Naghihintay",
+          "renewalImminent": "Pagpapabago ay Malapit Na",
+          "gracePeriod": "Grace Period",
+          "lapsed": "Lumipas"
+        },
+        "empty": "Walang dunning rows.",
+        "overrideAction": "I-override"
+      },
+      "error": {
+        "loadFailed": "Nabigo ang pagkuha ng billing data."
+      },
+      "override": {
+        "title": "I-override ang dunning phase",
+        "targetPhaseLabel": "Target phase",
+        "reasonLabel": "Dahilan ng override",
+        "reasonPlaceholder": "Bakit ito na-override (audit log)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Ilapat ang override",
+        "cancelButton": "Kanselahin",
+        "successToast": "Dunning phase override na-apply.",
+        "errorPrefix": "Nabigong i-override"
+      },
+      "snapshot": {
+        "triggerButton": "Mag-trigger ng snapshot",
+        "insertedToast": "Revenue snapshot na-generate.",
+        "alreadyExistsToast": "Snapshot ay umiiral na para sa {{period}}.",
+        "errorPrefix": "Nabigong mag-trigger ng snapshot"
+      }
     },
     "tabShareTokens": "Share Tokens"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "Kinansela ang iyong pagbabayad. Maaari mong subukan muli sa page ng mga Plan.",
     "backToPlans": "Bumalik sa mga Plano",
     "backToDashboard": "Bumalik sa Dashboard",
-    "renewBanner": "Mag-eexpire ang iyong {{tier}} subscription sa loob ng {{days}} araw.",
-    "expiredBanner": "Nag-expire na ang iyong subscription. Inilipat ka na sa Free tier.",
-    "renew": "I-renew",
     "tipTitle": "Suportahan ang Proyekto",
     "tipDesc": "Tulungan kaming panatilihing tumatakbo ang Multiverse Echoes. Ang mga tip ay direktang mapupunta sa development.",
     "tipAmount": "Halaga",
@@ -762,7 +847,14 @@
     "tipMaximum": "Ang maximum na tip ay {{currency}}{{max}}",
     "provider": "Paraan ng pagbabayad",
     "cryptoUnavailable": "Pansamantalang hindi available ang crypto payments. Pakisubukan muli mamaya o gumamit ng card payment.",
-    "checkingStatus": "Sinusuri ang katayuan ng pagbabayad..."
+    "checkingStatus": "Sinusuri ang katayuan ng pagbabayad...",
+    "banner": {
+      "renewalPending": "Malapit nang mag-renew ang iyong subscription. Kumpirmahin ang iyong paraan ng pagbabayad para maiwasan ang pagkaantala.",
+      "renewalImminent": "Mag-rerenew ang iyong subscription sa loob ng 24 oras. Kumpirmahin ang iyong paraan ng pagbabayad ngayon.",
+      "gracePeriod": "Hindi natuloy ang iyong bayad. I-update ang iyong paraan ng pagbabayad bago mag-expire ang subscription.",
+      "paymentFailed": "Nabigo ang iyong huling pagsubok sa pagbabayad. I-update ang iyong paraan ng pagbabayad para manatiling aktibo ang subscription.",
+      "updatePaymentMethod": "I-update ang paraan ng pagbabayad"
+    }
   },
   "waitlist": {
     "heroTitle": "Ano kaya ang hitsura ng buhay mo kung iba ang mga pinili mo?",

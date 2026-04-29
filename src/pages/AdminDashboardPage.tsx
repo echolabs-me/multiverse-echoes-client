@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -10,11 +10,26 @@ import {
   Database,
   Search,
   Clock,
+  Download,
 } from 'lucide-react';
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { Tabs, Button, Badge, Spinner, Card } from '../components/index.ts';
+import { OverrideDunningPhaseModal } from '../components/admin/billing/OverrideDunningPhaseModal.tsx';
+import { TriggerSnapshotButton } from '../components/admin/billing/TriggerSnapshotButton.tsx';
 import { useAuthStore } from '../stores/index.ts';
-import { admin, adminShare } from '../lib/api/endpoints.ts';
+import { admin, adminBilling, adminShare } from '../lib/api/endpoints.ts';
 import { request } from '../lib/api/client.ts';
+import { formatUsdCents } from '../lib/format.ts';
+import { useToastStore } from '../stores/useToastStore.ts';
 import type {
   SystemHealth,
   AdminReport,
@@ -25,7 +40,13 @@ import type {
   FeedbackPriority,
   ModeratorUserItem,
 } from '../types/api.ts';
-import type { AdminShareTokenSummary } from '../types/generated.ts';
+import type {
+  AdminRevenueSnapshotItem,
+  AdminShareTokenSummary,
+  BillingHealthDunningState,
+  CryptoBillingProvider,
+  DunningPhase,
+} from '../types/generated.ts';
 
 type AdminTab =
   | 'dashboard'
@@ -34,6 +55,7 @@ type AdminTab =
   | 'shards'
   | 'controls'
   | 'analytics'
+  | 'billing'
   | 'feedback'
   | 'moderators'
   | 'share-tokens';
@@ -71,6 +93,7 @@ export function AdminDashboardPage() {
     { id: 'shards', label: t('admin.tabShards') },
     { id: 'controls', label: t('admin.tabControls') },
     { id: 'analytics', label: t('admin.tabAnalytics') },
+    { id: 'billing', label: t('admin.tabBilling') },
     { id: 'feedback', label: t('admin.tabFeedback') },
     { id: 'share-tokens', label: t('admin.tabShareTokens') },
   ];
@@ -103,6 +126,7 @@ export function AdminDashboardPage() {
         {activeTab === 'shards' && <ShardsView />}
         {activeTab === 'controls' && <ControlsView />}
         {activeTab === 'analytics' && <AnalyticsView />}
+        {activeTab === 'billing' && <BillingView />}
         {activeTab === 'feedback' && <FeedbackQueueView />}
         {activeTab === 'share-tokens' && <ShareTokensView />}
       </div>
@@ -568,15 +592,17 @@ function ControlsView() {
 }
 
 // --- Analytics View ---
+// Revenue fields (mrr, subscriber_count, churn_rate) intentionally omitted
+// from this client-side projection — those metrics are now sourced from
+// the Lane C billing-health endpoints and rendered in `BillingView`.
+// The server `/admin/analytics/summary` response shape is unchanged; the
+// client just stops reading the unused fields.
 interface AnalyticsSummary {
   dau: number;
   registrations_7d: number;
   echo_creations_7d: number;
   diary_views_today: number;
   safety_flagged_7d: number;
-  mrr: number;
-  subscriber_count: Record<string, number>;
-  churn_rate: number;
 }
 
 function AnalyticsView() {
@@ -626,27 +652,481 @@ function AnalyticsView() {
           </Card>
         ))}
       </div>
-
-      {/* Revenue (stubs) */}
-      <Card>
-        <h3 className="mbe-3 text-sm font-semibold text-text-secondary">{t('admin.revenueCard')}</h3>
-        <div className="grid grid-cols-3 gap-4 text-sm">
-          <div>
-            <p className="text-text-muted">{t('admin.revenueMrr')}</p>
-            <p className="text-lg font-semibold text-text-primary">${summary.mrr}</p>
-          </div>
-          <div>
-            <p className="text-text-muted">{t('admin.revenueChurn')}</p>
-            <p className="text-lg font-semibold text-text-primary">{summary.churn_rate}%</p>
-          </div>
-          <div>
-            <p className="text-text-muted">{t('admin.revenueSubscribers')}</p>
-            <p className="text-text-secondary">{t('admin.revenuePending')}</p>
-          </div>
-        </div>
-      </Card>
     </div>
   );
+}
+
+// ─── Billing View ────────────────────────────────────────────────────────────
+// Lane C Commit 4 — implements ME-UXF-001 §10.4 Revenue Dashboard admin
+// surface. Reads the two paginated admin billing endpoints shipped in
+// Lane C Commit 2 (GET /admin/billing/dunning-states +
+// GET /admin/billing/revenue-snapshots) and renders KPI cards, three
+// recharts time-series, the snapshot history table with CSV export, and
+// the dunning queue with client-side filtering.
+
+const PHASE_VARIANT: Record<DunningPhase, 'success' | 'info' | 'warning' | 'danger' | 'default'> = {
+  active: 'success',
+  renewal_pending: 'info',
+  renewal_imminent: 'warning',
+  grace_period: 'danger',
+  lapsed: 'default',
+};
+
+const DUNNING_PHASE_OPTIONS: DunningPhase[] = [
+  'active',
+  'renewal_pending',
+  'renewal_imminent',
+  'grace_period',
+  'lapsed',
+];
+
+function exportSnapshotsCsv(items: AdminRevenueSnapshotItem[]): void {
+  const header = [
+    'period_start',
+    'period_end',
+    'mrr_usd',
+    'paid_subscribers_total',
+    'starter',
+    'core',
+    'creator',
+    'god_mode',
+    'new_subscribers',
+    'churned_subscribers',
+    'dunning_active',
+  ];
+  const rows = items.map((s) => [
+    s.period_start,
+    s.period_end,
+    (s.mrr_usd_cents / 100).toFixed(2),
+    s.paid_subscribers_total,
+    s.paid_subscribers_by_tier.starter,
+    s.paid_subscribers_by_tier.core,
+    s.paid_subscribers_by_tier.creator,
+    s.paid_subscribers_by_tier.god_mode,
+    s.new_subscribers_count,
+    s.churned_subscribers_count,
+    s.dunning_active_count,
+  ]);
+  const escape = (v: unknown): string => {
+    const str = String(v);
+    return /["\n\r,]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+  };
+  const csv = [header, ...rows].map((r) => r.map(escape).join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `revenue-snapshots-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function BillingView() {
+  const { t } = useTranslation();
+  const addToast = useToastStore((s) => s.addToast);
+  const [snapshots, setSnapshots] = useState<AdminRevenueSnapshotItem[]>([]);
+  const [dunning, setDunning] = useState<BillingHealthDunningState[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [filterPhase, setFilterPhase] = useState<DunningPhase | 'all'>('all');
+  const [filterUserId, setFilterUserId] = useState<string>('');
+  const [filterProvider, setFilterProvider] = useState<CryptoBillingProvider | 'all'>('all');
+  const [overrideTarget, setOverrideTarget] = useState<{
+    userId: string;
+    provider: CryptoBillingProvider;
+    currentPhase: DunningPhase;
+  } | null>(null);
+
+  const refresh = useCallback(() => {
+    Promise.all([
+      adminBilling.listRevenueSnapshots(100, 0),
+      adminBilling.listDunningStates(500, 0),
+    ])
+      .then(([snapsRes, dunningRes]) => {
+        setSnapshots(snapsRes.items);
+        setDunning(dunningRes.items);
+        setLoading(false);
+      })
+      .catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err);
+        setLoadError(msg);
+        setLoading(false);
+        addToast(t('admin.billing.error.loadFailed'), 'danger', { platformLink: true });
+      });
+  }, [addToast, t]);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  const latest = snapshots[0];
+  const prior = snapshots[1];
+
+  const chartData = useMemo(
+    () =>
+      snapshots
+        .slice(0, 90)
+        .map((s) => ({
+          period_start: s.period_start.slice(0, 10),
+          mrr_usd: s.mrr_usd_cents / 100,
+          subscribers: s.paid_subscribers_total,
+          churn: s.churned_subscribers_count,
+        }))
+        .reverse(),
+    [snapshots],
+  );
+
+  const filteredDunning = useMemo(
+    () =>
+      dunning
+        .filter((d) => filterPhase === 'all' || d.phase === filterPhase)
+        .filter(
+          (d) =>
+            filterUserId === '' ||
+            d.user_id.toLowerCase().includes(filterUserId.toLowerCase()),
+        )
+        .filter((d) => filterProvider === 'all' || d.provider === filterProvider),
+    [dunning, filterPhase, filterUserId, filterProvider],
+  );
+
+  if (loading) return <Spinner />;
+  if (loadError) {
+    return (
+      <p className="py-8 text-center text-danger" role="alert">
+        {t('admin.billing.error.loadFailed')}
+      </p>
+    );
+  }
+
+  const churnDelta = latest?.churned_subscribers_count ?? 0;
+  const newSubs = latest?.new_subscribers_count ?? 0;
+  const churnSincePrev = prior
+    ? latest!.churned_subscribers_count - prior.churned_subscribers_count
+    : 0;
+  const newSincePrev = prior
+    ? latest!.new_subscribers_count - prior.new_subscribers_count
+    : 0;
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-lg font-semibold text-text-primary">{t('admin.billing.heading')}</h2>
+
+      {/* KPI cards */}
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+        <Card>
+          <p className="text-xs text-text-muted">{t('admin.billing.kpi.mrr')}</p>
+          <p className="text-lg font-semibold text-text-primary">
+            {formatUsdCents(latest?.mrr_usd_cents ?? 0)}
+          </p>
+        </Card>
+        <Card>
+          <p className="text-xs text-text-muted">{t('admin.billing.kpi.totalSubscribers')}</p>
+          <p className="text-lg font-semibold text-text-primary">
+            {latest?.paid_subscribers_total ?? 0}
+          </p>
+        </Card>
+        <Card>
+          <p className="text-xs text-text-muted">{t('admin.billing.kpi.churnDelta')}</p>
+          <p className="text-lg font-semibold text-text-primary">{churnDelta}</p>
+          <p className="text-xs text-text-muted">
+            {t('admin.billing.kpi.subtitle.churnSincePrev', { count: churnSincePrev })}
+          </p>
+        </Card>
+        <Card>
+          <p className="text-xs text-text-muted">{t('admin.billing.kpi.newSubs')}</p>
+          <p className="text-lg font-semibold text-text-primary">{newSubs}</p>
+          <p className="text-xs text-text-muted">
+            {t('admin.billing.kpi.subtitle.newSincePrev', { count: newSincePrev })}
+          </p>
+        </Card>
+        <Card>
+          <p className="text-xs text-text-muted">{t('admin.billing.kpi.dunningActive')}</p>
+          <p className="text-lg font-semibold text-text-primary">
+            {latest?.dunning_active_count ?? 0}
+          </p>
+        </Card>
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <Card>
+          <h3 className="mbe-2 text-sm font-semibold text-text-secondary">
+            {t('admin.billing.charts.mrrTrend')}
+          </h3>
+          <div data-testid="chart-mrr">
+            <ResponsiveContainer width="100%" height={220}>
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="period_start" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="mrr_usd"
+                  name={t('admin.billing.charts.legend.mrr')}
+                  stroke="var(--accent)"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+        <Card>
+          <h3 className="mbe-2 text-sm font-semibold text-text-secondary">
+            {t('admin.billing.charts.subscriberGrowth')}
+          </h3>
+          <div data-testid="chart-subscribers">
+            <ResponsiveContainer width="100%" height={220}>
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="period_start" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="subscribers"
+                  name={t('admin.billing.charts.legend.subscribers')}
+                  stroke="var(--success)"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+        <Card>
+          <h3 className="mbe-2 text-sm font-semibold text-text-secondary">
+            {t('admin.billing.charts.churnOverTime')}
+          </h3>
+          <div data-testid="chart-churn">
+            <ResponsiveContainer width="100%" height={220}>
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="period_start" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="churn"
+                  name={t('admin.billing.charts.legend.churn')}
+                  stroke="var(--danger)"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+      </div>
+
+      {/* Snapshot history table */}
+      <Card>
+        <div className="mbe-3 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-text-secondary">
+            {t('admin.billing.snapshots.heading')}
+          </h3>
+          <div className="flex gap-2">
+            <TriggerSnapshotButton onInserted={refresh} />
+            <Button
+              variant="secondary"
+              onClick={() => exportSnapshotsCsv(snapshots)}
+              disabled={snapshots.length === 0}
+            >
+              <span className="inline-flex items-center gap-1">
+                <Download size={14} />
+                {t('admin.billing.snapshots.exportCsv')}
+              </span>
+            </Button>
+          </div>
+        </div>
+        {snapshots.length === 0 ? (
+          <p className="py-8 text-center text-text-muted">{t('admin.billing.snapshots.empty')}</p>
+        ) : (
+          <div className="max-h-96 overflow-x-auto overflow-y-auto">
+            <table className="w-full text-sm" role="table">
+              <thead className="sticky inset-bs-0 bg-surface">
+                <tr className="border-be border-border text-start text-text-muted">
+                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.period')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.mrr')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.subscribers')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.perTier')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.newSubs')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.churned')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.snapshots.col.dunningActive')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {snapshots.map((s) => (
+                  <tr key={s.snapshot_id} className="border-be border-border">
+                    <td className="px-3 py-2 text-text-primary">{s.period_start.slice(0, 10)}</td>
+                    <td className="px-3 py-2 text-text-primary">{formatUsdCents(s.mrr_usd_cents)}</td>
+                    <td className="px-3 py-2 text-text-secondary">{s.paid_subscribers_total}</td>
+                    <td className="px-3 py-2 text-xs text-text-muted">
+                      <span className="me-2">
+                        {t('admin.billing.tier.starter')}: {s.paid_subscribers_by_tier.starter}
+                      </span>
+                      <span className="me-2">
+                        {t('admin.billing.tier.core')}: {s.paid_subscribers_by_tier.core}
+                      </span>
+                      <span className="me-2">
+                        {t('admin.billing.tier.creator')}: {s.paid_subscribers_by_tier.creator}
+                      </span>
+                      <span>
+                        {t('admin.billing.tier.godMode')}: {s.paid_subscribers_by_tier.god_mode}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-text-secondary">{s.new_subscribers_count}</td>
+                    <td className="px-3 py-2 text-text-secondary">{s.churned_subscribers_count}</td>
+                    <td className="px-3 py-2 text-text-secondary">{s.dunning_active_count}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+
+      {/* Dunning queue */}
+      <Card>
+        <h3 className="mbe-3 text-sm font-semibold text-text-secondary">
+          {t('admin.billing.dunning.heading')}
+        </h3>
+        <div className="mbe-3 flex flex-wrap gap-2">
+          <label className="flex items-center gap-2 text-xs text-text-muted">
+            <span>{t('admin.billing.dunning.filter.phaseLabel')}</span>
+            <select
+              value={filterPhase}
+              onChange={(e) => setFilterPhase(e.target.value as DunningPhase | 'all')}
+              className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
+              aria-label={t('admin.billing.dunning.filter.phaseLabel')}
+            >
+              <option value="all">{t('admin.billing.dunning.filter.phaseAll')}</option>
+              {DUNNING_PHASE_OPTIONS.map((p) => (
+                <option key={p} value={p}>
+                  {t(`admin.billing.dunning.phase.${dunningPhaseI18nKey(p)}`)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <input
+            type="text"
+            value={filterUserId}
+            onChange={(e) => setFilterUserId(e.target.value)}
+            placeholder={t('admin.billing.dunning.filter.userIdPlaceholder')}
+            className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
+            aria-label={t('admin.billing.dunning.filter.userIdPlaceholder')}
+          />
+          <label className="flex items-center gap-2 text-xs text-text-muted">
+            <span>{t('admin.billing.dunning.filter.providerLabel')}</span>
+            <select
+              value={filterProvider}
+              onChange={(e) =>
+                setFilterProvider(e.target.value as CryptoBillingProvider | 'all')
+              }
+              className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
+              aria-label={t('admin.billing.dunning.filter.providerLabel')}
+            >
+              <option value="all">{t('admin.billing.dunning.filter.providerAll')}</option>
+              <option value="nowpayments">nowpayments</option>
+              <option value="xaman">xaman</option>
+            </select>
+          </label>
+        </div>
+        {filteredDunning.length === 0 ? (
+          <p className="py-8 text-center text-text-muted">{t('admin.billing.dunning.empty')}</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm" role="table">
+              <thead>
+                <tr className="border-be border-border text-start text-text-muted">
+                  <th className="px-3 py-2">{t('admin.billing.dunning.col.user')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.dunning.col.provider')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.dunning.col.phase')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.dunning.col.periodEnd')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.dunning.col.graceUntil')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.dunning.col.lastNotified')}</th>
+                  <th className="px-3 py-2">{t('admin.billing.dunning.col.actions')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredDunning.map((d) => (
+                  <tr
+                    key={`${d.user_id}-${d.provider}`}
+                    className="border-be border-border"
+                  >
+                    <td className="px-3 py-2 font-mono text-xs text-text-primary">
+                      {d.user_id}
+                    </td>
+                    <td className="px-3 py-2">
+                      <Badge variant="default">{d.provider}</Badge>
+                    </td>
+                    <td className="px-3 py-2">
+                      <Badge variant={PHASE_VARIANT[d.phase]}>
+                        {t(`admin.billing.dunning.phase.${dunningPhaseI18nKey(d.phase)}`)}
+                      </Badge>
+                    </td>
+                    <td className="px-3 py-2 text-text-secondary">
+                      {new Date(d.current_period_end).toLocaleString()}
+                    </td>
+                    <td className="px-3 py-2 text-text-secondary">
+                      {d.grace_period_expires_at
+                        ? new Date(d.grace_period_expires_at).toLocaleString()
+                        : '—'}
+                    </td>
+                    <td className="px-3 py-2 text-text-secondary">
+                      {d.last_notified_at
+                        ? new Date(d.last_notified_at).toLocaleString()
+                        : '—'}
+                    </td>
+                    <td className="px-3 py-2">
+                      <Button
+                        variant="secondary"
+                        onClick={() =>
+                          setOverrideTarget({
+                            userId: d.user_id,
+                            provider: d.provider,
+                            currentPhase: d.phase,
+                          })
+                        }
+                      >
+                        {t('admin.billing.dunning.overrideAction')}
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+
+      {overrideTarget && (
+        <OverrideDunningPhaseModal
+          open={overrideTarget !== null}
+          userId={overrideTarget.userId}
+          provider={overrideTarget.provider}
+          currentPhase={overrideTarget.currentPhase}
+          onClose={() => setOverrideTarget(null)}
+          onSuccess={refresh}
+        />
+      )}
+    </div>
+  );
+}
+
+function dunningPhaseI18nKey(phase: DunningPhase): string {
+  switch (phase) {
+    case 'active':
+      return 'active';
+    case 'renewal_pending':
+      return 'renewalPending';
+    case 'renewal_imminent':
+      return 'renewalImminent';
+    case 'grace_period':
+      return 'gracePeriod';
+    case 'lapsed':
+      return 'lapsed';
+  }
 }
 
 // ─── Feedback Queue ──────────────────────────────────────────────────────────

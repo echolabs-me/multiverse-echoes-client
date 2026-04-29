@@ -613,6 +613,7 @@
     "tabControls": "การควบคุม",
     "tabAnalytics": "การวิเคราะห์ข้อมูล",
     "tabFeedback": "ข้อเสนอแนะ",
+    "tabBilling": "การเรียกเก็บเงิน",
     "feedbackQueue": "คิวคำติชม",
     "noFeedback": "ยังไม่มีการส่งคำติชม",
     "feedbackType": "พิมพ์",
@@ -676,11 +677,6 @@
     "backupControl": "การสำรองข้อมูลฐานข้อมูล",
     "triggerBackup": "สั่งสำรองข้อมูล",
     "analyticsLoadFailed": "โหลดข้อมูลการวิเคราะห์ล้มเหลว",
-    "revenueCard": "รายได้ (เร็วๆ นี้)",
-    "revenueMrr": "รายได้ประจำเดือนที่เกิดขึ้นซ้ำ (MRR)",
-    "revenueChurn": "อัตราการเลิกใช้บริการ",
-    "revenueSubscribers": "ผู้ติดตาม",
-    "revenuePending": "รอดำเนินการเชื่อมต่อ Stripe",
     "filterAll": "ทั้งหมด",
     "feedbackTypeBug": "แมลง",
     "feedbackTypeFeatureRequest": "คำขอฟีเจอร์ใหม่",
@@ -700,6 +696,98 @@
       "demote": "ลดตำแหน่ง",
       "empty": "ยังไม่มีผู้ดูแล โปรดเลื่อนตำแหน่งผู้ใช้มาตรฐานโดยใช้รหัสผู้ใช้",
       "updatedAt": "อัปเดตเมื่อ"
+    },
+    "billing": {
+      "heading": "สถานะการเรียกเก็บเงิน",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "สมาชิกที่ชำระเงิน",
+        "churnDelta": "ยกเลิก (ล่าสุด)",
+        "newSubs": "ใหม่ (ล่าสุด)",
+        "dunningActive": "Dunning ทำงานอยู่",
+        "subtitle": {
+          "churnSincePrev": "{{count}} นับจากสแนปชอตก่อนหน้า",
+          "newSincePrev": "{{count}} นับจากสแนปชอตก่อนหน้า"
+        }
+      },
+      "tier": {
+        "starter": "Starter",
+        "core": "Core",
+        "creator": "Creator",
+        "godMode": "God Mode"
+      },
+      "charts": {
+        "mrrTrend": "แนวโน้ม MRR",
+        "subscriberGrowth": "การเติบโตของสมาชิก",
+        "churnOverTime": "การยกเลิกเมื่อเวลาผ่านไป",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "สมาชิก",
+          "churn": "ยกเลิก"
+        }
+      },
+      "snapshots": {
+        "heading": "สแนปชอตรายได้",
+        "exportCsv": "ส่งออก CSV",
+        "col": {
+          "period": "ช่วงเวลา",
+          "mrr": "MRR",
+          "subscribers": "สมาชิก",
+          "perTier": "ต่อระดับ",
+          "newSubs": "ใหม่",
+          "churned": "ยกเลิก",
+          "dunningActive": "Dunning ทำงานอยู่"
+        },
+        "empty": "ยังไม่มีสแนปชอตรายได้"
+      },
+      "dunning": {
+        "heading": "คิวการเรียกเก็บเงิน",
+        "filter": {
+          "phaseLabel": "ขั้นตอน",
+          "phaseAll": "ทุกขั้นตอน",
+          "userIdPlaceholder": "ค้นหา User ID...",
+          "providerLabel": "ผู้ให้บริการ",
+          "providerAll": "ทุกผู้ให้บริการ"
+        },
+        "col": {
+          "user": "ผู้ใช้",
+          "provider": "ผู้ให้บริการ",
+          "phase": "ขั้นตอน",
+          "periodEnd": "สิ้นสุดช่วงเวลา",
+          "graceUntil": "ช่วงอ�猷ถึง",
+          "lastNotified": "แจ้งเตือนครั้งล่าสุด",
+          "actions": "การกระทำ"
+        },
+        "phase": {
+          "active": "ทำงานอยู่",
+          "renewalPending": "รอการต่ออายุ",
+          "renewalImminent": "ต่ออายุใกล้เข้ามา",
+          "gracePeriod": "ช่วงเวลาให้โอกาส",
+          "lapsed": "หมดอายุ"
+        },
+        "empty": "ไม่มีแถวการเรียกเก็บเงิน",
+        "overrideAction": "แทนที่"
+      },
+      "error": {
+        "loadFailed": "ไม่สามารถโหลดข้อมูลการเรียกเก็บเงิน"
+      },
+      "override": {
+        "title": "แทนที่ระยะ dunning",
+        "targetPhaseLabel": "ระยะเป้าหมาย",
+        "reasonLabel": "เหตุผลการแทนที่",
+        "reasonPlaceholder": "เหตุผลในการใช้การแทนที่นี้ (บันทึกตรวจสอบ)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "ใช้การแทนที่",
+        "cancelButton": "ยกเลิก",
+        "successToast": "ใช้การแทนที่ระยะ dunning เรียบร้อยแล้ว",
+        "errorPrefix": "การแทนที่ล้มเหลว"
+      },
+      "snapshot": {
+        "triggerButton": "สร้างภาพรวม",
+        "insertedToast": "สร้างภาพรวมรายได้เรียบร้อยแล้ว",
+        "alreadyExistsToast": "มีภาพรวมอยู่แล้วสำหรับช่วง {{period}}",
+        "errorPrefix": "การสร้างภาพรวมล้มเหลว"
+      }
     },
     "tabShareTokens": "Share Tokens"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "การชำระเงินของคุณถูกยกเลิก คุณสามารถลองอีกครั้งได้ที่หน้าแผนการใช้งาน",
     "backToPlans": "กลับไปยังแผนการ",
     "backToDashboard": "กลับไปยังแดชบอร์ด",
-    "renewBanner": "การสมัครสมาชิกระดับ {{tier}} ของคุณจะหมดอายุในอีก {{days}} วัน",
-    "expiredBanner": "การสมัครสมาชิกของคุณหมดอายุแล้ว คุณถูกเปลี่ยนเป็นแพ็กเกจฟรี",
-    "renew": "ต่ออายุ",
     "tipTitle": "สนับสนุนโครงการนี้",
     "tipDesc": "ช่วยสนับสนุนให้ Multiverse Echoes ดำเนินการต่อไปได้ เงินสนับสนุนจะถูกนำไปใช้ในการพัฒนาโดยตรง",
     "tipAmount": "จำนวน",
@@ -762,7 +847,14 @@
     "tipMaximum": "ทิปสูงสุดคือ {{currency}}{{max}}",
     "provider": "วิธีการชำระเงิน",
     "cryptoUnavailable": "ไม่สามารถชำระเงินด้วยคริปโตได้ชั่วคราว กรุณาลองใหม่อีกครั้งในภายหลัง หรือใช้การชำระเงินผ่านบัตร",
-    "checkingStatus": "กำลังตรวจสอบสถานะการชำระเงิน..."
+    "checkingStatus": "กำลังตรวจสอบสถานะการชำระเงิน...",
+    "banner": {
+      "renewalPending": "การสมัครสมาชิกของคุณจะต่ออายุในไม่ช้า ยืนยันวิธีการชำระเงินของคุณเพื่อหลีกเลี่ยงการหยุดชะงัก",
+      "renewalImminent": "การสมัครสมาชิกของคุณจะต่ออายุภายใน 24 ชั่วโมง ยืนยันวิธีการชำระเงินของคุณตอนนี้",
+      "gracePeriod": "การชำระเงินของคุณไม่สำเร็จ อัปเดตวิธีการชำระเงินก่อนที่การสมัครสมาชิกจะหมดอายุ",
+      "paymentFailed": "ความพยายามชำระเงินครั้งล่าสุดของคุณล้มเหลว อัปเดตวิธีการชำระเงินเพื่อให้การสมัครสมาชิกยังคงใช้งานได้",
+      "updatePaymentMethod": "อัปเดตวิธีการชำระเงิน"
+    }
   },
   "waitlist": {
     "heroTitle": "ชีวิตของคุณจะเป็นอย่างไรถ้าคุณเลือกทางเดินที่แตกต่างออกไป?",

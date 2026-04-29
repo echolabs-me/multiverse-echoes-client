@@ -613,6 +613,7 @@
     "tabControls": "Controles",
     "tabAnalytics": "Analítica",
     "tabFeedback": "Comentarios",
+    "tabBilling": "Facturación",
     "feedbackQueue": "Cola de comentarios",
     "noFeedback": "Aún no se han enviado comentarios.",
     "feedbackType": "Tipo",
@@ -676,11 +677,6 @@
     "backupControl": "Copia de seguridad de la base de datos",
     "triggerBackup": "Disparar copia de seguridad",
     "analyticsLoadFailed": "No se pudieron cargar las analíticas",
-    "revenueCard": "Ingresos (próximamente)",
-    "revenueMrr": "MRR",
-    "revenueChurn": "Tasa de abandono",
-    "revenueSubscribers": "Suscriptores",
-    "revenuePending": "Pendiente integración de Stripe",
     "filterAll": "Todo",
     "feedbackTypeBug": "Error",
     "feedbackTypeFeatureRequest": "Solicitud de función",
@@ -700,6 +696,98 @@
       "demote": "Degradar",
       "empty": "Aún no hay moderadores. Promueve a un usuario Estándar por su ID.",
       "updatedAt": "Actualizado"
+    },
+    "billing": {
+      "heading": "Estado de Facturación",
+      "kpi": {
+        "mrr": "MRR",
+        "totalSubscribers": "Suscriptores Pagos",
+        "churnDelta": "Cancelados (últimos)",
+        "newSubs": "Nuevos (últimos)",
+        "dunningActive": "Cobranza Activa",
+        "subtitle": {
+          "churnSincePrev": "{{count}} desde snapshot anterior",
+          "newSincePrev": "{{count}} desde snapshot anterior"
+        }
+      },
+      "tier": {
+        "starter": "Starter",
+        "core": "Core",
+        "creator": "Creator",
+        "godMode": "God Mode"
+      },
+      "charts": {
+        "mrrTrend": "Tendencia de MRR",
+        "subscriberGrowth": "Crecimiento de Suscriptores",
+        "churnOverTime": "Cancelaciones a lo Largo del Tiempo",
+        "legend": {
+          "mrr": "MRR (USD)",
+          "subscribers": "Suscriptores",
+          "churn": "Cancelados"
+        }
+      },
+      "snapshots": {
+        "heading": "Snapshots de Ingresos",
+        "exportCsv": "Exportar CSV",
+        "col": {
+          "period": "Período",
+          "mrr": "MRR",
+          "subscribers": "Suscriptores",
+          "perTier": "Por Plan",
+          "newSubs": "Nuevos",
+          "churned": "Cancelados",
+          "dunningActive": "Cobranza Activa"
+        },
+        "empty": "Sin snapshots de ingresos aún."
+      },
+      "dunning": {
+        "heading": "Cola de Cobranza",
+        "filter": {
+          "phaseLabel": "Fase",
+          "phaseAll": "Todas las fases",
+          "userIdPlaceholder": "Substring de User ID...",
+          "providerLabel": "Proveedor",
+          "providerAll": "Todos los proveedores"
+        },
+        "col": {
+          "user": "Usuario",
+          "provider": "Proveedor",
+          "phase": "Fase",
+          "periodEnd": "Período Finaliza",
+          "graceUntil": "Gracia Hasta",
+          "lastNotified": "Última Notificación",
+          "actions": "Acciones"
+        },
+        "phase": {
+          "active": "Activa",
+          "renewalPending": "Renovación Pendiente",
+          "renewalImminent": "Renovación Inminente",
+          "gracePeriod": "Período de Gracia",
+          "lapsed": "Vencida"
+        },
+        "empty": "Sin filas de cobranza.",
+        "overrideAction": "Anular"
+      },
+      "error": {
+        "loadFailed": "Error al cargar datos de facturación."
+      },
+      "override": {
+        "title": "Anular fase de cobro",
+        "targetPhaseLabel": "Fase objetivo",
+        "reasonLabel": "Motivo de la anulación",
+        "reasonPlaceholder": "Por qué se está aplicando esta anulación (registro de auditoría)…",
+        "reasonCounter": "{{current}}/{{max}}",
+        "submitButton": "Aplicar anulación",
+        "cancelButton": "Cancelar",
+        "successToast": "Anulación de fase de cobro aplicada.",
+        "errorPrefix": "La anulación falló"
+      },
+      "snapshot": {
+        "triggerButton": "Generar snapshot",
+        "insertedToast": "Snapshot de ingresos generado.",
+        "alreadyExistsToast": "Ya existe un snapshot para {{period}}.",
+        "errorPrefix": "La generación del snapshot falló"
+      }
     },
     "tabShareTokens": "Tokens de Compartición"
   },
@@ -747,9 +835,6 @@
     "cancelledDesc": "Tu pago fue cancelado. Puedes volver a intentarlo desde la página de planes.",
     "backToPlans": "Volver a planes",
     "backToDashboard": "Volver al panel",
-    "renewBanner": "Tu suscripción {{tier}} vence en {{days}} días.",
-    "expiredBanner": "Tu suscripción ha vencido. Se te ha movido al plan gratuito.",
-    "renew": "Renovar",
     "tipTitle": "Apoya el proyecto",
     "tipDesc": "Ayuda a mantener Multiverse Echoes en marcha. Las propinas van directamente al desarrollo.",
     "tipAmount": "Cantidad",
@@ -762,7 +847,14 @@
     "tipMaximum": "La propina máxima es {{currency}}{{max}}",
     "provider": "Método de pago",
     "cryptoUnavailable": "Los pagos con cripto están temporalmente no disponibles. Vuelve a intentarlo más tarde o usa pago con tarjeta.",
-    "checkingStatus": "Comprobando el estado del pago…"
+    "checkingStatus": "Comprobando el estado del pago…",
+    "banner": {
+      "renewalPending": "Tu suscripción se renueva pronto. Confirma tu método de pago para evitar interrupciones.",
+      "renewalImminent": "Tu suscripción se renueva dentro de 24 horas. Confirma tu método de pago ahora.",
+      "gracePeriod": "Tu pago no se completó. Actualiza tu método de pago antes de que tu suscripción venza.",
+      "paymentFailed": "Tu último intento de pago falló. Actualiza tu método de pago para mantener tu suscripción activa.",
+      "updatePaymentMethod": "Actualizar método de pago"
+    }
   },
   "waitlist": {
     "heroTitle": "¿Cómo sería tu vida si hubieras tomado otras decisiones?",
