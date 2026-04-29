@@ -41,6 +41,62 @@ export type ActiveConversationResponse = {
 	messages: ConversationMessageResponse[],
 };
 
+/**
+ *  One dead-letter row, surfaced via the admin queue endpoint.
+ *  Mirrors `me_core::models::billing_notification_dead_letter::BillingNotificationDeadLetter`
+ *  — the type lives here so the admin HTTP surface owns its
+ *  serialization shape without forcing the internal model into the
+ *  OpenAPI schema. Reference: ME-MIS-001 §5.4.7.3.
+ */
+export type AdminBillingDeadLetterRow = {
+	user_id: string,
+	kind: string,
+	period_anchor: string,
+	failed_at: string,
+	failure_layer: string,
+	failure_reason: string,
+	retry_count: number,
+	last_retried_at: string | null,
+};
+
+// Outcome envelope for the admin re-drive endpoint.
+export type AdminBillingRedriveResponse = 
+/**
+ *  Re-drive succeeded; the DLQ row was deleted and the underlying
+ *  state moved to its expected post-success shape (notifier
+ *  outcome = `Sent` for EmailSend / RepositoryRead layers; ledger
+ *  row written for LedgerInsert layer).
+ */
+{ outcome: "redriven_success" } | 
+/**
+ *  Re-drive ran but produced another dead-letter row. The
+ *  existing row's `retry_count` was incremented and
+ *  `last_retried_at` set; the row remains in the queue.
+ */
+{ outcome: "redriven_dead_lettered_again" } | 
+/**
+ *  No DLQ row matched (`user_id`, `kind`, `period_anchor`).
+ *  Either a concurrent admin already re-drove it or the path
+ *  args were wrong.
+ */
+{ outcome: "row_not_found" };
+
+/**
+ *  Snapshot of one dunning sweep's report, surfaced via the admin
+ *  observability endpoint. Mirrors
+ *  `me_api::billing::dunning_driver::DunningPassReport` field-for-field
+ *  — the type lives here so the admin HTTP surface owns its
+ *  serialization shape without forcing the driver internal type to be
+ *  in the OpenAPI schema. Reference: ME-MIS-001 §5.4.7.3.
+ */
+export type AdminDunningPassReportRow = {
+	scanned: number,
+	transitions: number,
+	errors: number,
+	dlq_writes: number,
+	completed_at: string,
+};
+
 export type AdminDunningStatesResponse = {
 	items: BillingHealthDunningState[],
 	total: number,

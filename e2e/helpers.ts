@@ -361,6 +361,74 @@ export async function setupMockApi(page: Page) {
   await page.route('**/social/mute/*', (route) =>
     route.fulfill({ status: 200, json: { status: 'removed' } }),
   );
+
+  // ── Lane C billing-health surfaces (Lane C Commit 7d E2E) ──────────
+  // /me/billing-health — self-service summary. Default returns `null`
+  // phase + Active stripe so BillingBanner unmounts.
+  await page.route('**/me/billing-health', (route) =>
+    route.fulfill({
+      status: 200,
+      json: {
+        crypto_states: [],
+        stripe_status: 'active',
+        upcoming_renewal: null,
+        in_grace_period: false,
+        grace_period_ends_at: null,
+      },
+    }),
+  );
+  // /admin/billing/dunning-states — empty paginated envelope.
+  await page.route('**/admin/billing/dunning-states*', (route) =>
+    route.fulfill({
+      status: 200,
+      json: { items: [], total: 0, limit: 50, offset: 0 },
+    }),
+  );
+  // /admin/billing/revenue-snapshots — empty list.
+  await page.route('**/admin/billing/revenue-snapshots*', (route) =>
+    route.fulfill({
+      status: 200,
+      json: { items: [], total: 0, limit: 50, offset: 0 },
+    }),
+  );
+  // /admin/billing/dunning-states/{user_id}/{provider}/override — happy path.
+  await page.route(
+    '**/admin/billing/dunning-states/*/*/override',
+    (route) =>
+      route.fulfill({
+        status: 200,
+        json: {
+          user_id: '00000000-0000-0000-0000-000000000001',
+          provider: 'nowpayments',
+          phase: 'active',
+          override_reason: 'admin override (test)',
+        },
+      }),
+  );
+  // /admin/billing/revenue-snapshots/trigger — happy path: already_exists.
+  await page.route('**/admin/billing/revenue-snapshots/trigger', (route) =>
+    route.fulfill({
+      status: 200,
+      json: { outcome: 'already_exists', period_start: '2026-04-29T00:00:00Z' },
+    }),
+  );
+  // /admin/billing/dunning-pass-reports — empty buffer.
+  await page.route('**/admin/billing/dunning-pass-reports', (route) =>
+    route.fulfill({ status: 200, json: [] }),
+  );
+  // /admin/billing/notification-dead-letters — empty queue.
+  await page.route('**/admin/billing/notification-dead-letters', (route) => {
+    if (route.request().method() === 'GET') {
+      return route.fulfill({ status: 200, json: [] });
+    }
+    return route.fulfill({ status: 200, json: [] });
+  });
+  // /admin/billing/notification-dead-letters/{user_id}/{kind}/{period_anchor}/redrive — happy path.
+  await page.route(
+    '**/admin/billing/notification-dead-letters/*/*/*/redrive',
+    (route) =>
+      route.fulfill({ status: 200, json: { outcome: 'redriven_success' } }),
+  );
 }
 
 /** Simulate an authenticated session by setting localStorage tokens. */

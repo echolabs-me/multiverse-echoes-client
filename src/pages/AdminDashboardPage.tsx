@@ -981,14 +981,17 @@ function BillingView() {
     : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="admin-billing-view-root">
       <h2 className="text-lg font-semibold text-text-primary">
         {t('admin.billing.heading')}
       </h2>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
-        <Card>
+      <div
+        className="grid grid-cols-2 gap-4 md:grid-cols-5"
+        data-testid="admin-billing-kpi-row"
+      >
+        <Card data-testid="admin-billing-kpi-mrr">
           <p className="text-xs text-text-muted">
             {t('admin.billing.kpi.mrr')}
           </p>
@@ -996,7 +999,7 @@ function BillingView() {
             {formatUsdCents(latest?.mrr_usd_cents ?? 0)}
           </p>
         </Card>
-        <Card>
+        <Card data-testid="admin-billing-kpi-total-subscribers">
           <p className="text-xs text-text-muted">
             {t('admin.billing.kpi.totalSubscribers')}
           </p>
@@ -1004,7 +1007,7 @@ function BillingView() {
             {latest?.paid_subscribers_total ?? 0}
           </p>
         </Card>
-        <Card>
+        <Card data-testid="admin-billing-kpi-churn-delta">
           <p className="text-xs text-text-muted">
             {t('admin.billing.kpi.churnDelta')}
           </p>
@@ -1017,7 +1020,7 @@ function BillingView() {
             })}
           </p>
         </Card>
-        <Card>
+        <Card data-testid="admin-billing-kpi-new-subs">
           <p className="text-xs text-text-muted">
             {t('admin.billing.kpi.newSubs')}
           </p>
@@ -1028,7 +1031,7 @@ function BillingView() {
             })}
           </p>
         </Card>
-        <Card>
+        <Card data-testid="admin-billing-kpi-dunning-active">
           <p className="text-xs text-text-muted">
             {t('admin.billing.kpi.dunningActive')}
           </p>
@@ -1120,6 +1123,7 @@ function BillingView() {
               variant="secondary"
               onClick={() => exportSnapshotsCsv(snapshots)}
               disabled={snapshots.length === 0}
+              data-testid="admin-billing-export-csv-button"
             >
               <span className="inline-flex items-center gap-1">
                 <Download size={14} />

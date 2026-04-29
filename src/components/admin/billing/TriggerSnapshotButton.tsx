@@ -39,7 +39,12 @@ export function TriggerSnapshotButton({ onInserted }: Props) {
   };
 
   return (
-    <Button variant="secondary" onClick={handleClick} disabled={busy}>
+    <Button
+      variant="secondary"
+      onClick={handleClick}
+      disabled={busy}
+      data-testid="admin-billing-trigger-snapshot-button"
+    >
       {t('admin.billing.snapshot.triggerButton')}
     </Button>
   );

@@ -376,6 +376,52 @@ test('prefers-reduced-motion sets zero durations', async ({ page }) => {
   expect(durationFast).toBe('0ms');
 });
 
+// ── Lane C Commit 7d — Admin Revenue Dashboard a11y (ME-ACC-001 §§8–9) ──
+
+test('a11y: Admin Revenue Dashboard (billing tab)', async ({ page }) => {
+  await setupMockApi(page);
+  await page.goto('/');
+  await authenticateAdmin(page);
+  await page.goto('/admin');
+  await page.getByRole('button', { name: /billing/i }).first().click();
+  await page.waitForLoadState('networkidle');
+  await auditPage(page, 'Admin Revenue Dashboard (billing tab)');
+});
+
+test('a11y: BillingBanner renewal_pending variant', async ({ page }) => {
+  await setupMockApi(page);
+  await page.route('**/me/billing-health', (route) =>
+    route.fulfill({
+      status: 200,
+      json: {
+        crypto_states: [
+          {
+            user_id: '00000000-0000-0000-0000-000000000001',
+            provider: 'nowpayments',
+            subscription_started_at: '2026-04-01T00:00:00Z',
+            current_period_end: '2026-05-01T00:00:00Z',
+            phase: 'renewal_pending',
+            grace_period_expires_at: null,
+            last_notified_at: null,
+            last_notification_phase: null,
+            created_at: '2026-04-01T00:00:00Z',
+            updated_at: '2026-04-29T00:00:00Z',
+          },
+        ],
+        stripe_status: 'active',
+        upcoming_renewal: '2026-05-01T00:00:00Z',
+        in_grace_period: false,
+        grace_period_ends_at: null,
+      },
+    }),
+  );
+  await page.goto('/');
+  await authenticateUser(page);
+  await page.goto('/dashboard');
+  await page.waitForLoadState('networkidle');
+  await auditPage(page, 'BillingBanner renewal_pending');
+});
+
 test('all images have alt text', async ({ page }) => {
   await setupMockApi(page);
   await page.goto('/');

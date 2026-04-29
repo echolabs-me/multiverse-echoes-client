@@ -88,13 +88,17 @@ export function OverrideDunningPhaseModal({
       onClose={onClose}
       title={t('admin.billing.override.title')}
     >
-      <div className="space-y-4">
+      <div
+        className="space-y-4"
+        data-testid="override-dunning-phase-modal-root"
+      >
         <label className="flex flex-col gap-1 text-sm text-text-secondary">
           <span>{t('admin.billing.override.targetPhaseLabel')}</span>
           <select
             value={targetPhase}
             onChange={(e) => setTargetPhase(e.target.value as DunningPhase)}
             className="rounded-sm border border-border bg-canvas px-2 py-1 text-text-primary"
+            data-testid="override-target-phase-select"
           >
             {targetPhases.map((p) => (
               <option key={p} value={p}>
@@ -113,6 +117,7 @@ export function OverrideDunningPhaseModal({
             rows={4}
             maxLength={REASON_MAX}
             className="rounded-sm border border-border bg-canvas px-2 py-1 text-text-primary"
+            data-testid="override-reason-textarea"
           />
           <span className="text-xs text-text-muted">
             {t('admin.billing.override.reasonCounter', {
@@ -123,16 +128,29 @@ export function OverrideDunningPhaseModal({
         </label>
 
         {error && (
-          <p className="text-sm text-danger" role="alert">
+          <p
+            className="text-sm text-danger"
+            role="alert"
+            data-testid="override-error-message"
+          >
             {t('admin.billing.override.errorPrefix')}: {error}
           </p>
         )}
 
         <div className="flex justify-end gap-2">
-          <Button variant="secondary" onClick={onClose} disabled={submitting}>
+          <Button
+            variant="secondary"
+            onClick={onClose}
+            disabled={submitting}
+            data-testid="override-cancel-button"
+          >
             {t('admin.billing.override.cancelButton')}
           </Button>
-          <Button onClick={handleSubmit} disabled={!reasonValid || submitting}>
+          <Button
+            onClick={handleSubmit}
+            disabled={!reasonValid || submitting}
+            data-testid="override-submit-button"
+          >
             {t('admin.billing.override.submitButton')}
           </Button>
         </div>

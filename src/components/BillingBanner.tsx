@@ -26,26 +26,31 @@ import type { DunningPhase } from '../types/generated.ts';
 const PAYMENT_FAILED_RECENCY_MS = 10 * 60 * 1000;
 
 type BannerVariant = {
+  id: string;
   copyKey: string;
   severity: 'warning' | 'error';
 };
 
 const PHASE_VARIANTS: Partial<Record<DunningPhase, BannerVariant>> = {
   renewal_pending: {
+    id: 'renewal-pending',
     copyKey: 'payment.banner.renewalPending',
     severity: 'warning',
   },
   renewal_imminent: {
+    id: 'renewal-imminent',
     copyKey: 'payment.banner.renewalImminent',
     severity: 'warning',
   },
   grace_period: {
+    id: 'grace-period',
     copyKey: 'payment.banner.gracePeriod',
     severity: 'error',
   },
 };
 
 const PAYMENT_FAILED_VARIANT: BannerVariant = {
+  id: 'payment-failed',
   copyKey: 'payment.banner.paymentFailed',
   severity: 'error',
 };
@@ -81,12 +86,19 @@ export function BillingBanner() {
     <div
       className={`flex shrink-0 items-center gap-3 border-be px-4 py-3 text-sm ${styles}`}
       role="alert"
+      data-testid="billing-banner-root"
     >
       <AlertTriangle size={18} className="shrink-0" />
-      <span className="flex-1">{t(variant.copyKey)}</span>
+      <span
+        className="flex-1"
+        data-testid={`billing-banner-variant-${variant.id}`}
+      >
+        {t(variant.copyKey)}
+      </span>
       <Link
         to="/plans"
         className="shrink-0 rounded-md bg-accent px-3 py-1 text-xs font-medium text-white hover:bg-accent/90"
+        data-testid="billing-banner-update-payment-link"
       >
         {t('payment.banner.updatePaymentMethod')}
       </Link>
