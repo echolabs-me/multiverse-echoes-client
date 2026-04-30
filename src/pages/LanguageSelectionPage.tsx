@@ -1,8 +1,10 @@
 import { useCallback, useState, useRef, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 import { trackEvent } from '../lib/analytics.ts';
-import type { SupportedLocale } from '../i18n.ts';
+import { CANONICAL_BASE_URL } from '../lib/canonicalUrl.ts';
+import { SUPPORTED_LOCALES, type SupportedLocale } from '../i18n.ts';
 import { useReducedMotion } from '../hooks/useReducedMotion.ts';
 import { AdaptiveLanguageSubheader } from '../components/AdaptiveLanguageSubheader.tsx';
 
@@ -127,6 +129,52 @@ export function LanguageSelectionPage() {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-canvas px-4">
+      <Helmet>
+        <title>Multiverse Echoes — Choose your language</title>
+        <meta
+          name="description"
+          content="Multiverse Echoes is an autonomous life simulation platform where AI versions of yourself live in parallel worlds. Choose your language to begin."
+        />
+        <link rel="canonical" href={`${CANONICAL_BASE_URL}/`} />
+        <link
+          rel="alternate"
+          hrefLang="x-default"
+          href={`${CANONICAL_BASE_URL}/`}
+        />
+        {SUPPORTED_LOCALES.map((locale) => (
+          <link
+            key={locale}
+            rel="alternate"
+            hrefLang={locale}
+            href={
+              locale === 'en'
+                ? `${CANONICAL_BASE_URL}/home/`
+                : `${CANONICAL_BASE_URL}/${locale}/home/`
+            }
+          />
+        ))}
+        <meta property="og:url" content={`${CANONICAL_BASE_URL}/`} />
+        <meta
+          property="og:title"
+          content="Multiverse Echoes — Choose your language"
+        />
+        <meta
+          property="og:description"
+          content="Multiverse Echoes is an autonomous life simulation platform where AI versions of yourself live in parallel worlds. Choose your language to begin."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content={`${CANONICAL_BASE_URL}/og-image-v2.png`}
+        />
+        <meta
+          name="twitter:image"
+          content={`${CANONICAL_BASE_URL}/og-image-v2.png`}
+        />
+        <meta property="og:locale" content="en_US" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@EchoLabsME" />
+      </Helmet>
       {/* Radial glow behind centre — matches hero-glow from landing page */}
       <div
         className={`me-hero-glow-soft pointer-events-none fixed inset-s-1/2 inset-bs-[40%] size-150 -translate-1/2 rounded-full ${animClass}`}

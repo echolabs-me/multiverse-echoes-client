@@ -68,6 +68,40 @@ const MIME = {
   '.ico': 'image/x-icon', '.mp4': 'video/mp4', '.webp': 'image/webp',
 };
 
+/**
+ * Strip stale <title> tags from prerendered HTML and ensure exactly one survives.
+ *
+ * Helmet on React 19 + StrictMode can leave multiple <title> tags in the DOM
+ * (template fallback + StrictMode double-render + Helmet commit). This helper
+ * removes all empty/template titles, then keeps only the first remaining one.
+ *
+ * @param {string} html - The prerendered HTML.
+ * @param {string|undefined} fallbackTitle - Title to inject if no <title> survives the
+ *   cleanup (e.g., when Helmet hasn't committed in time). Pass undefined to skip
+ *   injection — non-English pages with no title surface via the post-write smoke
+ *   warning instead of silently getting an English-language fallback.
+ * @returns {string} HTML with at most one <title> tag (zero if no Helmet title
+ *   committed and no fallback provided).
+ */
+function dedupeTitles(html, fallbackTitle) {
+  // Strip template fallback titles (the static index.html template's <title>Multiverse Echoes</title>).
+  let cleaned = html.replace(/<title>Multiverse Echoes<\/title>\s*/g, '');
+  // Strip empty <title></title> tags.
+  cleaned = cleaned.replace(/<title><\/title>\s*/g, '');
+  // First-wins: keep only the first remaining <title>.
+  let titleSeen = false;
+  cleaned = cleaned.replace(/<title>[^<]*<\/title>/g, (match) => {
+    if (titleSeen) return '';
+    titleSeen = true;
+    return match;
+  });
+  // Fallback: if nothing survived AND a fallback was provided, inject before </head>.
+  if (!titleSeen && fallbackTitle) {
+    cleaned = cleaned.replace('</head>', `  <title>${fallbackTitle}</title>\n</head>`);
+  }
+  return cleaned;
+}
+
 /** Minimal static file server with SPA fallback (serves index.html for non-file paths). */
 function startServer() {
   return new Promise((resolve) => {
@@ -202,35 +236,15 @@ async function capture(browser, locale, route) {
     };
   }
 
-  // Helmet (react-helmet-async 3.0 + React 19) can end up emitting two
-  // or three <title> tags in the captured HTML: the template fallback,
-  // a Helmet-injected copy, and sometimes a second Helmet copy from
-  // StrictMode's double-render. Dedupe in three passes:
-  //
-  //   1. Strip the template's generic "Multiverse Echoes" fallback and
-  //      any empty <title></title>. These are always redundant once
-  //      Helmet has committed a real title.
-  //   2. Dedupe duplicate <title>X</title> occurrences by keeping only
-  //      the first one. React-helmet-async's merging logic treats the
-  //      first-rendered <Helmet> as authoritative for SSR/static, so
-  //      keeping the first matches its intent.
-  //   3. If after all that there's no title at all (Helmet never fired),
-  //      inject an English fallback for English pages. Non-English pages
-  //      with no title will surface as a smoke-test warning below
-  //      instead of silently getting the wrong-language fallback.
-  html = html.replace(/<title>Multiverse Echoes<\/title>\s*/g, '');
-  html = html.replace(/<title><\/title>\s*/g, '');
-
-  let titleSeen = false;
-  html = html.replace(/<title>[^<]*<\/title>/g, (m) => {
-    if (titleSeen) return '';
-    titleSeen = true;
-    return m;
-  });
-
-  if (!titleSeen && locale === 'en' && EN_TITLE_FALLBACK[route]) {
-    html = html.replace(/<head>/, `<head><title>${EN_TITLE_FALLBACK[route]}</title>`);
-  }
+  // Title cleanup: strip template/empty titles, dedupe to first-wins, inject
+  // English fallback if Helmet didn't commit in time. Shared with the flag-page
+  // path via dedupeTitles(). Non-English pages with no title surface via the
+  // smoke-test warning below instead of silently getting the wrong-language
+  // fallback (achieved by passing undefined fallback for non-English).
+  html = dedupeTitles(
+    html,
+    locale === 'en' ? EN_TITLE_FALLBACK[route] : undefined,
+  );
 
   // Apply first-wins dedupe to the other Helmet-managed head tags that
   // suffer the same multi-emit quirk as <title>:
@@ -356,8 +370,17 @@ async function main() {
       await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded', timeout: 15000 });
       await page.waitForSelector('#root > *', { timeout: 7000 });
       await page.waitForTimeout(1200);
-      const flagHtml = await page.content();
+      let flagHtml = await page.content();
       await page.close();
+      // Same title cleanup as capture()'s 168-page matrix, via the shared
+      // dedupeTitles() helper. Fallback matches the Helmet-emitted title in
+      // LanguageSelectionPage so a fallback render is still SEO-correct. Other
+      // Helmet-managed tags (canonical/hreflang/og:*) come out clean here on
+      // the flag page so no further dedupe is needed inline.
+      flagHtml = dedupeTitles(
+        flagHtml,
+        'Multiverse Echoes — Choose your language',
+      );
       writeFileSync(join(DIST, 'index.html'), flagHtml, 'utf-8');
       console.log(`  ${Buffer.byteLength(flagHtml, 'utf-8')} bytes, content: ${flagHtml.includes('MULTIVERSE ECHOES') ? 'YES' : 'NO'}`);
 
