@@ -348,5 +348,5 @@ test('dashboard renders Echo data from API', async ({ page }) => {
   await expect(page.locator('text=Luna')).toBeVisible({ timeout: 5000 });
 
   // Mood should be displayed
-  await expect(page.locator('text=Curious')).toBeVisible({ timeout: 3000 });
+  await expect(page.getByLabel('Curious')).toBeVisible({ timeout: 3000 });
 });

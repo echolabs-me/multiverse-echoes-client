@@ -28,6 +28,19 @@ const MOCK_ECHO = {
   age_at_creation: 28,
 };
 
+// Wire-shape (narrower) for /shards/{id}/echoes — matches the canonical
+// `ShardEchoSummary` Specta type. Distinct from MOCK_ECHO's `EchoResponse`
+// shape which carries persona/what_if/birth_hash/etc. that the
+// /shards/{id}/echoes server route does NOT return.
+const MOCK_SHARD_ECHO_SUMMARY = {
+  echo_id: '00000000-0000-0000-0000-000000000010',
+  name: 'Luna',
+  status: 'Active',
+  current_mood: 'Curious',
+  current_location_id: '00000000-0000-0000-0000-000000000030',
+  current_tick: 42,
+};
+
 const MOCK_SHARD = {
   shard_id: '00000000-0000-0000-0000-000000000020',
   name: 'Cyber-Tokyo 2045',
@@ -55,7 +68,9 @@ export async function setupMockApi(page: Page) {
   await page.route('**/auth/refresh', (route) =>
     route.fulfill({ status: 200, json: MOCK_TOKENS }),
   );
-  await page.route('**/auth/logout', (route) => route.fulfill({ status: 200, json: {} }));
+  await page.route('**/auth/logout', (route) =>
+    route.fulfill({ status: 200, json: { message: 'Logged out successfully' } }),
+  );
 
   // Account
   await page.route('**/account/me', (route) => {
@@ -68,7 +83,7 @@ export async function setupMockApi(page: Page) {
     route.fulfill({ status: 200, json: { solo_mode: false } }),
   );
   await page.route('**/account/me/sessions', (route) =>
-    route.fulfill({ status: 200, json: { sessions: [] } }),
+    route.fulfill({ status: 200, json: [] }),
   );
   await page.route('**/account/me/export', (route) =>
     route.fulfill({
@@ -96,7 +111,7 @@ export async function setupMockApi(page: Page) {
     route.fulfill({ status: 200, json: { linked: false } }),
   );
   await page.route('**/account/me/password', (route) =>
-    route.fulfill({ status: 200, json: {} }),
+    route.fulfill({ status: 200, json: { message: 'Password updated' } }),
   );
 
   // Echoes
@@ -104,13 +119,13 @@ export async function setupMockApi(page: Page) {
     if (route.request().method() === 'POST') {
       return route.fulfill({ status: 201, json: MOCK_ECHO });
     }
-    return route.fulfill({ status: 200, json: { echoes: [MOCK_ECHO] } });
+    return route.fulfill({ status: 200, json: [MOCK_ECHO] });
   });
   await page.route('**/echoes/*/relationships', (route) =>
-    route.fulfill({ status: 200, json: { relationships: [] } }),
+    route.fulfill({ status: 200, json: [] }),
   );
   await page.route('**/echoes/*/memories', (route) =>
-    route.fulfill({ status: 200, json: { memories: [] } }),
+    route.fulfill({ status: 200, json: [] }),
   );
   await page.route('**/echoes/*/influence', (route) =>
     route.fulfill({ status: 200, json: { balance: 3, daily_limit: 5 } }),
@@ -126,7 +141,7 @@ export async function setupMockApi(page: Page) {
         },
       });
     }
-    return route.fulfill({ status: 200, json: { conversations: [] } });
+    return route.fulfill({ status: 200, json: [] });
   });
 
   // Conversations
@@ -142,7 +157,7 @@ export async function setupMockApi(page: Page) {
         },
       });
     }
-    return route.fulfill({ status: 200, json: { messages: [] } });
+    return route.fulfill({ status: 200, json: [] });
   });
   await page.route('**/conversations/*/save', (route) =>
     route.fulfill({ status: 200, json: { diary_id: 'diary-saved' } }),
@@ -150,10 +165,10 @@ export async function setupMockApi(page: Page) {
 
   // Shards
   await page.route('**/shards', (route) =>
-    route.fulfill({ status: 200, json: { shards: [MOCK_SHARD] } }),
+    route.fulfill({ status: 200, json: [MOCK_SHARD] }),
   );
   await page.route('**/shards/*/echoes', (route) =>
-    route.fulfill({ status: 200, json: { echoes: [MOCK_ECHO] } }),
+    route.fulfill({ status: 200, json: [MOCK_SHARD_ECHO_SUMMARY] }),
   );
 
   // Feeds
@@ -161,30 +176,52 @@ export async function setupMockApi(page: Page) {
     route.fulfill({
       status: 200,
       json: {
-        items: [
+        data: [
           {
             item_id: 'feed-001',
+            item_type: 'diary_entry',
             echo_id: MOCK_ECHO.echo_id,
-            echo_name: 'Luna',
-            event_type: 'DiaryEntry',
-            content: 'Today I explored a beautiful coral reef near the underwater city.',
+            shard_id: MOCK_SHARD.shard_id,
+            title: 'Coral reef',
+            body: 'Today I explored a beautiful coral reef near the underwater city.',
             significance: 80,
+            tick_id: 42,
             created_at: new Date().toISOString(),
+            is_public: true,
           },
         ],
+        next_cursor: null,
       },
     }),
   );
   await page.route('**/feeds/social', (route) =>
-    route.fulfill({ status: 200, json: { items: [] } }),
+    route.fulfill({ status: 200, json: { data: [], next_cursor: null } }),
   );
 
   // Notifications
-  await page.route('**/notifications', (route) =>
-    route.fulfill({ status: 200, json: { notifications: [] } }),
+  await page.route('**/account/me/notifications', (route) =>
+    route.fulfill({ status: 200, json: [] }),
   );
-  await page.route('**/notifications/preferences', (route) =>
-    route.fulfill({ status: 200, json: { preferences: {} } }),
+  await page.route('**/account/me/notifications/preferences', (route) =>
+    route.fulfill({
+      status: 200,
+      json: {
+        user_id: MOCK_USER.user_id,
+        echo_life_events: 'Off',
+        daily_digest: 'Off',
+        social: 'Off',
+        community: 'Off',
+        shard_activity: 'Off',
+        platform: 'Off',
+        marketplace: 'Off',
+        billing: 'Off',
+        moderation: 'Off',
+        account: 'Off',
+        quiet_hours_start: null,
+        quiet_hours_end: null,
+        updated_at: '2026-04-30T00:00:00Z',
+      },
+    }),
   );
 
   // Oracle
@@ -204,32 +241,32 @@ export async function setupMockApi(page: Page) {
     route.fulfill({
       status: 200,
       json: {
-        results: [
+        data: [
           {
-            result_id: 'sr-001',
-            type: 'diary',
+            item_type: 'diary',
+            item_id: 'sr-001',
             echo_id: MOCK_ECHO.echo_id,
-            echo_name: 'Luna',
             snippet: 'Explored a beautiful coral reef near the underwater city.',
             created_at: new Date().toISOString(),
           },
         ],
+        next_cursor: null,
       },
     }),
   );
 
   // API Keys
-  await page.route('**/keys', (route) => {
+  await page.route('**/account/me/api-keys', (route) => {
     if (route.request().method() === 'POST') {
       return route.fulfill({
         status: 201,
         json: { key_id: 'key-001', key: 'me_live_abc123xyz', name: 'Test Key', created_at: new Date().toISOString() },
       });
     }
-    return route.fulfill({ status: 200, json: { keys: [] } });
+    return route.fulfill({ status: 200, json: [] });
   });
-  await page.route('**/keys/*', (route) =>
-    route.fulfill({ status: 200, json: {} }),
+  await page.route('**/account/me/api-keys/*', (route) =>
+    route.fulfill({ status: 200, json: { revoked: true } }),
   );
 
   // Reports
@@ -276,16 +313,14 @@ export async function setupMockApi(page: Page) {
   await page.route('**/channels', (route) =>
     route.fulfill({
       status: 200,
-      json: {
-        channels: [
-          { channel_id: 'ch-001', name: 'general', channel_type: 'Global' },
-          { channel_id: 'ch-002', name: 'feedback', channel_type: 'Global' },
-        ],
-      },
+      json: [
+        { channel_id: 'ch-001', name: 'general', channel_type: 'Global' },
+        { channel_id: 'ch-002', name: 'feedback', channel_type: 'Global' },
+      ],
     }),
   );
   await page.route('**/channels/*/messages', (route) =>
-    route.fulfill({ status: 200, json: { messages: [] } }),
+    route.fulfill({ status: 200, json: { data: [], next_cursor: null } }),
   );
 
   // Health

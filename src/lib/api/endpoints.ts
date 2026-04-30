@@ -17,7 +17,6 @@ import type {
   LifeEvent,
   InfluenceBalance,
   UseInfluenceRequest,
-  EchoMemory,
   Channel,
   ChannelMessage,
   SendMessageRequest,
@@ -62,10 +61,13 @@ import type {
   InventoryRowResponse,
   MarketplaceItemResponse,
   MarketplacePreviewResponse,
+  MemoryView,
   PublicEchoRef,
   PublicProfileResponse,
   PublicUserOgResponse,
   RelationshipResponse,
+  RevokeApiKeyResponse,
+  ShardEchoSummary,
   ShareFeedItemRequest,
   ShareFeedItemResponse,
   ViralContentResponse,
@@ -151,7 +153,7 @@ export const echoes = {
     }),
 
   memories: (echoId: string) =>
-    request<EchoMemory[]>(`/echoes/${echoId}/memories`),
+    request<MemoryView[]>(`/echoes/${echoId}/memories`),
 
   diary: (echoId: string, limit = 20, cursor?: string, mood?: string) => {
     const params = new URLSearchParams({ limit: String(limit) });
@@ -280,7 +282,7 @@ export const shards = {
   get: (shardId: string) => request<ShardDetail>(`/shards/${shardId}`),
 
   echoes: (shardId: string) =>
-    request<EchoResponse[]>(`/shards/${shardId}/echoes`),
+    request<ShardEchoSummary[]>(`/shards/${shardId}/echoes`),
 };
 
 // --- Feeds ---
@@ -536,7 +538,7 @@ export const apiKeys = {
     }),
 
   revoke: (keyId: string) =>
-    request<MessageResponse>(`/account/me/api-keys/${keyId}`, {
+    request<RevokeApiKeyResponse>(`/account/me/api-keys/${keyId}`, {
       method: 'DELETE',
     }),
 };

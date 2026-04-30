@@ -23,7 +23,8 @@ import { trackEvent } from '../lib/analytics.ts';
 import { formatDate, formatDeletionDate } from '../lib/formatDate.ts';
 import { isShardArchived, shardDeletionDate } from '../lib/hibernation.ts';
 import { getMoodLabel } from '../lib/moodLabel.ts';
-import type { EchoResponse, FeedItem } from '../types/api.ts';
+import type { FeedItem } from '../types/api.ts';
+import type { ShardEchoSummary } from '../types/generated.ts';
 
 export function ShardViewPage() {
   const { shardId } = useParams<{ shardId: string }>();
@@ -33,7 +34,7 @@ export function ShardViewPage() {
   const { echoList, fetchEchoes } = useEchoStore();
   const addToast = useToastStore((s) => s.addToast);
 
-  const [shardEchoes, setShardEchoes] = useState<EchoResponse[]>([]);
+  const [shardEchoes, setShardEchoes] = useState<ShardEchoSummary[]>([]);
   const [shardFeed, setShardFeed] = useState<FeedItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [travelModal, setTravelModal] = useState(false);
@@ -45,7 +46,7 @@ export function ShardViewPage() {
     try {
       await fetchShard(shardId);
       const [echoesResult, feedResult] = await Promise.all([
-        shardApi.echoes(shardId).catch(() => [] as EchoResponse[]),
+        shardApi.echoes(shardId).catch(() => [] as ShardEchoSummary[]),
         feeds
           .shard(shardId)
           .catch(() => ({ data: [] as FeedItem[], next_cursor: null })),
