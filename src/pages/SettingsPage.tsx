@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -13,7 +13,14 @@ import {
   ExternalLink,
   MessageSquare,
 } from 'lucide-react';
-import { Card, Badge, Button, Input, Spinner } from '../components/index.ts';
+import {
+  Card,
+  Badge,
+  Button,
+  Input,
+  Spinner,
+  Tabs,
+} from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useThemeStore } from '../stores/useThemeStore.ts';
@@ -44,22 +51,90 @@ export function SettingsPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation();
-  const tabs = [
-    { id: 'profile', label: t('settings.profile'), icon: User },
-    { id: 'account', label: t('settings.account'), icon: Lock },
-    { id: 'privacy', label: t('settings.privacy'), icon: Shield },
-    { id: 'notifications', label: t('settings.notificationPrefs'), icon: Bell },
-    { id: 'appearance', label: t('settings.appearance'), icon: Palette },
-    { id: 'apikeys', label: t('settings.apiKeys'), icon: Key },
-    { id: 'feedback', label: t('settings.myFeedback'), icon: MessageSquare },
-    { id: 'danger', label: t('settings.dangerZone'), icon: Trash2 },
+
+  const tabConfig: ReadonlyArray<{
+    id: string;
+    icon: typeof User;
+    labelKey: string;
+    Section: () => ReactElement;
+  }> = [
+    {
+      id: 'profile',
+      icon: User,
+      labelKey: 'settings.profile',
+      Section: ProfileSection,
+    },
+    {
+      id: 'account',
+      icon: Lock,
+      labelKey: 'settings.account',
+      Section: AccountSection,
+    },
+    {
+      id: 'privacy',
+      icon: Shield,
+      labelKey: 'settings.privacy',
+      Section: PrivacySection,
+    },
+    {
+      id: 'notifications',
+      icon: Bell,
+      labelKey: 'settings.notificationPrefs',
+      Section: NotificationPrefsSection,
+    },
+    {
+      id: 'appearance',
+      icon: Palette,
+      labelKey: 'settings.appearance',
+      Section: AppearanceSection,
+    },
+    {
+      id: 'apikeys',
+      icon: Key,
+      labelKey: 'settings.apiKeys',
+      Section: ApiKeysSection,
+    },
+    {
+      id: 'feedback',
+      icon: MessageSquare,
+      labelKey: 'settings.myFeedback',
+      Section: MyFeedbackSection,
+    },
+    {
+      id: 'danger',
+      icon: Trash2,
+      labelKey: 'settings.dangerZone',
+      Section: DangerZoneSection,
+    },
   ];
 
-  const tabIds = tabs.map((tab) => tab.id);
+  const tabIds = tabConfig.map((tab) => tab.id);
   const paramTab = searchParams.get('tab');
   const initialTab =
     paramTab && tabIds.includes(paramTab) ? paramTab : 'profile';
   const [activeTab, setActiveTab] = useState(initialTab);
+
+  /* Render tabs through the shared <Tabs> component so the canonical
+     ARIA tabs pattern (role="tablist" parent, role="tab" buttons with
+     aria-controls, role="tabpanel" matching panels with id) is in
+     effect — Copilot review on PR #53 noted that the prior bespoke
+     inline tab nav left aria-controls and tabpanels off entirely, which
+     axe doesn't flag (it only catches *dangling* aria-controls, not
+     *missing* ones) but real assistive-tech users rely on the
+     programmatic association. The deep-link `?tab=<id>` URL contract
+     is preserved by running <Tabs> in controlled mode and writing the
+     activeTab back to searchParams from onTabChange. Lane MOCK_SHARD-
+     cleanup follow-up. */
+  const tabs = tabConfig.map(({ id, icon: Icon, labelKey, Section }) => ({
+    id,
+    label: (
+      <span className="flex items-center gap-1.5">
+        <Icon size={14} />
+        {t(labelKey)}
+      </span>
+    ),
+    content: <Section />,
+  }));
 
   return (
     <div className="flex-1 overflow-y-auto">
@@ -76,40 +151,14 @@ export function SettingsPage() {
           {t('settings.title')}
         </h1>
 
-        {/* Tab navigation */}
-        <div className="mbe-6 flex flex-wrap gap-1 border-be border-border">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => {
-                  setActiveTab(tab.id);
-                  setSearchParams({ tab: tab.id });
-                }}
-                className={`flex items-center gap-1.5 border-be-2 px-3 py-2 text-sm transition-colors ${
-                  activeTab === tab.id
-                    ? 'border-accent text-accent'
-                    : 'border-transparent text-text-secondary hover:text-text-primary'
-                }`}
-                role="tab"
-                aria-selected={activeTab === tab.id}
-              >
-                <Icon size={14} />
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {activeTab === 'profile' && <ProfileSection />}
-        {activeTab === 'account' && <AccountSection />}
-        {activeTab === 'privacy' && <PrivacySection />}
-        {activeTab === 'notifications' && <NotificationPrefsSection />}
-        {activeTab === 'appearance' && <AppearanceSection />}
-        {activeTab === 'apikeys' && <ApiKeysSection />}
-        {activeTab === 'feedback' && <MyFeedbackSection />}
-        {activeTab === 'danger' && <DangerZoneSection />}
+        <Tabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={(id) => {
+            setActiveTab(id);
+            setSearchParams({ tab: id });
+          }}
+        />
       </div>
     </div>
   );

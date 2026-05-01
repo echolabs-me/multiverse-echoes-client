@@ -319,6 +319,7 @@
     "reportReason": "이유",
     "reportPlaceholder": "무엇이 잘못되었는지 설명해 주세요...",
     "messagePlaceholder": "메시지를 입력하세요...",
+    "sendMessage": "메시지 보내기",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "메시지를 게시하려면 Core로 업그레이드하세요",
     "announcementsOnly": "이 채널은 플랫폼 공지사항 전용입니다.",
@@ -812,7 +813,8 @@
     "moodLegend": "무드 가이드",
     "arrivingAt": "{{shard}}에 도착하는 중…",
     "createEcho": "에코 생성",
-    "closeAriaLabel": "에코 스위처 닫기"
+    "closeAriaLabel": "에코 스위처 닫기",
+    "dragHandleLabel": "에코 {{name}} 순서 변경"
   },
   "payment": {
     "title": "계획",

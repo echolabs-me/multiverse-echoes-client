@@ -319,6 +319,7 @@
     "reportReason": "Motivo",
     "reportPlaceholder": "Describe qué está mal…",
     "messagePlaceholder": "Escribe un mensaje…",
+    "sendMessage": "Enviar mensaje",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Mejora a Core para publicar mensajes",
     "announcementsOnly": "Este canal es solo para anuncios de la plataforma.",
@@ -812,7 +813,8 @@
     "moodLegend": "Guía de ánimos",
     "arrivingAt": "Llegando a {{shard}}…",
     "createEcho": "Crear Eco",
-    "closeAriaLabel": "Cerrar selector de Eco"
+    "closeAriaLabel": "Cerrar selector de Eco",
+    "dragHandleLabel": "Reordenar Eco {{name}}"
   },
   "payment": {
     "title": "Planes",

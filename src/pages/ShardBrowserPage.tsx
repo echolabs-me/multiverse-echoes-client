@@ -79,6 +79,7 @@ export function ShardBrowserPage() {
               return (
                 <Card
                   key={shard.shard_id}
+                  data-shard-id={shard.shard_id}
                   onClick={() => navigate(`/shards/${shard.shard_id}`)}
                   className="overflow-hidden p-0!"
                 >
@@ -99,6 +100,8 @@ export function ShardBrowserPage() {
                         )}
                       </h3>
                       <Badge
+                        data-testid="shard-status-badge"
+                        data-archived={archived ? 'true' : 'false'}
                         variant={
                           archived
                             ? 'warning'
@@ -124,6 +127,7 @@ export function ShardBrowserPage() {
                         `crates/api/src/routes/shards.rs::ShardSummary`. */}
                     {archived && archiveDeletion && (
                       <p
+                        data-testid="shard-archive-chip"
                         className="text-[11px] font-medium text-warning"
                         role="status"
                         aria-live="polite"

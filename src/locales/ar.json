@@ -319,6 +319,7 @@
     "reportReason": "السبب",
     "reportPlaceholder": "صِف المشكلة…",
     "messagePlaceholder": "اكتب رسالة…",
+    "sendMessage": "إرسال الرسالة",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "الترقية إلى Core لإرسال الرسائل",
     "announcementsOnly": "هذه القناة مخصصة لإعلانات المنصة فقط.",
@@ -812,7 +813,8 @@
     "moodLegend": "دليل المزاج",
     "arrivingAt": "الوصول إلى {{shard}}…",
     "createEcho": "إنشاء صدى",
-    "closeAriaLabel": "إغلاق مبدّل الصدى"
+    "closeAriaLabel": "إغلاق مبدّل الصدى",
+    "dragHandleLabel": "إعادة ترتيب الصدى {{name}}"
   },
   "payment": {
     "title": "الخطط",

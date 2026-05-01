@@ -319,6 +319,7 @@
     "reportReason": "Alasan",
     "reportPlaceholder": "Jelaskan apa yang salah...",
     "messagePlaceholder": "Ketik pesan...",
+    "sendMessage": "Kirim pesan",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Tingkatkan ke Core untuk mengirim pesan",
     "announcementsOnly": "Saluran ini hanya untuk pengumuman platform.",
@@ -812,7 +813,8 @@
     "moodLegend": "Panduan Suasana Hati",
     "arrivingAt": "Tiba di {{shard}}…",
     "createEcho": "Buat Echo",
-    "closeAriaLabel": "Tutup pengalih gema"
+    "closeAriaLabel": "Tutup pengalih gema",
+    "dragHandleLabel": "Susun ulang Echo {{name}}"
   },
   "payment": {
     "title": "Rencana",

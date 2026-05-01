@@ -66,8 +66,16 @@ export function OnboardingWelcomePage() {
         <p className="text-sm text-text-secondary">{t(card.bodyKey)}</p>
       </Card>
 
-      {/* Progress dots */}
+      {/* Progress dots. role="status" added (Lane MOCK_SHARD-cleanup
+          Cluster F1) so the aria-label is allowed under WAI-ARIA — bare
+          <div> defaults to role=generic where aria-label is prohibited
+          (Phase 2F-diag-6 §6-F: axe-core "aria-prohibited-attr: aria-
+          label attribute cannot be used on a div with no valid role"
+          violation). status also gives assistive tech a polite live
+          announcement of "Card X of N" each time `currentCard` changes,
+          which is what the aria-label was already trying to convey. */}
       <div
+        role="status"
         className="mbe-6 flex gap-2"
         aria-label={`Card ${currentCard + 1} of ${cards.length}`}
       >

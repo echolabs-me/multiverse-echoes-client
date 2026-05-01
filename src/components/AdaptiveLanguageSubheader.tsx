@@ -128,7 +128,18 @@ export function AdaptiveLanguageSubheader() {
 
   return (
     <p
-      className="me-fade-up mbe-8 text-center font-serif text-lg font-light tracking-wide text-(--text-secondary)"
+      /* WCAG AA fix (Lane MOCK_SHARD-cleanup): text-(--text-secondary)
+         resolves to #9ba8b4 at rest (5.04:1 vs canvas #0f1923 — passes),
+         but the rotating slots run a `transition-opacity duration-300`
+         and the spans inherit the parent <p>'s `me-fade-up` 1.2s mount
+         animation. axe-core reads `getComputedStyle` mid-transition and
+         saw a blended #64707b (3.5:1, fails). Bumping the base color to
+         text-(--text-primary) keeps contrast safely above 4.5:1 across
+         the entire opacity range so the transition window cannot drop
+         below the AA floor. Aesthetic change is minor — the subheader
+         was already large/light/serif; primary text is one luminance
+         step higher. */
+      className="me-fade-up mbe-8 text-center font-serif text-lg font-light tracking-wide text-(--text-primary)"
       data-delay="150"
       data-testid="adaptive-language-subheader"
       dir="ltr"

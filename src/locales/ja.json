@@ -319,6 +319,7 @@
     "reportReason": "理由",
     "reportPlaceholder": "何が問題なのか説明してください...",
     "messagePlaceholder": "メッセージを入力...",
+    "sendMessage": "メッセージを送信",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "メッセージを投稿するにはCoreにアップグレードしてください",
     "announcementsOnly": "このチャンネルはプラットフォームのお知らせ専用です。",
@@ -812,7 +813,8 @@
     "moodLegend": "ムードガイド",
     "arrivingAt": "{{shard}}に到着中…",
     "createEcho": "Echoを作成",
-    "closeAriaLabel": "エコー切り替えスイッチを閉じる"
+    "closeAriaLabel": "エコー切り替えスイッチを閉じる",
+    "dragHandleLabel": "エコー {{name}} を並べ替え"
   },
   "payment": {
     "title": "計画",

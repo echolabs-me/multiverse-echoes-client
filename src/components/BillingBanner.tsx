@@ -95,9 +95,15 @@ export function BillingBanner() {
       >
         {t(variant.copyKey)}
       </span>
+      {/* WCAG AA fix (Lane MOCK_SHARD-cleanup): text-white (#ffffff) on
+          bg-accent (#d4915c) measured 2.62:1 by axe-core (BillingBanner
+          renewal_pending a11y test, Phase 2F-diag-6 §6-F). text-canvas
+          (#0f1923 dark / #faf6f1 light) on bg-accent gives 7+:1 in dark
+          mode — comfortable AA pass. Same colour pairing already in use
+          on `me-btn-primary` and the WaitlistPage submit button. */}
       <Link
         to="/plans"
-        className="shrink-0 rounded-md bg-accent px-3 py-1 text-xs font-medium text-white hover:bg-accent/90"
+        className="shrink-0 rounded-md bg-accent px-3 py-1 text-xs font-medium text-canvas hover:bg-accent/90"
         data-testid="billing-banner-update-payment-link"
       >
         {t('payment.banner.updatePaymentMethod')}

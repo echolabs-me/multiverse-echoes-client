@@ -319,6 +319,7 @@
     "reportReason": "Raison",
     "reportPlaceholder": "Décris ce qui ne va pas…",
     "messagePlaceholder": "Écris un message…",
+    "sendMessage": "Envoyer le message",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Passe à Core pour publier des messages",
     "announcementsOnly": "Ce canal est réservé aux annonces de la plateforme.",
@@ -812,7 +813,8 @@
     "moodLegend": "Guide des humeurs",
     "arrivingAt": "Arrivée à {{shard}}…",
     "createEcho": "Créer un Écho",
-    "closeAriaLabel": "Fermer le sélecteur d'Écho"
+    "closeAriaLabel": "Fermer le sélecteur d'Écho",
+    "dragHandleLabel": "Réorganiser l'Écho {{name}}"
   },
   "payment": {
     "title": "Forfaits",

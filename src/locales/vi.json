@@ -319,6 +319,7 @@
     "reportReason": "Lý do",
     "reportPlaceholder": "Mô tả điều gì đang xảy ra...",
     "messagePlaceholder": "Nhập tin nhắn...",
+    "sendMessage": "Gửi tin nhắn",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Nâng cấp lên Core để đăng tin nhắn",
     "announcementsOnly": "Kênh này chỉ dành cho các thông báo của nền tảng.",
@@ -812,7 +813,8 @@
     "moodLegend": "Hướng dẫn Tâm trạng",
     "arrivingAt": "Đang đến {{shard}}…",
     "createEcho": "Tạo Echo",
-    "closeAriaLabel": "Đóng bộ chuyển đổi tiếng vang"
+    "closeAriaLabel": "Đóng bộ chuyển đổi tiếng vang",
+    "dragHandleLabel": "Sắp xếp lại Echo {{name}}"
   },
   "payment": {
     "title": "Kế hoạch",

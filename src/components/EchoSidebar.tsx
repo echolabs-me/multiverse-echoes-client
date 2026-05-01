@@ -104,13 +104,26 @@ function EchoCard({
           : 'border border-transparent hover:bg-surface-raised'
       }`}
     >
-      {/* Drag handle — mood-colored */}
-      <div
+      {/* Drag handle — mood-colored. The dnd-kit `attributes` + `listeners`
+          spread onto a dedicated <button> rather than the parent <li>. The
+          earlier pattern attached `attributes` (which adds role="button"
+          + tabindex="0") to the <li>, which made axe-core see the parent
+          <ul> as containing a [role=button] direct child (list violation)
+          AND nested the inner card <button> inside the <li>'s effective
+          button role (nested-interactive violation). Moving the dnd-kit
+          surface here keeps <li> as a plain listitem and gives the drag
+          handle its own canonical interactive role. */}
+      <button
+        type="button"
+        aria-label={t('echoSidebar.dragHandleLabel', {
+          name: echo.name,
+          defaultValue: 'Reorder Echo {{name}}',
+        })}
         className="me-mood-fg shrink-0 cursor-grab touch-none px-1 py-3 opacity-40 transition-opacity hover:opacity-80 active:cursor-grabbing"
         {...dragHandleProps}
       >
         <GripVertical size={14} />
-      </div>
+      </button>
       <button
         onClick={onClick}
         className="flex min-w-0 flex-1 flex-col gap-1 py-2.5 pe-3 text-start"
@@ -210,7 +223,7 @@ function SortableEchoItem({
   };
 
   return (
-    <li ref={composedRef} {...attributes}>
+    <li ref={composedRef}>
       <EchoCard
         echo={echo}
         isActive={isActive}
@@ -218,7 +231,7 @@ function SortableEchoItem({
         latestDiary={latestDiary}
         latestDiaryShardId={latestDiaryShardId}
         onClick={onClick}
-        dragHandleProps={listeners}
+        dragHandleProps={{ ...attributes, ...listeners }}
       />
     </li>
   );

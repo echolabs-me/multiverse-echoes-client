@@ -319,6 +319,7 @@
     "reportReason": "Neden",
     "reportPlaceholder": "Neyin yanlış olduğunu açıklayın...",
     "messagePlaceholder": "Bir mesaj yazın...",
+    "sendMessage": "Mesaj gönder",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Mesaj göndermek için Core'a yükseltin",
     "announcementsOnly": "Bu kanal sadece platform duyuruları içindir.",
@@ -812,7 +813,8 @@
     "moodLegend": "Ruh Hali Rehberi",
     "arrivingAt": "{{shard}} konumuna varılıyor…",
     "createEcho": "Echo'yu Oluştur",
-    "closeAriaLabel": "Yankı anahtarını kapat"
+    "closeAriaLabel": "Yankı anahtarını kapat",
+    "dragHandleLabel": "Echo {{name}} sıralamasını değiştir"
   },
   "payment": {
     "title": "Planlar",

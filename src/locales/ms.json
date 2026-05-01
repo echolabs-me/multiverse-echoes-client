@@ -319,6 +319,7 @@
     "reportReason": "Sebab",
     "reportPlaceholder": "Huraikan apa yang tidak kena...",
     "messagePlaceholder": "Taip mesej...",
+    "sendMessage": "Hantar mesej",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Naik taraf ke Core untuk menghantar mesej",
     "announcementsOnly": "Saluran ini adalah untuk pengumuman platform sahaja.",
@@ -812,7 +813,8 @@
     "moodLegend": "Panduan Mood",
     "arrivingAt": "Tiba di {{shard}}…",
     "createEcho": "Cipta Echo",
-    "closeAriaLabel": "Tutup suis gema"
+    "closeAriaLabel": "Tutup suis gema",
+    "dragHandleLabel": "Susun semula Echo {{name}}"
   },
   "payment": {
     "title": "Rancangan",

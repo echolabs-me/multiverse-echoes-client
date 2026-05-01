@@ -2,7 +2,10 @@ import { useState, useRef, type ReactNode, type KeyboardEvent } from 'react';
 
 export interface Tab {
   id: string;
-  label: string;
+  /** Tab button content. `string` works as before; passing JSX (e.g. an
+   *  icon + label) lets consumers like SettingsPage render richer tabs
+   *  without forking this component. */
+  label: ReactNode;
   content?: ReactNode;
   testId?: string;
 }
@@ -88,18 +91,35 @@ export function Tabs({
           </button>
         ))}
       </div>
-      {activeTabObj?.content && (
-        <div
-          role="tabpanel"
-          id={`panel-${activeTabObj.id}`}
-          aria-labelledby={`tab-${activeTabObj.id}`}
-          tabIndex={0}
-          className="pbs-4"
-          key={activeId}
-        >
-          {activeTabObj.content}
-        </div>
-      )}
+      {/* Render an empty hidden <div role="tabpanel"> for every tab even
+          when no content prop is supplied. Each tab carries
+          aria-controls={`panel-${tab.id}`}, so without a matching panel
+          element axe-core's aria-valid-attr-value rule fails on every
+          tab whose IDREF dangles (verified Phase 2F-diag-6 §6-F on the
+          Admin Dashboard tabs — that page renders content separately
+          based on activeTab state and never passes `content` here).
+          The active tab still gets the actual content; inactive tabs
+          render an empty hidden panel that satisfies the IDREF without
+          affecting layout. Backwards-compat: existing consumers that DO
+          pass `content` continue to render exactly the same DOM for the
+          active tab as before. */}
+      {tabs.map((tab) => {
+        const isActive = tab.id === activeId;
+        const tabContent = isActive ? activeTabObj?.content : null;
+        return (
+          <div
+            key={tab.id}
+            role="tabpanel"
+            id={`panel-${tab.id}`}
+            aria-labelledby={`tab-${tab.id}`}
+            tabIndex={isActive ? 0 : -1}
+            hidden={!isActive}
+            className={isActive ? 'pbs-4' : ''}
+          >
+            {tabContent}
+          </div>
+        );
+      })}
     </div>
   );
 }

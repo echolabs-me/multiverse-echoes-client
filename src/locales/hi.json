@@ -319,6 +319,7 @@
     "reportReason": "कारण",
     "reportPlaceholder": "बताओ क्या ग़लत है…",
     "messagePlaceholder": "संदेश लिखो…",
+    "sendMessage": "संदेश भेजें",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "संदेश भेजने के लिए Core में अपग्रेड करो",
     "announcementsOnly": "यह चैनल सिर्फ़ प्लेटफ़ॉर्म घोषणाओं के लिए है।",
@@ -812,7 +813,8 @@
     "moodLegend": "मिज़ाज संकेत",
     "arrivingAt": "{{shard}} पहुँच रहे हैं…",
     "createEcho": "गूँज बनाओ",
-    "closeAriaLabel": "गूँज स्विचर बंद करो"
+    "closeAriaLabel": "गूँज स्विचर बंद करो",
+    "dragHandleLabel": "गूँज {{name}} को पुनर्व्यवस्थित करें"
   },
   "payment": {
     "title": "प्लान",

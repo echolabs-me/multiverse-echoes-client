@@ -319,6 +319,7 @@
     "reportReason": "Ragione",
     "reportPlaceholder": "Descrivi cosa c'è che non va...",
     "messagePlaceholder": "Digita un messaggio...",
+    "sendMessage": "Invia messaggio",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Passa a Core per pubblicare messaggi",
     "announcementsOnly": "Questo canale è riservato esclusivamente agli annunci della piattaforma.",
@@ -812,7 +813,8 @@
     "moodLegend": "Guida all'umore",
     "arrivingAt": "Arrivo a {{shard}}…",
     "createEcho": "Crea Echo",
-    "closeAriaLabel": "Chiudi selettore eco"
+    "closeAriaLabel": "Chiudi selettore eco",
+    "dragHandleLabel": "Riordina Echo {{name}}"
   },
   "payment": {
     "title": "Piani",

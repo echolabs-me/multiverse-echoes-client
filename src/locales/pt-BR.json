@@ -319,6 +319,7 @@
     "reportReason": "Razão",
     "reportPlaceholder": "Descreva o que há de errado...",
     "messagePlaceholder": "Digite uma mensagem...",
+    "sendMessage": "Enviar mensagem",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Faça o upgrade para o Core para postar mensagens",
     "announcementsOnly": "Este canal é apenas para anúncios da plataforma.",
@@ -812,7 +813,8 @@
     "moodLegend": "Guia de Humor",
     "arrivingAt": "Chegando a {{shard}}…",
     "createEcho": "Criar Echo",
-    "closeAriaLabel": "Fechar interruptor de eco"
+    "closeAriaLabel": "Fechar interruptor de eco",
+    "dragHandleLabel": "Reordenar Echo {{name}}"
   },
   "payment": {
     "title": "Planos",

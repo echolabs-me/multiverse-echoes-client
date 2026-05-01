@@ -39,12 +39,19 @@ const PUBLIC_PAGES = [
 // --- Reduced Motion Tests ---
 
 test.describe('Reduced Motion', () => {
-  test.use({
-    // Emulate prefers-reduced-motion: reduce
-    reducedMotion: 'reduce',
-  });
+  /* `test.use({ reducedMotion: 'reduce' })` at describe level set the
+     option on the BrowserContext at creation time, but did not reliably
+     propagate to the navigated page's media-query state — the parallel
+     test in axe-audit.spec.ts:406 (`prefers-reduced-motion sets zero
+     durations`) used `await page.emulateMedia(...)` inline and PASSED
+     against the same CSS files, while every test in this describe
+     FAILED with the test.use approach (Phase 2F-diag-6 §6-B-5). Each
+     test now calls `page.emulateMedia({ reducedMotion: 'reduce' })`
+     before any navigation so the @media query fires when the page CSS
+     is evaluated. Lane MOCK_SHARD-cleanup Cluster D1. */
 
   test('CSS duration tokens are set to 0ms', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await setupMockApi(page);
     await page.goto('/language');
     await page.waitForLoadState('networkidle');
@@ -65,6 +72,7 @@ test.describe('Reduced Motion', () => {
   });
 
   test('no keyframe animations running on Dashboard', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await setupMockApi(page);
     await page.goto('/');
     await authenticateUser(page);
@@ -101,6 +109,7 @@ test.describe('Reduced Motion', () => {
   });
 
   test('tick pulse is disabled', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await setupMockApi(page);
     await page.goto('/');
     await authenticateUser(page);
@@ -127,6 +136,7 @@ test.describe('Reduced Motion', () => {
   });
 
   test('3D portrait shows 2D static fallback', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await setupMockApi(page);
     await page.goto('/');
     await authenticateUser(page);
@@ -158,6 +168,7 @@ test.describe('Reduced Motion', () => {
   });
 
   test('Shard environment shows static fallback', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await setupMockApi(page);
     await page.goto('/');
     await authenticateUser(page);

@@ -64,10 +64,15 @@ export function OracleSidebar() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Focus input on mount
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  // Auto-focusing the textarea on mount steals initial keyboard focus
+  // from the page (it ran on every authenticated route since AppLayout
+  // always mounts OracleSidebar in the right pane), which prevented Tab-
+  // from-top from ever reaching the SkipLink — an accessibility regression
+  // for screen-reader / keyboard-only users that also masked the
+  // axe-audit "skip link targets main content" test (Phase 2F-diag-6
+  // §6-C / Cluster E1, Lane MOCK_SHARD-cleanup). Power users can click
+  // into the textarea to start typing; the natural Tab order reaches it
+  // after the page-level skip link + nav.
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

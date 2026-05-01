@@ -775,6 +775,7 @@ export function CommunityPage() {
                     <Button
                       onClick={() => void handleSend()}
                       disabled={!messageText.trim() || isSending}
+                      aria-label={t('community.sendMessage')}
                     >
                       <Send size={16} />
                     </Button>

@@ -319,6 +319,7 @@
     "reportReason": "কারণ",
     "reportPlaceholder": "কী সমস্যা হচ্ছে তা বর্ণনা করুন...",
     "messagePlaceholder": "একটি বার্তা লিখুন...",
+    "sendMessage": "বার্তা পাঠান",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "মেসেজ পোস্ট করতে কোর-এ আপগ্রেড করুন",
     "announcementsOnly": "এই চ্যানেলটি শুধুমাত্র প্ল্যাটফর্মের ঘোষণার জন্য।",
@@ -812,7 +813,8 @@
     "moodLegend": "মুড গাইড",
     "arrivingAt": "{{shard}}-এ পৌঁছানো হচ্ছে…",
     "createEcho": "ইকো তৈরি করুন",
-    "closeAriaLabel": "ইকো স্যুইচার বন্ধ করুন"
+    "closeAriaLabel": "ইকো স্যুইচার বন্ধ করুন",
+    "dragHandleLabel": "ইকো {{name}} পুনর্বিন্যাস করুন"
   },
   "payment": {
     "title": "পরিকল্পনাগুলো",

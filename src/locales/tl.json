@@ -319,6 +319,7 @@
     "reportReason": "Dahilan",
     "reportPlaceholder": "Ilarawan kung ano ang mali...",
     "messagePlaceholder": "Mag-type ng mensahe...",
+    "sendMessage": "Ipadala ang mensahe",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Mag-upgrade sa Core para makapag-post ng mga mensahe",
     "announcementsOnly": "Ang channel na ito ay para lamang sa mga anunsyo ng platform.",
@@ -812,7 +813,8 @@
     "moodLegend": "Gabay sa Mood",
     "arrivingAt": "Darating na sa {{shard}}…",
     "createEcho": "Gumawa ng Echo",
-    "closeAriaLabel": "Isara ang echo switcher"
+    "closeAriaLabel": "Isara ang echo switcher",
+    "dragHandleLabel": "Muling ayusin ang Echo {{name}}"
   },
   "payment": {
     "title": "Mga Plano",

@@ -319,6 +319,7 @@
     "reportReason": "Grund",
     "reportPlaceholder": "Beschreiben Sie, was falsch ist...",
     "messagePlaceholder": "Nachricht eingeben...",
+    "sendMessage": "Nachricht senden",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Auf Core aktualisieren, um Nachrichten zu posten",
     "announcementsOnly": "Dieser Kanal dient ausschließlich für Plattform-Ankündigungen.",
@@ -812,7 +813,8 @@
     "moodLegend": "Stimmungsführer",
     "arrivingAt": "Ankunft bei {{shard}}…",
     "createEcho": "Echo erstellen",
-    "closeAriaLabel": "Echo-Umschalter schließen"
+    "closeAriaLabel": "Echo-Umschalter schließen",
+    "dragHandleLabel": "Echo {{name}} neu anordnen"
   },
   "payment": {
     "title": "Pläne",

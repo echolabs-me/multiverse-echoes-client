@@ -41,13 +41,52 @@ const MOCK_SHARD_ECHO_SUMMARY = {
   current_tick: 42,
 };
 
+// Wire-shape (canonical 15-field) for /shards — matches the canonical
+// `ShardSummary` Specta type. Active/Included fixture: a tier-included
+// Public shard in normal operation. Pairs with MOCK_SHARD_ARCHIVED below
+// which exercises the archived-card render path (chip + Badge variant
+// flip gated on `provisioning_type === 'Archived'`).
 const MOCK_SHARD = {
   shard_id: '00000000-0000-0000-0000-000000000020',
   name: 'Cyber-Tokyo 2045',
   shard_type: 'Public',
   status: 'Active',
+  description: 'A neon-lit megacity where AI mediates every street corner.',
   current_active_count: 5,
+  current_hibernated_count: 0,
   max_active_echoes: 50,
+  banner_image: null,
+  created_at: '2026-01-15T00:00:00Z',
+  content_locale: 'en',
+  provisioning_type: 'Included',
+  archived_at: null,
+  archive_expires_at: null,
+  admin_flag: null,
+};
+
+// Wire-shape (canonical 15-field) for /shards — archived counterpart to
+// MOCK_SHARD. Exercises the ShardBrowserPage archived-card render path:
+// chip rendered (gated on `archived && archiveDeletion`) + Badge variant
+// flip to 'warning' (gated on `isShardArchived(shard) === true`).
+// `archive_expires_at` is `archived_at + 90d` per
+// `me_api::data_lifecycle::GRACE_PERIOD_DAYS` (ME-MIS-001 §5.2) — the
+// server populates it; clients display it via `shardDeletionDate()`.
+const MOCK_SHARD_ARCHIVED = {
+  shard_id: '00000000-0000-0000-0000-000000000021',
+  name: 'Lost Atlantis',
+  shard_type: 'Public',
+  status: 'Archived',
+  description: 'A sunken story — the city beneath the waves stopped ticking.',
+  current_active_count: 0,
+  current_hibernated_count: 3,
+  max_active_echoes: 50,
+  banner_image: null,
+  created_at: '2025-10-01T00:00:00Z',
+  content_locale: 'en',
+  provisioning_type: 'Archived',
+  archived_at: '2026-02-01T00:00:00Z',
+  archive_expires_at: '2026-05-02T00:00:00Z',
+  admin_flag: null,
 };
 
 const MOCK_TOKENS = {
@@ -56,8 +95,19 @@ const MOCK_TOKENS = {
   expires_in: 3600,
 };
 
+export type SetupMockApiOpts = {
+  /** Which shard fixtures to fulfill at GET /shards.
+   *  - 'active' (default): returns `[MOCK_SHARD]` — preserves the
+   *    pre-Lane behaviour for all existing positional call sites.
+   *  - 'archived': returns `[MOCK_SHARD_ARCHIVED]` — exercises the
+   *    ShardBrowserPage archived-card render path in isolation.
+   *  - 'both': returns `[MOCK_SHARD, MOCK_SHARD_ARCHIVED]` — for tests
+   *    asserting active vs archived gating side-by-side. */
+  shards?: 'active' | 'archived' | 'both';
+};
+
 /** Set up mock API routes for authenticated flows. */
-export async function setupMockApi(page: Page) {
+export async function setupMockApi(page: Page, opts: SetupMockApiOpts = {}) {
   // Auth
   await page.route('**/auth/register', (route) =>
     route.fulfill({ status: 200, json: { ...MOCK_USER, ...MOCK_TOKENS } }),
@@ -164,16 +214,31 @@ export async function setupMockApi(page: Page) {
   );
 
   // Shards
+  const shardsFixture =
+    opts.shards === 'archived'
+      ? [MOCK_SHARD_ARCHIVED]
+      : opts.shards === 'both'
+        ? [MOCK_SHARD, MOCK_SHARD_ARCHIVED]
+        : [MOCK_SHARD];
   await page.route('**/shards', (route) =>
-    route.fulfill({ status: 200, json: [MOCK_SHARD] }),
+    route.fulfill({ status: 200, json: shardsFixture }),
   );
   await page.route('**/shards/*/echoes', (route) =>
     route.fulfill({ status: 200, json: [MOCK_SHARD_ECHO_SUMMARY] }),
   );
 
-  // Feeds
-  await page.route('**/feeds/personal', (route) =>
-    route.fulfill({
+  // Feeds — both routes guard `resourceType === 'document'` so Playwright
+  // `page.goto('/feeds/personal')` document navigations fall through to
+  // Vite's index.html (SPA shell) instead of being intercepted and
+  // returned as JSON. Mirrors the `**/users/*` guard below. Without this,
+  // axe-audit on /feeds/* sees a JSON-as-document body — no React app, no
+  // <title>, no <html lang> — and surfaces document-title + html-has-lang
+  // violations as test artefacts rather than real production bugs.
+  await page.route('**/feeds/personal', (route) => {
+    if (route.request().resourceType() === 'document') {
+      return route.fallback();
+    }
+    return route.fulfill({
       status: 200,
       json: {
         data: [
@@ -192,11 +257,17 @@ export async function setupMockApi(page: Page) {
         ],
         next_cursor: null,
       },
-    }),
-  );
-  await page.route('**/feeds/social', (route) =>
-    route.fulfill({ status: 200, json: { data: [], next_cursor: null } }),
-  );
+    });
+  });
+  await page.route('**/feeds/social', (route) => {
+    if (route.request().resourceType() === 'document') {
+      return route.fallback();
+    }
+    return route.fulfill({
+      status: 200,
+      json: { data: [], next_cursor: null },
+    });
+  });
 
   // Notifications
   await page.route('**/account/me/notifications', (route) =>
@@ -675,12 +746,41 @@ export async function authenticateUser(page: Page) {
   });
 }
 
-/** Set the user as admin in localStorage. */
+/** Set the user as admin in localStorage AND override `/account/me` so the
+ *  auth store's `getProfile()` (called from `useAuthStore.initialize()` on
+ *  every App mount) populates `user.account_type='Admin'`. Without the
+ *  route override, the `setupMockApi` `/account/me` mock returns
+ *  `MOCK_USER` whose `account_type` is `'Standard'`, AdminDashboardPage's
+ *  auth gate (`user.account_type !== 'Admin'`) fires, and the page
+ *  renders an Access-Denied state — every admin tab button never mounts
+ *  and tests targeting the tab strip time out at 30 s. Phase 2F-diag-6
+ *  Cluster E3 surfaced this on the axe-audit "Admin Revenue Dashboard
+ *  (billing tab)" test; the same root cause was already worked around
+ *  inline in the "a11y: Admin Dashboard" test (axe-audit.spec.ts:317-331)
+ *  and in admin-revenue-dashboard.spec.ts. Centralising the override
+ *  here fixes every admin test consistently. Lane MOCK_SHARD-cleanup. */
 export async function authenticateAdmin(page: Page) {
   await authenticateUser(page);
   await page.evaluate(() => {
     localStorage.setItem('account_type', 'Admin');
   });
+  await page.route('**/account/me', (route) => {
+    // GET /account/me — admin profile fetch from `useAuthStore.initialize()`
+    // (the only path the auth gate at AdminDashboardPage:73 actually
+    // exercises). Other verbs (PATCH for profile saves, etc.) fall
+    // through to the underlying `setupMockApi` handler so an admin test
+    // that mutates the account doesn't silently receive a stale Admin
+    // payload as the mutation response. Copilot review on PR #53 flagged
+    // the previous identical-branches pattern as dead code that risked
+    // masking PATCH/POST behaviour. Lane MOCK_SHARD-cleanup follow-up.
+    if (route.request().method() === 'GET') {
+      return route.fulfill({
+        status: 200,
+        json: { ...MOCK_USER, account_type: 'Admin' },
+      });
+    }
+    return route.fallback();
+  });
 }
 
-export { MOCK_USER, MOCK_ECHO, MOCK_SHARD };
+export { MOCK_USER, MOCK_ECHO, MOCK_SHARD, MOCK_SHARD_ARCHIVED };

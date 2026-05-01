@@ -646,7 +646,12 @@ function DesktopPulseSection() {
         onClick={toggle}
         className="flex w-full items-center justify-between px-3 py-1.5 text-start transition-colors hover:bg-surface-raised"
       >
-        <span className="text-[11px] font-semibold tracking-wider text-accent/70 uppercase">
+        {/* WCAG AA fix (Lane MOCK_SHARD-cleanup): text-accent/70 over
+            bg-surface-raised/30 measured 3.71:1 by axe-core (Echo
+            Conversation a11y test, Phase 2F-diag-6 §6-F). text-accent/85
+            keeps the subdued look while clearing the 4.5:1 threshold for
+            this 11px section header. */}
+        <span className="text-[11px] font-semibold tracking-wider text-accent/85 uppercase">
           {t('communityFeed.title')}
         </span>
         {open ? (

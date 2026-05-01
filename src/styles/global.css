@@ -753,7 +753,15 @@ pre {
   transition-timing-function: ease-in-out;
 }
 
-/* Reduced motion: disable all keyframe animations */
+/* Reduced motion: disable all keyframe animations.
+   The universal selector + !important is kept as defense-in-depth for any
+   future class. Tailwind v4's cascade-layer interaction can defeat the
+   universal-selector !important for utility-derived animation tokens
+   (e.g. `animate-fade-in` / shorthand `.tick-digit-breathe { animation:
+   ... }` declarations), so every named animation class actually used in
+   the codebase also gets an explicit `animation: none !important`
+   override below. The list is exhaustive across global.css keyframes +
+   Tailwind built-ins referenced in JSX — see Phase 2F-diag-6 §6-B. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -761,6 +769,41 @@ pre {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .tick-digit-breathe,
+  .tick-bar-heartbeat-sweep,
+  .tick-double-pulse,
+  .tick-bar-flash,
+  .animate-tick-pulse,
+  .animate-fade-in,
+  .me-fade-in,
+  .me-fade-up,
+  .me-fade-out,
+  .animate-slide-in,
+  .me-slide-in,
+  .animate-modal-in,
+  .me-modal-in,
+  .me-modal-out,
+  .animate-diary-arrive,
+  .me-diary-arrive,
+  .animate-diary-glow,
+  .me-diary-glow,
+  .animate-nudge-ripple,
+  .me-nudge-ripple,
+  .animate-nudge-pulse,
+  .me-nudge-pulse,
+  .me-highlight-glow,
+  .me-breathe,
+  .me-reveal-fallback,
+  .me-float,
+  .animate-slide-in-left,
+  .animate-slide-in-right,
+  .animate-spin,
+  .animate-bounce,
+  .animate-pulse,
+  .animate-ping {
+    animation: none !important;
   }
 }
 

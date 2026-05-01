@@ -319,6 +319,7 @@
     "reportReason": "وجہ",
     "reportPlaceholder": "بتائیں کہ کیا مسئلہ ہے...",
     "messagePlaceholder": "پیغام لکھیں...",
+    "sendMessage": "پیغام بھیجیں",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "پیغامات پوسٹ کرنے کے لیے کور پر اپ گریڈ کریں",
     "announcementsOnly": "یہ چینل صرف پلیٹ فارم کے اعلانات کے لیے ہے۔",
@@ -812,7 +813,8 @@
     "moodLegend": "موڈ گائیڈ",
     "arrivingAt": "{{shard}} پر پہنچ رہے ہیں…",
     "createEcho": "ایکو بنائیں",
-    "closeAriaLabel": "ایکو سوئچر بند کریں"
+    "closeAriaLabel": "ایکو سوئچر بند کریں",
+    "dragHandleLabel": "Echo {{name}} کو دوبارہ ترتیب دیں"
   },
   "payment": {
     "title": "منصوبے",

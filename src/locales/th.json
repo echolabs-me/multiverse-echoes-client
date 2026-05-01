@@ -319,6 +319,7 @@
     "reportReason": "เหตุผล",
     "reportPlaceholder": "อธิบายสิ่งที่ผิดปกติ...",
     "messagePlaceholder": "พิมพ์ข้อความ...",
+    "sendMessage": "ส่งข้อความ",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "อัปเกรดเป็น Core เพื่อโพสต์ข้อความ",
     "announcementsOnly": "ช่องทางนี้สำหรับการประกาศเกี่ยวกับแพลตฟอร์มเท่านั้น",
@@ -812,7 +813,8 @@
     "moodLegend": "คู่มือบอกอารมณ์",
     "arrivingAt": "กำลังเดินทางถึง {{shard}}…",
     "createEcho": "สร้าง Echo",
-    "closeAriaLabel": "ปิดสวิตช์ตัดเสียงสะท้อน"
+    "closeAriaLabel": "ปิดสวิตช์ตัดเสียงสะท้อน",
+    "dragHandleLabel": "จัดเรียง Echo {{name}} ใหม่"
   },
   "payment": {
     "title": "แผนการ",

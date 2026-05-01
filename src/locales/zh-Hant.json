@@ -319,6 +319,7 @@
     "reportReason": "原因",
     "reportPlaceholder": "描述問題所在…",
     "messagePlaceholder": "輸入消息…",
+    "sendMessage": "傳送訊息",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "升級到 Core 方案才能發言",
     "announcementsOnly": "此頻道僅用於平台公告。",
@@ -812,7 +813,8 @@
     "moodLegend": "心情圖例",
     "arrivingAt": "正在抵達 {{shard}}…",
     "createEcho": "創建回聲",
-    "closeAriaLabel": "關閉回聲切換器"
+    "closeAriaLabel": "關閉回聲切換器",
+    "dragHandleLabel": "重新排列回聲 {{name}}"
   },
   "payment": {
     "title": "方案",

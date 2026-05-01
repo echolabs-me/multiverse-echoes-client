@@ -231,7 +231,15 @@ export function WaitlistPage() {
 
           <div className="mbs-16 text-center text-sm text-(--text-muted)">
             {t('waitlist.haveInviteCode')}{' '}
-            <Link to="/register" className="text-(--accent) hover:underline">
+            {/* WCAG 2.1 SC 1.4.1 fix (Lane MOCK_SHARD-cleanup Cluster
+                F5): inline link inside paragraph text must be
+                distinguished by something other than colour alone.
+                `hover:underline` only — at rest the link was visually
+                identical to surrounding muted text apart from the accent
+                colour, which axe-core's link-in-text-block rule
+                correctly flags. Always-on `underline` keeps the link
+                identifiable for users who can't perceive colour. */}
+            <Link to="/register" className="text-(--accent) underline">
               {t('waitlist.registerHere')}
             </Link>
             .

@@ -319,6 +319,7 @@
     "reportReason": "Reason",
     "reportPlaceholder": "Describe what's wrong...",
     "messagePlaceholder": "Type a message...",
+    "sendMessage": "Send message",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Upgrade to Core to post messages",
     "announcementsOnly": "This channel is for platform announcements only.",
@@ -843,7 +844,8 @@
     "moodLegend": "Mood Guide",
     "arrivingAt": "Arriving at {{shard}}…",
     "createEcho": "Create Echo",
-    "closeAriaLabel": "Close echo switcher"
+    "closeAriaLabel": "Close echo switcher",
+    "dragHandleLabel": "Reorder Echo {{name}}"
   },
   "payment": {
     "title": "Plans",

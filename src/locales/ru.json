@@ -319,6 +319,7 @@
     "reportReason": "Причина",
     "reportPlaceholder": "Опишите, что случилось...",
     "messagePlaceholder": "Введите сообщение...",
+    "sendMessage": "Отправить сообщение",
     "charCount": "{{count}} / {{max}}",
     "readOnly": "Перейдите на Core, чтобы публиковать сообщения",
     "announcementsOnly": "Этот канал предназначен только для объявлений платформы.",
@@ -812,7 +813,8 @@
     "moodLegend": "Гид по настроению",
     "arrivingAt": "Прибытие на {{shard}}…",
     "createEcho": "Создать Echo",
-    "closeAriaLabel": "Закрыть переключатель эха"
+    "closeAriaLabel": "Закрыть переключатель эха",
+    "dragHandleLabel": "Изменить порядок Echo {{name}}"
   },
   "payment": {
     "title": "Планы",

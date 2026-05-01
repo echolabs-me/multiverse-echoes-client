@@ -19,7 +19,11 @@
   --accent-subtle: #2a1f17;
   --success: #6baf7a;
   --warning: #d4a84c;
-  --danger: #c45b5b;
+  /* WCAG AA fix (Lane MOCK_SHARD-cleanup): #c45b5b on --canvas (#0f1923)
+     measured 4.21:1 by axe-core (axe-audit "Echo Conversation" verbatim
+     output, Phase 2F-diag-6 §6-F); raised to #e06b6b which gives
+     comfortable headroom over the 4.5:1 floor for normal-weight text. */
+  --danger: #e06b6b;
   --info: #5b9ec4;
 
   /* Typography scale — CDS-001 §4.2 */
