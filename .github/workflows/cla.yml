@@ -23,6 +23,6 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.CLA_ASSISTANT_PAT }}
         with:
           path-to-signatures: "signatures/version1/cla.json"
-          path-to-document: "https://cla-assistant.io/echolabs-me/multiverse-echoes-client"
+          path-to-document: "https://gist.githubusercontent.com/asiamtm/3f9566d5c60080dfe23e5d6c39984034/raw/EchoLabsME-ICLA-v1.0.md"
           branch: "main"
           allowlist: "bot*,dependabot*"
