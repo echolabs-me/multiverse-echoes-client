@@ -1,0 +1,41 @@
+{
+  "name": "@echolabs/multiverse-echoes",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for the Multiverse Echoes API",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  },
+  "keywords": [
+    "multiverse-echoes",
+    "ai",
+    "simulation",
+    "echo",
+    "api-client",
+    "sdk"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/echolabs-me/multiverse-echoes-client",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://echolabsme.com"
+}
