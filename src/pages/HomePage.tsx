@@ -203,7 +203,7 @@ export function HomePage() {
           <div className="mx-auto flex max-w-xl flex-col gap-10">
             {([1, 2, 3, 4] as const).map((n) => (
               <div key={n} className="section-reveal flex gap-5">
-                <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-(--accent) font-serif text-base text-(--accent)">
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-(--accent) font-serif text-base leading-none text-(--accent)">
                   {n}
                 </div>
                 <div>
