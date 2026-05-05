@@ -200,7 +200,7 @@ export function HomePage() {
           <h2 className="mbe-16 text-center font-serif text-3xl font-light tracking-[0.08em] text-(--text-primary)">
             {t('website.howItWorks.title')}
           </h2>
-          <div className="flex flex-col gap-10">
+          <div className="mx-auto flex max-w-xl flex-col gap-10">
             {([1, 2, 3, 4] as const).map((n) => (
               <div key={n} className="section-reveal flex gap-5">
                 <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-(--accent) font-serif text-base text-(--accent)">

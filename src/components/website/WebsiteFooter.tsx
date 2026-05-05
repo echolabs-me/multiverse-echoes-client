@@ -105,6 +105,14 @@ export function WebsiteFooter() {
             >
               {t('auth.joinWaitlist')}
             </Link>
+            <a
+              href="https://developers.echolabsme.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-(--text-secondary) hover:text-(--text-primary)"
+            >
+              {t('website.footer.developers')}
+            </a>
           </div>
 
           {/* Legal */}
