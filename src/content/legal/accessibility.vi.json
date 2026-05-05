@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Kiểm thử trình đọc màn hình thủ công** — Chúng tôi đã thực hiện kiểm thử tự động với axe-core nhưng chưa hoàn tất kiểm thử thủ công toàn diện với NVDA, JAWS hoặc VoiceOver. Việc này được lên kế hoạch thực hiện trước khi ra mắt chính thức.",
-            "**Phụ đề video** — Các tính năng xuất video (video highlight) hiện chưa bao gồm phụ đề. Vấn đề này sẽ được giải quyết khi các tính năng video chính thức ra mắt.",
             "**Các ngôn ngữ viết từ phải sang trái (RTL)** — Giao diện sử dụng các thuộc tính logic của CSS để chuẩn bị cho việc hỗ trợ RTL, nhưng bố cục RTL vẫn chưa được kiểm thử đầy đủ.",
             "**Các ngôn ngữ ngoài tiếng Anh** — Hiện tại chỉ hỗ trợ tiếng Anh. Các ngôn ngữ bổ sung dự kiến sẽ được cập nhật sau khi ra mắt. Kiến trúc quốc tế hóa đã sẵn sàng (632 chuỗi ký tự được tách biệt)."
           ]

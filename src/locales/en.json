@@ -952,6 +952,8 @@
     "PASSWORD_TOO_SHORT": "Your password must be at least 12 characters.",
     "DISPLAY_NAME_INVALID": "Display name must be 3–30 characters.",
     "TOS_NOT_ACCEPTED": "You must accept the Terms of Service.",
+    "TOS_VERSION_MISMATCH": "The Terms of Service have been updated. Reload and accept the latest version.",
+    "profileRefreshFailed": "Could not refresh profile. Please reload the page.",
     "PRIVACY_NOT_ACCEPTED": "You must accept the Privacy Policy.",
     "AGE_NOT_CONFIRMED": "Age confirmation is required.",
     "CAPTCHA_REQUIRED": "Please complete the captcha.",
@@ -968,6 +970,11 @@
     "INVALID_SUGGESTION": "Your suggestion is too long or empty.",
     "FILE_TOO_LARGE": "That file is too large. Maximum size is 5MB.",
     "ONLY_IMAGES": "Only image files are allowed."
+  },
+  "legal": {
+    "tosUpdatedBanner": "The Terms of Service have been updated. Accept the latest version to keep using your account.",
+    "tosUpdatedAcceptButton": "Accept",
+    "tosUpdatedAccepting": "Accepting..."
   },
   "voice": {
     "tapToStart": "Tap to start conversation",

@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Manuelle Screenreader-Tests** — Wir führen automatisierte Tests mit axe-core durch, haben jedoch noch keine umfassenden manuellen Tests mit NVDA, JAWS oder VoiceOver abgeschlossen. Dies ist vor dem öffentlichen Start geplant.",
-            "**Videountertitel** — Die Funktionen für den Videoexport (Highlight-Reels) enthalten noch keine Untertitel. Dies wird mit der Einführung der Videofunktionen behoben.",
             "**Rechts-nach-links-Sprachen (RTL)** — Die Benutzeroberfläche verwendet CSS-logische Eigenschaften zur Vorbereitung auf die RTL-Unterstützung, aber das RTL-Layout wurde noch nicht vollständig getestet.",
             "**Sprachen außer Englisch** — Derzeit wird nur Englisch unterstützt. Weitere Sprachen sind nach dem Start geplant. Die Internationalisierungsarchitektur ist vorhanden (632 externalisierte Zeichenfolgen)."
           ]

@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Ujian pembaca skrin manual** — Kami mempunyai ujian automatik dengan axe-core tetapi belum melengkapkan ujian manual yang komprehensif dengan NVDA, JAWS, atau VoiceOver. Ini dirancang sebelum pelancaran awam.",
-            "**Sari kata video** — Ciri eksport video (sorotan video) masih belum menyertakan sari kata. Perkara ini akan ditangani apabila ciri video dilancarkan.",
             "**Bahasa kanan-ke-kiri (RTL)** — Antara muka ini menggunakan sifat logik CSS sebagai persediaan untuk sokongan RTL, tetapi susun atur RTL masih belum diuji sepenuhnya.",
             "**Bahasa selain bahasa Inggeris** — Pada masa ini hanya bahasa Inggeris yang disokong. Bahasa tambahan dirancang selepas pelancaran. Seni bina antarabangsa telah tersedia (632 rentetan luaran)."
           ]

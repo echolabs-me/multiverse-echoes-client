@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Testes manuais com leitores de tela** — Temos testes automatizados com axe-core, mas ainda não concluímos testes manuais abrangentes com NVDA, JAWS ou VoiceOver. Isso está planejado para antes do lançamento público.",
-            "**Legendas de vídeo** — Os recursos de exportação de vídeo (vídeos de melhores momentos) ainda não incluem legendas. Isso será resolvido quando os recursos de vídeo forem lançados.",
             "**Idiomas da direita para a esquerda (RTL)** — A interface utiliza propriedades lógicas de CSS em preparação para o suporte a RTL, mas o layout RTL ainda não foi totalmente testado.",
             "**Idiomas além do inglês** — Atualmente, apenas o inglês é suportado. Idiomas adicionais estão planejados para após o lançamento. A arquitetura de internacionalização já está implementada (632 strings externalizadas)."
           ]

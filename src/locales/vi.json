@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "Mật khẩu của bạn phải có ít nhất 12 ký tự.",
     "DISPLAY_NAME_INVALID": "Tên hiển thị phải từ 3–30 ký tự.",
     "TOS_NOT_ACCEPTED": "Bạn phải chấp nhận Điều khoản Dịch vụ.",
+    "TOS_VERSION_MISMATCH": "Điều khoản Dịch vụ đã được cập nhật. Vui lòng tải lại ứng dụng và chấp nhận phiên bản mới nhất.",
+    "profileRefreshFailed": "Không thể làm mới hồ sơ. Vui lòng tải lại trang.",
     "PRIVACY_NOT_ACCEPTED": "Bạn phải chấp nhận Chính sách Bảo mật.",
     "AGE_NOT_CONFIRMED": "Yêu cầu xác nhận độ tuổi.",
     "CAPTCHA_REQUIRED": "Vui lòng hoàn tất mã captcha.",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "Gợi ý của bạn quá dài hoặc để trống.",
     "FILE_TOO_LARGE": "Tệp này quá lớn. Kích thước tối đa là 5MB.",
     "ONLY_IMAGES": "Chỉ cho phép các tệp hình ảnh."
+  },
+  "legal": {
+    "tosUpdatedBanner": "Điều khoản Dịch vụ đã được cập nhật. Vui lòng chấp nhận phiên bản mới nhất để tiếp tục sử dụng tài khoản của bạn.",
+    "tosUpdatedAcceptButton": "Chấp nhận",
+    "tosUpdatedAccepting": "Đang chấp nhận..."
   },
   "voice": {
     "tapToStart": "Nhấn để bắt đầu trò chuyện",

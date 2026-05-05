@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "Kata sandi Anda harus minimal 12 karakter.",
     "DISPLAY_NAME_INVALID": "Nama tampilan harus terdiri dari 3–30 karakter.",
     "TOS_NOT_ACCEPTED": "Anda harus menerima Ketentuan Layanan.",
+    "TOS_VERSION_MISMATCH": "Persyaratan Layanan telah diperbarui. Muat ulang aplikasi dan setujui versi terbaru.",
+    "profileRefreshFailed": "Gagal memuat ulang profil. Silakan muat ulang halaman.",
     "PRIVACY_NOT_ACCEPTED": "Anda harus menyetujui Kebijakan Privasi.",
     "AGE_NOT_CONFIRMED": "Konfirmasi usia diperlukan.",
     "CAPTCHA_REQUIRED": "Silakan lengkapi captcha.",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "Saran Anda terlalu panjang atau kosong.",
     "FILE_TOO_LARGE": "Berkas tersebut terlalu besar. Ukuran maksimum adalah 5MB.",
     "ONLY_IMAGES": "Hanya file gambar yang diperbolehkan."
+  },
+  "legal": {
+    "tosUpdatedBanner": "Persyaratan Layanan telah diperbarui. Setujui versi terbaru untuk terus menggunakan akun Anda.",
+    "tosUpdatedAcceptButton": "Setujui",
+    "tosUpdatedAccepting": "Menyetujui..."
   },
   "voice": {
     "tapToStart": "Ketuk untuk memulai percakapan",

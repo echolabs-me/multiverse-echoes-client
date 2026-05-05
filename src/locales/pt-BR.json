@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "Sua senha deve ter pelo menos 12 caracteres.",
     "DISPLAY_NAME_INVALID": "O nome de exibição deve ter entre 3 e 30 caracteres.",
     "TOS_NOT_ACCEPTED": "Você deve aceitar os Termos de Serviço.",
+    "TOS_VERSION_MISMATCH": "Os Termos de Serviço foram atualizados. Recarregue o aplicativo e aceite a versão mais recente.",
+    "profileRefreshFailed": "Não foi possível atualizar o perfil. Recarregue a página.",
     "PRIVACY_NOT_ACCEPTED": "Você deve aceitar a Política de Privacidade.",
     "AGE_NOT_CONFIRMED": "A confirmação de idade é necessária.",
     "CAPTCHA_REQUIRED": "Por favor, complete o captcha.",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "Sua sugestão é muito longa ou está vazia.",
     "FILE_TOO_LARGE": "Esse arquivo é muito grande. O tamanho máximo é 5MB.",
     "ONLY_IMAGES": "Apenas arquivos de imagem são permitidos."
+  },
+  "legal": {
+    "tosUpdatedBanner": "Os Termos de Serviço foram atualizados. Aceite a versão mais recente para continuar usando sua conta.",
+    "tosUpdatedAcceptButton": "Aceitar",
+    "tosUpdatedAccepting": "Aceitando..."
   },
   "voice": {
     "tapToStart": "Toque para iniciar a conversa",

@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "Kata laluan anda mestilah sekurang-kurangnya 12 aksara.",
     "DISPLAY_NAME_INVALID": "Nama paparan mestilah 3–30 aksara.",
     "TOS_NOT_ACCEPTED": "Anda mesti menerima Terma Perkhidmatan.",
+    "TOS_VERSION_MISMATCH": "Syarat Perkhidmatan telah dikemas kini. Muat semula aplikasi dan terima versi terkini.",
+    "profileRefreshFailed": "Tidak dapat menyegar semula profil. Sila muat semula halaman.",
     "PRIVACY_NOT_ACCEPTED": "Anda mesti menerima Dasar Privasi.",
     "AGE_NOT_CONFIRMED": "Pengesahan umur diperlukan.",
     "CAPTCHA_REQUIRED": "Sila lengkapkan captcha.",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "Cadangan anda terlalu panjang atau kosong.",
     "FILE_TOO_LARGE": "Fail itu terlalu besar. Saiz maksimum ialah 5MB.",
     "ONLY_IMAGES": "Hanya fail imej sahaja yang dibenarkan."
+  },
+  "legal": {
+    "tosUpdatedBanner": "Syarat Perkhidmatan telah dikemas kini. Terima versi terkini untuk terus menggunakan akaun anda.",
+    "tosUpdatedAcceptButton": "Terima",
+    "tosUpdatedAccepting": "Sedang menerima..."
   },
   "voice": {
     "tapToStart": "Ketik untuk memulakan perbualan",

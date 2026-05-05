@@ -29,6 +29,7 @@ import { EchoSidebar } from './EchoSidebar.tsx';
 import { CommunityPulseCard } from './CommunityPulseCard.tsx';
 import { MoodParticles } from './MoodParticles.tsx';
 import { BillingBanner } from './BillingBanner.tsx';
+import { ReacceptanceBanner } from './ReacceptanceBanner.tsx';
 import { useMoodPaletteStore } from '../stores/useMoodPaletteStore.ts';
 import { isTabletDevice } from '../lib/deviceDetect.ts';
 import type {
@@ -364,6 +365,13 @@ export function AppLayout() {
           </button>
         </div>
       </header>
+
+      {/* Persistent ToS re-acceptance banner — renders nothing
+          unless the auth store flags the current user as needing
+          re-acceptance AND a server-side current_tos_version is on
+          hand to submit. Lives above BillingBanner because legal
+          gating outranks dunning UX. ME-ILF-001 §3.1.1. */}
+      <ReacceptanceBanner />
 
       {/* Persistent billing banner — renders nothing when the
           authenticated user has no urgent dunning state. Lives above

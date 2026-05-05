@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "Şifreniz en az 12 karakter olmalıdır.",
     "DISPLAY_NAME_INVALID": "Görünen ad 3–30 karakter arasında olmalıdır.",
     "TOS_NOT_ACCEPTED": "Hizmet Şartlarını kabul etmelisiniz.",
+    "TOS_VERSION_MISMATCH": "Hizmet Şartları güncellendi. Uygulamayı yeniden yükleyin ve en son sürümü kabul edin.",
+    "profileRefreshFailed": "Profil yenilenemedi. Lütfen sayfayı yeniden yükleyin.",
     "PRIVACY_NOT_ACCEPTED": "Gizlilik Politikasını kabul etmelisiniz.",
     "AGE_NOT_CONFIRMED": "Yaş doğrulaması gereklidir.",
     "CAPTCHA_REQUIRED": "Lütfen captcha'yı tamamlayın.",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "Öneriniz çok uzun veya boş.",
     "FILE_TOO_LARGE": "Bu dosya çok büyük. Maksimum boyut 5MB'dır.",
     "ONLY_IMAGES": "Sadece resim dosyalarına izin verilir."
+  },
+  "legal": {
+    "tosUpdatedBanner": "Hizmet Şartları güncellendi. Hesabınızı kullanmaya devam etmek için en son sürümü kabul edin.",
+    "tosUpdatedAcceptButton": "Kabul et",
+    "tosUpdatedAccepting": "Kabul ediliyor..."
   },
   "voice": {
     "tapToStart": "Sohbete başlamak için dokunun",

@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "Ang iyong password ay dapat may hindi bababa sa 12 characters.",
     "DISPLAY_NAME_INVALID": "Ang display name ay dapat na 3–30 characters.",
     "TOS_NOT_ACCEPTED": "Kailangang tanggapin ang mga Tuntunin ng Serbisyo.",
+    "TOS_VERSION_MISMATCH": "Na-update na ang Mga Tuntunin ng Serbisyo. I-reload ang app at tanggapin ang pinakabagong bersyon.",
+    "profileRefreshFailed": "Hindi ma-refresh ang profile. Mangyaring i-reload ang pahina.",
     "PRIVACY_NOT_ACCEPTED": "Kailangang tanggapin ang Patakaran sa Privacy.",
     "AGE_NOT_CONFIRMED": "Kailangan ng kumpirmasyon ng edad.",
     "CAPTCHA_REQUIRED": "Pakisagutan ang captcha.",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "Masyadong mahaba o walang laman ang iyong mungkahi.",
     "FILE_TOO_LARGE": "Masyadong malaki ang file na iyan. Ang maximum na laki ay 5MB.",
     "ONLY_IMAGES": "Mga image file lamang ang pinapayagan."
+  },
+  "legal": {
+    "tosUpdatedBanner": "Na-update na ang Mga Tuntunin ng Serbisyo. Tanggapin ang pinakabagong bersyon upang ipagpatuloy ang paggamit ng iyong account.",
+    "tosUpdatedAcceptButton": "Tanggapin",
+    "tosUpdatedAccepting": "Tinatanggap..."
   },
   "voice": {
     "tapToStart": "Pindutin para simulan ang pag-uusap",

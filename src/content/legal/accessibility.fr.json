@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Tests manuels avec lecteur d'écran** — Nous effectuons des tests automatisés avec axe-core, mais nous n'avons pas encore terminé les tests manuels complets avec NVDA, JAWS ou VoiceOver. Cela est prévu avant le lancement public.",
-            "**Légendes vidéo** — Les fonctionnalités d'exportation vidéo (extraits forts) n'incluent pas encore les légendes. Ce point sera traité lors du lancement des fonctionnalités vidéo.",
             "**Langues s'écrivant de droite à gauche (RTL)** — L'interface utilise des propriétés logiques CSS en préparation du support RTL, mais la mise en page RTL n'a pas encore été entièrement testée.",
             "**Langues au-delà de l'anglais** — Actuellement, seul l'anglais est pris en charge. Des langues supplémentaires sont prévues après le lancement. L'architecture d'internationalisation est en place (632 chaînes externalisées)."
           ]

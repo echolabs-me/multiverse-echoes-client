@@ -19,6 +19,15 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  /** Server-side `[legal] current_tos_version`. Populated by login,
+   *  by `initialize()` (boot-time profile fetch), and by every
+   *  `fetchProfile()` call so refresh-path sessions and post-acceptance
+   *  state are both kept in sync. `null` only before the first
+   *  `/account/me` round-trip lands; the `ReacceptanceBanner`
+   *  defensively suppresses itself in that pre-hydration window
+   *  rather than rendering an unsubmittable form.
+   *  Reference: ME-ILF-001 §3.1.1. */
+  currentTosVersion: string | null;
 
   login: (data: LoginRequest) => Promise<void>;
   register: (data: RegisterRequest) => Promise<RegisterResponse>;
@@ -48,17 +57,22 @@ export const useAuthStore = create<AuthState>((set) => {
     user: null,
     isAuthenticated: hasStoredToken,
     isLoading: false,
+    currentTosVersion: null,
 
     login: async (data) => {
       set({ isLoading: true });
       try {
         const response = await auth.login(data);
         setTokens(response.access_token, response.refresh_token);
-        set({ isAuthenticated: true, isLoading: false });
+        set({
+          isAuthenticated: true,
+          isLoading: false,
+          currentTosVersion: response.current_tos_version,
+        });
         // Fetch user profile after login
         try {
           const user = await account.getProfile();
-          set({ user });
+          set({ user, currentTosVersion: user.current_tos_version });
         } catch {
           // Profile fetch is best-effort
         }
@@ -78,7 +92,7 @@ export const useAuthStore = create<AuthState>((set) => {
         // Fetch user profile after registration
         try {
           const user = await account.getProfile();
-          set({ user });
+          set({ user, currentTosVersion: user.current_tos_version });
         } catch {
           // Profile fetch is best-effort
         }
@@ -96,7 +110,7 @@ export const useAuthStore = create<AuthState>((set) => {
         // Logout even if API call fails
       }
       clearTokens();
-      set({ user: null, isAuthenticated: false });
+      set({ user: null, isAuthenticated: false, currentTosVersion: null });
     },
 
     initialize: () => {
@@ -107,7 +121,9 @@ export const useAuthStore = create<AuthState>((set) => {
       if (hasToken) {
         void account
           .getProfile()
-          .then((user) => set({ user }))
+          .then((user) =>
+            set({ user, currentTosVersion: user.current_tos_version }),
+          )
           .catch(() => {});
       }
       // Fetch system config (tick interval etc.) — public endpoint, no auth needed.
@@ -119,7 +135,7 @@ export const useAuthStore = create<AuthState>((set) => {
     fetchProfile: async () => {
       try {
         const user = await account.getProfile();
-        set({ user });
+        set({ user, currentTosVersion: user.current_tos_version });
       } catch {
         // Profile fetch failed
       }

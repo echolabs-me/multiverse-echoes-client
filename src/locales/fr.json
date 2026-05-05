@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "Ton mot de passe doit contenir au moins 12 caractères.",
     "DISPLAY_NAME_INVALID": "Le nom affiché doit contenir 3–30 caractères.",
     "TOS_NOT_ACCEPTED": "Tu dois accepter les Conditions d'utilisation.",
+    "TOS_VERSION_MISMATCH": "Les Conditions d'utilisation ont été mises à jour. Recharge l'app et accepte la dernière version.",
+    "profileRefreshFailed": "Impossible d'actualiser le profil. Veuillez recharger la page.",
     "PRIVACY_NOT_ACCEPTED": "Tu dois accepter la Politique de confidentialité.",
     "AGE_NOT_CONFIRMED": "La confirmation d'âge est requise.",
     "CAPTCHA_REQUIRED": "Complète le captcha.",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "Ta suggestion est trop longue ou vide.",
     "FILE_TOO_LARGE": "Ce fichier est trop volumineux. Taille maximale : 5 Mo.",
     "ONLY_IMAGES": "Seuls les fichiers image sont autorisés."
+  },
+  "legal": {
+    "tosUpdatedBanner": "Les Conditions d'utilisation ont été mises à jour. Accepte la dernière version pour continuer à utiliser ton compte.",
+    "tosUpdatedAcceptButton": "Accepter",
+    "tosUpdatedAccepting": "Acceptation..."
   },
   "voice": {
     "tapToStart": "Appuie pour démarrer la conversation",

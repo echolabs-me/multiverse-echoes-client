@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Manuel ekran okuyucu testleri** — axe-core ile otomatik testlerimiz mevcut ancak NVDA, JAWS veya VoiceOver ile kapsamlı manuel testleri henüz tamamlamadık. Bu işlemlerin halka açık lansmandan önce yapılması planlanmaktadır.",
-            "**Video altyazıları** — Video dışa aktarma özellikleri (öne çıkan anlar) henüz altyazıları içermemektedir. Bu durum, video özellikleri yayına girdiğinde çözülecektir.",
             "**Sağdan sola (RTL) diller** — Arayüz, RTL desteği hazırlığı kapsamında CSS mantıksal özelliklerini kullanmaktadır, ancak RTL düzeni henüz tam olarak test edilmemiştir.",
             "**İngilizce dışındaki diller** — Şu an için yalnızca İngilizce desteklenmektedir. Lansman sonrası ek diller planlanmaktadır. Uluslararasılaştırma mimarisi hazır durumdadır (632 dışsallaştırılmış dizgi)."
           ]

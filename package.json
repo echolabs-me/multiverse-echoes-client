@@ -20,6 +20,7 @@
     "check-i18n": "node scripts/check-i18n-keys.js",
     "check-strings": "node scripts/check-hardcoded-strings.js",
     "check-dynamic-keys": "node scripts/check-dynamic-keys.js",
+    "check-touch-targets": "node scripts/check-touch-targets.js",
     "check-choose-language-inline": "node scripts/generate-choose-language-inline.js --check",
     "test:watch": "vitest"
   },

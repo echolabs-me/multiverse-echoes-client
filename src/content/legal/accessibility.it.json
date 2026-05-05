@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Test manuali con screen reader** — Abbiamo implementato test automatizzati con axe-core, ma non abbiamo ancora completato test manuali approfonditi con NVDA, JAWS o VoiceOver. Ciò è pianificato prima del lancio pubblico.",
-            "**Didascalie dei video** — Le funzioni di esportazione video (reel dei momenti salienti) non includono ancora le didascalie. Questo verrà risolto al momento del lancio delle funzioni video.",
             "**Lingue da destra a sinistra (RTL)** — L'interfaccia utilizza proprietà logiche CSS in preparazione al supporto RTL, ma il layout RTL non è stato ancora completamente testato.",
             "**Lingue oltre l'inglese** — Attualmente è supportato solo l'inglese. Ulteriori lingue sono previste dopo il lancio. L'architettura di internazionalizzazione è già implementata (632 stringhe esternalizzate)."
           ]

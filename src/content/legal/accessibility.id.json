@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Pengujian pembaca layar manual** — Kami memiliki pengujian otomatis dengan axe-core tetapi belum menyelesaikan pengujian manual yang komprehensif dengan NVDA, JAWS, atau VoiceOver. Hal ini direncanakan sebelum peluncuran publik.",
-            "**Keterangan video** — Fitur ekspor video (highlight reels) belum menyertakan keterangan. Hal ini akan ditangani saat fitur video diluncurkan.",
             "**Bahasa kanan-ke-kiri (RTL)** — Antarmuka menggunakan properti logis CSS sebagai persiapan untuk dukungan RTL, namun tata letak RTL belum diuji sepenuhnya.",
             "**Bahasa selain Inggris** — Saat ini hanya bahasa Inggris yang didukung. Bahasa tambahan direncanakan setelah peluncuran. Arsitektur internasionalisasi sudah tersedia (632 string eksternal)."
           ]

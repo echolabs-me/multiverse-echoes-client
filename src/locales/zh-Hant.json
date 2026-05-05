@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "密碼至少需要 12 個字符。",
     "DISPLAY_NAME_INVALID": "顯示名稱需為 3–30 個字符。",
     "TOS_NOT_ACCEPTED": "你必須同意服務條款。",
+    "TOS_VERSION_MISMATCH": "服務條款已更新。請重新載入並接受最新版本。",
+    "profileRefreshFailed": "無法重新整理個人資料。請重新載入頁面。",
     "PRIVACY_NOT_ACCEPTED": "你必須同意隱私政策。",
     "AGE_NOT_CONFIRMED": "需要確認年齡。",
     "CAPTCHA_REQUIRED": "請完成人機驗證。",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "你的建議過長或為空。",
     "FILE_TOO_LARGE": "文件過大,最大尺寸為 5MB。",
     "ONLY_IMAGES": "僅允許圖片文件。"
+  },
+  "legal": {
+    "tosUpdatedBanner": "服務條款已更新。請接受最新版本以繼續使用您的帳戶。",
+    "tosUpdatedAcceptButton": "接受",
+    "tosUpdatedAccepting": "正在接受..."
   },
   "voice": {
     "tapToStart": "點按開始對話",

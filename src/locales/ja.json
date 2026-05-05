@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "パスワードは12文字以上である必要があります。",
     "DISPLAY_NAME_INVALID": "表示名は3〜30文字で入力してください。",
     "TOS_NOT_ACCEPTED": "利用規約に同意する必要があります。",
+    "TOS_VERSION_MISMATCH": "利用規約が更新されました。アプリをリロードし、最新版を承諾してください。",
+    "profileRefreshFailed": "プロフィールを更新できませんでした。ページを再読み込みしてください。",
     "PRIVACY_NOT_ACCEPTED": "プライバシーポリシーに同意する必要があります。",
     "AGE_NOT_CONFIRMED": "年齢確認が必要です。",
     "CAPTCHA_REQUIRED": "キャプチャを完了してください。",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "提案が長すぎるか、または空欄です。",
     "FILE_TOO_LARGE": "ファイルサイズが大きすぎます。最大サイズは5MBです。",
     "ONLY_IMAGES": "画像ファイルのみ許可されています。"
+  },
+  "legal": {
+    "tosUpdatedBanner": "利用規約が更新されました。アカウントを引き続き利用するには、最新版を承諾してください。",
+    "tosUpdatedAcceptButton": "承諾する",
+    "tosUpdatedAccepting": "承諾中..."
   },
   "voice": {
     "tapToStart": "タップして会話を始める",

@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Manwal na pag-test ng screen reader** — Mayroon kaming automated testing gamit ang axe-core ngunit hindi pa namin natatapos ang komprehensibong manwal na pag-test gamit ang NVDA, JAWS, o VoiceOver. Nakaplano ito bago ang pampublikong paglulunsad.",
-            "**Mga caption ng video** — Ang mga feature sa pag-export ng video (highlight reels) ay wala pang kasamang mga caption. Matutugunan ito kapag inilunsad na ang mga feature ng video.",
             "**Mga wikang Right-to-left (RTL)** — Gumagamit ang interface ng mga CSS logical property bilang paghahanda para sa suporta sa RTL, ngunit ang RTL layout ay hindi pa lubos na nasusuri.",
             "**Mga wikang higit pa sa Ingles** — Sa kasalukuyan, Ingles lamang ang suportado. Ang mga karagdagang wika ay nakaplano pagkatapos ng paglulunsad. Nakahanda na ang arkitektura para sa internationalisation (632 externalised strings)."
           ]

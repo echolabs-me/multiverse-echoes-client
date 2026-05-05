@@ -147,6 +147,14 @@ export interface LoginResponse {
   access_token: string;
   refresh_token: string;
   expires_in: number;
+  /** Server-side `[legal] current_tos_version` — the version the
+   *  client must offer in `account.acceptTos(version)` if
+   *  `requires_tos_reacceptance` is true. Reference: ME-ILF-001 §3.1.1. */
+  current_tos_version: string;
+  /** `true` when the user must re-accept the current ToS before
+   *  continuing. The server does not block requests; the client gates
+   *  the in-app flow on this value. Reference: ME-ILF-001 §3.1.1. */
+  requires_tos_reacceptance: boolean;
 }
 
 export interface RefreshRequest {
@@ -180,6 +188,17 @@ export interface User {
   tos_version: string;
   privacy_accepted_at: string;
   privacy_version: string;
+  /** Server-side `[legal] current_tos_version` — echoed on every
+   *  `/account/me` read so refresh-path sessions still know which
+   *  version to submit when accepting. Reference: ME-ILF-001 §3.1.1. */
+  current_tos_version: string;
+  /** `true` when User.tos_version differs from `[legal] current_tos_version`
+   *  AND the 30-day notice window has elapsed. The client renders a
+   *  re-acceptance modal/banner when this is true and calls
+   *  `account.acceptTos(currentTosVersion)`. The server does not block
+   *  requests on a stale version — gating is presentation-layer only.
+   *  Reference: ME-ILF-001 §3.1.1, ME-UAD-001 §2.2. */
+  requires_tos_reacceptance: boolean;
   echo_count_limit: number;
   solo_mode: boolean;
   deletion_scheduled_at: string | null;

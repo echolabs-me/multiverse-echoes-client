@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "يجب أن تتكون كلمة المرور من 12 حرفًا على الأقل.",
     "DISPLAY_NAME_INVALID": "يجب أن يكون اسم العرض من 3 إلى 30 حرفًا.",
     "TOS_NOT_ACCEPTED": "يجب الموافقة على شروط الخدمة.",
+    "TOS_VERSION_MISMATCH": "تم تحديث شروط الخدمة. أعد التحميل ووافق على الإصدار الأحدث.",
+    "profileRefreshFailed": "تعذر تحديث الملف الشخصي. يرجى إعادة تحميل الصفحة.",
     "PRIVACY_NOT_ACCEPTED": "يجب الموافقة على سياسة الخصوصية.",
     "AGE_NOT_CONFIRMED": "تأكيد العمر مطلوب.",
     "CAPTCHA_REQUIRED": "يرجى إكمال التحقق البشري.",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "اقتراحك طويل جدًا أو فارغ.",
     "FILE_TOO_LARGE": "هذا الملف كبير جدًا. الحد الأقصى للحجم 5 م.ب.",
     "ONLY_IMAGES": "يُسمح بملفات الصور فقط."
+  },
+  "legal": {
+    "tosUpdatedBanner": "تم تحديث شروط الخدمة. يرجى قبول الإصدار الأحدث لمواصلة استخدام حسابك.",
+    "tosUpdatedAcceptButton": "قبول",
+    "tosUpdatedAccepting": "جارٍ القبول..."
   },
   "voice": {
     "tapToStart": "انقر لبدء المحادثة",

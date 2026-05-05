@@ -524,6 +524,15 @@ export const account = {
       discord_user_id?: string;
       discord_username?: string;
     }>('/account/me/discord'),
+
+  acceptTos: (version: string) =>
+    request<import('../../types/generated.ts').AcceptTosResponse>(
+      '/account/me/accept-tos',
+      {
+        method: 'POST',
+        body: JSON.stringify({ version }),
+      },
+    ),
 };
 
 // --- API Keys ---

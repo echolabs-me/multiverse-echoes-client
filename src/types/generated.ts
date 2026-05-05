@@ -6,6 +6,30 @@ export type AcceptRequest = {
 	invite_token: string,
 };
 
+export type AcceptTosRequest = {
+	/**
+	 *  The exact `current_tos_version` value the client is offering on
+	 *  behalf of the user. Must match `[legal] current_tos_version`
+	 *  from server config — any other value returns 409
+	 *  `TOS_VERSION_MISMATCH`. Reference: ME-ILF-001 §3.1.
+	 */
+	version: string,
+};
+
+export type AcceptTosResponse = {
+	/**
+	 *  The version that was just accepted (always equals server-side
+	 *  `current_tos_version` on success — echoed back so the client
+	 *  can confirm the round-trip).
+	 */
+	tos_accepted_version: string,
+	/**
+	 *  RFC3339 timestamp of acceptance — matches the new
+	 *  `User.tos_accepted_at` value persisted by this call.
+	 */
+	tos_accepted_at: string,
+};
+
 export type AccessEntryResponse = {
 	user_id: string,
 	granted_at: string,
@@ -411,14 +435,33 @@ export type AnonymousIngestResponse = {
 	accepted: number,
 };
 
-// API key for third-party access. Reference: ME-API-001 §3.2.
+/**
+ *  API key for third-party access. Reference: ME-API-001 §3.2 + §3.4.
+ * 
+ *  `scopes`, `last_used_at`, and `expires_at` carry `#[serde(default)]`
+ *  so legacy rows persisted before these fields existed deserialise
+ *  cleanly into `vec![]` / `None` / `None`.
+ */
 export type ApiKey = {
 	key_id: string,
 	user_id: string,
 	name: string,
 	// Last 4 characters of the key for display.
 	key_prefix: string,
+	/**
+	 *  API-key scopes per ME-API-001 §3.3 (e.g. `echo:read`, `community:write`).
+	 *  Empty vec means "no scope-restricted access" — handlers that
+	 *  gate on a scope (none today) reject empty.
+	 */
+	scopes?: string[],
 	created_at: string,
+	/**
+	 *  Stamped on every successful API-key auth resolution. Best-effort —
+	 *  failure to update is not propagated to the caller.
+	 */
+	last_used_at?: string | null,
+	// Optional expiration boundary. `None` = never expires.
+	expires_at?: string | null,
 	revoked_at: string | null,
 };
 
@@ -428,6 +471,12 @@ export type ApiKeyListItem = {
 	// Last 4 chars of the key.
 	key_prefix: string,
 	created_at: string,
+	/**
+	 *  RFC3339 timestamp of the most recent successful authentication
+	 *  using this key. `null` if the key has never been used. Stamped
+	 *  by `resolve_api_key` on every successful API-key auth path.
+	 */
+	last_used_at: string | null,
 };
 
 /**
@@ -922,6 +971,38 @@ export type ConversationRole = "User" | "Echo";
 
 export type CreateApiKeyRequest = {
 	name: string,
+	/**
+	 *  API-key scopes per the `<resource>:<verb>` convention enforced
+	 *  by handlers via `AuthContext::require_scope`. Resource name
+	 *  matches the route's path segment (kebab-case, plural where the
+	 *  route is plural). Verb is `read` for GET, `write` for
+	 *  POST/PUT/PATCH, `delete` for DELETE.
+	 * 
+	 *  Active scope set as of Lane S Block F: `analytics:write`,
+	 *  `billing:read`, `channels:read|write|delete`,
+	 *  `conversations:read|write|delete`, `echoes:read|write|delete`,
+	 *  `feeds:read`, `marketplace:read|write`, `moderation:write`,
+	 *  `oracle:read|write`, `payments:read|write`, `search:read`,
+	 *  `shards:read|write|delete`, `subscription:read|write`,
+	 *  `system:read`, `users:read`, `voice:read|write`. Account-self
+	 *  routes (`/account/me/*`, including this `/api-keys` endpoint)
+	 *  require NO scope — the key holder IS the account, so
+	 *  scope-gating self-management would be circular.
+	 * 
+	 *  Empty `[]` means "no scope-restricted access" — every
+	 *  scope-gated handler will reject; only account-self routes
+	 *  remain reachable.
+	 * 
+	 *  ME-API-001 §3.3's spec catalog uses singular forms (`echo:*`,
+	 *  `feed:*`, etc.); the enforced names use plural matching the
+	 *  route segment. The handler-source naming is authoritative per
+	 *  CLAUDE.md "HANDLER SOURCE IS THE TRUTH"; the spec catalog row
+	 *  is tracked as drift in the Lane S audit (TIER-001 Req 21
+	 *  neighbour row, ME-API-001 audit Req 13).
+	 */
+	scopes?: string[],
+	// Optional expiration boundary for the key. `None` (or omitted) = never expires.
+	expires_at?: string | null,
 };
 
 export type CreateApiKeyResponse = {
@@ -4147,12 +4228,27 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
  *  (ME-SDB-001 §9.2).
  */
 { ShardAdminFlagUnflagged: { shard_id: string; admin_id: string } } | { ShardTravelRequested: { echo_id: string; from_shard: string; to_shard: string } } | { ShardTravelApproved: { echo_id: string; destination_shard: string } } | { ShardTravelCompleted: { echo_id: string; shard_id: string } } | { ShardTravelDenied: { echo_id: string; reason: string } } | { ShardCapacityWarning: { shard_id: string; percent: number } } | { EchoMoved: { echo_id: string; shard_id: string; from_location: string; to_location: string; arrival_tick: number } } | { EchoWealthChanged: { echo_id: string; old_value: number; new_value: number; reason: string } } | { GlobalEventPropagated: { event_id: string; affected_shards: string[] } } | 
-// Emitted by safety classifier on T2/T3 detection. Wired via record_content_flagged().
-{ ContentFlagged: { content_id: string; tier: string } } | 
+/**
+ *  Emitted when T2/T3 content is intercepted by the safety classifier
+ *  at engine boundary (post-generation, pre-persistence). The
+ *  `record_content_blocked()` analytics helper is invoked alongside.
+ *  Reference: ME-TSP-001 §8.4 line 293.
+ */
+{ ContentBlocked: { echo_id: string; tick_id: number; tier: ContentTierEnum; reason: string } } | 
 // Emitted when T3 content triggers Echo quarantine. Phase 7 safety enforcement.
 { EchoQuarantined: { echo_id: string; reason: string } } | 
 // Phase 7 — emergent behavior detection.
-{ EmergentGroupFlagged: { echo_ids: string[] } } | { InfluencePointUsed: { user_id: string; echo_id: string; points: number } } | { UserRegistered: { user_id: string } } | 
+{ EmergentGroupFlagged: { echo_ids: string[] } } | 
+/**
+ *  Emitted when an `EnforcementAction` row is committed against a
+ *  user (mute, ban, suspension, quarantine, false-positive
+ *  restoration, CSAM match, shard flag, etc.). The full action
+ *  record lives in the `EnforcementAction` table; this event is the
+ *  real-time announcement so admin-dashboard subscribers + audit
+ *  consumers learn about enforcement immediately. Reference:
+ *  ME-TSP-001 §8.4 line 297.
+ */
+{ UserEnforcementAction: { user_id: string; action_type: EnforcementActionType } } | { InfluencePointUsed: { user_id: string; echo_id: string; points: number } } | { UserRegistered: { user_id: string } } | 
 // Emitted by purge_user() after full data cascade. Requires EventBus in PurgeContext (Phase 7).
 { UserDeleted: { user_id: string } } | { PersonaUpdated: { echo_id: string; version: number } } | { ConversationSaved: { echo_id: string; user_id: string } } | 
 // Phase 7 — user feedback system.

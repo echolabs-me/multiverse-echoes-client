@@ -921,6 +921,8 @@
     "PASSWORD_TOO_SHORT": "Ihr Passwort muss mindestens 12 Zeichen lang sein.",
     "DISPLAY_NAME_INVALID": "Der Anzeigename muss 3–30 Zeichen lang sein.",
     "TOS_NOT_ACCEPTED": "Sie müssen die Nutzungsbedingungen akzeptieren.",
+    "TOS_VERSION_MISMATCH": "Die Nutzungsbedingungen wurden aktualisiert. Lade die App neu und akzeptiere die neueste Version.",
+    "profileRefreshFailed": "Profil konnte nicht aktualisiert werden. Bitte die Seite neu laden.",
     "PRIVACY_NOT_ACCEPTED": "Sie müssen die Datenschutzrichtlinie akzeptieren.",
     "AGE_NOT_CONFIRMED": "Eine Altersbestätigung ist erforderlich.",
     "CAPTCHA_REQUIRED": "Bitte lösen Sie das Captcha.",
@@ -937,6 +939,11 @@
     "INVALID_SUGGESTION": "Ihr Vorschlag ist zu lang oder leer.",
     "FILE_TOO_LARGE": "Diese Datei ist zu groß. Die maximale Größe beträgt 5 MB.",
     "ONLY_IMAGES": "Nur Bilddateien sind erlaubt."
+  },
+  "legal": {
+    "tosUpdatedBanner": "Die Nutzungsbedingungen wurden aktualisiert. Akzeptiere die neueste Version, um dein Konto weiterhin zu nutzen.",
+    "tosUpdatedAcceptButton": "Akzeptieren",
+    "tosUpdatedAccepting": "Wird akzeptiert..."
   },
   "voice": {
     "tapToStart": "Tippen, um die Konversation zu starten",

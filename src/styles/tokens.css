@@ -48,6 +48,13 @@
   --space-12: 48px;
   --space-16: 64px;
 
+  /* Accessibility — ME-ACC-001 §4.3 v1.1 (touch target minimum). Apply
+     `min-block-size: var(--ui-touch-target-min); min-inline-size: var(--ui-touch-target-min);`
+     (or Tailwind logical-property equivalents) on any interactive
+     element whose visible hit area would otherwise fall below this
+     threshold. Reviewer checklist enforces on PRs adding interactive UI. */
+  --ui-touch-target-min: 44px;
+
   /* Border radius — CDS-001 §6 */
   --radius-sm: 4px;
   --radius-md: 8px;

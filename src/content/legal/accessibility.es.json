@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Pruebas manuales con lectores de pantalla** — Contamos con pruebas automatizadas con axe-core, pero aún no hemos completado las pruebas manuales exhaustivas con NVDA, JAWS o VoiceOver. Esto está previsto antes del lanzamiento público.",
-            "**Subtítulos de video** — Las funciones de exportación de video (resúmenes) aún no incluyen subtítulos. Esto se solucionará cuando se lancen las funciones de video.",
             "**Idiomas de derecha a izquierda (RTL)** — La interfaz utiliza propiedades lógicas de CSS en preparación para el soporte de RTL, pero el diseño RTL aún no ha sido probado completamente.",
             "**Idiomas más allá del inglés** — Actualmente solo se admite el inglés. Se planean idiomas adicionales después del lanzamiento. La arquitectura de internacionalización ya está implementada (632 cadenas externalizadas)."
           ]

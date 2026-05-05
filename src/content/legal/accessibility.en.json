@@ -58,7 +58,6 @@
           "type": "ul",
           "items": [
             "**Manual screen reader testing** \u2014 We have automated testing with axe-core but have not yet completed comprehensive manual testing with NVDA, JAWS, or VoiceOver. This is planned before public launch.",
-            "**Video captions** \u2014 Video export features (highlight reels) do not yet include captions. This will be addressed when video features launch.",
             "**Right-to-left (RTL) languages** \u2014 The interface uses CSS logical properties in preparation for RTL support, but RTL layout has not yet been fully tested.",
             "**Languages beyond English** \u2014 Currently only English is supported. Additional languages are planned post-launch. The internationalisation architecture is in place (632 externalised strings)."
           ]
