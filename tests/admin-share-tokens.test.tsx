@@ -138,7 +138,13 @@ const SHARE_ROW_ACTIVE = {
   created_by_user_id: 'bbbbbbbb-1111-4111-8111-000000000050',
   include_display_name: false,
   created_at: '2026-04-26T00:00:00Z',
-  expires_at: '2026-05-26T00:00:00Z',
+  // Far-future expiry: statusLabel() in AdminDashboardPage flips this row to
+  // "Expired" once `expires_at < new Date()`, which would break the "renders
+  // Active badge AND option" assertion. The original fixture used a
+  // 2026-05-26 expiry that passed once wall-clock crossed June 2026. Year
+  // 2099 keeps the test stable for the foreseeable life of the codebase
+  // without coupling it to mocked clocks.
+  expires_at: '2099-12-31T00:00:00Z',
   revoked_at: null,
   revoked_by_user_id: null,
   revocation_reason: null,
