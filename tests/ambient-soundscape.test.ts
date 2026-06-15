@@ -29,7 +29,15 @@ const mockCtx = {
   close: vi.fn(() => Promise.resolve()),
 };
 
-vi.stubGlobal('AudioContext', vi.fn(() => ({ ...mockCtx })));
+// Vitest 4: arrow functions can no longer be invoked as constructors, and
+// `AudioContext` is `new`-called inside startSoundscape(). Use a regular
+// function expression so `new vi.fn(...)` succeeds.
+vi.stubGlobal(
+  'AudioContext',
+  vi.fn(function () {
+    return { ...mockCtx };
+  }),
+);
 
 // Import after mocking.
 const {

@@ -7,24 +7,28 @@ import { describe, it, expect, vi } from 'vitest';
  * in the registry and have valid frequencies.
  */
 
-// Mock AudioContext for happy-dom
+// Mock AudioContext for happy-dom. Vitest 4: arrow functions can no longer
+// be invoked as constructors, and `new AudioContext()` is the call site —
+// use a regular function expression so `new vi.fn(...)` succeeds.
 vi.stubGlobal(
   'AudioContext',
-  vi.fn(() => ({
-    currentTime: 0,
-    destination: {},
-    createOscillator: vi.fn(() => ({
-      type: 'sine',
-      frequency: { value: 0 },
-      connect: vi.fn(),
-      start: vi.fn(),
-      stop: vi.fn(),
-    })),
-    createGain: vi.fn(() => ({
-      gain: { value: 0, exponentialRampToValueAtTime: vi.fn() },
-      connect: vi.fn(),
-    })),
-  })),
+  vi.fn(function () {
+    return {
+      currentTime: 0,
+      destination: {},
+      createOscillator: vi.fn(() => ({
+        type: 'sine',
+        frequency: { value: 0 },
+        connect: vi.fn(),
+        start: vi.fn(),
+        stop: vi.fn(),
+      })),
+      createGain: vi.fn(() => ({
+        gain: { value: 0, exponentialRampToValueAtTime: vi.fn() },
+        connect: vi.fn(),
+      })),
+    };
+  }),
 );
 
 // Import after mocking
