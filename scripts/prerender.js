@@ -43,6 +43,7 @@ const MANIFEST = JSON.parse(
 );
 const LOCALES = MANIFEST.locales;
 const ROUTES = MANIFEST.routes.map((r) => r.path);
+const CANONICAL_BASE = MANIFEST.base;
 
 /**
  * English fallback titles for pages where `<Helmet>` hasn't fired during
@@ -337,6 +338,28 @@ async function capture(browser, locale, route) {
     );
   }
 
+  // Hard assertion: every captured locale page must declare its OWN URL as
+  // canonical. If `dist/index.html` ever contains baked-in flag-page SEO
+  // tags (canonical/og/hreflang) and the static server serves it as the SPA
+  // fallback, those baked tags can shadow Helmet's correct output and we
+  // ship the GSC "Duplicate without user-selected canonical" bug all over
+  // again. Failing fast here keeps that regression off production.
+  const expectedCanonical = `${CANONICAL_BASE}${url}`;
+  const canonicalMatch = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/);
+  if (!canonicalMatch) {
+    throw new Error(
+      `Canonical missing for ${url} — captured HTML has no <link rel="canonical">.`,
+    );
+  }
+  if (canonicalMatch[1] !== expectedCanonical) {
+    throw new Error(
+      `Canonical mismatch for ${url}: expected ${expectedCanonical}, got ${canonicalMatch[1]}. ` +
+        `Likely cause: dist/index.html contains baked-in SEO tags from a prior capture and ` +
+        `the SPA fallback is shadowing Helmet's runtime canonical. See prerender.js main() ` +
+        `comment on capture ordering.`,
+    );
+  }
+
   const outDir = outDirFor(locale, route);
   mkdirSync(outDir, { recursive: true });
   writeFileSync(join(outDir, 'index.html'), html, 'utf-8');
@@ -364,27 +387,26 @@ async function main() {
     const browser = await chromium.launch({ headless: true });
 
     try {
-      // 1. Flag page at `/` (no locale, x-default).
-      console.log('Pre-rendering / (flag page)...');
-      const page = await browser.newPage();
-      await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded', timeout: 15000 });
-      await page.waitForSelector('#root > *', { timeout: 7000 });
-      await page.waitForTimeout(1200);
-      let flagHtml = await page.content();
-      await page.close();
-      // Same title cleanup as capture()'s 168-page matrix, via the shared
-      // dedupeTitles() helper. Fallback matches the Helmet-emitted title in
-      // LanguageSelectionPage so a fallback render is still SEO-correct. Other
-      // Helmet-managed tags (canonical/hreflang/og:*) come out clean here on
-      // the flag page so no further dedupe is needed inline.
-      flagHtml = dedupeTitles(
-        flagHtml,
-        'Multiverse Echoes — Choose your language',
-      );
-      writeFileSync(join(DIST, 'index.html'), flagHtml, 'utf-8');
-      console.log(`  ${Buffer.byteLength(flagHtml, 'utf-8')} bytes, content: ${flagHtml.includes('MULTIVERSE ECHOES') ? 'YES' : 'NO'}`);
+      // ORDER MATTERS: locale matrix is captured FIRST, flag page LAST.
+      //
+      // The static server falls back to `dist/index.html` for any URL whose
+      // own `dist/<path>/index.html` doesn't yet exist. If the flag page is
+      // captured first, its `<link rel="canonical" href="/">`, hreflang
+      // block, and og:* tags get baked into `dist/index.html` and then leak
+      // into every subsequent locale capture as a competing set of SEO tags
+      // (Helmet adds the correct ones on top, but our first-wins dedupe
+      // below keeps the BAKED-IN stale ones, stripping Helmet's correct
+      // output). That's exactly how every prerendered page ended up
+      // declaring `https://echolabsme.com/` as its canonical, producing the
+      // GSC "Duplicate without user-selected canonical" report.
+      //
+      // Capturing the locale matrix first means the SPA fallback during
+      // every locale capture is Vite's pristine `dist/index.html` shell
+      // (no canonical/og/hreflang baked in) — Helmet's tags win the dedupe
+      // unopposed. Then the flag page is captured last and overwrites
+      // `dist/index.html` for production serving.
 
-      // 2. The 21 × 8 locale/route matrix.
+      // 1. The 21 × 8 locale/route matrix.
       const startedAt = Date.now();
       let done = 0;
       const total = LOCALES.length * ROUTES.length;
@@ -397,7 +419,23 @@ async function main() {
         }
       }
       const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
-      console.log(`\nPre-rendering complete. ${total} pages in ${elapsed}s.`);
+      console.log(`\nLocale matrix complete. ${total} pages in ${elapsed}s.`);
+
+      // 2. Flag page at `/` (no locale, x-default) — captured LAST so its
+      //    baked-in canonical/og/hreflang never leak into a locale capture.
+      console.log('\nPre-rendering / (flag page)...');
+      const page = await browser.newPage();
+      await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await page.waitForSelector('#root > *', { timeout: 7000 });
+      await page.waitForTimeout(1200);
+      let flagHtml = await page.content();
+      await page.close();
+      flagHtml = dedupeTitles(
+        flagHtml,
+        'Multiverse Echoes — Choose your language',
+      );
+      writeFileSync(join(DIST, 'index.html'), flagHtml, 'utf-8');
+      console.log(`  ${Buffer.byteLength(flagHtml, 'utf-8')} bytes, content: ${flagHtml.includes('MULTIVERSE ECHOES') ? 'YES' : 'NO'}`);
     } finally {
       await browser.close();
     }
