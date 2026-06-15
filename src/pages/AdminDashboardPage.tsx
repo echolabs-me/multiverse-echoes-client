@@ -1137,7 +1137,7 @@ function BillingView() {
             {t('admin.billing.snapshots.empty')}
           </p>
         ) : (
-          <div className="max-h-96 overflow-x-auto overflow-y-auto">
+          <div className="max-h-96 overflow-auto">
             <table className="w-full text-sm" role="table">
               <thead className="sticky inset-bs-0 bg-surface">
                 <tr className="border-be border-border text-start text-text-muted">
