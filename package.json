@@ -42,7 +42,7 @@
     "react-router-dom": "^7.0.0",
     "recharts": "^2.15.4",
     "three": "^0.183.2",
-    "zustand": "^5.0.0"
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",
