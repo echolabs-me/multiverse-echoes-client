@@ -158,12 +158,6 @@ void i18n
     interpolation: {
       escapeValue: false,
     },
-    // Suppress the "i18next is made possible by our own product, Locize..."
-    // promotional banner that i18next prints to the console on every page load.
-    // Verified as an official opt-out in i18next v25 source:
-    //   node_modules/i18next/dist/esm/i18next.js:1790
-    //     if (this.options.showSupportNotice !== false && ...)
-    showSupportNotice: false,
   });
 
 // Apply initial direction + lang immediately so the first paint is correct
