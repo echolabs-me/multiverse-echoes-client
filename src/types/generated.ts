@@ -131,7 +131,7 @@ export type AdminDunningStatesResponse = {
 /**
  *  Query parameters for `GET /admin/echoes`. Defaults: `limit = 50`
  *  (via `default_admin_limit`), `offset = 0`. Validated loudly at the
- *  handler edge via [`validate_admin_pagination`] — `limit = 0` and
+ *  handler edge via `validate_admin_pagination` — `limit = 0` and
  *  `limit > 500` are rejected with 400; `offset > u32::MAX` is
  *  rejected with 400 `OFFSET_INVALID`. The 500 ceiling matches the
  *  repo-level `MAX_LIMIT` clamp; loud rejection at the handler edge
@@ -1618,7 +1618,7 @@ export type EnforcementAction = {
  *  silent empty result).
  * 
  *  Default `limit = 50` (via `default_admin_limit`), zero-default offset.
- *  Validated loudly at the handler edge via [`validate_admin_pagination`]:
+ *  Validated loudly at the handler edge via `validate_admin_pagination`:
  *  `limit = 0` and `limit > 500` are rejected with 400; `offset` larger
  *  than `u32::MAX` is rejected with 400 `OFFSET_INVALID`. The 500
  *  ceiling matches the repo-level `MAX_LIMIT` clamp, so loud rejection
@@ -1641,13 +1641,13 @@ export type EnforcementActionListQuery = {
 	action_type?: string | null,
 	/**
 	 *  Target-enum shape: `User` | `Echo` | `Any`. Composes with
-	 *  `target_id` per [`compose_target_filter`]. Unknown value → 400
+	 *  `target_id` per `compose_target_filter`. Unknown value → 400
 	 *  `INVALID_TARGET_TYPE`.
 	 */
 	target_type?: string | null,
 	/**
 	 *  Specific target id. Requires `target_type` and must not be paired
-	 *  with `target_type=Any`. See [`compose_target_filter`].
+	 *  with `target_type=Any`. See `compose_target_filter`.
 	 */
 	target_id?: string | null,
 	// Inclusive lower bound on `created_at` (RFC 3339).
@@ -3573,7 +3573,7 @@ export type SystemStatusResponse = {
  *  Target-shape filter variant for `GET /admin/enforcement-actions`.
  *  Paired with `target_id` on the query string; the handler composes
  *  the two into `EnforcementActionTargetFilter` per
- *  [`compose_target_filter`]'s table.
+ *  `compose_target_filter`'s table.
  */
 export type TargetTypeFilter = "User" | "Echo" | "Any";
 
