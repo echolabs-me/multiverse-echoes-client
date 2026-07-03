@@ -49,7 +49,7 @@ function extractRecordKeys(filePath: string, varName: string): string[] {
   // Extract only top-level keys (at depth 0 within the body).
   // Top-level keys appear at the start of lines or after commas at depth 0.
   const keys: string[] = [];
-  let innerDepth = 0;
+  let innerDepth: number;
   const keyPattern = /(\w+)\s*:/g;
   let m;
   while ((m = keyPattern.exec(body)) !== null) {

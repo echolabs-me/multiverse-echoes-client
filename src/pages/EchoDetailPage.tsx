@@ -1580,6 +1580,7 @@ function DiaryCard({
                 if (fetchAttempt === 2)
                   throw new Error(
                     `Video fetch failed after 3 attempts: ${msg}`,
+                    { cause: fetchErr },
                   );
               }
             }

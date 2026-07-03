@@ -42,7 +42,7 @@ export function Tabs({
   const activeTabObj = tabs.find((t) => t.id === activeId);
 
   const handleKeyDown = (e: KeyboardEvent, index: number) => {
-    let nextIndex = index;
+    let nextIndex: number;
     switch (e.key) {
       case 'ArrowRight':
         nextIndex = (index + 1) % tabs.length;
