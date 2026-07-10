@@ -61,7 +61,9 @@ export function ShardViewPage() {
   }, [shardId, fetchShard]);
 
   useEffect(() => {
-    void loadData();
+    void (async () => {
+      await loadData();
+    })();
     // Ensure user's echoes are loaded (needed for travel button visibility)
     if (echoList.length === 0) void fetchEchoes();
   }, [loadData, echoList.length, fetchEchoes]);

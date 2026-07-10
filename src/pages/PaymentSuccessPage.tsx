@@ -15,6 +15,7 @@ export function PaymentSuccessPage() {
 
   useEffect(() => {
     if (!paymentId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot guard: stop the pending spinner when the page is opened without a payment id; a lazy initial state would change when polling first becomes false
       setPolling(false);
       return;
     }

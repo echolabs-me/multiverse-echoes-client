@@ -74,6 +74,7 @@ export function EchoActivityHint({
 
   // When mood changes, immediately pick a new hint from the new pool
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- deliberate re-roll of a RANDOM hint when mood/location changes; the cycling interval also mutates `hint`, so a useMemo derive would both break cycling and re-randomize every render
     setHint(getRandomHint(mood, locationName));
   }, [mood, locationName]);
 

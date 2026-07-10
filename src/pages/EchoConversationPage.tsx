@@ -60,6 +60,7 @@ export function EchoConversationPage() {
     if (!echoId || !limits.available) return;
 
     // Reset state from previous echo before loading.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional reset of conversation state when echoId changes, before the async load; a key-remount/derivation would change when and what resets
     setConversationId(null);
     setMessages([]);
     setError(null);

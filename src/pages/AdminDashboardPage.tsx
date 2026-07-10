@@ -431,7 +431,9 @@ function UsersView() {
   }, []);
 
   useEffect(() => {
-    void loadUsers();
+    void (async () => {
+      await loadUsers();
+    })();
   }, [loadUsers]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -1636,7 +1638,9 @@ function ModeratorsView() {
   }, []);
 
   useEffect(() => {
-    void loadModerators();
+    void (async () => {
+      await loadModerators();
+    })();
   }, [loadModerators]);
 
   const handlePromote = async (e: React.FormEvent) => {
@@ -1799,7 +1803,9 @@ function ShareTokensView() {
   }, [appliedCreator, appliedStatus, offset]);
 
   useEffect(() => {
-    void load();
+    void (async () => {
+      await load();
+    })();
   }, [load]);
 
   // Listen for the WS dashboard `ShareTokenRevoked` event so the list

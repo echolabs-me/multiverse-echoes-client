@@ -248,7 +248,7 @@ export function PlansPage() {
           : await payments.createXaman(tierKey);
 
       if (result.checkout_url) {
-        window.location.href = result.checkout_url;
+        window.location.assign(result.checkout_url);
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : '';

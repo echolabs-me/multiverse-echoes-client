@@ -50,6 +50,7 @@ export function CommunitySidebar() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const activeChannelRef = useRef(activeChannel);
+  // eslint-disable-next-line react-hooks/refs -- intentional render-time latest-value ref; the community WS handler reads .current synchronously, so moving the write into an effect would stale it
   activeChannelRef.current = activeChannel;
 
   const isFreeUser = user?.subscription_tier === 'Free';
@@ -104,7 +105,9 @@ export function CommunitySidebar() {
   }, [activeChannel]);
 
   useEffect(() => {
-    void loadMessages();
+    void (async () => {
+      await loadMessages();
+    })();
   }, [loadMessages]);
 
   // Save active channel to localStorage.
@@ -160,6 +163,7 @@ export function CommunitySidebar() {
   // Clear unread when switching channels.
   useEffect(() => {
     if (activeChannel) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional clear-unread when the active channel changes; a no-op-if-absent functional updater, and deriving it during render would change when the badge clears
       setUnreadChannels((prev) => {
         if (!prev.has(activeChannel.channel_id)) return prev;
         const next = new Set(prev);

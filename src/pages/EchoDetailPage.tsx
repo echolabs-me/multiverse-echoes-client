@@ -160,6 +160,7 @@ export function EchoDetailPage() {
 
   // Stable ref for echoId so polling doesn't depend on store function refs.
   const echoIdRef = useRef(echoId);
+  // eslint-disable-next-line react-hooks/refs -- intentional render-time latest-value ref; the diary polling reads .current synchronously, so moving the write into an effect would stale it
   echoIdRef.current = echoId;
 
   // Debounce fetchEchoes — multiple DiaryEntryCreated events fire per tick
@@ -243,11 +244,14 @@ export function EchoDetailPage() {
   }, [echoId, diaryCursor, isLoadingMore, diaryEntries, moodFilter]);
 
   useEffect(() => {
-    void loadData();
+    void (async () => {
+      await loadData();
+    })();
   }, [loadData]);
 
   // Reset per-echo UI state when switching echoes via the sidebar.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional reset of per-echo UI state when echoId changes; a key-remount would change when and what resets
     setToggledDays(new Set());
     setDiarySearch('');
     setMoodFilter('');

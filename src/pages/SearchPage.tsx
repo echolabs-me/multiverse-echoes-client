@@ -112,14 +112,6 @@ export function SearchPage() {
     return () => document.removeEventListener('keydown', handler);
   }, []);
 
-  // Auto-search on mount if query in URL
-  useEffect(() => {
-    if (initialQuery) {
-      void performSearch(initialQuery);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const performSearch = useCallback(
     async (q: string) => {
       if (!q.trim()) return;
@@ -170,6 +162,16 @@ export function SearchPage() {
     },
     [activeType, dateFrom, dateTo, scopeEchoId, scopeShardId],
   );
+
+  // Auto-search on mount if query in URL
+  useEffect(() => {
+    if (initialQuery) {
+      void (async () => {
+        await performSearch(initialQuery);
+      })();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

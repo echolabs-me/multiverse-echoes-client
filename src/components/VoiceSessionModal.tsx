@@ -127,6 +127,12 @@ export function VoiceSessionModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const endSession = useCallback(async () => {
+    setState('idle');
+    await cleanup();
+    onClose();
+  }, [cleanup, onClose]);
+
   const startSession = useCallback(async () => {
     // A genuinely new call begins — arm cleanup() to run again on this session.
     cleanupDoneRef.current = false;
@@ -240,12 +246,6 @@ export function VoiceSessionModal({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [echoId, cleanup, t]);
-
-  const endSession = useCallback(async () => {
-    setState('idle');
-    await cleanup();
-    onClose();
-  }, [cleanup, onClose]);
 
   const toggleMute = useCallback(() => {
     const newMuted = !isMuted;

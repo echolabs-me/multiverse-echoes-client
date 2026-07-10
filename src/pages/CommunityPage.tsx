@@ -156,7 +156,9 @@ export function CommunityPage() {
   }, [activeChannel, markChannelRead]);
 
   useEffect(() => {
-    void loadMessages();
+    void (async () => {
+      await loadMessages();
+    })();
   }, [loadMessages]);
 
   // Real-time updates via WebSocket — refresh on new messages/edits/deletes.
@@ -182,6 +184,7 @@ export function CommunityPage() {
   // Global community stream — marks non-active channels as unread in real-time.
   // Use a ref for activeChannel so the callback is stable and doesn't cause WS reconnects.
   const activeChannelRef = useRef(activeChannel);
+  // eslint-disable-next-line react-hooks/refs -- intentional render-time latest-value ref; the community-stream WS callback reads .current synchronously, so moving the write into an effect would stale it
   activeChannelRef.current = activeChannel;
 
   const handleCommunityEvent = useCallback(

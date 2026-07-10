@@ -336,17 +336,21 @@ export function MarketplacePage() {
   }, []);
 
   useEffect(() => {
-    if (activeTabId === INVENTORY_TAB_ID) {
-      void loadInventory();
-    } else {
-      void loadCategory(activeTabId as MarketplaceCategory);
-    }
+    void (async () => {
+      if (activeTabId === INVENTORY_TAB_ID) {
+        await loadInventory();
+      } else {
+        await loadCategory(activeTabId as MarketplaceCategory);
+      }
+    })();
   }, [activeTabId, loadCategory, loadInventory]);
 
   // Always hydrate inventory once on mount so item-grid cards can
   // render the "Owned" indicator on first paint of any category tab.
   useEffect(() => {
-    void loadInventory();
+    void (async () => {
+      await loadInventory();
+    })();
   }, [loadInventory]);
 
   // Fire the analytics browse event once per page mount, with the

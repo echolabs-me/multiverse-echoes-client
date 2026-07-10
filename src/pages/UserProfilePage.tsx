@@ -93,7 +93,9 @@ export function UserProfilePage() {
   }, [userId]);
 
   useEffect(() => {
-    void loadData();
+    void (async () => {
+      await loadData();
+    })();
   }, [loadData]);
 
   // Fire `profile.viewed` exactly once per resolved user_id load — not
