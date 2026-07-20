@@ -3334,6 +3334,18 @@ export type ShareItemKind = "feed_item";
  */
 export type ShareSnapshot = {
 	token: string,
+	/**
+	 *  The user (sharer) who created this share. Added cluster-016 as the
+	 *  direct, expiry-independent GDPR erasure key for the snapshot's PII
+	 *  (headline / body / echo_name / author_display_name), consumed by
+	 *  `delete_all_by_creator`. REQUIRED with NO `#[serde(default)]`: a nil
+	 *  creator is an impossible state that would dodge the creator-keyed
+	 *  purge and re-open the erasure gap on the Postgres arm, so the model
+	 *  stays honest. Any pre-field Redb snapshot blob (disposable §0 test
+	 *  data, refreshed on reset) deliberately hard-fails deserialisation
+	 *  rather than resolve to a sentinel.
+	 */
+	created_by_user_id: string,
 	// Captured content at share-time. Distinct from the live FeedItem.
 	content: ShareSnapshotContent,
 	/**
