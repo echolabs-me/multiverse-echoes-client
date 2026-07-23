@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "packageManager": "npm@11.18.0",
   "scripts": {
     "dev": "vite",
     "prebuild": "node scripts/generate-sitemap.js && node scripts/generate-choose-language-inline.js",
