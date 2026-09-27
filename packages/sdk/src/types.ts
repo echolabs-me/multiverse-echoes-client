@@ -51,7 +51,7 @@ export interface RefreshResponse {
 
 export type AccountType = 'Standard' | 'Admin' | 'Bot';
 export type SubscriptionTier = 'Free' | 'Basic' | 'Pro' | 'Enterprise';
-export type AccountStatus = 'Active' | 'Suspended' | 'PendingDeletion';
+export type AccountStatus = 'Active' | 'Suspended' | 'PendingDeletion' | 'Deleted' | 'Purging';
 
 export interface User {
   user_id: string;

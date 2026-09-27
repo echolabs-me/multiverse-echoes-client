@@ -36,7 +36,14 @@ export type AccessEntryResponse = {
 	granted_by: string,
 };
 
-export type AccountStatus = "Active" | "Suspended" | "PendingDeletion" | "Deleted";
+export type AccountStatus = "Active" | "Suspended" | "PendingDeletion" | "Deleted" | 
+/**
+ *  Claimed for purge. Only the claim transitions set it, and it is
+ *  terminal: `UserRepository::update` refuses a row in this state, so no
+ *  cancel, login or other writer can restore the account, and the purge's
+ *  own delete of the row is the only way out.
+ */
+"Purging";
 
 /**
  *  Account role in the trust & safety hierarchy. Per ME-CSS-001 §9.1
@@ -4349,7 +4356,8 @@ export type WsAuthQuery = {
 	 *  Short-lived JWT access token. Browsers can't set
 	 *  `Authorization` headers during the WebSocket upgrade handshake,
 	 *  so the token is passed in the query string. The server
-	 *  validates signature + expiry + blocklist on every upgrade.
+	 *  validates signature + expiry + blocklist, and the account's status,
+	 *  on every upgrade.
 	 */
 	token: string | null,
 };
