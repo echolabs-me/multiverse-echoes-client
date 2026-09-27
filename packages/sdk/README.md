@@ -1,15 +1,9 @@
 # @echolabs/multiverse-echoes
 
 > [!WARNING]
-> **This SDK is being rebuilt. Do not use it.** It does not match the current Multiverse Echoes API: many of its types differ from what the server returns, and many of its calls are refused by the server or reach no route. It is not published on npm, so the install command below does not work. It is being rebuilt, generated from the server's own code. Until the rebuilt SDK ships, call the API directly, as the [Developer Portal](https://developers.echolabsme.com) shows.
+> **This SDK is being rebuilt. Do not use it.** It does not match the current Multiverse Echoes API: many of its types differ from what the server returns, and many of its calls are refused by the server or reach no route. It is not published on npm. It is being rebuilt, generated from the server's own code. Until the rebuilt SDK ships, call the API directly, as the [Developer Portal](https://developers.echolabsme.com) shows.
 
 TypeScript SDK for the [Multiverse Echoes](https://echolabsme.com) API — an Autonomous Life Simulation Platform.
-
-## Installation
-
-```bash
-npm install @echolabs/multiverse-echoes
-```
 
 ## Quickstart
 
