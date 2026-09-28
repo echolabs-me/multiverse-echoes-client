@@ -57,6 +57,7 @@ import { ApiRequestError } from '../lib/api/client.ts';
 import { translateError } from '../lib/translateError.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { isTravelEvent } from '../lib/echoTravel.ts';
 import {
   formatDate,
   formatDateTime,
@@ -350,7 +351,7 @@ export function EchoDetailPage() {
 
       const id = echoIdRef.current;
       if (!id) return;
-      if (event.type === 'ShardTravelCompleted' || event.type === 'EchoMoved') {
+      if (isTravelEvent(event)) {
         trackEvent('echo.travel_completed', { echo_id: id });
       }
       if (event.type === 'DiaryEntryCreated') {

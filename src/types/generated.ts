@@ -4227,14 +4227,32 @@ export type WorldEvent = {
 };
 
 // All event variants from the doc suite.
-export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: string } } | { EchoDeleted: { echo_id: string } } | { EchoHibernated: { echo_id: string; reason: string } } | { EchoWoken: { echo_id: string } } | 
+export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: string } } | { EchoDeleted: { echo_id: string; 
+// The shard the event happened in, set at publish time (R176).
+shard_id: string } } | { EchoHibernated: { echo_id: string; reason: string; 
+// The shard the event happened in, set at publish time (R176).
+shard_id: string } } | { EchoWoken: { echo_id: string; 
+// The shard the event happened in, set at publish time (R176).
+shard_id: string } } | 
 /**
  *  Emitted when a quarantined Echo is restored by admin after
  *  false-positive review. Reference: ME-TSP-001 §6.3.
  */
-{ EchoRestored: { echo_id: string; restored_by_admin_id: string; reason: string } } | { TickStarted: { tick_id: number } } | { TickCompleted: { tick_id: number } } | { DiaryEntryGenerated: { echo_id: string; diary_id: string } } | { DiaryImageReady: { echo_id: string; diary_id: string; image_url: string } } | { LifeEventOccurred: { echo_id: string; event_id: string } } | { MoodChanged: { echo_id: string; old_mood: string; new_mood: string } } | { EchoInteraction: { echo_a: string; echo_b: string; interaction_type: string; tick_id: number } } | 
+{ EchoRestored: { echo_id: string; restored_by_admin_id: string; reason: string } } | { TickStarted: { tick_id: number } } | { TickCompleted: { tick_id: number } } | { DiaryEntryGenerated: { echo_id: string; diary_id: string; 
+// The shard the event happened in, set at publish time (R176).
+shard_id: string } } | { DiaryImageReady: { echo_id: string; diary_id: string; image_url: string; 
+// The shard the event happened in, set at publish time (R176).
+shard_id: string } } | { LifeEventOccurred: { echo_id: string; event_id: string; 
+// The shard the event happened in, set at publish time (R176).
+shard_id: string } } | { MoodChanged: { echo_id: string; old_mood: string; new_mood: string; 
+// The shard the event happened in, set at publish time (R176).
+shard_id: string } } | { EchoInteraction: { echo_a: string; echo_b: string; interaction_type: string; tick_id: number; 
+// The acting Echo's shard, set at publish time (R176).
+shard_id: string } } | 
 // Emitted from process_interaction_with_analytics when a new Echo relationship forms.
-{ RelationshipFormed: { echo_a: string; echo_b: string } } | 
+{ RelationshipFormed: { echo_a: string; echo_b: string; 
+// The acting Echo's shard, set at publish time (R176).
+shard_id: string } } | 
 // Emitted when an existing Echo relationship changes type. Phase 7.
 { RelationshipChanged: { echo_a: string; echo_b: string } } | { ShardCreated: { shard_id: string; shard_type: string; owner_id: string } } | { ShardStatusChanged: { shard_id: string; old_status: string; new_status: string } } | 
 /**
@@ -4246,7 +4264,11 @@ export type WorldEventPayload = { EchoCreated: { echo_id: string; owner_id: stri
  *  Admin cleared the flag on a previously-flagged Shard
  *  (ME-SDB-001 §9.2).
  */
-{ ShardAdminFlagUnflagged: { shard_id: string; admin_id: string } } | { ShardTravelRequested: { echo_id: string; from_shard: string; to_shard: string } } | { ShardTravelApproved: { echo_id: string; destination_shard: string } } | { ShardTravelCompleted: { echo_id: string; shard_id: string } } | { ShardTravelDenied: { echo_id: string; reason: string } } | { ShardCapacityWarning: { shard_id: string; percent: number } } | { EchoMoved: { echo_id: string; shard_id: string; from_location: string; to_location: string; arrival_tick: number } } | { EchoWealthChanged: { echo_id: string; old_value: number; new_value: number; reason: string } } | { GlobalEventPropagated: { event_id: string; affected_shards: string[] } } | 
+{ ShardAdminFlagUnflagged: { shard_id: string; admin_id: string } } | { ShardTravelRequested: { echo_id: string; from_shard: string; to_shard: string } } | { ShardTravelApproved: { echo_id: string; destination_shard: string } } | { ShardTravelCompleted: { echo_id: string; 
+// The destination shard.
+shard_id: string; 
+// The shard the Echo left (R176): the event reaches both shards' streams.
+origin_shard_id: string } } | { ShardTravelDenied: { echo_id: string; reason: string } } | { ShardCapacityWarning: { shard_id: string; percent: number } } | { EchoMoved: { echo_id: string; shard_id: string; from_location: string; to_location: string; arrival_tick: number } } | { EchoWealthChanged: { echo_id: string; old_value: number; new_value: number; reason: string } } | { GlobalEventPropagated: { event_id: string; affected_shards: string[] } } | 
 /**
  *  Emitted when T2/T3 content is intercepted by the safety classifier
  *  at engine boundary (post-generation, pre-persistence). The

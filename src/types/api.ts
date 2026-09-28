@@ -57,6 +57,8 @@ import type {
   TravelState as _TravelState,
   UserRelationshipType as _UserRelationshipType,
   WaitlistStatus as _WaitlistStatus,
+  WorldEvent as _WorldEvent,
+  WorldEventPayload as _WorldEventPayload,
 } from './generated';
 
 // Re-export for consumers
@@ -837,90 +839,12 @@ export interface PaymentRecord {
 
 // --- WebSocket Events ---
 
-/** Envelope for full WorldEvents (used by shard/channel streams). */
-export interface WorldEvent {
-  event_id: string;
-  tick_id: number;
-  timestamp: string;
-  payload: WorldEventPayload;
-}
-
-export type WorldEventPayload =
-  | { type: 'DiaryEntryGenerated'; echo_id: string; diary_id: string }
-  | { type: 'LifeEventOccurred'; echo_id: string; event_id: string }
-  | { type: 'MoodChanged'; echo_id: string; old_mood: string; new_mood: string }
-  | {
-      type: 'EchoInteraction';
-      echo_a: string;
-      echo_b: string;
-      interaction_type: string;
-      tick_id: number;
-    }
-  | { type: 'EchoHibernated'; echo_id: string; reason: string }
-  | { type: 'EchoWoken'; echo_id: string }
-  | { type: 'EchoCreated'; echo_id: string; owner_id: string }
-  | { type: 'EchoDeleted'; echo_id: string }
-  | {
-      type: 'EchoMoved';
-      echo_id: string;
-      shard_id: string;
-      from_location: string;
-      to_location: string;
-      arrival_tick: number;
-    }
-  | {
-      type: 'EchoWealthChanged';
-      echo_id: string;
-      old_value: number;
-      new_value: number;
-      reason: string;
-    }
-  | { type: 'RelationshipFormed'; echo_a: string; echo_b: string }
-  | { type: 'ShardTravelCompleted'; echo_id: string; shard_id: string }
-  | {
-      type: 'ShardCreated';
-      shard_id: string;
-      shard_type: string;
-      owner_id: string;
-    }
-  | {
-      type: 'ShardStatusChanged';
-      shard_id: string;
-      old_status: string;
-      new_status: string;
-    }
-  | {
-      type: 'GlobalEventPropagated';
-      event_id: string;
-      affected_shards: string[];
-    }
-  | { type: 'PersonaUpdated'; echo_id: string; version: number }
-  | {
-      type: 'CommunityMessagePosted';
-      channel_id: string;
-      message_id: string;
-      author_id: string;
-    }
-  | {
-      type: 'MessageDeleted';
-      channel_id: string;
-      message_id: string;
-      deleted_by: string;
-    }
-  | {
-      type: 'MessageEdited';
-      channel_id: string;
-      message_id: string;
-      author_id: string;
-    }
-  | {
-      type: 'FeedItemGenerated';
-      feed_item_id: string;
-      echo_id: string;
-      shard_id: string;
-    }
-  | { type: 'NotificationCreated'; user_id: string; notification_id: string }
-  | { type: string; [key: string]: unknown };
+/**
+ * Envelope for full WorldEvents (used by shard/channel streams). The payload is
+ * the server's externally tagged `WorldEventPayload`, taken from generated.ts.
+ */
+export type WorldEvent = _WorldEvent;
+export type WorldEventPayload = _WorldEventPayload;
 
 /** Flat tagged events sent over Echo/Dashboard WS streams (server's WsEchoEvent). */
 export type WsEchoEvent =
