@@ -903,7 +903,7 @@ export type ConsentRecord = {
 	context: string,
 };
 
-export type ConsentType = "ToS" | "Privacy" | "PersonaData" | "CrossUserInteraction" | "Community";
+export type ConsentType = "ToS" | "Privacy" | "PersonaData" | "Community";
 
 export type ContentFlag = {
 	flag_id: string,
@@ -1534,7 +1534,6 @@ export type EchoRelationship = {
 	sentiment: number,
 	key_moments: string[],
 	is_cross_user: boolean,
-	cross_user_consent: boolean,
 	created_at: string,
 	updated_at: string,
 };

@@ -298,7 +298,6 @@ export interface EchoRelationship {
   sentiment: number;
   key_moments: string[];
   is_cross_user: boolean;
-  cross_user_consent: boolean;
   created_at: string;
   updated_at: string;
 }
