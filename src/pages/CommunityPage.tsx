@@ -171,12 +171,16 @@ export function CommunityPage() {
       if (
         event.type === 'CommunityMessagePosted' ||
         event.type === 'CommunityMessageEdited' ||
-        event.type === 'CommunityMessageDeleted'
+        event.type === 'CommunityMessageDeleted' ||
+        // A user's messages here were anonymised: reload to show it (R217.2).
+        (event.type === 'ChannelMessagesAnonymised' &&
+          activeChannel !== null &&
+          event.channel_ids.includes(activeChannel.channel_id))
       ) {
         void loadMessages();
       }
     },
-    [loadMessages],
+    [activeChannel, loadMessages],
   );
 
   useEchoWebSocket(wsPath, handleWsEvent, loadMessages);
@@ -190,7 +194,7 @@ export function CommunityPage() {
   const handleCommunityEvent = useCallback(
     (event: WsEchoEvent) => {
       if (event.type === 'CommunityMessagePosted') {
-        const channelId = (event as { channel_id: string }).channel_id;
+        const channelId = event.channel_id;
         const current = activeChannelRef.current;
         // Don't mark the active channel as unread — the user is already viewing it.
         if (current && channelId === current.channel_id) return;
@@ -440,8 +444,13 @@ export function CommunityPage() {
                   <div className="flex flex-col">
                     {messages.map((msg, idx) => {
                       const prev = idx > 0 ? messages[idx - 1] : null;
+                      // A removed author and an unlinked Discord relay share
+                      // the nil author id, so the shown name is compared too.
                       const sameAuthor =
-                        prev !== null && prev.author_id === msg.author_id;
+                        prev !== null &&
+                        prev.author_id === msg.author_id &&
+                        prev.author_removed === msg.author_removed &&
+                        prev.author_display_name === msg.author_display_name;
                       const withinWindow =
                         sameAuthor &&
                         Math.abs(
@@ -450,8 +459,9 @@ export function CommunityPage() {
                         ) <
                           7 * 60 * 1000;
                       const showHeader = !withinWindow;
-                      const displayName =
-                        msg.author_display_name || 'Unknown User';
+                      const displayName = msg.author_removed
+                        ? t('community.formerMember')
+                        : msg.author_display_name || t('community.unknownUser');
                       const initial = displayName[0]?.toUpperCase() ?? '?';
                       const timeStr = formatTime(msg.created_at);
 

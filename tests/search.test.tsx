@@ -3,8 +3,9 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
 import { SearchPage } from '../src/pages/SearchPage.tsx';
+import { search } from '../src/lib/api/endpoints.ts';
 
 // Mock stores
 vi.mock('../src/stores/index.ts', () => ({
@@ -14,16 +15,20 @@ vi.mock('../src/stores/index.ts', () => ({
     selector({ unreadCount: 0 }),
 }));
 
-// Mock API
-vi.mock('../src/lib/api/endpoints.ts', () => ({
-  search: {
-    echoes: vi.fn().mockResolvedValue([]),
-    diary: vi.fn().mockResolvedValue([]),
-    events: vi.fn().mockResolvedValue([]),
-    shards: vi.fn().mockResolvedValue([]),
-    messages: vi.fn().mockResolvedValue([]),
-  },
-}));
+// Mock API: each search route answers an empty page.
+vi.mock('../src/lib/api/endpoints.ts', () => {
+  const emptyPage = () =>
+    vi.fn().mockResolvedValue({ data: [], next_cursor: null });
+  return {
+    search: {
+      echoes: emptyPage(),
+      diary: emptyPage(),
+      events: emptyPage(),
+      shards: emptyPage(),
+      messages: emptyPage(),
+    },
+  };
+});
 
 const testI18n = i18n.createInstance();
 void testI18n.use(initReactI18next).init({
@@ -65,6 +70,12 @@ function renderSearch(route = '/search') {
       </I18nextProvider>
     </MemoryRouter>,
   );
+}
+
+/** Stands in for the shard page, and names the shard the route opened. */
+function OpenedShard() {
+  const { id } = useParams();
+  return <p>opened shard {id}</p>;
 }
 
 describe('SearchPage', () => {
@@ -109,6 +120,45 @@ describe('SearchPage', () => {
     // Wait for async results
     const noResults = await screen.findByText('No results found');
     expect(noResults).toBeInTheDocument();
+  });
+
+  it('lists a result under its type with its snippet, and opens it by its id', async () => {
+    // The wire shape of `/search/shards` (`SearchResult`).
+    vi.mocked(search.shards).mockResolvedValueOnce({
+      data: [
+        {
+          item_type: 'shard',
+          item_id: 'shard-9',
+          echo_id: null,
+          snippet: 'A harbour town under a copper sky',
+          created_at: '2026-09-30T00:00:00Z',
+          owner_is_founding_echo: false,
+        },
+      ],
+      next_cursor: null,
+    });
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <I18nextProvider i18n={testI18n}>
+          <Routes>
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/shards/:id" element={<OpenedShard />} />
+          </Routes>
+        </I18nextProvider>
+      </MemoryRouter>,
+    );
+    const input = screen.getByRole('searchbox');
+    fireEvent.change(input, { target: { value: 'harbour' } });
+    fireEvent.submit(input);
+
+    const result = await screen.findByRole('button', {
+      name: /under a copper sky/,
+    });
+    expect(screen.getByRole('heading', { name: /Shards/ })).toBeInTheDocument();
+    fireEvent.click(result);
+    expect(await screen.findByText(/^opened shard /)).toHaveTextContent(
+      'opened shard shard-9',
+    );
   });
 
   it('saves and displays recent searches', async () => {

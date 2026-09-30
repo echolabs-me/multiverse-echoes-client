@@ -1,13 +1,16 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import i18n from '../i18n.ts';
-import type {
-  OracleContext,
-  OracleDeepLink,
-  FeedbackType,
-} from '../types/api.ts';
+import type { OracleContext, FeedbackType } from '../types/api.ts';
 import { oracle, feedback } from '../lib/api/endpoints.ts';
 import { detectConfirmationIntent } from '../lib/confirmationIntent.ts';
+
+/** A link an Oracle message can carry into the app (ME-UXF-001 §8). The
+ *  server's answer carries none today, so no message has any. */
+export interface OracleDeepLink {
+  label: string;
+  path: string;
+}
 
 export interface OracleMessage {
   id: string;
@@ -327,7 +330,6 @@ export const useOracleStore = create<OracleState>()(
             text:
               displayText ||
               'The Oracle is deep in thought. Please try again shortly.',
-            deep_links: response.deep_links,
             timestamp: Date.now(),
           };
 

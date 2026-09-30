@@ -8,7 +8,7 @@ import { conversations } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { formatTime } from '../lib/formatDate.ts';
 import { getMoodLabel } from '../lib/moodLabel.ts';
-import type { ConversationMessage } from '../types/api.ts';
+import type { ConversationMessage, ConversationQueued } from '../types/api.ts';
 
 interface TierLimits {
   available: boolean;
@@ -118,7 +118,6 @@ export function EchoConversationPage() {
     // Optimistic user message
     const optimisticUserMsg: ConversationMessage = {
       message_id: `temp-${Date.now()}`,
-      conversation_id: conversationId,
       role: 'user',
       content: trimmed,
       created_at: new Date().toISOString(),
@@ -137,18 +136,15 @@ export function EchoConversationPage() {
       });
 
       // Detect 202 queued response (has 'status' field instead of normal message fields).
-      const isQueued = (r: unknown): boolean =>
-        typeof r === 'object' &&
-        r !== null &&
-        'status' in r &&
-        (r as Record<string, unknown>).status === 'queued';
+      const isQueued = (
+        r: ConversationMessage | ConversationQueued,
+      ): r is ConversationQueued => 'status' in r && r.status === 'queued';
 
       while (retries < maxRetries && isQueued(echoResponse)) {
         // Show queued message while waiting.
         if (retries === 0) {
           const queuedMsg: ConversationMessage = {
             message_id: `queued-${Date.now()}`,
-            conversation_id: conversationId,
             role: 'echo',
             content: t('conversation.echoQueued'),
             created_at: new Date().toISOString(),
@@ -166,7 +162,6 @@ export function EchoConversationPage() {
               ...filtered,
               {
                 message_id: `queued-deep-${Date.now()}`,
-                conversation_id: conversationId,
                 role: 'echo',
                 content: t('conversation.echoDeepThought'),
                 created_at: new Date().toISOString(),
@@ -182,7 +177,7 @@ export function EchoConversationPage() {
         });
       }
 
-      if (retries >= maxRetries && isQueued(echoResponse)) {
+      if (isQueued(echoResponse)) {
         // Still queued after all retries — keep "deep in thought" message visible.
         setMessages((prev) => {
           const hasDeepThought = prev.some((m) =>
@@ -196,7 +191,6 @@ export function EchoConversationPage() {
             ...filtered,
             {
               message_id: `fallback-${Date.now()}`,
-              conversation_id: conversationId,
               role: 'echo',
               content: t('conversation.echoDeepThought'),
               created_at: new Date().toISOString(),
@@ -205,6 +199,7 @@ export function EchoConversationPage() {
         });
       } else {
         // Got a real response — replace any queued/deep-thought message.
+        const reply = echoResponse;
         trackEvent('conversation.message_sent', {
           echo_id: echoId,
           message_number: userMessageCount + 1,
@@ -215,7 +210,7 @@ export function EchoConversationPage() {
               !m.message_id.startsWith('queued-') &&
               !m.message_id.startsWith('fallback-'),
           );
-          return [...filtered, echoResponse];
+          return [...filtered, reply];
         });
       }
     } catch (err) {

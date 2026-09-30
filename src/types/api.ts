@@ -14,6 +14,7 @@ import type {
   AccountStatus as _AccountStatus,
   AccountType as _AccountType,
   CancelRequest as _CancelRequest,
+  ChannelStatus as _ChannelStatus,
   ChannelType as _ChannelType,
   CommitRequest as _CommitRequest,
   ConflictStyle as _ConflictStyle,
@@ -30,12 +31,14 @@ import type {
   EchoStatus as _EchoStatus,
   ExportFormat as _ExportFormat,
   ExportStatus as _ExportStatus,
+  FeedItemType as _FeedItemType,
   GlobalEventStatus as _GlobalEventStatus,
   GlobalEventType as _GlobalEventType,
   LifeEventType as _LifeEventType,
   LocationType as _LocationType,
   MarketplaceCategory as _MarketplaceCategory,
   MarketplaceItem as _MarketplaceItem,
+  MessageType as _MessageType,
   ModerationActionType as _ModerationActionType,
   NotificationDelivery as _NotificationDelivery,
   PaymentStatus as _PaymentStatus,
@@ -44,6 +47,7 @@ import type {
   PendingDecisionEntry as _PendingDecisionEntry,
   PersonaMode as _PersonaMode,
   PickIncludedShardRequest as _PickIncludedShardRequest,
+  ProfileVisibility as _ProfileVisibility,
   ProvisioningType as _ProvisioningType,
   ReportStatus as _ReportStatus,
   ReportTargetType as _ReportTargetType,
@@ -105,11 +109,26 @@ export type WaitlistStatus = _WaitlistStatus;
 
 // --- Common ---
 
+/** The error envelope (`ErrorBody` in `crates/api/src/error.rs`). The rate
+ *  limiter's 429 carries `retry_after_seconds` and neither `status` nor
+ *  `request_id`. A failed body validation answers a different shape,
+ *  [`ValidationErrorBody`]. */
 export interface ApiError {
   error: {
     code: string;
     message: string;
+    status?: number;
+    request_id?: string;
+    retry_after_seconds?: number;
   };
+}
+
+/** The 400 a request body that fails validation answers with
+ *  (`ValidationErrorResponse`): `error` is the string `VALIDATION_ERROR`,
+ *  and `fields` maps each field to its messages. */
+export interface ValidationErrorBody {
+  error: string;
+  fields: Record<string, string[]>;
 }
 
 export interface MessageResponse {
@@ -127,6 +146,7 @@ export interface RegisterRequest {
   age_confirmed: boolean;
   cf_turnstile_response?: string;
   invite_code: string;
+  locale?: string | null;
 }
 
 export interface RegisterResponse {
@@ -206,7 +226,27 @@ export interface User {
   deletion_scheduled_at: string | null;
   do_not_sell: boolean;
   analytics_opt_out: boolean;
-  subscription_expires_at: string | null;
+  bio: string | null;
+  avatar_url: string | null;
+  profile_visibility: _ProfileVisibility;
+}
+
+/** GET and PATCH `/account/me/privacy`. */
+export interface PrivacySettings {
+  solo_mode: boolean;
+  do_not_sell: boolean;
+  analytics_opt_out: boolean;
+  /** Opted out of community features (R209). Turning it on removes the
+   *  user's name from their past channel messages and share pages; turning
+   *  it off does not restore it. */
+  community_opt_out: boolean;
+  /** The opt-out is stored, but the user's name is not yet removed from
+   *  their channel messages and share pages (R220.3). Sending
+   *  `community_opt_out: true` again retries the removal. */
+  community_opt_out_cleanup_pending: boolean;
+  profile_visibility: _ProfileVisibility;
+  /** Set on a PATCH, absent on a GET. */
+  updated_at?: string;
 }
 
 // --- Echo ---
@@ -223,6 +263,9 @@ export interface CreateEchoRequest {
   /** Optional free-text description. When set, used directly as the FLUX.2
    *  portrait prompt and the LLM bio-extraction step is skipped. Max 1000. */
   physical_description?: string;
+  /** Must be `true` when the persona is flagged as a public figure, or the
+   *  server answers 400 `PUBLIC_FIGURE_CONSENT_REQUIRED`. */
+  public_figure_acknowledgement?: boolean;
 }
 
 /** Server-sourced Echo response. Regenerated from the Rust struct via
@@ -248,11 +291,14 @@ export interface DiaryEntry {
   tick_id: number;
   simulated_date: string;
   content: string;
+  /** Locale of `content`: the viewer's, or `en` while no translation is
+   *  stored. */
+  content_locale: string;
   mood: string;
   location_name: string;
   shard_id: string;
-  nudge_source?: string | null;
-  image_url?: string | null;
+  nudge_source: string | null;
+  image_url: string | null;
   created_at: string;
 }
 
@@ -260,7 +306,7 @@ export interface DiaryEntry {
 
 export interface FeedItem {
   item_id: string;
-  item_type: string;
+  item_type: _FeedItemType;
   echo_id: string;
   shard_id: string;
   title: string;
@@ -269,16 +315,23 @@ export interface FeedItem {
   tick_id: number;
   created_at: string;
   is_public: boolean;
+  /** Locale of `title` and `body`: the viewer's, or `en` while no
+   *  translation is stored. */
+  content_locale: string;
+  owner_is_founding_echo: boolean;
 }
 
 // --- Notification ---
 
 export interface Notification {
   notification_id: string;
-  user_id: string;
   category: string;
   title: string;
   body: string;
+  /** Locale of `title` and `body`. */
+  content_locale: string;
+  /** Where the notification leads in the app. */
+  link: string;
   read: boolean;
   created_at: string;
 }
@@ -289,14 +342,14 @@ export interface EchoRelationship {
   relationship_id: string;
   echo_a_id: string;
   echo_b_id: string;
-  other_echo_name?: string;
-  other_echo_owner_name?: string;
+  /** `null` when the other Echo no longer exists. */
+  other_echo_name: string | null;
+  other_echo_owner_name: string | null;
   relationship_type: string;
   status: string;
   formed_at_tick: number;
   last_interaction_tick: number;
   sentiment: number;
-  key_moments: string[];
   is_cross_user: boolean;
   created_at: string;
   updated_at: string;
@@ -321,19 +374,15 @@ export interface UseInfluenceRequest {
 
 // --- Memory ---
 
+/** `GET /echoes/{id}/memories` (`MemoryView`). */
 export interface EchoMemory {
   memory_id: string;
   echo_id: string;
-  source_tick_id: number;
-  memory_type: string;
+  tick_id: number;
   content: string;
-  emotional_valence: number;
-  importance: number;
-  embedding_id: string;
+  importance_score: number;
   is_summarised: boolean;
-  summarised_from: string[];
   created_at: string;
-  last_accessed_tick: number;
 }
 
 // --- Channel ---
@@ -343,7 +392,7 @@ export interface Channel {
   name: string;
   channel_type: ChannelType;
   scope_id: string | null;
-  status: string;
+  status: _ChannelStatus;
   description: string;
   is_read_only: boolean;
   slow_mode_seconds: number;
@@ -355,8 +404,11 @@ export interface ChannelMessage {
   channel_id: string;
   author_id: string;
   author_display_name: string;
+  /** The author opted out of community features or deleted their account,
+   *  and is shown as a former community member (R211, R212.2). */
+  author_removed: boolean;
   content: string;
-  message_type: string;
+  message_type: _MessageType;
   created_at: string;
   edited_at: string | null;
   is_edited: boolean;
@@ -364,6 +416,7 @@ export interface ChannelMessage {
   can_delete: boolean;
   image_url: string | null;
   poll_data: string | null;
+  owner_is_founding_echo: boolean;
 }
 
 export interface PollData {
@@ -395,7 +448,6 @@ export interface ChangePasswordRequest {
 }
 
 export interface NotificationPreferences {
-  user_id: string;
   echo_life_events: NotificationDelivery;
   daily_digest: NotificationDelivery;
   social: NotificationDelivery;
@@ -406,8 +458,6 @@ export interface NotificationPreferences {
   billing: NotificationDelivery;
   moderation: NotificationDelivery;
   account: NotificationDelivery;
-  quiet_hours_start: string | null;
-  quiet_hours_end: string | null;
   updated_at: string;
 }
 
@@ -418,10 +468,16 @@ export interface ApiKey {
   name: string;
   key_prefix: string;
   created_at: string;
+  last_used_at: string | null;
 }
 
 export interface CreateApiKeyRequest {
   name: string;
+  /** Scopes the key is granted. A key with none is refused by every
+   *  scope-gated route. */
+  scopes?: string[];
+  /** RFC 3339. Omitted or `null` for a key that does not expire. */
+  expires_at?: string | null;
 }
 
 export interface CreateApiKeyResponse {
@@ -445,29 +501,36 @@ export interface SystemHealth {
   total_shards: number;
 }
 
-export interface AdminReport {
-  report_id: string;
-  reporter_user_id: string;
-  target_type: string;
-  target_id: string;
-  reason: string;
-  details: string;
-  priority: string;
-  status: string;
-  sla_deadline: string;
-  created_at: string;
-}
+/** `GET /admin/reports` and the answer of `PATCH /admin/reports/{id}`
+ *  (`ReportResponse`). */
+export type AdminReport = UserReport;
 
+/** A row of `GET /admin/users` (`AdminUserSummary`). */
 export interface AdminUser {
   user_id: string;
   email: string;
   display_name: string;
-  account_type: AccountType;
   subscription_tier: SubscriptionTier;
   account_status: AccountStatus;
   echo_count: number;
   created_at: string;
-  last_login_at: string;
+}
+
+/** An Echo of the user `GET /admin/users/{id}` describes
+ *  (`AdminEchoSummary`). */
+export interface AdminEchoSummary {
+  echo_id: string;
+  name: string;
+  status: string;
+  owner_user_id: string;
+  avatar_url: string | null;
+  quarantined_at: string | null;
+  public_figure_flag: boolean | null;
+}
+
+/** `GET /admin/users/{id}` (`AdminUserDetail`). */
+export interface AdminUserDetail extends AdminUser {
+  echoes: AdminEchoSummary[];
 }
 
 export interface ResolveReportRequest {
@@ -509,9 +572,9 @@ export interface FeedbackEntry {
   structured_summary: string;
   context: FeedbackContext;
   status: FeedbackStatus;
-  priority?: FeedbackPriority | null;
-  github_issue_url?: string | null;
-  resolution_notes?: string | null;
+  priority: FeedbackPriority | null;
+  github_issue_url: string | null;
+  resolution_notes: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -535,9 +598,8 @@ export interface DataExport {
   export_id: string;
   status: ExportStatus;
   format: ExportFormat;
-  download_url?: string;
-  download_path?: string;
-  subtitle_path?: string;
+  download_path: string | null;
+  subtitle_path: string | null;
   created_at: string;
 }
 
@@ -559,10 +621,17 @@ export interface Conversation {
 
 export interface ConversationMessage {
   message_id: string;
-  conversation_id: string;
   role: 'user' | 'echo';
   content: string;
   created_at: string;
+}
+
+/** The 202 `POST /conversations/{id}/messages` answers while the Echo is
+ *  busy (`ConversationQueuedResponse`). */
+export interface ConversationQueued {
+  status: string;
+  message: string;
+  retry_after_seconds: number;
 }
 
 export interface CreateConversationResponse {
@@ -587,14 +656,19 @@ export interface SendConversationMessageRequest {
 
 // --- Search ---
 
+/** What `/search/{echoes,shards,diary,events,messages}` each answer with,
+ *  in that order. */
+export type SearchItemType = 'echo' | 'shard' | 'diary' | 'event' | 'message';
+
 export interface SearchResult {
-  id: string;
-  result_type: 'Echo' | 'DiaryEntry' | 'LifeEvent' | 'Shard' | 'Message';
-  title: string;
+  item_type: SearchItemType;
+  item_id: string;
+  /** The Echo a diary entry or an event belongs to, and the Echo itself for
+   *  an Echo. `null` for a shard or a message. */
+  echo_id: string | null;
   snippet: string;
-  echo_id?: string;
-  shard_id?: string;
   created_at: string;
+  owner_is_founding_echo: boolean;
 }
 
 export interface SearchParams {
@@ -610,6 +684,8 @@ export interface SearchParams {
 
 export interface OracleAskRequest {
   question: string;
+  context_type?: string;
+  context_id?: string;
   context?: OracleContext;
   history?: Array<{ role: string; text: string }>;
 }
@@ -622,12 +698,8 @@ export interface OracleContext {
 
 export interface OracleResponse {
   answer: string;
-  deep_links?: OracleDeepLink[];
-}
-
-export interface OracleDeepLink {
-  label: string;
-  path: string;
+  context_type: string | null;
+  context_id: string | null;
 }
 
 // --- Waitlist ---
@@ -658,18 +730,15 @@ export interface WaitlistCountResponse {
 
 // --- Life Event ---
 
+/** An item of `GET /echoes/{id}/timeline` (`TimelineEventView`). */
 export interface LifeEvent {
   event_id: string;
   echo_id: string;
   tick_id: number;
-  event_type: LifeEventType;
   headline: string;
   narrative: string;
   significance_score: number;
-  location_name: string;
   shard_id: string;
-  related_echo_ids: string[];
-  content_hash: string;
   created_at: string;
 }
 
@@ -717,19 +786,14 @@ export interface ShardTheme {
 
 // --- Shard Location ---
 
+/** A location as the shard routes answer it (`ShardLocationView`). */
 export interface ShardLocation {
   location_id: string;
   shard_id: string;
   name: string;
-  location_type: LocationType;
   description: string;
-  capacity: number;
-  connects_to: string[];
-  travel_time_ticks: number;
+  location_type: LocationType;
   is_spawn_point: boolean;
-  social_density: number;
-  economic_activity: number;
-  danger_level: number;
 }
 
 // --- Shard Placement ---
@@ -804,19 +868,22 @@ export interface ModerationAction {
   duration_seconds: number | null;
   created_at: string;
   expires_at: string | null;
+  resolved_at: string | null;
+  resolved_by: string | null;
+  resolution_notes: string | null;
 }
 
 // --- Consent Record ---
 
+/** A consent as `GET /account/me/consents` answers it. */
 export interface ConsentRecord {
   consent_id: string;
-  user_id: string;
   consent_type: ConsentType;
   version: string;
   granted_at: string;
   withdrawn_at: string | null;
-  ip_hash: string;
   context: string;
+  active: boolean;
 }
 
 // --- Payment Record ---
@@ -829,9 +896,10 @@ export interface PaymentRecord {
   provider_payment_id: string;
   amount_usd_cents: number;
   currency: string;
-  crypto_amount?: string | null;
+  crypto_amount: string | null;
   status: PaymentStatus;
   description: string;
+  metadata: unknown;
   created_at: string;
   confirmed_at: string | null;
 }
@@ -845,13 +913,15 @@ export interface PaymentRecord {
 export type WorldEvent = _WorldEvent;
 export type WorldEventPayload = _WorldEventPayload;
 
-/** Flat tagged events sent over Echo/Dashboard WS streams (server's WsEchoEvent). */
+/** Flat tagged frames sent over the echo, dashboard, channel and community
+ *  streams (the server's `WsEchoEvent`, and each stream's handshake frame). */
 export type WsEchoEvent =
   | {
       type: 'DiaryEntryCreated';
       echo_id: string;
       diary_id: string;
       tick_id: number;
+      content_locale: string;
     }
   | {
       type: 'DiaryImageReady';
@@ -864,6 +934,7 @@ export type WsEchoEvent =
       echo_id: string;
       event_id: string;
       tick_id: number;
+      content_locale: string;
     }
   | { type: 'MoodChanged'; echo_id: string; mood: string; tick_id: number }
   | {
@@ -904,6 +975,7 @@ export type WsEchoEvent =
       message_id: string;
       deleted_by: string;
     }
+  | { type: 'ChannelMessagesAnonymised'; channel_ids: string[] }
   | { type: 'NotificationCreated'; notification_id: string }
   | {
       type: 'PaymentFailed';
@@ -924,6 +996,24 @@ export type WsEchoEvent =
       revoked_by_user_id: string | null;
       reason: string;
     }
-  | { type: 'Connected'; echo_id?: string; message: string }
-  | { type: 'Error'; message: string }
-  | { type: string; [key: string]: unknown };
+  // Sent to admin dashboard sockets when the daily revenue snapshot is
+  // generated.
+  | { type: 'RevenueSnapshotGenerated'; snapshot_date: string }
+  // The first frame on the channel, community and shard streams: their
+  // handshake. The channel stream names its channel, the shard stream its
+  // shard, and the community stream neither.
+  | {
+      type: 'Connected';
+      channel_id?: string;
+      shard_id?: string;
+      message: string;
+    }
+  // The first frame on the echo and dashboard streams: their handshake.
+  | {
+      type: 'ConnectionEstablished';
+      echo_id?: string;
+      message: string;
+      last_tick_at: number;
+      tick_interval: number;
+    }
+  | { type: 'Error'; message: string };

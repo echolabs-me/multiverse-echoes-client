@@ -85,6 +85,33 @@ describe('api/client.request — error response envelope handling', () => {
     expect(caught?.message).toBe('Persona text too long');
   });
 
+  it('parses a failed body validation, whose `error` is a string, into its code and field messages', async () => {
+    installFetch({
+      status: 400,
+      body: JSON.stringify({
+        error: 'VALIDATION_ERROR',
+        fields: {
+          name: ['Name must be 1 to 50 characters'],
+          persona_text: ['Persona is too long'],
+        },
+      }),
+    });
+
+    let caught: ApiRequestError | null = null;
+    try {
+      await request<unknown>('/echoes');
+    } catch (e) {
+      caught = e as ApiRequestError;
+    }
+
+    expect(caught).toBeInstanceOf(ApiRequestError);
+    expect([caught?.status, caught?.code, caught?.message]).toEqual([
+      400,
+      'VALIDATION_ERROR',
+      'Name must be 1 to 50 characters Persona is too long',
+    ]);
+  });
+
   it('parses a 500 ErrorEnvelope without leaking the underlying error', async () => {
     installFetch({
       status: 500,

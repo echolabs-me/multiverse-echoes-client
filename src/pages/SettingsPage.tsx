@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { useCallback, useEffect, useState, type ReactElement } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -453,21 +453,31 @@ function PrivacySection() {
   const { t } = useTranslation();
   const addToast = useToastStore((s) => s.addToast);
   const [soloMode, setSoloMode] = useState(false);
+  const [communityOptOut, setCommunityOptOut] = useState(false);
+  // The opt-out is stored but the name removal has not finished (R220.3).
+  const [cleanupPending, setCleanupPending] = useState(false);
   const [doNotSell, setDoNotSell] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
 
+  // Reads the stored settings, so the page shows what the server holds.
+  const loadPrivacy = useCallback(async () => {
+    try {
+      const privacy = await accountApi.getPrivacy();
+      setSoloMode(privacy.solo_mode);
+      setCommunityOptOut(privacy.community_opt_out);
+      setCleanupPending(privacy.community_opt_out_cleanup_pending);
+      setDoNotSell(privacy.do_not_sell);
+    } catch {
+      addToast(t('common.error'), 'danger', { platformLink: true });
+    }
+  }, [addToast, t]);
+
   useEffect(() => {
     const load = async () => {
-      try {
-        const privacy = await accountApi.getPrivacy();
-        setSoloMode(privacy.solo_mode);
-        setDoNotSell(privacy.do_not_sell);
-      } catch {
-        // ignore
-      }
+      await loadPrivacy();
     };
     void load();
-  }, []);
+  }, [loadPrivacy]);
 
   const handleSoloModeToggle = async () => {
     try {
@@ -475,6 +485,21 @@ function PrivacySection() {
       setSoloMode(!soloMode);
     } catch {
       addToast(t('common.error'), 'danger', { platformLink: true });
+    }
+  };
+
+  // A failed request can leave the opt-out stored with its name removal
+  // unfinished, so the stored settings are read again after one (R220.3).
+  const setCommunityOptOutTo = async (on: boolean) => {
+    try {
+      const result = await accountApi.updatePrivacy({
+        community_opt_out: on,
+      });
+      setCommunityOptOut(result.community_opt_out);
+      setCleanupPending(result.community_opt_out_cleanup_pending);
+    } catch {
+      addToast(t('common.error'), 'danger', { platformLink: true });
+      await loadPrivacy();
     }
   };
 
@@ -535,6 +560,37 @@ function PrivacySection() {
               </p>
             </label>
           </div>
+          <div className="flex items-center gap-3">
+            <input
+              id="community-opt-out-toggle"
+              type="checkbox"
+              checked={communityOptOut}
+              onChange={() => void setCommunityOptOutTo(!communityOptOut)}
+              className="size-4 rounded-sm border-border accent-accent"
+              aria-label={t('settings.communityOptOut')}
+            />
+            <label htmlFor="community-opt-out-toggle">
+              <span className="text-sm text-text-primary">
+                {t('settings.communityOptOut')}
+              </span>
+              <p className="text-xs text-text-secondary">
+                {t('settings.communityOptOutDesc')}
+              </p>
+            </label>
+          </div>
+          {cleanupPending && (
+            <div role="status" className="flex items-center gap-3">
+              <p className="text-xs font-medium text-warning">
+                {t('settings.communityOptOutPending')}
+              </p>
+              <Button
+                variant="secondary"
+                onClick={() => void setCommunityOptOutTo(true)}
+              >
+                {t('settings.communityOptOutRetry')}
+              </Button>
+            </div>
+          )}
           <div className="flex items-center gap-3">
             <input
               id="do-not-sell-toggle"

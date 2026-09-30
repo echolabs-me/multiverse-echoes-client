@@ -1,4 +1,4 @@
-import type { ApiError } from '../../types/api.ts';
+import type { ApiError, ValidationErrorBody } from '../../types/api.ts';
 import { safeGetItem, safeRemoveItem, safeSetItem } from '../safeStorage.ts';
 
 function resolveBaseUrl(): string {
@@ -153,14 +153,26 @@ export async function request<T>(
       onAuthFailure?.();
     }
 
-    let errorBody: ApiError;
+    let errorBody: ApiError | ValidationErrorBody;
     try {
-      errorBody = (await response.json()) as ApiError;
+      errorBody = (await response.json()) as ApiError | ValidationErrorBody;
     } catch {
       throw new ApiRequestError(
         response.status,
         'UNKNOWN',
         `HTTP ${response.status}`,
+      );
+    }
+
+    // A failed body validation: `error` is the code itself, and `fields`
+    // holds each field's messages.
+    if (typeof errorBody.error === 'string') {
+      throw new ApiRequestError(
+        response.status,
+        errorBody.error,
+        Object.values((errorBody as ValidationErrorBody).fields)
+          .flat()
+          .join(' '),
       );
     }
 

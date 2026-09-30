@@ -15,7 +15,7 @@ import {
 import { search } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { formatDate } from '../lib/formatDate.ts';
-import type { SearchResult } from '../types/api.ts';
+import type { SearchItemType, SearchResult } from '../types/api.ts';
 
 type ContentType =
   | 'all'
@@ -24,6 +24,15 @@ type ContentType =
   | 'LifeEvent'
   | 'Shard'
   | 'Message';
+
+/** The filter tab each kind of result the server answers belongs under. */
+const RESULT_TAB: Record<SearchItemType, Exclude<ContentType, 'all'>> = {
+  echo: 'Echo',
+  diary: 'DiaryEntry',
+  event: 'LifeEvent',
+  shard: 'Shard',
+  message: 'Message',
+};
 
 const CONTENT_TYPES: ContentType[] = [
   'all',
@@ -192,21 +201,21 @@ export function SearchPage() {
 
   const handleResultClick = (result: SearchResult) => {
     trackEvent('search.result_clicked', {
-      result_type: result.result_type,
-      result_id: result.id,
+      result_type: result.item_type,
+      result_id: result.item_id,
     });
-    switch (result.result_type) {
-      case 'Echo':
-        navigate(`/echoes/${result.id}`);
+    switch (result.item_type) {
+      case 'echo':
+        navigate(`/echoes/${result.item_id}`);
         break;
-      case 'DiaryEntry':
-      case 'LifeEvent':
+      case 'diary':
+      case 'event':
         if (result.echo_id) navigate(`/echoes/${result.echo_id}`);
         break;
-      case 'Shard':
-        navigate(`/shards/${result.id}`);
+      case 'shard':
+        navigate(`/shards/${result.item_id}`);
         break;
-      case 'Message':
+      case 'message':
         navigate('/community');
         break;
     }
@@ -214,7 +223,7 @@ export function SearchPage() {
 
   // Group results by type
   const grouped = results.reduce<Record<string, SearchResult[]>>((acc, r) => {
-    const key = r.result_type;
+    const key = RESULT_TAB[r.item_type];
     if (!acc[key]) acc[key] = [];
     acc[key].push(r);
     return acc;
@@ -405,16 +414,13 @@ export function SearchPage() {
                     <div className="space-y-2">
                       {items.map((result) => (
                         <button
-                          key={`${result.result_type}-${result.id}`}
+                          key={`${result.item_type}-${result.item_id}`}
                           onClick={() => handleResultClick(result)}
                           className="w-full rounded-lg border border-border bg-surface p-3 text-start transition-colors hover:bg-surface-raised focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
                         >
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0 flex-1">
-                              <p className="text-sm font-medium text-text-primary">
-                                {highlightSnippet(result.title, query)}
-                              </p>
-                              <p className="mbs-1 line-clamp-2 text-xs text-text-secondary">
+                              <p className="line-clamp-2 text-sm text-text-primary">
                                 {highlightSnippet(result.snippet, query)}
                               </p>
                             </div>

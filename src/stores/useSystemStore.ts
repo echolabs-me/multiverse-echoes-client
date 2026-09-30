@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { getBaseUrl } from '../lib/api/client.ts';
+import type { HealthResponse } from '../types/generated.ts';
 
 interface SystemState {
   tickIntervalSeconds: number;
@@ -18,14 +19,11 @@ export const useSystemStore = create<SystemState>((set, get) => ({
     try {
       const resp = await fetch(`${getBaseUrl()}/health`);
       if (resp.ok) {
-        const data = (await resp.json()) as {
-          tick_interval_seconds?: number;
-          last_tick_at?: number;
-        };
+        const data = (await resp.json()) as HealthResponse;
         if (data.tick_interval_seconds) {
           set({
             tickIntervalSeconds: data.tick_interval_seconds,
-            lastTickAt: data.last_tick_at ?? 0,
+            lastTickAt: data.last_tick_at,
             isLoaded: true,
           });
         }

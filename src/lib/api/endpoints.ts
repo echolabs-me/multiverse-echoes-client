@@ -1,5 +1,6 @@
 import { request, getBaseUrl, getAccessToken } from './client.ts';
 import type {
+  PrivacySettings,
   RegisterRequest,
   RegisterResponse,
   LoginRequest,
@@ -32,14 +33,17 @@ import type {
   SearchParams,
   Conversation,
   ConversationMessage,
+  ConversationQueued,
   CreateConversationResponse,
   ActiveConversationResponse,
   SendConversationMessageRequest,
   DataExport,
+  PaymentStatus,
   RequestExportBody,
   SystemHealth,
   AdminReport,
   AdminUser,
+  AdminUserDetail,
   ResolveReportRequest,
   WaitlistSignupRequest,
   WaitlistSignupResponse,
@@ -57,11 +61,14 @@ import type {
   AdminRevokeShareTokenResponse,
   AdminShareTokenListResponse,
   AdminShareTokenSummary,
+  DiscordLinkStatus,
   EchoInCommonRef,
+  InfluenceResponse,
   InventoryRowResponse,
   MarketplaceItemResponse,
   MarketplacePreviewResponse,
   MemoryView,
+  ProfileVisibility,
   PublicEchoRef,
   PublicProfileResponse,
   PublicUserOgResponse,
@@ -70,7 +77,10 @@ import type {
   ShardEchoSummary,
   ShareFeedItemRequest,
   ShareFeedItemResponse,
+  TravelResponse,
   ViralContentResponse,
+  VoiceSessionResponse,
+  VoiceStartResponse,
 } from '../../types/generated.ts';
 
 // --- Auth ---
@@ -127,7 +137,7 @@ export const echoes = {
     request<EchoResponse>(`/echoes/${echoId}/wake`, { method: 'POST' }),
 
   travel: (echoId: string, targetShardId: string) =>
-    request<MessageResponse>(`/echoes/${echoId}/travel`, {
+    request<TravelResponse>(`/echoes/${echoId}/travel`, {
       method: 'POST',
       body: JSON.stringify({ destination_shard_id: targetShardId }),
     }),
@@ -147,7 +157,7 @@ export const echoes = {
     request<InfluenceBalance>(`/echoes/${echoId}/influence`),
 
   useInfluence: (echoId: string, data: UseInfluenceRequest) =>
-    request<MessageResponse>(`/echoes/${echoId}/influence`, {
+    request<InfluenceResponse>(`/echoes/${echoId}/influence`, {
       method: 'POST',
       body: JSON.stringify(data),
     }),
@@ -205,7 +215,11 @@ export const echoes = {
     echoId: string,
     entryId: string,
     jobId: string,
-  ): Promise<{ status: string; progress?: number; error?: string }> => {
+  ): Promise<
+    | { status: 'generating'; progress: number }
+    | { status: 'complete' }
+    | { status: 'failed'; error: string }
+  > => {
     return request(
       `/echoes/${echoId}/diary/${entryId}/narrate/video/status/${jobId}`,
     );
@@ -236,13 +250,9 @@ export const echoes = {
     }),
 
   startVoiceSession: (echoId: string) =>
-    request<{
-      voice_ws_url: string;
-      echo_id: string;
-      session_nonce: number;
-      conversation_id: string;
-      session_duration_seconds: number;
-    }>(`/echoes/${echoId}/voice/start`, { method: 'POST' }),
+    request<VoiceStartResponse>(`/echoes/${echoId}/voice/start`, {
+      method: 'POST',
+    }),
 
   stopVoiceSession: (echoId: string, nonce?: number) =>
     request<void>(
@@ -251,11 +261,7 @@ export const echoes = {
     ),
 
   voiceStatus: (echoId: string) =>
-    request<{
-      active: boolean;
-      voice_ws_url: string | null;
-      remaining_seconds?: number;
-    }>(`/echoes/${echoId}/voice/status`),
+    request<VoiceSessionResponse>(`/echoes/${echoId}/voice/status`),
 };
 
 // --- Shards ---
@@ -338,18 +344,16 @@ export const notifications = {
   list: () => request<Notification[]>('/account/me/notifications'),
 
   markRead: (notificationId: string) =>
-    request<MessageResponse>(
-      `/account/me/notifications/${notificationId}/read`,
-      { method: 'POST' },
-    ),
+    request<void>(`/account/me/notifications/${notificationId}/read`, {
+      method: 'POST',
+    }),
 };
 
 // --- Channels ---
 
 export const channels = {
-  list: (params?: { shard_id?: string; type?: string }) => {
+  list: (params?: { type?: string }) => {
     const query = new URLSearchParams();
-    if (params?.shard_id) query.set('shard_id', params.shard_id);
     if (params?.type) query.set('type', params.type);
     const qs = query.toString();
     return request<Channel[]>(`/channels${qs ? `?${qs}` : ''}`);
@@ -387,9 +391,10 @@ export const channels = {
     }),
 
   deleteMessage: (channelId: string, messageId: string) =>
-    request<MessageResponse>(`/channels/${channelId}/messages/${messageId}`, {
-      method: 'DELETE',
-    }),
+    request<{ deleted: boolean }>(
+      `/channels/${channelId}/messages/${messageId}`,
+      { method: 'DELETE' },
+    ),
 
   uploadImage: async (
     channelId: string,
@@ -435,8 +440,12 @@ export const channels = {
 export const account = {
   getProfile: () => request<import('../../types/api.ts').User>('/account/me'),
 
-  updateProfile: (data: { display_name?: string; locale?: string }) =>
-    request<{ message: string; display_name: string; locale?: string }>(
+  updateProfile: (data: {
+    display_name?: string;
+    locale?: string;
+    bio?: string;
+  }) =>
+    request<{ message: string; display_name: string; locale: string }>(
       '/account/me/profile',
       {
         method: 'PATCH',
@@ -444,20 +453,15 @@ export const account = {
       },
     ),
 
-  getPrivacy: () =>
-    request<{
-      solo_mode: boolean;
-      do_not_sell: boolean;
-      analytics_opt_out: boolean;
-    }>('/account/me/privacy'),
+  getPrivacy: () => request<PrivacySettings>('/account/me/privacy'),
 
-  updatePrivacy: (data: { solo_mode?: boolean; do_not_sell?: boolean }) =>
-    request<{
-      solo_mode: boolean;
-      do_not_sell: boolean;
-      analytics_opt_out: boolean;
-      updated_at: string;
-    }>('/account/me/privacy', {
+  updatePrivacy: (data: {
+    solo_mode?: boolean;
+    do_not_sell?: boolean;
+    community_opt_out?: boolean;
+    profile_visibility?: ProfileVisibility;
+  }) =>
+    request<PrivacySettings>('/account/me/privacy', {
       method: 'PATCH',
       body: JSON.stringify(data),
     }),
@@ -477,10 +481,10 @@ export const account = {
       body: JSON.stringify(data),
     }),
 
-  requestExport: (data?: RequestExportBody) =>
+  requestExport: (data: RequestExportBody) =>
     request<DataExport>('/account/me/story-export', {
       method: 'POST',
-      body: data ? JSON.stringify(data) : undefined,
+      body: JSON.stringify(data),
     }),
 
   getExportStatus: (exportId: string) =>
@@ -490,7 +494,9 @@ export const account = {
     `/account/me/story-export/${exportId}/download`,
 
   deleteAccount: () =>
-    request<MessageResponse>('/account/me', { method: 'DELETE' }),
+    request<{ message: string; deletion_scheduled_at: string }>('/account/me', {
+      method: 'DELETE',
+    }),
 
   cancelDeletion: () =>
     request<MessageResponse>('/account/me/delete/cancel', { method: 'POST' }),
@@ -516,14 +522,11 @@ export const account = {
     }),
 
   unlinkDiscord: () =>
-    request<MessageResponse>('/account/me/discord/link', { method: 'DELETE' }),
+    request<{ unlinked: boolean }>('/account/me/discord/link', {
+      method: 'DELETE',
+    }),
 
-  discordStatus: () =>
-    request<{
-      linked: boolean;
-      discord_user_id?: string;
-      discord_username?: string;
-    }>('/account/me/discord'),
+  discordStatus: () => request<DiscordLinkStatus>('/account/me/discord'),
 
   acceptTos: (version: string) =>
     request<import('../../types/generated.ts').AcceptTosResponse>(
@@ -572,14 +575,18 @@ export const conversations = {
   messages: (conversationId: string) =>
     request<ConversationMessage[]>(`/conversations/${conversationId}/messages`),
 
+  /** Answers the Echo's message, or 202 `queued` while the Echo is busy. */
   sendMessage: (conversationId: string, data: SendConversationMessageRequest) =>
-    request<ConversationMessage>(`/conversations/${conversationId}/messages`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }),
+    request<ConversationMessage | ConversationQueued>(
+      `/conversations/${conversationId}/messages`,
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+      },
+    ),
 
   saveAsDiary: (conversationId: string) =>
-    request<MessageResponse>(`/conversations/${conversationId}/save`, {
+    request<{ saved: boolean }>(`/conversations/${conversationId}/save`, {
       method: 'POST',
     }),
 };
@@ -633,7 +640,7 @@ export const admin = {
   reports: () => request<AdminReport[]>('/admin/reports'),
 
   resolveReport: (reportId: string, data: ResolveReportRequest) =>
-    request<MessageResponse>(`/admin/reports/${reportId}`, {
+    request<AdminReport>(`/admin/reports/${reportId}`, {
       method: 'PATCH',
       body: JSON.stringify(data),
     }),
@@ -645,17 +652,20 @@ export const admin = {
     return request<AdminUser[]>(`/admin/users${qs ? `?${qs}` : ''}`);
   },
 
-  getUser: (userId: string) => request<AdminUser>(`/admin/users/${userId}`),
+  getUser: (userId: string) =>
+    request<AdminUserDetail>(`/admin/users/${userId}`),
 
   suspendUser: (userId: string) =>
-    request<MessageResponse>(`/admin/users/${userId}/suspend`, {
-      method: 'POST',
-    }),
+    request<{ status: string; user_id: string }>(
+      `/admin/users/${userId}/suspend`,
+      { method: 'POST' },
+    ),
 
   unsuspendUser: (userId: string) =>
-    request<MessageResponse>(`/admin/users/${userId}/unsuspend`, {
-      method: 'POST',
-    }),
+    request<{ status: string; user_id: string }>(
+      `/admin/users/${userId}/unsuspend`,
+      { method: 'POST' },
+    ),
 
   shards: () => request<Shard[]>('/shards'),
 
@@ -783,7 +793,7 @@ export interface CreatePaymentResponse {
 
 export interface PaymentStatusResponse {
   payment_id: string;
-  status: string;
+  status: PaymentStatus;
   provider: string;
   amount_usd_cents: number;
   confirmed_at: string | null;

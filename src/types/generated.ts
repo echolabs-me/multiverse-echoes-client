@@ -837,6 +837,12 @@ export type ChannelMessage = {
 	image_url?: string | null,
 	// JSON-serialized poll data (question, options, votes).
 	poll_data?: string | null,
+	/**
+	 *  True once `anonymise_by_author` removed the author, because they opted
+	 *  out of community features or their account was deleted (R211). The nil
+	 *  author alone cannot say so: an unlinked Discord relay has it too.
+	 */
+	author_removed?: boolean,
 };
 
 export type ChannelResponse = {
@@ -903,7 +909,7 @@ export type ConsentRecord = {
 	context: string,
 };
 
-export type ConsentType = "ToS" | "Privacy" | "PersonaData" | "Community";
+export type ConsentType = "ToS" | "Privacy" | "PersonaData";
 
 export type ContentFlag = {
 	flag_id: string,
@@ -2417,6 +2423,12 @@ export type MessageResponse = {
 	channel_id: string,
 	author_id: string,
 	author_display_name: string,
+	/**
+	 *  True when the author was removed because they opted out of community
+	 *  features or deleted their account. The client then shows them as a
+	 *  former community member (R211, R212.2).
+	 */
+	author_removed: boolean,
 	content: string,
 	message_type: MessageType,
 	created_at: string,
@@ -3789,6 +3801,12 @@ export type UpdatePreferencesRequest = {
 export type UpdatePrivacyRequest = {
 	solo_mode: boolean | null,
 	do_not_sell: boolean | null,
+	/**
+	 *  The community opt-out (R209). Turning it on removes the user's name from
+	 *  their existing channel messages and their share pages at once; turning
+	 *  it off does not restore it.
+	 */
+	community_opt_out: boolean | null,
 	profile_visibility: ProfileVisibility | null,
 };
 
@@ -3868,6 +3886,20 @@ export type User = {
 	 *  Linked to do_not_sell per ME-PDP-001.
 	 */
 	analytics_opt_out?: boolean,
+	/**
+	 *  The community opt-out (R208, R209). When true the user cannot post,
+	 *  edit, upload or poll in channels, share to feeds, be followed or be
+	 *  relayed from Discord, and other viewers do not see their feed items.
+	 *  Reference: ME-API-001 §4.3 (`community_opt_out`), ME-PDP-001.
+	 */
+	community_opt_out?: boolean,
+	/**
+	 *  True while the opt-out is stored but the removal of the user's name
+	 *  from their channel messages and share pages has not finished (R220.3).
+	 *  Set with `community_opt_out`, and cleared when the removal completes
+	 *  or the opt-out is turned off.
+	 */
+	community_opt_out_cleanup_pending?: boolean,
 	/**
 	 *  GDPR Art. 18 — Right to Restriction of Processing. When true, the
 	 *  tick engine MUST skip every Echo owned by this user — no diary
@@ -4292,7 +4324,13 @@ origin_shard_id: string } } | { ShardTravelDenied: { echo_id: string; reason: st
 // Emitted by purge_user() after full data cascade. Requires EventBus in PurgeContext (Phase 7).
 { UserDeleted: { user_id: string } } | { PersonaUpdated: { echo_id: string; version: number } } | { ConversationSaved: { echo_id: string; user_id: string } } | 
 // Phase 7 — user feedback system.
-{ FeedbackSubmitted: { user_id: string; feedback_id: string } } | { CommunityMessagePosted: { channel_id: string; message_id: string; author_id: string } } | { MessageDeleted: { channel_id: string; message_id: string; deleted_by: string } } | { MessageEdited: { channel_id: string; message_id: string; author_id: string } } | { FeedItemGenerated: { feed_item_id: string; echo_id: string; shard_id: string } } | { UserFollowed: { source_user_id: string; target_user_id: string } } | { UserBlocked: { source_user_id: string; target_user_id: string } } | { UserMuted: { source_user_id: string; target_user_id: string } } | 
+{ FeedbackSubmitted: { user_id: string; feedback_id: string } } | { CommunityMessagePosted: { channel_id: string; message_id: string; author_id: string } } | { MessageDeleted: { channel_id: string; message_id: string; deleted_by: string } } | { MessageEdited: { channel_id: string; message_id: string; author_id: string } } | 
+/**
+ *  A user's channel messages were anonymised, by the community opt-out or
+ *  the account purge, so open views of these channels reload (R217.2).
+ *  It names the channels whose messages changed, and never the user.
+ */
+{ ChannelMessagesAnonymised: { channel_ids: string[] } } | { FeedItemGenerated: { feed_item_id: string; echo_id: string; shard_id: string } } | { UserFollowed: { source_user_id: string; target_user_id: string } } | { UserBlocked: { source_user_id: string; target_user_id: string } } | { UserMuted: { source_user_id: string; target_user_id: string } } | 
 /**
  *  An Admin changed a user's `AccountType` (ME-CSS-001 §9.1
  *  Moderator role management). Emitted by
@@ -4402,7 +4440,14 @@ export type WsEchoEvent = { type: "DiaryEntryCreated"; echo_id: string; diary_id
  */
 content_locale: string } | { type: "DiaryImageReady"; echo_id: string; diary_id: string; image_url: string } | { type: "LifeEventOccurred"; echo_id: string; event_id: string; tick_id: number; 
 // See `DiaryEntryCreated::content_locale`. CC TASK 3 Step 4.
-content_locale: string } | { type: "MoodChanged"; echo_id: string; mood: string; tick_id: number } | { type: "EchoMoved"; echo_id: string; from_location: string; to_location: string } | { type: "PersonaUpdated"; echo_id: string; version: number } | { type: "EchoHibernated"; echo_id: string; reason: string } | { type: "EchoWoken"; echo_id: string } | { type: "EchoWealthChanged"; echo_id: string; old_value: number; new_value: number; reason: string } | { type: "EchoDeleted"; echo_id: string } | { type: "ShardTravelCompleted"; echo_id: string; shard_id: string } | { type: "ShardCreated"; shard_id: string; shard_type: string } | { type: "CommunityMessagePosted"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageEdited"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageDeleted"; channel_id: string; message_id: string; deleted_by: string } | { type: "NotificationCreated"; notification_id: string } | { type: "EchoAvatarReady"; echo_id: string; avatar_url: string } | 
+content_locale: string } | { type: "MoodChanged"; echo_id: string; mood: string; tick_id: number } | { type: "EchoMoved"; echo_id: string; from_location: string; to_location: string } | { type: "PersonaUpdated"; echo_id: string; version: number } | { type: "EchoHibernated"; echo_id: string; reason: string } | { type: "EchoWoken"; echo_id: string } | { type: "EchoWealthChanged"; echo_id: string; old_value: number; new_value: number; reason: string } | { type: "EchoDeleted"; echo_id: string } | { type: "ShardTravelCompleted"; echo_id: string; shard_id: string } | { type: "ShardCreated"; shard_id: string; shard_type: string } | { type: "CommunityMessagePosted"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageEdited"; channel_id: string; message_id: string; author_id: string } | { type: "CommunityMessageDeleted"; channel_id: string; message_id: string; deleted_by: string } | 
+/**
+ *  The messages of a user who opted out of community features or was
+ *  purged were anonymised in these channels, so a view of one reloads its
+ *  messages (R217.2). It never names the user. The channel stream names
+ *  only its own channel; the community stream never names a private one.
+ */
+{ type: "ChannelMessagesAnonymised"; channel_ids: string[] } | { type: "NotificationCreated"; notification_id: string } | { type: "EchoAvatarReady"; echo_id: string; avatar_url: string } | 
 /**
  *  A share token was revoked — admin-initiated via the
  *  `/admin/share/tokens/{token}/revoke` endpoint, or sweeper-

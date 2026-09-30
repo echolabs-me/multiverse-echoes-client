@@ -298,11 +298,15 @@ function ReportsView() {
 
   if (isLoading) return <Spinner />;
 
-  const priorityColors: Record<string, string> = {
-    P0: 'danger',
-    P1: 'warning',
-    P2: 'info',
-    P3: 'default',
+  // The server sends the priority as a number: 0 is P0, the most urgent.
+  const priorityColors: Record<
+    number,
+    'danger' | 'warning' | 'info' | 'default'
+  > = {
+    0: 'danger',
+    1: 'warning',
+    2: 'info',
+    3: 'default',
   };
 
   return (
@@ -320,15 +324,8 @@ function ReportsView() {
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <Badge
-                    variant={
-                      priorityColors[report.priority] as
-                        | 'danger'
-                        | 'warning'
-                        | 'default'
-                    }
-                  >
-                    {report.priority}
+                  <Badge variant={priorityColors[report.priority] ?? 'default'}>
+                    P{report.priority}
                   </Badge>
                   <span className="text-sm font-medium text-text-primary">
                     {report.target_type}: {report.target_id.slice(0, 8)}
@@ -344,11 +341,6 @@ function ReportsView() {
                 )}
                 <div className="mbs-2 flex items-center gap-3 text-xs text-text-muted">
                   <span>{new Date(report.created_at).toLocaleString()}</span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={10} />
-                    {t('admin.slaDeadline')}:{' '}
-                    {new Date(report.sla_deadline).toLocaleString()}
-                  </span>
                 </div>
               </div>
 
@@ -722,17 +714,24 @@ function ControlsView() {
 }
 
 // --- Analytics View ---
-// Revenue fields (mrr, subscriber_count, churn_rate) intentionally omitted
-// from this client-side projection — those metrics are now sourced from
-// the Lane C billing-health endpoints and rendered in `BillingView`.
-// The server `/admin/analytics/summary` response shape is unchanged; the
-// client just stops reading the unused fields.
+// `/admin/analytics/summary` (`AnalyticsSummaryResponse`). This view does
+// not render the revenue fields (mrr, subscriber_count, churn_rate): those
+// metrics are sourced from the Lane C billing-health endpoints and rendered
+// in `BillingView`.
 interface AnalyticsSummary {
   dau: number;
   registrations_7d: number;
   echo_creations_7d: number;
   diary_views_today: number;
   safety_flagged_7d: number;
+  mrr: number;
+  subscriber_count: {
+    free: number;
+    core: number;
+    creator: number;
+    godmode: number;
+  };
+  churn_rate: number;
 }
 
 function AnalyticsView() {

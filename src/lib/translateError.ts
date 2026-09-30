@@ -22,6 +22,9 @@ import i18n from '../i18n';
 export interface ServerErrorEnvelope {
   code?: string;
   message?: string;
+  status?: number;
+  request_id?: string;
+  retry_after_seconds?: number;
 }
 
 /**

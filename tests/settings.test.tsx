@@ -1,10 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { SettingsPage } from '../src/pages/SettingsPage.tsx';
+import { account } from '../src/lib/api/endpoints.ts';
+import { useToastStore } from '../src/stores/useToastStore.ts';
 
 vi.mock('../src/stores/useAuthStore.ts', () => ({
   useAuthStore: () => ({
@@ -13,9 +15,14 @@ vi.mock('../src/stores/useAuthStore.ts', () => ({
   }),
 }));
 
-vi.mock('../src/stores/useToastStore.ts', () => ({
-  useToastStore: () => ({ addToast: vi.fn() }),
-}));
+// The page reads the store through a selector, so the mock applies it.
+vi.mock('../src/stores/useToastStore.ts', () => {
+  const state = { addToast: vi.fn() };
+  return {
+    useToastStore: (selector?: (s: typeof state) => unknown) =>
+      selector ? selector(state) : state,
+  };
+});
 
 vi.mock('../src/stores/useThemeStore.ts', () => ({
   useThemeStore: () => ({
@@ -44,7 +51,14 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
     getSessions: vi.fn().mockResolvedValue([]),
     changePassword: vi.fn(),
     revokeSession: vi.fn(),
-    getPrivacy: vi.fn().mockResolvedValue({ solo_mode: false, do_not_sell: false }),
+    getPrivacy: vi.fn().mockResolvedValue({
+      solo_mode: false,
+      do_not_sell: false,
+      analytics_opt_out: false,
+      community_opt_out: false,
+      community_opt_out_cleanup_pending: false,
+      profile_visibility: 'Public',
+    }),
     updatePrivacy: vi.fn(),
     getNotificationPreferences: vi.fn().mockResolvedValue({}),
     updateNotificationPreferences: vi.fn(),
@@ -85,6 +99,12 @@ void testI18n.use(initReactI18next).init({
         'settings.linkDiscord': 'Link Discord',
         'settings.soloMode': 'Solo Mode',
         'settings.soloModeDesc': 'Hide your echoes from other users',
+        'settings.communityOptOut': 'Community opt-out',
+        'settings.communityOptOutDesc':
+          'Turning it on removes your name from your past channel messages. Turning it off again does not restore it.',
+        'settings.communityOptOutPending':
+          'Your setting is saved, but removing your name did not finish.',
+        'settings.communityOptOutRetry': 'Try again',
         'settings.exportData': 'Export Data',
         'settings.privacyPolicy': 'Privacy Policy',
         'settings.theme': 'Theme',
@@ -133,10 +153,25 @@ void testI18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
 });
 
-function renderPage() {
+const PENDING_NOTICE =
+  'Your setting is saved, but removing your name did not finish.';
+
+/** A privacy response with the community opt-out flags set as given. */
+function privacy(community_opt_out: boolean, cleanup_pending: boolean) {
+  return {
+    solo_mode: false,
+    do_not_sell: false,
+    analytics_opt_out: false,
+    community_opt_out,
+    community_opt_out_cleanup_pending: cleanup_pending,
+    profile_visibility: 'Public' as const,
+  };
+}
+
+function renderPage(path = '/settings') {
   return render(
     <I18nextProvider i18n={testI18n}>
-      <MemoryRouter initialEntries={['/settings']}>
+      <MemoryRouter initialEntries={[path]}>
         <SettingsPage />
       </MemoryRouter>
     </I18nextProvider>,
@@ -152,6 +187,110 @@ describe('SettingsPage', () => {
     expect(profileElements.length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Account')).toBeInTheDocument();
     expect(screen.getByText('Privacy')).toBeInTheDocument();
+  });
+
+  it('shows the community opt-out toggle with what turning it on does', async () => {
+    await act(async () => {
+      renderPage('/settings?tab=privacy');
+    });
+    const toggle = screen.getByRole('checkbox', { name: 'Community opt-out' });
+    expect(toggle).not.toBeChecked();
+    expect(
+      screen.getByText(
+        'Turning it on removes your name from your past channel messages. Turning it off again does not restore it.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(PENDING_NOTICE)).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Try again' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('turns the community opt-out on and shows the stored setting', async () => {
+    vi.mocked(account.updatePrivacy).mockResolvedValueOnce({
+      ...privacy(true, false),
+      updated_at: '2026-09-30T00:00:00Z',
+    });
+    await act(async () => {
+      renderPage('/settings?tab=privacy');
+    });
+    const toggle = screen.getByRole('checkbox', { name: 'Community opt-out' });
+    await act(async () => {
+      fireEvent.click(toggle);
+    });
+    expect(account.updatePrivacy).toHaveBeenCalledWith({ community_opt_out: true });
+    expect(toggle).toBeChecked();
+  });
+
+  it('reads a stored opt-out as on', async () => {
+    vi.mocked(account.getPrivacy).mockResolvedValueOnce(privacy(true, false));
+    await act(async () => {
+      renderPage('/settings?tab=privacy');
+    });
+    expect(screen.getByRole('checkbox', { name: 'Community opt-out' })).toBeChecked();
+  });
+
+  it('shows an unfinished clean-up with the toggle on, the notice and a retry', async () => {
+    vi.mocked(account.getPrivacy).mockResolvedValueOnce(privacy(true, true));
+    await act(async () => {
+      renderPage('/settings?tab=privacy');
+    });
+    expect(screen.getByRole('checkbox', { name: 'Community opt-out' })).toBeChecked();
+    expect(screen.getByText(PENDING_NOTICE)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
+  });
+
+  it('retries the clean-up by sending the opt-out on again, and drops the notice once it finishes', async () => {
+    vi.mocked(account.getPrivacy).mockResolvedValueOnce(privacy(true, true));
+    vi.mocked(account.updatePrivacy).mockClear();
+    vi.mocked(account.updatePrivacy).mockResolvedValueOnce({
+      ...privacy(true, false),
+      updated_at: '2026-09-30T00:00:00Z',
+    });
+    await act(async () => {
+      renderPage('/settings?tab=privacy');
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+    });
+    expect(account.updatePrivacy).toHaveBeenCalledTimes(1);
+    expect(account.updatePrivacy).toHaveBeenCalledWith({ community_opt_out: true });
+    expect(screen.queryByText(PENDING_NOTICE)).not.toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: 'Community opt-out' })).toBeChecked();
+  });
+
+  it('re-reads the stored settings after a failed request', async () => {
+    vi.mocked(account.getPrivacy).mockClear();
+    vi.mocked(account.getPrivacy)
+      .mockResolvedValueOnce(privacy(false, false))
+      .mockResolvedValueOnce(privacy(true, true));
+    vi.mocked(account.updatePrivacy).mockRejectedValueOnce(new Error('503'));
+    await act(async () => {
+      renderPage('/settings?tab=privacy');
+    });
+    const toggle = screen.getByRole('checkbox', { name: 'Community opt-out' });
+    expect(toggle).not.toBeChecked();
+    await act(async () => {
+      fireEvent.click(toggle);
+    });
+    expect(account.getPrivacy).toHaveBeenCalledTimes(2);
+    expect(toggle).toBeChecked();
+    expect(screen.getByText(PENDING_NOTICE)).toBeInTheDocument();
+  });
+
+  it('tells the user when the privacy settings cannot be read', async () => {
+    const { addToast } = (
+      useToastStore as unknown as () => { addToast: ReturnType<typeof vi.fn> }
+    )();
+    addToast.mockClear();
+    vi.mocked(account.getPrivacy).mockRejectedValueOnce(new Error('500'));
+    await act(async () => {
+      renderPage('/settings?tab=privacy');
+    });
+    expect(addToast).toHaveBeenCalledTimes(1);
+    expect(addToast).toHaveBeenCalledWith('Error', 'danger', {
+      platformLink: true,
+    });
   });
 
   it('renders without crash', async () => {
