@@ -2980,6 +2980,14 @@ export type RevokeApiKeyResponse = {
 	revoked: boolean,
 };
 
+/**
+ *  The kind of search that found a result (R222.7, R225). The five content
+ *  routes each send their own value. `/search/feed`, and the feed results the
+ *  global `/search` merges, send `feed`. An `item_id` alone does not tell the
+ *  kinds apart: `/search/diary` and `/search/events` send feed item ids too.
+ */
+export type SearchItemType = "echo" | "shard" | "diary" | "event" | "message" | "feed";
+
 export type SearchQuery = {
 	q: string,
 	cursor?: string | null,
@@ -2992,7 +3000,9 @@ export type SearchQuery = {
 };
 
 export type SearchResult = {
-	item_type: string,
+	item_type: SearchItemType,
+	// The feed item's own kind, on a `feed` result only.
+	feed_item_type: FeedItemType | null,
 	item_id: string,
 	echo_id: string | null,
 	snippet: string,

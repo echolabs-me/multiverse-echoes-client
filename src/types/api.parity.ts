@@ -34,7 +34,8 @@ export type ApiTypeParity = [
   Expect<Equal<Api.OracleResponse, Gen.OracleAskResponse>>,
   Expect<Equal<Api.EchoMemory, Gen.MemoryView>>,
   Expect<Equal<Api.AdminEchoSummary, Gen.AdminEchoSummary>>,
-  // The server's `item_type`, `status`, `format` and `role` are strings; the
+  // The server's `status`, `format` and `role` are strings, and its search
+  // `item_type` has a sixth value the routes the client calls never send; the
   // hand-written types narrow them to the values the handlers send.
   Expect<
     Equal<

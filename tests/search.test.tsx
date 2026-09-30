@@ -10,7 +10,9 @@ import { search } from '../src/lib/api/endpoints.ts';
 // Mock stores
 vi.mock('../src/stores/index.ts', () => ({
   useAuthStore: (selector: (s: Record<string, unknown>) => unknown) =>
-    selector({ user: { display_name: 'Test User', subscription_tier: 'Free' } }),
+    selector({
+      user: { display_name: 'Test User', subscription_tier: 'Free' },
+    }),
   useNotificationStore: (selector: (s: Record<string, unknown>) => unknown) =>
     selector({ unreadCount: 0 }),
 }));
@@ -86,7 +88,9 @@ describe('SearchPage', () => {
   it('renders the search input', () => {
     renderSearch();
     expect(
-      screen.getByRole('searchbox', { name: 'Search Echoes, diary entries, events, shards...' }),
+      screen.getByRole('searchbox', {
+        name: 'Search Echoes, diary entries, events, shards...',
+      }),
     ).toBeInTheDocument();
   });
 
@@ -94,8 +98,12 @@ describe('SearchPage', () => {
     renderSearch();
     expect(screen.getByRole('tab', { name: 'All' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Echoes' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Diary Entries' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Life Events' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: 'Diary Entries' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: 'Life Events' }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Shards' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Messages' })).toBeInTheDocument();
   });
@@ -128,6 +136,7 @@ describe('SearchPage', () => {
       data: [
         {
           item_type: 'shard',
+          feed_item_type: null,
           item_id: 'shard-9',
           echo_id: null,
           snippet: 'A harbour town under a copper sky',
@@ -163,7 +172,10 @@ describe('SearchPage', () => {
 
   it('saves and displays recent searches', async () => {
     // Pre-populate recent searches
-    localStorage.setItem('me_recent_searches', JSON.stringify(['hello', 'world']));
+    localStorage.setItem(
+      'me_recent_searches',
+      JSON.stringify(['hello', 'world']),
+    );
     renderSearch();
     expect(screen.getByText('hello')).toBeInTheDocument();
     expect(screen.getByText('world')).toBeInTheDocument();

@@ -51,6 +51,7 @@ import type {
   ProvisioningType as _ProvisioningType,
   ReportStatus as _ReportStatus,
   ReportTargetType as _ReportTargetType,
+  SearchItemType as _SearchItemType,
   ShardDecisionRequest as _ShardDecisionRequest,
   ShardDetail as _ShardDetail,
   ShardSummary as _ShardSummary,
@@ -657,11 +658,16 @@ export interface SendConversationMessageRequest {
 // --- Search ---
 
 /** What `/search/{echoes,shards,diary,events,messages}` each answer with,
- *  in that order. */
-export type SearchItemType = 'echo' | 'shard' | 'diary' | 'event' | 'message';
+ *  in that order. The five routes the client calls never send `feed`: only
+ *  `/search/feed` and the global `/search` do, and the client calls neither.
+ *  Taken from the server's enum, so a kind added there fails the typecheck. */
+export type SearchItemType = Exclude<_SearchItemType, 'feed'>;
 
 export interface SearchResult {
   item_type: SearchItemType;
+  /** The feed item's own kind, on a `feed` result only, so always `null` from
+   *  the five routes the client calls. */
+  feed_item_type: _FeedItemType | null;
   item_id: string;
   /** The Echo a diary entry or an event belongs to, and the Echo itself for
    *  an Echo. `null` for a shard or a message. */
