@@ -327,6 +327,7 @@
     "messageDeleted": "Message deleted",
     "messageEdited": "Message edited",
     "formerMember": "A former community member",
+    "viaDiscord": "via Discord",
     "unknownUser": "Unknown User",
     "reportSent": "Report submitted",
     "editMessageLabel": "Edit message",

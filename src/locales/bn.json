@@ -327,6 +327,7 @@
     "messageDeleted": "বার্তা মুছে ফেলা হয়েছে",
     "messageEdited": "বার্তাটি সম্পাদিত হয়েছে",
     "formerMember": "একজন প্রাক্তন কমিউনিটি সদস্য",
+    "viaDiscord": "Discord-এর মাধ্যমে",
     "unknownUser": "অজানা ব্যবহারকারী",
     "reportSent": "রিপোর্ট জমা দেওয়া হয়েছে",
     "editMessageLabel": "বার্তা সম্পাদনা করুন",

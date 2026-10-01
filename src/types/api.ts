@@ -408,6 +408,10 @@ export interface ChannelMessage {
   /** The author opted out of community features or deleted their account,
    *  and is shown as a former community member (R211, R212.2). */
   author_removed: boolean;
+  /** The Discord name of the author of a message relayed from Discord by
+   *  someone without a linked account; `author_display_name` is then this
+   *  name, and the message is shown "via Discord" (R218). */
+  external_author_name: string | null;
   content: string;
   message_type: _MessageType;
   created_at: string;

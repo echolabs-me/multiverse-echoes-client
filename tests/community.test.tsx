@@ -76,6 +76,7 @@ void testI18n.use(initReactI18next).init({
         'common.report': 'Report',
         'community.formerMember': 'A former community member',
         'community.unknownUser': 'Unknown User',
+        'community.viaDiscord': 'via Discord',
       },
     },
   },
@@ -113,6 +114,7 @@ function message(
   author_display_name: string,
   author_removed: boolean,
   content = `content ${id}`,
+  external_author_name: string | null = null,
 ): ChannelMessage {
   return {
     message_id: id,
@@ -120,6 +122,7 @@ function message(
     author_id,
     author_display_name,
     author_removed,
+    external_author_name,
     content,
     message_type: 'UserMessage',
     created_at: '2026-09-30T00:00:00Z',
@@ -129,17 +132,34 @@ function message(
     can_delete: false,
     image_url: null,
     poll_data: null,
+    owner_is_founding_echo: false,
   };
+}
+
+/** `msg` as a server that predates the Discord name sends it: with no
+ *  `external_author_name` key at all, which the client's type does not allow,
+ *  hence the cast (R246). */
+function withoutDiscordName(msg: ChannelMessage): ChannelMessage {
+  const copy: Partial<ChannelMessage> = { ...msg };
+  delete copy.external_author_name;
+  return copy as ChannelMessage;
 }
 
 /** A removed author, then an unlinked Discord relay (both the nil author),
  *  then a named user, all within the grouping window. The relay has the shape
- *  the API sends it in: the nil author named "Unknown", not removed, with the
- *  Discord name inside its content. */
+ *  the API sends it in: the nil author, not removed, named by its Discord name,
+ *  with the text alone as its content (R218). */
 const removedThenRelay = [
   message('m1', NIL, 'Unknown', true),
-  message('m2', NIL, 'Unknown', false, 'Discord | visitor: hello'),
+  message('m2', NIL, 'visitor', false, 'hello', 'visitor'),
   message('m3', 'u2', 'Alice', false),
+];
+
+/** Two Discord users relayed one after the other, within the grouping window,
+ *  both under the nil author (R218). */
+const twoRelays = [
+  message('r1', NIL, 'visitor', false, 'first', 'visitor'),
+  message('r2', NIL, 'guest', false, 'second', 'guest'),
 ];
 
 function withMessages(msgs: ChannelMessage[]) {
@@ -153,8 +173,9 @@ function withMessages(msgs: ChannelMessage[]) {
  *  own header rather than grouped under the former member's. */
 function expectAuthorsShown() {
   expect(screen.getByText('A former community member')).toBeInTheDocument();
-  expect(screen.getByText('Unknown')).toBeInTheDocument();
-  expect(screen.getByText('Discord | visitor: hello')).toBeInTheDocument();
+  expect(screen.getByText('visitor')).toBeInTheDocument();
+  expect(screen.getByText('hello')).toBeInTheDocument();
+  expect(screen.getAllByText('via Discord')).toHaveLength(1);
   expect(screen.getByText('Alice')).toBeInTheDocument();
 }
 
@@ -206,6 +227,70 @@ describe('removed authors (R211, R212.2)', () => {
     });
     expectAuthorsShown();
   });
+});
+
+describe('Discord relays (R218)', () => {
+  afterEach(() => {
+    vi.mocked(channels.list).mockResolvedValue([]);
+    vi.mocked(channels.messages).mockResolvedValue(
+      [] as unknown as Awaited<ReturnType<typeof channels.messages>>,
+    );
+  });
+
+  it.each([
+    ['CommunityPage', renderPage],
+    ['CommunitySidebar', mountSidebar],
+  ])(
+    '%s shows each Discord user under a header of their own',
+    async (_name, mount) => {
+      withMessages(twoRelays);
+      await act(async () => {
+        mount();
+      });
+      expect(screen.getByText('visitor')).toBeInTheDocument();
+      expect(screen.getByText('guest')).toBeInTheDocument();
+      expect(screen.getAllByText('via Discord')).toHaveLength(2);
+    },
+  );
+
+  it.each([
+    ['CommunityPage', renderPage],
+    ['CommunitySidebar', mountSidebar],
+  ])(
+    '%s tags no message from a server that predates the Discord name (R246)',
+    async (_name, mount) => {
+      const msgs = [message('o1', 'u2', 'Alice', false, 'hi')].map(
+        withoutDiscordName,
+      );
+      withMessages(msgs);
+      await act(async () => {
+        mount();
+      });
+      expect(screen.getByText('hi')).toBeInTheDocument();
+      expect(screen.queryByText('via Discord')).not.toBeInTheDocument();
+    },
+  );
+
+  it.each([
+    ['CommunityPage', renderPage],
+    ['CommunitySidebar', mountSidebar],
+  ])(
+    '%s keeps one header for an author across a server upgrade (R246)',
+    async (_name, mount) => {
+      // Fetched before the upgrade, with no Discord name key, then after it,
+      // with the key set to null.
+      withMessages([
+        withoutDiscordName(message('a1', 'u2', 'Alice', false, 'before')),
+        message('a2', 'u2', 'Alice', false, 'after'),
+      ]);
+      await act(async () => {
+        mount();
+      });
+      expect(screen.getByText('before')).toBeInTheDocument();
+      expect(screen.getByText('after')).toBeInTheDocument();
+      expect(screen.getAllByText('Alice')).toHaveLength(1);
+    },
+  );
 });
 
 describe('anonymised messages (R217.2)', () => {

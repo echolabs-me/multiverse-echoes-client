@@ -327,6 +327,7 @@
     "messageDeleted": "메시지가 삭제되었습니다",
     "messageEdited": "메시지가 수정됨",
     "formerMember": "이전 커뮤니티 회원",
+    "viaDiscord": "Discord를 통해",
     "unknownUser": "알 수 없는 사용자",
     "reportSent": "보고서 제출됨",
     "editMessageLabel": "메시지 수정",

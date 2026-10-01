@@ -327,6 +327,7 @@
     "messageDeleted": "消息已刪除",
     "messageEdited": "消息已編輯",
     "formerMember": "一位前社羣成員",
+    "viaDiscord": "來自 Discord",
     "unknownUser": "未知用户",
     "reportSent": "舉報已提交",
     "editMessageLabel": "編輯消息",

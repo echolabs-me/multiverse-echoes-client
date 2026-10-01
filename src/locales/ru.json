@@ -327,6 +327,7 @@
     "messageDeleted": "Сообщение удалено",
     "messageEdited": "Сообщение отредактировано",
     "formerMember": "Бывший участник сообщества",
+    "viaDiscord": "через Discord",
     "unknownUser": "Неизвестный пользователь",
     "reportSent": "Отчет отправлен",
     "editMessageLabel": "Редактировать сообщение",

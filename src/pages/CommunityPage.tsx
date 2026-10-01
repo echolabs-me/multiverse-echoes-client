@@ -23,6 +23,7 @@ import {
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { formatTime } from '../lib/formatDate.ts';
+import { sameMessageAuthor } from '../lib/messageGrouping.ts';
 import type { Channel, ChannelMessage, WsEchoEvent } from '../types/api.ts';
 
 const MAX_MESSAGE_LENGTH = 2000;
@@ -444,13 +445,7 @@ export function CommunityPage() {
                   <div className="flex flex-col">
                     {messages.map((msg, idx) => {
                       const prev = idx > 0 ? messages[idx - 1] : null;
-                      // A removed author and an unlinked Discord relay share
-                      // the nil author id, so the shown name is compared too.
-                      const sameAuthor =
-                        prev !== null &&
-                        prev.author_id === msg.author_id &&
-                        prev.author_removed === msg.author_removed &&
-                        prev.author_display_name === msg.author_display_name;
+                      const sameAuthor = sameMessageAuthor(prev, msg);
                       const withinWindow =
                         sameAuthor &&
                         Math.abs(
@@ -513,6 +508,11 @@ export function CommunityPage() {
                                       <span className="text-sm font-medium text-accent">
                                         {displayName}
                                       </span>
+                                      {msg.external_author_name != null && (
+                                        <span className="text-xs text-text-muted">
+                                          {t('community.viaDiscord')}
+                                        </span>
+                                      )}
                                       <span className="text-xs text-text-muted">
                                         {timeStr}
                                       </span>

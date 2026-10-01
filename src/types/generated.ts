@@ -843,6 +843,13 @@ export type ChannelMessage = {
 	 *  author alone cannot say so: an unlinked Discord relay has it too.
 	 */
 	author_removed?: boolean,
+	/**
+	 *  The Discord name of the author of a message relayed from Discord by
+	 *  someone without a linked account, whose message is stored under the
+	 *  nil author with the text alone as its content (R218). `None` for every
+	 *  other message.
+	 */
+	external_author_name?: string | null,
 };
 
 export type ChannelResponse = {
@@ -2429,6 +2436,13 @@ export type MessageResponse = {
 	 *  former community member (R211, R212.2).
 	 */
 	author_removed: boolean,
+	/**
+	 *  The Discord name of the author of a message relayed from Discord by
+	 *  someone without a linked account. When set, `author_display_name` is
+	 *  this name and `author_id` is the nil id; the client shows it with a
+	 *  "via Discord" tag (R218).
+	 */
+	external_author_name: string | null,
 	content: string,
 	message_type: MessageType,
 	created_at: string,

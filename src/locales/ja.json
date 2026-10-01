@@ -327,6 +327,7 @@
     "messageDeleted": "メッセージが削除されました",
     "messageEdited": "メッセージを編集しました",
     "formerMember": "元コミュニティメンバー",
+    "viaDiscord": "Discord経由",
     "unknownUser": "不明なユーザー",
     "reportSent": "レポートを提出しました",
     "editMessageLabel": "メッセージを編集",

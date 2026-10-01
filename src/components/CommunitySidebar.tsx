@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Button, Spinner } from './index.ts';
 import { formatTime } from '../lib/formatDate.ts';
+import { sameMessageAuthor } from '../lib/messageGrouping.ts';
 import { DiscordIcon } from './icons/DiscordIcon.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
@@ -358,13 +359,7 @@ export function CommunitySidebar() {
           <div className="flex flex-col">
             {messages.map((msg, idx) => {
               const prev = idx > 0 ? messages[idx - 1] : null;
-              // A removed author and an unlinked Discord relay share the nil
-              // author id, so the shown name is compared too.
-              const sameAuthor =
-                prev !== null &&
-                prev.author_id === msg.author_id &&
-                prev.author_removed === msg.author_removed &&
-                prev.author_display_name === msg.author_display_name;
+              const sameAuthor = sameMessageAuthor(prev, msg);
               const withinWindow =
                 sameAuthor &&
                 Math.abs(
@@ -394,6 +389,11 @@ export function CommunitySidebar() {
                           <span className="font-medium text-accent">
                             {displayName}
                           </span>
+                          {msg.external_author_name != null && (
+                            <span className="text-[10px] text-text-muted">
+                              {t('community.viaDiscord')}
+                            </span>
+                          )}
                           <span className="text-[10px] text-text-muted">
                             {timeStr}
                           </span>

@@ -327,6 +327,7 @@
     "messageDeleted": "تم حذف الرسالة",
     "messageEdited": "تم تعديل الرسالة",
     "formerMember": "عضو سابق في المجتمع",
+    "viaDiscord": "عبر Discord",
     "unknownUser": "مستخدم غير معروف",
     "reportSent": "تم إرسال البلاغ",
     "editMessageLabel": "تعديل الرسالة",
