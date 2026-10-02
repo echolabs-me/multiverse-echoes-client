@@ -1,6 +1,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { Sparkles } from 'lucide-react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { Button, Input } from '../components/index.ts';
@@ -97,18 +98,17 @@ export function RegisterPage() {
         navigate('/verify-pending', { state: { email } });
       }
     } catch (err) {
-      if (err instanceof ApiRequestError) {
-        if (err.code === 'EMAIL_TAKEN') {
-          setErrors({ email: t('auth.emailTaken') });
-        } else if (err.code === 'DISPLAY_NAME_TAKEN') {
-          setErrors({ displayName: t('auth.displayNameTaken') });
-        } else if (err.code === 'INVALID_INVITE_CODE') {
-          setErrors({ inviteCode: t('auth.invalidInviteCode') });
-        } else {
-          setErrors({ form: err.message });
-        }
+      // A taken email or a bad invite code is shown at its own field; any
+      // other error shows the translator's text for the form (R264.2).
+      if (err instanceof ApiRequestError && err.code === 'EMAIL_TAKEN') {
+        setErrors({ email: t('auth.emailTaken') });
+      } else if (
+        err instanceof ApiRequestError &&
+        err.code === 'INVALID_INVITE_CODE'
+      ) {
+        setErrors({ inviteCode: t('auth.invalidInviteCode') });
       } else {
-        setErrors({ form: t('common.error') });
+        setErrors({ form: translateCaughtError(err, t('common.error')) });
       }
     } finally {
       setIsSubmitting(false);

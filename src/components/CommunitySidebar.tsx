@@ -2,6 +2,10 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
+import {
   Send,
   ExternalLink,
   Paperclip,
@@ -187,8 +191,10 @@ export function CommunitySidebar() {
       });
       setMessages((prev) => [...prev, msg]);
       setMessageText('');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsSending(false);
     }
@@ -208,8 +214,10 @@ export function CommunitySidebar() {
     try {
       const msg = await channelApi.uploadImage(activeChannel.channel_id, file);
       setMessages((prev) => [...prev, msg]);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsSending(false);
     }
@@ -225,8 +233,10 @@ export function CommunitySidebar() {
         answer_id: answerId,
       });
       addToast(t('community.voteRecorded'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -245,8 +255,10 @@ export function CommunitySidebar() {
       setPollOptions(['', '']);
       await loadMessages();
       addToast(t('community.pollCreated'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsSending(false);
     }

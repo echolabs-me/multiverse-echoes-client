@@ -17,6 +17,7 @@
  * Reference: docs/claude/i18n-multilingual-tasks.md CC TASK 4 Part F Step 15.
  */
 import i18n from '../i18n';
+import { ApiRequestError } from './api/client.ts';
 
 /** Shape of the server error envelope as returned by `ApiError::into_response`. */
 export interface ServerErrorEnvelope {
@@ -58,4 +59,31 @@ export function translateError(
 
   if (message) return message;
   return fallback ?? i18n.t('errors.INTERNAL_ERROR');
+}
+
+/**
+ * The text for an error a request threw (R264). An `ApiRequestError` goes
+ * through `translateError` with its code and message. Anything else (a
+ * network failure, an exception in the page) carries no server text, so the
+ * fallback is shown.
+ */
+export function translateCaughtError(err: unknown, fallback?: string): string {
+  return translateError(
+    err instanceof ApiRequestError
+      ? { code: err.code, message: err.message }
+      : null,
+    fallback,
+  );
+}
+
+/**
+ * Whether a caught error is the platform's fault, so a toast showing its
+ * text carries the status-page link (R283.3). The server answering 500 or
+ * above is; so is anything that is not the server's answer at all (a network
+ * failure, an exception in the page). A refusal the server explains with a
+ * status below 500 is not: the link there would blame the platform for a
+ * validation or business error.
+ */
+export function isPlatformError(err: unknown): boolean {
+  return !(err instanceof ApiRequestError) || err.status >= 500;
 }

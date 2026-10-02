@@ -14,7 +14,8 @@ import {
 } from 'lucide-react';
 import { Button } from './Button.tsx';
 import { account, echoes as echoesApi } from '../lib/api/endpoints.ts';
-import { getBaseUrl, getAccessToken } from '../lib/api/client.ts';
+import { ApiRequestError } from '../lib/api/client.ts';
+import { translateCaughtError } from '../lib/translateError.ts';
 import type { ExportFormat, DataExport } from '../types/api.ts';
 
 interface StoryExportModalProps {
@@ -215,11 +216,10 @@ export function StoryExportModal({
         pollRef.current = setTimeout(() => void pollStatus(), 3000);
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : '';
-      if (msg.includes('TIER_REQUIRED')) {
+      if (err instanceof ApiRequestError && err.code === 'TIER_REQUIRED') {
         setTierGated(true);
       } else {
-        setError('export.errorRequesting');
+        setError(translateCaughtError(err, t('export.errorRequesting')));
       }
     } finally {
       setIsRequesting(false);
@@ -229,18 +229,10 @@ export function StoryExportModal({
   const handleDownload = () => {
     if (!exportData || isDownloading) return;
     setIsDownloading(true);
-    const path = account.downloadExport(exportData.export_id);
-    const url = `${getBaseUrl()}${path}`;
-    const token = getAccessToken();
-
-    // Fetch with auth header, create blob, trigger download
-    void fetch(url, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const disposition = res.headers.get('Content-Disposition');
-        const match = disposition?.match(/filename="?([^"]+)"?/);
+    // Fetch the file, then hand it to the browser as a download.
+    void account
+      .downloadExport(exportData.export_id)
+      .then(({ blob, filename: serverName }) => {
         const fallbackName =
           selectedEchoIds.size > 1
             ? 'echoes-story'
@@ -251,10 +243,7 @@ export function StoryExportModal({
             : selectedFormat === 'pdf'
               ? 'pdf'
               : 'txt';
-        const filename = match?.[1] ?? `${fallbackName}.${ext}`;
-        return res.blob().then((blob) => ({ blob, filename }));
-      })
-      .then(({ blob, filename }) => {
+        const filename = serverName ?? `${fallbackName}.${ext}`;
         const blobUrl = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = blobUrl;
@@ -264,8 +253,8 @@ export function StoryExportModal({
         a.remove();
         URL.revokeObjectURL(blobUrl);
       })
-      .catch(() => {
-        setError('export.errorRequesting');
+      .catch((err: unknown) => {
+        setError(translateCaughtError(err, t('export.errorRequesting')));
       })
       .finally(() => {
         setIsDownloading(false);
@@ -458,7 +447,7 @@ export function StoryExportModal({
               ))}
             </fieldset>
 
-            {error && <p className="mbe-4 text-sm text-danger">{t(error)}</p>}
+            {error && <p className="mbe-4 text-sm text-danger">{error}</p>}
 
             {/* Step 4: Export button */}
             <div className="flex justify-end gap-2">
@@ -529,7 +518,7 @@ export function StoryExportModal({
                 </p>
               </div>
               <p className="mbs-1 text-xs text-text-secondary">
-                {t('export.formatLabel')}: {exportData?.format}
+                {t('export.formatValue', { format: exportData?.format })}
               </p>
             </div>
 

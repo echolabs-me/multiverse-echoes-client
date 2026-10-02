@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { Sparkles } from 'lucide-react';
 import { Button, Input } from '../components/index.ts';
 import { request } from '../lib/api/client.ts';
@@ -27,8 +28,8 @@ export function ForgotPasswordPage() {
         body: JSON.stringify({ email }),
       });
       setSubmitted(true);
-    } catch {
-      setError(t('auth.forgotPasswordError'));
+    } catch (err) {
+      setError(translateCaughtError(err, t('auth.forgotPasswordError')));
     } finally {
       setIsSubmitting(false);
     }

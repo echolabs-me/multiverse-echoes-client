@@ -1,12 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { X, Globe, Home } from 'lucide-react';
 import { Button, Input, Card, Spinner } from '../components/index.ts';
 import { EchoBirthAnimation } from '../components/EchoBirthAnimation.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useSharedShardNotice } from '../hooks/useSharedShardNotice.tsx';
 import { shards as shardsApi } from '../lib/api/endpoints.ts';
+import { ApiRequestError } from '../lib/api/client.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import type { Shard } from '../types/api.ts';
 
@@ -103,13 +105,12 @@ export function EchoCreationPage() {
         target_shard: shardName,
       });
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Echo creation failed';
-      // Check for echo limit error
-      if (message.includes('ECHO_LIMIT') || message.includes('limit')) {
+      // The Echo limit has its own view with an upgrade path; any other
+      // error shows the translator's text (R264.2).
+      if (err instanceof ApiRequestError && err.code === 'ECHO_LIMIT_REACHED') {
         setCreateError('limit');
       } else {
-        setCreateError(message);
+        setCreateError(translateCaughtError(err));
       }
       setStep('destination');
     }
@@ -406,7 +407,7 @@ export function EchoCreationPage() {
                     {t('echo.limitTitle')}
                   </p>
                   <p className="text-sm text-text-secondary">
-                    {t('echo.limitDesc', { max: 1 })}
+                    {t('errors.ECHO_LIMIT_REACHED')}
                   </p>
                   <div className="flex gap-2">
                     <Button

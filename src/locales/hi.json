@@ -66,6 +66,7 @@
     "translationPending": "अनुवाद हो रहा है…",
     "legalDocsEnglishOnly": "यह पेज अभी केवल अंग्रेज़ी में उपलब्ध है। अनुवादित संस्करण जल्द प्रकाशित किया जाएगा।",
     "legalMachineTranslationDisclaimer": "यह अनुवाद सुविधा के लिए प्रदान किया गया है। अंग्रेजी संस्करण कानूनी रूप से आधिकारिक पाठ है।",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "मेनू खोलें",
     "closeMenu": "मेनू बंद करें",
     "fieldRequired": "कृपया यह फ़ील्ड भरें।",
@@ -105,7 +106,6 @@
     "verifiedTitle": "हो गया!",
     "verifiedDescription": "चलो तुम्हारी पहली गूँज बनाते हैं।",
     "emailTaken": "यह ईमेल पहले से पंजीकृत है",
-    "displayNameTaken": "यह प्रदर्शन नाम पहले से मौजूद है",
     "confirmPassword": "पासवर्ड की पुष्टि करें",
     "passwordMismatch": "पासवर्ड मेल नहीं खाते",
     "passwordTooShort": "पासवर्ड कम से कम 12 अक्षरों का होना चाहिए",
@@ -140,15 +140,18 @@
     "card3Title": "यह कोई खेल नहीं है",
     "card3Body": "यहाँ न अंक हैं, न जीत। यह एक स्वायत्त जीवन सिमुलेशन है। इसे जिज्ञासा के साथ देखो।",
     "understand": "मैं समझ गया — चलो शुरू करें",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "अपनी प्रोफ़ाइल सेट करें",
     "bio": "परिचय",
     "bioHint": "तुम्हारे बारे में थोड़ा — तुम प्रेक्षक के बारे में, गूँज के बारे में नहीं। तुम्हारी सामुदायिक प्रोफ़ाइल पर दिखेगा (वैकल्पिक, अधिकतम 500 अक्षर)",
     "bioCallout": "यह तुम्हारे बारे में है, तुम्हारी गूँज के बारे में नहीं। दूसरे उपयोगकर्ता इसे समुदाय में तुम्हारी प्रोफ़ाइल पर देखेंगे। इसका तुम्हारी गूँजों की सोच या व्यवहार पर कोई असर नहीं पड़ता।",
     "timezone": "टाइम ज़ोन",
     "avatar": "अवतार",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "अपनी भाषा चुनो",
     "languagesComingSoon": "और भाषाएँ जल्द आ रही हैं",
-    "languageSelectionLabel": "भाषा चयन"
+    "languageSelectionLabel": "भाषा चयन",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "अपनी गूँज बनाओ",
@@ -178,8 +181,6 @@
     "birthTitle": "तुम्हारी गूँज जन्म ले रही है…",
     "birthComplete": "तुम्हारी गूँज जीवित है।",
     "limitTitle": "गूँज सीमा पूरी",
-    "limitDesc": "तुम्हारा मौजूदा प्लान {{max}} गूँज की अनुमति देता है। और बनाने के लिए अपग्रेड करो, या डैशबोर्ड पर वापस जाओ।",
-    "limitDesc_plural": "तुम्हारा मौजूदा प्लान {{max}} गूँजों की अनुमति देता है। और बनाने के लिए अपग्रेड करो, या डैशबोर्ड पर वापस जाओ।",
     "viewPlans": "प्लान देखें"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "दूसरे उपयोगकर्ताओं को फ़ॉलो करो, उनकी गूँजों की कहानियाँ यहाँ दिखेंगी।",
     "filterByEcho": "गूँज से छानो",
     "allEchoes": "सभी गूँजें",
-    "significance": "महत्व"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "समुदाय",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "मेरी प्रतिक्रिया",
     "noFeedbackYet": "तुमने अभी तक कोई प्रतिक्रिया नहीं भेजी है।",
-    "feedbackSubmitted": "भेजी गई",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "ख़तरा क्षेत्र",
     "subscriptionTier": "सदस्यता",
     "managePlan": "प्लान प्रबंधित करो",
@@ -391,6 +393,8 @@
     "passwordChanged": "पासवर्ड सफलतापूर्वक बदल गया",
     "sessions": "सक्रिय सत्र",
     "currentSession": "मौजूदा सत्र",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "रद्द करो",
     "sessionRevoked": "सत्र रद्द कर दिया गया",
     "exportData": "मेरा डेटा निर्यात करो",
@@ -474,7 +478,7 @@
     "noEchoes": "तुम्हारा मल्टीवर्स ख़ाली है",
     "noEchoesDesc": "अपनी पहली गूँज बनाओ और एक नई ज़िंदगी को खुलते देखो।",
     "viewDetail": "विवरण देखो",
-    "mood": "मिज़ाज",
+    "moodValue": "Mood: {{mood}}",
     "tick": "धड़कन {{tick}}",
     "latestDiaryEmpty": "तुम्हारी गूँज की कहानी अभी-अभी शुरू हुई है। थोड़ी देर में फिर देखो।",
     "nextTick": "अगली धड़कन {{seconds}} सेकंड में",
@@ -541,7 +545,7 @@
     "downloading": "डाउनलोड हो रहा है…",
     "downloadSubtitles": "सबटाइटल डाउनलोड करो (.srt)",
     "progress": "निर्यात प्रगति",
-    "formatLabel": "प्रारूप",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "फ़ाइल तुम्हारे डाउनलोड फ़ोल्डर में सहेजी जाएगी।"
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "ऑरेकल से पूछो…",
     "send": "ओरेकल को भेजें",
     "thinking": "ऑरेकल सोच रहा है…",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "बातचीत साफ़ करो",
     "rateLimit": "प्रति मिनट {{limit}} सवाल",
     "error": "ऑरेकल जवाब नहीं दे पाया। कृपया फिर कोशिश करें।",
@@ -631,13 +638,15 @@
     "tabBilling": "बिलिंग",
     "feedbackQueue": "प्रतिक्रिया क़तार",
     "noFeedback": "अभी तक कोई प्रतिक्रिया नहीं भेजी गई।",
-    "feedbackType": "प्रकार",
-    "feedbackStatus": "स्थिति",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "प्राथमिकता",
     "feedbackMessage": "उपयोगकर्ता संदेश",
     "feedbackSummary": "सारांश",
     "feedbackContext": "संदर्भ",
-    "feedbackScreen": "स्क्रीन",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "स्वीकार करो",
     "feedbackResolve": "समाधान करो",
     "feedbackWontfix": "ठीक नहीं करेंगे",
@@ -692,7 +701,6 @@
     "backupControl": "डेटाबेस बैकअप",
     "triggerBackup": "बैकअप ट्रिगर करो",
     "analyticsLoadFailed": "एनालिटिक्स लोड करने में विफल",
-    "filterAll": "सभी",
     "feedbackTypeBug": "बग",
     "feedbackTypeFeatureRequest": "सुविधा अनुरोध",
     "feedbackTypeFrustration": "निराशा",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "स्वीकार किया गया",
     "feedbackStatusResolved": "हल हो गया",
     "feedbackStatusWontfix": "ठीक नहीं करेंगे",
-    "resolutionPrefix": "समाधान",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "मॉडरेटर",
     "moderators": {
       "heading": "वर्तमान मॉडरेटर",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "स्टार्टर",
-        "core": "कोर",
-        "creator": "क्रिएटर",
-        "godMode": "गॉड मोड"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "MRR ट्रेंड",
@@ -795,7 +803,7 @@
         "submitButton": "ओवरराइड लागू करें",
         "cancelButton": "रद्द करें",
         "successToast": "डनिंग चरण ओवरराइड लागू हो गया।",
-        "errorPrefix": "ओवरराइड विफल"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "स्नैपशॉट ट्रिगर करें",
@@ -837,7 +845,9 @@
     "current": "वर्तमान",
     "perMonth": "/माह",
     "payWithCrypto": "क्रिप्टो से भुगतान करो",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "XRP से भुगतान करो",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "कार्ड से भुगतान करो",
     "cardComingSoon": "कंपनी पंजीकरण के बाद उपलब्ध",
     "manageSubscription": "सदस्यता प्रबंधित करो",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "बातचीत शुरू करने के लिए टैप करो",
     "requestingMic": "माइक्रोफ़ोन का अनुरोध…",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "गूँज से जुड़ रहे हैं…",
     "speaking": "बोल रहा है…",
     "error": "कनेक्शन त्रुटि",
@@ -1192,10 +1203,11 @@
     "playing": "चल रहा",
     "paused": "रुका हुआ",
     "watch": "देखें",
-    "generatingVideo": "वीडियो तैयार हो रही है…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "वीडियो चल रही है",
     "watchAgain": "फिर से देखें",
-    "videoError": "वीडियो विफल — फिर कोशिश के लिए टैप करें"
+    "videoError": "वीडियो विफल — फिर कोशिश के लिए टैप करें",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

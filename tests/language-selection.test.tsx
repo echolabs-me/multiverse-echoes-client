@@ -18,6 +18,9 @@ void testI18n.use(initReactI18next).init({
         onboarding: {
           // aria-label on the listbox containers (circle + mobile grid).
           languageSelectionLabel: 'Language selection',
+          // R284.5: the label and the language are one key. The test text
+          // differs from what code once wrote, so a join in code fails here.
+          selectLanguageNamed: 'Choose {{language}}',
         },
       },
     },
@@ -68,6 +71,18 @@ describe('LanguageSelectionPage', () => {
     // the page now shows only live languages.
     const tiles = screen.getAllByRole('option');
     expect(tiles).toHaveLength(21);
+  });
+
+  it("names each tile with one key's text and its language (R284.5)", async () => {
+    await act(async () => {
+      renderPage();
+    });
+    expect(
+      screen.getByRole('option', { name: 'Choose English' }),
+    ).toBeInTheDocument();
+    for (const tile of screen.getAllByRole('option')) {
+      expect(tile.getAttribute('aria-label')).toMatch(/^Choose \S/);
+    }
   });
 
   // NOTE: The previous "shows coming soon for unavailable languages" test

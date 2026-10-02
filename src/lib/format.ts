@@ -19,16 +19,27 @@
  * `cents` is treated as an integer; fractional cent inputs are rounded
  * by `Intl.NumberFormat` per its own rounding behaviour (banker's
  * rounding on most engines). Callers should pass integer cents.
+ * `fractionDigits` is 2 unless a caller shows whole dollars.
  */
 export function formatUsdCents(
   cents: number,
   locale: string = 'en-US',
+  fractionDigits: number = 2,
 ): string {
   const dollars = cents / 100;
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
   }).format(dollars);
+}
+
+/** The sign a locale writes for US dollars, as the browser formats it. */
+export function usdSign(locale: string = 'en-US'): string {
+  return (
+    new Intl.NumberFormat(locale, { style: 'currency', currency: 'USD' })
+      .formatToParts(0)
+      .find((part) => part.type === 'currency')?.value ?? ''
+  );
 }

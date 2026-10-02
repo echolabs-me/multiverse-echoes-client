@@ -66,6 +66,7 @@
     "translationPending": "Перевод…",
     "legalDocsEnglishOnly": "Эта страница доступна только на английском языке. Перевод будет опубликован в ближайшее время.",
     "legalMachineTranslationDisclaimer": "Данный перевод предоставлен для удобства. Английская версия является юридически определяющим текстом.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "Открыть меню",
     "closeMenu": "Закрыть меню",
     "fieldRequired": "Заполните это поле.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "Вы в деле!",
     "verifiedDescription": "Давайте создадим ваш первый Echo.",
     "emailTaken": "Этот адрес электронной почты уже зарегистрирован",
-    "displayNameTaken": "Это отображаемое имя уже занято",
     "confirmPassword": "Подтвердите пароль",
     "passwordMismatch": "Пароли не совпадают",
     "passwordTooShort": "Пароль должен содержать не менее 12 символов",
@@ -140,15 +140,18 @@
     "card3Title": "Это не игра",
     "card3Body": "Здесь нет очков и нет победы. Это автономная симуляция жизни. Относитесь к ней с любопытством.",
     "understand": "Я понимаю — погнали",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "Настройте свой профиль",
     "bio": "Биография",
     "bioHint": "Немного о вас — наблюдателе, а не Эхо. Отображается в вашем профиле сообщества (необязательно, макс. 500 симв.)",
     "bioCallout": "Это касается вас, а не вашего Эхо. Другие пользователи видят это в вашем профиле в сообществе. Это не влияет на то, как ваши Эхо думают или себя ведут.",
     "timezone": "Часовой пояс",
     "avatar": "Аватар",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "Выберите ваш язык",
     "languagesComingSoon": "Скоро появятся другие языки",
-    "languageSelectionLabel": "Выбор языка"
+    "languageSelectionLabel": "Выбор языка",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "Создайте своё эхо",
@@ -178,8 +181,6 @@
     "birthTitle": "Ваш Echo рождается…",
     "birthComplete": "Ваш Echo жив.",
     "limitTitle": "Лимит эха исчерпан",
-    "limitDesc": "Ваш текущий план позволяет использовать {{max}} Echo. Обновите план, чтобы создать больше, или вернитесь на панель управления.",
-    "limitDesc_plural": "Ваш текущий тарифный план позволяет создавать до {{max}} Эхо. Обновите план, чтобы создавать больше, или вернитесь на панель управления.",
     "viewPlans": "Посмотреть тарифы"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "Подписывайтесь на других пользователей, чтобы видеть их истории Echo здесь.",
     "filterByEcho": "Фильтр по эху",
     "allEchoes": "Все отголоски",
-    "significance": "Значимость"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "Сообщество",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "Мой отзыв",
     "noFeedbackYet": "Вы еще не оставили отзывов.",
-    "feedbackSubmitted": "Отправлено",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "Опасная зона",
     "subscriptionTier": "Подписка",
     "managePlan": "Управление планом",
@@ -391,6 +393,8 @@
     "passwordChanged": "Пароль успешно изменен",
     "sessions": "Активные сессии",
     "currentSession": "Текущий сеанс",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "Отозвать",
     "sessionRevoked": "Сессия аннулирована",
     "exportData": "Экспортировать мои данные",
@@ -474,7 +478,7 @@
     "noEchoes": "Ваша мультивселенная пуста",
     "noEchoesDesc": "Создайте свое первое Эхо и наблюдайте за тем, как разворачивается новая жизнь.",
     "viewDetail": "Посмотреть детали",
-    "mood": "Настроение",
+    "moodValue": "Mood: {{mood}}",
     "tick": "Галочка {{tick}}",
     "latestDiaryEmpty": "История вашего Echo только начинается. Заходите скорее.",
     "nextTick": "Следующий тик через {{seconds}}с",
@@ -541,7 +545,7 @@
     "downloading": "Загрузка...",
     "downloadSubtitles": "Скачать субтитры (.srt)",
     "progress": "Прогресс экспорта",
-    "formatLabel": "Формат",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "Файл будет сохранен в папке «Загрузки»."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "Спросите Оракула...",
     "send": "Отправить в Oracle",
     "thinking": "Оракул думает...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "Очистить переписку",
     "rateLimit": "{{limit}} вопросов в минуту",
     "error": "Оракул не смог ответить. Пожалуйста, попробуйте еще раз.",
@@ -631,13 +638,15 @@
     "tabBilling": "Биллинг",
     "feedbackQueue": "Очередь отзывов",
     "noFeedback": "Отзывы еще не отправлены.",
-    "feedbackType": "Тип",
-    "feedbackStatus": "Статус",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "Приоритет",
     "feedbackMessage": "Сообщение пользователя",
     "feedbackSummary": "Резюме",
     "feedbackContext": "Контекст",
-    "feedbackScreen": "Экран",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "Подтвердите получение",
     "feedbackResolve": "Разрешить",
     "feedbackWontfix": "Не будет исправлено",
@@ -692,7 +701,6 @@
     "backupControl": "Резервное копирование базы данных",
     "triggerBackup": "Запустить резервное копирование",
     "analyticsLoadFailed": "Не удалось загрузить аналитику",
-    "filterAll": "Все",
     "feedbackTypeBug": "Ошибка",
     "feedbackTypeFeatureRequest": "Запрос на новую функцию",
     "feedbackTypeFrustration": "Разочарование",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "Принято",
     "feedbackStatusResolved": "Решено",
     "feedbackStatusWontfix": "Не будет исправлено",
-    "resolutionPrefix": "Разрешение",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "Модераторы",
     "moderators": {
       "heading": "Текущие модераторы",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "Starter",
-        "core": "Core",
-        "creator": "Creator",
-        "godMode": "God Mode"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "Тренд MRR",
@@ -795,7 +803,7 @@
         "submitButton": "Применить переопределение",
         "cancelButton": "Отмена",
         "successToast": "Переопределение этапа взыскания применено.",
-        "errorPrefix": "Ошибка переопределения"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Создать снимок",
@@ -837,7 +845,9 @@
     "current": "Текущий",
     "perMonth": "/мес.",
     "payWithCrypto": "Оплатить криптовалютой",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "Оплатите с помощью XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "Оплата картой",
     "cardComingSoon": "Доступно после регистрации компании",
     "manageSubscription": "Управление подпиской",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "Нажмите, чтобы начать общение",
     "requestingMic": "Запрос доступа к микрофону...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Подключение к Echo...",
     "listening": "Слушаю...",
     "thinking": "Размышление...",
@@ -1192,10 +1203,11 @@
     "playing": "Воспроизведение",
     "paused": "Пауза",
     "watch": "Смотреть",
-    "generatingVideo": "Генерация видео…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "Воспроизведение видео",
     "watchAgain": "Смотреть снова",
-    "videoError": "Ошибка воспроизведения — нажмите, чтобы повторить"
+    "videoError": "Ошибка воспроизведения — нажмите, чтобы повторить",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

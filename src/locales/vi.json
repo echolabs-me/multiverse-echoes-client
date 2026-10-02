@@ -66,6 +66,7 @@
     "translationPending": "Đang dịch…",
     "legalDocsEnglishOnly": "Trang này hiện chỉ có tiếng Anh. Bản dịch sẽ sớm được cập nhật.",
     "legalMachineTranslationDisclaimer": "Bản dịch này được cung cấp nhằm mục đích thuận tiện. Bản tiếng Anh là văn bản có giá trị pháp lý.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "Mở menu",
     "closeMenu": "Đóng menu",
     "fieldRequired": "Vui lòng điền vào trường này.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "Bạn đã tham gia!",
     "verifiedDescription": "Hãy cùng tạo Echo đầu tiên của bạn.",
     "emailTaken": "Email này đã được đăng ký",
-    "displayNameTaken": "Tên hiển thị này đã được sử dụng",
     "confirmPassword": "Xác nhận mật khẩu",
     "passwordMismatch": "Mật khẩu không khớp",
     "passwordTooShort": "Mật khẩu phải có ít nhất 12 ký tự",
@@ -140,15 +140,18 @@
     "card3Title": "Đây Không Phải Là Một Trò Chơi",
     "card3Body": "Không có điểm số, không có thắng thua. Đây là một mô phỏng cuộc sống tự trị. Hãy đón nhận nó với sự tò mò.",
     "understand": "Tôi hiểu rồi — đi thôi",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "Thiết lập hồ sơ của bạn",
     "bio": "Tiểu sử",
     "bioHint": "Một chút về bạn — người quan sát, không phải là Echo. Hiển thị trên hồ sơ cộng đồng của bạn (tùy chọn, tối đa 500 ký tự)",
     "bioCallout": "Đây là thông tin về bạn, không phải về Echo của bạn. Những người dùng khác sẽ thấy nội dung này trên hồ sơ của bạn trong cộng đồng. Điều này không ảnh hưởng đến cách các Echo của bạn suy nghĩ hay hành xử.",
     "timezone": "Múi giờ",
     "avatar": "Hình đại diện",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "Chọn ngôn ngữ của bạn",
     "languagesComingSoon": "Sẽ sớm cập nhật thêm nhiều ngôn ngữ khác",
-    "languageSelectionLabel": "Chọn ngôn ngữ"
+    "languageSelectionLabel": "Chọn ngôn ngữ",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "Hãy Tạo Bản Sao Của Chính Bạn",
@@ -178,8 +181,6 @@
     "birthTitle": "Echo của bạn đang được khởi tạo…",
     "birthComplete": "Echo của bạn đang hoạt động.",
     "limitTitle": "Đã đạt đến giới hạn phản hồi",
-    "limitDesc": "Gói hiện tại của bạn cho phép {{max}} Echo. Hãy nâng cấp để tạo thêm, hoặc quay lại bảng điều khiển.",
-    "limitDesc_plural": "Gói hiện tại của bạn cho phép {{max}} Echoes. Hãy nâng cấp để tạo thêm, hoặc quay lại bảng điều khiển.",
     "viewPlans": "Xem các gói dịch vụ"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "Theo dõi những người dùng khác để xem các câu chuyện Echo của họ tại đây.",
     "filterByEcho": "Lọc theo Echo",
     "allEchoes": "Tất cả tiếng vang",
-    "significance": "Ý nghĩa"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "Cộng đồng",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "Phản hồi của tôi",
     "noFeedbackYet": "Bạn chưa gửi bất kỳ phản hồi nào.",
-    "feedbackSubmitted": "Đã gửi",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "Vùng Nguy Hiểm",
     "subscriptionTier": "Đăng ký",
     "managePlan": "Quản lý Gói cước",
@@ -391,6 +393,8 @@
     "passwordChanged": "Thay đổi mật khẩu thành công",
     "sessions": "Phiên hoạt động",
     "currentSession": "Phiên hiện tại",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "Thu hồi",
     "sessionRevoked": "Phiên làm việc đã bị thu hồi",
     "exportData": "Xuất dữ liệu của tôi",
@@ -474,7 +478,7 @@
     "noEchoes": "Đa vũ trụ của bạn trống rỗng",
     "noEchoesDesc": "Hãy tạo Echo đầu tiên của bạn và chứng kiến một cuộc đời mới mở ra.",
     "viewDetail": "Xem chi tiết",
-    "mood": "Tâm trạng",
+    "moodValue": "Mood: {{mood}}",
     "tick": "Đánh dấu {{tick}}",
     "latestDiaryEmpty": "Câu chuyện về Echo của bạn chỉ mới bắt đầu. Hãy quay lại kiểm tra sớm nhé.",
     "nextTick": "Lần tick tiếp theo sau {{seconds}} giây",
@@ -541,7 +545,7 @@
     "downloading": "Đang tải xuống...",
     "downloadSubtitles": "Tải xuống phụ đề (.srt)",
     "progress": "Tiến độ xuất",
-    "formatLabel": "Định dạng",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "Tệp sẽ được lưu vào thư mục Tải về của bạn."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "Hỏi Nhà Tiên Tri...",
     "send": "Gửi đến Oracle",
     "thinking": "Oracle đang suy nghĩ...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "Xóa cuộc hội thoại",
     "rateLimit": "{{limit}} câu hỏi mỗi phút",
     "error": "Oracle không thể phản hồi. Vui lòng thử lại.",
@@ -631,13 +638,15 @@
     "tabBilling": "Thanh toán",
     "feedbackQueue": "Hàng đợi phản hồi",
     "noFeedback": "Chưa có phản hồi nào được gửi.",
-    "feedbackType": "Loại",
-    "feedbackStatus": "Trạng thái",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "Ưu tiên",
     "feedbackMessage": "Tin nhắn của người dùng",
     "feedbackSummary": "Tóm tắt",
     "feedbackContext": "Ngữ cảnh",
-    "feedbackScreen": "Màn hình",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "Xác nhận",
     "feedbackResolve": "Giải quyết",
     "feedbackWontfix": "Sẽ không sửa",
@@ -692,7 +701,6 @@
     "backupControl": "Sao lưu Cơ sở dữ liệu",
     "triggerBackup": "Kích hoạt Sao lưu",
     "analyticsLoadFailed": "Không tải được phân tích",
-    "filterAll": "Tất cả",
     "feedbackTypeBug": "Lỗi",
     "feedbackTypeFeatureRequest": "Yêu cầu tính năng",
     "feedbackTypeFrustration": "Sự thất vọng",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "Đã ghi nhận",
     "feedbackStatusResolved": "Đã giải quyết",
     "feedbackStatusWontfix": "Sẽ không sửa",
-    "resolutionPrefix": "Độ phân giải",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "Quản trị viên",
     "moderators": {
       "heading": "Quản trị viên hiện tại",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "Starter",
-        "core": "Core",
-        "creator": "Creator",
-        "godMode": "God Mode"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "Xu hướng MRR",
@@ -795,7 +803,7 @@
         "submitButton": "Áp dụng ghi đè",
         "cancelButton": "Hủy",
         "successToast": "Ghi đè giai đoạn thu hồi đã được áp dụng.",
-        "errorPrefix": "Ghi đè thất bại"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Tạo ảnh chụp",
@@ -837,7 +845,9 @@
     "current": "Hiện tại",
     "perMonth": "/tháng",
     "payWithCrypto": "Thanh toán bằng Tiền điện tử",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "Thanh toán bằng XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "Thanh toán bằng thẻ",
     "cardComingSoon": "Có sẵn sau khi thành lập công ty",
     "manageSubscription": "Quản lý gói đăng ký",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "Nhấn để bắt đầu trò chuyện",
     "requestingMic": "Đang yêu cầu quyền truy cập micro...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Đang kết nối với Echo...",
     "listening": "Đang lắng nghe...",
     "thinking": "Đang suy nghĩ...",
@@ -1192,10 +1203,11 @@
     "playing": "Đang phát",
     "paused": "Tạm dừng",
     "watch": "Xem",
-    "generatingVideo": "Đang tạo video…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "Đang phát video",
     "watchAgain": "Xem lại",
-    "videoError": "Video thất bại — chạm để thử lại"
+    "videoError": "Video thất bại — chạm để thử lại",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

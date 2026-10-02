@@ -66,6 +66,7 @@
     "translationPending": "번역 중…",
     "legalDocsEnglishOnly": "이 페이지는 영어로만 제공됩니다. 번역본은 곧 게시될 예정입니다.",
     "legalMachineTranslationDisclaimer": "본 번역은 편의를 위해 제공되는 것입니다. 법적 권한이 있는 텍스트는 영문본입니다.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "메뉴 열기",
     "closeMenu": "메뉴 닫기",
     "fieldRequired": "이 필드를 입력해 주세요.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "합격입니다!",
     "verifiedDescription": "첫 번째 Echo를 만들어 봅시다.",
     "emailTaken": "이미 등록된 이메일입니다.",
-    "displayNameTaken": "이미 사용 중인 표시 이름입니다.",
     "confirmPassword": "비밀번호 확인",
     "passwordMismatch": "비밀번호가 일치하지 않습니다",
     "passwordTooShort": "비밀번호는 최소 12자 이상이어야 합니다.",
@@ -140,15 +140,18 @@
     "card3Title": "이것은 게임이 아니다",
     "card3Body": "점수도 없고, 승리도 없습니다. 이것은 자율적인 삶의 시뮬레이션입니다. 호기심을 가지고 대해주세요.",
     "understand": "알겠습니다 — 가시죠",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "프로필을 설정하세요",
     "bio": "프로필",
     "bioHint": "본인에 대한 소개 — 에코(Echo)가 아닌 관찰자로서의 모습. 커뮤니티 프로필에 표시됩니다 (선택 사항, 최대 500자)",
     "bioCallout": "이것은 Echo가 아닌 귀하에 관한 내용입니다. 커뮤니티의 다른 사용자들이 귀하의 프로필에서 이 내용을 볼 수 있습니다. 이는 Echo의 사고방식이나 행동에는 아무런 영향을 미치지 않습니다.",
     "timezone": "시간대",
     "avatar": "아바타",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "언어를 선택하세요",
     "languagesComingSoon": "더 많은 언어가 곧 추가될 예정입니다.",
-    "languageSelectionLabel": "언어 선택"
+    "languageSelectionLabel": "언어 선택",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "당신의 에코를 만들어보세요",
@@ -178,8 +181,6 @@
     "birthTitle": "당신의 Echo가 태어나고 있습니다…",
     "birthComplete": "당신의 에코가 살아있습니다.",
     "limitTitle": "에코 제한 도달함",
-    "limitDesc": "현재 요금제에서는 최대 {{max}}개의 Echo를 사용할 수 있습니다. 더 많이 생성하시려면 업그레이드하시거나 대시보드로 돌아가세요.",
-    "limitDesc_plural": "현재 요금제에서는 최대 {{max}}개의 Echoes를 생성할 수 있습니다. 더 많이 생성하시려면 업그레이드하시거나 대시보드로 돌아가세요.",
     "viewPlans": "요금제 보기"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "다른 사용자를 팔로우하고 여기에서 그들의 Echo 스토리를 확인하세요.",
     "filterByEcho": "에코로 필터링",
     "allEchoes": "모든 메아리",
-    "significance": "의미"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "커뮤니티",
@@ -381,7 +382,8 @@
     "discord": "디스코드",
     "myFeedback": "내 피드백",
     "noFeedbackYet": "아직 제출하신 피드백이 없습니다.",
-    "feedbackSubmitted": "제출됨",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "위험 구역",
     "subscriptionTier": "구독",
     "managePlan": "플랜 관리",
@@ -391,6 +393,8 @@
     "passwordChanged": "비밀번호가 성공적으로 변경되었습니다.",
     "sessions": "활성 세션",
     "currentSession": "현재 세션",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "취소하다",
     "sessionRevoked": "세션이 만료되었습니다",
     "exportData": "내 데이터 내보내기",
@@ -474,7 +478,7 @@
     "noEchoes": "당신의 멀티버스는 비어 있습니다.",
     "noEchoesDesc": "첫 번째 에코를 만들고 새로운 생명이 펼쳐지는 것을 지켜보세요.",
     "viewDetail": "상세 보기",
-    "mood": "기분",
+    "moodValue": "Mood: {{mood}}",
     "tick": "체크 {{tick}}",
     "latestDiaryEmpty": "Echo의 이야기는 이제 시작입니다. 곧 다시 확인해 주세요.",
     "nextTick": "{{seconds}}초 후 다음 틱",
@@ -541,7 +545,7 @@
     "downloading": "다운로드 중...",
     "downloadSubtitles": "자막 다운로드 (.srt)",
     "progress": "내보내기 진행 상황",
-    "formatLabel": "형식",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "파일이 다운로드 폴더에 저장됩니다."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "오라클에게 물어보세요...",
     "send": "오라클로 전송",
     "thinking": "오라클이 생각 중입니다...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "대화 내용 지우기",
     "rateLimit": "분당 {{limit}}개 질문",
     "error": "오라클이 응답할 수 없습니다. 다시 시도해 주세요.",
@@ -631,13 +638,15 @@
     "tabBilling": "결제",
     "feedbackQueue": "피드백 대기열",
     "noFeedback": "아직 제출된 피드백이 없습니다.",
-    "feedbackType": "유형",
-    "feedbackStatus": "상태",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "우선순위",
     "feedbackMessage": "사용자 메시지",
     "feedbackSummary": "요약",
     "feedbackContext": "맥락",
-    "feedbackScreen": "화면",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "확인했습니다",
     "feedbackResolve": "해결하다",
     "feedbackWontfix": "수정하지 않음",
@@ -692,7 +701,6 @@
     "backupControl": "데이터베이스 백업",
     "triggerBackup": "백업 실행",
     "analyticsLoadFailed": "분석 데이터를 불러오지 못했습니다",
-    "filterAll": "모두",
     "feedbackTypeBug": "벌레",
     "feedbackTypeFeatureRequest": "기능 요청",
     "feedbackTypeFrustration": "좌절감",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "확인했습니다",
     "feedbackStatusResolved": "해결됨",
     "feedbackStatusWontfix": "수정하지 않음",
-    "resolutionPrefix": "해상도",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "중재자",
     "moderators": {
       "heading": "현재 중재자",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "스타터",
-        "core": "코어",
-        "creator": "크리에이터",
-        "godMode": "갓 모드"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "MRR 추이",
@@ -795,7 +803,7 @@
         "submitButton": "재정의 적용",
         "cancelButton": "취소",
         "successToast": "회수 단계 재정의가 적용되었습니다.",
-        "errorPrefix": "재정의 실패"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "스냅샷 생성",
@@ -837,7 +845,9 @@
     "current": "현재",
     "perMonth": "/월",
     "payWithCrypto": "암호화폐로 결제하기",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "XRP로 결제하세요",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "카드로 결제",
     "cardComingSoon": "법인 설립 후 이용 가능",
     "manageSubscription": "구독 관리",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "탭하여 대화 시작하기",
     "requestingMic": "마이크 요청 중...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Echo에 연결 중...",
     "listening": "듣는 중...",
     "thinking": "생각 중...",
@@ -1192,10 +1203,11 @@
     "playing": "재생 중",
     "paused": "일시정지",
     "watch": "시청",
-    "generatingVideo": "영상 생성 중…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "영상 재생 중",
     "watchAgain": "다시 시청",
-    "videoError": "영상 실패 — 탭하여 재시도"
+    "videoError": "영상 실패 — 탭하여 재시도",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

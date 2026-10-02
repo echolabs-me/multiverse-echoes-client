@@ -4,12 +4,19 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Heart, Coins, Wallet } from 'lucide-react';
 import { Card } from '../components/index.ts';
 import { payments } from '../lib/api/endpoints.ts';
+import { formatUsdCents, usdSign } from '../lib/format.ts';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
+import { useToastStore } from '../stores/useToastStore.ts';
 
 const PRESET_AMOUNTS = [100, 500, 1000, 2500];
 
 export function TipPage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const addToast = useToastStore((s) => s.addToast);
   const [amount, setAmount] = useState(500);
   const [customAmount, setCustomAmount] = useState('');
   const [message, setMessage] = useState('');
@@ -19,6 +26,9 @@ export function TipPage() {
   const effectiveAmount = useCustom
     ? Math.round(parseFloat(customAmount || '0') * 100)
     : amount;
+  // The browser formats the amount for the active locale, so no currency
+  // sign or separator is written here (R284.5).
+  const tipAmount = formatUsdCents(effectiveAmount, i18n.language);
 
   const handleTip = async (provider: 'nowpayments' | 'xaman') => {
     if (effectiveAmount < 100) return;
@@ -32,8 +42,10 @@ export function TipPage() {
       if (result.checkout_url) {
         window.location.href = result.checkout_url;
       }
-    } catch {
-      // Error handled by API client
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setLoading(null);
     }
@@ -79,7 +91,7 @@ export function TipPage() {
                       : 'hover:bg-surface-hover border-border bg-surface text-text-primary'
                   }`}
                 >
-                  ${(cents / 100).toFixed(0)}
+                  {formatUsdCents(cents, i18n.language, 0)}
                 </button>
               ))}
             </div>
@@ -97,7 +109,9 @@ export function TipPage() {
               </button>
               {useCustom && (
                 <div className="flex items-center gap-1">
-                  <span className="text-sm text-text-secondary">$</span>
+                  <span className="text-sm text-text-secondary">
+                    {usdSign(i18n.language)}
+                  </span>
                   <input
                     type="number"
                     min="1"
@@ -106,7 +120,9 @@ export function TipPage() {
                     value={customAmount}
                     onChange={(e) => setCustomAmount(e.target.value)}
                     className="w-24 rounded-lg border border-border bg-surface px-2 py-1 text-sm text-text-primary"
-                    placeholder="0.00"
+                    placeholder={new Intl.NumberFormat(i18n.language, {
+                      minimumFractionDigits: 2,
+                    }).format(0)}
                   />
                 </div>
               )}
@@ -135,7 +151,7 @@ export function TipPage() {
                 <Coins size={16} />
                 {loading === 'nowpayments'
                   ? t('payment.subscribing')
-                  : `${t('payment.payWithCrypto')} — $${(effectiveAmount / 100).toFixed(2)}`}
+                  : t('payment.payWithCryptoAmount', { amount: tipAmount })}
               </button>
               <button
                 onClick={() => handleTip('xaman')}
@@ -145,7 +161,7 @@ export function TipPage() {
                 <Wallet size={16} />
                 {loading === 'xaman'
                   ? t('payment.subscribing')
-                  : `${t('payment.payWithXRP')} — $${(effectiveAmount / 100).toFixed(2)}`}
+                  : t('payment.payWithXRPAmount', { amount: tipAmount })}
               </button>
             </div>
           </div>

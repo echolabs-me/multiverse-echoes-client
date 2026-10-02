@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { Sparkles } from 'lucide-react';
 import { Button, Input } from '../components/index.ts';
 import { request } from '../lib/api/client.ts';
@@ -37,8 +38,8 @@ export function ResetPasswordPage() {
       });
       setSuccess(true);
       setTimeout(() => navigate('/login'), 3000);
-    } catch {
-      setError(t('auth.resetPasswordError'));
+    } catch (err) {
+      setError(translateCaughtError(err, t('auth.resetPasswordError')));
     } finally {
       setIsSubmitting(false);
     }

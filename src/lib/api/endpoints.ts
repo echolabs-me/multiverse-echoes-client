@@ -1,4 +1,9 @@
-import { request, getBaseUrl, getAccessToken } from './client.ts';
+import {
+  request,
+  getBaseUrl,
+  getAccessToken,
+  apiErrorFromResponse,
+} from './client.ts';
 import type {
   PrivacySettings,
   RegisterRequest,
@@ -185,7 +190,7 @@ export const echoes = {
         headers,
       },
     );
-    if (!resp.ok) throw new Error(await resp.text());
+    if (!resp.ok) throw await apiErrorFromResponse(resp);
     return resp.blob();
   },
 
@@ -204,7 +209,7 @@ export const echoes = {
         headers,
       },
     );
-    if (!resp.ok) throw new Error(await resp.text());
+    if (!resp.ok) throw await apiErrorFromResponse(resp);
     if (resp.status === 200) return { cached: await resp.blob() };
     const body = await resp.json();
     return { jobId: body.job_id };
@@ -240,7 +245,7 @@ export const echoes = {
         headers,
       },
     );
-    if (!resp.ok) throw new Error(await resp.text());
+    if (!resp.ok) throw await apiErrorFromResponse(resp);
     return resp.blob();
   },
 
@@ -400,7 +405,6 @@ export const channels = {
     channelId: string,
     file: File,
   ): Promise<ChannelMessage> => {
-    const { getAccessToken, getBaseUrl } = await import('../api/client.ts');
     const form = new FormData();
     form.append('file', file);
     const resp = await fetch(`${getBaseUrl()}/channels/${channelId}/upload`, {
@@ -408,7 +412,7 @@ export const channels = {
       headers: { Authorization: `Bearer ${getAccessToken()}` },
       body: form,
     });
-    if (!resp.ok) throw new Error(`Upload failed: ${resp.status}`);
+    if (!resp.ok) throw await apiErrorFromResponse(resp);
     return resp.json() as Promise<ChannelMessage>;
   },
 
@@ -494,8 +498,20 @@ export const account = {
   getExportStatus: (exportId: string) =>
     request<DataExport>(`/account/me/story-export/${exportId}`),
 
-  downloadExport: (exportId: string) =>
-    `/account/me/story-export/${exportId}/download`,
+  /** The finished export's file, and the name the server gave it. */
+  downloadExport: async (
+    exportId: string,
+  ): Promise<{ blob: Blob; filename: string | null }> => {
+    const token = getAccessToken();
+    const resp = await fetch(
+      `${getBaseUrl()}/account/me/story-export/${exportId}/download`,
+      { headers: token ? { Authorization: `Bearer ${token}` } : {} },
+    );
+    if (!resp.ok) throw await apiErrorFromResponse(resp);
+    const disposition = resp.headers.get('Content-Disposition');
+    const match = disposition?.match(/filename="?([^"]+)"?/);
+    return { blob: await resp.blob(), filename: match?.[1] ?? null };
+  },
 
   deleteAccount: () =>
     request<{ message: string; deletion_scheduled_at: string }>('/account/me', {

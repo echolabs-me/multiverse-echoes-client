@@ -153,36 +153,52 @@ export async function request<T>(
       onAuthFailure?.();
     }
 
-    let errorBody: ApiError | ValidationErrorBody;
-    try {
-      errorBody = (await response.json()) as ApiError | ValidationErrorBody;
-    } catch {
-      throw new ApiRequestError(
-        response.status,
-        'UNKNOWN',
-        `HTTP ${response.status}`,
-      );
-    }
-
-    // A failed body validation: `error` is the code itself, and `fields`
-    // holds each field's messages.
-    if (typeof errorBody.error === 'string') {
-      throw new ApiRequestError(
-        response.status,
-        errorBody.error,
-        Object.values((errorBody as ValidationErrorBody).fields)
-          .flat()
-          .join(' '),
-      );
-    }
-
-    throw new ApiRequestError(
-      response.status,
-      errorBody.error.code,
-      errorBody.error.message,
-    );
+    throw await apiErrorFromResponse(response);
   }
 
   if (response.status === 204) return undefined as T;
   return (await response.json()) as T;
+}
+
+/**
+ * The error for a response from the API that is not OK. Every request the
+ * client sends to the API throws what this builds (R283.2), so a page reads
+ * one error type whichever way the request was sent.
+ */
+export async function apiErrorFromResponse(
+  response: Response,
+): Promise<ApiRequestError> {
+  let errorBody: Partial<ApiError | ValidationErrorBody> | null;
+  try {
+    errorBody = (await response.json()) as Partial<
+      ApiError | ValidationErrorBody
+    > | null;
+  } catch {
+    errorBody = null;
+  }
+
+  // A failed body validation: `error` is the code itself, and `fields`
+  // holds each field's messages.
+  if (typeof errorBody?.error === 'string') {
+    const fields = (errorBody as Partial<ValidationErrorBody>).fields ?? {};
+    return new ApiRequestError(
+      response.status,
+      errorBody.error,
+      Object.values(fields).flat().join(' '),
+    );
+  }
+
+  const envelope = errorBody?.error;
+  if (envelope && typeof envelope.code === 'string') {
+    return new ApiRequestError(
+      response.status,
+      envelope.code,
+      typeof envelope.message === 'string' ? envelope.message : '',
+    );
+  }
+
+  // A body with no envelope carries no text for the user, so a page shows
+  // its own fallback rather than "HTTP 502" (R264.5). The status stays on
+  // the error.
+  return new ApiRequestError(response.status, 'UNKNOWN', '');
 }

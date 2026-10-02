@@ -22,6 +22,9 @@ void testI18n.use(initReactI18next).init({
         'onboarding.timezone': 'Timezone',
         'common.skip': 'Skip',
         'common.continue': 'Continue',
+        // R284.5: the label and the number are one key. The test text
+        // differs from what code once wrote, so a join in code fails here.
+        'onboarding.selectAvatarNumbered': 'Pick avatar {{number}}',
       },
     },
   },
@@ -62,5 +65,16 @@ describe('OnboardingProfilePage', () => {
       renderPage();
     });
     expect(screen.getByLabelText('Bio')).toBeInTheDocument();
+  });
+
+  it("names each avatar with one key's text and its number (R284.5)", async () => {
+    await act(async () => {
+      renderPage();
+    });
+    for (const n of ['1', '2', '3', '4', '5', '6']) {
+      expect(
+        screen.getByRole('button', { name: `Pick avatar ${n}` }),
+      ).toBeInTheDocument();
+    }
   });
 });

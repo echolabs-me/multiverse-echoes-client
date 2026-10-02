@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Card, Button, Input } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
@@ -25,8 +29,10 @@ export function DeleteAccountPage() {
       addToast(t('settings.deleteAccountGrace', { days: 30 }), 'info');
       await logout();
       navigate('/login');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsDeleting(false);
     }

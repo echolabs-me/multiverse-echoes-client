@@ -269,8 +269,14 @@ describe('ShardViewPage', () => {
   });
 
   it('a failed acknowledgment closes the notice, travels nothing and shows the page’s error (R254.3)', async () => {
+    // A server error whose code has no locale text: the translator passes
+    // the server's message through (R264).
     vi.mocked(account.acknowledgeSharedShardNotice).mockRejectedValueOnce(
-      new Error('acknowledgment failed'),
+      new ApiRequestError(
+        500,
+        'NO_TEXT_FOR_THIS_CODE',
+        'acknowledgment failed',
+      ),
     );
     mocks.activeShard = shard('Public');
     await act(async () => {

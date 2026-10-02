@@ -28,6 +28,10 @@ import { TriggerSnapshotButton } from '../components/admin/billing/TriggerSnapsh
 import { useAuthStore } from '../stores/index.ts';
 import { admin, adminBilling, adminShare } from '../lib/api/endpoints.ts';
 import { request } from '../lib/api/client.ts';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
 import { formatUsdCents } from '../lib/format.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import type {
@@ -918,12 +922,13 @@ function BillingView() {
         setLoading(false);
       })
       .catch((err: unknown) => {
-        const msg = err instanceof Error ? err.message : String(err);
+        const msg = translateCaughtError(
+          err,
+          t('admin.billing.error.loadFailed'),
+        );
         setLoadError(msg);
         setLoading(false);
-        addToast(t('admin.billing.error.loadFailed'), 'danger', {
-          platformLink: true,
-        });
+        addToast(msg, 'danger', { platformLink: isPlatformError(err) });
       });
   }, [addToast, t]);
 
@@ -967,7 +972,7 @@ function BillingView() {
   if (loadError) {
     return (
       <p className="py-8 text-center text-danger" role="alert">
-        {t('admin.billing.error.loadFailed')}
+        {loadError}
       </p>
     );
   }
@@ -1179,20 +1184,24 @@ function BillingView() {
                     </td>
                     <td className="px-3 py-2 text-xs text-text-muted">
                       <span className="me-2">
-                        {t('admin.billing.tier.starter')}:{' '}
-                        {s.paid_subscribers_by_tier.starter}
+                        {t('admin.billing.tier.starterSubscribers', {
+                          subscribers: s.paid_subscribers_by_tier.starter,
+                        })}
                       </span>
                       <span className="me-2">
-                        {t('admin.billing.tier.core')}:{' '}
-                        {s.paid_subscribers_by_tier.core}
+                        {t('admin.billing.tier.coreSubscribers', {
+                          subscribers: s.paid_subscribers_by_tier.core,
+                        })}
                       </span>
                       <span className="me-2">
-                        {t('admin.billing.tier.creator')}:{' '}
-                        {s.paid_subscribers_by_tier.creator}
+                        {t('admin.billing.tier.creatorSubscribers', {
+                          subscribers: s.paid_subscribers_by_tier.creator,
+                        })}
                       </span>
                       <span>
-                        {t('admin.billing.tier.godMode')}:{' '}
-                        {s.paid_subscribers_by_tier.god_mode}
+                        {t('admin.billing.tier.godModeSubscribers', {
+                          subscribers: s.paid_subscribers_by_tier.god_mode,
+                        })}
                       </span>
                     </td>
                     <td className="px-3 py-2 text-text-secondary">
@@ -1455,9 +1464,7 @@ function FeedbackQueueView() {
           onChange={(e) => setFilterType(e.target.value)}
           className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
         >
-          <option value="all">
-            {t('admin.feedbackType')}: {t('admin.filterAll')}
-          </option>
+          <option value="all">{t('admin.feedbackTypeAll')}</option>
           <option value="Bug">{t('admin.feedbackTypeBug')}</option>
           <option value="FeatureRequest">
             {t('admin.feedbackTypeFeatureRequest')}
@@ -1473,9 +1480,7 @@ function FeedbackQueueView() {
           onChange={(e) => setFilterStatus(e.target.value)}
           className="rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary"
         >
-          <option value="all">
-            {t('admin.feedbackStatus')}: {t('admin.filterAll')}
-          </option>
+          <option value="all">{t('admin.feedbackStatusAll')}</option>
           <option value="New">{t('admin.feedbackStatusNew')}</option>
           <option value="Acknowledged">
             {t('admin.feedbackStatusAcknowledged')}
@@ -1515,9 +1520,17 @@ function FeedbackQueueView() {
                     {item.structured_summary}
                   </p>
                   <p className="mbs-1 text-xs text-text-muted">
-                    {t('admin.feedbackScreen')}: {item.context.screen}
-                    {item.context.echo_id &&
-                      ` · Echo: ${item.context.echo_id.slice(0, 8)}…`}
+                    {t('admin.feedbackScreenValue', {
+                      screen: item.context.screen,
+                    })}
+                    {item.context.echo_id && (
+                      <>
+                        {' · '}
+                        {t('admin.feedbackEchoValue', {
+                          echoId: `${item.context.echo_id.slice(0, 8)}…`,
+                        })}
+                      </>
+                    )}
                   </p>
                   {item.github_issue_url && (
                     <p className="mbs-1 text-xs">
@@ -1527,13 +1540,15 @@ function FeedbackQueueView() {
                         rel="noopener noreferrer"
                         className="text-accent underline hover:text-accent/80"
                       >
-                        GitHub Issue
+                        {t('admin.feedbackGithubIssue')}
                       </a>
                     </p>
                   )}
                   {item.resolution_notes && (
                     <p className="mbs-1 text-xs text-success">
-                      {t('admin.resolutionPrefix')}: {item.resolution_notes}
+                      {t('admin.resolutionValue', {
+                        notes: item.resolution_notes,
+                      })}
                     </p>
                   )}
                   <p className="mbs-1 text-xs text-text-muted">
@@ -1767,7 +1782,7 @@ function ShareTokensView() {
   const [total, setTotal] = useState(0);
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [errorKey, setErrorKey] = useState<string | null>(null);
+  const [errorText, setErrorText] = useState<string | null>(null);
   // Input-bound state (free typing — does NOT trigger re-fetches).
   const [creatorInput, setCreatorInput] = useState('');
   const [statusInput, setStatusInput] = useState<ShareTokenStatusFilter>('any');
@@ -1783,7 +1798,7 @@ function ShareTokensView() {
 
   const load = useCallback(async () => {
     setIsLoading(true);
-    setErrorKey(null);
+    setErrorText(null);
     try {
       const trimmedCreator = appliedCreator.trim();
       const resp = await adminShare.listTokens({
@@ -1794,12 +1809,12 @@ function ShareTokensView() {
       });
       setItems(resp.items);
       setTotal(Number(resp.total));
-    } catch {
-      setErrorKey('adminShare.tokens.loadError');
+    } catch (err) {
+      setErrorText(translateCaughtError(err, t('adminShare.tokens.loadError')));
     } finally {
       setIsLoading(false);
     }
-  }, [appliedCreator, appliedStatus, offset]);
+  }, [appliedCreator, appliedStatus, offset, t]);
 
   useEffect(() => {
     void (async () => {
@@ -1837,8 +1852,10 @@ function ShareTokensView() {
       setSuccessToast(t('adminShare.tokens.revokeSuccess'));
       window.setTimeout(() => setSuccessToast(null), 3000);
       void load();
-    } catch {
-      setErrorKey('adminShare.tokens.revokeError');
+    } catch (err) {
+      setErrorText(
+        translateCaughtError(err, t('adminShare.tokens.revokeError')),
+      );
     }
   };
 
@@ -1914,9 +1931,9 @@ function ShareTokensView() {
           {successToast}
         </p>
       )}
-      {errorKey && (
+      {errorText && (
         <p className="text-sm text-danger" role="alert">
-          {t(errorKey)}
+          {errorText}
         </p>
       )}
 

@@ -67,6 +67,7 @@
     "translationPending": "Translating…",
     "legalDocsEnglishOnly": "This page is available in English only. A translated version will be published soon.",
     "legalMachineTranslationDisclaimer": "This translation is provided for convenience. The English version is the legally authoritative text.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "fieldRequired": "Please fill in this field."
@@ -107,7 +108,6 @@
     "verifiedTitle": "You're in!",
     "verifiedDescription": "Let's create your first Echo.",
     "emailTaken": "This email is already registered",
-    "displayNameTaken": "This display name is taken",
     "confirmPassword": "Confirm password",
     "passwordMismatch": "Passwords do not match",
     "passwordTooShort": "Password must be at least 12 characters",
@@ -140,15 +140,18 @@
     "card3Title": "This Is Not a Game",
     "card3Body": "There are no points, no winning. This is an autonomous life simulation. Treat it with curiosity.",
     "understand": "I understand — let's go",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "Set up your profile",
     "bio": "Bio",
     "bioHint": "A bit about you — the observer, not the Echo. Shown on your community profile (optional, max 500 chars)",
     "bioCallout": "This is about you, not your Echo. Other users see this on your profile in the community. It has no effect on how your Echoes think or behave.",
     "timezone": "Timezone",
     "avatar": "Avatar",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "Choose your language",
     "languagesComingSoon": "More languages coming soon",
-    "languageSelectionLabel": "Language selection"
+    "languageSelectionLabel": "Language selection",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "Create Your Echo",
@@ -178,8 +181,6 @@
     "birthTitle": "Your Echo is being born…",
     "birthComplete": "Your Echo is alive.",
     "limitTitle": "Echo limit reached",
-    "limitDesc": "Your current plan allows {{max}} Echo. Upgrade to create more, or return to the dashboard.",
-    "limitDesc_plural": "Your current plan allows {{max}} Echoes. Upgrade to create more, or return to the dashboard.",
     "viewPlans": "View Plans"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "Follow other users to see their Echo stories here.",
     "filterByEcho": "Filter by Echo",
     "allEchoes": "All Echoes",
-    "significance": "Significance"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "Community",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "My Feedback",
     "noFeedbackYet": "You haven't submitted any feedback yet.",
-    "feedbackSubmitted": "Submitted",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "Danger Zone",
     "subscriptionTier": "Subscription",
     "managePlan": "Manage Plan",
@@ -391,6 +393,8 @@
     "passwordChanged": "Password changed successfully",
     "sessions": "Active Sessions",
     "currentSession": "Current session",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "Revoke",
     "sessionRevoked": "Session revoked",
     "exportData": "Export My Data",
@@ -474,7 +478,7 @@
     "noEchoes": "Your multiverse is empty",
     "noEchoesDesc": "Create your first Echo and watch a new life unfold.",
     "viewDetail": "View detail",
-    "mood": "Mood",
+    "moodValue": "Mood: {{mood}}",
     "tick": "Tick {{tick}}",
     "latestDiaryEmpty": "Your Echo's story is just beginning. Check back soon.",
     "nextTick": "Next tick in {{seconds}}s",
@@ -541,7 +545,7 @@
     "downloading": "Downloading...",
     "downloadSubtitles": "Download subtitles (.srt)",
     "progress": "Export progress",
-    "formatLabel": "Format",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "File will be saved to your Downloads folder."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "Ask the Oracle...",
     "send": "Send to Oracle",
     "thinking": "Oracle is thinking...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "Clear conversation",
     "rateLimit": "{{limit}} questions per minute",
     "error": "The Oracle couldn't respond. Please try again.",
@@ -641,13 +648,15 @@
     },
     "feedbackQueue": "Feedback Queue",
     "noFeedback": "No feedback submitted yet.",
-    "feedbackType": "Type",
-    "feedbackStatus": "Status",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "Priority",
     "feedbackMessage": "User Message",
     "feedbackSummary": "Summary",
     "feedbackContext": "Context",
-    "feedbackScreen": "Screen",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "Acknowledge",
     "feedbackResolve": "Resolve",
     "feedbackWontfix": "Won't Fix",
@@ -702,7 +711,6 @@
     "backupControl": "Database Backup",
     "triggerBackup": "Trigger Backup",
     "analyticsLoadFailed": "Failed to load analytics",
-    "filterAll": "All",
     "feedbackTypeBug": "Bug",
     "feedbackTypeFeatureRequest": "Feature Request",
     "feedbackTypeFrustration": "Frustration",
@@ -712,7 +720,7 @@
     "feedbackStatusAcknowledged": "Acknowledged",
     "feedbackStatusResolved": "Resolved",
     "feedbackStatusWontfix": "Won't Fix",
-    "resolutionPrefix": "Resolution",
+    "resolutionValue": "Resolution: {{notes}}",
     "billing": {
       "heading": "Billing Health",
       "kpi": {
@@ -727,10 +735,10 @@
         }
       },
       "tier": {
-        "starter": "Starter",
-        "core": "Core",
-        "creator": "Creator",
-        "godMode": "God Mode"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "MRR Trend",
@@ -793,7 +801,7 @@
         "submitButton": "Apply override",
         "cancelButton": "Cancel",
         "successToast": "Dunning phase override applied.",
-        "errorPrefix": "Override failed"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Trigger snapshot",
@@ -868,7 +876,9 @@
     "current": "Current",
     "perMonth": "/month",
     "payWithCrypto": "Pay with Crypto",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "Pay with XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "Pay with Card",
     "cardComingSoon": "Available after company incorporation",
     "manageSubscription": "Manage Subscription",
@@ -1148,6 +1158,7 @@
   "voice": {
     "tapToStart": "Tap to start conversation",
     "requestingMic": "Requesting microphone...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Connecting to Echo...",
     "listening": "Listening...",
     "thinking": "Thinking...",
@@ -1223,10 +1234,11 @@
     "playing": "Playing",
     "paused": "Paused",
     "watch": "Watch",
-    "generatingVideo": "Generating video…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "Playing video",
     "watchAgain": "Watch again",
-    "videoError": "Video failed — tap to retry"
+    "videoError": "Video failed — tap to retry",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

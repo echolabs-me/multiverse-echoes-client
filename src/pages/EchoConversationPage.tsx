@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Send, Lock } from 'lucide-react';
 import { Button } from '../components/index.ts';
@@ -78,7 +79,7 @@ export function EchoConversationPage() {
           trackEvent('conversation.started', { echo_id: echoId });
         }
       } catch (err) {
-        const detail = err instanceof Error ? err.message : 'Unknown error';
+        const detail = translateCaughtError(err);
         setError(t('conversation.errorStarting', { detail }));
       } finally {
         setIsLoading(false);
@@ -214,7 +215,7 @@ export function EchoConversationPage() {
         });
       }
     } catch (err) {
-      const detail = err instanceof Error ? err.message : 'Unknown error';
+      const detail = translateCaughtError(err);
       setError(t('conversation.errorSending', { detail }));
     } finally {
       setIsSending(false);

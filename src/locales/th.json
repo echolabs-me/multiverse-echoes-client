@@ -66,6 +66,7 @@
     "translationPending": "กำลังแปล...",
     "legalDocsEnglishOnly": "หน้านี้มีให้บริการเฉพาะภาษาอังกฤษเท่านั้น เวอร์ชันแปลภาษาจะถูกเผยแพร่ในเร็วๆ นี้",
     "legalMachineTranslationDisclaimer": "คำแปลนี้จัดทำขึ้นเพื่อความสะดวกเท่านั้น ให้ยึดถือฉบับภาษาอังกฤษเป็นหลักในทางกฎหมาย",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "เปิดเมนู",
     "closeMenu": "ปิดเมนู",
     "fieldRequired": "กรุณากรอกข้อมูลในช่องนี้",
@@ -105,7 +106,6 @@
     "verifiedTitle": "คุณเข้ามาได้แล้ว!",
     "verifiedDescription": "มาสร้าง Echo แรกของคุณกันเลย",
     "emailTaken": "อีเมลนี้ถูกลงทะเบียนไว้แล้ว",
-    "displayNameTaken": "ชื่อที่แสดงนี้ถูกใช้ไปแล้ว",
     "confirmPassword": "ยืนยันรหัสผ่าน",
     "passwordMismatch": "รหัสผ่านไม่ตรงกัน",
     "passwordTooShort": "รหัสผ่านต้องมีความยาวอย่างน้อย 12 ตัวอักษร",
@@ -140,15 +140,18 @@
     "card3Title": "นี่ไม่ใช่เกม",
     "card3Body": "ไม่มีคะแนน ไม่มีการชนะ นี่คือการจำลองชีวิตแบบอัตโนมัติ โปรดรับชมด้วยความอยากรู้อยากเห็น",
     "understand": "เข้าใจแล้ว — ไปกันเลย",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "ตั้งค่าโปรไฟล์ของคุณ",
     "bio": "ประวัติโดยย่อ",
     "bioHint": "ข้อมูลเกี่ยวกับคุณ — ในฐานะผู้สังเกตการณ์ ไม่ใช่เสียงสะท้อน จะแสดงบนโปรไฟล์ชุมชนของคุณ (ไม่บังคับ, สูงสุด 500 ตัวอักษร)",
     "bioCallout": "นี่คือข้อมูลเกี่ยวกับคุณ ไม่ใช่ Echo ของคุณ ผู้ใช้รายอื่นจะเห็นข้อมูลนี้บนโปรไฟล์ของคุณในชุมชน ซึ่งจะไม่มีผลต่อวิธีที่ Echo ของคุณคิดหรือแสดงออก",
     "timezone": "เขตเวลา",
     "avatar": "อวตาร",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "เลือกภาษาของคุณ",
     "languagesComingSoon": "จะมีการเพิ่มภาษาอื่นๆ ในเร็วๆ นี้",
-    "languageSelectionLabel": "เลือกภาษา"
+    "languageSelectionLabel": "เลือกภาษา",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "สร้างเสียงสะท้อนของคุณ",
@@ -178,8 +181,6 @@
     "birthTitle": "Echo ของคุณกำลังถือกำเนิด...",
     "birthComplete": "Echo ของคุณมีชีวิตแล้ว",
     "limitTitle": "ถึงขีดจำกัดของการทวนคำแล้ว",
-    "limitDesc": "แผนปัจจุบันของคุณอนุญาตให้ใช้ Echo ได้ {{max}} ราย อัปเกรดเพื่อสร้างเพิ่ม หรือกลับไปยังแดชบอร์ด",
-    "limitDesc_plural": "แผนปัจจุบันของคุณอนุญาตให้มี Echoes ได้ {{max}} รายการ อัปเกรดเพื่อสร้างเพิ่มเติม หรือกลับไปยังแดชบอร์ด",
     "viewPlans": "ดูแผนบริการ"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "ติดตามผู้ใช้คนอื่นๆ เพื่อดูเรื่องราว Echo ของพวกเขาที่นี่",
     "filterByEcho": "กรองโดย Echo",
     "allEchoes": "เสียงสะท้อนทั้งหมด",
-    "significance": "ความสำคัญ"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "ชุมชน",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "คำติชมของฉัน",
     "noFeedbackYet": "คุณยังไม่ได้ส่งคำติชมใดๆ",
-    "feedbackSubmitted": "ส่งแล้ว",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "เขตอันตราย",
     "subscriptionTier": "การสมัครสมาชิก",
     "managePlan": "จัดการแผน",
@@ -391,6 +393,8 @@
     "passwordChanged": "เปลี่ยนรหัสผ่านสำเร็จแล้ว",
     "sessions": "เซสชันที่ใช้งานอยู่",
     "currentSession": "เซสชันปัจจุบัน",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "ยกเลิก",
     "sessionRevoked": "เซสชันถูกยกเลิกแล้ว",
     "exportData": "ส่งออกข้อมูลของฉัน",
@@ -474,7 +478,7 @@
     "noEchoes": "พหุภพของคุณว่างเปล่า",
     "noEchoesDesc": "สร้าง Echo ตัวแรกของคุณ และเฝ้าดูชีวิตใหม่ที่กำลังเริ่มต้นขึ้น",
     "viewDetail": "ดูรายละเอียด",
-    "mood": "อารมณ์",
+    "moodValue": "Mood: {{mood}}",
     "tick": "ทำเครื่องหมาย {{tick}}",
     "latestDiaryEmpty": "เรื่องราวของ Echo ของคุณเพิ่งเริ่มต้นขึ้น โปรดกลับมาตรวจสอบอีกครั้งเร็วๆ นี้",
     "nextTick": "ติ๊กถัดไปใน {{seconds}} วินาที",
@@ -541,7 +545,7 @@
     "downloading": "กำลังดาวน์โหลด...",
     "downloadSubtitles": "ดาวน์โหลดคำบรรยาย (.srt)",
     "progress": "ความคืบหน้าในการส่งออก",
-    "formatLabel": "รูปแบบ",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "ไฟล์จะถูกบันทึกไว้ในโฟลเดอร์ดาวน์โหลดของคุณ"
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "ถามพยากรณ์...",
     "send": "ส่งไปยัง Oracle",
     "thinking": "Oracle กำลังคิด...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "ล้างการสนทนา",
     "rateLimit": "{{limit}} คำถามต่อนาที",
     "error": "ออราเคิลไม่สามารถตอบสนองได้ โปรดลองอีกครั้ง",
@@ -631,13 +638,15 @@
     "tabBilling": "การเรียกเก็บเงิน",
     "feedbackQueue": "คิวคำติชม",
     "noFeedback": "ยังไม่มีการส่งคำติชม",
-    "feedbackType": "พิมพ์",
-    "feedbackStatus": "สถานะ",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "ลำดับความสำคัญ",
     "feedbackMessage": "ข้อความจากผู้ใช้",
     "feedbackSummary": "สรุป",
     "feedbackContext": "บริบท",
-    "feedbackScreen": "หน้าจอ",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "รับทราบ",
     "feedbackResolve": "แก้ไข",
     "feedbackWontfix": "จะไม่แก้ไข",
@@ -692,7 +701,6 @@
     "backupControl": "การสำรองข้อมูลฐานข้อมูล",
     "triggerBackup": "สั่งสำรองข้อมูล",
     "analyticsLoadFailed": "โหลดข้อมูลการวิเคราะห์ล้มเหลว",
-    "filterAll": "ทั้งหมด",
     "feedbackTypeBug": "แมลง",
     "feedbackTypeFeatureRequest": "คำขอฟีเจอร์ใหม่",
     "feedbackTypeFrustration": "ความหงุดหงิด",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "รับทราบ",
     "feedbackStatusResolved": "แก้ไขแล้ว",
     "feedbackStatusWontfix": "จะไม่แก้ไข",
-    "resolutionPrefix": "ความละเอียด",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "ผู้ดูแล",
     "moderators": {
       "heading": "ผู้ดูแลปัจจุบัน",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "Starter",
-        "core": "Core",
-        "creator": "Creator",
-        "godMode": "God Mode"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "แนวโน้ม MRR",
@@ -795,7 +803,7 @@
         "submitButton": "ใช้การแทนที่",
         "cancelButton": "ยกเลิก",
         "successToast": "ใช้การแทนที่ระยะ dunning เรียบร้อยแล้ว",
-        "errorPrefix": "การแทนที่ล้มเหลว"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "สร้างภาพรวม",
@@ -837,7 +845,9 @@
     "current": "ปัจจุบัน",
     "perMonth": "/เดือน",
     "payWithCrypto": "ชำระเงินด้วยคริปโต",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "ชำระเงินด้วย XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "ชำระเงินด้วยบัตร",
     "cardComingSoon": "พร้อมใช้งานหลังจากการจดทะเบียนบริษัท",
     "manageSubscription": "จัดการการสมัครสมาชิก",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "แตะเพื่อเริ่มการสนทนา",
     "requestingMic": "กำลังขออนุญาตใช้ไมโครโฟน...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "กำลังเชื่อมต่อกับ Echo...",
     "listening": "กำลังฟัง...",
     "thinking": "กำลังคิด...",
@@ -1192,10 +1203,11 @@
     "playing": "กำลังเล่น",
     "paused": "หยุดชั่วคราว",
     "watch": "ดู",
-    "generatingVideo": "กำลังสร้างวิดีโอ…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "กำลังเล่นวิดีโอ",
     "watchAgain": "ดูอีกครั้ง",
-    "videoError": "วิดีโอล้มเหลว — แตะเพื่อลองอีกครั้ง"
+    "videoError": "วิดีโอล้มเหลว — แตะเพื่อลองอีกครั้ง",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

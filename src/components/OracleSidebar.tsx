@@ -174,7 +174,7 @@ export function OracleSidebar() {
           </div>
         )}
 
-        {error && <p className="text-xs text-danger">{t(error)}</p>}
+        {error && <p className="text-xs text-danger">{error}</p>}
 
         <div ref={messagesEndRef} />
       </div>

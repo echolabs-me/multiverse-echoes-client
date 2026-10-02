@@ -5,6 +5,11 @@ import { useTranslation } from 'react-i18next';
 import { Avatar, EmptyState, Spinner } from '../components/index.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { social, users } from '../lib/api/endpoints.ts';
+import { ApiRequestError } from '../lib/api/client.ts';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import type {
   EchoInCommonRef,
@@ -55,7 +60,9 @@ export function UserProfilePage() {
   const [rel, setRel] = useState<RelationshipState>(DEFAULT_REL);
   const [pending, setPending] = useState<keyof RelationshipState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<'not-found' | 'load-failed' | null>(null);
+  const [error, setError] = useState<
+    { kind: 'not-found' } | { kind: 'load-failed'; text: string } | null
+  >(null);
 
   const loadData = useCallback(async () => {
     if (!userId) return;
@@ -84,13 +91,21 @@ export function UserProfilePage() {
         muted: contains(muted, userId),
       });
     } catch (err) {
-      const message = (err as Error)?.message ?? '';
+      // A missing user has its own view; any other error shows the
+      // translator's text (R264.2).
       setProfile(null);
-      setError(/404|not.found/i.test(message) ? 'not-found' : 'load-failed');
+      setError(
+        err instanceof ApiRequestError && err.status === 404
+          ? { kind: 'not-found' }
+          : {
+              kind: 'load-failed',
+              text: translateCaughtError(err, t('userProfile.errorLoading')),
+            },
+      );
     } finally {
       setIsLoading(false);
     }
-  }, [userId]);
+  }, [userId, t]);
 
   useEffect(() => {
     void (async () => {
@@ -123,10 +138,14 @@ export function UserProfilePage() {
       try {
         await run();
         trackEvent('profile.action', { user_id: userId, kind, next });
-      } catch {
+      } catch (err) {
         // Revert + toast.
         setRel(prev);
-        addToast(t('userProfile.actionFailed'), 'danger');
+        addToast(
+          translateCaughtError(err, t('userProfile.actionFailed')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
       } finally {
         setPending(null);
       }
@@ -154,12 +173,12 @@ export function UserProfilePage() {
     );
   }
 
-  if (error === 'load-failed') {
+  if (error?.kind === 'load-failed') {
     return (
       <main id="main-content" data-testid="profile-page-root" className="p-6">
         <div data-testid="profile-load-failed">
           <EmptyState
-            title={t('userProfile.errorLoading')}
+            title={error.text}
             action={
               <button
                 type="button"
@@ -175,7 +194,7 @@ export function UserProfilePage() {
     );
   }
 
-  if (error === 'not-found' || !profile || !view) {
+  if (error?.kind === 'not-found' || !profile || !view) {
     return (
       <main id="main-content" data-testid="profile-page-root" className="p-6">
         <div data-testid="profile-not-found">

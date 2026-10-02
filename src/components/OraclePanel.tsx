@@ -197,7 +197,7 @@ export function OraclePanel() {
               </div>
             )}
 
-            {error && <p className="text-sm text-danger">{t(error)}</p>}
+            {error && <p className="text-sm text-danger">{error}</p>}
 
             <div ref={messagesEndRef} />
           </div>

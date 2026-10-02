@@ -66,6 +66,7 @@
     "translationPending": "ترجمہ ہو رہا ہے…",
     "legalDocsEnglishOnly": "یہ صفحہ صرف انگریزی میں دستیاب ہے۔ ترجمہ شدہ ورژن جلد شائع کیا جائے گا۔",
     "legalMachineTranslationDisclaimer": "یہ ترجمہ سہولت کے لیے فراہم کیا گیا ہے۔ انگریزی ورژن قانونی طور پر مستند متن ہے۔",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "مینو کھولیں",
     "closeMenu": "مینو بند کریں",
     "fieldRequired": "براہ کرم یہ خانہ پُر کریں۔",
@@ -105,7 +106,6 @@
     "verifiedTitle": "آپ شامل ہو گئے ہیں!",
     "verifiedDescription": "آئیے آپ کا پہلا Echo بنائیں۔",
     "emailTaken": "یہ ای میل پہلے ہی رجسٹرڈ ہے۔",
-    "displayNameTaken": "یہ ڈسپلے نام پہلے سے استعمال میں ہے",
     "confirmPassword": "پاس ورڈ کی تصدیق کریں",
     "passwordMismatch": "پاس ورڈز آپس میں نہیں ملتے",
     "passwordTooShort": "پاس ورڈ کم از کم 12 حروف پر مشتمل ہونا چاہیے۔",
@@ -140,15 +140,18 @@
     "card3Title": "یہ کوئی کھیل نہیں ہے",
     "card3Body": "یہاں کوئی پوائنٹس نہیں ہیں، نہ ہی کوئی جیت ہے۔ یہ ایک خود مختار زندگی کی نقل (سیمولیشن) ہے۔ اسے تجسس کے ساتھ دیکھیں۔",
     "understand": "میں سمجھ گیا — چلو چلتے ہیں",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "اپنا پروفائل سیٹ اپ کریں",
     "bio": "سوانح",
     "bioHint": "آپ کے بارے میں کچھ — مشاہدہ کرنے والا، نہ کہ گونج۔ آپ کے کمیونٹی پروفائل پر دکھایا جائے گا (اختیاری، زیادہ سے زیادہ 500 حروف)",
     "bioCallout": "یہ آپ کے بارے میں ہے، آپ کے ایکو (Echo) کے بارے میں نہیں۔ کمیونٹی میں دوسرے صارفین اسے آپ کی پروفائل پر دیکھتے ہیں۔ اس کا اس بات پر کوئی اثر نہیں پڑتا کہ آپ کے ایکوز کیسے سوچتے ہیں یا کیسا برتاؤ کرتے ہیں۔",
     "timezone": "ٹائم زون",
     "avatar": "اوتار",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "اپنی زبان منتخب کریں",
     "languagesComingSoon": "مزید زبانیں جلد آ رہی ہیں",
-    "languageSelectionLabel": "زبان کا انتخاب"
+    "languageSelectionLabel": "زبان کا انتخاب",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "اپنی گونج تخلیق کریں",
@@ -178,8 +181,6 @@
     "birthTitle": "آپ کا ایکو (Echo) جنم لے رہا ہے...",
     "birthComplete": "آپ کا ایکو زندہ ہے۔",
     "limitTitle": "ایکو کی حد ختم ہوگئی ہے",
-    "limitDesc": "آپ کا موجودہ پلان {{max}} Echo کی اجازت دیتا ہے۔ مزید بنانے کے لیے اپ گریڈ کریں، یا ڈیش بورڈ پر واپس جائیں۔",
-    "limitDesc_plural": "آپ کا موجودہ پلان {{max}} Echoes کی اجازت دیتا ہے۔ مزید بنانے کے لیے اپ گریڈ کریں، یا ڈیش بورڈ پر واپس جائیں۔",
     "viewPlans": "پلانز دیکھیں"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "دیگر صارفین کو فالو کریں تاکہ ان کی ایکو (Echo) کہانیاں یہاں دیکھ سکیں۔",
     "filterByEcho": "ایکو کے ذریعے فلٹر کریں",
     "allEchoes": "تمام گونجیں",
-    "significance": "اہمیت"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "برادری",
@@ -381,7 +382,8 @@
     "discord": "ڈسکارڈ",
     "myFeedback": "میری رائے",
     "noFeedbackYet": "آپ نے ابھی تک کوئی رائے جمع نہیں کروائی ہے۔",
-    "feedbackSubmitted": "جمع شدہ",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "خطرناک علاقہ",
     "subscriptionTier": "سبسکرپشن",
     "managePlan": "پلان مینیج کریں",
@@ -391,6 +393,8 @@
     "passwordChanged": "پاس ورڈ کامیابی سے تبدیل کر دیا گیا ہے",
     "sessions": "فعال سیشنز",
     "currentSession": "موجودہ سیشن",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "منسوخ کرنا",
     "sessionRevoked": "سیشن ختم کر دیا گیا ہے",
     "exportData": "میرا ڈیٹا ایکسپورٹ کریں",
@@ -474,7 +478,7 @@
     "noEchoes": "آپ کی کائناتیں خالی ہیں۔",
     "noEchoesDesc": "اپنا پہلا ایکو (Echo) بنائیں اور ایک نئی زندگی کو پروان چڑھتے ہوئے دیکھیں۔",
     "viewDetail": "تفصیل دیکھیں",
-    "mood": "موڈ",
+    "moodValue": "Mood: {{mood}}",
     "tick": "نشان لگائیں {{tick}}",
     "latestDiaryEmpty": "آپ کے ایکو (Echo) کی کہانی ابھی شروع ہوئی ہے۔ جلد دوبارہ چیک کریں۔",
     "nextTick": "اگلا ٹک {{seconds}} سیکنڈز میں",
@@ -541,7 +545,7 @@
     "downloading": "ڈاؤن لوڈ ہو رہا ہے...",
     "downloadSubtitles": "سب ٹائٹلز ڈاؤن لوڈ کریں (.srt)",
     "progress": "برآمدگی کی پیشرفت",
-    "formatLabel": "فارمیٹ",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "فائل آپ کے ڈاؤن لوڈز فولڈر میں محفوظ کر دی جائے گی۔"
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "اوریکل سے پوچھیں...",
     "send": "اوریکل کو بھیجیں",
     "thinking": "اوریکل سوچ رہا ہے...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "گفتگو صاف کریں",
     "rateLimit": "فی منٹ {{limit}} سوالات",
     "error": "اوریکل جواب نہیں دے سکا۔ براہ کرم دوبارہ کوشش کریں۔",
@@ -631,13 +638,15 @@
     "tabBilling": "بلنگ",
     "feedbackQueue": "فیڈ بیک کیو",
     "noFeedback": "ابھی تک کوئی فیڈ بیک جمع نہیں کرایا گیا۔",
-    "feedbackType": "ٹائپ کریں",
-    "feedbackStatus": "صورتحال",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "ترجیح",
     "feedbackMessage": "صارف کا پیغام",
     "feedbackSummary": "خلاصہ",
     "feedbackContext": "سیاق و سباق",
-    "feedbackScreen": "اسکرین",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "تسلیم کریں",
     "feedbackResolve": "حل کریں",
     "feedbackWontfix": "ٹھیک نہیں کیا جائے گا",
@@ -692,7 +701,6 @@
     "backupControl": "ڈیٹا بیس بیک اپ",
     "triggerBackup": "بیک اپ شروع کریں",
     "analyticsLoadFailed": "اینالٹکس لوڈ کرنے میں ناکامی ہوئی",
-    "filterAll": "تمام",
     "feedbackTypeBug": "کیڑا",
     "feedbackTypeFeatureRequest": "فیچر کی درخواست",
     "feedbackTypeFrustration": "ناکامی یا مایوسی",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "تسلیم کیا گیا",
     "feedbackStatusResolved": "حل شدہ",
     "feedbackStatusWontfix": "ٹھیک نہیں کیا جائے گا",
-    "resolutionPrefix": "قرار نامہ",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "ماڈریٹرز",
     "moderators": {
       "heading": "موجودہ ماڈریٹرز",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "سٹارٹر",
-        "core": "کور",
-        "creator": "تخلیق کار",
-        "godMode": "خدائی موڈ"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "MRR رجحان",
@@ -795,7 +803,7 @@
         "submitButton": "نیا تعین لاگو کریں",
         "cancelButton": "منسوخ کریں",
         "successToast": "ڈننگ مرحلہ نیا تعین لاگو ہو گیا۔",
-        "errorPrefix": "نیا تعین ناکام"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "سنیپ شاٹ شروع کریں",
@@ -837,7 +845,9 @@
     "current": "موجودہ",
     "perMonth": "فی مہینہ",
     "payWithCrypto": "کرپٹو کے ذریعے ادائیگی کریں",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "XRP کے ذریعے ادائیگی کریں",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "کارڈ سے ادائیگی کریں",
     "cardComingSoon": "کمپنی کی رجسٹریشن کے بعد دستیاب ہوگا",
     "manageSubscription": "سبسکرپشن کا انتظام کریں",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "گفتگو شروع کرنے کے لیے ٹیپ کریں",
     "requestingMic": "مائیکروفون کی درخواست کی جا رہی ہے...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "ایکو سے منسلک ہو رہا ہے...",
     "listening": "سن رہا ہوں...",
     "thinking": "سوچ رہا ہوں...",
@@ -1192,10 +1203,11 @@
     "playing": "چل رہا ہے",
     "paused": "موقوف",
     "watch": "دیکھیں",
-    "generatingVideo": "ویڈیو تیار ہو رہی ہے…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "ویڈیو چل رہی ہے",
     "watchAgain": "دوبارہ دیکھیں",
-    "videoError": "ویڈیو ناکام — دوبارہ کوشش کے لیے ٹیپ کریں"
+    "videoError": "ویڈیو ناکام — دوبارہ کوشش کے لیے ٹیپ کریں",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

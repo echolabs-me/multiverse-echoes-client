@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../../../lib/translateError.ts';
 import { Modal } from '../../Modal.tsx';
 import { Button } from '../../Button.tsx';
 import { adminBilling } from '../../../lib/api/endpoints.ts';
@@ -75,8 +76,7 @@ export function OverrideDunningPhaseModal({
       onSuccess();
       onClose();
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      setError(msg);
+      setError(translateCaughtError(err));
     } finally {
       setSubmitting(false);
     }
@@ -134,7 +134,7 @@ export function OverrideDunningPhaseModal({
             role="alert"
             data-testid="override-error-message"
           >
-            {t('admin.billing.override.errorPrefix')}: {error}
+            {t('admin.billing.override.errorDetail', { detail: error })}
           </p>
         )}
 

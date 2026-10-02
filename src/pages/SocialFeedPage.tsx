@@ -126,7 +126,9 @@ function SocialFeedCard({
               {item.significance > 0 && (
                 <span className="flex items-center gap-1">
                   <TrendingUp size={10} aria-hidden="true" />
-                  {t('feeds.significance')}: {item.significance}
+                  {t('feeds.significanceValue', {
+                    significance: item.significance,
+                  })}
                 </span>
               )}
               <button

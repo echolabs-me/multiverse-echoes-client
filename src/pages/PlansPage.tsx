@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
+import { ApiRequestError } from '../lib/api/client.ts';
 import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Check, Settings } from 'lucide-react';
 import { Card, Badge, Tooltip } from '../components/index.ts';
@@ -251,11 +256,20 @@ export function PlansPage() {
         window.location.assign(result.checkout_url);
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : '';
-      if (msg.includes('Rate lookup') || msg.includes('rate')) {
-        addToast(t('payment.cryptoUnavailable'), 'warning');
+      // A failed rate lookup is a warning, not a failure: the code chooses
+      // the toast's severity, and the translator its text (R264.2).
+      if (err instanceof ApiRequestError && err.code === 'RATE_LOOKUP_FAILED') {
+        addToast(
+          translateCaughtError(err, t('payment.cryptoUnavailable')),
+          'warning',
+          { platformLink: isPlatformError(err) },
+        );
       } else {
-        addToast(t('common.errorGeneric'), 'danger', { platformLink: true });
+        addToast(
+          translateCaughtError(err, t('common.errorGeneric')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
       }
     } finally {
       setLoading(null);
@@ -269,8 +283,10 @@ export function PlansPage() {
       if (result.portal_url) {
         window.location.href = result.portal_url;
       }
-    } catch {
-      addToast(t('common.errorGeneric'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.errorGeneric')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setLoading(null);
     }

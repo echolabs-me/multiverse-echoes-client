@@ -33,11 +33,6 @@ const SUBJECT_KEYS = [
 const MESSAGE_MAX = 2000;
 const RESUBMIT_COOLDOWN_SECONDS = 60;
 
-interface WorkerError {
-  error?: string;
-  field?: string;
-}
-
 export function ContactPage() {
   const { t } = useTranslation();
   const [name, setName] = useState('');
@@ -111,19 +106,14 @@ export function ContactPage() {
         return;
       }
 
-      let body: WorkerError = {};
-      try {
-        body = (await res.json()) as WorkerError;
-      } catch {
-        // ignore — fall through with status-based message
-      }
-
+      // The Worker's own text is English and not ours, so the page shows
+      // its own string for the refusal (R264.4, R284.1).
       if (res.status === 429) {
-        setError(body.error ?? t('contact.errorRateLimit'));
+        setError(t('contact.errorRateLimit'));
       } else if (res.status === 400) {
-        setError(body.error ?? t('contact.errorBadRequest'));
+        setError(t('contact.errorBadRequest'));
       } else {
-        setError(body.error ?? t('contact.errorGeneric'));
+        setError(t('contact.errorGeneric'));
       }
       turnstileRef.current?.reset();
       setTurnstileToken('');

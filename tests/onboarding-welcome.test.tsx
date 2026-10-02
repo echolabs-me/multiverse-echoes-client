@@ -24,6 +24,9 @@ void testI18n.use(initReactI18next).init({
         'onboarding.card3Body': 'Export your Echo diary.',
         'onboarding.understand': 'I understand',
         'common.next': 'Next',
+        // R284.5: the position is one key. The test text differs from what
+        // code once wrote, so a join in code fails here.
+        'onboarding.cardPosition': 'Slide {{current}} of {{total}}',
       },
     },
   },
@@ -74,5 +77,20 @@ describe('OnboardingWelcomePage', () => {
       fireEvent.click(nextButton);
     });
     expect(screen.getByText('Watch and nudge')).toBeInTheDocument();
+  });
+
+  it("names the card position with one key's text and its values (R284.5)", async () => {
+    await act(async () => {
+      renderPage();
+    });
+    expect(
+      screen.getByRole('status', { name: 'Slide 1 of 3' }),
+    ).toBeInTheDocument();
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    });
+    expect(
+      screen.getByRole('status', { name: 'Slide 2 of 3' }),
+    ).toBeInTheDocument();
   });
 });

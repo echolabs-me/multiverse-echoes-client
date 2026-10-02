@@ -25,6 +25,9 @@ void testI18n.use(initReactI18next).init({
         'auth.resend': 'Resend',
         'auth.resendCooldown': 'Resend in {{seconds}}s',
         'common.continue': 'Continue',
+        // R284.5: the label and the date are one key. The test text differs
+        // from what code once wrote, so a join in code fails here.
+        'common.legalLastUpdated': 'Revised {{date}}',
       },
     },
   },
@@ -60,6 +63,19 @@ describe('TermsPage', () => {
     });
     expect(screen.getByText('Terms of Service')).toBeInTheDocument();
   });
+
+  it("shows the date it was last updated as one key's text with its value (R284.5)", async () => {
+    await act(async () => {
+      render(
+        <I18nextProvider i18n={testI18n}>
+          <MemoryRouter>
+            <TermsPage />
+          </MemoryRouter>
+        </I18nextProvider>,
+      );
+    });
+    expect(screen.getByText('Revised 31 March 2026')).toBeInTheDocument();
+  });
 });
 
 describe('VerifiedPage', () => {
@@ -74,9 +90,7 @@ describe('VerifiedPage', () => {
       );
     });
     expect(screen.getByText('Email Verified')).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'Continue' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Continue' })).toBeInTheDocument();
   });
 });
 
@@ -85,7 +99,14 @@ describe('VerifyPendingPage', () => {
     await act(async () => {
       render(
         <I18nextProvider i18n={testI18n}>
-          <MemoryRouter initialEntries={[{ pathname: '/verify-pending', state: { email: 'test@example.com' } }]}>
+          <MemoryRouter
+            initialEntries={[
+              {
+                pathname: '/verify-pending',
+                state: { email: 'test@example.com' },
+              },
+            ]}
+          >
             <VerifyPendingPage />
           </MemoryRouter>
         </I18nextProvider>,

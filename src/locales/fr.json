@@ -66,6 +66,7 @@
     "translationPending": "Traduction en cours…",
     "legalDocsEnglishOnly": "Cette page n'est disponible qu'en anglais pour le moment. Une version traduite sera publiée bientôt.",
     "legalMachineTranslationDisclaimer": "Cette traduction est fournie à titre de commodité. La version anglaise est le texte légalement faisant autorité.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "fieldRequired": "Veuillez remplir ce champ.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "Tu y es !",
     "verifiedDescription": "Créons ton premier Écho.",
     "emailTaken": "Cet e-mail est déjà enregistré",
-    "displayNameTaken": "Ce nom affiché est déjà pris",
     "confirmPassword": "Confirme le mot de passe",
     "passwordMismatch": "Les mots de passe ne correspondent pas",
     "passwordTooShort": "Le mot de passe doit contenir au moins 12 caractères",
@@ -140,15 +140,18 @@
     "card3Title": "Ceci n'est pas un jeu",
     "card3Body": "Il n'y a pas de points, pas de victoire. C'est une simulation de vie autonome. Aborde-la avec curiosité.",
     "understand": "J'ai compris — c'est parti",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "Configure ton profil",
     "bio": "Bio",
     "bioHint": "Un peu sur toi — l'observateur, pas l'Écho. Affichée sur ton profil communautaire (facultatif, 500 caractères max)",
     "bioCallout": "C'est à propos de toi, pas de ton Écho. Les autres utilisateurs la voient sur ton profil dans la communauté. Ça n'a aucun effet sur la façon dont tes Échos pensent ou se comportent.",
     "timezone": "Fuseau horaire",
     "avatar": "Avatar",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "Choisis ta langue",
     "languagesComingSoon": "D'autres langues arrivent",
-    "languageSelectionLabel": "Sélection de la langue"
+    "languageSelectionLabel": "Sélection de la langue",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "Crée ton Écho",
@@ -178,8 +181,6 @@
     "birthTitle": "Ton Écho est en train de naître…",
     "birthComplete": "Ton Écho est vivant.",
     "limitTitle": "Limite d'Échos atteinte",
-    "limitDesc": "Ton plan actuel permet {{max}} Écho. Passe à un plan supérieur pour en créer plus, ou retourne au tableau de bord.",
-    "limitDesc_plural": "Ton plan actuel permet {{max}} Échos. Passe à un plan supérieur pour en créer plus, ou retourne au tableau de bord.",
     "viewPlans": "Voir les plans"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "Suis d'autres utilisateurs pour voir les histoires de leurs Échos ici.",
     "filterByEcho": "Filtrer par Écho",
     "allEchoes": "Tous les Échos",
-    "significance": "Importance"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "Communauté",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "Mes retours",
     "noFeedbackYet": "Tu n'as encore envoyé aucun retour.",
-    "feedbackSubmitted": "Envoyé",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "Zone sensible",
     "subscriptionTier": "Abonnement",
     "managePlan": "Gérer le plan",
@@ -391,6 +393,8 @@
     "passwordChanged": "Mot de passe changé avec succès",
     "sessions": "Sessions actives",
     "currentSession": "Session actuelle",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "Révoquer",
     "sessionRevoked": "Session révoquée",
     "exportData": "Exporter mes données",
@@ -474,7 +478,7 @@
     "noEchoes": "Ton multivers est vide",
     "noEchoesDesc": "Crée ton premier Écho et regarde une nouvelle vie se déployer.",
     "viewDetail": "Voir le détail",
-    "mood": "Humeur",
+    "moodValue": "Mood: {{mood}}",
     "tick": "Pulsation {{tick}}",
     "latestDiaryEmpty": "L'histoire de ton Écho ne fait que commencer. Reviens bientôt.",
     "nextTick": "Prochaine pulsation dans {{seconds}} s",
@@ -541,7 +545,7 @@
     "downloading": "Téléchargement…",
     "downloadSubtitles": "Télécharger les sous-titres (.srt)",
     "progress": "Progression de l'export",
-    "formatLabel": "Format",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "Le fichier sera enregistré dans ton dossier Téléchargements."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "Demande à l'Oracle…",
     "send": "Envoyer à Oracle",
     "thinking": "L'Oracle réfléchit…",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "Effacer la conversation",
     "rateLimit": "{{limit}} questions par minute",
     "error": "L'Oracle n'a pas pu répondre. Réessaie.",
@@ -631,13 +638,15 @@
     "tabBilling": "Facturation",
     "feedbackQueue": "File des retours",
     "noFeedback": "Aucun retour envoyé pour l'instant.",
-    "feedbackType": "Type",
-    "feedbackStatus": "Statut",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "Priorité",
     "feedbackMessage": "Message de l'utilisateur",
     "feedbackSummary": "Résumé",
     "feedbackContext": "Contexte",
-    "feedbackScreen": "Écran",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "Accuser réception",
     "feedbackResolve": "Résolu",
     "feedbackWontfix": "Ne sera pas corrigé",
@@ -692,7 +701,6 @@
     "backupControl": "Sauvegarde de la base de données",
     "triggerBackup": "Déclencher la sauvegarde",
     "analyticsLoadFailed": "Échec du chargement des analyses",
-    "filterAll": "Tout",
     "feedbackTypeBug": "Bug",
     "feedbackTypeFeatureRequest": "Demande de fonctionnalité",
     "feedbackTypeFrustration": "Frustration",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "Reconnu",
     "feedbackStatusResolved": "Résolu",
     "feedbackStatusWontfix": "Ne sera pas corrigé",
-    "resolutionPrefix": "Résolution",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "Modérateurs",
     "moderators": {
       "heading": "Modérateurs actuels",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "Starter",
-        "core": "Core",
-        "creator": "Creator",
-        "godMode": "God Mode"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "Tendance MRR",
@@ -795,7 +803,7 @@
         "submitButton": "Appliquer le remplacement",
         "cancelButton": "Annuler",
         "successToast": "Remplacement de phase de relance appliqué.",
-        "errorPrefix": "Échec du remplacement"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Générer un snapshot",
@@ -837,7 +845,9 @@
     "current": "Actuel",
     "perMonth": "/mois",
     "payWithCrypto": "Payer en crypto",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "Payer en XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "Payer par carte",
     "cardComingSoon": "Disponible après l'immatriculation de la société",
     "manageSubscription": "Gérer l'abonnement",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "Appuie pour démarrer la conversation",
     "requestingMic": "Demande du microphone…",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Connexion à l'Écho…",
     "speaking": "Parle…",
     "error": "Erreur de connexion",
@@ -1192,10 +1203,11 @@
     "playing": "Lecture",
     "paused": "Pause",
     "watch": "Regarder",
-    "generatingVideo": "Génération de la vidéo…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "Lecture vidéo",
     "watchAgain": "Revoir",
-    "videoError": "La vidéo a échoué — appuyez pour réessayer"
+    "videoError": "La vidéo a échoué — appuyez pour réessayer",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

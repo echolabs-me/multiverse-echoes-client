@@ -2,6 +2,10 @@ import { useCallback, useEffect, useState, type ReactElement } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
+import {
   ArrowLeft,
   User,
   Lock,
@@ -33,7 +37,11 @@ import {
 } from '../lib/api/endpoints.ts';
 import { request } from '../lib/api/client.ts';
 import { trackEvent } from '../lib/analytics.ts';
-import { formatDate, formatDeletionDate } from '../lib/formatDate.ts';
+import {
+  formatDate,
+  formatDateTime,
+  formatDeletionDate,
+} from '../lib/formatDate.ts';
 import {
   echoDeletionDate,
   isEchoHibernated,
@@ -187,8 +195,10 @@ function ProfileSection() {
       });
       addToast(t('settings.displayNameSaved'), 'success');
       setIsEditing(false);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsSaving(false);
     }
@@ -312,8 +322,10 @@ function AccountSection() {
       addToast(t('settings.passwordChanged'), 'success');
       setCurrentPassword('');
       setNewPassword('');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsChanging(false);
     }
@@ -324,8 +336,10 @@ function AccountSection() {
       await accountApi.revokeSession(sessionId);
       setSessions((prev) => prev.filter((s) => s.session_id !== sessionId));
       addToast(t('settings.sessionRevoked'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -421,11 +435,14 @@ function AccountSection() {
                   <p className="text-sm text-text-primary">
                     {session.current
                       ? t('settings.currentSession')
-                      : `Session ${session.session_id.slice(0, 8)}...`}
+                      : t('settings.sessionName', {
+                          id: `${session.session_id.slice(0, 8)}...`,
+                        })}
                   </p>
                   <p className="text-xs text-text-muted">
-                    Last active:{' '}
-                    {new Date(session.last_active).toLocaleString()}
+                    {t('settings.sessionLastActive', {
+                      date: formatDateTime(session.last_active),
+                    })}
                   </p>
                 </div>
                 {!session.current && (
@@ -467,8 +484,10 @@ function PrivacySection() {
       setCommunityOptOut(privacy.community_opt_out);
       setCleanupPending(privacy.community_opt_out_cleanup_pending);
       setDoNotSell(privacy.do_not_sell);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   }, [addToast, t]);
 
@@ -483,8 +502,10 @@ function PrivacySection() {
     try {
       await accountApi.updatePrivacy({ solo_mode: !soloMode });
       setSoloMode(!soloMode);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -497,8 +518,10 @@ function PrivacySection() {
       });
       setCommunityOptOut(result.community_opt_out);
       setCleanupPending(result.community_opt_out_cleanup_pending);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
       await loadPrivacy();
     }
   };
@@ -509,8 +532,10 @@ function PrivacySection() {
         do_not_sell: !doNotSell,
       });
       setDoNotSell(result.do_not_sell);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -528,8 +553,10 @@ function PrivacySection() {
       a.click();
       URL.revokeObjectURL(url);
       addToast(t('settings.dataExported'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsExporting(false);
     }
@@ -674,8 +701,10 @@ function NotificationPrefsSection() {
         [key]: value,
       });
       setPrefs(updated);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -940,9 +969,8 @@ function LanguageSettingsCard() {
       });
       addToast(t('common.saved'), 'success');
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      addToast(msg || t('errors.INTERNAL_ERROR'), 'danger', {
-        platformLink: true,
+      addToast(translateCaughtError(err), 'danger', {
+        platformLink: isPlatformError(err),
       });
     } finally {
       setSaving(false);
@@ -1025,9 +1053,9 @@ function DiscordLinkSection() {
         // eslint-disable-next-line no-console -- user sees toast; dev log surfaces OAuth link-init failures (e.g. Discord config issues)
         console.error('[DiscordLink] link failed:', err);
       }
-      const msg =
-        err instanceof Error && err.message ? err.message : t('common.error');
-      addToast(msg, 'danger', { platformLink: true });
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -1037,8 +1065,10 @@ function DiscordLinkSection() {
       setLinked(false);
       setUsername(null);
       addToast(t('settings.discordUnlinked'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -1159,14 +1189,17 @@ function MyFeedbackSection() {
                 </span>
                 <span className="text-text-muted">·</span>
                 <span className="text-text-muted">
-                  {t('settings.feedbackSubmitted')}{' '}
-                  {formatDate(item.created_at)}
+                  {t('settings.feedbackSubmittedOn', {
+                    date: formatDate(item.created_at),
+                  })}
                 </span>
               </div>
               <p className="text-sm text-text-primary">{item.user_message}</p>
               {item.resolution_notes && (
                 <p className="mbs-1 text-xs text-success italic">
-                  Resolution: {item.resolution_notes}
+                  {t('settings.feedbackResolutionValue', {
+                    notes: item.resolution_notes,
+                  })}
                 </p>
               )}
             </div>
@@ -1191,14 +1224,27 @@ function DangerZoneSection() {
   const handleCancelDeletion = async () => {
     setIsCancelling(true);
     try {
-      await accountApi.cancelDeletion();
+      try {
+        await accountApi.cancelDeletion();
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+        return;
+      }
       trackEvent('account.deletion_cancelled');
       addToast(t('settings.deletionCancelled'), 'success');
-      // Refresh profile to update status
-      const fetchProfile = useAuthStore.getState().fetchProfile;
-      await fetchProfile();
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+      // The cancellation has succeeded, so a failed refresh of the profile
+      // shows its own error and leaves the success toast (R283.1).
+      try {
+        await useAuthStore.getState().fetchProfile();
+      } catch (err) {
+        addToast(
+          translateCaughtError(err, t('errors.profileRefreshFailed')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
+      }
     } finally {
       setIsCancelling(false);
     }
@@ -1270,7 +1316,7 @@ interface PendingEntry {
 type PendingState =
   | { kind: 'loading' }
   | { kind: 'ready'; entries: PendingEntry[] }
-  | { kind: 'error' };
+  | { kind: 'error'; text: string };
 
 function PendingDeletionsCard() {
   const { t } = useTranslation();
@@ -1321,14 +1367,22 @@ function PendingDeletionsCard() {
           (a, b) => a.deletionDate.getTime() - b.deletionDate.getTime(),
         );
         setState({ kind: 'ready', entries: pending });
-      } catch {
-        if (!cancelled) setState({ kind: 'error' });
+      } catch (err) {
+        if (!cancelled) {
+          setState({
+            kind: 'error',
+            text: translateCaughtError(
+              err,
+              t('tiers.deletion.pendingList.loadError'),
+            ),
+          });
+        }
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [attempt]);
+  }, [attempt, t]);
 
   return (
     <Card>
@@ -1344,7 +1398,7 @@ function PendingDeletionsCard() {
           className="flex items-center justify-between gap-3 text-xs text-text-secondary"
           role="alert"
         >
-          <span>{t('tiers.deletion.pendingList.loadError')}</span>
+          <span>{state.text}</span>
           <button
             type="button"
             onClick={() => {

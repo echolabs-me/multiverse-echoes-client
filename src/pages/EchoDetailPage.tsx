@@ -54,7 +54,10 @@ import { VoiceSessionModal } from '../components/VoiceSessionModal.tsx';
 import { echoes as echoApi, conversations } from '../lib/api/endpoints.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { ApiRequestError } from '../lib/api/client.ts';
-import { translateError } from '../lib/translateError.ts';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { isTravelEvent } from '../lib/echoTravel.ts';
@@ -499,8 +502,8 @@ export function EchoDetailPage() {
       // Echo no longer exists — return to the dashboard. Note: '/' is a
       // Navigate-to-login redirect (see App.tsx), NOT the dashboard route.
       navigate('/dashboard');
-    } catch {
-      setDeleteError(t('echoDetail.deleteFailed'));
+    } catch (err) {
+      setDeleteError(translateCaughtError(err, t('echoDetail.deleteFailed')));
     } finally {
       setIsDeleting(false);
     }
@@ -526,8 +529,10 @@ export function EchoDetailPage() {
       }
       setHibernateModal(false);
       await fetchEcho(id);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       hibernateInFlight.current = false;
       setHibernating(null);
@@ -566,24 +571,20 @@ export function EchoDetailPage() {
       const inf = await echoApi.influence(activeEcho.echo_id).catch(() => null);
       setInfluence(inf);
     } catch (err) {
-      // Session 099 Commit 2 split the nudge and Influence Points
-      // counters server-side, so the two error codes need
-      // differentiated toasts + CTAs. Add-on purchase flow lands in
-      // Commit 5; for now the toast text steers the user toward the
-      // eventual CTA copy by naming the right currency.
-      if (err instanceof ApiRequestError) {
-        if (err.code === 'NUDGE_LIMIT') {
-          addToast(t('errors.NUDGE_LIMIT'), 'warning');
-        } else if (err.code === 'INFLUENCE_LIMIT') {
-          addToast(t('errors.INFLUENCE_LIMIT'), 'warning');
-        } else {
-          addToast(
-            translateError({ code: err.code, message: err.message }),
-            'danger',
-          );
-        }
+      // A spent nudge or Influence Points allowance is a warning, not a
+      // failure: the code chooses the toast's severity, and the translator
+      // its text (R264.2).
+      if (
+        err instanceof ApiRequestError &&
+        (err.code === 'NUDGE_LIMIT' || err.code === 'INFLUENCE_LIMIT')
+      ) {
+        addToast(translateCaughtError(err), 'warning', {
+          platformLink: isPlatformError(err),
+        });
       } else {
-        addToast(t('common.error'), 'danger', { platformLink: true });
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
       }
     } finally {
       influenceInFlight.current = false;
@@ -595,8 +596,10 @@ export function EchoDetailPage() {
     try {
       await accountApi.updatePrivacy({ solo_mode: !soloMode });
       setSoloMode(!soloMode);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -691,7 +694,9 @@ export function EchoDetailPage() {
                   })}
                 </p>
                 <p className="mbs-1 text-sm text-text-secondary">
-                  {t('dashboard.mood')}: {getMoodLabel(activeEcho.current_mood)}{' '}
+                  {t('dashboard.moodValue', {
+                    mood: getMoodLabel(activeEcho.current_mood),
+                  })}{' '}
                   &middot;{' '}
                   {t('dashboard.tick', { tick: activeEcho.current_tick })}
                 </p>
@@ -1618,11 +1623,9 @@ function DiaryCard({
                     `[video] Fetch attempt ${fetchAttempt + 1} failed: ${msg}`,
                   );
                 }
-                if (fetchAttempt === 2)
-                  throw new Error(
-                    `Video fetch failed after 3 attempts: ${msg}`,
-                    { cause: fetchErr },
-                  );
+                // The last failure is thrown as it came, so a server
+                // error keeps its text (R283.2).
+                if (fetchAttempt === 2) throw fetchErr;
               }
             }
             if (!videoBlob) throw new Error('Video fetch returned empty');
@@ -1645,10 +1648,14 @@ function DiaryCard({
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       if (import.meta.env.DEV) {
-        // eslint-disable-next-line no-console -- msg is shown to the user via setVideoErrorMsg; dev log preserves the full error for local debugging
+        // eslint-disable-next-line no-console -- the user sees the translated error; dev log preserves the full error for local debugging
         console.error('Video narration failed:', msg);
       }
-      setVideoErrorMsg(msg);
+      // Only the server's error has text for the user; any other failure
+      // shows the button's own failure text (R264).
+      setVideoErrorMsg(
+        e instanceof ApiRequestError ? translateCaughtError(e) : '',
+      );
       setVideoState('error');
     }
   }, [videoState, entry.echo_id, entry.diary_id]);
@@ -1738,7 +1745,9 @@ function DiaryCard({
             <>
               <Loader2 size={16} className="animate-spin" />
               <span>
-                {t('diary.generatingVideo')} {Math.round(generateProgress)}%
+                {t('diary.generatingVideoProgress', {
+                  progress: Math.round(generateProgress),
+                })}
               </span>
             </>
           ) : videoState === 'playing' ? (
@@ -1761,7 +1770,7 @@ function DiaryCard({
               <Video size={16} />
               <span>
                 {videoErrorMsg
-                  ? `Error: ${videoErrorMsg.slice(0, 80)}`
+                  ? t('diary.videoErrorDetail', { detail: videoErrorMsg })
                   : t('diary.videoError')}
               </span>
             </>

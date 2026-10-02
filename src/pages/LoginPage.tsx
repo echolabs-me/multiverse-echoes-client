@@ -1,6 +1,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { Sparkles } from 'lucide-react';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
 import { Button, Input } from '../components/index.ts';
@@ -37,8 +38,8 @@ export function LoginPage() {
       localStorage.setItem('has_logged_in', 'true');
       trackEvent('account.login', { method: 'password' });
       navigate('/dashboard');
-    } catch {
-      setError(t('auth.loginFailed'));
+    } catch (err) {
+      setError(translateCaughtError(err, t('auth.loginFailed')));
     } finally {
       setIsSubmitting(false);
       turnstileRef.current?.reset();

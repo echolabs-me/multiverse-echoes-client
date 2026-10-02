@@ -70,7 +70,9 @@ export function OnboardingProfilePage() {
                     ? 'ring-2 ring-accent ring-offset-2 ring-offset-canvas'
                     : ''
                 }`}
-                aria-label={`Select avatar ${avatar.id.slice(-1)}`}
+                aria-label={t('onboarding.selectAvatarNumbered', {
+                  number: avatar.id.slice(-1),
+                })}
                 aria-pressed={selectedAvatar === avatar.id}
               >
                 <div

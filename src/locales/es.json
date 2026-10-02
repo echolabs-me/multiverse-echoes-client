@@ -66,6 +66,7 @@
     "translationPending": "Traduciendo…",
     "legalDocsEnglishOnly": "Esta página solo está disponible en inglés. Una versión traducida se publicará pronto.",
     "legalMachineTranslationDisclaimer": "Esta traducción se proporciona para su conveniencia. La versión en inglés es el texto legalmente autorizado.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
     "fieldRequired": "Rellena este campo.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "¡Ya estás dentro!",
     "verifiedDescription": "Vamos a crear tu primer Eco.",
     "emailTaken": "Este correo ya está registrado",
-    "displayNameTaken": "Este nombre visible ya está en uso",
     "confirmPassword": "Confirmar contraseña",
     "passwordMismatch": "Las contraseñas no coinciden",
     "passwordTooShort": "La contraseña debe tener al menos 12 caracteres",
@@ -140,15 +140,18 @@
     "card3Title": "Esto no es un juego",
     "card3Body": "No hay puntos, no hay forma de ganar. Es una simulación de vida autónoma. Trátala con curiosidad.",
     "understand": "Lo entiendo — adelante",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "Configura tu perfil",
     "bio": "Biografía",
     "bioHint": "Un poco sobre ti — el observador, no el Eco. Se muestra en tu perfil comunitario (opcional, máx. 500 caracteres)",
     "bioCallout": "Esto es sobre ti, no sobre tu Eco. Otros usuarios lo verán en tu perfil de la comunidad. No afecta cómo piensan ni se comportan tus Ecos.",
     "timezone": "Zona horaria",
     "avatar": "Avatar",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "Elige tu idioma",
     "languagesComingSoon": "Más idiomas próximamente",
-    "languageSelectionLabel": "Selección de idioma"
+    "languageSelectionLabel": "Selección de idioma",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "Crea tu Eco",
@@ -178,8 +181,6 @@
     "birthTitle": "Tu Eco está naciendo…",
     "birthComplete": "Tu Eco ha cobrado vida.",
     "limitTitle": "Límite de Ecos alcanzado",
-    "limitDesc": "Tu plan actual permite {{max}} Eco. Mejora tu plan para crear más, o vuelve al panel.",
-    "limitDesc_plural": "Tu plan actual permite {{max}} Ecos. Mejora tu plan para crear más, o vuelve al panel.",
     "viewPlans": "Ver planes"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "Sigue a otros usuarios para ver las historias de sus Ecos aquí.",
     "filterByEcho": "Filtrar por Eco",
     "allEchoes": "Todos los Ecos",
-    "significance": "Importancia"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "Comunidad",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "Mis comentarios",
     "noFeedbackYet": "Aún no has enviado ningún comentario.",
-    "feedbackSubmitted": "Enviado",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "Zona peligrosa",
     "subscriptionTier": "Suscripción",
     "managePlan": "Gestionar plan",
@@ -391,6 +393,8 @@
     "passwordChanged": "Contraseña cambiada correctamente",
     "sessions": "Sesiones activas",
     "currentSession": "Sesión actual",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "Revocar",
     "sessionRevoked": "Sesión revocada",
     "exportData": "Exportar mis datos",
@@ -474,7 +478,7 @@
     "noEchoes": "Tu multiverso está vacío",
     "noEchoesDesc": "Crea tu primer Eco y observa cómo se despliega una nueva vida.",
     "viewDetail": "Ver detalle",
-    "mood": "Ánimo",
+    "moodValue": "Mood: {{mood}}",
     "tick": "Pulso {{tick}}",
     "latestDiaryEmpty": "La historia de tu Eco apenas empieza. Vuelve pronto.",
     "nextTick": "Próximo pulso en {{seconds}} s",
@@ -541,7 +545,7 @@
     "downloading": "Descargando…",
     "downloadSubtitles": "Descargar subtítulos (.srt)",
     "progress": "Progreso de la exportación",
-    "formatLabel": "Formato",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "El archivo se guardará en tu carpeta de Descargas."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "Pregunta al Oráculo…",
     "send": "Enviar a Oracle",
     "thinking": "El Oráculo está pensando…",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "Borrar conversación",
     "rateLimit": "{{limit}} preguntas por minuto",
     "error": "El Oráculo no pudo responder. Vuelve a intentarlo.",
@@ -631,13 +638,15 @@
     "tabBilling": "Facturación",
     "feedbackQueue": "Cola de comentarios",
     "noFeedback": "Aún no se han enviado comentarios.",
-    "feedbackType": "Tipo",
-    "feedbackStatus": "Estado",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "Prioridad",
     "feedbackMessage": "Mensaje del usuario",
     "feedbackSummary": "Resumen",
     "feedbackContext": "Contexto",
-    "feedbackScreen": "Pantalla",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "Reconocer",
     "feedbackResolve": "Resolver",
     "feedbackWontfix": "No se corregirá",
@@ -692,7 +701,6 @@
     "backupControl": "Copia de seguridad de la base de datos",
     "triggerBackup": "Disparar copia de seguridad",
     "analyticsLoadFailed": "No se pudieron cargar las analíticas",
-    "filterAll": "Todo",
     "feedbackTypeBug": "Error",
     "feedbackTypeFeatureRequest": "Solicitud de función",
     "feedbackTypeFrustration": "Frustración",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "Reconocido",
     "feedbackStatusResolved": "Resuelto",
     "feedbackStatusWontfix": "No se corregirá",
-    "resolutionPrefix": "Resolución",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "Moderadores",
     "moderators": {
       "heading": "Moderadores actuales",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "Starter",
-        "core": "Core",
-        "creator": "Creator",
-        "godMode": "God Mode"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "Tendencia de MRR",
@@ -795,7 +803,7 @@
         "submitButton": "Aplicar anulación",
         "cancelButton": "Cancelar",
         "successToast": "Anulación de fase de cobro aplicada.",
-        "errorPrefix": "La anulación falló"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Generar snapshot",
@@ -837,7 +845,9 @@
     "current": "Actual",
     "perMonth": "/mes",
     "payWithCrypto": "Pagar con cripto",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "Pagar con XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "Pagar con tarjeta",
     "cardComingSoon": "Disponible tras la constitución de la empresa",
     "manageSubscription": "Gestionar suscripción",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "Toca para iniciar la conversación",
     "requestingMic": "Solicitando micrófono…",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Conectando con el Eco…",
     "speaking": "Hablando…",
     "error": "Error de conexión",
@@ -1192,10 +1203,11 @@
     "playing": "Reproduciendo",
     "paused": "Pausado",
     "watch": "Ver",
-    "generatingVideo": "Generando vídeo…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "Reproduciendo vídeo",
     "watchAgain": "Ver de nuevo",
-    "videoError": "El vídeo falló — toca para reintentar"
+    "videoError": "El vídeo falló — toca para reintentar",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

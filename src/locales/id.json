@@ -66,6 +66,7 @@
     "translationPending": "Menerjemahkan…",
     "legalDocsEnglishOnly": "Halaman ini hanya tersedia dalam bahasa Inggris. Versi terjemahan akan segera diterbitkan.",
     "legalMachineTranslationDisclaimer": "Terjemahan ini disediakan untuk kenyamanan. Versi bahasa Inggris adalah teks yang berlaku secara hukum.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "Buka menu",
     "closeMenu": "Tutup menu",
     "fieldRequired": "Harap isi kolom ini.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "Anda berhasil masuk!",
     "verifiedDescription": "Mari buat Echo pertama Anda.",
     "emailTaken": "Email ini sudah terdaftar",
-    "displayNameTaken": "Nama tampilan ini sudah digunakan",
     "confirmPassword": "Konfirmasi kata sandi",
     "passwordMismatch": "Kata sandi tidak cocok",
     "passwordTooShort": "Kata sandi harus minimal 12 karakter",
@@ -140,15 +140,18 @@
     "card3Title": "Ini Bukan Permainan",
     "card3Body": "Tidak ada poin, tidak ada kemenangan. Ini adalah simulasi kehidupan otonom. Sikapi dengan rasa ingin tahu.",
     "understand": "Saya mengerti — ayo jalan",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "Atur profil Anda",
     "bio": "Bio",
     "bioHint": "Sedikit tentang Anda — sang pengamat, bukan Echo. Ditampilkan di profil komunitas Anda (opsional, maks 500 karakter)",
     "bioCallout": "Ini adalah tentang Anda, bukan Echo Anda. Pengguna lain melihat ini di profil Anda di komunitas. Hal ini tidak berpengaruh pada cara Echo Anda berpikir atau berperilaku.",
     "timezone": "Zona waktu",
     "avatar": "Avatar",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "Pilih bahasa Anda",
     "languagesComingSoon": "Bahasa lainnya akan segera hadir",
-    "languageSelectionLabel": "Pemilihan bahasa"
+    "languageSelectionLabel": "Pemilihan bahasa",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "Buat Echo Anda",
@@ -178,8 +181,6 @@
     "birthTitle": "Echo Anda sedang dilahirkan…",
     "birthComplete": "Echo Anda hidup.",
     "limitTitle": "Batas gema tercapai",
-    "limitDesc": "Paket Anda saat ini mengizinkan {{max}} Echo. Tingkatkan paket untuk membuat lebih banyak, atau kembali ke dasbor.",
-    "limitDesc_plural": "Paket Anda saat ini mengizinkan {{max}} Echoes. Tingkatkan paket untuk membuat lebih banyak, atau kembali ke dasbor.",
     "viewPlans": "Lihat Paket"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "Ikuti pengguna lain untuk melihat cerita Echo mereka di sini.",
     "filterByEcho": "Filter berdasarkan Echo",
     "allEchoes": "Semua Gema",
-    "significance": "Signifikansi"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "Komunitas",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "Umpan Balik Saya",
     "noFeedbackYet": "Anda belum mengirimkan masukan apa pun.",
-    "feedbackSubmitted": "Terkirim",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "Zona Bahaya",
     "subscriptionTier": "Langganan",
     "managePlan": "Kelola Paket",
@@ -391,6 +393,8 @@
     "passwordChanged": "Kata sandi berhasil diubah",
     "sessions": "Sesi Aktif",
     "currentSession": "Sesi saat ini",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "Cabut",
     "sessionRevoked": "Sesi dicabut",
     "exportData": "Ekspor Data Saya",
@@ -474,7 +478,7 @@
     "noEchoes": "Multisemesta Anda kosong",
     "noEchoesDesc": "Buat Echo pertamamu dan saksikan kehidupan baru terungkap.",
     "viewDetail": "Lihat detail",
-    "mood": "Suasana hati",
+    "moodValue": "Mood: {{mood}}",
     "tick": "Centang {{tick}}",
     "latestDiaryEmpty": "Kisah Echo Anda baru saja dimulai. Pantau terus segera.",
     "nextTick": "Tik berikutnya dalam {{seconds}}d",
@@ -541,7 +545,7 @@
     "downloading": "Mengunduh...",
     "downloadSubtitles": "Unduh subtitle (.srt)",
     "progress": "Kemajuan ekspor",
-    "formatLabel": "Format",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "Berkas akan disimpan ke folder Unduhan Anda."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "Tanyakan pada Sang Oracle...",
     "send": "Kirim ke Oracle",
     "thinking": "Oracle sedang berpikir...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "Hapus percakapan",
     "rateLimit": "{{limit}} pertanyaan per menit",
     "error": "Oracle tidak dapat merespons. Silakan coba lagi.",
@@ -631,13 +638,15 @@
     "tabBilling": "Tagihan",
     "feedbackQueue": "Antrean Umpan Balik",
     "noFeedback": "Belum ada masukan yang dikirimkan.",
-    "feedbackType": "Ketik",
-    "feedbackStatus": "Status",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "Prioritas",
     "feedbackMessage": "Pesan Pengguna",
     "feedbackSummary": "Ringkasan",
     "feedbackContext": "Konteks",
-    "feedbackScreen": "Layar",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "Akui",
     "feedbackResolve": "Selesaikan",
     "feedbackWontfix": "Tidak Akan Diperbaiki",
@@ -692,7 +701,6 @@
     "backupControl": "Cadangan Database",
     "triggerBackup": "Picu Cadangan",
     "analyticsLoadFailed": "Gagal memuat analitik",
-    "filterAll": "Semua",
     "feedbackTypeBug": "Kutu",
     "feedbackTypeFeatureRequest": "Permintaan Fitur",
     "feedbackTypeFrustration": "Frustrasi",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "Dimengerti",
     "feedbackStatusResolved": "Terselesaikan",
     "feedbackStatusWontfix": "Tidak Akan Diperbaiki",
-    "resolutionPrefix": "Resolusi",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "Moderator",
     "moderators": {
       "heading": "Moderator Saat Ini",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "Starter",
-        "core": "Core",
-        "creator": "Creator",
-        "godMode": "God Mode"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "Tren MRR",
@@ -795,7 +803,7 @@
         "submitButton": "Terapkan penggantian",
         "cancelButton": "Batal",
         "successToast": "Penggantian fase dunning diterapkan.",
-        "errorPrefix": "Penggantian gagal"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Buat snapshot",
@@ -837,7 +845,9 @@
     "current": "Saat ini",
     "perMonth": "/bulan",
     "payWithCrypto": "Bayar dengan Kripto",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "Bayar dengan XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "Bayar dengan Kartu",
     "cardComingSoon": "Tersedia setelah pendirian perusahaan",
     "manageSubscription": "Kelola Langganan",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "Ketuk untuk memulai percakapan",
     "requestingMic": "Meminta mikrofon...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Menghubungkan ke Echo...",
     "listening": "Mendengarkan...",
     "thinking": "Berpikir...",
@@ -1192,10 +1203,11 @@
     "playing": "Memutar",
     "paused": "Dijeda",
     "watch": "Tonton",
-    "generatingVideo": "Membuat video…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "Memutar video",
     "watchAgain": "Tonton lagi",
-    "videoError": "Video gagal — ketuk untuk mencoba lagi"
+    "videoError": "Video gagal — ketuk untuk mencoba lagi",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

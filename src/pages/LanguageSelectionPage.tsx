@@ -285,13 +285,16 @@ function LanguageTile({
   onMouseEnter,
   onMouseLeave,
 }: LanguageTileProps) {
+  const { t } = useTranslation();
   // Visual state (border, scale, shadow, z-index) flows via data-expanded /
   // data-reduced attributes — see .me-lang-tile rules in global.css.
   return (
     <button
       role="option"
       aria-selected={false}
-      aria-label={`Select ${lang.nativeName}`}
+      aria-label={t('onboarding.selectLanguageNamed', {
+        language: lang.nativeName,
+      })}
       onClick={onClick}
       onKeyDown={onKeyDown}
       onMouseEnter={onMouseEnter}

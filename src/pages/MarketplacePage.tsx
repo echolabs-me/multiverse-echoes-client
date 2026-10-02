@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
 
 import {
   Badge,
@@ -295,7 +299,7 @@ export function MarketplacePage() {
   const [items, setItems] = useState<MarketplaceItemResponse[]>([]);
   const [inventory, setInventory] = useState<InventoryRowResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [loadError, setLoadError] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [previewState, setPreviewState] = useState<{
     open: boolean;
     data: MarketplacePreviewResponse | null;
@@ -307,33 +311,36 @@ export function MarketplacePage() {
     [inventory],
   );
 
-  const loadCategory = useCallback(async (category: MarketplaceCategory) => {
-    setIsLoading(true);
-    setLoadError(false);
-    try {
-      const page = await marketplace.list({ category });
-      setItems(page.data);
-    } catch {
-      setItems([]);
-      setLoadError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const loadCategory = useCallback(
+    async (category: MarketplaceCategory) => {
+      setIsLoading(true);
+      setLoadError(null);
+      try {
+        const page = await marketplace.list({ category });
+        setItems(page.data);
+      } catch (err) {
+        setItems([]);
+        setLoadError(translateCaughtError(err, t('marketplace.loadError')));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [t],
+  );
 
   const loadInventory = useCallback(async () => {
     setIsLoading(true);
-    setLoadError(false);
+    setLoadError(null);
     try {
       const page = await marketplace.inventory();
       setInventory(page.data);
-    } catch {
+    } catch (err) {
       setInventory([]);
-      setLoadError(true);
+      setLoadError(translateCaughtError(err, t('marketplace.loadError')));
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     void (async () => {
@@ -380,8 +387,12 @@ export function MarketplacePage() {
           category: item.category,
           price: item.price_coins,
         });
-      } catch {
-        addToast(t('marketplace.loadError'), 'danger');
+      } catch (err) {
+        addToast(
+          translateCaughtError(err, t('marketplace.loadError')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
       }
     },
     [items, addToast, t],
@@ -403,8 +414,12 @@ export function MarketplacePage() {
           price: item.price_coins,
           provider: 'tier_grant',
         });
-      } catch {
-        addToast(t('marketplace.loadError'), 'danger');
+      } catch (err) {
+        addToast(
+          translateCaughtError(err, t('marketplace.loadError')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
       }
     },
     [items, addToast, t],
@@ -427,9 +442,13 @@ export function MarketplacePage() {
       try {
         await marketplace.equip(itemId, nextEquipped);
         await loadInventory();
-      } catch {
+      } catch (err) {
         setInventory(prior);
-        addToast(t('marketplace.equipError'), 'danger');
+        addToast(
+          translateCaughtError(err, t('marketplace.equipError')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
       }
     },
     [inventory, addToast, t, loadInventory],
@@ -487,7 +506,7 @@ export function MarketplacePage() {
       return (
         <div data-testid="marketplace-load-error">
           <EmptyState
-            title={t('marketplace.loadError')}
+            title={loadError}
             action={
               <button
                 type="button"
@@ -535,7 +554,7 @@ export function MarketplacePage() {
       return (
         <div data-testid="marketplace-load-error">
           <EmptyState
-            title={t('marketplace.loadError')}
+            title={loadError}
             action={
               <button
                 type="button"

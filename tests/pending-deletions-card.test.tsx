@@ -58,7 +58,12 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
   },
 }));
 
-vi.mock('../src/lib/api/client.ts', () => ({
+// The real error class: the translator tells a server error from any
+// other by it (R264).
+vi.mock('../src/lib/api/client.ts', async (importOriginal) => ({
+  ApiRequestError: (
+    await importOriginal<typeof import('../src/lib/api/client.ts')>()
+  ).ApiRequestError,
   request: vi.fn().mockResolvedValue([]),
 }));
 
@@ -129,7 +134,8 @@ void testI18n.use(initReactI18next).init({
         'settings.sessionRevoked': 'Revoked',
         'settings.noSessions': 'No sessions',
         'settings.revokeSession': 'Revoke',
-        'settings.deleteAccountWarning': 'This will permanently delete your account',
+        'settings.deleteAccountWarning':
+          'This will permanently delete your account',
         'settings.deleteAccount': 'Delete Account',
         'settings.cancelling': 'Cancelling',
         'settings.cancelDeletion': 'Cancel',
@@ -149,7 +155,8 @@ void testI18n.use(initReactI18next).init({
         'tiers.deletion.pendingList.shardLabel': 'Private Shard',
         'tiers.deletion.pendingList.deletesOn': 'Deletes {{date}}',
         'tiers.deletion.pendingList.loading': 'Loading pending deletions…',
-        'tiers.deletion.pendingList.loadError': "Couldn't load pending deletions.",
+        'tiers.deletion.pendingList.loadError':
+          "Couldn't load pending deletions.",
         'tiers.deletion.pendingList.retry': 'Retry',
       },
     },
@@ -185,7 +192,9 @@ describe('PendingDeletionsCard — ME-MIS-001 §5.2 Surface D', () => {
       await new Promise((r) => setTimeout(r, 0));
     });
     expect(
-      await result.findByText('No Echoes or Shards are scheduled for deletion.'),
+      await result.findByText(
+        'No Echoes or Shards are scheduled for deletion.',
+      ),
     ).toBeInTheDocument();
   });
 
@@ -294,7 +303,9 @@ describe('PendingDeletionsCard — ME-MIS-001 §5.2 Surface D', () => {
       await new Promise((r) => setTimeout(r, 0));
     });
     expect(
-      await result.findByText('No Echoes or Shards are scheduled for deletion.'),
+      await result.findByText(
+        'No Echoes or Shards are scheduled for deletion.',
+      ),
     ).toBeInTheDocument();
     expect(result.queryByText('Awake')).not.toBeInTheDocument();
     expect(result.queryByText('Living')).not.toBeInTheDocument();

@@ -1,5 +1,9 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
 import { useNavigate } from 'react-router-dom';
 import {
   Send,
@@ -230,8 +234,10 @@ export function CommunityPage() {
       });
       setMessages((prev) => [...prev, msg]);
       setMessageText('');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsSending(false);
     }
@@ -250,8 +256,10 @@ export function CommunityPage() {
       );
       setEditingMessageId(null);
       addToast(t('community.messageEdited'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -261,8 +269,10 @@ export function CommunityPage() {
       await channelApi.deleteMessage(activeChannel.channel_id, messageId);
       setMessages((prev) => prev.filter((m) => m.message_id !== messageId));
       addToast(t('community.messageDeleted'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -280,8 +290,10 @@ export function CommunityPage() {
     try {
       const msg = await channelApi.uploadImage(activeChannel.channel_id, file);
       setMessages((prev) => [...prev, msg]);
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsSending(false);
     }
@@ -299,8 +311,10 @@ export function CommunityPage() {
         answer_id: answerId,
       });
       addToast(t('community.voteRecorded'), 'success');
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 
@@ -318,8 +332,10 @@ export function CommunityPage() {
       setPollQuestion('');
       setPollOptions(['', '']);
       void loadMessages();
-    } catch {
-      addToast(t('common.error'), 'danger', { platformLink: true });
+    } catch (err) {
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     } finally {
       setIsSending(false);
     }

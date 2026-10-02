@@ -6,6 +6,7 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
 
 import { UserProfilePage } from '../src/pages/UserProfilePage.tsx';
+import { ApiRequestError } from '../src/lib/api/client.ts';
 
 // vi.mock calls hoist to the top of the file, ahead of any `const`
 // declarations — so the mock factories cannot reference module-level
@@ -147,7 +148,9 @@ describe('UserProfilePage — privacy gates', () => {
       renderPage();
     });
     expect(await screen.findByText('Bob')).toBeInTheDocument();
-    expect(screen.getByText('A traveller of inner worlds.')).toBeInTheDocument();
+    expect(
+      screen.getByText('A traveller of inner worlds.'),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { level: 2, name: 'Echoes' }),
     ).toBeInTheDocument();
@@ -195,16 +198,18 @@ describe('UserProfilePage — privacy gates', () => {
 
   it('renders ONLY display_name + Follow button + private message when target is Private', async () => {
     mocks.getProfile.mockResolvedValue(
-      publicProfile({ profile_visibility: 'Private', bio: null, avatar_url: null }),
+      publicProfile({
+        profile_visibility: 'Private',
+        bio: null,
+        avatar_url: null,
+      }),
     );
     await act(async () => {
       renderPage();
     });
     expect(await screen.findByText('Bob')).toBeInTheDocument();
     expect(screen.getByText('This profile is private.')).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'Follow' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Follow' })).toBeInTheDocument();
     // Block + Mute must NOT render on a Private view per ME-UXF-001
     // §8.2 ("Follow button still available" — Follow only).
     expect(
@@ -287,6 +292,8 @@ describe('UserProfilePage — action buttons', () => {
     expect(mocks.addToast).toHaveBeenCalledWith(
       'That action didn’t go through. Please try again.',
       'danger',
+      // Not the server's answer, so the platform's (R283.3).
+      { platformLink: true },
     );
   });
 
@@ -314,8 +321,10 @@ describe('UserProfilePage — action buttons', () => {
 // ==================================================================
 
 describe('UserProfilePage — load + error + analytics + EIC rendering', () => {
-  it('renders the not-found empty state when getProfile throws a 404-ish error', async () => {
-    mocks.getProfile.mockRejectedValue(new Error('404 Not Found'));
+  it('renders the not-found empty state when getProfile answers 404', async () => {
+    mocks.getProfile.mockRejectedValue(
+      new ApiRequestError(404, 'NOT_FOUND', 'No such user'),
+    );
     await act(async () => {
       renderPage();
     });

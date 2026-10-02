@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../../../lib/translateError.ts';
 import { Button } from '../../Button.tsx';
 import { adminBilling } from '../../../lib/api/endpoints.ts';
 import { useToastStore } from '../../../stores/useToastStore.ts';
@@ -29,10 +33,11 @@ export function TriggerSnapshotButton({ onInserted }: Props) {
         );
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      addToast(`${t('admin.billing.snapshot.errorPrefix')}: ${msg}`, 'danger', {
-        platformLink: true,
-      });
+      addToast(
+        translateCaughtError(err, t('admin.billing.snapshot.errorPrefix')),
+        'danger',
+        { platformLink: isPlatformError(err) },
+      );
     } finally {
       setBusy(false);
     }

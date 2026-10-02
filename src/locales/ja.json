@@ -66,6 +66,7 @@
     "translationPending": "翻訳中…",
     "legalDocsEnglishOnly": "このページは英語のみでご利用いただけます。翻訳版は近日中に公開予定です。",
     "legalMachineTranslationDisclaimer": "この翻訳は便宜のために提供されるものです。法的権限を持つ正文は英語版です。",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "メニューを開く",
     "closeMenu": "メニューを閉じる",
     "fieldRequired": "この項目を入力してください。",
@@ -105,7 +106,6 @@
     "verifiedTitle": "合格です！",
     "verifiedDescription": "最初のEchoを作成しましょう。",
     "emailTaken": "このメールアドレスは既に登録されています。",
-    "displayNameTaken": "この表示名は既に使用されています。",
     "confirmPassword": "パスワード（確認用）",
     "passwordMismatch": "パスワードが一致しません",
     "passwordTooShort": "パスワードは12文字以上である必要があります。",
@@ -140,15 +140,18 @@
     "card3Title": "これはゲームではない",
     "card3Body": "得点もなく、勝利もありません。これは自律的なライフシミュレーションです。好奇心を持って接してください。",
     "understand": "分かりました。行きましょう。",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "プロフィールを設定してください",
     "bio": "プロフィール",
     "bioHint": "あなたについて — エコーではなく、観察者としてのあなたを。コミュニティプロフィールに表示されます（任意、最大500文字）",
     "bioCallout": "これはあなた自身に関するものであり、あなたのEchoに関するものではありません。コミュニティ内のプロフィールでは、他のユーザーにこれが表示されます。Echoの思考や動作に影響はありません。",
     "timezone": "タイムゾーン",
     "avatar": "アバター",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "言語を選択してください",
     "languagesComingSoon": "近日、さらに多くの言語に対応予定です。",
-    "languageSelectionLabel": "言語選択"
+    "languageSelectionLabel": "言語選択",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "あなたのエコーを創ろう",
@@ -178,8 +181,6 @@
     "birthTitle": "あなたのEchoが誕生しています…",
     "birthComplete": "あなたのEchoは生きています。",
     "limitTitle": "エコー制限に達しました",
-    "limitDesc": "現在のプランでは{{max}}個のEchoまでご利用いただけます。さらに作成するにはアップグレードするか、ダッシュボードに戻ってください。",
-    "limitDesc_plural": "現在のプランでは{{max}}個のEchoesまで作成可能です。さらに作成するにはアップグレードするか、ダッシュボードに戻ってください。",
     "viewPlans": "プランを見る"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "他のユーザーをフォローして、ここでEchoストーリーをチェックしましょう。",
     "filterByEcho": "エコーでフィルタリング",
     "allEchoes": "すべてのエコー",
-    "significance": "意義"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "コミュニティ",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "私のフィードバック",
     "noFeedbackYet": "まだフィードバックが送信されていません。",
-    "feedbackSubmitted": "提出済み",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "危険地帯",
     "subscriptionTier": "サブスクリプション",
     "managePlan": "プランを管理",
@@ -391,6 +393,8 @@
     "passwordChanged": "パスワードが正常に変更されました。",
     "sessions": "アクティブセッション",
     "currentSession": "現在のセッション",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "取り消す",
     "sessionRevoked": "セッションが取り消されました",
     "exportData": "データの書き出し",
@@ -474,7 +478,7 @@
     "noEchoes": "あなたのマルチバースは空です。",
     "noEchoesDesc": "最初のEchoを作成し、新たな生命が展開する様子を見守りましょう。",
     "viewDetail": "詳細を見る",
-    "mood": "気分",
+    "moodValue": "Mood: {{mood}}",
     "tick": "チェック {{tick}}",
     "latestDiaryEmpty": "Echoの物語はまだ始まったばかりです。またすぐにお越しください。",
     "nextTick": "次回のティックまで{{seconds}}秒",
@@ -541,7 +545,7 @@
     "downloading": "ダウンロード中...",
     "downloadSubtitles": "字幕をダウンロード (.srt)",
     "progress": "エクスポート状況",
-    "formatLabel": "形式",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "ファイルはダウンロードフォルダに保存されます。"
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "神託に問え…",
     "send": "オラクルに送信",
     "thinking": "オラクルが考え中...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "会話をクリアにする",
     "rateLimit": "1分あたり{{limit}}問まで",
     "error": "オラクルが応答できませんでした。もう一度お試しください。",
@@ -631,13 +638,15 @@
     "tabBilling": "請求",
     "feedbackQueue": "フィードバックキュー",
     "noFeedback": "まだフィードバックは送信されていません。",
-    "feedbackType": "タイプ",
-    "feedbackStatus": "ステータス",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "優先順位",
     "feedbackMessage": "ユーザーメッセージ",
     "feedbackSummary": "要約",
     "feedbackContext": "文脈",
-    "feedbackScreen": "画面",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "了解しました",
     "feedbackResolve": "解決する",
     "feedbackWontfix": "修正しない",
@@ -692,7 +701,6 @@
     "backupControl": "データベースバックアップ",
     "triggerBackup": "バックアップを実行",
     "analyticsLoadFailed": "アナリティクスの読み込みに失敗しました",
-    "filterAll": "すべて",
     "feedbackTypeBug": "バグ",
     "feedbackTypeFeatureRequest": "機能リクエスト",
     "feedbackTypeFrustration": "挫折感",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "了解しました",
     "feedbackStatusResolved": "解決済み",
     "feedbackStatusWontfix": "修正しない",
-    "resolutionPrefix": "解像度",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "モデレーター",
     "moderators": {
       "heading": "現在のモデレーター",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "スターター",
-        "core": "コア",
-        "creator": "クリエイター",
-        "godMode": "ゴッドモード"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "MRRトレンド",
@@ -795,7 +803,7 @@
         "submitButton": "オーバーライドを適用",
         "cancelButton": "キャンセル",
         "successToast": "ダニング段階のオーバーライドが適用されました。",
-        "errorPrefix": "オーバーライド失敗"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "スナップショットを生成",
@@ -837,7 +845,9 @@
     "current": "現在",
     "perMonth": "/月",
     "payWithCrypto": "仮想通貨で支払う",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "XRPで支払う",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "カードで支払う",
     "cardComingSoon": "会社設立後に利用可能",
     "manageSubscription": "サブスクリプションの管理",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "タップして会話を始める",
     "requestingMic": "マイクをリクエストしています...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Echoに接続しています...",
     "listening": "聞き取り中...",
     "thinking": "考え中...",
@@ -1192,10 +1203,11 @@
     "playing": "再生中",
     "paused": "一時停止",
     "watch": "視聴",
-    "generatingVideo": "動画を生成中…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "動画を再生中",
     "watchAgain": "もう一度見る",
-    "videoError": "動画の再生に失敗しました — タップして再試行"
+    "videoError": "動画の再生に失敗しました — タップして再試行",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

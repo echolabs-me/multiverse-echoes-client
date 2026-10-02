@@ -24,15 +24,28 @@ vi.mock('../src/stores/useAuthStore.ts', () => ({
 
 // Payment mocks exposed at module scope so the Stripe-toast test can
 // assert non-invocation alongside the happy-path calls that other tests use.
-const mockCreateNowpayments = vi.fn().mockResolvedValue({ payment_id: 'p1', checkout_url: 'https://example.com' });
-const mockCreateXaman = vi.fn().mockResolvedValue({ payment_id: 'p2', checkout_url: 'https://example.com' });
+const mockCreateNowpayments = vi
+  .fn()
+  .mockResolvedValue({ payment_id: 'p1', checkout_url: 'https://example.com' });
+const mockCreateXaman = vi
+  .fn()
+  .mockResolvedValue({ payment_id: 'p2', checkout_url: 'https://example.com' });
 
 vi.mock('../src/lib/api/endpoints.ts', () => ({
   payments: {
     createNowpayments: (...args: unknown[]) => mockCreateNowpayments(...args),
     createXaman: (...args: unknown[]) => mockCreateXaman(...args),
-    getStatus: vi.fn().mockResolvedValue({ payment_id: 'p1', status: 'Pending', provider: 'nowpayments', amount_usd_cents: 999, confirmed_at: null }),
-    createTip: vi.fn().mockResolvedValue({ payment_id: 'p3', checkout_url: 'https://example.com' }),
+    getStatus: vi.fn().mockResolvedValue({
+      payment_id: 'p1',
+      status: 'Pending',
+      provider: 'nowpayments',
+      amount_usd_cents: 999,
+      confirmed_at: null,
+    }),
+    createTip: vi.fn().mockResolvedValue({
+      payment_id: 'p3',
+      checkout_url: 'https://example.com',
+    }),
   },
 }));
 
@@ -66,6 +79,8 @@ void testI18n.use(initReactI18next).init({
         'payment.perMonth': '/month',
         'payment.payWithCrypto': 'Pay with Crypto',
         'payment.payWithXRP': 'Pay with XRP',
+        'payment.payWithCryptoAmount': 'Pay with Crypto — {{amount}}',
+        'payment.payWithXRPAmount': 'Pay with XRP — {{amount}}',
         'payment.cardComingSoon': 'Available after company incorporation',
         'payment.cryptoUnavailable': 'Crypto payments temporarily unavailable.',
         'common.comingSoon': 'Coming soon',
@@ -95,7 +110,8 @@ void testI18n.use(initReactI18next).init({
         'tiers.enterprise': 'Enterprise',
         'tiers.enterpriseDesc': 'Custom solutions for organisations.',
         'tiers.contactUs': 'Contact us',
-        'tiers.enhanceTiers': 'Enhance your experience. No commitment — add or remove anytime.',
+        'tiers.enhanceTiers':
+          'Enhance your experience. No commitment — add or remove anytime.',
         'tiers.features.1echoPublic': '1 Echo (public)',
         'tiers.features.diaryAmPm': 'Diary entries twice daily',
         'tiers.features.1conv': '1 conversation/day',
@@ -134,7 +150,8 @@ void testI18n.use(initReactI18next).init({
         'tiers.addOns.nudgePack': 'Nudge 100-Pack',
         'tiers.addOns.nudgePackDesc': '100 extra nudges.',
         'tiers.addOns.premiumActionsPack': 'Premium Actions 20-Pack',
-        'tiers.addOns.premiumActionsPackDesc': '20 Influence Points for your Echo to act on.',
+        'tiers.addOns.premiumActionsPackDesc':
+          '20 Influence Points for your Echo to act on.',
         'tiers.addOns.speedBoost': 'Speed Boost',
         'tiers.addOns.speedBoostDesc': 'Halve the heartbeat interval.',
         'tiers.addOns.videoVoiceBoost': 'Video & Voice Boost',
@@ -268,13 +285,17 @@ describe('PaymentSuccessPage', () => {
     await act(async () => {
       render(
         <I18nextProvider i18n={testI18n}>
-          <MemoryRouter initialEntries={['/payment/success?id=abc123&provider=nowpayments']}>
+          <MemoryRouter
+            initialEntries={['/payment/success?id=abc123&provider=nowpayments']}
+          >
             <PaymentSuccessPage />
           </MemoryRouter>
         </I18nextProvider>,
       );
     });
-    expect(screen.getByText('Payment is being processed...')).toBeInTheDocument();
+    expect(
+      screen.getByText('Payment is being processed...'),
+    ).toBeInTheDocument();
     expect(screen.getByText('Checking payment status...')).toBeInTheDocument();
   });
 
@@ -352,7 +373,9 @@ describe('TipPage', () => {
       renderPage();
     });
     expect(screen.getByText('Support the Project')).toBeInTheDocument();
-    expect(screen.getByText('Help keep Multiverse Echoes running.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Help keep Multiverse Echoes running.'),
+    ).toBeInTheDocument();
   });
 
   it('renders preset amount buttons', async () => {
@@ -377,7 +400,9 @@ describe('TipPage', () => {
       renderPage();
     });
     expect(screen.getByText('Message (optional)')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Leave a message...')).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText('Leave a message...'),
+    ).toBeInTheDocument();
   });
 
   it('renders provider buttons', async () => {

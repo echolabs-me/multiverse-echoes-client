@@ -6,6 +6,8 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { EchoDetailPage } from '../src/pages/EchoDetailPage.tsx';
 import { echoes } from '../src/lib/api/endpoints.ts';
+import { ApiRequestError } from '../src/lib/api/client.ts';
+import appI18n from '../src/i18n.ts';
 
 // Mutable test state — allows the existing smoke tests to keep exercising
 // the null-activeEcho short-circuit path while new loaded-state tests set a
@@ -81,6 +83,9 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
     diary: vi.fn().mockResolvedValue({ data: [], next_cursor: null }),
     influence: vi.fn().mockResolvedValue({ remaining: 5, daily_limit: 10 }),
     useInfluence: vi.fn(),
+    narrateVideoStart: vi.fn(),
+    narrateVideoStatus: vi.fn(),
+    narrateVideoResult: vi.fn(),
   },
   // EchoDetailPage.tsx:182 calls conversations.list(echoId) in the initial-load
   // useEffect once activeEcho is populated. Mocked here so the loaded-state
@@ -171,6 +176,14 @@ void testI18n.use(initReactI18next).init({
         'tiers.deletion.echoHibernatedBanner':
           'This Echo is hibernated and will be deleted on {{date}} unless you upgrade back or free up a slot to wake it.',
         'tiers.deletion.echoDeletesOn': 'Deletes {{date}}',
+        'diary.watch': 'Watch',
+        // R284.5: the label and its value are one key each.
+        'dashboard.moodValue': 'Mood: {{mood}}',
+        'diary.generatingVideoProgress': 'Generating video: {{progress}}%',
+        'diary.videoError': 'Video failed, tap to retry',
+        // Worded apart from the old hardcoded "Error:" prefix, so the test
+        // tells the locale key from it.
+        'diary.videoErrorDetail': 'Video error: {{detail}}',
       },
     },
   },
@@ -656,5 +669,187 @@ describe('EchoDetailPage — the hibernate, wake and influence dialogs (R258)', 
       expect(dialog).not.toHaveAttribute('aria-busy');
       expect(send(dialog)).toBeEnabled();
     });
+  });
+});
+
+describe('EchoDetailPage — a failed narration video (R264.5)', () => {
+  const entry = {
+    diary_id: 'd1',
+    echo_id: 'e1',
+    tick_id: 1,
+    simulated_date: '2026-04-17',
+    content: 'A day in the life.',
+    content_locale: 'en',
+    mood: 'neutral',
+    location_name: 'Home',
+    shard_id: 'shard-1',
+    nudge_source: null,
+    image_url: null,
+    created_at: '2026-04-17T00:00:00Z',
+  };
+
+  beforeEach(() => {
+    mockActiveEcho = {
+      echo_id: 'e1',
+      name: 'Test Echo',
+      persona_text: 'A short persona.',
+      what_if_prompt: 'What if...',
+      status: 'Active',
+      current_mood: 'neutral',
+      current_tick: 42,
+      current_shard_id: 'shard-1',
+      birth_hash: 'abcdef',
+      created_at: '2026-04-17T00:00:00Z',
+      avatar_url: null,
+      physical_description: null,
+    };
+    vi.mocked(echoes.diary).mockResolvedValue({
+      data: [entry],
+      next_cursor: null,
+    });
+    vi.mocked(echoes.narrateVideoStart).mockReset();
+  });
+
+  afterEach(() => {
+    mockActiveEcho = null;
+    vi.mocked(echoes.diary).mockResolvedValue({ data: [], next_cursor: null });
+  });
+
+  async function watch() {
+    await act(async () => {
+      renderPage();
+    });
+    const button = await screen.findByRole('button', { name: /Watch/ });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+  }
+
+  it("shows the server's error through the translator, in the locale key's frame", async () => {
+    vi.mocked(echoes.narrateVideoStart).mockRejectedValue(
+      new ApiRequestError(
+        400,
+        'DAILY_VIDEO_LIMIT',
+        'Daily video render limit reached (10/10). Upgrade or wait 24h.',
+      ),
+    );
+    await watch();
+    expect(
+      await screen.findByText(
+        `Video error: ${appI18n.t('errors.DAILY_VIDEO_LIMIT')}`,
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it("shows the button's own failure text for a failure that is not the server's", async () => {
+    vi.mocked(echoes.narrateVideoStart).mockRejectedValue(
+      new TypeError('Failed to fetch'),
+    );
+    await watch();
+    expect(
+      await screen.findByText('Video failed, tap to retry'),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/Failed to fetch/)).not.toBeInTheDocument();
+  });
+
+  it("shows DAILY_VIDEO_LIMIT's text when the endpoint answers with that code (R283.2)", async () => {
+    // The real endpoint, with only `fetch` stood in for: the page must get
+    // the server's code through the endpoint itself.
+    const actual = await vi.importActual<
+      typeof import('../src/lib/api/endpoints.ts')
+    >('../src/lib/api/endpoints.ts');
+    vi.mocked(echoes.narrateVideoStart).mockImplementation(
+      actual.echoes.narrateVideoStart,
+    );
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            error: {
+              code: 'DAILY_VIDEO_LIMIT',
+              message: 'Daily video render limit reached (10/10).',
+            },
+          }),
+          { status: 429, headers: { 'Content-Type': 'application/json' } },
+        ),
+      ),
+    );
+    await watch();
+    expect(
+      await screen.findByText(
+        `Video error: ${appI18n.t('errors.DAILY_VIDEO_LIMIT')}`,
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it("shows the server's error when the finished video cannot be fetched (R283.2)", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      vi.mocked(echoes.narrateVideoStart).mockResolvedValue({ jobId: 'j1' });
+      vi.mocked(echoes.narrateVideoStatus).mockResolvedValue({
+        status: 'complete',
+      });
+      vi.mocked(echoes.narrateVideoResult).mockRejectedValue(
+        new ApiRequestError(429, 'DAILY_VIDEO_LIMIT', 'limit reached'),
+      );
+      await watch();
+      // One poll, then three fetches of the result two seconds apart.
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(2500 + 2 * 2000 + 100);
+      });
+      expect(echoes.narrateVideoResult).toHaveBeenCalledTimes(3);
+      expect(
+        screen.getByText(
+          `Video error: ${appI18n.t('errors.DAILY_VIDEO_LIMIT')}`,
+        ),
+      ).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("shows the video's progress as one key's text with its value (R284.5)", async () => {
+    vi.mocked(echoes.narrateVideoStart).mockReturnValue(new Promise(() => {}));
+    await watch();
+    expect(await screen.findByText('Generating video: 0%')).toBeInTheDocument();
+  });
+});
+
+describe('EchoDetailPage — the mood line (R284.5)', () => {
+  beforeEach(() => {
+    mockActiveEcho = {
+      echo_id: 'e1',
+      name: 'Test Echo',
+      persona_text: 'A short persona.',
+      what_if_prompt: 'What if...',
+      status: 'Active',
+      current_mood: 'neutral',
+      current_tick: 42,
+      current_shard_id: 'shard-1',
+      birth_hash: 'abcdef',
+      created_at: '2026-04-17T00:00:00Z',
+      avatar_url: null,
+      physical_description: null,
+    };
+  });
+
+  afterEach(() => {
+    mockActiveEcho = null;
+  });
+
+  it("shows the mood as one key's text with its value", async () => {
+    await act(async () => {
+      renderPage();
+    });
+    const moodLabel = appI18n.t('moods.neutral');
+    expect(
+      screen.getByText((_, el) =>
+        Boolean(
+          el?.tagName === 'P' &&
+          el.textContent?.startsWith(`Mood: ${moodLabel} `),
+        ),
+      ),
+    ).toBeInTheDocument();
   });
 });

@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Button, Card, Spinner, EmptyState } from '../components/index.ts';
 import { subscription, shards as shardsApi } from '../lib/api/endpoints.ts';
@@ -17,7 +21,7 @@ type ShardNameMap = Record<string, string>;
 type LoadState =
   | { kind: 'loading' }
   | { kind: 'no-session' }
-  | { kind: 'error'; code: string; message: string }
+  | { kind: 'error'; message: string }
   | { kind: 'ready'; session: DowngradeSessionView; shards: ShardNameMap };
 
 // Values come from the server as Rust-Debug-formatted strings (see
@@ -97,12 +101,10 @@ export function DowngradeChoicePage() {
           setLoadState({ kind: 'no-session' });
           return;
         }
-        const code = err instanceof ApiRequestError ? err.code : 'UNKNOWN';
-        const message =
-          err instanceof ApiRequestError
-            ? err.message
-            : t('tiers.downgrade.errorGeneric');
-        setLoadState({ kind: 'error', code, message });
+        setLoadState({
+          kind: 'error',
+          message: translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
+        });
       }
     })();
     return () => {
@@ -120,11 +122,11 @@ export function DowngradeChoicePage() {
         );
         await applySession(updated);
       } catch (err) {
-        const message =
-          err instanceof ApiRequestError
-            ? err.message
-            : t('tiers.downgrade.errorGeneric');
-        addToast(message, 'danger', { platformLink: true });
+        addToast(
+          translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
       } finally {
         setMutating(false);
       }
@@ -143,11 +145,11 @@ export function DowngradeChoicePage() {
         );
         await applySession(updated);
       } catch (err) {
-        const message =
-          err instanceof ApiRequestError
-            ? err.message
-            : t('tiers.downgrade.errorGeneric');
-        addToast(message, 'danger', { platformLink: true });
+        addToast(
+          translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
       } finally {
         setMutating(false);
       }
@@ -164,11 +166,11 @@ export function DowngradeChoicePage() {
         await applySession(updated);
         navigate('/dashboard');
       } catch (err) {
-        const message =
-          err instanceof ApiRequestError
-            ? err.message
-            : t('tiers.downgrade.errorGeneric');
-        addToast(message, 'danger', { platformLink: true });
+        addToast(
+          translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
       } finally {
         setMutating(false);
       }
@@ -183,11 +185,11 @@ export function DowngradeChoicePage() {
         await subscription.cancel(sessionId);
         navigate(-1);
       } catch (err) {
-        const message =
-          err instanceof ApiRequestError
-            ? err.message
-            : t('tiers.downgrade.errorGeneric');
-        addToast(message, 'danger', { platformLink: true });
+        addToast(
+          translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
+          'danger',
+          { platformLink: isPlatformError(err) },
+        );
       } finally {
         setMutating(false);
       }
@@ -233,9 +235,6 @@ export function DowngradeChoicePage() {
               <AlertTriangle size={20} className="mbs-0.5 text-danger" />
               <div>
                 <p className="text-sm text-text-primary">{loadState.message}</p>
-                <p className="mbs-1 text-xs text-text-muted">
-                  {loadState.code}
-                </p>
               </div>
             </div>
           </Card>

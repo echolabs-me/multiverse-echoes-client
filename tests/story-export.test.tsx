@@ -4,6 +4,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { StoryExportModal } from '../src/components/StoryExportModal.tsx';
+import { ApiRequestError } from '../src/lib/api/client.ts';
 
 // Mock the API.
 const mockRequestExport = vi.fn();
@@ -60,7 +61,7 @@ void testI18n.use(initReactI18next).init({
         'export.download': 'Download',
         'export.downloadSubtitles': 'Download subtitles (.srt)',
         'export.progress': 'Export progress',
-        'export.formatLabel': 'Format',
+        'export.formatValue': 'Format: {{format}}',
         'export.downloadHint': 'File will be saved to your Downloads folder.',
       },
     },
@@ -145,13 +146,45 @@ describe('StoryExportModal', () => {
       );
     });
 
-    const exportBtn = screen.getByRole('button', { name: /Export/, hidden: true });
+    const exportBtn = screen.getByRole('button', {
+      name: /Export/,
+      hidden: true,
+    });
     await act(async () => {
       fireEvent.click(exportBtn);
     });
 
     expect(screen.getByText('Generating export...')).toBeInTheDocument();
-    expect(screen.getByRole('progressbar', { hidden: true })).toBeInTheDocument();
+    expect(
+      screen.getByRole('progressbar', { hidden: true }),
+    ).toBeInTheDocument();
+  });
+
+  it("shows the export's format as one key's text with its value (R284.5)", async () => {
+    mockRequestExport.mockResolvedValue({
+      export_id: 'exp-1',
+      status: 'Processing',
+      format: 'text',
+      created_at: new Date().toISOString(),
+    });
+    await act(async () => {
+      render(
+        <Wrapper>
+          <StoryExportModal
+            open={true}
+            onClose={() => {}}
+            echoName="Test"
+            echoId="echo-123"
+          />
+        </Wrapper>,
+      );
+    });
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole('button', { name: /Export/, hidden: true }),
+      );
+    });
+    expect(screen.getByText('Format: text')).toBeInTheDocument();
   });
 
   it('sends echo_ids array in export request', async () => {
@@ -175,7 +208,10 @@ describe('StoryExportModal', () => {
       );
     });
 
-    const exportBtn = screen.getByRole('button', { name: /Export/, hidden: true });
+    const exportBtn = screen.getByRole('button', {
+      name: /Export/,
+      hidden: true,
+    });
     await act(async () => {
       fireEvent.click(exportBtn);
     });
@@ -189,7 +225,9 @@ describe('StoryExportModal', () => {
   });
 
   it('shows tier gate for video on free tier', async () => {
-    mockRequestExport.mockRejectedValue(new Error('TIER_REQUIRED'));
+    mockRequestExport.mockRejectedValue(
+      new ApiRequestError(403, 'TIER_REQUIRED', 'Video export needs Core'),
+    );
 
     await act(async () => {
       render(
@@ -208,7 +246,10 @@ describe('StoryExportModal', () => {
     const videoLabel = screen.getByText('Video (MP4)').closest('label');
     fireEvent.click(videoLabel!);
 
-    const exportBtn = screen.getByRole('button', { name: /Export/, hidden: true });
+    const exportBtn = screen.getByRole('button', {
+      name: /Export/,
+      hidden: true,
+    });
     await act(async () => {
       fireEvent.click(exportBtn);
     });

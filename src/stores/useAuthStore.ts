@@ -76,9 +76,10 @@ export const useAuthStore = create<AuthState>((set) => {
         } catch {
           // Profile fetch is best-effort
         }
-      } catch {
+      } catch (err) {
+        // The caller shows the server's error, so it is passed on as caught.
         set({ isLoading: false });
-        throw new Error('Login failed');
+        throw err;
       }
     },
 
@@ -97,9 +98,10 @@ export const useAuthStore = create<AuthState>((set) => {
           // Profile fetch is best-effort
         }
         return response;
-      } catch {
+      } catch (err) {
+        // The caller shows the server's error, so it is passed on as caught.
         set({ isLoading: false });
-        throw new Error('Registration failed');
+        throw err;
       }
     },
 
@@ -132,13 +134,10 @@ export const useAuthStore = create<AuthState>((set) => {
 
     setUser: (user) => set({ user }),
 
+    // A failure is thrown, so each caller shows it (R283.1).
     fetchProfile: async () => {
-      try {
-        const user = await account.getProfile();
-        set({ user, currentTosVersion: user.current_tos_version });
-      } catch {
-        // Profile fetch failed
-      }
+      const user = await account.getProfile();
+      set({ user, currentTosVersion: user.current_tos_version });
     },
   };
 });

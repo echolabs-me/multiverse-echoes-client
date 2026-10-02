@@ -4,6 +4,7 @@ import i18n from '../i18n.ts';
 import type { OracleContext, FeedbackType } from '../types/api.ts';
 import { oracle, feedback } from '../lib/api/endpoints.ts';
 import { detectConfirmationIntent } from '../lib/confirmationIntent.ts';
+import { translateCaughtError } from '../lib/translateError.ts';
 
 /** A link an Oracle message can carry into the app (ME-UXF-001 §8). The
  *  server's answer carries none today, so no message has any. */
@@ -165,11 +166,11 @@ export const useOracleStore = create<OracleState>()(
               isLoading: false,
               pendingFeedback: null,
             });
-          } catch {
+          } catch (err) {
             const errorMsg: OracleMessage = {
               id: genId(),
               role: 'oracle',
-              text: i18n.t('oracle.feedbackError'),
+              text: translateCaughtError(err, i18n.t('oracle.feedbackError')),
               timestamp: Date.now(),
             };
             set({
@@ -226,11 +227,11 @@ export const useOracleStore = create<OracleState>()(
               isLoading: false,
               feedbackMode: null,
             });
-          } catch {
+          } catch (err) {
             const errorMsg: OracleMessage = {
               id: genId(),
               role: 'oracle',
-              text: i18n.t('oracle.feedbackError'),
+              text: translateCaughtError(err, i18n.t('oracle.feedbackError')),
               timestamp: Date.now(),
             };
             set({
@@ -258,10 +259,8 @@ export const useOracleStore = create<OracleState>()(
           let retries = 0;
           const maxRetries = 8;
           const deepThoughtThreshold = 6;
-          const queuedText =
-            'The Oracle is busy guiding the multiverse right now. They\u2019ll be with you shortly.';
-          const deepThoughtText =
-            'The Oracle is taking a while \u2014 they\u2019re deep in thought. Hang tight, they\u2019ll respond soon.';
+          const queuedText = i18n.t('oracle.queued');
+          const deepThoughtText = i18n.t('oracle.deepThought');
           // Build conversation history from stored messages (last 20, excluding current).
           const history = get()
             .messages.slice(-20)
@@ -327,9 +326,7 @@ export const useOracleStore = create<OracleState>()(
           const oracleMsg: OracleMessage = {
             id: genId(),
             role: 'oracle',
-            text:
-              displayText ||
-              'The Oracle is deep in thought. Please try again shortly.',
+            text: displayText || i18n.t('oracle.emptyAnswer'),
             timestamp: Date.now(),
           };
 
@@ -343,8 +340,11 @@ export const useOracleStore = create<OracleState>()(
           } else {
             set({ messages: [...get().messages, oracleMsg], isLoading: false });
           }
-        } catch {
-          set({ error: 'oracle.error', isLoading: false });
+        } catch (err) {
+          set({
+            error: translateCaughtError(err, i18n.t('oracle.error')),
+            isLoading: false,
+          });
         }
       },
 

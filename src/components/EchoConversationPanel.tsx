@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { Send, X } from 'lucide-react';
 import { useAuthStore } from '../stores/index.ts';
 import { conversations } from '../lib/api/endpoints.ts';
@@ -88,7 +89,7 @@ export function EchoConversationPanel({
           }
         }
       } catch (err) {
-        const detail = err instanceof Error ? err.message : 'Unknown error';
+        const detail = translateCaughtError(err);
         setError(t('conversation.errorStarting', { detail }));
       } finally {
         setIsLoading(false);
@@ -219,7 +220,7 @@ export function EchoConversationPanel({
           });
         }
       } catch (err) {
-        const detail = err instanceof Error ? err.message : 'Unknown error';
+        const detail = translateCaughtError(err);
         setError(t('conversation.errorSending', { detail }));
       } finally {
         setIsSending(false);

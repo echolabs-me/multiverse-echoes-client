@@ -32,7 +32,8 @@ const { MockApiRequestError } = vi.hoisted(() => {
 // whose `instanceof` check will succeed against the error objects the
 // mocked endpoints throw below.
 vi.mock('../src/lib/api/client.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../src/lib/api/client.ts')>();
+  const actual =
+    await importOriginal<typeof import('../src/lib/api/client.ts')>();
   return {
     ...actual,
     ApiRequestError: MockApiRequestError,
@@ -73,9 +74,10 @@ vi.mock('../src/stores/useToastStore.ts', () => ({
 
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual<typeof import('react-router-dom')>(
-    'react-router-dom',
-  );
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
   return {
     ...actual,
     useNavigate: () => mockNavigate,
@@ -217,8 +219,10 @@ describe('DowngradeChoicePage', () => {
 
     await renderPage();
 
+    // A code with no locale text shows the server's message, and never the
+    // raw code (R264.3).
+    expect(screen.queryByText(/DB_ERROR/)).not.toBeInTheDocument();
     expect(screen.getByText('Database unreachable')).toBeInTheDocument();
-    expect(screen.getByText('DB_ERROR')).toBeInTheDocument();
   });
 
   it('renders the PickingIncluded pick-1-of-3 screen with Keep-as-Included buttons', async () => {

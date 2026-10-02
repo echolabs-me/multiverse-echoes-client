@@ -11,6 +11,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { Mic, MicOff, PhoneOff, Loader2, X, Clock, Send } from 'lucide-react';
 import { Button } from './index.ts';
 import { getBaseUrl } from '../lib/api/client.ts';
@@ -149,14 +150,27 @@ export function VoiceSessionModal({
       if (preAudioCtx.state === 'suspended') {
         await preAudioCtx.resume();
       }
-      const preMicStream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
-        },
-      });
+      let preMicStream: MediaStream;
+      try {
+        preMicStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            channelCount: 1,
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+          },
+        });
+      } catch (err) {
+        // The browser refusing the microphone has its own text; any other
+        // failure is the connection error below (R284.4).
+        if (err instanceof DOMException && err.name === 'NotAllowedError') {
+          setError(t('voice.micRefused'));
+          setState('error');
+          void cleanup();
+          return;
+        }
+        throw err;
+      }
       preMicStreamRef.current = preMicStream;
 
       // Start server-side session
@@ -182,7 +196,10 @@ export function VoiceSessionModal({
         await new Promise((r) => setTimeout(r, 500));
       }
       if (!ready) {
-        throw new Error(t('voice.serverTimeout', 'Voice server not available'));
+        setError(t('voice.serverTimeout'));
+        setState('error');
+        void cleanup();
+        return;
       }
 
       // Create audio bridge
@@ -204,8 +221,10 @@ export function VoiceSessionModal({
             return url;
           });
         },
-        onError: (msg) => {
-          setError(msg);
+        // The bridge's own message is a diagnostic in English, so the
+        // user sees the translated connection error.
+        onError: () => {
+          setError(t('voice.error'));
           setState('error');
         },
         onClose: () => {},
@@ -239,8 +258,7 @@ export function VoiceSessionModal({
         }
       }, 1000);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : t('voice.error');
-      setError(msg);
+      setError(translateCaughtError(err, t('voice.error')));
       setState('error');
       void cleanup();
     }

@@ -299,7 +299,7 @@ export function LegalDocument({
           {doc.title}
         </h1>
         <p className="mbe-8 text-sm text-(--text-muted)">
-          Last updated: {doc.lastUpdated}
+          {t('common.legalLastUpdated', { date: doc.lastUpdated })}
         </p>
 
         <div className="flex flex-col gap-6 text-sm/relaxed text-(--text-secondary)">

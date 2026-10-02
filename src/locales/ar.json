@@ -66,6 +66,7 @@
     "translationPending": "جارٍ الترجمة…",
     "legalDocsEnglishOnly": "هذه الصفحة متاحة باللغة الإنجليزية فقط حاليًا. سيتم نشر نسخة مترجمة قريبًا.",
     "legalMachineTranslationDisclaimer": "تم توفير هذه الترجمة للتسهيل فقط. وتعتبر النسخة الإنجليزية هي النص المعتمد قانوناً.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "فتح القائمة",
     "closeMenu": "إغلاق القائمة",
     "fieldRequired": "يرجى تعبئة هذا الحقل.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "أنت داخل!",
     "verifiedDescription": "لننشئ أول صدى لك.",
     "emailTaken": "هذا البريد الإلكتروني مسجَّل بالفعل",
-    "displayNameTaken": "اسم العرض هذا مستخدم بالفعل",
     "confirmPassword": "تأكيد كلمة المرور",
     "passwordMismatch": "كلمتا المرور غير متطابقتين",
     "passwordTooShort": "يجب أن تتكون كلمة المرور من 12 حرفًا على الأقل",
@@ -140,15 +140,18 @@
     "card3Title": "هذه ليست لعبة",
     "card3Body": "لا توجد نقاط ولا ربح. هذه محاكاة حياة مستقلة. تعامل معها بفضول.",
     "understand": "فهمت — لنبدأ",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "أعدّ ملفك الشخصي",
     "bio": "نبذة",
     "bioHint": "شيء بسيط عنك — أنت المراقب، لا الصدى. يظهر في ملفك الشخصي في المجتمع (اختياري، 500 حرف كحد أقصى)",
     "bioCallout": "هذا عنك، وليس عن صداك. يرى المستخدمون الآخرون هذا في ملفك الشخصي في المجتمع. لا يؤثر على كيفية تفكير أصدائك أو تصرفها.",
     "timezone": "المنطقة الزمنية",
     "avatar": "الصورة الرمزية",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "اختر لغتك",
     "languagesComingSoon": "المزيد من اللغات قريبًا",
-    "languageSelectionLabel": "اختيار اللغة"
+    "languageSelectionLabel": "اختيار اللغة",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "أنشئ صداك",
@@ -178,8 +181,6 @@
     "birthTitle": "صداك يُولَد…",
     "birthComplete": "صداك حيّ.",
     "limitTitle": "تم بلوغ حد الأصداء",
-    "limitDesc": "يسمح لك خطتك الحالية بـ {{max}} صدى. قم بالترقية لإنشاء المزيد، أو عُد إلى لوحة التحكم.",
-    "limitDesc_plural": "تسمح لك خطتك الحالية بـ {{max}} أصداء. قم بالترقية لإنشاء المزيد، أو عُد إلى لوحة التحكم.",
     "viewPlans": "عرض الخطط"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "تابع مستخدمين آخرين لترى قصص أصدائهم هنا.",
     "filterByEcho": "تصفية حسب الصدى",
     "allEchoes": "كل الأصداء",
-    "significance": "الأهمية"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "المجتمع",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "ملاحظاتي",
     "noFeedbackYet": "لم تُرسل أي ملاحظات بعد.",
-    "feedbackSubmitted": "مُرسَلة",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "منطقة الخطر",
     "subscriptionTier": "الاشتراك",
     "managePlan": "إدارة الخطة",
@@ -391,6 +393,8 @@
     "passwordChanged": "تم تغيير كلمة المرور بنجاح",
     "sessions": "الجلسات النشطة",
     "currentSession": "الجلسة الحالية",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "إلغاء",
     "sessionRevoked": "تم إلغاء الجلسة",
     "exportData": "تصدير بياناتي",
@@ -474,7 +478,7 @@
     "noEchoes": "أكوانك المتعددة فارغة",
     "noEchoesDesc": "أنشئ أول صدى لك وشاهد حياة جديدة تتفتح.",
     "viewDetail": "عرض التفاصيل",
-    "mood": "المزاج",
+    "moodValue": "Mood: {{mood}}",
     "tick": "نبضة {{tick}}",
     "latestDiaryEmpty": "قصة صداك في بدايتها. عُد قريبًا.",
     "nextTick": "النبضة التالية خلال {{seconds}} ث",
@@ -541,7 +545,7 @@
     "downloading": "جارٍ التنزيل…",
     "downloadSubtitles": "تنزيل الترجمات (.srt)",
     "progress": "تقدم التصدير",
-    "formatLabel": "التنسيق",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "سيتم حفظ الملف في مجلد التنزيلات."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "اسأل العرّاف…",
     "send": "إرسال إلى أوراكل",
     "thinking": "العرّاف يفكر…",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "مسح المحادثة",
     "rateLimit": "{{limit}} أسئلة في الدقيقة",
     "error": "لم يتمكن العرّاف من الرد. يرجى المحاولة مرة أخرى.",
@@ -631,13 +638,15 @@
     "tabBilling": "الفواتير",
     "feedbackQueue": "قائمة الملاحظات",
     "noFeedback": "لم تُقدَّم أي ملاحظات بعد.",
-    "feedbackType": "النوع",
-    "feedbackStatus": "الحالة",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "الأولوية",
     "feedbackMessage": "رسالة المستخدم",
     "feedbackSummary": "الملخص",
     "feedbackContext": "السياق",
-    "feedbackScreen": "الشاشة",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "إقرار",
     "feedbackResolve": "تم الحل",
     "feedbackWontfix": "لن يُصلَح",
@@ -692,7 +701,6 @@
     "backupControl": "نسخ احتياطي لقاعدة البيانات",
     "triggerBackup": "إطلاق النسخ الاحتياطي",
     "analyticsLoadFailed": "فشل تحميل التحليلات",
-    "filterAll": "الكل",
     "feedbackTypeBug": "خلل",
     "feedbackTypeFeatureRequest": "طلب ميزة",
     "feedbackTypeFrustration": "إحباط",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "تم الإقرار",
     "feedbackStatusResolved": "تم الحل",
     "feedbackStatusWontfix": "لن يُصلَح",
-    "resolutionPrefix": "الحل",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "المشرفون",
     "moderators": {
       "heading": "المشرفون الحاليون",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "مبتدئ",
-        "core": "أساسي",
-        "creator": "منشئ",
-        "godMode": "وضع الإله"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "اتجاه MRR",
@@ -795,7 +803,7 @@
         "submitButton": "Apply override",
         "cancelButton": "Cancel",
         "successToast": "Dunning phase override applied.",
-        "errorPrefix": "Override failed"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Trigger snapshot",
@@ -837,7 +845,9 @@
     "current": "الحالية",
     "perMonth": "/شهر",
     "payWithCrypto": "الدفع بالعملة المشفرة",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "الدفع بـ XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "الدفع بالبطاقة",
     "cardComingSoon": "متاح بعد تأسيس الشركة",
     "manageSubscription": "إدارة الاشتراك",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "انقر لبدء المحادثة",
     "requestingMic": "جارٍ طلب الميكروفون…",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "جارٍ الاتصال بالصدى…",
     "speaking": "يتحدث…",
     "error": "خطأ في الاتصال",
@@ -1192,10 +1203,11 @@
     "playing": "قيد التشغيل",
     "paused": "متوقف",
     "watch": "شاهد",
-    "generatingVideo": "جارٍ إنشاء الفيديو…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "جارٍ تشغيل الفيديو",
     "watchAgain": "شاهد مرة أخرى",
-    "videoError": "فشل الفيديو — انقر لإعادة المحاولة"
+    "videoError": "فشل الفيديو — انقر لإعادة المحاولة",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

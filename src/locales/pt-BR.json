@@ -66,6 +66,7 @@
     "translationPending": "Traduzindo…",
     "legalDocsEnglishOnly": "Esta página está disponível apenas em inglês. Uma versão traduzida será publicada em breve.",
     "legalMachineTranslationDisclaimer": "Esta tradução é fornecida para conveniência. A versão em inglês é o texto legalmente autoritativo.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "Abrir menu",
     "closeMenu": "Fechar menu",
     "fieldRequired": "Preencha este campo.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "Você entrou!",
     "verifiedDescription": "Vamos criar o seu primeiro Echo.",
     "emailTaken": "Este e-mail já está cadastrado",
-    "displayNameTaken": "Este nome de exibição já está em uso",
     "confirmPassword": "Confirmar senha",
     "passwordMismatch": "As senhas não coincidem",
     "passwordTooShort": "A senha deve ter pelo menos 12 caracteres",
@@ -140,15 +140,18 @@
     "card3Title": "Isto Não é um Jogo",
     "card3Body": "Não há pontos, não há vencedores. Esta é uma simulação de vida autônoma. Trate-a com curiosidade.",
     "understand": "Eu entendo — vamos lá",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "Configure seu perfil",
     "bio": "Bio",
     "bioHint": "Um pouco sobre você — o observador, não o Echo. Exibido no seu perfil da comunidade (opcional, máx. 500 caracteres)",
     "bioCallout": "Isso é sobre você, não sobre o seu Echo. Outros usuários veem isso no seu perfil na comunidade. Não tem efeito sobre como seus Echoes pensam ou se comportam.",
     "timezone": "Fuso horário",
     "avatar": "Avatar",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "Escolha seu idioma",
     "languagesComingSoon": "Mais idiomas em breve",
-    "languageSelectionLabel": "Seleção de idioma"
+    "languageSelectionLabel": "Seleção de idioma",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "Crie Seu Echo",
@@ -178,8 +181,6 @@
     "birthTitle": "Seu Echo está nascendo…",
     "birthComplete": "Seu Echo está vivo.",
     "limitTitle": "Limite de eco atingido",
-    "limitDesc": "Seu plano atual permite {{max}} Echo. Faça um upgrade para criar mais ou retorne ao painel.",
-    "limitDesc_plural": "Seu plano atual permite {{max}} Echoes. Faça um upgrade para criar mais ou retorne ao painel.",
     "viewPlans": "Ver Planos"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "Siga outros usuários para ver as histórias do Echo deles aqui.",
     "filterByEcho": "Filtrar por Echo",
     "allEchoes": "Todos os Ecos",
-    "significance": "Significado"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "Comunidade",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "Meu Feedback",
     "noFeedbackYet": "Você ainda não enviou nenhum feedback.",
-    "feedbackSubmitted": "Enviado",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "Zona de Perigo",
     "subscriptionTier": "Assinatura",
     "managePlan": "Gerenciar Plano",
@@ -391,6 +393,8 @@
     "passwordChanged": "Senha alterada com sucesso",
     "sessions": "Sessões Ativas",
     "currentSession": "Sessão atual",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "Revogar",
     "sessionRevoked": "Sessão revogada",
     "exportData": "Exportar Meus Dados",
@@ -474,7 +478,7 @@
     "noEchoes": "Seu multiverso está vazio",
     "noEchoesDesc": "Crie seu primeiro Echo e assista a uma nova vida se desenrolar.",
     "viewDetail": "Ver detalhes",
-    "mood": "Humor",
+    "moodValue": "Mood: {{mood}}",
     "tick": "Marcar {{tick}}",
     "latestDiaryEmpty": "A história do seu Echo está apenas começando. Volte logo.",
     "nextTick": "Próximo tick em {{seconds}}s",
@@ -541,7 +545,7 @@
     "downloading": "Baixando...",
     "downloadSubtitles": "Baixar legendas (.srt)",
     "progress": "Progresso da exportação",
-    "formatLabel": "Formato",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "O arquivo será salvo na sua pasta de Downloads."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "Pergunte ao Oráculo...",
     "send": "Enviar para o Oracle",
     "thinking": "Oracle está pensando...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "Limpar conversa",
     "rateLimit": "{{limit}} perguntas por minuto",
     "error": "O Oráculo não conseguiu responder. Por favor, tente novamente.",
@@ -631,13 +638,15 @@
     "tabBilling": "Faturamento",
     "feedbackQueue": "Fila de Feedback",
     "noFeedback": "Nenhum feedback enviado ainda.",
-    "feedbackType": "Digite",
-    "feedbackStatus": "Status",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "Prioridade",
     "feedbackMessage": "Mensagem do Usuário",
     "feedbackSummary": "Resumo",
     "feedbackContext": "Contexto",
-    "feedbackScreen": "Tela",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "Confirmar",
     "feedbackResolve": "Resolver",
     "feedbackWontfix": "Não será corrigido",
@@ -692,7 +701,6 @@
     "backupControl": "Backup do Banco de Dados",
     "triggerBackup": "Acionar Backup",
     "analyticsLoadFailed": "Falha ao carregar análises",
-    "filterAll": "Tudo",
     "feedbackTypeBug": "Bug",
     "feedbackTypeFeatureRequest": "Solicitação de Recurso",
     "feedbackTypeFrustration": "Frustração",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "Confirmado",
     "feedbackStatusResolved": "Resolvido",
     "feedbackStatusWontfix": "Não será corrigido",
-    "resolutionPrefix": "Resolução",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "Moderadores",
     "moderators": {
       "heading": "Moderadores atuais",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "Starter",
-        "core": "Core",
-        "creator": "Creator",
-        "godMode": "God Mode"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "Tendência de MRR",
@@ -795,7 +803,7 @@
         "submitButton": "Aplicar sobrescrita",
         "cancelButton": "Cancelar",
         "successToast": "Sobrescrita de fase de cobrança aplicada.",
-        "errorPrefix": "Falha na sobrescrita"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Gerar snapshot",
@@ -837,7 +845,9 @@
     "current": "Atual",
     "perMonth": "/mês",
     "payWithCrypto": "Pague com Cripto",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "Pague com XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "Pague com Cartão",
     "cardComingSoon": "Disponível após a constituição da empresa",
     "manageSubscription": "Gerenciar Assinatura",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "Toque para iniciar a conversa",
     "requestingMic": "Solicitando microfone...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Conectando ao Echo...",
     "listening": "Ouvindo...",
     "thinking": "Pensando...",
@@ -1192,10 +1203,11 @@
     "playing": "Reproduzindo",
     "paused": "Pausado",
     "watch": "Assistir",
-    "generatingVideo": "Gerando vídeo…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "Reproduzindo vídeo",
     "watchAgain": "Assistir novamente",
-    "videoError": "O vídeo falhou — toque para tentar novamente"
+    "videoError": "O vídeo falhou — toque para tentar novamente",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

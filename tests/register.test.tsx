@@ -56,7 +56,6 @@ void testI18n.use(initReactI18next).init({
         'auth.tosRequired': 'Must accept ToS',
         'auth.privacyRequired': 'Must accept Privacy',
         'auth.emailTaken': 'Email taken',
-        'auth.displayNameTaken': 'Name taken',
         'common.loading': 'Loading...',
         'common.error': 'Error',
       },

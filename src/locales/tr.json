@@ -66,6 +66,7 @@
     "translationPending": "Çevriliyor…",
     "legalDocsEnglishOnly": "Bu sayfa yalnızca İngilizce dilinde mevcuttur. Çevirisi yakında yayınlanacaktır.",
     "legalMachineTranslationDisclaimer": "Bu çeviri kolaylık sağlamak amacıyla sunulmuştur. İngilizce metin, yasal olarak yetkili metindir.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "Menüyü aç",
     "closeMenu": "Menüyü kapat",
     "fieldRequired": "Lütfen bu alanı doldurun.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "İçeridesin!",
     "verifiedDescription": "İlk Echo'nuzu oluşturalım.",
     "emailTaken": "Bu e-posta adresi zaten kayıtlı",
-    "displayNameTaken": "Bu görünen ad alınmış",
     "confirmPassword": "Şifreyi onayla",
     "passwordMismatch": "Şifreler eşleşmiyor",
     "passwordTooShort": "Şifre en az 12 karakter olmalıdır",
@@ -140,15 +140,18 @@
     "card3Title": "Bu Bir Oyun Değil",
     "card3Body": "Puan yok, kazanmak yok. Bu, otonom bir yaşam simülasyonudur. Ona merakla yaklaşın.",
     "understand": "Anladım — hadi gidelim",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "Profilinizi oluşturun",
     "bio": "Biyografi",
     "bioHint": "Kendiniz hakkında biraz bilgi — Yankı değil, gözlemci olan siz. Topluluk profilinizde görünür (isteğe bağlı, maks. 500 karakter)",
     "bioCallout": "Bu sizinle ilgilidir, Echo'nuzla değil. Toplulukta diğer kullanıcılar bunu profilinizde görür. Echo'larınızın nasıl düşündüğü veya davrandığı üzerinde hiçbir etkisi yoktur.",
     "timezone": "Saat dilimi",
     "avatar": "Avatar",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "Dilinizi seçin",
     "languagesComingSoon": "Yakında daha fazla dil eklenecek",
-    "languageSelectionLabel": "Dil seçimi"
+    "languageSelectionLabel": "Dil seçimi",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "Kendi Yankını Oluştur",
@@ -178,8 +181,6 @@
     "birthTitle": "Echo'nuz doğuyor…",
     "birthComplete": "Echo'nuz hayatta.",
     "limitTitle": "Yankı sınırına ulaşıldı",
-    "limitDesc": "Mevcut planınız {{max}} Echo'ya izin veriyor. Daha fazlasını oluşturmak için yükseltin veya panele dönün.",
-    "limitDesc_plural": "Mevcut planınız {{max}} Echo'ya izin veriyor. Daha fazlasını oluşturmak için yükseltin veya panoya dönün.",
     "viewPlans": "Planları Görüntüle"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "Diğer kullanıcıların Echo hikayelerini burada görmek için onları takip edin.",
     "filterByEcho": "Echo'ya göre filtrele",
     "allEchoes": "Tüm Yankılar",
-    "significance": "Önem"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "Topluluk",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "Geri Bildirimim",
     "noFeedbackYet": "Henüz herhangi bir geri bildirim göndermediniz.",
-    "feedbackSubmitted": "Gönderildi",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "Tehlike Bölgesi",
     "subscriptionTier": "Abonelik",
     "managePlan": "Planı Yönet",
@@ -391,6 +393,8 @@
     "passwordChanged": "Şifre başarıyla değiştirildi",
     "sessions": "Aktif Oturumlar",
     "currentSession": "Geçerli oturum",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "Geri çekmek",
     "sessionRevoked": "Oturum iptal edildi",
     "exportData": "Verilerimi Dışa Aktar",
@@ -474,7 +478,7 @@
     "noEchoes": "Çoklu evrenin boş",
     "noEchoesDesc": "İlk Echo'nuzu oluşturun ve yeni bir yaşamın filizlenişini izleyin.",
     "viewDetail": "Detayları görüntüle",
-    "mood": "Ruh hali",
+    "moodValue": "Mood: {{mood}}",
     "tick": "İşaretle {{tick}}",
     "latestDiaryEmpty": "Echo'nuzun hikayesi henüz yeni başlıyor. Yakında tekrar kontrol edin.",
     "nextTick": "Sıradaki tik {{seconds}}s içinde",
@@ -541,7 +545,7 @@
     "downloading": "İndiriliyor...",
     "downloadSubtitles": "Altyazıları indir (.srt)",
     "progress": "Dışa aktarma ilerlemesi",
-    "formatLabel": "Format",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "Dosya, İndirilenler klasörünüze kaydedilecektir."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "Kahine sor...",
     "send": "Oracle'a gönder",
     "thinking": "Oracle düşünüyor...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "Sohbeti temizle",
     "rateLimit": "dakika başına {{limit}} soru",
     "error": "Kahin yanıt veremedi. Lütfen tekrar deneyin.",
@@ -631,13 +638,15 @@
     "tabBilling": "Faturalandırma",
     "feedbackQueue": "Geri Bildirim Kuyruğu",
     "noFeedback": "Henüz geri bildirim gönderilmedi.",
-    "feedbackType": "Tür",
-    "feedbackStatus": "Durum",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "Öncelik",
     "feedbackMessage": "Kullanıcı Mesajı",
     "feedbackSummary": "Özet",
     "feedbackContext": "Bağlam",
-    "feedbackScreen": "Ekran",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "Onayla",
     "feedbackResolve": "Çözmek",
     "feedbackWontfix": "Düzeltilmeyecek",
@@ -692,7 +701,6 @@
     "backupControl": "Veritabanı Yedeği",
     "triggerBackup": "Yedeği Başlat",
     "analyticsLoadFailed": "Analizler yüklenemedi",
-    "filterAll": "Hepsi",
     "feedbackTypeBug": "Böcek",
     "feedbackTypeFeatureRequest": "Özellik Talebi",
     "feedbackTypeFrustration": "Hüsran",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "Anlaşıldı",
     "feedbackStatusResolved": "Çözüldü",
     "feedbackStatusWontfix": "Düzeltilmeyecek",
-    "resolutionPrefix": "Çözünürlük",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "Moderatörler",
     "moderators": {
       "heading": "Mevcut Moderatörler",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "Başlangıç",
-        "core": "Çekirdek",
-        "creator": "Yaratıcı",
-        "godMode": "Tanrı Modu"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "MRR Trendi",
@@ -795,7 +803,7 @@
         "submitButton": "Geçersiz kılmayı uygula",
         "cancelButton": "İptal",
         "successToast": "Dunning aşaması geçersiz kılması uygulandı.",
-        "errorPrefix": "Geçersiz kılma başarısız oldu"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Anlık görüntü oluştur",
@@ -837,7 +845,9 @@
     "current": "Güncel",
     "perMonth": "/ay",
     "payWithCrypto": "Kripto ile Öde",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "XRP ile öde",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "Kartla Öde",
     "cardComingSoon": "Şirket kuruluşundan sonra mevcut olacaktır",
     "manageSubscription": "Aboneliği Yönet",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "Sohbete başlamak için dokunun",
     "requestingMic": "Mikrofon isteniyor...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Echo'ya bağlanılıyor...",
     "listening": "Dinleniyor...",
     "thinking": "Düşünülüyor...",
@@ -1192,10 +1203,11 @@
     "playing": "Çalıyor",
     "paused": "Duraklatıldı",
     "watch": "İzle",
-    "generatingVideo": "Video oluşturuluyor…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "Video oynatılıyor",
     "watchAgain": "Tekrar izle",
-    "videoError": "Video başarısız — tekrar denemek için dokunun"
+    "videoError": "Video başarısız — tekrar denemek için dokunun",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

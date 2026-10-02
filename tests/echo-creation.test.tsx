@@ -7,6 +7,7 @@ import { initReactI18next } from 'react-i18next';
 import { EchoCreationPage } from '../src/pages/EchoCreationPage.tsx';
 import { account, shards } from '../src/lib/api/endpoints.ts';
 import { ApiRequestError } from '../src/lib/api/client.ts';
+import appI18n from '../src/i18n.ts';
 import { SHARED_SHARD_NOTICE_REQUIRED } from '../src/hooks/useSharedShardNotice.tsx';
 import type { PrivacySettings } from '../src/types/api.ts';
 
@@ -60,7 +61,9 @@ void testI18n.use(initReactI18next).init({
         'echo.personalShard': 'Personal Shard',
         'echo.personalShardDesc': 'Your private world',
         'echo.limitTitle': 'Echo limit reached',
-        'echo.limitDesc': 'Upgrade your plan',
+        // The limit view states no number, whatever the plan (R284.3).
+        'errors.ECHO_LIMIT_REACHED':
+          'You have reached your Echo limit. Upgrade to create more.',
         'echo.viewPlans': 'View plans',
         'echo.createButton': 'Create Echo',
         'echo.birthTitle': 'Your Echo is being born...',
@@ -267,8 +270,14 @@ describe('EchoCreationPage', () => {
   });
 
   it('a failed acknowledgment closes the notice, creates nothing and shows the page’s error on the destination step (R254.3)', async () => {
+    // A server error whose code has no locale text: the translator passes
+    // the server's message through (R264).
     vi.mocked(account.acknowledgeSharedShardNotice).mockRejectedValueOnce(
-      new Error('acknowledgment failed'),
+      new ApiRequestError(
+        500,
+        'NO_TEXT_FOR_THIS_CODE',
+        'acknowledgment failed',
+      ),
     );
     await reachDestination();
     await click(screen.getByRole('button', { name: 'Create Echo' }));
@@ -282,6 +291,56 @@ describe('EchoCreationPage', () => {
     expect(notice()).toBeNull();
     expect(screen.getByText('acknowledgment failed')).toBeInTheDocument();
     expect(screen.getByText('Choose destination')).toBeInTheDocument();
+  });
+
+  it('shows the Echo limit view for the Echo limit code (R264.2)', async () => {
+    mocks.createEcho.mockRejectedValueOnce(
+      new ApiRequestError(
+        403,
+        'ECHO_LIMIT_REACHED',
+        'Echo limit reached (1/1)',
+      ),
+    );
+    await reachDestination();
+    await click(screen.getByText('Personal Shard'));
+    await click(screen.getByRole('button', { name: 'Create Echo' }));
+
+    expect(screen.getByText('Echo limit reached')).toBeInTheDocument();
+  });
+
+  it("states no number in the limit view: it shows ECHO_LIMIT_REACHED's text (R284.3)", async () => {
+    mocks.createEcho.mockRejectedValueOnce(
+      new ApiRequestError(
+        403,
+        'ECHO_LIMIT_REACHED',
+        'Echo limit reached (3/3)',
+      ),
+    );
+    await reachDestination();
+    await click(screen.getByText('Personal Shard'));
+    await click(screen.getByRole('button', { name: 'Create Echo' }));
+
+    expect(
+      screen.getByText(
+        'You have reached your Echo limit. Upgrade to create more.',
+      ),
+    ).toBeInTheDocument();
+    const view = screen.getByText('Echo limit reached').parentElement;
+    expect(view?.textContent).not.toMatch(/\d/);
+  });
+
+  it('reads the code, not the message: another limit is not the Echo limit (R264.2)', async () => {
+    mocks.createEcho.mockRejectedValueOnce(
+      new ApiRequestError(429, 'RATE_LIMITED', 'Rate limit exceeded'),
+    );
+    await reachDestination();
+    await click(screen.getByText('Personal Shard'));
+    await click(screen.getByRole('button', { name: 'Create Echo' }));
+
+    expect(screen.queryByText('Echo limit reached')).not.toBeInTheDocument();
+    expect(
+      screen.getByText(appI18n.t('errors.RATE_LIMITED')),
+    ).toBeInTheDocument();
   });
 
   it('creates in the Personal shard without the notice', async () => {

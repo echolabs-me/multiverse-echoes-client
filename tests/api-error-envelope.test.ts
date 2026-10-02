@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { request, ApiRequestError } from '../src/lib/api/client.ts';
+import { translateCaughtError } from '../src/lib/translateError.ts';
 
 /**
  * Guards that EVERY non-OK response from the API is parsed as JSON
@@ -23,7 +24,11 @@ interface MockFetchOpts {
   contentType?: string;
 }
 
-function installFetch({ status, body, contentType = 'application/json' }: MockFetchOpts) {
+function installFetch({
+  status,
+  body,
+  contentType = 'application/json',
+}: MockFetchOpts) {
   const fetchMock = vi.fn().mockResolvedValue(
     new Response(body, {
       status,
@@ -152,10 +157,12 @@ describe('api/client.request — error response envelope handling', () => {
 
     expect(caught?.status).toBe(403);
     expect(caught?.code).toBe('UNKNOWN');
-    // Pin the EXACT fallback message format. A drift to e.g.
-    // "Unknown 403 response" or "fail 403 abc" would still pass a
-    // loose .toContain('403') check; this one would not.
-    expect(caught?.message).toBe('HTTP 403');
+    // The body carries no text for the user, so the message is empty and a
+    // page shows its own fallback, never "HTTP 403" (R264.5).
+    expect(caught?.message).toBe('');
+    expect(translateCaughtError(caught, 'the page fallback')).toBe(
+      'the page fallback',
+    );
   });
 
   it('never calls .text() on the response — JSON-only by contract', async () => {

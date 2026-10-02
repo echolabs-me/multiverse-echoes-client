@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { FileWarning } from 'lucide-react';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { account } from '../lib/api/endpoints.ts';
@@ -43,8 +44,8 @@ export function ReacceptanceBanner() {
 
     try {
       await account.acceptTos(currentTosVersion);
-    } catch {
-      setError(t('errors.TOS_VERSION_MISMATCH'));
+    } catch (err) {
+      setError(translateCaughtError(err, t('errors.TOS_VERSION_MISMATCH')));
       setSubmitting(false);
       return;
     }
@@ -57,8 +58,8 @@ export function ReacceptanceBanner() {
     // the same version).
     try {
       await fetchProfile();
-    } catch {
-      setError(t('errors.profileRefreshFailed'));
+    } catch (err) {
+      setError(translateCaughtError(err, t('errors.profileRefreshFailed')));
       setSubmitting(false);
       return;
     }

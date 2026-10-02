@@ -66,6 +66,7 @@
     "translationPending": "翻译中…",
     "legalDocsEnglishOnly": "此页面目前仅提供英文版本。翻译版本即将发布。",
     "legalMachineTranslationDisclaimer": "本翻译仅供参考。英文版本为具有法律效力的权威文本。",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "打开菜单",
     "closeMenu": "关闭菜单",
     "fieldRequired": "请填写此字段。",
@@ -105,7 +106,6 @@
     "verifiedTitle": "成功了!",
     "verifiedDescription": "来创建你的第一个回声吧。",
     "emailTaken": "该邮箱已被注册",
-    "displayNameTaken": "该显示名称已被使用",
     "confirmPassword": "确认密码",
     "passwordMismatch": "两次密码不一致",
     "passwordTooShort": "密码至少需要 12 个字符",
@@ -140,15 +140,18 @@
     "card3Title": "这不是游戏",
     "card3Body": "这里没有分数,没有胜负。这是一场自主的生命模拟。请以好奇心对待它。",
     "understand": "我明白了 — 开始吧",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "设置你的个人资料",
     "bio": "简介",
     "bioHint": "关于你的一些事 — 是你这个观察者,不是回声。会显示在社区个人资料中(可选,最多 500 字符)",
     "bioCallout": "这里写的是你自己,不是你的回声。其他用户会在社区的个人资料中看到它。它不会影响你的回声的思考或行为。",
     "timezone": "时区",
     "avatar": "头像",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "选择你的语言",
     "languagesComingSoon": "更多语言即将推出",
-    "languageSelectionLabel": "语言选择"
+    "languageSelectionLabel": "语言选择",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "创建你的回声",
@@ -178,8 +181,6 @@
     "birthTitle": "你的回声正在诞生…",
     "birthComplete": "你的回声已经活起来了。",
     "limitTitle": "已达回声上限",
-    "limitDesc": "你当前的方案允许 {{max}} 个回声。升级可以创建更多,或返回仪表盘。",
-    "limitDesc_plural": "你当前的方案允许 {{max}} 个回声。升级可以创建更多,或返回仪表盘。",
     "viewPlans": "查看方案"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "关注其他用户,就能在这里看到他们的回声故事。",
     "filterByEcho": "按回声筛选",
     "allEchoes": "所有回声",
-    "significance": "重要度"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "社区",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "我的反馈",
     "noFeedbackYet": "你还没有提交过任何反馈。",
-    "feedbackSubmitted": "已提交",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "危险操作区",
     "subscriptionTier": "订阅",
     "managePlan": "管理方案",
@@ -391,6 +393,8 @@
     "passwordChanged": "密码修改成功",
     "sessions": "活动会话",
     "currentSession": "当前会话",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "撤销",
     "sessionRevoked": "会话已撤销",
     "exportData": "导出我的数据",
@@ -474,7 +478,7 @@
     "noEchoes": "你的多元宇宙还是空的",
     "noEchoesDesc": "创建你的第一个回声,看一段新的人生展开。",
     "viewDetail": "查看详情",
-    "mood": "心情",
+    "moodValue": "Mood: {{mood}}",
     "tick": "脉动 {{tick}}",
     "latestDiaryEmpty": "你的回声的故事才刚刚开始。稍后再来看看。",
     "nextTick": "下次脉动还有 {{seconds}} 秒",
@@ -541,7 +545,7 @@
     "downloading": "下载中…",
     "downloadSubtitles": "下载字幕 (.srt)",
     "progress": "导出进度",
-    "formatLabel": "格式",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "文件将保存到你的下载文件夹。"
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "问问神谕…",
     "send": "发送至 Oracle",
     "thinking": "神谕正在思考…",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "清除对话",
     "rateLimit": "每分钟 {{limit}} 个问题",
     "error": "神谕无法回应,请再试一次。",
@@ -631,13 +638,15 @@
     "tabBilling": "账单",
     "feedbackQueue": "反馈队列",
     "noFeedback": "尚未提交任何反馈。",
-    "feedbackType": "类型",
-    "feedbackStatus": "状态",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "优先级",
     "feedbackMessage": "用户消息",
     "feedbackSummary": "摘要",
     "feedbackContext": "上下文",
-    "feedbackScreen": "页面",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "已知悉",
     "feedbackResolve": "已解决",
     "feedbackWontfix": "不予修复",
@@ -692,7 +701,6 @@
     "backupControl": "数据库备份",
     "triggerBackup": "触发备份",
     "analyticsLoadFailed": "加载分析数据失败",
-    "filterAll": "全部",
     "feedbackTypeBug": "缺陷",
     "feedbackTypeFeatureRequest": "功能请求",
     "feedbackTypeFrustration": "不满",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "已知悉",
     "feedbackStatusResolved": "已解决",
     "feedbackStatusWontfix": "不予修复",
-    "resolutionPrefix": "解决方案",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "版主",
     "moderators": {
       "heading": "当前版主",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "入门版",
-        "core": "核心版",
-        "creator": "创作者版",
-        "godMode": "上帝模式"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "MRR 趋势",
@@ -795,7 +803,7 @@
         "submitButton": "应用覆盖",
         "cancelButton": "取消",
         "successToast": "催款阶段覆盖已应用。",
-        "errorPrefix": "覆盖失败"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "生成快照",
@@ -837,7 +845,9 @@
     "current": "当前",
     "perMonth": "/月",
     "payWithCrypto": "用加密货币支付",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "用 XRP 支付",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "用银行卡支付",
     "cardComingSoon": "公司注册后可用",
     "manageSubscription": "管理订阅",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "点按开始对话",
     "requestingMic": "正在请求麦克风…",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "正在连接回声…",
     "speaking": "说话中…",
     "error": "连接错误",
@@ -1192,10 +1203,11 @@
     "playing": "播放中",
     "paused": "已暂停",
     "watch": "观看",
-    "generatingVideo": "正在生成视频…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "正在播放视频",
     "watchAgain": "再看一遍",
-    "videoError": "视频失败 — 点按重试"
+    "videoError": "视频失败 — 点按重试",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

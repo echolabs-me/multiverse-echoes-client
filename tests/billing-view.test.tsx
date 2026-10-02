@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -67,12 +73,14 @@ void testI18n.use(initReactI18next).init({
         'admin.billing.kpi.churnDelta': 'Churned (latest)',
         'admin.billing.kpi.newSubs': 'New (latest)',
         'admin.billing.kpi.dunningActive': 'Dunning Active',
-        'admin.billing.kpi.subtitle.churnSincePrev': '{{count}} since prior snapshot',
-        'admin.billing.kpi.subtitle.newSincePrev': '{{count}} since prior snapshot',
-        'admin.billing.tier.starter': 'Starter',
-        'admin.billing.tier.core': 'Core',
-        'admin.billing.tier.creator': 'Creator',
-        'admin.billing.tier.godMode': 'God Mode',
+        'admin.billing.kpi.subtitle.churnSincePrev':
+          '{{count}} since prior snapshot',
+        'admin.billing.kpi.subtitle.newSincePrev':
+          '{{count}} since prior snapshot',
+        'admin.billing.tier.starterSubscribers': 'Starter: {{subscribers}}',
+        'admin.billing.tier.coreSubscribers': 'Core: {{subscribers}}',
+        'admin.billing.tier.creatorSubscribers': 'Creator: {{subscribers}}',
+        'admin.billing.tier.godModeSubscribers': 'God Mode: {{subscribers}}',
         'admin.billing.charts.mrrTrend': 'MRR Trend',
         'admin.billing.charts.subscriberGrowth': 'Subscriber Growth',
         'admin.billing.charts.churnOverTime': 'Churn Over Time',
@@ -92,7 +100,8 @@ void testI18n.use(initReactI18next).init({
         'admin.billing.dunning.heading': 'Dunning Queue',
         'admin.billing.dunning.filter.phaseLabel': 'Phase',
         'admin.billing.dunning.filter.phaseAll': 'All phases',
-        'admin.billing.dunning.filter.userIdPlaceholder': 'User ID substring...',
+        'admin.billing.dunning.filter.userIdPlaceholder':
+          'User ID substring...',
         'admin.billing.dunning.filter.providerLabel': 'Provider',
         'admin.billing.dunning.filter.providerAll': 'All providers',
         'admin.billing.dunning.col.user': 'User',
@@ -122,7 +131,12 @@ const SNAP_LATEST = {
   period_end: '2026-04-27T00:00:00Z',
   mrr_usd_cents: 1234567,
   paid_subscribers_total: 245,
-  paid_subscribers_by_tier: { starter: 120, core: 80, creator: 40, god_mode: 5 },
+  paid_subscribers_by_tier: {
+    starter: 120,
+    core: 80,
+    creator: 40,
+    god_mode: 5,
+  },
   new_subscribers_count: 15,
   churned_subscribers_count: 3,
   dunning_active_count: 7,
@@ -135,7 +149,12 @@ const SNAP_PRIOR = {
   period_end: '2026-04-26T00:00:00Z',
   mrr_usd_cents: 1100000,
   paid_subscribers_total: 233,
-  paid_subscribers_by_tier: { starter: 115, core: 75, creator: 38, god_mode: 5 },
+  paid_subscribers_by_tier: {
+    starter: 115,
+    core: 75,
+    creator: 38,
+    god_mode: 5,
+  },
   new_subscribers_count: 10,
   churned_subscribers_count: 1,
   dunning_active_count: 5,
@@ -236,7 +255,9 @@ describe('BillingView', () => {
     await waitFor(() => {
       // Latest MRR cents 1234567 → $12,345.67. Appears twice (KPI card +
       // snapshot table row); we just assert at least one render.
-      expect(screen.getAllByText('$12,345.67').length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText('$12,345.67').length).toBeGreaterThanOrEqual(
+        1,
+      );
       // Latest paid_subscribers_total 245 — also appears in both KPI + table.
       expect(screen.getAllByText('245').length).toBeGreaterThanOrEqual(1);
       // Heading present.
@@ -249,9 +270,15 @@ describe('BillingView', () => {
     await selectBillingTab();
 
     await waitFor(() => {
-      expect(document.querySelector('[data-testid="chart-mrr"]')).not.toBeNull();
-      expect(document.querySelector('[data-testid="chart-subscribers"]')).not.toBeNull();
-      expect(document.querySelector('[data-testid="chart-churn"]')).not.toBeNull();
+      expect(
+        document.querySelector('[data-testid="chart-mrr"]'),
+      ).not.toBeNull();
+      expect(
+        document.querySelector('[data-testid="chart-subscribers"]'),
+      ).not.toBeNull();
+      expect(
+        document.querySelector('[data-testid="chart-churn"]'),
+      ).not.toBeNull();
     });
   });
 
@@ -340,12 +367,26 @@ describe('BillingView', () => {
     });
   });
 
+  it("shows each tier's subscribers as one key's text with its value (R284.5)", async () => {
+    renderPage();
+    await selectBillingTab();
+    await waitFor(() => {
+      expect(screen.getByText('Starter: 120')).toBeInTheDocument();
+    });
+    expect(screen.getByText('Core: 80')).toBeInTheDocument();
+    expect(screen.getByText('Creator: 40')).toBeInTheDocument();
+    // Both snapshots have five.
+    expect(screen.getAllByText('God Mode: 5')).toHaveLength(2);
+  });
+
   it('renders the load-failed error when the snapshots endpoint rejects', async () => {
     mockListRevenueSnapshots.mockRejectedValueOnce(new Error('boom'));
     renderPage();
     await selectBillingTab();
     await waitFor(() => {
-      expect(screen.getByRole('alert')).toHaveTextContent('Failed to load billing data.');
+      expect(screen.getByRole('alert')).toHaveTextContent(
+        'Failed to load billing data.',
+      );
     });
   });
 });

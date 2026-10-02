@@ -77,7 +77,10 @@ export function OnboardingWelcomePage() {
       <div
         role="status"
         className="mbe-6 flex gap-2"
-        aria-label={`Card ${currentCard + 1} of ${cards.length}`}
+        aria-label={t('onboarding.cardPosition', {
+          current: currentCard + 1,
+          total: cards.length,
+        })}
       >
         {cards.map((_, i) => (
           <div

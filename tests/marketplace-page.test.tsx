@@ -15,9 +15,9 @@ const mocks = vi.hoisted(() => ({
   purchase: vi.fn(),
   inventory: vi.fn(),
   equip: vi.fn(),
-  user: { subscription_tier: 'Starter' as string } as
-    | { subscription_tier: string }
-    | null,
+  user: { subscription_tier: 'Starter' as string } as {
+    subscription_tier: string;
+  } | null,
 }));
 
 vi.mock('../src/stores/useToastStore.ts', () => ({
@@ -225,7 +225,9 @@ describe('MarketplacePage — tier gating', () => {
       renderPage();
     });
     expect(await screen.findByText('Upgrade to unlock')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Buy' })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Buy' }),
+    ).not.toBeInTheDocument();
   });
 
   it('Starter+ user sees "Buy" button for an unowned Common item', async () => {
@@ -237,7 +239,9 @@ describe('MarketplacePage — tier gating', () => {
     await act(async () => {
       renderPage();
     });
-    expect(await screen.findByRole('button', { name: 'Buy' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('button', { name: 'Buy' }),
+    ).toBeInTheDocument();
     expect(screen.queryByText('Upgrade to unlock')).not.toBeInTheDocument();
   });
 
@@ -255,7 +259,9 @@ describe('MarketplacePage — tier gating', () => {
       renderPage();
     });
     expect(await screen.findByText('Owned')).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Buy' })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Buy' }),
+    ).not.toBeInTheDocument();
   });
 });
 
@@ -372,7 +378,9 @@ describe('MarketplacePage — inventory tab', () => {
     const equipBtn = await screen.findByRole('button', { name: 'Equip' });
     await user.click(equipBtn);
 
-    await waitFor(() => expect(mocks.equip).toHaveBeenCalledWith('inv-1', true));
+    await waitFor(() =>
+      expect(mocks.equip).toHaveBeenCalledWith('inv-1', true),
+    );
   });
 });
 
@@ -409,6 +417,8 @@ describe('MarketplacePage — equip rollback', () => {
       expect(mocks.addToast).toHaveBeenCalledWith(
         'That toggle didn’t go through.',
         'danger',
+        // Not the server's answer, so the platform's (R283.3).
+        { platformLink: true },
       ),
     );
     // Button reverts to "Equip" (was optimistically "Unequip" mid-flight).

@@ -9,10 +9,9 @@ export interface ToastOptions {
   // validation errors (file-too-large, email-taken) or business errors
   // (tier-limit-reached, permission-denied) — appending the link there reads
   // as false causation ("File too large • check status" implies the platform
-  // is at fault on pure user-input failures). Rubric: if the toast message is
-  // a generic catch-all like t('common.error') / t('common.errorGeneric') /
-  // t('errors.INTERNAL_ERROR'), it belongs to the platform category. If the
-  // message is a specific validation key, it does not.
+  // is at fault on pure user-input failures). A toast showing a caught
+  // error's text takes this from `isPlatformError` in lib/translateError.ts,
+  // and never sets it by hand (R283.3).
   platformLink?: boolean;
 }
 

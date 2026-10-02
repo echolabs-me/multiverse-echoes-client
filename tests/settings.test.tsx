@@ -5,12 +5,18 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { SettingsPage } from '../src/pages/SettingsPage.tsx';
-import { account } from '../src/lib/api/endpoints.ts';
+import { account, feedback } from '../src/lib/api/endpoints.ts';
+import { formatDate, formatDateTime } from '../src/lib/formatDate.ts';
 import { useToastStore } from '../src/stores/useToastStore.ts';
 
 vi.mock('../src/stores/useAuthStore.ts', () => ({
   useAuthStore: () => ({
-    user: { user_id: 'u1', display_name: 'Test', email: 'test@example.com', subscription_tier: 'Free' },
+    user: {
+      user_id: 'u1',
+      display_name: 'Test',
+      email: 'test@example.com',
+      subscription_tier: 'Free',
+    },
     logout: vi.fn(),
   }),
 }));
@@ -63,10 +69,21 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
     getNotificationPreferences: vi.fn().mockResolvedValue({}),
     updateNotificationPreferences: vi.fn(),
     cancelDeletion: vi.fn(),
+    discordStatus: vi
+      .fn()
+      .mockResolvedValue({ linked: false, discord_username: null }),
+  },
+  feedback: {
+    myFeedback: vi.fn().mockResolvedValue([]),
   },
 }));
 
-vi.mock('../src/lib/api/client.ts', () => ({
+// The real error class: the translator tells a server error from any
+// other by it (R264).
+vi.mock('../src/lib/api/client.ts', async (importOriginal) => ({
+  ApiRequestError: (
+    await importOriginal<typeof import('../src/lib/api/client.ts')>()
+  ).ApiRequestError,
   request: vi.fn(),
 }));
 
@@ -118,7 +135,8 @@ void testI18n.use(initReactI18next).init({
         'settings.languageNote': 'Language setting',
         'settings.apiKeyComingSoon': 'Coming soon',
         'settings.createApiKey': 'Create API Key',
-        'settings.deleteAccountWarning': 'This will permanently delete your account',
+        'settings.deleteAccountWarning':
+          'This will permanently delete your account',
         'settings.deleteAccount': 'Delete Account',
         'settings.deleteAccountConfirm': 'Type DELETE to confirm',
         'settings.cancelDeletion': 'Cancel Deletion',
@@ -146,6 +164,12 @@ void testI18n.use(initReactI18next).init({
         'common.save': 'Save',
         'common.cancel': 'Cancel',
         'common.error': 'Error',
+        // R284.5: each label and its value are one key. The test text
+        // differs from what code once wrote, so a join in code fails here.
+        'settings.feedbackSubmittedOn': 'Sent {{date}}',
+        'settings.feedbackResolutionValue': 'Resolved as: {{notes}}',
+        'settings.sessionName': 'Login {{id}}',
+        'settings.sessionLastActive': 'Seen {{date}}',
       },
     },
   },
@@ -218,7 +242,9 @@ describe('SettingsPage', () => {
     await act(async () => {
       fireEvent.click(toggle);
     });
-    expect(account.updatePrivacy).toHaveBeenCalledWith({ community_opt_out: true });
+    expect(account.updatePrivacy).toHaveBeenCalledWith({
+      community_opt_out: true,
+    });
     expect(toggle).toBeChecked();
   });
 
@@ -227,7 +253,9 @@ describe('SettingsPage', () => {
     await act(async () => {
       renderPage('/settings?tab=privacy');
     });
-    expect(screen.getByRole('checkbox', { name: 'Community opt-out' })).toBeChecked();
+    expect(
+      screen.getByRole('checkbox', { name: 'Community opt-out' }),
+    ).toBeChecked();
   });
 
   it('shows an unfinished clean-up with the toggle on, the notice and a retry', async () => {
@@ -235,9 +263,13 @@ describe('SettingsPage', () => {
     await act(async () => {
       renderPage('/settings?tab=privacy');
     });
-    expect(screen.getByRole('checkbox', { name: 'Community opt-out' })).toBeChecked();
+    expect(
+      screen.getByRole('checkbox', { name: 'Community opt-out' }),
+    ).toBeChecked();
     expect(screen.getByText(PENDING_NOTICE)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Try again' }),
+    ).toBeInTheDocument();
   });
 
   it('retries the clean-up by sending the opt-out on again, and drops the notice once it finishes', async () => {
@@ -254,9 +286,13 @@ describe('SettingsPage', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
     });
     expect(account.updatePrivacy).toHaveBeenCalledTimes(1);
-    expect(account.updatePrivacy).toHaveBeenCalledWith({ community_opt_out: true });
+    expect(account.updatePrivacy).toHaveBeenCalledWith({
+      community_opt_out: true,
+    });
     expect(screen.queryByText(PENDING_NOTICE)).not.toBeInTheDocument();
-    expect(screen.getByRole('checkbox', { name: 'Community opt-out' })).toBeChecked();
+    expect(
+      screen.getByRole('checkbox', { name: 'Community opt-out' }),
+    ).toBeChecked();
   });
 
   it('re-reads the stored settings after a failed request', async () => {
@@ -291,6 +327,52 @@ describe('SettingsPage', () => {
     expect(addToast).toHaveBeenCalledWith('Error', 'danger', {
       platformLink: true,
     });
+  });
+
+  it("shows a feedback item's date and resolution as one key's text each, with its value (R284.5)", async () => {
+    vi.mocked(feedback.myFeedback).mockResolvedValueOnce([
+      {
+        feedback_id: 'f1',
+        user_id: 'u1',
+        feedback_type: 'Bug',
+        user_message: 'The page broke.',
+        structured_summary: 'A page broke.',
+        context: { screen: 'settings', recent_events: [] },
+        status: 'Resolved',
+        priority: null,
+        github_issue_url: null,
+        resolution_notes: 'Fixed in the next build.',
+        created_at: '2026-10-01T00:00:00Z',
+        updated_at: '2026-10-02T00:00:00Z',
+      },
+    ]);
+    await act(async () => {
+      renderPage('/settings?tab=feedback');
+    });
+    expect(
+      screen.getByText(`Sent ${formatDate('2026-10-01T00:00:00Z')}`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Resolved as: Fixed in the next build.'),
+    ).toBeInTheDocument();
+  });
+
+  it("shows a session's name and last activity as one key's text each, with its value (R284.5)", async () => {
+    vi.mocked(account.getSessions).mockResolvedValueOnce([
+      {
+        session_id: 'abcdef0123456789',
+        created_at: '2026-10-01T00:00:00Z',
+        last_active: '2026-10-02T08:30:00Z',
+        current: false,
+      },
+    ]);
+    await act(async () => {
+      renderPage('/settings?tab=account');
+    });
+    expect(screen.getByText('Login abcdef01...')).toBeInTheDocument();
+    expect(
+      screen.getByText(`Seen ${formatDateTime('2026-10-02T08:30:00Z')}`),
+    ).toBeInTheDocument();
   });
 
   it('renders without crash', async () => {

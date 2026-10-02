@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Button, Card, Spinner, EmptyState } from '../components/index.ts';
 import { echoes as echoesApi, subscription } from '../lib/api/endpoints.ts';
@@ -45,7 +46,7 @@ import type {
 type LoadState =
   | { kind: 'loading' }
   | { kind: 'no-session' }
-  | { kind: 'error'; canRetry: boolean; code: string; message: string }
+  | { kind: 'error'; canRetry: boolean; message: string }
   | {
       kind: 'ready';
       session: DowngradeSessionView;
@@ -87,7 +88,6 @@ export function DowngradeConfirmPage() {
           setLoadState({
             kind: 'error',
             canRetry: true,
-            code: 'UNKNOWN_TIER',
             message: t('tiers.deletion.consent.errorGeneric'),
           });
           return;
@@ -116,12 +116,14 @@ export function DowngradeConfirmPage() {
           setLoadState({ kind: 'no-session' });
           return;
         }
-        const code = err instanceof ApiRequestError ? err.code : 'UNKNOWN';
-        const message =
-          err instanceof ApiRequestError
-            ? err.message
-            : t('tiers.deletion.consent.errorGeneric');
-        setLoadState({ kind: 'error', canRetry: true, code, message });
+        setLoadState({
+          kind: 'error',
+          canRetry: true,
+          message: translateCaughtError(
+            err,
+            t('tiers.deletion.consent.errorGeneric'),
+          ),
+        });
       }
     })();
     return () => {
@@ -183,9 +185,6 @@ export function DowngradeConfirmPage() {
               />
               <div className="flex-1">
                 <p className="text-sm text-text-primary">{loadState.message}</p>
-                <p className="mbs-1 text-xs text-text-muted">
-                  {loadState.code}
-                </p>
               </div>
               {loadState.canRetry && (
                 <button

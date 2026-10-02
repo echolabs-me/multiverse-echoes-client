@@ -66,6 +66,7 @@
     "translationPending": "Isinasalin…",
     "legalDocsEnglishOnly": "Ang pahinang ito ay available lamang sa Ingles. Ang translated na bersyon ay ilalathala sa lalong madaling panahon.",
     "legalMachineTranslationDisclaimer": "Ang pagsasalin na ito ay ibinigay para sa kaginhawaan. Ang bersyong Ingles ang siyang legal na awtoritatibong teksto.",
+    "legalLastUpdated": "Last updated: {{date}}",
     "openMenu": "Buksan ang menu",
     "closeMenu": "Isara ang menu",
     "fieldRequired": "Pakipuno ang patlang na ito.",
@@ -105,7 +106,6 @@
     "verifiedTitle": "Kasama ka na!",
     "verifiedDescription": "Gawin na natin ang iyong unang Echo.",
     "emailTaken": "Ang email na ito ay rehistrado na",
-    "displayNameTaken": "Gamit na ang display name na ito",
     "confirmPassword": "Kumpirmahin ang password",
     "passwordMismatch": "Hindi magkatugma ang mga password",
     "passwordTooShort": "Ang password ay dapat na hindi bababa sa 12 characters",
@@ -140,15 +140,18 @@
     "card3Title": "Hindi Ito Laro",
     "card3Body": "Walang mga puntos, walang nananalo. Ito ay isang autonomous life simulation. Tratuhin ito nang may kuryosidad.",
     "understand": "Naiintindihan ko — tara na",
+    "cardPosition": "Card {{current}} of {{total}}",
     "profileTitle": "I-set up ang iyong profile",
     "bio": "Bio",
     "bioHint": "Kaunting impormasyon tungkol sa iyo — ang tagamasid, hindi ang Echo. Ipapakita sa iyong community profile (opsyonal, max 500 chars)",
     "bioCallout": "Tungkol ito sa iyo, hindi sa iyong Echo. Nakikita ito ng ibang mga user sa iyong profile sa community. Wala itong epekto sa kung paano mag-isip o kumilos ang iyong mga Echo.",
     "timezone": "Sona ng oras",
     "avatar": "Avatar",
+    "selectAvatarNumbered": "Select avatar {{number}}",
     "chooseLanguageTitle": "Piliin ang iyong wika",
     "languagesComingSoon": "May mga darating pang wika sa lalong madaling panahon",
-    "languageSelectionLabel": "Pagpili ng wika"
+    "languageSelectionLabel": "Pagpili ng wika",
+    "selectLanguageNamed": "Select {{language}}"
   },
   "echo": {
     "createTitle": "Likhain ang Iyong Echo",
@@ -178,8 +181,6 @@
     "birthTitle": "Isinisilang na ang iyong Echo…",
     "birthComplete": "Buhay ang iyong Echo.",
     "limitTitle": "Naabot na ang limitasyon ng echo",
-    "limitDesc": "Pinapayagan ng iyong kasalukuyang plan ang {{max}} Echo. Mag-upgrade para makagawa pa, o bumalik sa dashboard.",
-    "limitDesc_plural": "Pinapayagan ng iyong kasalukuyang plan ang {{max}} Echoes. Mag-upgrade para makagawa pa, o bumalik sa dashboard.",
     "viewPlans": "Tingnan ang mga Plano"
   },
   "echoDetail": {
@@ -311,7 +312,7 @@
     "socialEmptyDesc": "I-follow ang ibang mga user para makita ang kanilang mga Echo story rito.",
     "filterByEcho": "I-filter gamit ang Echo",
     "allEchoes": "Lahat ng mga Alingawngaw",
-    "significance": "Kahalagahan"
+    "significanceValue": "Significance: {{significance}}"
   },
   "community": {
     "title": "Komunidad",
@@ -381,7 +382,8 @@
     "discord": "Discord",
     "myFeedback": "Ang Aking Feedback",
     "noFeedbackYet": "Wala ka pang isinumiteng feedback.",
-    "feedbackSubmitted": "Isinumite",
+    "feedbackSubmittedOn": "Submitted {{date}}",
+    "feedbackResolutionValue": "Resolution: {{notes}}",
     "dangerZone": "Delikadong Zona",
     "subscriptionTier": "Suskrisyon",
     "managePlan": "Pamahalaan ang Plano",
@@ -391,6 +393,8 @@
     "passwordChanged": "Matagumpay na nabago ang password",
     "sessions": "Mga Aktibong Sesyon",
     "currentSession": "Kasalukuyang sesyon",
+    "sessionName": "Session {{id}}",
+    "sessionLastActive": "Last active: {{date}}",
     "revokeSession": "Bawiin",
     "sessionRevoked": "Binawi ang session",
     "exportData": "I-export ang Aking Data",
@@ -474,7 +478,7 @@
     "noEchoes": "Walang laman ang iyong multiverse.",
     "noEchoesDesc": "Gumawa ng iyong unang Echo at panoorin ang pag-usbong ng isang bagong buhay.",
     "viewDetail": "Tingnan ang detalye",
-    "mood": "Mood",
+    "moodValue": "Mood: {{mood}}",
     "tick": "Tsek {{tick}}",
     "latestDiaryEmpty": "Nagsisimula pa lamang ang kuwento ng iyong Echo. Balikan itong muli sa madaling panahon.",
     "nextTick": "Susunod na tick sa {{seconds}}s",
@@ -541,7 +545,7 @@
     "downloading": "Nag-da-download...",
     "downloadSubtitles": "I-download ang mga subtitle (.srt)",
     "progress": "Pag-unlad ng pag-export",
-    "formatLabel": "Format",
+    "formatValue": "Format: {{format}}",
     "downloadHint": "Ang file ay ise-save sa iyong Downloads folder."
   },
   "conversation": {
@@ -597,6 +601,9 @@
     "inputPlaceholder": "Magtanong sa Oracle...",
     "send": "Ipadala sa Oracle",
     "thinking": "Nag-iisip ang Oracle...",
+    "queued": "The Oracle is busy guiding the multiverse right now. They’ll be with you shortly.",
+    "deepThought": "The Oracle is taking a while — they’re deep in thought. Hang tight, they’ll respond soon.",
+    "emptyAnswer": "The Oracle is deep in thought. Please try again shortly.",
     "clearHistory": "Linisin ang pag-uusap",
     "rateLimit": "{{limit}} na mga tanong bawat minuto",
     "error": "Hindi nakatugon ang Oracle. Pakisubukan muli.",
@@ -631,13 +638,15 @@
     "tabBilling": "Pagbabayad",
     "feedbackQueue": "Pila ng Feedback",
     "noFeedback": "Wala pang isinumiteng feedback.",
-    "feedbackType": "Uri",
-    "feedbackStatus": "Status",
+    "feedbackTypeAll": "Type: All",
+    "feedbackStatusAll": "Status: All",
     "feedbackPriority": "Prayoridad",
     "feedbackMessage": "Mensahe ng User",
     "feedbackSummary": "Buod",
     "feedbackContext": "Konteksto",
-    "feedbackScreen": "Screen",
+    "feedbackScreenValue": "Screen: {{screen}}",
+    "feedbackEchoValue": "Echo: {{echoId}}",
+    "feedbackGithubIssue": "GitHub Issue",
     "feedbackAcknowledge": "Kumpirmahin",
     "feedbackResolve": "Lutasin",
     "feedbackWontfix": "Hindi aayusin",
@@ -692,7 +701,6 @@
     "backupControl": "Backup ng Database",
     "triggerBackup": "Simulan ang Backup",
     "analyticsLoadFailed": "Hindi nag-load ang analytics",
-    "filterAll": "Lahat",
     "feedbackTypeBug": "Surot",
     "feedbackTypeFeatureRequest": "Kahilingan para sa Tampok",
     "feedbackTypeFrustration": "Pagkadismaya",
@@ -702,7 +710,7 @@
     "feedbackStatusAcknowledged": "Nabatid",
     "feedbackStatusResolved": "Naresolba",
     "feedbackStatusWontfix": "Hindi aayusin",
-    "resolutionPrefix": "Resolusyon",
+    "resolutionValue": "Resolution: {{notes}}",
     "tabModerators": "Mga Tagapamagitan",
     "moderators": {
       "heading": "Kasalukuyang Mga Tagapamagitan",
@@ -726,10 +734,10 @@
         }
       },
       "tier": {
-        "starter": "Starter",
-        "core": "Core",
-        "creator": "Creator",
-        "godMode": "God Mode"
+        "starterSubscribers": "Starter: {{subscribers}}",
+        "coreSubscribers": "Core: {{subscribers}}",
+        "creatorSubscribers": "Creator: {{subscribers}}",
+        "godModeSubscribers": "God Mode: {{subscribers}}"
       },
       "charts": {
         "mrrTrend": "MRR Trend",
@@ -795,7 +803,7 @@
         "submitButton": "Ilapat ang override",
         "cancelButton": "Kanselahin",
         "successToast": "Dunning phase override na-apply.",
-        "errorPrefix": "Nabigong i-override"
+        "errorDetail": "Override failed: {{detail}}"
       },
       "snapshot": {
         "triggerButton": "Mag-trigger ng snapshot",
@@ -837,7 +845,9 @@
     "current": "Kasalukuyan",
     "perMonth": "/buwan",
     "payWithCrypto": "Magbayad gamit ang Crypto",
+    "payWithCryptoAmount": "Pay with Crypto — {{amount}}",
     "payWithXRP": "Magbayad gamit ang XRP",
+    "payWithXRPAmount": "Pay with XRP — {{amount}}",
     "payWithCard": "Magbayad gamit ang Kard",
     "cardComingSoon": "Magagamit pagkatapos ng pagbubuo ng kumpanya",
     "manageSubscription": "Pamahalaan ang Subscription",
@@ -1117,6 +1127,7 @@
   "voice": {
     "tapToStart": "Pindutin para simulan ang pag-uusap",
     "requestingMic": "Hinihiling ang mikropono...",
+    "micRefused": "Microphone access was refused. Allow it in your browser's settings and try again.",
     "connecting": "Kumokonekta sa Echo...",
     "listening": "Nakikinig...",
     "thinking": "Nag-iisip...",
@@ -1192,10 +1203,11 @@
     "playing": "Nagpe-play",
     "paused": "Naka-pause",
     "watch": "Panoorin",
-    "generatingVideo": "Gumagawa ng video…",
+    "generatingVideoProgress": "Generating video… {{progress}}%",
     "playingVideo": "Nagpe-play ng video",
     "watchAgain": "Panoorin muli",
-    "videoError": "Nabigo ang video — i-tap para subukang muli"
+    "videoError": "Nabigo ang video — i-tap para subukang muli",
+    "videoErrorDetail": "Error: {{detail}}"
   },
   "activityHints": {
     "contemplative": {

@@ -1,6 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
 import { ArrowLeft, Archive, MapPin, Users } from 'lucide-react';
 import {
   Card,
@@ -95,8 +99,9 @@ export function ShardViewPage() {
       void loadData();
       void fetchEchoes();
     } catch (err: unknown) {
-      const detail = err instanceof Error ? err.message : t('common.error');
-      addToast(detail, 'danger', { platformLink: true });
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
   };
 

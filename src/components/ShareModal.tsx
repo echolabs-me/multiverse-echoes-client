@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { translateCaughtError } from '../lib/translateError.ts';
 import { Link2, Share2, Image, Check, Loader } from 'lucide-react';
 import { Button } from './Button.tsx';
 import { getComputedTokenColor } from '../lib/tokenColor.ts';
@@ -228,7 +229,7 @@ export function ShareModal({
             data-testid="share-modal-error"
             className="border-error/30 bg-error/10 text-error mbe-2 rounded-lg border px-4 py-3 text-sm"
           >
-            {t('share.errorCreating')}
+            {translateCaughtError(error, t('share.errorCreating'))}
           </div>
         )}
 
