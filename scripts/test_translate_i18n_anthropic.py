@@ -7,7 +7,7 @@ response parser the Anthropic adapter introduces and for the
 do-not-translate vocabulary loader + system-prompt injection added in
 the brand-term recovery fold-in.
 
-Cover six pure-helper concerns specific to this adapter:
+Covers these concerns specific to this adapter:
 
     1. JSON-array response parsing (happy path)
     2. Markdown-fence stripping (defensive recovery)
@@ -16,8 +16,13 @@ Cover six pure-helper concerns specific to this adapter:
     5. System prompt incorporates locale tone guidance verbatim
     6. Re-export invariant — pure helpers are the same Python objects
        as in translate-i18n.py
-    7. Do-not-translate YAML loads to expected schema (NEW)
-    8. System prompt injects do-not-translate vocabulary verbatim (NEW)
+    7. Do-not-translate YAML loads to expected schema
+    8. System prompt injects do-not-translate vocabulary verbatim
+    9. System prompt enforces source-plural-form preservation
+   10. --derive-zh-hant default-OFF gate
+   11. The word-list fixtures the brand-word check's tests share: this
+       reader's verdict on each, and agreement with the check (R266.4);
+       a repeated section is refused (R266.3)
 
 Run with:
 
@@ -442,10 +447,10 @@ def test_plural_form_preservation_in_system_prompt() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Test 9: --derive-zh-hant default-OFF gate (Backlog #3 defensive guard)
+# Test 10: --derive-zh-hant default-OFF gate (Backlog #3 defensive guard)
 # ---------------------------------------------------------------------------
 # Mirrors the gate tests in `test_translate_i18n.py` but exercises the
-# adapter-specific call site at translate-i18n-anthropic.py:712. The
+# adapter-specific call site in translate-i18n-anthropic.py's mode_translate. The
 # patch target is `adapter.convert_zh_hant` (the adapter's module-scope
 # alias of the primary's helper) rather than `translate_i18n.convert_zh_hant`,
 # so the test catches a regression in the adapter's plumbing without
@@ -522,3 +527,70 @@ def test_adapter_convert_zh_hant_runs_when_flag_on(
         f"skip-log substring leaked into flag-ON path. Got: {captured.out!r}"
     )
     assert rc == 0, f"expected clean exit, got rc={rc}"
+
+
+# ---------------------------------------------------------------------------
+# Test 11: the word-list fixtures both readers' suites share (R266.3, R266.4)
+# ---------------------------------------------------------------------------
+# client/tests/i18n-brand-words.test.ts reads the same fixtures with the
+# brand-word check. Each suite proves its own reader's verdicts, and that
+# every fixture the check accepts, this script accepts with the same words.
+FIXTURES = THIS_DIR / "fixtures" / "do-not-translate"
+VERDICTS = json.loads((FIXTURES / "verdicts.json").read_text(encoding="utf-8"))
+
+
+def _verdict(verdict: str | list[str]) -> str | set[str]:
+    """A verdict with its words as a set, so verdicts compare by words."""
+    return verdict if verdict == "refuse" else set(verdict)
+
+
+def _translation_script_reads(name: str) -> str | set[str]:
+    """What `load_do_not_translate` does with a fixture: "refuse", or the
+    set of words it reads. A bad byte raises UnicodeDecodeError, which is a
+    ValueError; any other error, such as a missing file, is not a verdict
+    and fails the test."""
+    try:
+        vocab = adapter.load_do_not_translate(FIXTURES / name)
+    except (ValueError, adapter.yaml.YAMLError):
+        return "refuse"
+    return {word for words in vocab.values() for word in words}
+
+
+def test_fixture_files_are_the_ones_verdicts_lists() -> None:
+    files = sorted(p.name for p in FIXTURES.iterdir() if p.name != "verdicts.json")
+    assert files == sorted(VERDICTS["fixtures"])
+
+
+@pytest.mark.parametrize("name", sorted(VERDICTS["fixtures"]))
+def test_translation_script_verdict_on_each_fixture(name: str) -> None:
+    fixture = VERDICTS["fixtures"][name]
+    assert _translation_script_reads(name) == _verdict(fixture["translate"]), fixture["shape"]
+
+
+def test_every_fixture_the_check_accepts_reads_the_same_words_here() -> None:
+    disagree = [
+        name
+        for name, fixture in VERDICTS["fixtures"].items()
+        if fixture["check"] != "refuse" and _translation_script_reads(name) != set(fixture["check"])
+    ]
+    assert disagree == []
+
+
+def test_real_word_list_reads_the_words_the_check_reads() -> None:
+    vocab = adapter.load_do_not_translate()
+    words = [word for entries in vocab.values() for word in entries]
+    assert len(words) == 18
+    assert set(words) == set(VERDICTS["real"])
+
+
+def test_repeated_section_is_refused_and_named(tmp_path: Path) -> None:
+    path = tmp_path / "words.yaml"
+    path.write_text(
+        'product_nouns:\n  - "Echo"\n'
+        'brand_technical_terms:\n  - "Rust"\n'
+        'shard_proper_nouns:\n  - "Nomad Australia"\n'
+        'product_nouns:\n  - "Tick"\n',
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="repeats top-level section 'product_nouns'"):
+        adapter.load_do_not_translate(path)

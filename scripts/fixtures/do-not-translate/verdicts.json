@@ -1,0 +1,234 @@
+{
+  "about": "Each fixture is a word-list file and what each reader must do with it: the check (client/scripts/i18n-brand-words.js) and the translation script (client/scripts/translate-i18n-anthropic.py). A verdict is \"refuse\", or the set of words the reader accepts the file with. The check accepts a file only when the translation script reads the same words from it (R266.2). \"real\" is the words both read from i18n-do-not-translate.yaml.",
+  "real": [
+    "Multiverse Echoes",
+    "Echoes",
+    "Echo",
+    "Shards",
+    "Shard",
+    "Tick",
+    "Diaries",
+    "Diary",
+    "FLUX.2",
+    "VoxCPM2",
+    "Gemma",
+    "MuseTalk",
+    "Rust",
+    "vLLM",
+    "Marketplace",
+    "Cyber-Tokyo 2045",
+    "Nomad Australia",
+    "Renaissance Florence"
+  ],
+  "fixtures": {
+    "02-unknown-section.yaml": {
+      "shape": "a fourth section, new_category",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "03-repeated-section.yaml": {
+      "shape": "product_nouns a second time, with one item",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "04-missing-section.yaml": {
+      "shape": "shard_proper_nouns missing",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "05-blank-word.yaml": {
+      "shape": "an item of one space, \" \"",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "06-unicode-escape.yaml": {
+      "shape": "an item \"Caf\\u00e9\", which YAML reads as Caf\u00e9",
+      "check": "refuse",
+      "translate": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia",
+        "Caf\u00e9"
+      ]
+    },
+    "07-unknown-escape.yaml": {
+      "shape": "an item \"A\\B\"",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "08-tab-indented-item.yaml": {
+      "shape": "an item indented with a tab",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "09-four-space-item.yaml": {
+      "shape": "an item indented four spaces among two-space items",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "10-one-space-item.yaml": {
+      "shape": "an item indented one space among two-space items",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "11-crlf.yaml": {
+      "shape": "CRLF line endings",
+      "check": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia"
+      ],
+      "translate": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia"
+      ]
+    },
+    "12-other-order.yaml": {
+      "shape": "the three sections in another order",
+      "check": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia"
+      ],
+      "translate": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia"
+      ]
+    },
+    "13-comment-without-space.yaml": {
+      "shape": "a comment straight after an item's closing quote, with no space",
+      "check": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia"
+      ],
+      "translate": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia"
+      ]
+    },
+    "14-tab-comment-line.yaml": {
+      "shape": "a comment line indented with a tab",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "15-line-separator-in-comment.yaml": {
+      "shape": "a comment holding U+2028, which YAML ends the line at, then an item",
+      "check": "refuse",
+      "translate": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia",
+        "Tick"
+      ]
+    },
+    "16-lone-cr-in-comment.yaml": {
+      "shape": "a comment holding a lone CR, which YAML ends the line at, then an item",
+      "check": "refuse",
+      "translate": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia",
+        "Tick"
+      ]
+    },
+    "17-next-line-in-comment.yaml": {
+      "shape": "a comment holding U+0085, which YAML ends the line at, then an item",
+      "check": "refuse",
+      "translate": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia",
+        "Tick"
+      ]
+    },
+    "18-control-character.yaml": {
+      "shape": "a comment holding U+0001, which YAML refuses",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "19-nbsp-comment-line.yaml": {
+      "shape": "a comment line indented with U+00A0",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "20-tab-before-comment.yaml": {
+      "shape": "a tab between an item's closing quote and its comment",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "21-not-utf8.yaml": {
+      "shape": "a comment holding the byte 0xFF, which is not UTF-8",
+      "check": "refuse",
+      "translate": "refuse"
+    },
+    "22-space-before-word.yaml": {
+      "shape": "an item \" Diary\", with a space before the word",
+      "check": "refuse",
+      "translate": [
+        "Echo",
+        "Shard",
+        " Diary",
+        "Rust",
+        "Nomad Australia"
+      ]
+    },
+    "23-space-after-word.yaml": {
+      "shape": "an item \"Diary \", with a space after the word",
+      "check": "refuse",
+      "translate": [
+        "Echo",
+        "Shard",
+        "Diary ",
+        "Rust",
+        "Nomad Australia"
+      ]
+    },
+    "24-nbsp-before-word.yaml": {
+      "shape": "an item \" Diary\", with U+00A0 before the word",
+      "check": "refuse",
+      "translate": [
+        "Echo",
+        "Shard",
+        " Diary",
+        "Rust",
+        "Nomad Australia"
+      ]
+    },
+    "25-tab-after-word.yaml": {
+      "shape": "an item \"Diary\\t\", with a tab after the word",
+      "check": "refuse",
+      "translate": [
+        "Echo",
+        "Shard",
+        "Diary\t",
+        "Rust",
+        "Nomad Australia"
+      ]
+    },
+    "26-repeated-word.yaml": {
+      "shape": "Echo listed in product_nouns and again in shard_proper_nouns",
+      "check": "refuse",
+      "translate": [
+        "Echo",
+        "Shard",
+        "Rust",
+        "Nomad Australia",
+        "Echo"
+      ]
+    }
+  }
+}

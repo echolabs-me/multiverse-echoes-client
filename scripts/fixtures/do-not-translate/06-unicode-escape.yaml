@@ -1,0 +1,11 @@
+# A word-list fixture (R266.4): see verdicts.json.
+product_nouns:
+  - "Echo"
+  - "Shard"
+  - "Caf\u00e9"
+
+brand_technical_terms:
+  - "Rust"
+
+shard_proper_nouns:
+  - "Nomad Australia"

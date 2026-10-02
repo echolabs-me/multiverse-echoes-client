@@ -71,7 +71,7 @@ from pathlib import Path
 from typing import Any
 
 import httpx
-import yaml  # type: ignore[import-untyped]
+import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 LOCALES_DIR = ROOT / "src" / "locales"
@@ -85,10 +85,11 @@ SIDECAR_LOCALES: list[str] = [
     "id", "de", "ja", "vi", "tr", "ko", "tl", "it", "th", "ms",
 ]
 
-# All 20 non-English locales. MUST match `NON_EN_LOCALES` in
-# `client/scripts/check-i18n-keys.js` exactly — drift would let
-# parity-passing keys ship without a translation slot. Asserted by
-# `test_translate_i18n.py::test_locale_lists_match_check_i18n_keys`.
+# All 20 non-English locales. MUST match the locale files in
+# `client/src/locales/` other than en.json, which are the locales
+# `npm run check-i18n` checks (R266.5) — drift would let parity-passing
+# keys ship without a translation slot. Asserted by
+# `test_translate_i18n.py::test_locale_list_matches_the_locale_folder`.
 NON_EN_LOCALES: list[str] = SIDECAR_LOCALES + ["zh-Hant"]
 
 TRANSLATION_URL = os.environ.get("TRANSLATION_URL", "http://localhost:8200")

@@ -2,13 +2,18 @@
 /**
  * i18n key sync checker.
  *
- * Verifies two things:
+ * Verifies four things:
  *   1. Every `t('key')` call in the source tree resolves to a key in en.json
  *      (the primary check from CC-066).
  *   2. Every non-English locale bundle has the same flattened key set as
  *      en.json — no missing keys, no extra keys (added in CC TASK 4 Part B).
+ *   3. Every leaf of en.json and of every other locale bundle is a string,
+ *      not null, a number, a boolean or a list (R272.3).
+ *   4. Every locale keeps the brand words of i18n-do-not-translate.yaml
+ *      that each English value contains, outside the shrinking baseline in
+ *      i18n-brand-baseline.json (R256, R260, see i18n-brand-words.js).
  *
- * Exit code 1 if any missing keys or parity failures are found.
+ * Exit code 1 if any of the four fails.
  * Usage: node scripts/check-i18n-keys.js
  */
 
@@ -16,21 +21,28 @@ import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import {
+  brandWordFailures,
+  compareToBaseline,
+  describeEntry,
+  nonStringLeaves,
+  readDoNotTranslate,
+} from './i18n-brand-words.js';
+import { localeCodes } from './i18n-locales.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = join(__dirname, '..');
 
-// Supported locale bundle filenames. Keep in sync with client/src/i18n.ts
-// SUPPORTED_LOCALES. en.json is the canonical source; others must match it.
-const NON_EN_LOCALES = [
-  'zh-Hans', 'zh-Hant', 'hi', 'es', 'ar', 'fr',
-  'bn', 'pt-BR', 'ru', 'ur', 'id', 'de',
-  'ja', 'vi', 'tr', 'ko', 'tl', 'it', 'th', 'ms',
-];
+// The locales to check: every .json file in src/locales/ other than en.json,
+// the source, which the others must match (R266.5). A vitest test holds the
+// folder to client/src/i18n.ts's SUPPORTED_LOCALES.
+const NON_EN_LOCALES = localeCodes(join(ROOT, 'src/locales'));
 
 // 1. Parse en.json — flatten to dot-notation keys
-const enJson = JSON.parse(readFileSync(join(ROOT, 'src/locales/en.json'), 'utf8'));
+const enJson = JSON.parse(
+  readFileSync(join(ROOT, 'src/locales/en.json'), 'utf8'),
+);
 
 function flattenKeys(obj, prefix = '') {
   const keys = new Set();
@@ -53,7 +65,11 @@ function collectFiles(dir, extensions) {
   for (const entry of readdirSync(dir)) {
     const fullPath = join(dir, entry);
     const stat = statSync(fullPath);
-    if (stat.isDirectory() && !entry.startsWith('.') && entry !== 'node_modules') {
+    if (
+      stat.isDirectory() &&
+      !entry.startsWith('.') &&
+      entry !== 'node_modules'
+    ) {
       files.push(...collectFiles(fullPath, extensions));
     } else if (extensions.some((ext) => entry.endsWith(ext))) {
       files.push(fullPath);
@@ -102,7 +118,9 @@ for (const file of srcFiles) {
 
 // 3. Report
 if (dynamicKeys.length > 0) {
-  console.log(`INFO: ${dynamicKeys.length} dynamic t() call(s) found (cannot statically check):`);
+  console.log(
+    `INFO: ${dynamicKeys.length} dynamic t() call(s) found (cannot statically check):`,
+  );
   for (const { file, line } of dynamicKeys) {
     console.log(`  ${file}:${line}`);
   }
@@ -121,16 +139,20 @@ if (missingKeys.length > 0) {
 //    key set as en.json. Enforces that translations stay in lockstep as en.json
 //    gains or loses keys. Reference: CC TASK 4 Part B Step 21.
 let parityFailed = false;
+const bundles = {};
 for (const locale of NON_EN_LOCALES) {
   const path = join(ROOT, 'src/locales', `${locale}.json`);
   let json;
   try {
     json = JSON.parse(readFileSync(path, 'utf8'));
   } catch (err) {
-    console.error(`ERROR: failed to load locale bundle '${locale}': ${err.message}`);
+    console.error(
+      `ERROR: failed to load locale bundle '${locale}': ${err.message}`,
+    );
     parityFailed = true;
     continue;
   }
+  bundles[locale] = json;
   const localeKeys = flattenKeys(json);
 
   const missing = [...availableKeys].filter((k) => !localeKeys.has(k));
@@ -150,11 +172,54 @@ for (const locale of NON_EN_LOCALES) {
 }
 
 if (parityFailed) {
-  console.error('One or more locales are out of sync with en.json. Fix before committing.');
+  console.error(
+    'One or more locales are out of sync with en.json. Fix before committing.',
+  );
+  process.exit(1);
+}
+
+// 5. Every leaf is a string (R272.3), in en.json and in every other locale,
+//    so the brand-word check below reads every value.
+let leavesFailed = false;
+for (const [locale, bundle] of [['en', enJson], ...Object.entries(bundles)]) {
+  for (const key of nonStringLeaves(bundle)) {
+    leavesFailed = true;
+    console.error(`ERROR: src/locales/${locale}.json: ${key} is not a string`);
+  }
+}
+if (leavesFailed) {
+  console.error('Every locale value must be a string. Fix before committing.');
+  process.exit(1);
+}
+
+// 6. Brand words (R256, R260): each word of i18n-do-not-translate.yaml that
+//    a locale value loses, and its English value contains, fails unless the
+//    baseline lists that locale, key and word; a baseline entry that no
+//    longer fails fails too.
+const words = readDoNotTranslate(join(__dirname, 'i18n-do-not-translate.yaml'));
+const baseline = JSON.parse(
+  readFileSync(join(__dirname, 'i18n-brand-baseline.json'), 'utf8'),
+);
+const { unlisted, fixed } = compareToBaseline(
+  brandWordFailures(words, enJson, bundles),
+  baseline,
+);
+if (unlisted.length || fixed.length) {
+  for (const entry of unlisted) {
+    console.error(
+      `ERROR: brand word translated (keep it in English): ${describeEntry(entry)}`,
+    );
+  }
+  for (const entry of fixed) {
+    console.error(
+      `ERROR: no longer fails, remove it from i18n-brand-baseline.json: ${describeEntry(entry)}`,
+    );
+  }
   process.exit(1);
 }
 
 console.log(
   `i18n key check passed. ${availableKeys.size} keys in en.json, all t() calls resolved, ` +
-    `${NON_EN_LOCALES.length} non-en locales in sync.`,
+    `${NON_EN_LOCALES.length} non-en locales in sync, every value a string, ` +
+    `brand words kept outside ${baseline.length} baseline entries.`,
 );

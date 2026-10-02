@@ -5,7 +5,7 @@ the dispatch named:
 
     1. Placeholder extraction (regex inventory)
     2. Tone YAML schema validation
-    3. Locale-code parity vs check-i18n-keys.js
+    3. Locale-code parity vs the locale folder check-i18n-keys.js reads
     4. Placeholder-mismatch detection
 
 Run with:
@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import importlib.util
 import json
-import re
 import sys
 from pathlib import Path
 from unittest.mock import MagicMock
@@ -95,37 +94,26 @@ def test_tone_yaml_validates_against_21_locale_schema() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Test 3: locale list parity vs check-i18n-keys.js
+# Test 3: locale list parity vs the locale folder check-i18n-keys.js reads
 # ---------------------------------------------------------------------------
-def test_locale_lists_match_check_i18n_keys_js() -> None:
-    """`translate-i18n.py`'s `NON_EN_LOCALES` MUST equal the same-named
-    constant in `check-i18n-keys.js`. The pre-commit + CI parity gate is
-    that JS list; if Python drifts, translation runs against a different
-    locale set than the gate enforces, and bundles would silently
-    desync."""
-    js_path = THIS_DIR / "check-i18n-keys.js"
-    js_text = js_path.read_text(encoding="utf-8")
-
-    # Match: const NON_EN_LOCALES = [ 'zh-Hans', 'zh-Hant', ... ];
-    match = re.search(
-        r"const\s+NON_EN_LOCALES\s*=\s*\[(.*?)\];",
-        js_text,
-        re.DOTALL,
+def test_locale_list_matches_the_locale_folder() -> None:
+    """`translate-i18n.py`'s `NON_EN_LOCALES` MUST equal the locale files
+    in `client/src/locales/` other than en.json, which are the locales
+    `check-i18n-keys.js` checks (R266.5). The pre-commit + CI parity gate
+    reads that folder; if Python drifts, translation runs against a
+    different locale set than the gate enforces, and bundles would
+    silently desync."""
+    folder_locales = sorted(
+        path.stem for path in translate_i18n.LOCALES_DIR.glob("*.json") if path.name != "en.json"
     )
-    assert match is not None, (
-        f"Could not locate `const NON_EN_LOCALES = [...]` in {js_path.name}. "
-        f"check-i18n-keys.js may have been refactored — update this test."
-    )
-    js_array_body = match.group(1)
-    js_locales = sorted(re.findall(r"['\"]([\w-]+)['\"]", js_array_body))
 
     py_locales = sorted(translate_i18n.NON_EN_LOCALES)
 
-    assert js_locales == py_locales, (
-        f"NON_EN_LOCALES drift between Python and JS. "
-        f"py={py_locales} js={js_locales} "
-        f"missing_in_py={set(js_locales) - set(py_locales)} "
-        f"extra_in_py={set(py_locales) - set(js_locales)}"
+    assert folder_locales == py_locales, (
+        f"NON_EN_LOCALES drift between Python and the locale folder. "
+        f"py={py_locales} folder={folder_locales} "
+        f"missing_in_py={set(folder_locales) - set(py_locales)} "
+        f"extra_in_py={set(py_locales) - set(folder_locales)}"
     )
 
 

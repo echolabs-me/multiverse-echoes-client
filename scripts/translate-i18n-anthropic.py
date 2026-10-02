@@ -65,7 +65,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-import yaml  # type: ignore[import-untyped]
+import yaml
 
 # Reuse the shared helpers from translate-i18n.py rather than
 # duplicating them. translate-i18n.py is a CLI script (hyphenated
@@ -76,11 +76,17 @@ SIBLING_PATH = THIS_DIR / "translate-i18n.py"
 
 
 def _load_sibling_module() -> Any:
+    # Reuse the instance already registered (by an earlier import of this
+    # adapter, or by test_translate_i18n.py), so the helpers re-exported here
+    # are the same objects as sys.modules["translate_i18n"]'s.
+    loaded = sys.modules.get("translate_i18n")
+    if loaded is not None:
+        return loaded
     spec = importlib.util.spec_from_file_location("translate_i18n", SIBLING_PATH)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Cannot load module spec for {SIBLING_PATH}")
     module = importlib.util.module_from_spec(spec)
-    sys.modules.setdefault("translate_i18n", module)
+    sys.modules["translate_i18n"] = module
     spec.loader.exec_module(module)
     return module
 
@@ -151,6 +157,16 @@ def load_do_not_translate(path: Path = DO_NOT_TRANSLATE_YAML) -> dict[str, list[
             f"i18n-do-not-translate.yaml must parse to a top-level dict, "
             f"got {type(data).__name__}"
         )
+    # yaml.safe_load keeps the last copy of a repeated key and says nothing,
+    # so a repeated section would drop the words of every copy before it
+    # (R266.3).
+    seen: set[str] = set()
+    for key_node, _ in yaml.compose(raw, Loader=yaml.SafeLoader).value:
+        if key_node.value in seen:
+            raise ValueError(
+                f"i18n-do-not-translate.yaml repeats top-level section '{key_node.value}'"
+            )
+        seen.add(key_node.value)
     out: dict[str, list[str]] = {}
     for section in DO_NOT_TRANSLATE_REQUIRED_SECTIONS:
         if section not in data:
