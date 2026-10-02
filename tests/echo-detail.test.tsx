@@ -5,6 +5,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { EchoDetailPage } from '../src/pages/EchoDetailPage.tsx';
+import { echoes } from '../src/lib/api/endpoints.ts';
 
 // Mutable test state — allows the existing smoke tests to keep exercising
 // the null-activeEcho short-circuit path while new loaded-state tests set a
@@ -49,16 +50,23 @@ vi.mock('../src/stores/useFeedStore.ts', () => ({
   }),
 }));
 
+// EchoDetailPage selects `addToast` and `play` from these stores, so the
+// mocks apply the selector it passes.
+const stableAddToast = vi.fn();
 vi.mock('../src/stores/useToastStore.ts', () => ({
-  useToastStore: () => ({ addToast: vi.fn() }),
+  useToastStore: (
+    select: (s: { addToast: typeof stableAddToast }) => unknown,
+  ) => select({ addToast: stableAddToast }),
 }));
 
 vi.mock('../src/stores/useSystemStore.ts', () => ({
   useSystemStore: () => ({ tickInterval: 300 }),
 }));
 
+const stablePlay = vi.fn();
 vi.mock('../src/lib/sounds.ts', () => ({
-  useSoundStore: () => ({ play: vi.fn() }),
+  useSoundStore: (select: (s: { play: typeof stablePlay }) => unknown) =>
+    select({ play: stablePlay }),
 }));
 
 vi.mock('../src/stores/index.ts', () => ({
@@ -72,6 +80,7 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
     memories: vi.fn().mockResolvedValue([]),
     diary: vi.fn().mockResolvedValue({ data: [], next_cursor: null }),
     influence: vi.fn().mockResolvedValue({ remaining: 5, daily_limit: 10 }),
+    useInfluence: vi.fn(),
   },
   // EchoDetailPage.tsx:182 calls conversations.list(echoId) in the initial-load
   // useEffect once activeEcho is populated. Mocked here so the loaded-state
@@ -420,5 +429,232 @@ describe('EchoDetailPage — the delete dialog (R254.2)', () => {
     expect(within(dialog).getByRole('alert')).toHaveTextContent(
       'Could not delete',
     );
+  });
+});
+
+describe('EchoDetailPage — the hibernate, wake and influence dialogs (R258)', () => {
+  function echo(status: 'Active' | 'Hibernated') {
+    return {
+      echo_id: 'e1',
+      name: 'Test Echo',
+      persona_text: 'A short persona.',
+      what_if_prompt: 'What if...',
+      status,
+      current_mood: 'neutral',
+      current_tick: 42,
+      current_shard_id: 'shard-1',
+      birth_hash: 'abcdef',
+      created_at: '2026-04-17T00:00:00Z',
+      avatar_url: null,
+      physical_description: null,
+      hibernated_at: null,
+    };
+  }
+
+  /** A request the test holds open, and the functions that settle it. */
+  function held() {
+    let resolve: () => void = () => undefined;
+    let reject: (reason: unknown) => void = () => undefined;
+    const promise = new Promise<void>((res, rej) => {
+      resolve = () => res();
+      reject = rej;
+    });
+    return { promise, resolve, reject };
+  }
+
+  async function click(element: HTMLElement) {
+    await act(async () => {
+      fireEvent.click(element);
+    });
+  }
+
+  beforeEach(() => {
+    HTMLDialogElement.prototype.showModal = function (this: HTMLDialogElement) {
+      this.setAttribute('open', '');
+    };
+    HTMLDialogElement.prototype.close = function (this: HTMLDialogElement) {
+      this.removeAttribute('open');
+    };
+    stableHibernateEcho.mockReset();
+    stableWakeEcho.mockReset();
+    vi.mocked(echoes.useInfluence).mockReset();
+  });
+
+  afterEach(() => {
+    mockActiveEcho = null;
+  });
+
+  describe.each([
+    ['Hibernate', 'Active', stableHibernateEcho],
+    ['Wake', 'Hibernated', stableWakeEcho],
+  ] as const)('the %s dialog', (name, status, request) => {
+    async function openDialog() {
+      mockActiveEcho = echo(status);
+      await act(async () => {
+        renderPage();
+      });
+      await click(screen.getByRole('button', { name: 'More' }));
+      await click(screen.getByRole('button', { name }));
+      return screen.getByRole('dialog', { name });
+    }
+
+    it('sends one request on a double click', async () => {
+      const work = held();
+      request.mockReturnValue(work.promise);
+      const dialog = await openDialog();
+      const confirm = within(dialog).getByRole('button', { name: 'Confirm' });
+
+      await act(async () => {
+        fireEvent.click(confirm);
+        fireEvent.click(confirm);
+      });
+      expect(request).toHaveBeenCalledTimes(1);
+
+      await act(async () => {
+        work.resolve();
+      });
+      expect(request).toHaveBeenCalledTimes(1);
+    });
+
+    it('is busy, with every control disabled, until the request settles, then closes', async () => {
+      const work = held();
+      request.mockReturnValue(work.promise);
+      const dialog = await openDialog();
+      expect(dialog).not.toHaveAttribute('aria-busy');
+
+      await click(within(dialog).getByRole('button', { name: 'Confirm' }));
+      expect(dialog).toHaveAttribute('aria-busy', 'true');
+      for (const control of ['Close', 'Cancel', 'Confirm']) {
+        expect(
+          within(dialog).getByRole('button', { name: control }),
+        ).toBeDisabled();
+      }
+
+      await act(async () => {
+        work.resolve();
+      });
+      expect(screen.queryByRole('dialog', { name })).toBeNull();
+    });
+
+    it('stays open and is no longer busy when the request fails', async () => {
+      const work = held();
+      request.mockReturnValue(work.promise);
+      const dialog = await openDialog();
+      await click(within(dialog).getByRole('button', { name: 'Confirm' }));
+
+      await act(async () => {
+        work.reject(new Error('server down'));
+      });
+      expect(screen.getByRole('dialog', { name })).toBe(dialog);
+      expect(dialog).not.toHaveAttribute('aria-busy');
+      expect(
+        within(dialog).getByRole('button', { name: 'Confirm' }),
+      ).toBeEnabled();
+    });
+  });
+
+  it('keeps naming the action it sent while the store flips the status', async () => {
+    const work = held();
+    stableHibernateEcho.mockImplementation(() => {
+      // The store flips the status before the request settles.
+      mockActiveEcho = echo('Hibernated');
+      return work.promise;
+    });
+    mockActiveEcho = echo('Active');
+    await act(async () => {
+      renderPage();
+    });
+    await click(screen.getByRole('button', { name: 'More' }));
+    await click(screen.getByRole('button', { name: 'Hibernate' }));
+    const dialog = screen.getByRole('dialog', { name: 'Hibernate' });
+
+    await click(within(dialog).getByRole('button', { name: 'Confirm' }));
+    expect(dialog).toHaveAttribute('aria-busy', 'true');
+    expect(screen.getByRole('dialog', { name: 'Hibernate' })).toBe(dialog);
+  });
+
+  describe('the influence dialog', () => {
+    async function openDialog() {
+      mockActiveEcho = echo('Active');
+      await act(async () => {
+        renderPage();
+      });
+      await click(screen.getByRole('button', { name: /^Use Influence/ }));
+      const dialog = screen.getByRole('dialog', { name: 'Use Influence' });
+      await act(async () => {
+        fireEvent.change(within(dialog).getByLabelText('Details'), {
+          target: { value: 'Visit the harbour' },
+        });
+      });
+      return dialog;
+    }
+
+    function send(dialog: HTMLElement) {
+      return within(dialog).getByRole('button', { name: 'Use Influence' });
+    }
+
+    function holdInfluence() {
+      const work = held();
+      vi.mocked(echoes.useInfluence).mockReturnValue(
+        work.promise as unknown as ReturnType<typeof echoes.useInfluence>,
+      );
+      return work;
+    }
+
+    it('sends one request on a double click', async () => {
+      const work = holdInfluence();
+      const dialog = await openDialog();
+
+      await act(async () => {
+        fireEvent.click(send(dialog));
+        fireEvent.click(send(dialog));
+      });
+      expect(echoes.useInfluence).toHaveBeenCalledTimes(1);
+
+      await act(async () => {
+        work.resolve();
+      });
+      expect(echoes.useInfluence).toHaveBeenCalledTimes(1);
+    });
+
+    it('is busy, with every control disabled, until the request settles, then closes', async () => {
+      const work = holdInfluence();
+      const dialog = await openDialog();
+      expect(dialog).not.toHaveAttribute('aria-busy');
+
+      await click(send(dialog));
+      expect(dialog).toHaveAttribute('aria-busy', 'true');
+      for (const control of ['Close', 'Cancel', 'Use Influence']) {
+        expect(
+          within(dialog).getByRole('button', { name: control }),
+        ).toBeDisabled();
+      }
+      expect(
+        within(dialog).getByRole('combobox', { name: 'Influence type' }),
+      ).toBeDisabled();
+      expect(within(dialog).getByLabelText('Details')).toBeDisabled();
+
+      await act(async () => {
+        work.resolve();
+      });
+      expect(
+        screen.queryByRole('dialog', { name: 'Use Influence' }),
+      ).toBeNull();
+    });
+
+    it('stays open and is no longer busy when the request fails', async () => {
+      const work = holdInfluence();
+      const dialog = await openDialog();
+      await click(send(dialog));
+
+      await act(async () => {
+        work.reject(new Error('server down'));
+      });
+      expect(screen.getByRole('dialog', { name: 'Use Influence' })).toBe(
+        dialog,
+      );
+      expect(dialog).not.toHaveAttribute('aria-busy');
+      expect(send(dialog)).toBeEnabled();
+    });
   });
 });

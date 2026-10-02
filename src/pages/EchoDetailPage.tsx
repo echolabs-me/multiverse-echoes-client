@@ -122,6 +122,14 @@ export function EchoDetailPage() {
   const [influenceModal, setInfluenceModal] = useState(false);
   const [influenceType, setInfluenceType] = useState('nudge');
   const [influenceDetails, setInfluenceDetails] = useState('');
+  // Each dialog's request is sent once: a click while it runs sends nothing,
+  // and the dialog is busy until it settles (R258).
+  const hibernateInFlight = useRef(false);
+  const [hibernating, setHibernating] = useState<'hibernate' | 'wake' | null>(
+    null,
+  );
+  const influenceInFlight = useRef(false);
+  const [isInfluencing, setIsInfluencing] = useState(false);
   const [exportModal, setExportModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -499,30 +507,41 @@ export function EchoDetailPage() {
   };
 
   const handleHibernateWake = async () => {
-    if (!activeEcho) return;
+    if (!activeEcho || hibernateInFlight.current) return;
+    const id = activeEcho.echo_id;
+    // Read before the store flips the status optimistically, so the busy
+    // dialog keeps naming what it is doing.
+    const action = activeEcho.status === 'Active' ? 'hibernate' : 'wake';
+    hibernateInFlight.current = true;
+    setHibernating(action);
     try {
-      if (activeEcho.status === 'Active') {
-        await hibernateEcho(activeEcho.echo_id);
+      if (action === 'hibernate') {
+        await hibernateEcho(id);
         trackEvent('echo.hibernated', { reason: 'manual' });
         addToast(t('echoDetail.hibernated'), 'success');
       } else {
-        await wakeEcho(activeEcho.echo_id);
+        await wakeEcho(id);
         trackEvent('echo.woken');
         addToast(t('echoDetail.woken'), 'success');
       }
       setHibernateModal(false);
-      await fetchEcho(activeEcho.echo_id);
+      await fetchEcho(id);
     } catch {
       addToast(t('common.error'), 'danger', { platformLink: true });
+    } finally {
+      hibernateInFlight.current = false;
+      setHibernating(null);
     }
   };
 
   const handleUseInfluence = async () => {
-    if (!activeEcho) return;
+    if (!activeEcho || influenceInFlight.current) return;
     if (!influenceDetails.trim()) {
       addToast(t('echoDetail.influenceDetailsRequired'), 'danger');
       return;
     }
+    influenceInFlight.current = true;
+    setIsInfluencing(true);
     try {
       await echoApi.useInfluence(activeEcho.echo_id, {
         influence_type: influenceType,
@@ -566,6 +585,9 @@ export function EchoDetailPage() {
       } else {
         addToast(t('common.error'), 'danger', { platformLink: true });
       }
+    } finally {
+      influenceInFlight.current = false;
+      setIsInfluencing(false);
     }
   };
 
@@ -604,6 +626,9 @@ export function EchoDetailPage() {
 
   const personaTruncated =
     activeEcho.persona_text.length > 200 && !showAllPersona;
+  // While its request runs, the dialog names the action it sent (R258).
+  const hibernateMode =
+    hibernating ?? (activeEcho.status === 'Active' ? 'hibernate' : 'wake');
 
   return (
     <div className="flex h-full">
@@ -1335,13 +1360,14 @@ export function EchoDetailPage() {
           open={hibernateModal}
           onClose={() => setHibernateModal(false)}
           title={
-            activeEcho.status === 'Active'
+            hibernateMode === 'hibernate'
               ? t('echoDetail.hibernate')
               : t('echoDetail.wake')
           }
+          busy={hibernating !== null}
         >
           <p className="mbe-4 text-sm text-text-secondary">
-            {activeEcho.status === 'Active'
+            {hibernateMode === 'hibernate'
               ? t('echoDetail.hibernateConfirm')
               : t('echoDetail.wakeConfirm')}
           </p>
@@ -1349,10 +1375,14 @@ export function EchoDetailPage() {
             <Button
               variant="secondary"
               onClick={() => setHibernateModal(false)}
+              disabled={hibernating !== null}
             >
               {t('common.cancel')}
             </Button>
-            <Button onClick={() => void handleHibernateWake()}>
+            <Button
+              onClick={() => void handleHibernateWake()}
+              disabled={hibernating !== null}
+            >
               {t('common.confirm')}
             </Button>
           </div>
@@ -1363,6 +1393,7 @@ export function EchoDetailPage() {
           open={influenceModal}
           onClose={() => setInfluenceModal(false)}
           title={t('echoDetail.useInfluence')}
+          busy={isInfluencing}
         >
           <p className="mbe-2 text-xs text-text-secondary">
             {t('echoDetail.influenceHelperText')}
@@ -1381,6 +1412,7 @@ export function EchoDetailPage() {
             <select
               value={influenceType}
               onChange={(e) => setInfluenceType(e.target.value)}
+              disabled={isInfluencing}
               className="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
               aria-label={t('echoDetail.influenceType')}
             >
@@ -1397,21 +1429,24 @@ export function EchoDetailPage() {
               value={influenceDetails}
               onChange={(e) => setInfluenceDetails(e.target.value)}
               placeholder={t('echoDetail.influenceDetailsPlaceholder')}
+              disabled={isInfluencing}
             />
           </div>
           <div className="flex justify-end gap-2">
             <Button
               variant="secondary"
               onClick={() => setInfluenceModal(false)}
+              disabled={isInfluencing}
             >
               {t('common.cancel')}
             </Button>
             <Button
               onClick={() => void handleUseInfluence()}
               disabled={
-                influence !== null &&
-                influence.remaining !== null &&
-                influence.remaining <= 0
+                isInfluencing ||
+                (influence !== null &&
+                  influence.remaining !== null &&
+                  influence.remaining <= 0)
               }
             >
               {t('echoDetail.useInfluence')}
