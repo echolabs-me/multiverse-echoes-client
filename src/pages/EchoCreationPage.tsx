@@ -5,6 +5,7 @@ import { X, Globe, Home } from 'lucide-react';
 import { Button, Input, Card, Spinner } from '../components/index.ts';
 import { EchoBirthAnimation } from '../components/EchoBirthAnimation.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
+import { useSharedShardNotice } from '../hooks/useSharedShardNotice.tsx';
 import { shards as shardsApi } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import type { Shard } from '../types/api.ts';
@@ -15,6 +16,7 @@ export function EchoCreationPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const createEcho = useEchoStore((s) => s.createEcho);
+  const sharedShardNotice = useSharedShardNotice();
 
   const [step, setStep] = useState<Step>('details');
 
@@ -61,21 +63,36 @@ export function EchoCreationPage() {
 
   async function handleCreate() {
     setCreateError(null);
-    setStep('birth');
 
     try {
       const trimmedPhysical = physicalDescription.trim();
-      const echo = await createEcho({
-        name: echoName.trim(),
-        persona_text: personaText || whatIfPrompt,
-        what_if_prompt: whatIfPrompt,
-        persona_mode: 'detailed',
-        consent_declaration: true,
-        persona_declaration: personaDeclaration,
-        shard_id: selectedShardId ?? undefined,
-        physical_description:
-          trimmedPhysical.length > 0 ? trimmedPhysical : undefined,
-      });
+      // Only Public shards are offered here, and each is shared, so the
+      // shared-shard notice comes first (R216.4). The notice is shown on the
+      // destination step.
+      const outcome = await sharedShardNotice.run(
+        selectedShardId !== null,
+        () => {
+          setStep('birth');
+          return createEcho({
+            name: echoName.trim(),
+            persona_text: personaText || whatIfPrompt,
+            what_if_prompt: whatIfPrompt,
+            persona_mode: 'detailed',
+            consent_declaration: true,
+            persona_declaration: personaDeclaration,
+            shard_id: selectedShardId ?? undefined,
+            physical_description:
+              trimmedPhysical.length > 0 ? trimmedPhysical : undefined,
+          });
+        },
+        { beforeNotice: () => setStep('destination') },
+      );
+      if (outcome.status === 'ignored') return;
+      if (outcome.status === 'cancelled') {
+        setStep('destination');
+        return;
+      }
+      const echo = outcome.value;
 
       createdEchoId.current = echo.echo_id;
       const shardName =
@@ -420,11 +437,16 @@ export function EchoCreationPage() {
             >
               {t('common.back')}
             </Button>
-            <Button onClick={() => void handleCreate()} className="flex-1">
+            <Button
+              onClick={() => void handleCreate()}
+              disabled={sharedShardNotice.running}
+              className="flex-1"
+            >
               {t('echo.createButton')}
             </Button>
           </div>
         </div>
+        {sharedShardNotice.notice}
       </div>
     );
   }

@@ -245,6 +245,11 @@ export interface PrivacySettings {
    *  their channel messages and share pages (R220.3). Sending
    *  `community_opt_out: true` again retries the removal. */
   community_opt_out_cleanup_pending: boolean;
+  /** When the user acknowledged the shared-shard notice (RFC 3339), or null.
+   *  Until it is set, the API refuses an Echo's entry into a Public or
+   *  Private shard with 409 SHARED_SHARD_NOTICE_REQUIRED (R216). A server
+   *  that predates the field omits it (R257.4). */
+  shared_shard_notice_acknowledged_at?: string | null;
   profile_visibility: _ProfileVisibility;
   /** Set on a PATCH, absent on a GET. */
   updated_at?: string;
@@ -410,8 +415,9 @@ export interface ChannelMessage {
   author_removed: boolean;
   /** The Discord name of the author of a message relayed from Discord by
    *  someone without a linked account; `author_display_name` is then this
-   *  name, and the message is shown "via Discord" (R218). */
-  external_author_name: string | null;
+   *  name, and the message is shown "via Discord" (R218). A server that
+   *  predates the field omits it (R246, R257.4). */
+  external_author_name?: string | null;
   content: string;
   message_type: _MessageType;
   created_at: string;

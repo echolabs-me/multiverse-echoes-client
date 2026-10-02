@@ -3925,6 +3925,13 @@ export type User = {
 	 */
 	community_opt_out_cleanup_pending?: boolean,
 	/**
+	 *  When the user acknowledged the shared-shard notice (R178, R216). Until
+	 *  it is set, no path puts the user's Echo into a Public or Private shard.
+	 *  Written once, by `acknowledge_shared_shard_notice`; the whole-row
+	 *  `update` never writes it (R222.9).
+	 */
+	shared_shard_notice_acknowledged_at?: string | null,
+	/**
 	 *  GDPR Art. 18 — Right to Restriction of Processing. When true, the
 	 *  tick engine MUST skip every Echo owned by this user — no diary
 	 *  generation, no relationship updates, no LLM calls. Distinct from

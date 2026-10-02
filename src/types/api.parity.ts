@@ -27,7 +27,21 @@ type Expect<T extends true> = T;
 type SameFields<A, B> = Equal<Required<A>, Required<B>>;
 
 export type ApiTypeParity = [
-  Expect<Equal<Api.ChannelMessage, Gen.MessageResponse>>,
+  // The server always sends `external_author_name`, but one that predates it
+  // omits it, so the client's type has it optional (R246, R257.4). Its type
+  // is compared, and its optionality is not.
+  Expect<
+    Equal<
+      Omit<Api.ChannelMessage, 'external_author_name'>,
+      Omit<Gen.MessageResponse, 'external_author_name'>
+    >
+  >,
+  Expect<
+    Equal<
+      Required<Pick<Api.ChannelMessage, 'external_author_name'>>,
+      Required<Pick<Gen.MessageResponse, 'external_author_name'>>
+    >
+  >,
   Expect<Equal<Api.Channel, Gen.ChannelResponse>>,
   Expect<Equal<Api.ApiKey, Gen.ApiKeyListItem>>,
   Expect<Equal<Api.UserReport, Gen.ReportResponse>>,

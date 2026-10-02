@@ -455,6 +455,10 @@ export const account = {
 
   getPrivacy: () => request<PrivacySettings>('/account/me/privacy'),
 
+  /** Records that the user has read the shared-shard notice (R216). */
+  acknowledgeSharedShardNotice: () =>
+    request<void>('/account/me/shared-shard-notice', { method: 'POST' }),
+
   updatePrivacy: (data: {
     solo_mode?: boolean;
     do_not_sell?: boolean;

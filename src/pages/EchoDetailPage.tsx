@@ -1298,6 +1298,7 @@ export function EchoDetailPage() {
             setDeleteError(null);
           }}
           title={t('echoDetail.deleteConfirmTitle', { name: activeEcho.name })}
+          busy={isDeleting}
         >
           <p className="mbe-4 text-sm text-text-secondary">
             {t('echoDetail.deleteConfirmBody')}

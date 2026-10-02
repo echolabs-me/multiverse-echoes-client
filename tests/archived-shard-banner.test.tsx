@@ -75,6 +75,7 @@ const mocks = vi.hoisted(() => {
     feedsShard: async () => ({ data: [] as unknown[], next_cursor: null }),
     channelsList: async () => [] as unknown[],
     channelsMessages: async () => [] as unknown[],
+    getPrivacy: async () => ({ shared_shard_notice_acknowledged_at: null }),
   };
 });
 
@@ -107,6 +108,9 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
     list: mocks.channelsList,
     messages: mocks.channelsMessages,
   },
+  // The page's shared-shard notice reads the acknowledgment when the page
+  // opens (R253.1).
+  account: { getPrivacy: mocks.getPrivacy },
 }));
 
 vi.mock('../src/lib/analytics.ts', () => ({

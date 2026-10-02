@@ -280,6 +280,13 @@
     "statusArchived": "আর্কাইভ",
     "statusPendingDeletion": "মুছে ফেলা মুলতুবি"
   },
+  "sharedShardNotice": {
+    "title": "Entering a shared world",
+    "body": "In shared worlds, your Echo meets other people's Echoes. They can talk, form relationships and appear in each other's diaries, and other users can see your Echo's name and what it does there. We do this to run the shared worlds you choose to join. You can stop it at any time: turn on solo mode in Settings to keep your Echoes apart from everyone else's, or block a user.",
+    "privacyLink": "Read the privacy policy",
+    "accept": "I understand",
+    "cancel": "Cancel"
+  },
   "shardBrowser": {
     "title": "শার্ডস ব্রাউজ করুন",
     "searchPlaceholder": "নাম দিয়ে শার্ড খুঁজুন...",

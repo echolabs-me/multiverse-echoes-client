@@ -14,6 +14,7 @@ import { ShardEnvironment3D } from '../components/ShardEnvironment3D.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
+import { useSharedShardNotice } from '../hooks/useSharedShardNotice.tsx';
 import {
   shards as shardApi,
   echoes as echoApi,
@@ -33,6 +34,7 @@ export function ShardViewPage() {
   const { activeShard, fetchShard } = useShardStore();
   const { echoList, fetchEchoes } = useEchoStore();
   const addToast = useToastStore((s) => s.addToast);
+  const sharedShardNotice = useSharedShardNotice();
 
   const [shardEchoes, setShardEchoes] = useState<ShardEchoSummary[]>([]);
   const [shardFeed, setShardFeed] = useState<FeedItem[]>([]);
@@ -73,7 +75,13 @@ export function ShardViewPage() {
   const handleTravel = async () => {
     if (!shardId || !selectedEchoId) return;
     try {
-      await echoApi.travel(selectedEchoId, shardId);
+      // Travel into a Public or Private shard waits on the shared-shard
+      // notice; cancelling it leaves the Echo where it is (R216.4).
+      const outcome = await sharedShardNotice.run(
+        activeShard?.shard_type !== 'Personal',
+        () => echoApi.travel(selectedEchoId, shardId),
+      );
+      if (outcome.status !== 'ran') return;
       trackEvent('echo.travel_initiated', {
         echo_id: selectedEchoId,
         destination_shard: shardId,
@@ -320,11 +328,15 @@ export function ShardViewPage() {
           <Button variant="secondary" onClick={() => setTravelModal(false)}>
             {t('common.cancel')}
           </Button>
-          <Button onClick={handleTravel} disabled={!selectedEchoId}>
+          <Button
+            onClick={handleTravel}
+            disabled={!selectedEchoId || sharedShardNotice.running}
+          >
             {t('shardView.travelHere')}
           </Button>
         </div>
       </Modal>
+      {sharedShardNotice.notice}
     </div>
   );
 }

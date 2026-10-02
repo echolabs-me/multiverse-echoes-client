@@ -137,12 +137,11 @@ function message(
 }
 
 /** `msg` as a server that predates the Discord name sends it: with no
- *  `external_author_name` key at all, which the client's type does not allow,
- *  hence the cast (R246). */
+ *  `external_author_name` key at all (R246, R257.4). */
 function withoutDiscordName(msg: ChannelMessage): ChannelMessage {
-  const copy: Partial<ChannelMessage> = { ...msg };
+  const copy = { ...msg };
   delete copy.external_author_name;
-  return copy as ChannelMessage;
+  return copy;
 }
 
 /** A removed author, then an unlinked Discord relay (both the nil author),
@@ -183,7 +182,9 @@ function mountSidebar() {
   // The sidebar lists messages only once Discord is linked.
   vi.mocked(account.discordStatus).mockResolvedValueOnce({
     linked: true,
+    discord_user_id: '1001',
     discord_username: 'tester',
+    sync_display_name: false,
   });
   return render(
     <I18nextProvider i18n={testI18n}>

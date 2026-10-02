@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, fireEvent, within } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
@@ -19,6 +19,7 @@ let mockActiveEcho: unknown = null;
 const stableFetchEcho = vi.fn();
 const stableHibernateEcho = vi.fn();
 const stableWakeEcho = vi.fn();
+const stableDeleteEcho = vi.fn();
 
 // EchoDetailPage.tsx:533 renders <MobileEchoSwitcher />, which destructures
 // echoList + fetchEchoes from useEchoStore (EchoSidebar.tsx:352). Missing
@@ -36,6 +37,7 @@ vi.mock('../src/stores/useEchoStore.ts', () => ({
     reorderEchoes: stableReorderEchoes,
     hibernateEcho: stableHibernateEcho,
     wakeEcho: stableWakeEcho,
+    deleteEcho: stableDeleteEcho,
   }),
 }));
 
@@ -139,6 +141,12 @@ void testI18n.use(initReactI18next).init({
         'echoDetail.influenceInspire': 'Inspire',
         'echoDetail.influenceDetailsLabel': 'Details',
         'echoDetail.influenceDetailsPlaceholder': 'Describe your influence',
+        'echoDetail.delete': 'Delete',
+        'echoDetail.deleteConfirmTitle': 'Delete {{name}}?',
+        'echoDetail.deleteConfirmAction': 'Delete forever',
+        'echoDetail.deleteFailed': 'Could not delete',
+        'common.more': 'More',
+        'common.close': 'Close',
         'common.back': 'Back',
         'common.cancel': 'Cancel',
         'common.save': 'Save',
@@ -332,5 +340,85 @@ describe('EchoDetailPage — hibernated Echo banner (ME-MIS-001 §5.2 Surface A)
       renderPage();
     });
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+});
+
+describe('EchoDetailPage — the delete dialog (R254.2)', () => {
+  const DIALOG = 'Delete Test Echo?';
+
+  beforeEach(() => {
+    // happy-dom has no showModal: open and close the dialog by its
+    // attribute, which is what makes it reachable by role.
+    HTMLDialogElement.prototype.showModal = function (this: HTMLDialogElement) {
+      this.setAttribute('open', '');
+    };
+    HTMLDialogElement.prototype.close = function (this: HTMLDialogElement) {
+      this.removeAttribute('open');
+    };
+    stableDeleteEcho.mockReset();
+    mockActiveEcho = {
+      echo_id: 'e1',
+      name: 'Test Echo',
+      persona_text: 'A short persona.',
+      what_if_prompt: 'What if...',
+      status: 'Active',
+      current_mood: 'neutral',
+      current_tick: 42,
+      current_shard_id: 'shard-1',
+      birth_hash: 'abcdef',
+      created_at: '2026-04-17T00:00:00Z',
+      avatar_url: null,
+      physical_description: null,
+    };
+  });
+
+  afterEach(() => {
+    mockActiveEcho = null;
+  });
+
+  it('is busy while it deletes, and Escape and the backdrop leave it open', async () => {
+    let fail: (reason: unknown) => void = () => undefined;
+    stableDeleteEcho.mockReturnValue(
+      new Promise<void>((_, reject) => {
+        fail = reject;
+      }),
+    );
+    await act(async () => {
+      renderPage();
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'More' }));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    });
+    const dialog = screen.getByRole('dialog', { name: DIALOG });
+    const close = within(dialog).getByRole('button', { name: 'Close' });
+    expect(dialog).not.toHaveAttribute('aria-busy');
+    expect(close).toBeEnabled();
+
+    await act(async () => {
+      fireEvent.click(
+        within(dialog).getByRole('button', { name: 'Delete forever' }),
+      );
+    });
+    expect(stableDeleteEcho).toHaveBeenCalledWith('e1');
+    expect(dialog).toHaveAttribute('aria-busy', 'true');
+    expect(close).toBeDisabled();
+
+    await act(async () => {
+      fireEvent(dialog, new Event('cancel', { cancelable: true }));
+      fireEvent.click(dialog);
+    });
+    expect(screen.queryByRole('dialog', { name: DIALOG })).not.toBeNull();
+
+    await act(async () => {
+      fail(new Error('server down'));
+    });
+    expect(dialog).not.toHaveAttribute('aria-busy');
+    expect(close).toBeEnabled();
+    expect(within(dialog).getByRole('alert')).toHaveTextContent(
+      'Could not delete',
+    );
   });
 });

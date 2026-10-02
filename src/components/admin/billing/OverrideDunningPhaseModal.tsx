@@ -87,6 +87,7 @@ export function OverrideDunningPhaseModal({
       open={open}
       onClose={onClose}
       title={t('admin.billing.override.title')}
+      busy={submitting}
     >
       <div
         className="space-y-4"
