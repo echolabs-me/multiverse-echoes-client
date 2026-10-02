@@ -37,10 +37,12 @@ function makeDiaryEntry(overrides: Partial<DiaryEntry> = {}): DiaryEntry {
     tick_id: 1,
     simulated_date: '2087-03-15',
     content: 'Test diary entry.',
+    content_locale: 'en',
     mood: 'neutral',
     location_name: 'Test Location',
     shard_id: 'shard-1',
     nudge_source: null,
+    image_url: null,
     created_at: new Date().toISOString(),
     ...overrides,
   };

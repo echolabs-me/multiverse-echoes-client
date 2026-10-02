@@ -67,7 +67,6 @@ function buildI18n(): I18nInstance {
     lng: 'en',
     fallbackLng: 'en',
     interpolation: { escapeValue: false },
-    showSupportNotice: false,
   });
   for (const [locale, bundle] of Object.entries(BUNDLES)) {
     instance.addResourceBundle(locale, 'translation', bundle);
@@ -474,7 +473,6 @@ describe('AdaptiveLanguageSubheader', () => {
       lng: 'en',
       fallbackLng: 'en',
       interpolation: { escapeValue: false },
-      showSupportNotice: false,
     });
     await act(async () => {
       render(

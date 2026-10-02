@@ -1,4 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  afterEach,
+  type MockInstance,
+} from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
@@ -17,16 +25,16 @@ function makeI18n(locale: 'en' | 'ar', resources: Record<string, unknown>) {
   return instance;
 }
 
-function Crash(): JSX.Element {
+function Crash(): React.JSX.Element {
   throw new Error('boom');
 }
 
-function SafeChild(): JSX.Element {
+function SafeChild(): React.JSX.Element {
   return <div>safe-child</div>;
 }
 
 describe('ErrorBoundary', () => {
-  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  let consoleErrorSpy: MockInstance<typeof console.error>;
 
   beforeEach(() => {
     // React logs caught errors to console.error in tests — silence the noise
@@ -147,7 +155,7 @@ describe('ErrorBoundary', () => {
 });
 
 describe('ErrorBoundary — Rule #30 cycle: without the wrap, default React crash resumes', () => {
-  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  let consoleErrorSpy: MockInstance<typeof console.error>;
   beforeEach(() => {
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
   });

@@ -13,10 +13,7 @@ import en from '../src/locales/en.json';
  * Pool-size assertions now read the en.json bundle directly — the
  * bundle is the source of truth for per-mood hint variety.
  */
-const activityHints = en.activityHints as Record<
-  string,
-  Record<string, string>
->;
+const activityHints = en.activityHints;
 
 const ALL_MOODS = [
   'contemplative',

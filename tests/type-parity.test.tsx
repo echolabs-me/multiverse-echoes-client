@@ -145,15 +145,16 @@ describe('AccountStatus type parity', () => {
 
 describe('EchoStatus type parity', () => {
   it('includes Quarantined and Deleted variants', () => {
+    // The server's `EchoStatus` (crates/core/src/models/enums.rs) has five
+    // variants; an Echo has no pending-deletion status.
     const statuses: EchoStatus[] = [
       'Active',
       'Hibernated',
       'Travelling',
-      'PendingDeletion',
       'Quarantined',
       'Deleted',
     ];
-    expect(statuses).toHaveLength(6);
+    expect(statuses).toHaveLength(5);
   });
 
   it('Quarantined status renders appropriate message', () => {
@@ -167,8 +168,6 @@ describe('EchoStatus type parity', () => {
           return 'Hibernated';
         case 'Travelling':
           return 'Travelling';
-        case 'PendingDeletion':
-          return 'Pending Deletion';
         case 'Quarantined':
           return 'Under Review';
         case 'Deleted':
@@ -181,60 +180,71 @@ describe('EchoStatus type parity', () => {
 });
 
 describe('WebSocket event type discrimination', () => {
-  it('discriminates WorldEventPayload variants by type field', () => {
+  it('tags each WorldEventPayload variant by its key', () => {
+    // The server serialises `WorldEventPayload` externally tagged: each
+    // event is an object with one key, the variant's name.
     const events: WorldEventPayload[] = [
-      { type: 'DiaryEntryCreated', echo_id: '1', entry_id: '2' },
-      { type: 'MoodChanged', echo_id: '1', old_mood: 'happy', new_mood: 'sad' },
-      { type: 'MessageDeleted', channel_id: 'c1', message_id: 'm1', deleted_by: 'u1' },
-      { type: 'MessageEdited', channel_id: 'c1', message_id: 'm1', author_id: 'u1' },
       {
-        type: 'GlobalEventPropagated',
-        event_id: 'e1',
-        affected_shards: ['s1', 's2'],
+        MoodChanged: {
+          echo_id: '1',
+          old_mood: 'happy',
+          new_mood: 'sad',
+          shard_id: 's1',
+        },
       },
       {
-        type: 'EchoWealthChanged',
-        echo_id: '1',
-        old_value: 100,
-        new_value: 200,
-        reason: 'trade',
+        MessageDeleted: {
+          channel_id: 'c1',
+          message_id: 'm1',
+          deleted_by: 'u1',
+        },
       },
       {
-        type: 'EchoMoved',
-        echo_id: '1',
-        shard_id: 's1',
-        from_location: 'loc1',
-        to_location: 'loc2',
-        arrival_tick: 42,
+        GlobalEventPropagated: {
+          event_id: 'e1',
+          affected_shards: ['s1', 's2'],
+        },
       },
-      { type: 'FeedItemGenerated', feed_item_id: 'f1', echo_id: 'e1', shard_id: 's1' },
-      { type: 'NotificationCreated', notification_id: 'n1' },
+      {
+        EchoWealthChanged: {
+          echo_id: '1',
+          old_value: 100,
+          new_value: 200,
+          reason: 'trade',
+        },
+      },
+      { NotificationCreated: { user_id: 'u1', notification_id: 'n1' } },
     ];
 
-    // Each event should be discriminable by type
     for (const event of events) {
-      expect(event.type).toBeTruthy();
+      expect(Object.keys(event)).toHaveLength(1);
     }
 
-    // Verify specific field access via type narrowing
-    const mood = events.find((e) => e.type === 'MoodChanged');
-    if (mood && mood.type === 'MoodChanged') {
-      expect(mood.old_mood).toBe('happy');
-      expect(mood.new_mood).toBe('sad');
-    }
+    // Field access narrows by the variant's key.
+    const mood = events.find((e) => 'MoodChanged' in e);
+    expect(mood && 'MoodChanged' in mood && mood.MoodChanged).toMatchObject({
+      old_mood: 'happy',
+      new_mood: 'sad',
+    });
 
-    const deleted = events.find((e) => e.type === 'MessageDeleted');
-    if (deleted && deleted.type === 'MessageDeleted') {
-      expect(deleted.deleted_by).toBe('u1');
-    }
+    const deleted = events.find((e) => 'MessageDeleted' in e);
+    expect(
+      deleted && 'MessageDeleted' in deleted && deleted.MessageDeleted.deleted_by,
+    ).toBe('u1');
   });
 
   it('discriminates WsEchoEvent variants by type field', () => {
     const events: WsEchoEvent[] = [
-      { type: 'DiaryEntryCreated', echo_id: '1', diary_id: '2', tick_id: 10 },
+      {
+        type: 'DiaryEntryCreated',
+        echo_id: '1',
+        diary_id: '2',
+        tick_id: 10,
+        content_locale: 'en',
+      },
       { type: 'MoodChanged', echo_id: '1', mood: 'happy', tick_id: 10 },
       { type: 'EchoMoved', echo_id: '1', from_location: 'a', to_location: 'b' },
-      { type: 'PersonalityShift', echo_id: '1', version: 3 },
+      { type: 'PersonaUpdated', echo_id: '1', version: 3 },
       { type: 'Connected', message: 'ok' },
       { type: 'Error', message: 'fail' },
     ];

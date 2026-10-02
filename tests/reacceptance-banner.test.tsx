@@ -17,7 +17,12 @@ const mocks = vi.hoisted(() => ({
   },
   currentTosVersion: null as string | null,
   fetchProfile: vi.fn(async () => undefined),
-  acceptTos: vi.fn(async () => ({
+  acceptTos: vi.fn<
+    (version: string) => Promise<{
+      tos_accepted_version: string;
+      tos_accepted_at: string;
+    }>
+  >(async () => ({
     tos_accepted_version: '2026-05-03',
     tos_accepted_at: '2026-05-03T00:00:00Z',
   })),
@@ -36,7 +41,7 @@ vi.mock('../src/stores/useAuthStore.ts', () => ({
 
 vi.mock('../src/lib/api/endpoints.ts', () => ({
   account: {
-    acceptTos: (...args: unknown[]) => mocks.acceptTos(...(args as [string])),
+    acceptTos: (version: string) => mocks.acceptTos(version),
   },
 }));
 
