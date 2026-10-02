@@ -21,9 +21,6 @@ beforeEach(() => {
 describe('Analytics Event Instrumentation — ME-UXF-001 §16', () => {
   describe('§16.1 Account & Auth events', () => {
     it('account.registered event exists in RegisterPage', async () => {
-      const mod = await import('../src/pages/RegisterPage.tsx');
-      expect(mod).toBeDefined();
-      // Verify trackEvent import is used in the module
       const source = await import('../src/pages/RegisterPage.tsx?raw');
       expect(source.default).toContain("trackEvent('account.registered'");
     });
