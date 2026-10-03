@@ -381,6 +381,38 @@ describe('every locale value is a string (R272.3)', () => {
     });
   }
 
+  for (const [kind, value] of [
+    ['the empty string', ''],
+    ['white space only', ' \t\n'],
+  ] as const) {
+    it(`fails on ${kind} in a locale file, naming the file and the key (R301)`, () => {
+      const run = runCheck({
+        en: { a: { k: 'Buy' }, j: 'Your Echo' },
+        xx: { a: { k: value }, j: 'Votre Echo' },
+      });
+      expect(run.output).toContain('ERROR: src/locales/xx.json: a.k has no text');
+      expect(run.status).toBe(1);
+    });
+
+    it(`fails on ${kind} in en.json, naming the file and the key (R301)`, () => {
+      const run = runCheck({
+        en: { a: { k: value }, j: 'Your Echo' },
+        xx: { a: { k: 'Acheter' }, j: 'Votre Echo' },
+      });
+      expect(run.output).toContain('ERROR: src/locales/en.json: a.k has no text');
+      expect(run.status).toBe(1);
+    });
+  }
+
+  it('passes when every value is a string with text in it (R301)', () => {
+    const run = runCheck({
+      en: { a: { k: 'Buy' }, j: 'Your Echo' },
+      xx: { a: { k: 'Acheter' }, j: 'Votre Echo' },
+    });
+    expect(run.output).not.toContain('has no text');
+    expect(run.status).toBe(0);
+  });
+
   it('fails on a value in en.json that is not a string, naming the file and the key', () => {
     const run = runCheck({
       en: { a: { k: ['Your Echo'] } },

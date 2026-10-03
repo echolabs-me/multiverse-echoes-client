@@ -1723,38 +1723,38 @@
     "foundingEcho": "Founding Echo"
   },
   "marketplace": {
-    "pageTitle": "",
+    "pageTitle": "Marketplace",
     "tabs": {
-      "dashboardTheme": "",
-      "portraitStyle": "",
-      "exportTemplate": "",
-      "shardAesthetic": "",
-      "scenarioPack": "",
-      "seasonalCosmetic": "",
-      "soundPack": "",
-      "myInventory": ""
+      "dashboardTheme": "Dashboard Themes",
+      "portraitStyle": "Portrait Styles",
+      "exportTemplate": "Export Templates",
+      "shardAesthetic": "Shard Aesthetics",
+      "scenarioPack": "Scenario Packs",
+      "seasonalCosmetic": "Seasonal",
+      "soundPack": "Sound Packs",
+      "myInventory": "My Inventory"
     },
-    "preview": "",
-    "buy": "",
-    "owned": "",
-    "upgradeToUnlock": "",
-    "tierRequired": "",
-    "priceCoins": "",
-    "limitedTimeRemaining": "",
-    "equip": "",
-    "unequip": "",
-    "equipped": "",
-    "notEquipped": "",
+    "preview": "Preview",
+    "buy": "Buy",
+    "owned": "Owned",
+    "upgradeToUnlock": "Upgrade to unlock",
+    "tierRequired": "Tier required: {{tier}}",
+    "priceCoins": "{{count}} coins",
+    "limitedTimeRemaining": "Ends in {{duration}}",
+    "equip": "Equip",
+    "unequip": "Unequip",
+    "equipped": "Equipped",
+    "notEquipped": "Not equipped",
     "rarity": {
-      "common": "",
-      "rare": "",
-      "epic": "",
-      "legendary": ""
+      "common": "Common",
+      "rare": "Rare",
+      "epic": "Epic",
+      "legendary": "Legendary"
     },
-    "empty": "",
-    "emptyInventory": "",
-    "loadError": "",
-    "equipError": ""
+    "empty": "No items in this category yet.",
+    "emptyInventory": "Your collection is empty. Browse the marketplace to personalise your experience.",
+    "loadError": "Couldn’t load the marketplace. Please try again.",
+    "equipError": "That toggle didn’t go through. Please try again."
   },
   "adminShare": {
     "tokens": {

@@ -175,6 +175,19 @@ export function nonStringLeaves(bundle) {
     .map(([key]) => key);
 }
 
+/**
+ * The keys of a bundle whose leaf is a string with no text in it: the empty
+ * string, or white space only (R301). A blank value shows the reader nothing,
+ * because i18next returns an empty string as it is and never falls back.
+ * @param {Record<string, unknown>} bundle
+ * @returns {string[]}
+ */
+export function blankLeaves(bundle) {
+  return [...flattenLeaves(bundle)]
+    .filter(([, value]) => typeof value === 'string' && value.trim() === '')
+    .map(([key]) => key);
+}
+
 /** Whether `text` contains `word` as a whole word: not inside a longer one.
  * @param {string} text
  * @param {string} word */

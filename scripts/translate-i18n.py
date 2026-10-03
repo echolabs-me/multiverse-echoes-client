@@ -373,9 +373,10 @@ def set_at_path(obj: Any, path: list, value: Any) -> None:
 
 
 def needs_translation(en_text: str, target_text: str | None) -> bool:
-    """Idempotent-fill predicate: target needs a translation when it is missing
-    or still carries the English source verbatim."""
-    return target_text is None or target_text == en_text
+    """Idempotent-fill predicate: target needs a translation when it is missing,
+    has no text in it (empty or white space only, R301.3), or still carries the
+    English source verbatim."""
+    return target_text is None or not target_text.strip() or target_text == en_text
 
 
 # ---------------------------------------------------------------------------

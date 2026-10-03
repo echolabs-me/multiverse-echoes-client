@@ -2,18 +2,19 @@
 /**
  * i18n key sync checker.
  *
- * Verifies four things:
+ * Verifies five things:
  *   1. Every `t('key')` call in the source tree resolves to a key in en.json
  *      (the primary check from CC-066).
  *   2. Every non-English locale bundle has the same flattened key set as
  *      en.json — no missing keys, no extra keys (added in CC TASK 4 Part B).
  *   3. Every leaf of en.json and of every other locale bundle is a string,
  *      not null, a number, a boolean or a list (R272.3).
- *   4. Every locale keeps the brand words of i18n-do-not-translate.yaml
+ *   4. No such string is blank: empty, or white space only (R301).
+ *   5. Every locale keeps the brand words of i18n-do-not-translate.yaml
  *      that each English value contains, outside the shrinking baseline in
  *      i18n-brand-baseline.json (R256, R260, see i18n-brand-words.js).
  *
- * Exit code 1 if any of the four fails.
+ * Exit code 1 if any of the five fails.
  * Usage: node scripts/check-i18n-keys.js
  */
 
@@ -22,6 +23,7 @@ import { join, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import {
+  blankLeaves,
   brandWordFailures,
   compareToBaseline,
   describeEntry,
@@ -178,17 +180,24 @@ if (parityFailed) {
   process.exit(1);
 }
 
-// 5. Every leaf is a string (R272.3), in en.json and in every other locale,
-//    so the brand-word check below reads every value.
+// 5. Every leaf is a string (R272.3) with text in it (R301), in en.json and
+//    in every other locale, so the brand-word check below reads every value
+//    and no reader is shown a blank.
 let leavesFailed = false;
 for (const [locale, bundle] of [['en', enJson], ...Object.entries(bundles)]) {
   for (const key of nonStringLeaves(bundle)) {
     leavesFailed = true;
     console.error(`ERROR: src/locales/${locale}.json: ${key} is not a string`);
   }
+  for (const key of blankLeaves(bundle)) {
+    leavesFailed = true;
+    console.error(`ERROR: src/locales/${locale}.json: ${key} has no text`);
+  }
 }
 if (leavesFailed) {
-  console.error('Every locale value must be a string. Fix before committing.');
+  console.error(
+    'Every locale value must be a string with text in it. Fix before committing.',
+  );
   process.exit(1);
 }
 
@@ -220,6 +229,6 @@ if (unlisted.length || fixed.length) {
 
 console.log(
   `i18n key check passed. ${availableKeys.size} keys in en.json, all t() calls resolved, ` +
-    `${NON_EN_LOCALES.length} non-en locales in sync, every value a string, ` +
+    `${NON_EN_LOCALES.length} non-en locales in sync, every value a string with text, ` +
     `brand words kept outside ${baseline.length} baseline entries.`,
 );

@@ -157,6 +157,13 @@ def test_needs_translation_predicate() -> None:
     assert translate_i18n.needs_translation("Hello", "Bonjour") is False
 
 
+@pytest.mark.parametrize("blank", ["", " \t\n"], ids=["empty", "white space only"])
+def test_needs_translation_takes_a_value_with_no_text(blank: str) -> None:
+    # A blank is never skipped by either route: the Anthropic route's
+    # needs_translation is this one (R301.3).
+    assert translate_i18n.needs_translation("Buy", blank) is True
+
+
 # ---------------------------------------------------------------------------
 # Bonus: collect_pairs walks nested structure correctly
 # ---------------------------------------------------------------------------
