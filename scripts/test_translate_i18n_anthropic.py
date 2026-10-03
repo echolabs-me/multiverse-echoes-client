@@ -23,6 +23,8 @@ Covers these concerns specific to this adapter:
    11. The word-list fixtures the brand-word check's tests share: this
        reader's verdict on each, and agreement with the check (R266.4);
        a repeated section is refused (R266.3)
+   12. The checks and retries translate-i18n.py makes, through its own
+       function (R297.3), and the brand-word check in --test
 
 Run with:
 
@@ -34,9 +36,12 @@ import importlib.util
 import json
 import sys
 from pathlib import Path
+from types import SimpleNamespace
+from typing import Any
 from unittest.mock import MagicMock
 
 import pytest
+import yaml
 
 THIS_DIR = Path(__file__).resolve().parent
 ADAPTER_PATH = THIS_DIR / "translate-i18n-anthropic.py"
@@ -551,7 +556,7 @@ def _translation_script_reads(name: str) -> str | set[str]:
     and fails the test."""
     try:
         vocab = adapter.load_do_not_translate(FIXTURES / name)
-    except (ValueError, adapter.yaml.YAMLError):
+    except (ValueError, yaml.YAMLError):
         return "refuse"
     return {word for words in vocab.values() for word in words}
 
@@ -594,3 +599,126 @@ def test_repeated_section_is_refused_and_named(tmp_path: Path) -> None:
     )
     with pytest.raises(ValueError, match="repeats top-level section 'product_nouns'"):
         adapter.load_do_not_translate(path)
+
+
+# ---------------------------------------------------------------------------
+# Test 12: the checks and retries, through translate-i18n.py's function (R297.3)
+# ---------------------------------------------------------------------------
+class _StandInClaude:
+    """A local stand-in for the Anthropic client. Each `messages.create`
+    answers with the next reply, and a reply that is an exception is raised,
+    so no request leaves the machine (SR51)."""
+
+    def __init__(self, *replies: str | Exception) -> None:
+        self.replies = list(replies)
+        self.calls = 0
+        self.messages = self
+
+    def create(self, **_kwargs: Any) -> Any:
+        self.calls += 1
+        reply = self.replies.pop(0)
+        if isinstance(reply, Exception):
+            raise reply
+        return SimpleNamespace(content=[SimpleNamespace(text=reply)])
+
+
+def _seed_adapter_locale(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, en: dict[str, str]) -> Path:
+    """An en.json and an es.json holding the English placeholders. The
+    adapter reads them through its own paths and writes through
+    translate-i18n.py's `write_locale`, so both modules point here; the
+    backoff between retries is stubbed."""
+    (tmp_path / "en.json").write_text(json.dumps(en), encoding="utf-8")
+    es_path = tmp_path / "es.json"
+    es_path.write_text(json.dumps(en), encoding="utf-8")
+    sibling = sys.modules["translate_i18n"]
+    for module in (adapter, sibling):
+        monkeypatch.setattr(module, "LOCALES_DIR", tmp_path)
+        monkeypatch.setattr(module, "EN_LOCALE", tmp_path / "en.json")
+    monkeypatch.setattr(sibling.time, "sleep", lambda _s: None)
+    return es_path
+
+
+ADAPTER_TERMS = ["Multiverse Echoes", "Echoes", "Echo"]
+
+
+def _adapter_translate(client: _StandInClaude) -> int:
+    return adapter.mode_translate(
+        client=client,
+        tones=adapter.load_tone_yaml(),
+        do_not_translate=ADAPTER_TERMS,
+        force=False,
+        target_locales=["es"],
+    )
+
+
+def test_adapter_a_retry_that_raises_is_followed_by_the_next_retry(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    es_path = _seed_adapter_locale(tmp_path, monkeypatch, {"meet": "Meet your Echo"})
+    client = _StandInClaude(json.dumps(["Conoce a tu Eco"]), RuntimeError("overloaded"), "Conoce a tu Echo")
+
+    rc = _adapter_translate(client)
+
+    assert json.loads(es_path.read_text(encoding="utf-8")) == {"meet": "Conoce a tu Echo"}
+    assert rc == 0
+    assert client.calls == 3
+
+
+def test_adapter_three_raised_retries_leave_the_english_and_fail_the_run(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    es_path = _seed_adapter_locale(tmp_path, monkeypatch, {"meet": "Meet your Echo"})
+    client = _StandInClaude(
+        json.dumps(["Conoce a tu Eco"]),
+        RuntimeError("overloaded 1"),
+        RuntimeError("overloaded 2"),
+        RuntimeError("overloaded 3"),
+    )
+
+    rc = _adapter_translate(client)
+
+    assert json.loads(es_path.read_text(encoding="utf-8")) == {"meet": "Meet your Echo"}
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert (
+        "  es meet: brand words lost: Echo, after 3 retries; "
+        "last error: retry 3/3 raised RuntimeError: overloaded 3\n"
+    ) in err
+    assert client.calls == 4
+
+
+def test_adapter_placeholders_that_do_not_match_after_the_retries_leave_the_english_and_fail_the_run(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    es_path = _seed_adapter_locale(tmp_path, monkeypatch, {"hi": "Hello {name}", "plain": "Settings"})
+    client = _StandInClaude(json.dumps(["Hola", "Ajustes"]), "Hola", "Hola", "Hola")
+
+    rc = _adapter_translate(client)
+
+    es = json.loads(es_path.read_text(encoding="utf-8"))
+    assert es == {"hi": "Hello {name}", "plain": "Ajustes"}
+    assert rc == 2
+    assert "  es hi: placeholders expected=['{name}'] actual=[], after 3 retries\n" in capsys.readouterr().err
+    assert client.calls == 4
+
+
+def test_adapter_test_mode_fails_a_translation_that_loses_a_brand_word(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    # --test checks the brand words as translate-i18n.py's --test does (R256.2).
+    kept_placeholders = [
+        "Hola {name}, bienvenido a Multiverse Ecos.",
+        "<strong>Importante:</strong> revisa tu configuración.",
+        "Creaste %d Ecos hoy.",
+    ]
+    client = _StandInClaude(*(kept_placeholders * len(adapter.SIDECAR_LOCALES)))
+
+    rc = adapter.mode_test(client, adapter.load_tone_yaml(), ADAPTER_TERMS)
+
+    assert rc == 2
+    assert "es [named-placeholder]: brand words lost ['Multiverse Echoes', 'Echoes']" in capsys.readouterr().err

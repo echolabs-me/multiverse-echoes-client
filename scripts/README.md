@@ -88,7 +88,7 @@ Exit codes:
 | --- | --- |
 | 0 | All requested (locale, key) pairs translated or already filled |
 | 1 | Sidecar unreachable at startup (tunnel hint printed) |
-| 2 | One or more (locale, key) pairs failed; see stderr |
+| 2 | One or more (locale, key) pairs failed, or a value failed a check after its retries and kept its English; see stderr |
 
 ### 5. Close the tunnel
 

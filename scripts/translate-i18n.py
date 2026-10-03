@@ -10,9 +10,20 @@ to `client/src/locales/{locale}.json`.
 
 Preserves the nested object structure of `en.json` and the placeholder
 inventory of every translatable string (`{name}` named placeholders,
-`<Tag>` JSX tags, `%s` / `%d` printf tokens). Translation results that
-fail placeholder-count parity are retried up to 3 times with exponential
-backoff before being logged and skipped.
+`<Tag>` JSX tags, `%s` / `%d` printf tokens).
+
+Keeps the brand words (R256). Each request carries the terms of
+`i18n-do-not-translate.yaml` that its English value contains, and the
+sidecar tells the model to keep them unchanged.
+
+Every translation passes two checks: its placeholders match the English
+value's, and it keeps every brand word the English value contains. One
+that fails either is retried up to 3 times with exponential backoff, and
+a retry that raises counts as one of the 3. A value that still fails a
+check after its retries stays as the English placeholder, is named on
+stderr with what failed and the last error a retry raised, and makes the
+exit code 2 (R297). `translate-i18n-anthropic.py` goes through the same
+check.
 
 zh-Hant is NOT translated by the sidecar directly; it is derived from
 the zh-Hans output via OpenCC s2hk in a second pass after zh-Hans
@@ -57,7 +68,8 @@ Exit codes:
 
     0  all (locale, key) pairs translated (or already filled)
     1  sidecar unreachable at startup
-    2  one or more (locale, key) pairs failed (details printed)
+    2  one or more (locale, key) pairs failed, or failed a check that
+       retries could not pass (details printed)
 """
 from __future__ import annotations
 
@@ -67,6 +79,7 @@ import os
 import re
 import sys
 import time
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -213,6 +226,117 @@ def load_tone_yaml(path: Path = TONE_YAML) -> dict[str, dict[str, str]]:
 
 
 # ---------------------------------------------------------------------------
+# Do-not-translate vocabulary loading + flattening
+# ---------------------------------------------------------------------------
+DO_NOT_TRANSLATE_YAML = Path(__file__).resolve().parent / "i18n-do-not-translate.yaml"
+
+DO_NOT_TRANSLATE_REQUIRED_SECTIONS = (
+    "product_nouns",
+    "brand_technical_terms",
+    "shard_proper_nouns",
+)
+
+
+def load_do_not_translate(path: Path = DO_NOT_TRANSLATE_YAML) -> dict[str, list[str]]:
+    """Read i18n-do-not-translate.yaml. Schema-validates the three
+    required sections and confirms every entry is a non-empty string.
+
+    Mirrors `load_tone_yaml`'s startup-validate-fail-fast pattern.
+    A malformed YAML or missing section is caught at script start, not
+    silently ignored — the consequence of a missing entry is a brand
+    term getting translated, which is the regression class this
+    config exists to prevent.
+    """
+    raw = path.read_text(encoding="utf-8")
+    data = yaml.safe_load(raw)
+    if not isinstance(data, dict):
+        raise ValueError(
+            f"i18n-do-not-translate.yaml must parse to a top-level dict, "
+            f"got {type(data).__name__}"
+        )
+    # yaml.safe_load keeps the last copy of a repeated key and says nothing,
+    # so a repeated section would drop the words of every copy before it
+    # (R266.3).
+    seen: set[str] = set()
+    for key_node, _ in yaml.compose(raw, Loader=yaml.SafeLoader).value:
+        if key_node.value in seen:
+            raise ValueError(
+                f"i18n-do-not-translate.yaml repeats top-level section '{key_node.value}'"
+            )
+        seen.add(key_node.value)
+    out: dict[str, list[str]] = {}
+    for section in DO_NOT_TRANSLATE_REQUIRED_SECTIONS:
+        if section not in data:
+            raise ValueError(
+                f"i18n-do-not-translate.yaml missing required section '{section}'"
+            )
+        entries = data[section]
+        if not isinstance(entries, list):
+            raise ValueError(
+                f"i18n-do-not-translate.yaml section '{section}' must be a list, "
+                f"got {type(entries).__name__}"
+            )
+        for i, entry in enumerate(entries):
+            if not isinstance(entry, str) or not entry.strip():
+                raise ValueError(
+                    f"i18n-do-not-translate.yaml section '{section}' entry [{i}] "
+                    f"must be a non-empty string, got {entry!r}"
+                )
+        out[section] = list(entries)
+    # Reject extra top-level keys to catch typos like 'shard_propernouns'.
+    extra = set(data.keys()) - set(DO_NOT_TRANSLATE_REQUIRED_SECTIONS)
+    if extra:
+        raise ValueError(
+            f"i18n-do-not-translate.yaml has unexpected top-level sections: "
+            f"{sorted(extra)}. Expected only: "
+            f"{list(DO_NOT_TRANSLATE_REQUIRED_SECTIONS)}"
+        )
+    return out
+
+
+def flatten_do_not_translate(vocab: dict[str, list[str]]) -> list[str]:
+    """Flatten the three vocabulary sections into a single list,
+    preserving order: product_nouns first (most-frequent), then
+    brand_technical_terms, then shard_proper_nouns.
+
+    Order matters for the system prompt — listing 'Multiverse Echoes'
+    before 'Echoes' before 'Echo' (which is the YAML order) helps the
+    model match longest-first when scanning candidate translations,
+    so 'Multiverse Echoes' isn't accidentally split mid-token."""
+    flat: list[str] = []
+    for section in DO_NOT_TRANSLATE_REQUIRED_SECTIONS:
+        flat.extend(vocab[section])
+    return flat
+
+
+# ---------------------------------------------------------------------------
+# Brand words kept (R256.2)
+# ---------------------------------------------------------------------------
+def contains_word(text: str, word: str) -> bool:
+    """Whether `text` contains `word` as a whole word, not inside a longer one.
+
+    The same rule as `containsWord` in `i18n-brand-words.js`, which
+    `npm run check-i18n` applies: `[^\\W_]` is a letter or a number, as
+    `[\\p{L}\\p{N}]` is there.
+    """
+    return re.search(rf"(?<![^\W_]){re.escape(word)}(?![^\W_])", text) is not None
+
+
+def terms_in(text: str, terms: list[str]) -> list[str]:
+    """The terms `text` contains as whole words: the ones a request carries."""
+    return [term for term in terms if contains_word(text, term)]
+
+
+def lost_terms(source: str, translated: str, terms: list[str]) -> list[str]:
+    """The terms `source` contains that `translated` does not keep unchanged.
+
+    A kept term need only appear in the translation, as `check-i18n`'s
+    brand-word check reads it.
+    """
+    return [term for term in terms_in(source, terms) if term not in translated]
+
+
+# ---------------------------------------------------------------------------
 # JSON tree walking
 # ---------------------------------------------------------------------------
 def collect_pairs(
@@ -260,9 +384,14 @@ def needs_translation(en_text: str, target_text: str | None) -> bool:
 def translate_batch(
     items: list[str],
     target_locale: str,
+    terms: list[str],
     content_type: str = CONTENT_TYPE,
 ) -> list[str]:
-    """Call /translate/batch with `items`, return list of translated strings."""
+    """Call /translate/batch with `items`, return list of translated strings.
+
+    Each item carries the terms its text contains, for the sidecar to keep
+    unchanged (R256.1).
+    """
     payload = {
         "items": [
             {
@@ -270,6 +399,7 @@ def translate_batch(
                 "source_locale": "en",
                 "target_locale": target_locale,
                 "content_type": content_type,
+                "keep_terms": terms_in(t, terms),
             }
             for t in items
         ]
@@ -281,13 +411,22 @@ def translate_batch(
     return [item["translated_text"] for item in data["results"]]
 
 
-def translate_single(text: str, target_locale: str, content_type: str = CONTENT_TYPE) -> str:
-    """Single-string translate via /translate. Used during placeholder retries."""
+def translate_single(
+    text: str,
+    target_locale: str,
+    terms: list[str],
+    content_type: str = CONTENT_TYPE,
+) -> str:
+    """Single-string translate via /translate. Used during retries.
+
+    The request carries the terms `text` contains (R256.1).
+    """
     payload = {
         "text": text,
         "source_locale": "en",
         "target_locale": target_locale,
         "content_type": content_type,
+        "keep_terms": terms_in(text, terms),
     }
     with httpx.Client(timeout=BATCH_TIMEOUT) as client:
         r = client.post(f"{TRANSLATION_URL}/translate", json=payload)
@@ -313,47 +452,101 @@ def health_probe(url: str = TRANSLATION_URL) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Placeholder-aware translation with retry
+# Checked translation with retry: placeholders and brand words (R256.2, R297)
 # ---------------------------------------------------------------------------
-def translate_with_placeholder_check(
+RETRIES = 3
+
+
+def check_failures(source: str, translated: str, terms: list[str]) -> list[str]:
+    """What `translated` fails of the two checks, in words: its placeholders
+    against `source`'s, and the terms of `terms` that `source` contains and
+    `translated` loses. Empty when it passes both."""
+    failed: list[str] = []
+    if not placeholders_match(source, translated):
+        failed.append(
+            f"placeholders expected={extract_placeholders(source)} "
+            f"actual={extract_placeholders(translated)}"
+        )
+    lost = lost_terms(source, translated, terms)
+    if lost:
+        failed.append(f"brand words lost: {', '.join(lost)}")
+    return failed
+
+
+def translate_with_checks(
     text: str,
-    target_locale: str,
-    initial_translated: str,
+    candidate: str,
+    terms: list[str],
+    translate_one: Callable[[str], str],
 ) -> tuple[str, str | None]:
-    """Verify `initial_translated` has the same placeholder multiset as `text`.
+    """Check `candidate`, the translation of `text`, and retry until one passes.
 
-    On mismatch, retry up to 3 single-string calls with exponential
-    backoff (1s, 2s, 4s). Returns `(final_translated, error_message)`
-    where `error_message` is None on success, populated on exhaustion.
-    The returned string is always a candidate translation (for caller
-    use even on failure-with-best-effort).
+    A candidate that fails a check (`check_failures`) is retried up to
+    `RETRIES` times through `translate_one`, with exponential backoff
+    (1s, 2s, 4s). A retry that raises counts as one of them, and the next
+    one runs (R297.1).
+
+    Returns `(translation, None)` for the first candidate that passes both
+    checks. When none does, returns `(text, failure)`: the English value,
+    which the caller keeps (R297.2), and a line saying what the last
+    candidate failed, how many retries ran, and the last error a retry
+    raised.
     """
-    if placeholders_match(text, initial_translated):
-        return (initial_translated, None)
+    failed = check_failures(text, candidate, terms)
+    if not failed:
+        return (candidate, None)
 
-    expected = extract_placeholders(text)
-    last_attempt = initial_translated
-    last_actual = extract_placeholders(initial_translated)
-
-    for attempt in range(3):
+    last_error: str | None = None
+    for attempt in range(RETRIES):
         time.sleep(2 ** attempt)  # 1s, 2s, 4s
         try:
-            retry = translate_single(text, target_locale)
-        except Exception as e:  # noqa: BLE001 — retry path; structured failure
-            return (
-                last_attempt,
-                f"placeholder retry {attempt + 1}/3 raised {type(e).__name__}: {e}",
-            )
-        last_attempt = retry
-        last_actual = extract_placeholders(retry)
-        if last_actual == expected:
-            return (retry, None)
+            candidate = translate_one(text)
+        except Exception as e:  # noqa: BLE001 — a retry that raises counts as one (R297.1)
+            last_error = f"retry {attempt + 1}/{RETRIES} raised {type(e).__name__}: {e}"
+            continue
+        failed = check_failures(text, candidate, terms)
+        if not failed:
+            return (candidate, None)
 
-    return (
-        last_attempt,
-        f"placeholder mismatch persists after 3 retries. "
-        f"expected={expected} actual={last_actual}",
+    failure = f"{'; '.join(failed)}, after {RETRIES} retries"
+    if last_error is not None:
+        failure += f"; last error: {last_error}"
+    return (text, failure)
+
+
+def apply_checked(
+    target_data: dict,
+    paths: list[list],
+    texts: list[str],
+    translated: list[str],
+    terms: list[str],
+    translate_one: Callable[[str], str],
+) -> list[tuple[list, str]]:
+    """Set each value of `target_data` from its checked translation.
+
+    A value no candidate of passes keeps its English, and is returned with
+    what failed (R297.2). Both routes go through this function (R297.3).
+    """
+    kept_english: list[tuple[list, str]] = []
+    for path, text, candidate in zip(paths, texts, translated, strict=True):
+        final, failure = translate_with_checks(text, candidate, terms, translate_one)
+        set_at_path(target_data, path, final)
+        if failure is not None:
+            kept_english.append((path, failure))
+    return kept_english
+
+
+def report_kept_english(kept_english: list[tuple[str, list, str]]) -> None:
+    """Name on stderr each value that kept its English, with what failed."""
+    if not kept_english:
+        return
+    print(
+        f"Kept as the English placeholder, a check failed after {RETRIES} retries "
+        f"({len(kept_english)}):",
+        file=sys.stderr,
     )
+    for locale, key_path, failure in kept_english:
+        print(f"  {locale} {'.'.join(str(p) for p in key_path)}: {failure}", file=sys.stderr)
 
 
 # ---------------------------------------------------------------------------
@@ -364,8 +557,14 @@ def translate_locale(
     en_data: dict,
     target_data: dict,
     force: bool,
+    terms: list[str],
 ) -> dict:
-    """Translate one locale. Mutates `target_data` in place."""
+    """Translate one locale. Mutates `target_data` in place.
+
+    A value whose translation still fails a check after its retries keeps
+    the English value, and is listed in the result's `kept_english` with
+    what failed (R297.2).
+    """
     # Identify pairs that need translation under the active mode.
     pending: list[tuple[list, str]] = []
     for path, en_text, tgt_text in collect_pairs(en_data, target_data):
@@ -380,7 +579,7 @@ def translate_locale(
 
     start = time.monotonic()
     try:
-        translated = translate_batch(texts, target_locale)
+        translated = translate_batch(texts, target_locale, terms)
     except httpx.HTTPStatusError as e:
         detail = e.response.text[:200] if e.response is not None else ""
         return {
@@ -400,18 +599,20 @@ def translate_locale(
             "count": len(texts),
         }
 
-    placeholder_failures: list[tuple[list, str]] = []
-    for path, src_text, candidate in zip(paths, texts, translated):
-        final, err = translate_with_placeholder_check(src_text, target_locale, candidate)
-        if err is not None:
-            placeholder_failures.append((path, err))
-        set_at_path(target_data, path, final)
+    kept_english = apply_checked(
+        target_data,
+        paths,
+        texts,
+        translated,
+        terms,
+        lambda text: translate_single(text, target_locale, terms),
+    )
 
     return {
         "status": "ok",
         "count": len(texts),
         "elapsed_s": round(elapsed, 1),
-        "placeholder_failures": placeholder_failures,
+        "kept_english": kept_english,
     }
 
 
@@ -510,9 +711,10 @@ def mode_check(en_data: dict) -> int:
     return 2 if failed else 0
 
 
-def mode_test() -> int:
+def mode_test(terms: list[str]) -> int:
     """Translate 3 canonical placeholder-bearing strings into all 20 non-en
-    locales, assert placeholder preservation + non-empty output."""
+    locales, assert placeholder preservation, brand words kept (R256.2) and
+    non-empty output."""
     canonical = [
         ("named-placeholder", "Hello {name}, welcome to Multiverse Echoes."),
         ("jsx-tag", "<strong>Important:</strong> please review your settings."),
@@ -524,7 +726,7 @@ def mode_test() -> int:
         for label, src in canonical:
             print(f"[{locale:9}] {label:20} ... ", end="", flush=True)
             try:
-                translated = translate_single(src, locale)
+                translated = translate_single(src, locale, terms)
             except Exception as e:  # noqa: BLE001
                 print(f"FAIL ({type(e).__name__}: {e})")
                 failures.append((locale, label, str(e)))
@@ -542,6 +744,11 @@ def mode_test() -> int:
                     (locale, label, f"placeholder drift expected={expected} actual={actual}")
                 )
                 continue
+            lost = lost_terms(src, translated, terms)
+            if lost:
+                print(f"FAIL (brand words lost: {lost})")
+                failures.append((locale, label, f"brand words lost {lost}"))
+                continue
             print("OK")
 
     if failures:
@@ -549,11 +756,16 @@ def mode_test() -> int:
         for locale, label, err in failures:
             print(f"  {locale} [{label}]: {err}", file=sys.stderr)
         return 2
-    print("\nAll 60 (locale × canonical) pairs translated with placeholder parity.")
+    print("\nAll 60 (locale × canonical) pairs translated with placeholder parity and brand words kept.")
     return 0
 
 
-def mode_translate(force: bool, target_locales: list[str], derive_zh_hant: bool = False) -> int:
+def mode_translate(
+    force: bool,
+    target_locales: list[str],
+    terms: list[str],
+    derive_zh_hant: bool = False,
+) -> int:
     """Default + --force + --locale paths. Translate locales in `target_locales`.
 
     `derive_zh_hant` gates the OpenCC s2hk derive step. Default False — the
@@ -562,7 +774,7 @@ def mode_translate(force: bool, target_locales: list[str], derive_zh_hant: bool 
     en_data = json.loads(EN_LOCALE.read_text(encoding="utf-8"))
 
     failures: list[tuple[str, str]] = []
-    placeholder_warns: list[tuple[str, list, str]] = []
+    kept_english: list[tuple[str, list, str]] = []
     total_strings = 0
     total_elapsed = 0.0
 
@@ -577,7 +789,7 @@ def mode_translate(force: bool, target_locales: list[str], derive_zh_hant: bool 
         target_data = json.loads(path.read_text(encoding="utf-8"))
 
         print(f"  {locale:9} -> ... ", end="", flush=True)
-        result = translate_locale(locale, en_data, target_data, force=force)
+        result = translate_locale(locale, en_data, target_data, force=force, terms=terms)
 
         if result.get("skipped"):
             print("OK (no pending keys)")
@@ -595,8 +807,8 @@ def mode_translate(force: bool, target_locales: list[str], derive_zh_hant: bool 
 
         total_strings += result["count"]
         total_elapsed += result["elapsed_s"]
-        for path_, err in result.get("placeholder_failures", []):
-            placeholder_warns.append((locale, path_, err))
+        for path_, failure in result["kept_english"]:
+            kept_english.append((locale, path_, failure))
         print(f"OK ({result['count']} strs, {result['elapsed_s']:>5.1f}s, {write_result['size']:>7} B)")
 
     # zh-Hant derivation runs after zh-Hans completes — opt-in via
@@ -622,16 +834,12 @@ def mode_translate(force: bool, target_locales: list[str], derive_zh_hant: bool 
                 failures.append(("zh-Hant", result["error"]))
 
     print(f"\nTotal: {total_strings} strings translated in {total_elapsed:.1f}s wall time")
-    if placeholder_warns:
-        print(f"Placeholder retries that exhausted ({len(placeholder_warns)}):", file=sys.stderr)
-        for locale, key_path, err in placeholder_warns:
-            print(f"  {locale} {'.'.join(str(p) for p in key_path)}: {err}", file=sys.stderr)
+    report_kept_english(kept_english)
     if failures:
         print(f"\nFAILURES ({len(failures)}):", file=sys.stderr)
         for locale, err in failures:
             print(f"  {locale}: {err}", file=sys.stderr)
-        return 2
-    return 0
+    return 2 if failures or kept_english else 0
 
 
 # ---------------------------------------------------------------------------
@@ -683,6 +891,9 @@ def main() -> None:
     # Load + validate the tone YAML at startup so a broken table is
     # caught here instead of mid-run.
     tones = load_tone_yaml()
+    # The brand words every request carries, read and validated at start
+    # (R256.1).
+    terms = flatten_do_not_translate(load_do_not_translate())
     if args.verbose:
         for locale in NON_EN_LOCALES:
             entry = tones[locale]
@@ -697,7 +908,7 @@ def main() -> None:
 
     if args.test:
         health_probe()
-        sys.exit(mode_test())
+        sys.exit(mode_test(terms))
 
     health_probe()
 
@@ -712,7 +923,7 @@ def main() -> None:
     else:
         targets = list(NON_EN_LOCALES)
 
-    sys.exit(mode_translate(args.force, targets, args.derive_zh_hant))
+    sys.exit(mode_translate(args.force, targets, terms, args.derive_zh_hant))
 
 
 if __name__ == "__main__":

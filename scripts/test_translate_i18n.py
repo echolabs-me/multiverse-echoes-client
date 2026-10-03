@@ -17,9 +17,12 @@ from __future__ import annotations
 import importlib.util
 import json
 import sys
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 from unittest.mock import MagicMock
 
+import httpx
 import pytest
 
 # ---------------------------------------------------------------------------
@@ -228,6 +231,7 @@ def test_convert_zh_hant_skipped_when_flag_off(
     rc = translate_i18n.mode_translate(
         force=False,
         target_locales=["zh-Hans", "zh-Hant"],
+        terms=[],
         derive_zh_hant=False,
     )
     captured = capsys.readouterr()
@@ -255,6 +259,7 @@ def test_convert_zh_hant_runs_when_flag_on(
     rc = translate_i18n.mode_translate(
         force=False,
         target_locales=["zh-Hans", "zh-Hant"],
+        terms=[],
         derive_zh_hant=True,
     )
     captured = capsys.readouterr()
@@ -264,6 +269,173 @@ def test_convert_zh_hant_runs_when_flag_on(
         f"skip-log substring leaked into flag-ON path. Got: {captured.out!r}"
     )
     assert rc == 0, f"expected clean exit, got rc={rc}"
+
+
+# ---------------------------------------------------------------------------
+# The brand words (R256): each request carries the terms its text contains,
+# and a translation that loses one is rejected. Offline: the sidecar is a
+# stand-in transport, so no request leaves the machine (SR51).
+# ---------------------------------------------------------------------------
+def _stand_in_sidecar(
+    monkeypatch: pytest.MonkeyPatch,
+    answer: Callable[[dict[str, Any]], str | None],
+) -> list[dict[str, Any]]:
+    """Route the script's sidecar calls to a local stand-in. Each item sent
+    is answered by `answer`; every request body is recorded and returned.
+    A single request `answer` gives None is answered 500, so the script's
+    `raise_for_status` raises."""
+    sent: list[dict[str, Any]] = []
+
+    def handle(request: httpx.Request) -> httpx.Response:
+        body = json.loads(request.content)
+        sent.append(body)
+        if request.url.path == "/translate/batch":
+            results = [{"translated_text": answer(item)} for item in body["items"]]
+            return httpx.Response(200, json={"results": results})
+        translated = answer(body)
+        if translated is None:
+            return httpx.Response(500, json={"detail": "stand-in failure"})
+        return httpx.Response(200, json={"translated_text": translated})
+
+    real_client = httpx.Client
+
+    def client(**kwargs: Any) -> httpx.Client:
+        return real_client(transport=httpx.MockTransport(handle), **kwargs)
+
+    monkeypatch.setattr(translate_i18n.httpx, "Client", client)
+    monkeypatch.setattr(translate_i18n.time, "sleep", lambda _s: None)
+    return sent
+
+
+TERMS = ["Multiverse Echoes", "Echoes", "Echo"]
+
+
+def test_each_request_carries_the_terms_its_text_contains(monkeypatch: pytest.MonkeyPatch) -> None:
+    sent = _stand_in_sidecar(monkeypatch, lambda item: item["text"])
+    translate_i18n.translate_batch(["Meet your Echo", "Your Echoes", "Settings"], "es", TERMS)
+    translate_i18n.translate_single("Welcome to Multiverse Echoes", "es", TERMS)
+
+    batch, single = sent
+    assert [item["keep_terms"] for item in batch["items"]] == [["Echo"], ["Echoes"], []]
+    assert single["keep_terms"] == ["Multiverse Echoes", "Echoes"]
+
+
+def test_a_term_inside_a_longer_word_is_not_contained() -> None:
+    # The rule `check-i18n` applies: "Echoes" does not contain the word "Echo".
+    assert translate_i18n.terms_in("Your Echoes", ["Echo"]) == []
+    assert translate_i18n.terms_in("Echo's diary", ["Echo"]) == ["Echo"]
+
+
+def _seed_locale(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, en: dict[str, str]) -> Path:
+    """An en.json and an es.json holding the English placeholders."""
+    (tmp_path / "en.json").write_text(json.dumps(en), encoding="utf-8")
+    es_path = tmp_path / "es.json"
+    es_path.write_text(json.dumps(en), encoding="utf-8")
+    monkeypatch.setattr(translate_i18n, "LOCALES_DIR", tmp_path)
+    monkeypatch.setattr(translate_i18n, "EN_LOCALE", tmp_path / "en.json")
+    return es_path
+
+
+def test_a_translation_that_loses_a_term_keeps_the_english_and_fails_the_run(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    es_path = _seed_locale(tmp_path, monkeypatch, {"meet": "Meet your Echo", "plain": "Settings"})
+    answers = {"Meet your Echo": "Conoce a tu Eco", "Settings": "Ajustes"}
+    sent = _stand_in_sidecar(monkeypatch, lambda item: answers[item["text"]])
+
+    rc = translate_i18n.mode_translate(force=False, target_locales=["es"], terms=TERMS)
+
+    es = json.loads(es_path.read_text(encoding="utf-8"))
+    assert es == {"meet": "Meet your Echo", "plain": "Ajustes"}
+    assert rc == 2
+    assert "  es meet: brand words lost: Echo, after 3 retries\n" in capsys.readouterr().err
+    # The batch, then three retries of the value that lost its term.
+    assert len(sent) == 4
+
+
+def test_a_retry_that_keeps_the_term_is_taken(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    es_path = _seed_locale(tmp_path, monkeypatch, {"meet": "Meet your Echo"})
+    replies = iter(["Conoce a tu Eco", "Conoce a tu Echo"])
+    _stand_in_sidecar(monkeypatch, lambda _item: next(replies))
+
+    rc = translate_i18n.mode_translate(force=False, target_locales=["es"], terms=TERMS)
+
+    assert json.loads(es_path.read_text(encoding="utf-8")) == {"meet": "Conoce a tu Echo"}
+    assert rc == 0
+
+
+def _replies(*replies: str | None) -> Callable[[dict[str, Any]], str | None]:
+    """Answer each request with the next reply, in order."""
+    queue = iter(replies)
+    return lambda _item: next(queue)
+
+
+def test_a_retry_that_raises_is_followed_by_the_next_retry(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    # R297.1: the batch loses the term, retry 1 raises, retry 2 keeps it.
+    es_path = _seed_locale(tmp_path, monkeypatch, {"meet": "Meet your Echo"})
+    sent = _stand_in_sidecar(monkeypatch, _replies("Conoce a tu Eco", None, "Conoce a tu Echo"))
+
+    rc = translate_i18n.mode_translate(force=False, target_locales=["es"], terms=TERMS)
+
+    assert json.loads(es_path.read_text(encoding="utf-8")) == {"meet": "Conoce a tu Echo"}
+    assert rc == 0
+    assert len(sent) == 3
+
+
+def test_three_raised_retries_leave_the_english_and_fail_the_run(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    # R297.1 and R297.2: each retry raises, all three run, and the value
+    # keeps its English with what failed and the last error named.
+    es_path = _seed_locale(tmp_path, monkeypatch, {"meet": "Meet your Echo"})
+    sent = _stand_in_sidecar(monkeypatch, _replies("Conoce a tu Eco", None, None, None))
+
+    rc = translate_i18n.mode_translate(force=False, target_locales=["es"], terms=TERMS)
+
+    assert json.loads(es_path.read_text(encoding="utf-8")) == {"meet": "Meet your Echo"}
+    assert rc == 2
+    err = capsys.readouterr().err
+    assert "  es meet: brand words lost: Echo, after 3 retries; last error: retry 3/3 raised HTTPStatusError" in err
+    assert len(sent) == 4
+
+
+def test_placeholders_that_do_not_match_after_the_retries_leave_the_english_and_fail_the_run(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    # R297.2: the placeholder check takes the same path as the brand words.
+    es_path = _seed_locale(tmp_path, monkeypatch, {"hi": "Hello {name}", "plain": "Settings"})
+    answers = {"Hello {name}": "Hola", "Settings": "Ajustes"}
+    sent = _stand_in_sidecar(monkeypatch, lambda item: answers[item["text"]])
+
+    rc = translate_i18n.mode_translate(force=False, target_locales=["es"], terms=TERMS)
+
+    es = json.loads(es_path.read_text(encoding="utf-8"))
+    assert es == {"hi": "Hello {name}", "plain": "Ajustes"}
+    assert rc == 2
+    assert "  es hi: placeholders expected=['{name}'] actual=[], after 3 retries\n" in capsys.readouterr().err
+    assert len(sent) == 4
+
+
+def test_the_fallback_reads_the_word_list_through_this_script() -> None:
+    # One reader of i18n-do-not-translate.yaml for both routes (R266.3).
+    adapter_path = THIS_DIR / "translate-i18n-anthropic.py"
+    spec = importlib.util.spec_from_file_location("translate_i18n_anthropic", adapter_path)
+    assert spec is not None and spec.loader is not None
+    adapter = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(adapter)
+    assert adapter.load_do_not_translate is translate_i18n.load_do_not_translate
 
 
 if __name__ == "__main__":

@@ -27,6 +27,12 @@ Contract preserved from `translate-i18n.py`
     - Identical zh-Hant derivation from zh-Hans via OpenCC s2hk
     - Identical CLI surface: `--check`, `--test`, `--force`, `--locale`,
       `--verbose`
+    - Identical checks and retries, through translate-i18n.py's own
+      `apply_checked` (R297.3): a translation whose placeholders do not
+      match, or that loses a brand word, is retried up to 3 times, and a
+      retry that raises counts as one. A value that still fails a check
+      keeps the English placeholder, is named on stderr with what failed,
+      and makes the exit code 2
 
 Backend differences
     - No HTTP sidecar, no `/health` probe — `ANTHROPIC_API_KEY` env var
@@ -51,7 +57,8 @@ Usage
 Exit codes
     0  all (locale, key) pairs translated (or already filled)
     1  ANTHROPIC_API_KEY unset OR Anthropic SDK import failure
-    2  one or more (locale, key) pairs failed (details printed)
+    2  one or more (locale, key) pairs failed, or failed a check that
+       retries could not pass (details printed)
 """
 from __future__ import annotations
 
@@ -64,8 +71,6 @@ import sys
 import time
 from pathlib import Path
 from typing import Any
-
-import yaml
 
 # Reuse the shared helpers from translate-i18n.py rather than
 # duplicating them. translate-i18n.py is a CLI script (hyphenated
@@ -101,17 +106,25 @@ NON_EN_LOCALES = _sibling.NON_EN_LOCALES
 TONE_REQUIRED_FIELDS = _sibling.TONE_REQUIRED_FIELDS
 extract_placeholders = _sibling.extract_placeholders
 placeholders_match = _sibling.placeholders_match
+lost_terms = _sibling.lost_terms
+# The checked retry both routes go through (R297.3).
+apply_checked = _sibling.apply_checked
+report_kept_english = _sibling.report_kept_english
 load_tone_yaml = _sibling.load_tone_yaml
 collect_pairs = _sibling.collect_pairs
 set_at_path = _sibling.set_at_path
 needs_translation = _sibling.needs_translation
 write_locale = _sibling.write_locale
 convert_zh_hant = _sibling.convert_zh_hant
+# The word list has one reader, shared with the Gemma route (R256.1, R266.3).
+DO_NOT_TRANSLATE_YAML = _sibling.DO_NOT_TRANSLATE_YAML
+DO_NOT_TRANSLATE_REQUIRED_SECTIONS = _sibling.DO_NOT_TRANSLATE_REQUIRED_SECTIONS
+load_do_not_translate = _sibling.load_do_not_translate
+flatten_do_not_translate = _sibling.flatten_do_not_translate
 
 ROOT = Path(__file__).resolve().parent.parent
 LOCALES_DIR = ROOT / "src" / "locales"
 EN_LOCALE = LOCALES_DIR / "en.json"
-DO_NOT_TRANSLATE_YAML = Path(__file__).resolve().parent / "i18n-do-not-translate.yaml"
 
 # Anthropic model. Opus 4.7 chosen over Sonnet 4.6 because translation
 # is one-shot quality-sensitive work — placeholder-preservation rate is
@@ -128,88 +141,6 @@ MAX_TOKENS = 4096
 # but each call should complete in well under 60 s; 120 s headroom for
 # tail latency.
 SDK_TIMEOUT = 120.0
-
-
-# ---------------------------------------------------------------------------
-# Do-not-translate vocabulary loading + flattening
-# ---------------------------------------------------------------------------
-DO_NOT_TRANSLATE_REQUIRED_SECTIONS = (
-    "product_nouns",
-    "brand_technical_terms",
-    "shard_proper_nouns",
-)
-
-
-def load_do_not_translate(path: Path = DO_NOT_TRANSLATE_YAML) -> dict[str, list[str]]:
-    """Read i18n-do-not-translate.yaml. Schema-validates the three
-    required sections and confirms every entry is a non-empty string.
-
-    Mirrors `load_tone_yaml`'s startup-validate-fail-fast pattern.
-    A malformed YAML or missing section is caught at script start, not
-    silently ignored — the consequence of a missing entry is a brand
-    term getting translated, which is the regression class this
-    config exists to prevent.
-    """
-    raw = path.read_text(encoding="utf-8")
-    data = yaml.safe_load(raw)
-    if not isinstance(data, dict):
-        raise ValueError(
-            f"i18n-do-not-translate.yaml must parse to a top-level dict, "
-            f"got {type(data).__name__}"
-        )
-    # yaml.safe_load keeps the last copy of a repeated key and says nothing,
-    # so a repeated section would drop the words of every copy before it
-    # (R266.3).
-    seen: set[str] = set()
-    for key_node, _ in yaml.compose(raw, Loader=yaml.SafeLoader).value:
-        if key_node.value in seen:
-            raise ValueError(
-                f"i18n-do-not-translate.yaml repeats top-level section '{key_node.value}'"
-            )
-        seen.add(key_node.value)
-    out: dict[str, list[str]] = {}
-    for section in DO_NOT_TRANSLATE_REQUIRED_SECTIONS:
-        if section not in data:
-            raise ValueError(
-                f"i18n-do-not-translate.yaml missing required section '{section}'"
-            )
-        entries = data[section]
-        if not isinstance(entries, list):
-            raise ValueError(
-                f"i18n-do-not-translate.yaml section '{section}' must be a list, "
-                f"got {type(entries).__name__}"
-            )
-        for i, entry in enumerate(entries):
-            if not isinstance(entry, str) or not entry.strip():
-                raise ValueError(
-                    f"i18n-do-not-translate.yaml section '{section}' entry [{i}] "
-                    f"must be a non-empty string, got {entry!r}"
-                )
-        out[section] = list(entries)
-    # Reject extra top-level keys to catch typos like 'shard_propernouns'.
-    extra = set(data.keys()) - set(DO_NOT_TRANSLATE_REQUIRED_SECTIONS)
-    if extra:
-        raise ValueError(
-            f"i18n-do-not-translate.yaml has unexpected top-level sections: "
-            f"{sorted(extra)}. Expected only: "
-            f"{list(DO_NOT_TRANSLATE_REQUIRED_SECTIONS)}"
-        )
-    return out
-
-
-def flatten_do_not_translate(vocab: dict[str, list[str]]) -> list[str]:
-    """Flatten the three vocabulary sections into a single list,
-    preserving order: product_nouns first (most-frequent), then
-    brand_technical_terms, then shard_proper_nouns.
-
-    Order matters for the system prompt — listing 'Multiverse Echoes'
-    before 'Echoes' before 'Echo' (which is the YAML order) helps the
-    model match longest-first when scanning candidate translations,
-    so 'Multiverse Echoes' isn't accidentally split mid-token."""
-    flat: list[str] = []
-    for section in DO_NOT_TRANSLATE_REQUIRED_SECTIONS:
-        flat.extend(vocab[section])
-    return flat
 
 
 # ---------------------------------------------------------------------------
@@ -465,7 +396,7 @@ def translate_single_anthropic(
     tone_entry: dict[str, str],
     do_not_translate: list[str] | None,
 ) -> str:
-    """Single-string Anthropic round-trip. Used during placeholder retries."""
+    """Single-string Anthropic round-trip. Used for `--test` and for retries."""
     system = build_system_prompt(target_locale, tone_entry, do_not_translate)
     user = build_user_prompt_single(text)
     response = client.messages.create(
@@ -477,55 +408,6 @@ def translate_single_anthropic(
     if not response.content:
         raise ValueError("Anthropic response.content is empty")
     return response.content[0].text.strip()
-
-
-# ---------------------------------------------------------------------------
-# Placeholder-aware translation with retry
-# ---------------------------------------------------------------------------
-def translate_with_placeholder_check(
-    client: Any,
-    text: str,
-    target_locale: str,
-    tone_entry: dict[str, str],
-    initial_translated: str,
-    do_not_translate: list[str] | None,
-) -> tuple[str, str | None]:
-    """Mirror of translate-i18n.py's same-named helper, Anthropic backend.
-
-    Verify `initial_translated` carries the same placeholder multiset as
-    `text`. On mismatch, retry up to 3 single-string Anthropic calls
-    with exponential backoff (1s, 2s, 4s). Returns
-    `(final_translated, error_message)` where `error_message` is None
-    on success.
-    """
-    if placeholders_match(text, initial_translated):
-        return (initial_translated, None)
-
-    expected = extract_placeholders(text)
-    last_attempt = initial_translated
-    last_actual = extract_placeholders(initial_translated)
-
-    for attempt in range(3):
-        time.sleep(2 ** attempt)  # 1s, 2s, 4s — same backoff as Gemma path
-        try:
-            retry = translate_single_anthropic(
-                client, text, target_locale, tone_entry, do_not_translate
-            )
-        except Exception as e:  # noqa: BLE001 — structured failure surfaced to caller
-            return (
-                last_attempt,
-                f"placeholder retry {attempt + 1}/3 raised {type(e).__name__}: {e}",
-            )
-        last_attempt = retry
-        last_actual = extract_placeholders(retry)
-        if last_actual == expected:
-            return (retry, None)
-
-    return (
-        last_attempt,
-        f"placeholder mismatch persists after 3 retries. "
-        f"expected={expected} actual={last_actual}",
-    )
 
 
 # ---------------------------------------------------------------------------
@@ -581,20 +463,22 @@ def translate_locale(
 
     elapsed = time.monotonic() - start
 
-    placeholder_failures: list[tuple[list, str]] = []
-    for path, src_text, candidate in zip(paths, texts, translated):
-        final, err = translate_with_placeholder_check(
-            client, src_text, target_locale, tone_entry, candidate, do_not_translate
-        )
-        if err is not None:
-            placeholder_failures.append((path, err))
-        set_at_path(target_data, path, final)
+    kept_english = apply_checked(
+        target_data,
+        paths,
+        texts,
+        translated,
+        do_not_translate or [],
+        lambda text: translate_single_anthropic(
+            client, text, target_locale, tone_entry, do_not_translate
+        ),
+    )
 
     return {
         "status": "ok",
         "count": len(texts),
         "elapsed_s": round(elapsed, 1),
-        "placeholder_failures": placeholder_failures,
+        "kept_english": kept_english,
     }
 
 
@@ -612,8 +496,9 @@ def mode_test(
     do_not_translate: list[str],
 ) -> int:
     """Translate 3 canonical placeholder-bearing strings into all 19
-    sidecar-translated locales, assert placeholder preservation +
-    non-empty output. Mirrors translate-i18n.py's mode_test."""
+    sidecar-translated locales, assert placeholder preservation, brand
+    words kept (R256.2) and non-empty output. Mirrors translate-i18n.py's
+    mode_test."""
     canonical = [
         ("named-placeholder", "Hello {name}, welcome to Multiverse Echoes."),
         ("jsx-tag", "<strong>Important:</strong> please review your settings."),
@@ -646,6 +531,11 @@ def mode_test(
                     (locale, label, f"placeholder drift expected={expected} actual={actual}")
                 )
                 continue
+            lost = lost_terms(src, translated, do_not_translate)
+            if lost:
+                print(f"FAIL (brand words lost: {lost})")
+                failures.append((locale, label, f"brand words lost {lost}"))
+                continue
             print("OK")
 
     if failures:
@@ -654,7 +544,10 @@ def mode_test(
             print(f"  {locale} [{label}]: {err}", file=sys.stderr)
         return 2
     total_pairs = len(SIDECAR_LOCALES) * len(canonical)
-    print(f"\nAll {total_pairs} (locale × canonical) pairs translated with placeholder parity.")
+    print(
+        f"\nAll {total_pairs} (locale × canonical) pairs translated with placeholder "
+        f"parity and brand words kept."
+    )
     return 0
 
 
@@ -678,7 +571,7 @@ def mode_translate(
     en_data = json.loads(EN_LOCALE.read_text(encoding="utf-8"))
 
     failures: list[tuple[str, str]] = []
-    placeholder_warns: list[tuple[str, list, str]] = []
+    kept_english: list[tuple[str, list, str]] = []
     total_strings = 0
     total_elapsed = 0.0
 
@@ -720,8 +613,8 @@ def mode_translate(
 
         total_strings += result["count"]
         total_elapsed += result["elapsed_s"]
-        for path_, err in result.get("placeholder_failures", []):
-            placeholder_warns.append((locale, path_, err))
+        for path_, failure in result["kept_english"]:
+            kept_english.append((locale, path_, failure))
         print(f"OK ({result['count']} strs, {result['elapsed_s']:>5.1f}s, {write_result['size']:>7} B)")
 
     # zh-Hant derivation runs after zh-Hans completes — same OpenCC
@@ -748,16 +641,12 @@ def mode_translate(
                 failures.append(("zh-Hant", result["error"]))
 
     print(f"\nTotal: {total_strings} strings translated in {total_elapsed:.1f}s wall time")
-    if placeholder_warns:
-        print(f"Placeholder retries that exhausted ({len(placeholder_warns)}):", file=sys.stderr)
-        for locale, key_path, err in placeholder_warns:
-            print(f"  {locale} {'.'.join(str(p) for p in key_path)}: {err}", file=sys.stderr)
+    report_kept_english(kept_english)
     if failures:
         print(f"\nFAILURES ({len(failures)}):", file=sys.stderr)
         for locale, err in failures:
             print(f"  {locale}: {err}", file=sys.stderr)
-        return 2
-    return 0
+    return 2 if failures or kept_english else 0
 
 
 # ---------------------------------------------------------------------------
