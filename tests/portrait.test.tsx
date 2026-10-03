@@ -1,6 +1,16 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import i18n from '../src/i18n.ts';
+import { getMoodLabel } from '../src/lib/moodLabel.ts';
 import { EchoPortrait3D } from '../src/components/EchoPortrait3D.tsx';
+
+// R284.5: the portrait's label is one key whose text holds the name and the
+// mood. The test gives the key other text, so a label built in code fails.
+const KEY = 'echo.portraitLabel';
+const saved = i18n.t(KEY);
+afterEach(() => {
+  i18n.addResource('en', 'translation', KEY, saved);
+});
 
 // happy-dom has no WebGL, so useGpuAvailable returns false → all renders use 2D fallback.
 // This is intentional: we test the fallback path in unit tests, 3D in E2E.
@@ -12,12 +22,13 @@ describe('EchoPortrait3D', () => {
     expect(screen.getByText('S')).toBeInTheDocument();
   });
 
-  it('has accessible role and label', () => {
+  it("has accessible role and label, from its key, with the mood's label", () => {
+    i18n.addResource('en', 'translation', KEY, '{{name}}, feeling {{mood}}');
     render(<EchoPortrait3D name="Akira" mood="melancholy" />);
     const portrait = screen.getByRole('img');
     expect(portrait).toHaveAttribute(
       'aria-label',
-      'Akira portrait, mood: melancholy',
+      `Akira, feeling ${getMoodLabel('melancholy')}`,
     );
   });
 

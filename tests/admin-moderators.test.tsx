@@ -9,7 +9,13 @@ import { AdminDashboardPage } from '../src/pages/AdminDashboardPage.tsx';
 // Mock admin user so AdminDashboardPage renders tab content.
 vi.mock('../src/stores/index.ts', () => ({
   useAuthStore: (selector: (s: Record<string, unknown>) => unknown) =>
-    selector({ user: { display_name: 'Admin', account_type: 'Admin', subscription_tier: 'Free' } }),
+    selector({
+      user: {
+        display_name: 'Admin',
+        account_type: 'Admin',
+        subscription_tier: 'Free',
+      },
+    }),
 }));
 
 const mockListModerators = vi.fn();
@@ -55,9 +61,12 @@ void testI18n.use(initReactI18next).init({
         'admin.userName': 'Name',
         'admin.userEmail': 'Email',
         'admin.actions': 'Actions',
-        'admin.moderators.heading': 'Current Moderators',
+        // R284.5: the heading and its count are one key. The test text
+        // differs from what code once wrote, so a join in code fails here.
+        'admin.moderators.headingCount': 'Moderators now: {{number}}',
         'admin.moderators.promote': 'Promote',
-        'admin.moderators.promotePlaceholder': 'User ID to promote to Moderator',
+        'admin.moderators.promotePlaceholder':
+          'User ID to promote to Moderator',
         'admin.moderators.demote': 'Demote',
         'admin.moderators.empty': 'No Moderators yet.',
         'admin.moderators.updatedAt': 'Updated',
@@ -124,6 +133,7 @@ describe('AdminDashboardPage — Moderators tab', () => {
     expect(await screen.findByText('alice@example.com')).toBeInTheDocument();
     expect(screen.getByText('bob@example.com')).toBeInTheDocument();
     expect(mockListModerators).toHaveBeenCalledTimes(1);
+    expect(screen.getByText('Moderators now: 2')).toBeInTheDocument();
   });
 
   it('shows empty-state message when no moderators exist', async () => {
@@ -136,13 +146,17 @@ describe('AdminDashboardPage — Moderators tab', () => {
   });
 
   it('promote flow calls promoteModerator and refreshes the list on success', async () => {
-    mockListModerators.mockResolvedValueOnce([]).mockResolvedValueOnce([MOD_ALICE]);
+    mockListModerators
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([MOD_ALICE]);
     mockPromoteModerator.mockResolvedValue(MOD_ALICE);
     renderPage();
     await act(async () => {
       selectModeratorsTab();
     });
-    const input = await screen.findByLabelText('User ID to promote to Moderator');
+    const input = await screen.findByLabelText(
+      'User ID to promote to Moderator',
+    );
     fireEvent.change(input, { target: { value: MOD_ALICE.user_id } });
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: 'Promote' }));
@@ -172,7 +186,9 @@ describe('AdminDashboardPage — Moderators tab', () => {
   });
 
   it('demote flow requires confirmation and calls demoteModerator', async () => {
-    mockListModerators.mockResolvedValueOnce([MOD_ALICE]).mockResolvedValueOnce([]);
+    mockListModerators
+      .mockResolvedValueOnce([MOD_ALICE])
+      .mockResolvedValueOnce([]);
     mockDemoteModerator.mockResolvedValue({
       ...MOD_ALICE,
       account_type: 'Standard' as const,
@@ -206,6 +222,44 @@ describe('AdminDashboardPage — Moderators tab', () => {
     expect(mockDemoteModerator).toHaveBeenCalledWith(MOD_ALICE.user_id);
     expect(screen.getByText('alice@example.com')).toBeInTheDocument();
     expect(mockListModerators).toHaveBeenCalledTimes(1);
+  });
+
+  it('sends one promote on a double click, and holds the button until it settles (R265)', async () => {
+    mockListModerators.mockResolvedValue([]);
+    mockPromoteModerator.mockReturnValue(new Promise(() => {}));
+    renderPage();
+    await act(async () => {
+      selectModeratorsTab();
+    });
+    const input = await screen.findByLabelText(
+      'User ID to promote to Moderator',
+    );
+    fireEvent.change(input, { target: { value: MOD_ALICE.user_id } });
+    const button = screen.getByRole('button', { name: 'Promote' });
+    await act(async () => {
+      fireEvent.click(button);
+      fireEvent.click(button);
+    });
+    expect(mockPromoteModerator).toHaveBeenCalledTimes(1);
+    expect(button).toBeDisabled();
+  });
+
+  it('sends one demote on a double click, and holds the button until it settles (R265)', async () => {
+    mockListModerators.mockResolvedValue([MOD_ALICE]);
+    mockDemoteModerator.mockReturnValue(new Promise(() => {}));
+    renderPage();
+    await act(async () => {
+      selectModeratorsTab();
+    });
+    await screen.findByText('alice@example.com');
+    fireEvent.click(screen.getByRole('button', { name: 'Demote' }));
+    const confirm = screen.getByRole('button', { name: 'Confirm' });
+    await act(async () => {
+      fireEvent.click(confirm);
+      fireEvent.click(confirm);
+    });
+    expect(mockDemoteModerator).toHaveBeenCalledTimes(1);
+    expect(confirm).toBeDisabled();
   });
 
   it('demote Cancel button closes the confirmation without calling the API', async () => {

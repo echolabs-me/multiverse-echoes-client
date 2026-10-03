@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, fireEvent } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
@@ -22,11 +22,17 @@ import { initReactI18next } from 'react-i18next';
 // AppLayout.tsx:148 reads isAuthenticated via selector. If this is false,
 // the layout renders `<Navigate to="/login" />` and no heading ever
 // mounts, so the auth guard MUST be satisfied for these assertions.
+const mockLogout = vi.hoisted(() => vi.fn());
+// The mock answers `subscribe` as the store does; it never changes, so it
+// notifies nobody (R296.1).
 vi.mock('../src/stores/useAuthStore.ts', () => ({
   useAuthStore: Object.assign(
     (selector: (s: Record<string, unknown>) => unknown) =>
-      selector({ isAuthenticated: true }),
-    { getState: () => ({ isAuthenticated: true, logout: vi.fn() }) },
+      selector({ isAuthenticated: true, logout: mockLogout }),
+    {
+      getState: () => ({ isAuthenticated: true, logout: mockLogout }),
+      subscribe: () => () => {},
+    },
   ),
 }));
 
@@ -90,6 +96,10 @@ vi.mock('../src/lib/deviceDetect.ts', () => ({
 
 // Import AFTER mocks are registered.
 import { AppLayout } from '../src/components/AppLayout.tsx';
+import { DeleteAccountPage } from '../src/pages/DeleteAccountPage.tsx';
+import { account } from '../src/lib/api/endpoints.ts';
+import { useInFlightStore } from '../src/stores/useInFlightStore.ts';
+import { markers } from '../src/lib/inFlightMarkers.ts';
 
 // ─── i18next ────────────────────────────────────────────────────────────
 // Distinctive translation string so the assertion cannot be satisfied by
@@ -117,7 +127,12 @@ function renderAt(path: string) {
               path="/dashboard"
               element={<div data-testid="dashboard-outlet" />}
             />
+            <Route
+              path="/settings/delete-account"
+              element={<DeleteAccountPage />}
+            />
           </Route>
+          <Route path="/login" element={<div data-testid="login-page" />} />
         </Routes>
       </MemoryRouter>
     </I18nextProvider>,
@@ -175,5 +190,110 @@ describe('AppLayout communityFeed.title heading', () => {
     });
     const headings = screen.getAllByText('COMMUNITY_PULSE_HEADING');
     expect(headings).toHaveLength(2);
+  });
+});
+
+describe('AppLayout logout (R265)', () => {
+  beforeEach(() => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      onchange: null,
+      dispatchEvent: vi.fn(),
+    }));
+    mockLogout.mockReset();
+    mockLogout.mockReturnValue(new Promise(() => {}));
+  });
+
+  // A spy a test sets on an endpoint is restored after it, here rather than
+  // in the test body, so a failing test restores it too (R288.7, R294.4).
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  /** Opens the delete page with DELETE typed into its field. */
+  async function deletePageReady() {
+    mockIsTablet = false;
+    await act(async () => {
+      renderAt('/settings/delete-account');
+    });
+    fireEvent.change(screen.getByPlaceholderText('DELETE'), {
+      target: { value: 'DELETE' },
+    });
+  }
+
+  // A held write belongs to the session now (R296.1).
+  const holdLogout = () => {
+    const { session, hold } = useInFlightStore.getState();
+    return hold(session, markers.logout());
+  };
+
+  it('a double click sends one logout', async () => {
+    mockIsTablet = false;
+    await act(async () => {
+      renderAt('/dashboard');
+    });
+    // The test i18n has no `auth.logout`, so the label is the key.
+    const logout = screen.getByRole('button', { name: 'auth.logout' });
+    await act(async () => {
+      fireEvent.click(logout);
+      fireEvent.click(logout);
+    });
+    expect(mockLogout).toHaveBeenCalledTimes(1);
+  });
+
+  it("the delete-account page's logout in flight disables the sidebar's, and one logout is sent (R288.5)", async () => {
+    vi.spyOn(account, 'deleteAccount').mockResolvedValue(undefined as never);
+    mockIsTablet = false;
+    await act(async () => {
+      renderAt('/settings/delete-account');
+    });
+    fireEvent.change(screen.getByPlaceholderText('DELETE'), {
+      target: { value: 'DELETE' },
+    });
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole('button', { name: 'settings.deleteAccount' }),
+      );
+    });
+    const logout = screen.getByRole('button', { name: 'auth.logout' });
+    expect(logout).toBeDisabled();
+    await act(async () => {
+      fireEvent.click(logout);
+    });
+    expect(mockLogout).toHaveBeenCalledTimes(1);
+  });
+
+  it('a logout held elsewhere disables the delete button (R294.2)', async () => {
+    holdLogout();
+    await deletePageReady();
+    expect(
+      screen.getByRole('button', { name: 'settings.deleteAccount' }),
+    ).toBeDisabled();
+  });
+
+  it('a logout held elsewhere when the deletion lands: the delete page sends no logout and does not navigate (R294.3)', async () => {
+    let deleted!: () => void;
+    vi.spyOn(account, 'deleteAccount').mockReturnValue(
+      new Promise<void>((resolve) => {
+        deleted = resolve;
+      }) as never,
+    );
+    await deletePageReady();
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole('button', { name: 'settings.deleteAccount' }),
+      );
+    });
+    holdLogout();
+    await act(async () => {
+      deleted();
+    });
+    expect(mockLogout).not.toHaveBeenCalled();
+    expect(screen.queryByTestId('login-page')).toBeNull();
   });
 });

@@ -18,6 +18,8 @@ import {
 
 import { DiscordIcon } from './icons/DiscordIcon.tsx';
 import { useAuthStore } from '../stores/useAuthStore.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
 import { useBillingHealth } from '../stores/useBillingHealth.ts';
 import { trackEvent } from '../lib/analytics.ts';
@@ -72,6 +74,7 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
   const navigate = useNavigate();
   const location = useLocation();
   const unreadCount = useNotificationStore((s) => s.unreadCount);
+  const inFlight = useInFlight();
 
   const allItems: NavItem[] = [
     {
@@ -154,10 +157,14 @@ function NavSidebar({ isTablet = false }: { isTablet?: boolean }) {
       </nav>
       <div className="border-bs border-border px-1.5 py-2">
         <button
-          onClick={() => {
-            void useAuthStore.getState().logout();
-            navigate('/login');
-          }}
+          disabled={inFlight.isHeld(markers.logout())}
+          onClick={() =>
+            void inFlight.run(markers.logout(), async () => {
+              const loggedOut = useAuthStore.getState().logout();
+              navigate('/login');
+              await loggedOut;
+            })
+          }
           className="flex w-full flex-col items-center gap-0.5 rounded-lg px-1 py-2 text-text-muted transition-colors hover:bg-surface-raised hover:text-danger"
         >
           <LogOut size={20} />

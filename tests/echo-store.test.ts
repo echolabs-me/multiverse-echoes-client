@@ -25,7 +25,7 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
 // isn't exercised here, but `fetchEchoes` (also unused by these tests)
 // reads `safeGetJSON`, so the import surface has to resolve.
 vi.mock('../src/lib/safeStorage.ts', () => ({
-  safeGetJSON: <T,>(_key: string, fallback: T) => fallback,
+  safeGetJSON: <T>(_key: string, fallback: T) => fallback,
   safeSetItem: vi.fn(),
 }));
 
@@ -90,9 +90,9 @@ describe('useEchoStore — server-authoritative hibernate', () => {
 
   it('rolls back the optimistic status flip when the hibernate call rejects', async () => {
     mocks.hibernate.mockRejectedValue(new Error('stub server failure'));
-    await expect(
-      useEchoStore.getState().hibernateEcho('e-1'),
-    ).rejects.toThrow('stub server failure');
+    await expect(useEchoStore.getState().hibernateEcho('e-1')).rejects.toThrow(
+      'stub server failure',
+    );
 
     const finalEcho = useEchoStore.getState().echoList[0];
     // Pre-call status was 'Active' — rollback must restore it
@@ -136,9 +136,9 @@ describe('useEchoStore — server-authoritative wake', () => {
 
   it('rolls back the optimistic status flip when the wake call rejects', async () => {
     mocks.wake.mockRejectedValue(new Error('stub server failure'));
-    await expect(
-      useEchoStore.getState().wakeEcho('e-1'),
-    ).rejects.toThrow('stub server failure');
+    await expect(useEchoStore.getState().wakeEcho('e-1')).rejects.toThrow(
+      'stub server failure',
+    );
 
     const finalEcho = useEchoStore.getState().echoList[0];
     // Pre-call status was 'Hibernated' with a populated
@@ -149,5 +149,58 @@ describe('useEchoStore — server-authoritative wake', () => {
     expect(useEchoStore.getState().activeEcho?.hibernated_at).toBe(
       '2026-03-15T09:00:00Z',
     );
+  });
+});
+
+// R285.3: a failure undoes its own change, the status, on the store as it
+// is then. A change to the Echo that landed while the request was in
+// flight stays.
+describe('useEchoStore — a failed hibernate or wake undoes only the status', () => {
+  it('a hibernate that fails keeps a mood that changed meanwhile', async () => {
+    let fail!: (e: unknown) => void;
+    mocks.hibernate.mockReturnValue(
+      new Promise((_, reject) => {
+        fail = reject;
+      }),
+    );
+    const call = useEchoStore.getState().hibernateEcho('e-1');
+    useEchoStore.setState((s) => ({
+      echoList: s.echoList.map((e) => ({ ...e, current_mood: 'joyful' })),
+      activeEcho: s.activeEcho && { ...s.activeEcho, current_mood: 'joyful' },
+    }));
+    fail(new Error('stub server failure'));
+    await expect(call).rejects.toThrow('stub server failure');
+
+    const finalEcho = useEchoStore.getState().echoList[0];
+    expect(finalEcho.status).toBe('Active');
+    expect(finalEcho.current_mood).toBe('joyful');
+    expect(useEchoStore.getState().activeEcho?.status).toBe('Active');
+    expect(useEchoStore.getState().activeEcho?.current_mood).toBe('joyful');
+  });
+
+  it('a wake that fails keeps a mood that changed meanwhile', async () => {
+    useEchoStore.setState({
+      echoList: [{ ...BASE_ECHO, status: 'Hibernated' }],
+      activeEcho: { ...BASE_ECHO, status: 'Hibernated' },
+    });
+    let fail!: (e: unknown) => void;
+    mocks.wake.mockReturnValue(
+      new Promise((_, reject) => {
+        fail = reject;
+      }),
+    );
+    const call = useEchoStore.getState().wakeEcho('e-1');
+    useEchoStore.setState((s) => ({
+      echoList: s.echoList.map((e) => ({ ...e, current_mood: 'joyful' })),
+      activeEcho: s.activeEcho && { ...s.activeEcho, current_mood: 'joyful' },
+    }));
+    fail(new Error('stub server failure'));
+    await expect(call).rejects.toThrow('stub server failure');
+
+    const finalEcho = useEchoStore.getState().echoList[0];
+    expect(finalEcho.status).toBe('Hibernated');
+    expect(finalEcho.current_mood).toBe('joyful');
+    expect(useEchoStore.getState().activeEcho?.status).toBe('Hibernated');
+    expect(useEchoStore.getState().activeEcho?.current_mood).toBe('joyful');
   });
 });

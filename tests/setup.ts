@@ -1,5 +1,13 @@
 import '@testing-library/jest-dom/vitest';
 import { vi, beforeEach } from 'vitest';
+import { useInFlightStore } from '../src/stores/useInFlightStore.ts';
+
+// The in-flight store is one for the whole app, so a marker a test left
+// held (a request that never settles) would hold a control in the next
+// test. Each test starts with nothing held (R288.8).
+beforeEach(() => {
+  useInFlightStore.setState({ held: new Set() });
+});
 
 // Quiet default for unmocked fetch.
 //

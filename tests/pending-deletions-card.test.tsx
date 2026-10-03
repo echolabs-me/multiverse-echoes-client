@@ -67,20 +67,26 @@ vi.mock('../src/lib/api/client.ts', async (importOriginal) => ({
   request: vi.fn().mockResolvedValue([]),
 }));
 
-vi.mock('../src/stores/useAuthStore.ts', () => ({
-  useAuthStore: (selector?: (s: unknown) => unknown) => {
-    const state = {
-      user: {
-        user_id: 'u1',
-        display_name: 'Test',
-        email: 't@example.com',
-        subscription_tier: 'Core',
-      },
-      logout: vi.fn(),
-    };
-    return selector ? selector(state) : state;
-  },
-}));
+// The mock applies the selector and answers `getState` and `subscribe`, as
+// the store does; it never changes, so it notifies nobody (R296.1).
+vi.mock('../src/stores/useAuthStore.ts', () => {
+  const state = {
+    user: {
+      user_id: 'u1',
+      display_name: 'Test',
+      email: 't@example.com',
+      subscription_tier: 'Core',
+    },
+    logout: vi.fn(),
+  };
+  return {
+    useAuthStore: Object.assign(
+      (selector?: (s: typeof state) => unknown) =>
+        selector ? selector(state) : state,
+      { getState: () => state, subscribe: () => () => {} },
+    ),
+  };
+});
 
 vi.mock('../src/stores/useToastStore.ts', () => ({
   useToastStore: () => ({ addToast: vi.fn() }),

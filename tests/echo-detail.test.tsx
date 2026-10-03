@@ -5,7 +5,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { EchoDetailPage } from '../src/pages/EchoDetailPage.tsx';
-import { echoes } from '../src/lib/api/endpoints.ts';
+import { echoes, account } from '../src/lib/api/endpoints.ts';
 import { ApiRequestError } from '../src/lib/api/client.ts';
 import appI18n from '../src/i18n.ts';
 
@@ -95,6 +95,7 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
   },
   account: {
     getPrivacy: vi.fn().mockResolvedValue({ solo_mode: false }),
+    updatePrivacy: vi.fn(),
   },
 }));
 
@@ -179,6 +180,7 @@ void testI18n.use(initReactI18next).init({
         'diary.watch': 'Watch',
         // R284.5: the label and its value are one key each.
         'dashboard.moodValue': 'Mood: {{mood}}',
+        'echoDetail.dayEntryCount': '[{{number}}]',
         'diary.generatingVideoProgress': 'Generating video: {{progress}}%',
         'diary.videoError': 'Video failed, tap to retry',
         // Worded apart from the old hardcoded "Error:" prefix, so the test
@@ -809,6 +811,13 @@ describe('EchoDetailPage — a failed narration video (R264.5)', () => {
     }
   });
 
+  it("shows a day's entry count through its key (R284.5)", async () => {
+    await act(async () => {
+      renderPage();
+    });
+    expect(await screen.findByText('[1]')).toBeInTheDocument();
+  });
+
   it("shows the video's progress as one key's text with its value (R284.5)", async () => {
     vi.mocked(echoes.narrateVideoStart).mockReturnValue(new Promise(() => {}));
     await watch();
@@ -836,6 +845,20 @@ describe('EchoDetailPage — the mood line (R284.5)', () => {
 
   afterEach(() => {
     mockActiveEcho = null;
+  });
+
+  it('sends one solo-mode write on a double click, and holds the toggle (R265)', async () => {
+    vi.mocked(account.updatePrivacy).mockReturnValueOnce(new Promise(() => {}));
+    await act(async () => {
+      renderPage();
+    });
+    const solo = screen.getByRole('checkbox', { name: 'Solo Mode' });
+    await act(async () => {
+      fireEvent.click(solo);
+      fireEvent.click(solo);
+    });
+    expect(account.updatePrivacy).toHaveBeenCalledTimes(1);
+    expect(solo).toBeDisabled();
   });
 
   it("shows the mood as one key's text with its value", async () => {

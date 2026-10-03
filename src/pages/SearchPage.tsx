@@ -409,7 +409,9 @@ export function SearchPage() {
                     <h3 className="mbe-2 flex items-center gap-2 text-sm font-semibold text-text-secondary">
                       {typeIcons[type]}
                       {t(typeLabels[type])}
-                      <span className="text-text-muted">({items.length})</span>
+                      <span className="text-text-muted">
+                        {t('search.groupCount', { number: items.length })}
+                      </span>
                     </h3>
                     <div className="space-y-2">
                       {items.map((result) => (

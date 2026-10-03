@@ -17,6 +17,8 @@ import { formatTime } from '../lib/formatDate.ts';
 import { sameMessageAuthor } from '../lib/messageGrouping.ts';
 import { DiscordIcon } from './icons/DiscordIcon.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import {
   channels as channelApi,
@@ -46,6 +48,7 @@ export function CommunitySidebar() {
   const [isLoading, setIsLoading] = useState(true);
   const [messageText, setMessageText] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const inFlight = useInFlight();
   const [showChannelPicker, setShowChannelPicker] = useState(false);
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
   const [showPollForm, setShowPollForm] = useState(false);
@@ -200,6 +203,9 @@ export function CommunitySidebar() {
     }
   };
 
+  // The marker holds the upload; `isSending` disables the composer while it
+  // is in flight (R285.1), and the marker disables the upload button in any
+  // sidebar mounted while it is held (R294.2).
   const handleImageUpload = async (file: File) => {
     if (!activeChannel) return;
     if (file.size > 5 * 1024 * 1024) {
@@ -210,34 +216,41 @@ export function CommunitySidebar() {
       addToast(t('community.onlyImages'), 'danger');
       return;
     }
-    setIsSending(true);
-    try {
-      const msg = await channelApi.uploadImage(activeChannel.channel_id, file);
-      setMessages((prev) => [...prev, msg]);
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    } finally {
-      setIsSending(false);
-    }
+    const channelId = activeChannel.channel_id;
+    await inFlight.run(markers.upload('sidebar', channelId), async () => {
+      setIsSending(true);
+      try {
+        const msg = await channelApi.uploadImage(channelId, file);
+        setMessages((prev) => [...prev, msg]);
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      } finally {
+        setIsSending(false);
+      }
+    });
   };
 
   const handlePollVote = async (msg: ChannelMessage, answerId: number) => {
     if (!activeChannel || !msg.poll_data) return;
-    try {
-      const poll: PollData = JSON.parse(msg.poll_data);
-      await channelApi.pollVote(activeChannel.channel_id, {
-        discord_message_id: poll.discord_message_id,
-        discord_channel_id: poll.discord_channel_id,
-        answer_id: answerId,
-      });
-      addToast(t('community.voteRecorded'), 'success');
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    const channelId = activeChannel.channel_id;
+    const pollData = msg.poll_data;
+    await inFlight.run(markers.vote(msg.message_id), async () => {
+      try {
+        const poll: PollData = JSON.parse(pollData);
+        await channelApi.pollVote(channelId, {
+          discord_message_id: poll.discord_message_id,
+          discord_channel_id: poll.discord_channel_id,
+          answer_id: answerId,
+        });
+        addToast(t('community.voteRecorded'), 'success');
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   const handleCreatePoll = async () => {
@@ -452,6 +465,9 @@ export function CommunitySidebar() {
                               {poll.options.map((opt) => (
                                 <button
                                   key={opt.id}
+                                  disabled={inFlight.isHeld(
+                                    markers.vote(msg.message_id),
+                                  )}
                                   onClick={() =>
                                     void handlePollVote(msg, opt.id)
                                   }
@@ -557,7 +573,12 @@ export function CommunitySidebar() {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              disabled={isSending}
+              disabled={
+                isSending ||
+                inFlight.isHeld(
+                  markers.upload('sidebar', activeChannel.channel_id),
+                )
+              }
               className="rounded-sm p-1.5 text-[#5865F2] transition-colors hover:bg-[#5865F2]/10"
               title={t('community.uploadImage')}
             >

@@ -10,9 +10,11 @@
 
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useRef, useMemo, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useGpuAvailable } from '@/hooks/useGpuAvailable';
+import { getMoodLabel } from '@/lib/moodLabel';
 
 // --- Mood colour mapping (mirrors Rust me-core::portrait::mood_to_colour) ---
 
@@ -190,6 +192,7 @@ function StaticFallback({
   mood: string;
   size: 'sm' | 'md' | 'lg';
 }) {
+  const { t } = useTranslation();
   const theme = getMoodTheme(mood);
   const sizeClass =
     size === 'lg' ? 'h-24 w-24' : size === 'md' ? 'h-20 w-20' : 'h-14 w-14';
@@ -209,7 +212,7 @@ function StaticFallback({
       ref={setThemeVars}
       className={`me-theme-fallback flex ${sizeClass} shrink-0 items-center justify-center rounded-xl`}
       role="img"
-      aria-label={`${name} portrait, mood: ${mood}`}
+      aria-label={t('echo.portraitLabel', { name, mood: getMoodLabel(mood) })}
     >
       <span className={`me-theme-fg ${textSize} font-bold`}>
         {name[0] ?? '?'}
@@ -240,6 +243,7 @@ export function EchoPortrait3D({
   disable3D = false,
   avatarUrl,
 }: EchoPortrait3DProps) {
+  const { t } = useTranslation();
   const reducedMotion = useReducedMotion();
   const gpuAvailable = useGpuAvailable();
 
@@ -257,11 +261,11 @@ export function EchoPortrait3D({
         }}
         className={`me-portrait-ring ${sizeClass} shrink-0 overflow-hidden rounded-xl`}
         role="img"
-        aria-label={`${name} portrait, mood: ${mood}`}
+        aria-label={t('echo.portraitLabel', { name, mood: getMoodLabel(mood) })}
       >
         <img
           src={avatarUrl}
-          alt={`${name} portrait`}
+          alt={t('echo.portraitAlt', { name })}
           className="size-full object-cover"
           loading="eager"
         />
@@ -280,7 +284,7 @@ export function EchoPortrait3D({
     <div
       className={`${sizeClass} shrink-0 overflow-hidden rounded-xl`}
       role="img"
-      aria-label={`${name} portrait, mood: ${mood}`}
+      aria-label={t('echo.portraitLabel', { name, mood: getMoodLabel(mood) })}
     >
       <Suspense
         fallback={<StaticFallback name={name} mood={mood} size={size} />}

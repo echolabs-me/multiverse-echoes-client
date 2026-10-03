@@ -14,11 +14,20 @@ vi.mock('../src/stores/useToastStore.ts', () => ({
   useToastStore: () => ({ addToast: vi.fn() }),
 }));
 
-vi.mock('../src/stores/useAuthStore.ts', () => ({
-  useAuthStore: () => ({
+// The mock applies the selector and answers `getState` and `subscribe`, as
+// the store does; it never changes, so it notifies nobody (R296.1).
+vi.mock('../src/stores/useAuthStore.ts', () => {
+  const state = {
     user: { user_id: 'u1', display_name: 'Test', subscription_tier: 'Free' },
-  }),
-}));
+  };
+  return {
+    useAuthStore: Object.assign(
+      (selector?: (s: typeof state) => unknown) =>
+        selector ? selector(state) : state,
+      { getState: () => state, subscribe: () => () => {} },
+    ),
+  };
+});
 
 // CommunityPage.tsx:24 imports useEchoWebSocket, which internally calls
 // useAuthStore.subscribe (useEchoWebSocket.ts:63). The useAuthStore mock

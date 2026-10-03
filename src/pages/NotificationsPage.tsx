@@ -15,7 +15,14 @@ import {
 } from 'lucide-react';
 import { Button, Spinner, EmptyState } from '../components/index.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import {
+  translateCaughtError,
+  isPlatformError,
+} from '../lib/translateError.ts';
+import { useToastStore } from '../stores/useToastStore.ts';
 import type { Notification } from '../types/api.ts';
 
 const categoryIcons: Record<string, typeof Bell> = {
@@ -65,27 +72,66 @@ export function NotificationsPage() {
     markRead,
   } = useNotificationStore();
 
+  const addToast = useToastStore((s) => s.addToast);
+
+  const inFlight = useInFlight();
+
   useEffect(() => {
     void fetchNotifications();
   }, [fetchNotifications]);
 
+  const showFailure = (err: unknown) =>
+    addToast(translateCaughtError(err), 'danger', {
+      platformLink: isPlatformError(err),
+    });
+
+  // Opening a row and "mark all read" send the same write, so both hold the
+  // row's `markers.markRead` marker. A row whose read is in flight is
+  // skipped, and one already read, by the store as it is now, is not sent
+  // (R285.2).
+  const isReadNow = (id: string) =>
+    useNotificationStore
+      .getState()
+      .notifications.some((n) => n.notification_id === id && n.read);
+
+  const readOnce = (id: string) =>
+    inFlight.run(markers.markRead(id), async () => {
+      if (!isReadNow(id)) await markRead(id);
+    });
+
   const handleMarkAllRead = async () => {
-    const unread = notifications.filter((n) => !n.read);
-    trackEvent('notification.dismissed', { count: unread.length });
-    for (const n of unread) {
-      await markRead(n.notification_id);
-    }
+    await inFlight.run(markers.markAllRead(), async () => {
+      const unread = notifications.filter((n) => !n.read);
+      trackEvent('notification.dismissed', { count: unread.length });
+      try {
+        for (const n of unread) {
+          await readOnce(n.notification_id);
+        }
+      } catch (err) {
+        showFailure(err);
+      }
+    });
   };
 
   const handleClick = async (notification: Notification) => {
-    trackEvent('notification.clicked', { category: notification.category });
-    if (!notification.read) {
-      await markRead(notification.notification_id);
-    }
-    const target = getNavigationTarget(notification);
-    if (target) {
-      navigate(target);
-    }
+    await inFlight.run(
+      markers.markRead(notification.notification_id),
+      async () => {
+        trackEvent('notification.clicked', { category: notification.category });
+        try {
+          if (!isReadNow(notification.notification_id)) {
+            await markRead(notification.notification_id);
+          }
+        } catch (err) {
+          showFailure(err);
+          return;
+        }
+        const target = getNavigationTarget(notification);
+        if (target) {
+          navigate(target);
+        }
+      },
+    );
   };
 
   return (
@@ -104,7 +150,11 @@ export function NotificationsPage() {
             {t('notifications.title')}
           </h1>
           {unreadCount > 0 && (
-            <Button variant="ghost" onClick={() => void handleMarkAllRead()}>
+            <Button
+              variant="ghost"
+              disabled={inFlight.isHeld(markers.markAllRead())}
+              onClick={() => void handleMarkAllRead()}
+            >
               <CheckCheck size={16} />
               {t('common.markAllRead')}
             </Button>
@@ -134,6 +184,9 @@ export function NotificationsPage() {
             {notifications.map((notification) => (
               <button
                 key={notification.notification_id}
+                disabled={inFlight.isHeld(
+                  markers.markRead(notification.notification_id),
+                )}
                 onClick={() => void handleClick(notification)}
                 className={`w-full rounded-lg border text-start transition-colors ${
                   notification.read

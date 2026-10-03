@@ -34,6 +34,8 @@ import {
 } from '../lib/translateError.ts';
 import { formatUsdCents } from '../lib/format.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import type {
   SystemHealth,
   AdminReport,
@@ -252,6 +254,8 @@ function ReportsView() {
   const [resolveId, setResolveId] = useState<string | null>(null);
   const [resolveAction, setResolveAction] = useState<string>('Dismiss');
   const [resolveNotes, setResolveNotes] = useState('');
+  const addToast = useToastStore((s) => s.addToast);
+  const inFlight = useInFlight();
 
   useEffect(() => {
     const load = async () => {
@@ -282,22 +286,27 @@ function ReportsView() {
 
   const handleResolve = async () => {
     if (!resolveId || !resolveNotes.trim()) return;
-    try {
-      await admin.resolveReport(resolveId, {
-        action: resolveAction as
-          | 'Quarantine'
-          | 'Warn'
-          | 'Suspend'
-          | 'Dismiss'
-          | 'Restore',
-        notes: resolveNotes,
-      });
-      setReports((prev) => prev.filter((r) => r.report_id !== resolveId));
-      setResolveId(null);
-      setResolveNotes('');
-    } catch {
-      // Error handling
-    }
+    const reportId = resolveId;
+    await inFlight.run(markers.resolveReport(reportId), async () => {
+      try {
+        await admin.resolveReport(reportId, {
+          action: resolveAction as
+            | 'Quarantine'
+            | 'Warn'
+            | 'Suspend'
+            | 'Dismiss'
+            | 'Restore',
+          notes: resolveNotes,
+        });
+        setReports((prev) => prev.filter((r) => r.report_id !== reportId));
+        setResolveId(null);
+        setResolveNotes('');
+      } catch (err) {
+        addToast(translateCaughtError(err), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   if (isLoading) return <Spinner />;
@@ -316,7 +325,7 @@ function ReportsView() {
   return (
     <div className="space-y-4">
       <h3 className="text-sm font-semibold text-text-secondary">
-        {t('admin.reportQueue')} ({reports.length})
+        {t('admin.reportQueueCount', { number: reports.length })}
       </h3>
       {reports.length === 0 ? (
         <p className="py-8 text-center text-text-muted">
@@ -376,7 +385,10 @@ function ReportsView() {
                     <Button
                       variant="primary"
                       onClick={() => void handleResolve()}
-                      disabled={!resolveNotes.trim()}
+                      disabled={
+                        !resolveNotes.trim() ||
+                        inFlight.isHeld(markers.resolveReport(report.report_id))
+                      }
                       className="text-xs"
                     >
                       {t('common.confirm')}
@@ -413,6 +425,8 @@ function UsersView() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const addToast = useToastStore((s) => s.addToast);
+  const inFlight = useInFlight();
 
   const loadUsers = useCallback(async (q?: string) => {
     setIsLoading(true);
@@ -438,16 +452,20 @@ function UsersView() {
   };
 
   const handleSuspendToggle = async (userId: string, currentStatus: string) => {
-    try {
-      if (currentStatus === 'Suspended') {
-        await admin.unsuspendUser(userId);
-      } else {
-        await admin.suspendUser(userId);
+    await inFlight.run(markers.suspend(userId), async () => {
+      try {
+        if (currentStatus === 'Suspended') {
+          await admin.unsuspendUser(userId);
+        } else {
+          await admin.suspendUser(userId);
+        }
+        void loadUsers(searchQuery || undefined);
+      } catch (err) {
+        addToast(translateCaughtError(err), 'danger', {
+          platformLink: isPlatformError(err),
+        });
       }
-      void loadUsers(searchQuery || undefined);
-    } catch {
-      // Error handling
-    }
+    });
   };
 
   return (
@@ -517,6 +535,7 @@ function UsersView() {
                         u.account_status === 'Suspended' ? 'primary' : 'danger'
                       }
                       className="text-xs"
+                      disabled={inFlight.isHeld(markers.suspend(u.user_id))}
                       onClick={() =>
                         void handleSuspendToggle(u.user_id, u.account_status)
                       }
@@ -645,6 +664,8 @@ function ControlsView() {
   const { t } = useTranslation();
   const [paused, setPaused] = useState(false);
   const [loading, setLoading] = useState(true);
+  const addToast = useToastStore((s) => s.addToast);
+  const inFlight = useInFlight();
 
   useEffect(() => {
     void admin
@@ -655,17 +676,33 @@ function ControlsView() {
   }, []);
 
   const handleToggle = async () => {
-    try {
-      if (paused) {
-        const r = await admin.tickResume();
-        setPaused(r.paused);
-      } else {
-        const r = await admin.tickPause();
-        setPaused(r.paused);
+    await inFlight.run(markers.tickState(), async () => {
+      try {
+        if (paused) {
+          const r = await admin.tickResume();
+          setPaused(r.paused);
+        } else {
+          const r = await admin.tickPause();
+          setPaused(r.paused);
+        }
+      } catch (err) {
+        addToast(translateCaughtError(err), 'danger', {
+          platformLink: isPlatformError(err),
+        });
       }
-    } catch {
-      /* */
-    }
+    });
+  };
+
+  const handleTriggerTick = async () => {
+    await inFlight.run(markers.tickTrigger(), async () => {
+      try {
+        await admin.triggerTick();
+      } catch (err) {
+        addToast(translateCaughtError(err), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   if (loading) return <Spinner />;
@@ -678,10 +715,11 @@ function ControlsView() {
         </h3>
         <div className="flex items-center gap-4">
           <Badge variant={paused ? 'warning' : 'success'}>
-            {paused ? 'Paused' : 'Running'}
+            {paused ? t('admin.tickBadgePaused') : t('admin.tickBadgeRunning')}
           </Badge>
           <Button
             variant={paused ? 'primary' : 'secondary'}
+            disabled={inFlight.isHeld(markers.tickState())}
             onClick={() => void handleToggle()}
           >
             {paused ? t('admin.resumeTick') : t('admin.pauseTick')}
@@ -689,7 +727,7 @@ function ControlsView() {
         </div>
         {paused && (
           <p className="mbs-3 text-xs text-text-muted">
-            Tick engine is paused. No Echoes will be processed until resumed.
+            {t('admin.tickPausedDesc')}
           </p>
         )}
       </Card>
@@ -702,13 +740,8 @@ function ControlsView() {
         </p>
         <Button
           variant="secondary"
-          onClick={async () => {
-            try {
-              await admin.triggerTick();
-            } catch {
-              /* */
-            }
-          }}
+          disabled={inFlight.isHeld(markers.tickTrigger())}
+          onClick={() => void handleTriggerTick()}
         >
           {t('admin.triggerTick')}
         </Button>
@@ -1398,6 +1431,8 @@ function FeedbackQueueView() {
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const addToast = useToastStore((s) => s.addToast);
+  const inFlight = useInFlight();
 
   const load = useCallback(() => {
     void admin
@@ -1416,21 +1451,42 @@ function FeedbackQueueView() {
     status: FeedbackStatus,
     notes?: string,
   ) => {
-    try {
-      await admin.updateFeedbackStatus(id, status, notes);
-      load();
-    } catch {
-      /* toast in future */
-    }
+    await inFlight.run(markers.feedbackStatus(id), async () => {
+      try {
+        await admin.updateFeedbackStatus(id, status, notes);
+        load();
+      } catch (err) {
+        addToast(translateCaughtError(err), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   const handlePriority = async (id: string, priority: FeedbackPriority) => {
-    try {
-      await admin.updateFeedbackPriority(id, priority);
-      load();
-    } catch {
-      /* toast in future */
-    }
+    await inFlight.run(markers.feedbackPriority(id), async () => {
+      try {
+        await admin.updateFeedbackPriority(id, priority);
+        load();
+      } catch (err) {
+        addToast(translateCaughtError(err), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
+  };
+
+  const handleCreateIssue = async (id: string) => {
+    await inFlight.run(markers.feedbackIssue(id), async () => {
+      try {
+        await admin.createGithubIssue(id);
+        load();
+      } catch (err) {
+        addToast(translateCaughtError(err), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   const filtered = items.filter((i) => {
@@ -1559,6 +1615,9 @@ function FeedbackQueueView() {
                   {item.status === 'New' && (
                     <Button
                       variant="secondary"
+                      disabled={inFlight.isHeld(
+                        markers.feedbackStatus(item.feedback_id),
+                      )}
                       onClick={() =>
                         void handleStatus(item.feedback_id, 'Acknowledged')
                       }
@@ -1569,6 +1628,9 @@ function FeedbackQueueView() {
                   {item.status !== 'Resolved' && item.status !== 'Wontfix' && (
                     <Button
                       variant="secondary"
+                      disabled={inFlight.isHeld(
+                        markers.feedbackStatus(item.feedback_id),
+                      )}
                       onClick={() => {
                         const notes = prompt(
                           t('admin.feedbackResolutionNotes'),
@@ -1586,6 +1648,9 @@ function FeedbackQueueView() {
                   )}
                   <select
                     value={item.priority ?? ''}
+                    disabled={inFlight.isHeld(
+                      markers.feedbackPriority(item.feedback_id),
+                    )}
                     onChange={(e) => {
                       if (e.target.value)
                         void handlePriority(
@@ -1608,16 +1673,12 @@ function FeedbackQueueView() {
                     !item.github_issue_url && (
                       <Button
                         variant="secondary"
-                        onClick={async () => {
-                          try {
-                            await admin.createGithubIssue(item.feedback_id);
-                            load();
-                          } catch {
-                            /* toast in future */
-                          }
-                        }}
+                        disabled={inFlight.isHeld(
+                          markers.feedbackIssue(item.feedback_id),
+                        )}
+                        onClick={() => void handleCreateIssue(item.feedback_id)}
                       >
-                        Create Issue
+                        {t('admin.feedbackCreateIssue')}
                       </Button>
                     )}
                 </div>
@@ -1637,6 +1698,8 @@ function ModeratorsView() {
   const [isLoading, setIsLoading] = useState(true);
   const [promoteUserId, setPromoteUserId] = useState('');
   const [confirmDemoteId, setConfirmDemoteId] = useState<string | null>(null);
+  const addToast = useToastStore((s) => s.addToast);
+  const inFlight = useInFlight();
 
   const loadModerators = useCallback(async () => {
     setIsLoading(true);
@@ -1661,23 +1724,31 @@ function ModeratorsView() {
     e.preventDefault();
     const trimmed = promoteUserId.trim();
     if (!trimmed) return;
-    try {
-      await admin.promoteModerator(trimmed);
-      setPromoteUserId('');
-      void loadModerators();
-    } catch {
-      // Will show empty
-    }
+    await inFlight.run(markers.promote(trimmed), async () => {
+      try {
+        await admin.promoteModerator(trimmed);
+        setPromoteUserId('');
+        void loadModerators();
+      } catch (err) {
+        addToast(translateCaughtError(err), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   const handleDemote = async (userId: string) => {
-    try {
-      await admin.demoteModerator(userId);
-      setConfirmDemoteId(null);
-      void loadModerators();
-    } catch {
-      // Will show empty
-    }
+    await inFlight.run(markers.demote(userId), async () => {
+      try {
+        await admin.demoteModerator(userId);
+        setConfirmDemoteId(null);
+        void loadModerators();
+      } catch (err) {
+        addToast(translateCaughtError(err), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   return (
@@ -1697,13 +1768,19 @@ function ModeratorsView() {
             aria-label={t('admin.moderators.promotePlaceholder')}
           />
         </div>
-        <Button type="submit" disabled={!promoteUserId.trim()}>
+        <Button
+          type="submit"
+          disabled={
+            !promoteUserId.trim() ||
+            inFlight.isHeld(markers.promote(promoteUserId.trim()))
+          }
+        >
           {t('admin.moderators.promote')}
         </Button>
       </form>
 
       <h3 className="text-sm font-semibold text-text-secondary">
-        {t('admin.moderators.heading')} ({moderators.length})
+        {t('admin.moderators.headingCount', { number: moderators.length })}
       </h3>
 
       {isLoading ? (
@@ -1735,6 +1812,7 @@ function ModeratorsView() {
                         <Button
                           variant="danger"
                           className="text-xs"
+                          disabled={inFlight.isHeld(markers.demote(m.user_id))}
                           onClick={() => void handleDemote(m.user_id)}
                         >
                           {t('common.confirm')}
@@ -1783,6 +1861,7 @@ function ShareTokensView() {
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [errorText, setErrorText] = useState<string | null>(null);
+  const inFlight = useInFlight();
   // Input-bound state (free typing — does NOT trigger re-fetches).
   const [creatorInput, setCreatorInput] = useState('');
   const [statusInput, setStatusInput] = useState<ShareTokenStatusFilter>('any');
@@ -1845,18 +1924,21 @@ function ShareTokensView() {
 
   const handleRevokeConfirm = async () => {
     if (!revokeTarget || !revokeReason.trim()) return;
-    try {
-      await adminShare.revokeToken(revokeTarget, revokeReason.trim());
-      setRevokeTarget(null);
-      setRevokeReason('');
-      setSuccessToast(t('adminShare.tokens.revokeSuccess'));
-      window.setTimeout(() => setSuccessToast(null), 3000);
-      void load();
-    } catch (err) {
-      setErrorText(
-        translateCaughtError(err, t('adminShare.tokens.revokeError')),
-      );
-    }
+    const token = revokeTarget;
+    await inFlight.run(markers.revokeShareToken(token), async () => {
+      try {
+        await adminShare.revokeToken(token, revokeReason.trim());
+        setRevokeTarget(null);
+        setRevokeReason('');
+        setSuccessToast(t('adminShare.tokens.revokeSuccess'));
+        window.setTimeout(() => setSuccessToast(null), 3000);
+        void load();
+      } catch (err) {
+        setErrorText(
+          translateCaughtError(err, t('adminShare.tokens.revokeError')),
+        );
+      }
+    });
   };
 
   const statusLabel = (s: AdminShareTokenSummary): string => {
@@ -2072,7 +2154,10 @@ function ShareTokensView() {
               </Button>
               <Button
                 variant="danger"
-                disabled={!revokeReason.trim()}
+                disabled={
+                  !revokeReason.trim() ||
+                  inFlight.isHeld(markers.revokeShareToken(revokeTarget))
+                }
                 onClick={() => void handleRevokeConfirm()}
               >
                 {t('adminShare.tokens.revokeConfirm')}

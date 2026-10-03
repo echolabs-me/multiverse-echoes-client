@@ -314,6 +314,32 @@ describe('AdminDashboardPage — Share Tokens tab', () => {
     });
   });
 
+  it('sends one revoke on a double click, and holds the button until it settles (R265)', async () => {
+    mockListTokens.mockResolvedValue({
+      items: [SHARE_ROW_ACTIVE],
+      total: 1,
+      limit: 25,
+      offset: 0,
+    });
+    mockRevokeToken.mockReturnValue(new Promise(() => {}));
+    renderPage();
+    await selectShareTokensTab();
+    await screen.findByText('aaaaaaaa…');
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Revoke' }));
+    });
+    fireEvent.change(screen.getByLabelText('Revocation reason'), {
+      target: { value: 'policy violation' },
+    });
+    const confirm = screen.getByRole('button', { name: 'Confirm revoke' });
+    await act(async () => {
+      fireEvent.click(confirm);
+      fireEvent.click(confirm);
+    });
+    expect(mockRevokeToken).toHaveBeenCalledTimes(1);
+    expect(confirm).toBeDisabled();
+  });
+
   it('revoke confirm is disabled when reason is empty', async () => {
     mockListTokens.mockResolvedValue({
       items: [SHARE_ROW_ACTIVE],

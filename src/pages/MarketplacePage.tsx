@@ -17,6 +17,8 @@ import { trackEvent } from '../lib/analytics.ts';
 import { marketplace } from '../lib/api/endpoints.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import type {
   InventoryRowResponse,
   ItemRarity,
@@ -148,6 +150,8 @@ interface CardProps {
   userTier: SubscriptionTier | null;
   onPreview: (itemId: string) => void;
   onBuy: (itemId: string) => void;
+  /** The purchase of this item is in flight (R265). */
+  busy: boolean;
 }
 
 function ItemCard({
@@ -156,6 +160,7 @@ function ItemCard({
   userTier,
   onPreview,
   onBuy,
+  busy,
 }: CardProps) {
   const { t } = useTranslation();
   const owned = ownedItemIds.has(item.item_id);
@@ -222,6 +227,7 @@ function ItemCard({
           <button
             type="button"
             data-testid="marketplace-item-buy"
+            disabled={busy}
             onClick={() => onBuy(item.item_id)}
             className="rounded-sm border border-accent px-3 py-1 text-sm text-accent hover:bg-accent-subtle"
           >
@@ -244,9 +250,12 @@ function ItemCard({
 interface InventoryRowProps {
   row: InventoryRowResponse;
   onToggle: (itemId: string, nextEquipped: boolean) => void;
+  /** The toggle's request is in flight, so a second click cannot send the
+   *  opposite value (R265.3). */
+  busy: boolean;
 }
 
-function InventoryRow({ row, onToggle }: InventoryRowProps) {
+function InventoryRow({ row, onToggle, busy }: InventoryRowProps) {
   const { t } = useTranslation();
   if (!row.item) {
     return (
@@ -280,6 +289,7 @@ function InventoryRow({ row, onToggle }: InventoryRowProps) {
       <button
         type="button"
         data-testid="marketplace-inventory-equip-toggle"
+        disabled={busy}
         onClick={() => onToggle(item.item_id, !row.equipped)}
         aria-pressed={row.equipped}
         className="rounded-sm border border-border px-3 py-1 text-sm hover:bg-surface-raised"
@@ -300,6 +310,7 @@ export function MarketplacePage() {
   const [inventory, setInventory] = useState<InventoryRowResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const inFlight = useInFlight();
   const [previewState, setPreviewState] = useState<{
     open: boolean;
     data: MarketplacePreviewResponse | null;
@@ -402,56 +413,62 @@ export function MarketplacePage() {
     async (itemId: string) => {
       const item = items.find((i) => i.item_id === itemId);
       if (!item) return;
-      try {
-        const row = await marketplace.purchase(itemId);
-        setInventory((prev) => [
-          row,
-          ...prev.filter((r) => r.item_id !== row.item_id),
-        ]);
-        trackEvent('marketplace.item_purchased', {
-          item_id: itemId,
-          category: item.category,
-          price: item.price_coins,
-          provider: 'tier_grant',
-        });
-      } catch (err) {
-        addToast(
-          translateCaughtError(err, t('marketplace.loadError')),
-          'danger',
-          { platformLink: isPlatformError(err) },
-        );
-      }
+      await inFlight.run(markers.buy(itemId), async () => {
+        try {
+          const row = await marketplace.purchase(itemId);
+          setInventory((prev) => [
+            row,
+            ...prev.filter((r) => r.item_id !== row.item_id),
+          ]);
+          trackEvent('marketplace.item_purchased', {
+            item_id: itemId,
+            category: item.category,
+            price: item.price_coins,
+            provider: 'tier_grant',
+          });
+        } catch (err) {
+          addToast(
+            translateCaughtError(err, t('marketplace.loadError')),
+            'danger',
+            { platformLink: isPlatformError(err) },
+          );
+        }
+      });
     },
-    [items, addToast, t],
+    [items, addToast, t, inFlight],
   );
 
   const handleEquipToggle = useCallback(
-    async (itemId: string, nextEquipped: boolean) => {
-      const prior = inventory;
-      // Optimistic update. The auto-unequip-others-of-same-type
-      // logic lives server-side; the client cannot replicate it
-      // accurately for non-Badge categories without re-fetching
-      // the catalog metadata for every owned item. Instead of
-      // attempting that, we re-fetch the inventory after the
-      // server confirms — the truth flows back exactly once.
-      setInventory((prev) =>
-        prev.map((r) =>
-          r.item_id === itemId ? { ...r, equipped: nextEquipped } : r,
-        ),
-      );
-      try {
-        await marketplace.equip(itemId, nextEquipped);
-        await loadInventory();
-      } catch (err) {
-        setInventory(prior);
-        addToast(
-          translateCaughtError(err, t('marketplace.equipError')),
-          'danger',
-          { platformLink: isPlatformError(err) },
+    async (itemId: string, nextEquipped: boolean) =>
+      inFlight.run(markers.equip(itemId), async () => {
+        // Optimistic update. The auto-unequip-others-of-same-type
+        // logic lives server-side; the client cannot replicate it
+        // accurately for non-Badge categories without re-fetching
+        // the catalog metadata for every owned item. Instead of
+        // attempting that, we re-fetch the inventory after the
+        // server confirms — the truth flows back exactly once.
+        setInventory((prev) =>
+          prev.map((r) =>
+            r.item_id === itemId ? { ...r, equipped: nextEquipped } : r,
+          ),
         );
-      }
-    },
-    [inventory, addToast, t, loadInventory],
+        try {
+          await marketplace.equip(itemId, nextEquipped);
+          await loadInventory();
+        } catch (err) {
+          addToast(
+            translateCaughtError(err, t('marketplace.equipError')),
+            'danger',
+            { platformLink: isPlatformError(err) },
+          );
+          // An equip changes other items too, so a failure reads the
+          // list again rather than restoring one taken before it: that
+          // would undo another item's equip that succeeded meanwhile. A
+          // failed reload shows as any failed load does (R285.3).
+          await loadInventory();
+        }
+      }),
+    [addToast, t, loadInventory, inFlight],
   );
 
   // Map enum value to kebab-case suffix for `marketplace-tab-{slug}`
@@ -535,6 +552,7 @@ export function MarketplacePage() {
               userTier={user?.subscription_tier ?? null}
               onPreview={handlePreview}
               onBuy={handleBuy}
+              busy={inFlight.isHeld(markers.buy(item.item_id))}
             />
           </li>
         ))}
@@ -578,6 +596,7 @@ export function MarketplacePage() {
             key={row.inventory_id}
             row={row}
             onToggle={handleEquipToggle}
+            busy={inFlight.isHeld(markers.equip(row.item_id))}
           />
         ))}
       </ul>

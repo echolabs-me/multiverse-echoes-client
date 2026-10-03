@@ -39,6 +39,8 @@ import { getMoodColor } from '../lib/moodColor.ts';
 import { getMoodLabel } from '../lib/moodLabel.ts';
 import { formatSimDate } from '../lib/formatSimDate.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import { useEchoStore } from '../stores/useEchoStore.ts';
 import { useShardStore } from '../stores/useShardStore.ts';
 import { useFeedStore } from '../stores/useFeedStore.ts';
@@ -132,6 +134,7 @@ export function EchoDetailPage() {
     null,
   );
   const influenceInFlight = useRef(false);
+  const inFlight = useInFlight();
   const [isInfluencing, setIsInfluencing] = useState(false);
   const [exportModal, setExportModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -593,14 +596,16 @@ export function EchoDetailPage() {
   };
 
   const handleSoloModeToggle = async () => {
-    try {
-      await accountApi.updatePrivacy({ solo_mode: !soloMode });
-      setSoloMode(!soloMode);
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    await inFlight.run(markers.soloMode(), async () => {
+      try {
+        await accountApi.updatePrivacy({ solo_mode: !soloMode });
+        setSoloMode(!soloMode);
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   if (isLoading) {
@@ -1088,7 +1093,9 @@ export function EchoDetailPage() {
                             {t('echoDetail.simulatedDay', { day })}
                           </span>
                           <span className="text-xs text-text-muted">
-                            ({entries.length})
+                            {t('echoDetail.dayEntryCount', {
+                              number: entries.length,
+                            })}
                           </span>
                         </button>
                         {expanded && (
@@ -1285,7 +1292,8 @@ export function EchoDetailPage() {
                   <input
                     type="checkbox"
                     checked={soloMode}
-                    onChange={handleSoloModeToggle}
+                    disabled={inFlight.isHeld(markers.soloMode())}
+                    onChange={() => void handleSoloModeToggle()}
                     className="size-4 rounded-sm border-border accent-accent"
                   />
                   <span className="text-sm text-text-primary">

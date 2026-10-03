@@ -65,9 +65,7 @@ export const useEchoStore = create<EchoState>((set, get) => ({
   },
 
   hibernateEcho: async (id) => {
-    // Snapshot the pre-call state so we can roll back on failure.
-    // Copy by structure (not reference) so later mutations to the
-    // list don't retroactively alter the rollback target.
+    // The pre-call entries, whose status a failure puts back.
     const prevList = get().echoList;
     const prevActive = get().activeEcho;
     const prevEntry = prevList.find((e) => e.echo_id === id);
@@ -97,18 +95,21 @@ export const useEchoStore = create<EchoState>((set, get) => ({
           get().activeEcho?.echo_id === id ? updated : get().activeEcho,
       });
     } catch (err) {
-      // Roll back the optimistic status flip. If the entry was not
-      // in the list at call time (edge case: deleted during flight),
-      // we leave the list as the mutator above wrote it.
-      if (prevEntry) {
-        set({
-          echoList: get().echoList.map((e) =>
-            e.echo_id === id ? prevEntry : e,
-          ),
-          activeEcho:
-            get().activeEcho?.echo_id === id ? prevActive : get().activeEcho,
-        });
-      }
+      // Roll back the optimistic status flip, and the status alone, on the
+      // state as it is now: restoring the whole entry taken before the
+      // request would undo any other change to it meanwhile (R285.3).
+      const active = get().activeEcho;
+      set({
+        echoList: get().echoList.map((e) =>
+          e.echo_id === id && prevEntry
+            ? { ...e, status: prevEntry.status }
+            : e,
+        ),
+        activeEcho:
+          active?.echo_id === id && prevActive?.echo_id === id
+            ? { ...active, status: prevActive.status }
+            : active,
+      });
       throw err;
     }
   },
@@ -136,15 +137,18 @@ export const useEchoStore = create<EchoState>((set, get) => ({
           get().activeEcho?.echo_id === id ? updated : get().activeEcho,
       });
     } catch (err) {
-      if (prevEntry) {
-        set({
-          echoList: get().echoList.map((e) =>
-            e.echo_id === id ? prevEntry : e,
-          ),
-          activeEcho:
-            get().activeEcho?.echo_id === id ? prevActive : get().activeEcho,
-        });
-      }
+      const active = get().activeEcho;
+      set({
+        echoList: get().echoList.map((e) =>
+          e.echo_id === id && prevEntry
+            ? { ...e, status: prevEntry.status }
+            : e,
+        ),
+        activeEcho:
+          active?.echo_id === id && prevActive?.echo_id === id
+            ? { ...active, status: prevActive.status }
+            : active,
+      });
       throw err;
     }
   },

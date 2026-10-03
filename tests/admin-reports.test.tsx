@@ -57,7 +57,9 @@ void testI18n.use(initReactI18next).init({
         'admin.title': 'Admin Dashboard',
         'admin.tabDashboard': 'Dashboard',
         'admin.tabReports': 'Reports',
-        'admin.reportQueue': 'Report queue',
+        // R284.5: the heading and its count are one key. The test text
+        // differs from what code once wrote, so a join in code fails here.
+        'admin.reportQueueCount': 'Reports waiting: {{number}}',
         'admin.slaDeadline': 'SLA deadline',
         'common.back': 'Back',
       },
@@ -87,5 +89,6 @@ describe('AdminDashboardPage reports', () => {
     expect(badge.className).toContain('warning');
     expect(screen.queryByText(/Invalid Date/)).not.toBeInTheDocument();
     expect(screen.queryByText(/SLA deadline/)).not.toBeInTheDocument();
+    expect(screen.getByText('Reports waiting: 1')).toBeInTheDocument();
   });
 });

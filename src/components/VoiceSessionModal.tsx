@@ -16,6 +16,8 @@ import { Mic, MicOff, PhoneOff, Loader2, X, Clock, Send } from 'lucide-react';
 import { Button } from './index.ts';
 import { getBaseUrl } from '../lib/api/client.ts';
 import { echoes as echoApi } from '../lib/api/endpoints.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import { VoiceAudioBridge } from '../lib/voiceAudio.ts';
 import type { VoicePipelineState } from '../lib/voiceAudio.ts';
 
@@ -43,6 +45,7 @@ export function VoiceSessionModal({
   const { t } = useTranslation();
   const [state, setState] = useState<SessionState>('idle');
   const [error, setError] = useState<string | null>(null);
+  const inFlight = useInFlight();
   const [isMuted, setIsMuted] = useState(false);
   const [transcript, setTranscript] = useState('');
   const transcriptRef = useRef<HTMLDivElement>(null);
@@ -128,11 +131,18 @@ export function VoiceSessionModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const endSession = useCallback(async () => {
-    setState('idle');
-    await cleanup();
-    onClose();
-  }, [cleanup, onClose]);
+  // Every way out (the close button, End Call, the duration limit) holds one
+  // marker, so a second trigger neither stops the session again nor closes
+  // the modal twice (R265.4).
+  const endSession = useCallback(
+    () =>
+      inFlight.run(markers.endVoiceSession(echoId), async () => {
+        setState('idle');
+        await cleanup();
+        onClose();
+      }),
+    [cleanup, onClose, inFlight, echoId],
+  );
 
   const startSession = useCallback(async () => {
     // A genuinely new call begins — arm cleanup() to run again on this session.
@@ -307,6 +317,7 @@ export function VoiceSessionModal({
       {/* Close button — always visible so user can dismiss at any state */}
       {(state === 'idle' || state === 'error' || state === 'connecting') && (
         <button
+          disabled={inFlight.isHeld(markers.endVoiceSession(echoId))}
           onClick={() => void endSession()}
           className="absolute inset-e-4 inset-bs-4 rounded-full p-2 text-text-secondary hover:bg-surface-raised hover:text-text-primary"
           aria-label={t('voice.close')}
@@ -461,6 +472,7 @@ export function VoiceSessionModal({
               </button>
             )}
             <button
+              disabled={inFlight.isHeld(markers.endVoiceSession(echoId))}
               onClick={() => void endSession()}
               className="rounded-full bg-red-500 p-4 text-white"
               aria-label={t('voice.endCall')}

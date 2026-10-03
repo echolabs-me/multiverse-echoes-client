@@ -26,6 +26,8 @@ import {
   Tabs,
 } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useThemeStore } from '../stores/useThemeStore.ts';
 import { useSoundStore } from '../lib/sounds.ts';
@@ -281,6 +283,7 @@ function AccountSection() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isChanging, setIsChanging] = useState(false);
+  const inFlight = useInFlight();
   const [sessions, setSessions] = useState<
     Array<{
       session_id: string;
@@ -332,15 +335,17 @@ function AccountSection() {
   };
 
   const handleRevokeSession = async (sessionId: string) => {
-    try {
-      await accountApi.revokeSession(sessionId);
-      setSessions((prev) => prev.filter((s) => s.session_id !== sessionId));
-      addToast(t('settings.sessionRevoked'), 'success');
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    await inFlight.run(markers.revokeSession(sessionId), async () => {
+      try {
+        await accountApi.revokeSession(sessionId);
+        setSessions((prev) => prev.filter((s) => s.session_id !== sessionId));
+        addToast(t('settings.sessionRevoked'), 'success');
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   return (
@@ -448,6 +453,9 @@ function AccountSection() {
                 {!session.current && (
                   <Button
                     variant="ghost"
+                    disabled={inFlight.isHeld(
+                      markers.revokeSession(session.session_id),
+                    )}
                     onClick={() => void handleRevokeSession(session.session_id)}
                   >
                     {t('settings.revokeSession')}
@@ -475,6 +483,7 @@ function PrivacySection() {
   const [cleanupPending, setCleanupPending] = useState(false);
   const [doNotSell, setDoNotSell] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const inFlight = useInFlight();
 
   // Reads the stored settings, so the page shows what the server holds.
   const loadPrivacy = useCallback(async () => {
@@ -499,44 +508,52 @@ function PrivacySection() {
   }, [loadPrivacy]);
 
   const handleSoloModeToggle = async () => {
-    try {
-      await accountApi.updatePrivacy({ solo_mode: !soloMode });
-      setSoloMode(!soloMode);
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    await inFlight.run(markers.soloMode(), async () => {
+      try {
+        await accountApi.updatePrivacy({ solo_mode: !soloMode });
+        setSoloMode(!soloMode);
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   // A failed request can leave the opt-out stored with its name removal
   // unfinished, so the stored settings are read again after one (R220.3).
+  // The toggle and the Retry button send the same write, so they hold one
+  // marker (R265).
   const setCommunityOptOutTo = async (on: boolean) => {
-    try {
-      const result = await accountApi.updatePrivacy({
-        community_opt_out: on,
-      });
-      setCommunityOptOut(result.community_opt_out);
-      setCleanupPending(result.community_opt_out_cleanup_pending);
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-      await loadPrivacy();
-    }
+    await inFlight.run(markers.communityOptOut(), async () => {
+      try {
+        const result = await accountApi.updatePrivacy({
+          community_opt_out: on,
+        });
+        setCommunityOptOut(result.community_opt_out);
+        setCleanupPending(result.community_opt_out_cleanup_pending);
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+        await loadPrivacy();
+      }
+    });
   };
 
   const handleDoNotSellToggle = async () => {
-    try {
-      const result = await accountApi.updatePrivacy({
-        do_not_sell: !doNotSell,
-      });
-      setDoNotSell(result.do_not_sell);
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    await inFlight.run(markers.doNotSell(), async () => {
+      try {
+        const result = await accountApi.updatePrivacy({
+          do_not_sell: !doNotSell,
+        });
+        setDoNotSell(result.do_not_sell);
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   const handleExport = async () => {
@@ -574,6 +591,7 @@ function PrivacySection() {
               id="solo-mode-toggle"
               type="checkbox"
               checked={soloMode}
+              disabled={inFlight.isHeld(markers.soloMode())}
               onChange={() => void handleSoloModeToggle()}
               className="size-4 rounded-sm border-border accent-accent"
               aria-label={t('settings.soloMode')}
@@ -592,6 +610,7 @@ function PrivacySection() {
               id="community-opt-out-toggle"
               type="checkbox"
               checked={communityOptOut}
+              disabled={inFlight.isHeld(markers.communityOptOut())}
               onChange={() => void setCommunityOptOutTo(!communityOptOut)}
               className="size-4 rounded-sm border-border accent-accent"
               aria-label={t('settings.communityOptOut')}
@@ -612,6 +631,7 @@ function PrivacySection() {
               </p>
               <Button
                 variant="secondary"
+                disabled={inFlight.isHeld(markers.communityOptOut())}
                 onClick={() => void setCommunityOptOutTo(true)}
               >
                 {t('settings.communityOptOutRetry')}
@@ -623,6 +643,7 @@ function PrivacySection() {
               id="do-not-sell-toggle"
               type="checkbox"
               checked={doNotSell}
+              disabled={inFlight.isHeld(markers.doNotSell())}
               onChange={() => void handleDoNotSellToggle()}
               className="size-4 rounded-sm border-border accent-accent"
               aria-label={t('settings.doNotSellLabel')}
@@ -676,6 +697,7 @@ function NotificationPrefsSection() {
   const addToast = useToastStore((s) => s.addToast);
   const [prefs, setPrefs] = useState<NotificationPreferences | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const inFlight = useInFlight();
 
   useEffect(() => {
     const load = async () => {
@@ -696,16 +718,21 @@ function NotificationPrefsSection() {
     key: keyof NotificationPreferences,
     value: string,
   ) => {
-    try {
-      const updated = await accountApi.updateNotificationPreferences({
-        [key]: value,
-      });
-      setPrefs(updated);
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    await inFlight.run(markers.notificationPref(key), async () => {
+      try {
+        const updated = await accountApi.updateNotificationPreferences({
+          [key]: value,
+        });
+        // Every response carries every preference. Only the one this
+        // request sent is taken, so a late response for one preference
+        // does not undo another's save (R285.4).
+        setPrefs((cur) => (cur ? { ...cur, [key]: updated[key] } : updated));
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   if (isLoading || !prefs) {
@@ -748,9 +775,10 @@ function NotificationPrefsSection() {
                 ) : (
                   <select
                     value={value}
+                    disabled={inFlight.isHeld(markers.notificationPref(key))}
                     onChange={(e) => void updatePref(key, e.target.value)}
                     className="rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary focus:border-accent focus:outline-none"
-                    aria-label={`${label} preference`}
+                    aria-label={t('settings.prefSelectLabel', { label })}
                   >
                     <option value="InApp">{t('settings.inAppOnly')}</option>
                     <option value="InAppAndEmail">
@@ -1032,6 +1060,7 @@ function DiscordLinkSection() {
   const [linked, setLinked] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const inFlight = useInFlight();
 
   useEffect(() => {
     void accountApi
@@ -1045,31 +1074,35 @@ function DiscordLinkSection() {
   }, []);
 
   const handleLink = async () => {
-    try {
-      const { auth_url } = await accountApi.linkDiscord();
-      window.location.href = auth_url;
-    } catch (err) {
-      if (import.meta.env.DEV) {
-        // eslint-disable-next-line no-console -- user sees toast; dev log surfaces OAuth link-init failures (e.g. Discord config issues)
-        console.error('[DiscordLink] link failed:', err);
+    await inFlight.run(markers.discordLink(), async () => {
+      try {
+        const { auth_url } = await accountApi.linkDiscord();
+        window.location.href = auth_url;
+      } catch (err) {
+        if (import.meta.env.DEV) {
+          // eslint-disable-next-line no-console -- user sees toast; dev log surfaces OAuth link-init failures (e.g. Discord config issues)
+          console.error('[DiscordLink] link failed:', err);
+        }
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
       }
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    });
   };
 
   const handleUnlink = async () => {
-    try {
-      await accountApi.unlinkDiscord();
-      setLinked(false);
-      setUsername(null);
-      addToast(t('settings.discordUnlinked'), 'success');
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    await inFlight.run(markers.discordUnlink(), async () => {
+      try {
+        await accountApi.unlinkDiscord();
+        setLinked(false);
+        setUsername(null);
+        addToast(t('settings.discordUnlinked'), 'success');
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   if (loading)
@@ -1116,6 +1149,7 @@ function DiscordLinkSection() {
             </div>
           </div>
           <button
+            disabled={inFlight.isHeld(markers.discordUnlink())}
             onClick={() => void handleUnlink()}
             className="hover:bg-surface-hover rounded-md border border-border px-3 py-1.5 text-xs text-text-secondary transition-colors"
           >
@@ -1125,10 +1159,10 @@ function DiscordLinkSection() {
       ) : (
         <>
           <p className="mbe-3 text-sm text-text-secondary">
-            Link your Discord account to sync your identity across in-app and
-            Discord communities.
+            {t('settings.discordLinkDesc')}
           </p>
           <button
+            disabled={inFlight.isHeld(markers.discordLink())}
             onClick={() => void handleLink()}
             className="flex items-center gap-2 rounded-lg bg-[#5865F2] px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#4752C4]"
           >

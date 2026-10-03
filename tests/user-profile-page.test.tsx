@@ -1,7 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import {
+  render,
+  screen,
+  act,
+  waitFor,
+  fireEvent,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
 
@@ -107,6 +113,49 @@ function renderPage(path = `/users/${TARGET_USER}`) {
       </MemoryRouter>
     </I18nextProvider>,
   );
+}
+
+const OTHER_USER = '22222222-2222-2222-2222-222222222222';
+
+/** A link to the other user's profile, so the route reuses the page. */
+function ToOtherUser() {
+  const navigate = useNavigate();
+  return (
+    <button type="button" onClick={() => navigate(`/users/${OTHER_USER}`)}>
+      Go to the other user
+    </button>
+  );
+}
+
+function renderWithLinkToOtherUser() {
+  return render(
+    <I18nextProvider i18n={testI18n}>
+      <MemoryRouter initialEntries={[`/users/${TARGET_USER}`]}>
+        <Routes>
+          <Route
+            path="/users/:user_id"
+            element={
+              <>
+                <UserProfilePage />
+                <ToOtherUser />
+              </>
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    </I18nextProvider>,
+  );
+}
+
+/** A promise the test settles by hand. */
+function deferred() {
+  let resolve!: (v: unknown) => void;
+  let reject!: (e: unknown) => void;
+  const promise = new Promise((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return { promise, resolve, reject };
 }
 
 function publicProfile(overrides: Record<string, unknown> = {}) {
@@ -242,6 +291,115 @@ describe('UserProfilePage — action buttons', () => {
     );
     expect(mocks.follow).toHaveBeenCalledTimes(1);
     expect(mocks.follow).toHaveBeenCalledWith(TARGET_USER);
+  });
+
+  it('holds each kind of action on its own marker: a block that settles does not free a follow in flight (R265.2)', async () => {
+    mocks.follow.mockReturnValue(new Promise(() => {}));
+    mocks.block.mockResolvedValue({});
+    await act(async () => {
+      renderPage();
+    });
+    const follow = await screen.findByRole('button', { name: 'Follow' });
+    await act(async () => {
+      fireEvent.click(follow);
+      fireEvent.click(follow);
+    });
+    expect(mocks.follow).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Block' }));
+    });
+    expect(mocks.block).toHaveBeenCalledTimes(1);
+    // The follow has not settled, so its button stays held.
+    const held = screen.getByRole('button', { name: 'Unfollow' });
+    expect(held).toBeDisabled();
+    await act(async () => {
+      fireEvent.click(held);
+    });
+    expect(mocks.unfollow).not.toHaveBeenCalled();
+  });
+
+  it('holds a follow on its target: a follow in flight on one user does not disable Follow on another (R285.2)', async () => {
+    mocks.getProfile.mockImplementation((id: string) =>
+      Promise.resolve(publicProfile({ user_id: id })),
+    );
+    mocks.follow.mockImplementation((id: string) =>
+      id === TARGET_USER ? new Promise(() => {}) : Promise.resolve({}),
+    );
+    await act(async () => {
+      renderWithLinkToOtherUser();
+    });
+    await act(async () => {
+      fireEvent.click(await screen.findByRole('button', { name: 'Follow' }));
+    });
+    expect(screen.getByRole('button', { name: 'Unfollow' })).toBeDisabled();
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Go to the other user' }),
+      );
+    });
+    await waitFor(() =>
+      expect(mocks.getProfile).toHaveBeenLastCalledWith(OTHER_USER),
+    );
+    const follow = await screen.findByRole('button', { name: 'Follow' });
+    expect(follow).toBeEnabled();
+    await act(async () => {
+      fireEvent.click(follow);
+    });
+    expect(mocks.follow).toHaveBeenCalledTimes(2);
+    expect(mocks.follow).toHaveBeenLastCalledWith(OTHER_USER);
+  });
+
+  it('a follow that fails after a block has succeeded leaves the block on screen (R285.3)', async () => {
+    const follow = deferred();
+    mocks.follow.mockReturnValue(follow.promise);
+    mocks.block.mockResolvedValue({});
+    await act(async () => {
+      renderPage();
+    });
+    await act(async () => {
+      fireEvent.click(await screen.findByRole('button', { name: 'Follow' }));
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Block' }));
+    });
+    expect(screen.getByRole('button', { name: 'Unblock' })).toBeEnabled();
+    await act(async () => {
+      follow.reject(new Error('boom'));
+    });
+    // The follow's own field goes back, and the block it did not change
+    // stays.
+    expect(screen.getByRole('button', { name: 'Follow' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Unblock' })).toBeInTheDocument();
+  });
+
+  it('a follow that fails after the page has moved to another user changes nothing there (R285.3)', async () => {
+    const follow = deferred();
+    mocks.getProfile.mockImplementation((id: string) =>
+      Promise.resolve(publicProfile({ user_id: id })),
+    );
+    // The other user is already followed, so a stray undo of a follow
+    // would show Follow on their page.
+    mocks.socialFollowing.mockResolvedValue([{ target_user_id: OTHER_USER }]);
+    mocks.follow.mockReturnValue(follow.promise);
+    await act(async () => {
+      renderWithLinkToOtherUser();
+    });
+    await act(async () => {
+      fireEvent.click(await screen.findByRole('button', { name: 'Follow' }));
+    });
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Go to the other user' }),
+      );
+    });
+    expect(
+      await screen.findByRole('button', { name: 'Unfollow' }),
+    ).toBeEnabled();
+    await act(async () => {
+      follow.reject(new Error('boom'));
+    });
+    expect(screen.getByRole('button', { name: 'Unfollow' })).toBeEnabled();
+    expect(screen.queryByRole('button', { name: 'Follow' })).toBeNull();
   });
 
   it('clicking Block calls users.block exactly once with the target user_id', async () => {

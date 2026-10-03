@@ -50,6 +50,8 @@ void testI18n.use(initReactI18next).init({
         'search.typeShard': 'Shards',
         'search.typeMessage': 'Messages',
         'search.filterByType': 'Filter by content type',
+        // R284.5: the count's brackets are the key's, not the code's.
+        'search.groupCount': '[{{number}}]',
         'search.dateFrom': 'From date',
         'search.dateTo': 'To date',
         'search.resultCount': '{{count}} results',
@@ -164,6 +166,7 @@ describe('SearchPage', () => {
       name: /under a copper sky/,
     });
     expect(screen.getByRole('heading', { name: /Shards/ })).toBeInTheDocument();
+    expect(screen.getByText('[1]')).toBeInTheDocument();
     fireEvent.click(result);
     expect(await screen.findByText(/^opened shard /)).toHaveTextContent(
       'opened shard shard-9',

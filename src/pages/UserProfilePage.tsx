@@ -11,6 +11,8 @@ import {
   isPlatformError,
 } from '../lib/translateError.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import type {
   EchoInCommonRef,
   PublicEchoRef,
@@ -49,6 +51,13 @@ const DEFAULT_REL: RelationshipState = {
   muted: false,
 };
 
+// The relationship state names the user it was read for, so an action that
+// settles after the page has moved to another user changes nothing on that
+// user's page (R285.3).
+interface OwnedRelationshipState extends RelationshipState {
+  owner: string | null;
+}
+
 export function UserProfilePage() {
   const { user_id: userId } = useParams<{ user_id: string }>();
   const { t } = useTranslation();
@@ -57,8 +66,14 @@ export function UserProfilePage() {
   const [profile, setProfile] = useState<PublicProfileResponse | null>(null);
   const [echoes, setEchoes] = useState<PublicEchoRef[]>([]);
   const [echoesInCommon, setEchoesInCommon] = useState<EchoInCommonRef[]>([]);
-  const [rel, setRel] = useState<RelationshipState>(DEFAULT_REL);
-  const [pending, setPending] = useState<keyof RelationshipState | null>(null);
+  const [rel, setRel] = useState<OwnedRelationshipState>({
+    owner: null,
+    ...DEFAULT_REL,
+  });
+  // One marker per kind of action and target user, so a block in flight
+  // does not free a follow in flight, and a follow in flight on one user
+  // does not hold Follow on another (R265.2, R285.2).
+  const inFlight = useInFlight();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<
     { kind: 'not-found' } | { kind: 'load-failed'; text: string } | null
@@ -86,6 +101,7 @@ export function UserProfilePage() {
       setEchoes(echoesResp);
       setEchoesInCommon(eicResp);
       setRel({
+        owner: userId,
         following: contains(following, userId),
         blocked: contains(blocked, userId),
         muted: contains(muted, userId),
@@ -131,26 +147,30 @@ export function UserProfilePage() {
       run: () => Promise<unknown>,
     ) => {
       if (!userId) return;
-      setPending(kind);
-      const prev = rel;
-      // Optimistic update.
-      setRel({ ...prev, [kind]: next });
-      try {
-        await run();
-        trackEvent('profile.action', { user_id: userId, kind, next });
-      } catch (err) {
-        // Revert + toast.
-        setRel(prev);
-        addToast(
-          translateCaughtError(err, t('userProfile.actionFailed')),
-          'danger',
-          { platformLink: isPlatformError(err) },
+      const target = userId;
+      // Each write changes one field, so the optimistic change and its
+      // undo set that field alone, on the state as it is then, and only
+      // while the page still shows the target (R285.3).
+      const setField = (value: boolean) =>
+        setRel((cur) =>
+          cur.owner === target ? { ...cur, [kind]: value } : cur,
         );
-      } finally {
-        setPending(null);
-      }
+      await inFlight.run(markers[kind](target), async () => {
+        setField(next);
+        try {
+          await run();
+          trackEvent('profile.action', { user_id: target, kind, next });
+        } catch (err) {
+          setField(!next);
+          addToast(
+            translateCaughtError(err, t('userProfile.actionFailed')),
+            'danger',
+            { platformLink: isPlatformError(err) },
+          );
+        }
+      });
     },
-    [userId, rel, addToast, t],
+    [userId, addToast, t, inFlight],
   );
 
   if (!userId) {
@@ -243,7 +263,7 @@ export function UserProfilePage() {
           available per ME-UXF-001 §8.2 Private branch). */}
       <ActionRow
         rel={rel}
-        pending={pending}
+        isPending={(kind) => inFlight.isHeld(markers[kind](userId))}
         viewIsPrivate={view === 'Private'}
         onFollow={() =>
           handleAction('following', true, () => users.follow(userId))
@@ -354,7 +374,7 @@ export function UserProfilePage() {
 
 interface ActionRowProps {
   rel: RelationshipState;
-  pending: keyof RelationshipState | null;
+  isPending: (kind: keyof RelationshipState) => boolean;
   viewIsPrivate: boolean;
   onFollow: () => void;
   onUnfollow: () => void;
@@ -368,7 +388,7 @@ function ActionRow(props: ActionRowProps) {
   const { t } = useTranslation();
   const {
     rel,
-    pending,
+    isPending,
     viewIsPrivate,
     onFollow,
     onUnfollow,
@@ -386,7 +406,7 @@ function ActionRow(props: ActionRowProps) {
           rel.following ? 'profile-action-unfollow' : 'profile-action-follow'
         }
         onClick={rel.following ? onUnfollow : onFollow}
-        disabled={pending === 'following'}
+        disabled={isPending('following')}
         aria-pressed={rel.following}
         className="rounded-sm border px-3 py-1 hover:bg-white/5 disabled:opacity-60"
       >
@@ -406,7 +426,7 @@ function ActionRow(props: ActionRowProps) {
               rel.blocked ? 'profile-action-unblock' : 'profile-action-block'
             }
             onClick={rel.blocked ? onUnblock : onBlock}
-            disabled={pending === 'blocked'}
+            disabled={isPending('blocked')}
             aria-pressed={rel.blocked}
             className="rounded-sm border px-3 py-1 hover:bg-white/5 disabled:opacity-60"
           >
@@ -420,7 +440,7 @@ function ActionRow(props: ActionRowProps) {
               rel.muted ? 'profile-action-unmute' : 'profile-action-mute'
             }
             onClick={rel.muted ? onUnmute : onMute}
-            disabled={pending === 'muted'}
+            disabled={isPending('muted')}
             aria-pressed={rel.muted}
             className="rounded-sm border px-3 py-1 hover:bg-white/5 disabled:opacity-60"
           >

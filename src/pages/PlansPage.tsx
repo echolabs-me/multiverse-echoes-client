@@ -231,7 +231,7 @@ function formatPrice(cents: number): string {
 export function PlansPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const pageTitle = `${t('payment.title')} — Multiverse Echoes`;
+  const pageTitle = t('payment.pageTitle');
   const pageDesc = t('payment.subtitle');
   const user = useAuthStore((s) => s.user);
   const addToast = useToastStore((s) => s.addToast);

@@ -1,5 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, act, fireEvent } from '@testing-library/react';
+import {
+  render,
+  screen,
+  act,
+  fireEvent,
+  waitFor,
+} from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
@@ -9,18 +16,23 @@ import { PaymentSuccessPage } from '../src/pages/PaymentSuccessPage.tsx';
 import { PaymentCancelledPage } from '../src/pages/PaymentCancelledPage.tsx';
 import { TipPage } from '../src/pages/TipPage.tsx';
 
-vi.mock('../src/stores/useAuthStore.ts', () => ({
-  useAuthStore: (selector: (s: unknown) => unknown) => {
-    const state = {
-      user: {
-        user_id: 'test-id',
-        subscription_tier: 'Free',
-        subscription_expires_at: null,
-      },
-    };
-    return selector(state);
-  },
-}));
+// The mock applies the selector and answers `getState` and `subscribe`, as
+// the store does; it never changes, so it notifies nobody (R296.1).
+vi.mock('../src/stores/useAuthStore.ts', () => {
+  const state = {
+    user: {
+      user_id: 'test-id',
+      subscription_tier: 'Free',
+      subscription_expires_at: null,
+    },
+  };
+  return {
+    useAuthStore: Object.assign(
+      (selector: (s: unknown) => unknown) => selector(state),
+      { getState: () => state, subscribe: () => () => {} },
+    ),
+  };
+});
 
 // Payment mocks exposed at module scope so the Stripe-toast test can
 // assert non-invocation alongside the happy-path calls that other tests use.
@@ -80,6 +92,8 @@ void testI18n.use(initReactI18next).init({
         'payment.payWithCrypto': 'Pay with Crypto',
         'payment.payWithXRP': 'Pay with XRP',
         'payment.payWithCryptoAmount': 'Pay with Crypto — {{amount}}',
+        // R284.5: the page title is one key.
+        'payment.pageTitle': 'All plans | ME',
         'payment.payWithXRPAmount': 'Pay with XRP — {{amount}}',
         'payment.cardComingSoon': 'Available after company incorporation',
         'payment.cryptoUnavailable': 'Crypto payments temporarily unavailable.',
@@ -170,6 +184,21 @@ void testI18n.use(initReactI18next).init({
 // ── PlansPage ───────────────────────────────────────────────────
 
 describe('PlansPage', () => {
+  it('titles the page from one key (R284.5)', async () => {
+    await act(async () => {
+      render(
+        <HelmetProvider>
+          <I18nextProvider i18n={testI18n}>
+            <MemoryRouter>
+              <PlansPage />
+            </MemoryRouter>
+          </I18nextProvider>
+        </HelmetProvider>,
+      );
+    });
+    await waitFor(() => expect(document.title).toBe('All plans | ME'));
+  });
+
   function renderPage() {
     return render(
       <I18nextProvider i18n={testI18n}>

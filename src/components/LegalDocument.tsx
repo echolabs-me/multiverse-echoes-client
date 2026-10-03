@@ -255,8 +255,8 @@ export function LegalDocument({
 
   // Meta title for this doc localises automatically via the rendered `doc`.
   const metaTitle = useMemo(
-    () => `${doc.title} — Multiverse Echoes`,
-    [doc.title],
+    () => t('common.legalPageTitle', { title: doc.title }),
+    [doc.title, t],
   );
 
   return (

@@ -1,5 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, act, waitFor, within } from '@testing-library/react';
+import {
+  render,
+  screen,
+  act,
+  waitFor,
+  within,
+  fireEvent,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
@@ -27,12 +34,18 @@ vi.mock('../src/stores/useToastStore.ts', () => ({
   },
 }));
 
-vi.mock('../src/stores/useAuthStore.ts', () => ({
-  useAuthStore: (selector?: (s: unknown) => unknown) => {
-    const state = { user: mocks.user };
-    return selector ? selector(state) : state;
-  },
-}));
+// The mock applies the selector and answers `getState` and `subscribe`, as
+// the store does; it never changes, so it notifies nobody (R296.1).
+vi.mock('../src/stores/useAuthStore.ts', () => {
+  const state = () => ({ user: mocks.user });
+  return {
+    useAuthStore: Object.assign(
+      (selector?: (s: unknown) => unknown) =>
+        selector ? selector(state()) : state(),
+      { getState: state, subscribe: () => () => {} },
+    ),
+  };
+});
 
 vi.mock('../src/lib/analytics.ts', () => ({
   trackEvent: mocks.trackEvent,
@@ -385,6 +398,59 @@ describe('MarketplacePage — inventory tab', () => {
 });
 
 // ==================================================================
+// Each write sends once (R265)
+// ==================================================================
+
+describe('MarketplacePage — each write sends once (R265)', () => {
+  it('buying an item: a double click sends one purchase, and Buy is held', async () => {
+    mocks.user = { subscription_tier: 'Starter' };
+    mocks.list.mockResolvedValue({
+      data: [item({ price_tier_required: 'Starter' })],
+      next_cursor: null,
+    });
+    mocks.purchase.mockReturnValue(new Promise(() => {}));
+    await act(async () => {
+      renderPage();
+    });
+    const buy = await screen.findByRole('button', { name: 'Buy' });
+    await act(async () => {
+      fireEvent.click(buy);
+      fireEvent.click(buy);
+    });
+    expect(mocks.purchase).toHaveBeenCalledTimes(1);
+    expect(buy).toBeDisabled();
+  });
+
+  it('the equip toggle: a double click sends one request, never the opposite value, and the toggle is held', async () => {
+    const user = userEvent.setup();
+    mocks.inventory.mockResolvedValue({
+      data: [
+        inventoryRow({
+          item_id: 'inv-1',
+          equipped: false,
+          item: item({ item_id: 'inv-1', name: 'Aurora Skin' }),
+        }),
+      ],
+      next_cursor: null,
+    });
+    mocks.equip.mockReturnValue(new Promise(() => {}));
+    await act(async () => {
+      renderPage();
+    });
+    await user.click(await screen.findByRole('tab', { name: 'My Inventory' }));
+    const toggle = await screen.findByRole('button', { name: 'Equip' });
+    await act(async () => {
+      fireEvent.click(toggle);
+      fireEvent.click(toggle);
+    });
+    expect(mocks.equip.mock.calls).toEqual([['inv-1', true]]);
+    expect(
+      screen.getByTestId('marketplace-inventory-equip-toggle'),
+    ).toBeDisabled();
+  });
+});
+
+// ==================================================================
 // Optimistic-UI rollback — 1 test
 // ==================================================================
 
@@ -423,6 +489,85 @@ describe('MarketplacePage — equip rollback', () => {
     );
     // Button reverts to "Equip" (was optimistically "Unequip" mid-flight).
     expect(screen.getByRole('button', { name: 'Equip' })).toBeInTheDocument();
+  });
+});
+
+describe('MarketplacePage — a failed equip reads the list again (R285.3)', () => {
+  const row = (id: string, name: string, equipped: boolean) =>
+    inventoryRow({
+      inventory_id: `row-${id}`,
+      item_id: id,
+      equipped,
+      item: item({ item_id: id, name }),
+    });
+
+  async function openInventory() {
+    const user = userEvent.setup();
+    await act(async () => {
+      renderPage();
+    });
+    await user.click(await screen.findByRole('tab', { name: 'My Inventory' }));
+  }
+
+  const toggleIn = async (id: string) =>
+    within(
+      await screen.findByTestId(`marketplace-inventory-row-${id}`),
+    ).getByTestId('marketplace-inventory-equip-toggle');
+
+  it("an equip that fails after another item's equip has succeeded leaves that item equipped", async () => {
+    // The server's inventory, which each read returns as it is then.
+    let server = [row('a', 'Aurora', false), row('b', 'Borealis', false)];
+    mocks.inventory.mockImplementation(() =>
+      Promise.resolve({ data: server, next_cursor: null }),
+    );
+    let failA!: (e: unknown) => void;
+    mocks.equip.mockImplementation((id: string) => {
+      if (id === 'a') {
+        return new Promise((_, reject) => {
+          failA = reject;
+        });
+      }
+      server = [row('a', 'Aurora', false), row('b', 'Borealis', true)];
+      return Promise.resolve(row('b', 'Borealis', true));
+    });
+    await openInventory();
+    await act(async () => {
+      fireEvent.click(await toggleIn('a'));
+    });
+    await act(async () => {
+      fireEvent.click(await toggleIn('b'));
+    });
+    await waitFor(async () =>
+      expect(await toggleIn('b')).toHaveTextContent('Unequip'),
+    );
+    await act(async () => {
+      failA(new Error('boom'));
+    });
+    await waitFor(async () =>
+      expect(await toggleIn('a')).toHaveTextContent('Equip'),
+    );
+    expect(await toggleIn('a')).not.toHaveTextContent('Unequip');
+    expect(await toggleIn('b')).toHaveTextContent('Unequip');
+  });
+
+  it('a reload that fails after a failed equip shows the load error', async () => {
+    mocks.inventory.mockResolvedValueOnce({
+      data: [row('a', 'Aurora', false)],
+      next_cursor: null,
+    });
+    mocks.inventory.mockResolvedValueOnce({
+      data: [row('a', 'Aurora', false)],
+      next_cursor: null,
+    });
+    mocks.inventory.mockRejectedValue(new Error('down'));
+    mocks.equip.mockRejectedValue(new Error('boom'));
+    await openInventory();
+    await act(async () => {
+      fireEvent.click(await toggleIn('a'));
+    });
+    expect(
+      await screen.findByTestId('marketplace-load-error'),
+    ).toHaveTextContent('Couldn’t load the marketplace.');
   });
 });
 

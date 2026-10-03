@@ -11,11 +11,14 @@ import { useToastStore } from '../stores/useToastStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { account as accountApi } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 
 export function DeleteAccountPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const logout = useAuthStore((s) => s.logout);
+  const inFlight = useInFlight();
   const addToast = useToastStore((s) => s.addToast);
   const [confirmText, setConfirmText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -27,8 +30,13 @@ export function DeleteAccountPage() {
       await accountApi.deleteAccount();
       trackEvent('account.deletion_initiated', { tier: 'Free' });
       addToast(t('settings.deleteAccountGrace', { days: 30 }), 'info');
-      await logout();
-      navigate('/login');
+      // The sidebar's Log out sends the same write, so both hold one marker
+      // (R288.5). If it is held, this page sends nothing and leaves the
+      // navigation to the logout in flight (R294.3).
+      await inFlight.run(markers.logout(), async () => {
+        await logout();
+        navigate('/login');
+      });
     } catch (err) {
       addToast(translateCaughtError(err, t('common.error')), 'danger', {
         platformLink: isPlatformError(err),
@@ -79,7 +87,11 @@ export function DeleteAccountPage() {
             <Button
               variant="danger"
               onClick={() => void handleDelete()}
-              disabled={confirmText !== 'DELETE' || isDeleting}
+              disabled={
+                confirmText !== 'DELETE' ||
+                isDeleting ||
+                inFlight.isHeld(markers.logout())
+              }
             >
               {t('settings.deleteAccount')}
             </Button>

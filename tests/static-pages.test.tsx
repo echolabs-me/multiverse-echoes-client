@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, waitFor } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
@@ -28,6 +29,7 @@ void testI18n.use(initReactI18next).init({
         // R284.5: the label and the date are one key. The test text differs
         // from what code once wrote, so a join in code fails here.
         'common.legalLastUpdated': 'Revised {{date}}',
+        'common.legalPageTitle': '{{title}} | ME',
       },
     },
   },
@@ -75,6 +77,23 @@ describe('TermsPage', () => {
       );
     });
     expect(screen.getByText('Revised 31 March 2026')).toBeInTheDocument();
+  });
+
+  it("titles the page with one key's text and the document's title (R284.5)", async () => {
+    await act(async () => {
+      render(
+        <HelmetProvider>
+          <I18nextProvider i18n={testI18n}>
+            <MemoryRouter>
+              <TermsPage />
+            </MemoryRouter>
+          </I18nextProvider>
+        </HelmetProvider>,
+      );
+    });
+    await waitFor(() =>
+      expect(document.title).toBe('Terms of Service | ME'),
+    );
   });
 });
 

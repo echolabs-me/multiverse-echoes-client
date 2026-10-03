@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { Button, Spinner, EmptyState } from '../components/index.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
+import { useInFlight } from '../hooks/useInFlight.ts';
+import { markers } from '../lib/inFlightMarkers.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import {
   channels as channelApi,
@@ -47,6 +49,7 @@ export function CommunityPage() {
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [messageText, setMessageText] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const inFlight = useInFlight();
 
   // Edit/delete/report state
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
@@ -245,37 +248,45 @@ export function CommunityPage() {
 
   const handleEdit = async (messageId: string) => {
     if (!activeChannel || !editText.trim()) return;
-    try {
-      const updated = await channelApi.editMessage(
-        activeChannel.channel_id,
-        messageId,
-        { content: editText.trim() },
-      );
-      setMessages((prev) =>
-        prev.map((m) => (m.message_id === messageId ? updated : m)),
-      );
-      setEditingMessageId(null);
-      addToast(t('community.messageEdited'), 'success');
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    const channelId = activeChannel.channel_id;
+    const content = editText.trim();
+    await inFlight.run(markers.editMessage(messageId), async () => {
+      try {
+        const updated = await channelApi.editMessage(channelId, messageId, {
+          content,
+        });
+        setMessages((prev) =>
+          prev.map((m) => (m.message_id === messageId ? updated : m)),
+        );
+        setEditingMessageId(null);
+        addToast(t('community.messageEdited'), 'success');
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   const handleDelete = async (messageId: string) => {
     if (!activeChannel) return;
-    try {
-      await channelApi.deleteMessage(activeChannel.channel_id, messageId);
-      setMessages((prev) => prev.filter((m) => m.message_id !== messageId));
-      addToast(t('community.messageDeleted'), 'success');
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    const channelId = activeChannel.channel_id;
+    await inFlight.run(markers.deleteMessage(messageId), async () => {
+      try {
+        await channelApi.deleteMessage(channelId, messageId);
+        setMessages((prev) => prev.filter((m) => m.message_id !== messageId));
+        addToast(t('community.messageDeleted'), 'success');
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
+  // The marker holds the upload; `isSending` disables the composer while it
+  // is in flight (R285.1), and the marker disables the upload button in any
+  // page mounted while it is held (R294.2).
   const handleImageUpload = async (file: File) => {
     if (!activeChannel) return;
     if (file.size > 5 * 1024 * 1024) {
@@ -286,36 +297,41 @@ export function CommunityPage() {
       addToast(t('community.onlyImages'), 'danger');
       return;
     }
-    setIsSending(true);
-    try {
-      const msg = await channelApi.uploadImage(activeChannel.channel_id, file);
-      setMessages((prev) => [...prev, msg]);
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    } finally {
-      setIsSending(false);
-    }
+    const channelId = activeChannel.channel_id;
+    await inFlight.run(markers.upload('page', channelId), async () => {
+      setIsSending(true);
+      try {
+        const msg = await channelApi.uploadImage(channelId, file);
+        setMessages((prev) => [...prev, msg]);
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      } finally {
+        setIsSending(false);
+      }
+    });
   };
 
   const handlePollVote = async (msg: ChannelMessage, answerId: number) => {
     if (!activeChannel || !msg.poll_data) return;
-    try {
-      const poll: import('../types/api.ts').PollData = JSON.parse(
-        msg.poll_data,
-      );
-      await channelApi.pollVote(activeChannel.channel_id, {
-        discord_message_id: poll.discord_message_id,
-        discord_channel_id: poll.discord_channel_id,
-        answer_id: answerId,
-      });
-      addToast(t('community.voteRecorded'), 'success');
-    } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
+    const channelId = activeChannel.channel_id;
+    const pollData = msg.poll_data;
+    await inFlight.run(markers.vote(msg.message_id), async () => {
+      try {
+        const poll: import('../types/api.ts').PollData = JSON.parse(pollData);
+        await channelApi.pollVote(channelId, {
+          discord_message_id: poll.discord_message_id,
+          discord_channel_id: poll.discord_channel_id,
+          answer_id: answerId,
+        });
+        addToast(t('community.voteRecorded'), 'success');
+      } catch (err) {
+        addToast(translateCaughtError(err, t('common.error')), 'danger', {
+          platformLink: isPlatformError(err),
+        });
+      }
+    });
   };
 
   const handleCreatePoll = async () => {
@@ -489,6 +505,9 @@ export function CommunityPage() {
                                 onChange={(e) => setEditText(e.target.value)}
                                 maxLength={MAX_MESSAGE_LENGTH}
                                 aria-label={t('community.editMessageLabel')}
+                                disabled={inFlight.isHeld(
+                                  markers.editMessage(msg.message_id),
+                                )}
                                 className="flex-1 rounded-sm border border-border bg-surface px-2 py-1 text-sm text-text-primary focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
                                 onKeyDown={(e) => {
                                   if (e.key === 'Enter')
@@ -501,6 +520,9 @@ export function CommunityPage() {
                               />
                               <Button
                                 variant="ghost"
+                                disabled={inFlight.isHeld(
+                                  markers.editMessage(msg.message_id),
+                                )}
                                 onClick={() => void handleEdit(msg.message_id)}
                               >
                                 {t('common.save')}
@@ -589,6 +611,9 @@ export function CommunityPage() {
                                           {poll.options.map((opt) => (
                                             <button
                                               key={opt.id}
+                                              disabled={inFlight.isHeld(
+                                                markers.vote(msg.message_id),
+                                              )}
                                               onClick={() =>
                                                 void handlePollVote(msg, opt.id)
                                               }
@@ -645,6 +670,9 @@ export function CommunityPage() {
                                     )}
                                     {canDeleteMessage(msg) && (
                                       <button
+                                        disabled={inFlight.isHeld(
+                                          markers.deleteMessage(msg.message_id),
+                                        )}
                                         onClick={() => {
                                           void handleDelete(msg.message_id);
                                           setMenuOpenId(null);
@@ -760,7 +788,12 @@ export function CommunityPage() {
                     />
                     <button
                       onClick={() => fileInputRef.current?.click()}
-                      disabled={isSending}
+                      disabled={
+                        isSending ||
+                        inFlight.isHeld(
+                          markers.upload('page', activeChannel.channel_id),
+                        )
+                      }
                       className="rounded-lg p-2 text-[#5865F2] transition-colors hover:bg-[#5865F2]/10"
                       aria-label={t('community.uploadImage')}
                       title={t('community.uploadImage')}
