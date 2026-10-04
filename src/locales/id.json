@@ -939,11 +939,6 @@
     "registerHere": "Daftar di sini"
   },
   "errors": {
-    "appCrashed": {
-      "title": "Terjadi kesalahan",
-      "body": "Aplikasi mengalami kesalahan tak terduga. Coba muat ulang — jika masalah berlanjut, periksa halaman status platform.",
-      "reload": "Muat ulang"
-    },
     "INTERNAL_ERROR": "Terjadi kesalahan pada sistem kami. Silakan coba lagi.",
     "UNAUTHORIZED": "Anda harus masuk untuk melakukan itu.",
     "FORBIDDEN": "Anda tidak memiliki izin untuk melakukan itu.",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "Nama tampilan harus terdiri dari 3–30 karakter.",
     "TOS_NOT_ACCEPTED": "Anda harus menerima Ketentuan Layanan.",
     "TOS_VERSION_MISMATCH": "Persyaratan Layanan telah diperbarui. Muat ulang aplikasi dan setujui versi terbaru.",
-    "profileRefreshFailed": "Gagal memuat ulang profil. Silakan muat ulang halaman.",
     "PRIVACY_NOT_ACCEPTED": "Anda harus menyetujui Kebijakan Privasi.",
     "AGE_NOT_CONFIRMED": "Konfirmasi usia diperlukan.",
     "CAPTCHA_REQUIRED": "Silakan lengkapi captcha.",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "Terjadi kesalahan",
+      "body": "Aplikasi mengalami kesalahan tak terduga. Coba muat ulang — jika masalah berlanjut, periksa halaman status platform.",
+      "reload": "Muat ulang"
+    },
+    "profileRefreshFailed": "Gagal memuat ulang profil. Silakan muat ulang halaman."
   },
   "legal": {
     "tosUpdatedBanner": "Persyaratan Layanan telah diperbarui. Setujui versi terbaru untuk terus menggunakan akun Anda.",

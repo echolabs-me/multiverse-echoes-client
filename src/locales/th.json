@@ -939,11 +939,6 @@
     "registerHere": "ลงทะเบียนที่นี่"
   },
   "errors": {
-    "appCrashed": {
-      "title": "เกิดข้อผิดพลาด",
-      "body": "แอพพบข้อผิดพลาดที่ไม่คาดคิด ลองโหลดใหม่ดู — หากปัญหายังคงเดิม โปรดตรวจสอบหน้าสถานะของแพลตฟอร์ม",
-      "reload": "โหลดใหม่"
-    },
     "INTERNAL_ERROR": "เกิดข้อผิดพลาดจากทางเรา กรุณาลองอีกครั้ง",
     "UNAUTHORIZED": "คุณต้องลงชื่อเข้าใช้เพื่อดำเนินการนี้",
     "FORBIDDEN": "คุณไม่มีสิทธิ์ทำเช่นนั้น",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "ชื่อที่แสดงต้องมีความยาว 3–30 ตัวอักษร",
     "TOS_NOT_ACCEPTED": "คุณต้องยอมรับข้อกำหนดการให้บริการ",
     "TOS_VERSION_MISMATCH": "ข้อกำหนดการให้บริการได้รับการอัปเดตแล้ว โปรดโหลดซ้ำและยอมรับเวอร์ชันล่าสุด",
-    "profileRefreshFailed": "ไม่สามารถรีเฟรชโปรไฟล์ได้ กรุณารีโหลดหน้าเว็บ",
     "PRIVACY_NOT_ACCEPTED": "คุณต้องยอมรับนโยบายความเป็นส่วนตัว",
     "AGE_NOT_CONFIRMED": "กรุณายืนยันอายุ",
     "CAPTCHA_REQUIRED": "กรุณากรอกแคปช่าให้ครบถ้วน",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "เกิดข้อผิดพลาด",
+      "body": "แอพพบข้อผิดพลาดที่ไม่คาดคิด ลองโหลดใหม่ดู — หากปัญหายังคงเดิม โปรดตรวจสอบหน้าสถานะของแพลตฟอร์ม",
+      "reload": "โหลดใหม่"
+    },
+    "profileRefreshFailed": "ไม่สามารถรีเฟรชโปรไฟล์ได้ กรุณารีโหลดหน้าเว็บ"
   },
   "legal": {
     "tosUpdatedBanner": "ข้อกำหนดการให้บริการได้รับการอัปเดตแล้ว โปรดยอมรับเวอร์ชันล่าสุดเพื่อใช้งานบัญชีของคุณต่อ",

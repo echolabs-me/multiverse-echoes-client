@@ -939,11 +939,6 @@
     "registerHere": "Inscrivez-vous ici"
   },
   "errors": {
-    "appCrashed": {
-      "title": "Un problème est survenu",
-      "body": "L’application a rencontré une erreur inattendue. Essayez de recharger — si le problème persiste, consultez la page d’état de la plateforme.",
-      "reload": "Recharger"
-    },
     "INTERNAL_ERROR": "Quelque chose a mal tourné de notre côté. Réessaie.",
     "UNAUTHORIZED": "Tu dois te connecter pour faire ça.",
     "FORBIDDEN": "Tu n'as pas la permission de faire ça.",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "Le nom affiché doit contenir 3–30 caractères.",
     "TOS_NOT_ACCEPTED": "Tu dois accepter les Conditions d'utilisation.",
     "TOS_VERSION_MISMATCH": "Les Conditions d'utilisation ont été mises à jour. Recharge l'app et accepte la dernière version.",
-    "profileRefreshFailed": "Impossible d'actualiser le profil. Veuillez recharger la page.",
     "PRIVACY_NOT_ACCEPTED": "Tu dois accepter la Politique de confidentialité.",
     "AGE_NOT_CONFIRMED": "La confirmation d'âge est requise.",
     "CAPTCHA_REQUIRED": "Complète le captcha.",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "Un problème est survenu",
+      "body": "L’application a rencontré une erreur inattendue. Essayez de recharger — si le problème persiste, consultez la page d’état de la plateforme.",
+      "reload": "Recharger"
+    },
+    "profileRefreshFailed": "Impossible d'actualiser le profil. Veuillez recharger la page."
   },
   "legal": {
     "tosUpdatedBanner": "Les Conditions d'utilisation ont été mises à jour. Accepte la dernière version pour continuer à utiliser ton compte.",

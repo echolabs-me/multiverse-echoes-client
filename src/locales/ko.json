@@ -939,11 +939,6 @@
     "registerHere": "여기서 가입하세요"
   },
   "errors": {
-    "appCrashed": {
-      "title": "문제가 발생했습니다",
-      "body": "앱에서 예상치 못한 오류가 발생했습니다. 새로 고침을 시도해 보세요 — 문제가 계속되면 플랫폼 상태 페이지를 확인하세요.",
-      "reload": "새로 고침"
-    },
     "INTERNAL_ERROR": "시스템에 문제가 발생했습니다. 다시 시도해 주세요.",
     "UNAUTHORIZED": "그 작업을 하려면 로그인해야 합니다.",
     "FORBIDDEN": "그 작업을 수행할 권한이 없습니다.",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "표시 이름은 3~30자여야 합니다.",
     "TOS_NOT_ACCEPTED": "서비스 약관에 동의해야 합니다.",
     "TOS_VERSION_MISMATCH": "서비스 약관이 업데이트되었습니다. 앱을 다시 로드하고 최신 버전을 수락하세요.",
-    "profileRefreshFailed": "프로필을 새로고침할 수 없습니다. 페이지를 다시 로드해 주세요.",
     "PRIVACY_NOT_ACCEPTED": "개인정보 처리방침에 동의해야 합니다.",
     "AGE_NOT_CONFIRMED": "연령 확인이 필요합니다.",
     "CAPTCHA_REQUIRED": "캡차를 완료해 주세요.",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "문제가 발생했습니다",
+      "body": "앱에서 예상치 못한 오류가 발생했습니다. 새로 고침을 시도해 보세요 — 문제가 계속되면 플랫폼 상태 페이지를 확인하세요.",
+      "reload": "새로 고침"
+    },
+    "profileRefreshFailed": "프로필을 새로고침할 수 없습니다. 페이지를 다시 로드해 주세요."
   },
   "legal": {
     "tosUpdatedBanner": "서비스 약관이 업데이트되었습니다. 계정을 계속 사용하려면 최신 버전을 수락하세요.",

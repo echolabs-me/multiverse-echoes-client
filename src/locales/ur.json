@@ -939,11 +939,6 @@
     "registerHere": "یہاں رجسٹر کریں"
   },
   "errors": {
-    "appCrashed": {
-      "title": "کچھ غلط ہو گیا",
-      "body": "ایپ کو غیر متوقع غلطی پیش آئی۔ دوبارہ لوڈ کرنے کی کوشش کریں — اگر مسئلہ برقرار رہے تو پلیٹ فارم کا اسٹیٹس صفحہ دیکھیں۔",
-      "reload": "دوبارہ لوڈ"
-    },
     "INTERNAL_ERROR": "ہماری طرف سے کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں۔",
     "UNAUTHORIZED": "اس کے لیے آپ کو سائن ان کرنے کی ضرورت ہے۔",
     "FORBIDDEN": "آپ کو ایسا کرنے کی اجازت نہیں ہے۔",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "نمائشی نام 3 سے 30 حروف پر مشتمل ہونا چاہیے۔",
     "TOS_NOT_ACCEPTED": "آپ کو سروس کی شرائط قبول کرنی ہوں گی۔",
     "TOS_VERSION_MISMATCH": "خدمت کی شرائط اپ ڈیٹ کر دی گئی ہیں۔ ایپ کو دوبارہ لوڈ کریں اور تازہ ترین ورژن قبول کریں۔",
-    "profileRefreshFailed": "پروفائل کو ریفریش نہیں کیا جا سکا۔ براہ کرم صفحہ دوبارہ لوڈ کریں۔",
     "PRIVACY_NOT_ACCEPTED": "آپ کو پرائیویسی پالیسی قبول کرنی ہوگی۔",
     "AGE_NOT_CONFIRMED": "عمر کی تصدیق ضروری ہے۔",
     "CAPTCHA_REQUIRED": "براہ کرم کیپچا مکمل کریں۔",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "کچھ غلط ہو گیا",
+      "body": "ایپ کو غیر متوقع غلطی پیش آئی۔ دوبارہ لوڈ کرنے کی کوشش کریں — اگر مسئلہ برقرار رہے تو پلیٹ فارم کا اسٹیٹس صفحہ دیکھیں۔",
+      "reload": "دوبارہ لوڈ"
+    },
+    "profileRefreshFailed": "پروفائل کو ریفریش نہیں کیا جا سکا۔ براہ کرم صفحہ دوبارہ لوڈ کریں۔"
   },
   "legal": {
     "tosUpdatedBanner": "خدمت کی شرائط اپ ڈیٹ کر دی گئی ہیں۔ اپنے اکاؤنٹ کا استعمال جاری رکھنے کے لیے تازہ ترین ورژن قبول کریں۔",

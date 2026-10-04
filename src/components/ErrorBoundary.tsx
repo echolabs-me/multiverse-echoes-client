@@ -44,17 +44,17 @@ export function ErrorFallback() {
     >
       <div className="flex max-w-md flex-col items-center text-center">
         <h1 className="mbe-3 text-2xl font-bold text-text-primary">
-          {t('errors.appCrashed.title')}
+          {t('clientErrors.appCrashed.title')}
         </h1>
         <p className="mbe-6 text-sm text-text-secondary">
-          {t('errors.appCrashed.body')}
+          {t('clientErrors.appCrashed.body')}
         </p>
         <button
           type="button"
           onClick={() => window.location.reload()}
           className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-canvas hover:bg-accent/90"
         >
-          {t('errors.appCrashed.reload')}
+          {t('clientErrors.appCrashed.reload')}
         </button>
         <a
           href="https://status.echolabsme.com"

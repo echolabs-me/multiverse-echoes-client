@@ -939,11 +939,6 @@
     "registerHere": "Daftar di sini"
   },
   "errors": {
-    "appCrashed": {
-      "title": "Sesuatu tidak kena",
-      "body": "Aplikasi mengalami ralat yang tidak dijangka. Cuba muat semula — jika masalah berterusan, semak halaman status platform.",
-      "reload": "Muat semula"
-    },
     "INTERNAL_ERROR": "Sesuatu telah berlaku di pihak kami. Sila cuba lagi.",
     "UNAUTHORIZED": "Anda perlu log masuk untuk melakukan perkara tersebut.",
     "FORBIDDEN": "Anda tidak mempunyai kebenaran untuk melakukan perkara itu.",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "Nama paparan mestilah 3–30 aksara.",
     "TOS_NOT_ACCEPTED": "Anda mesti menerima Terma Perkhidmatan.",
     "TOS_VERSION_MISMATCH": "Syarat Perkhidmatan telah dikemas kini. Muat semula aplikasi dan terima versi terkini.",
-    "profileRefreshFailed": "Tidak dapat menyegar semula profil. Sila muat semula halaman.",
     "PRIVACY_NOT_ACCEPTED": "Anda mesti menerima Dasar Privasi.",
     "AGE_NOT_CONFIRMED": "Pengesahan umur diperlukan.",
     "CAPTCHA_REQUIRED": "Sila lengkapkan captcha.",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "Sesuatu tidak kena",
+      "body": "Aplikasi mengalami ralat yang tidak dijangka. Cuba muat semula — jika masalah berterusan, semak halaman status platform.",
+      "reload": "Muat semula"
+    },
+    "profileRefreshFailed": "Tidak dapat menyegar semula profil. Sila muat semula halaman."
   },
   "legal": {
     "tosUpdatedBanner": "Syarat Perkhidmatan telah dikemas kini. Terima versi terkini untuk terus menggunakan akaun anda.",

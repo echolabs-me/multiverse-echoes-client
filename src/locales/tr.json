@@ -939,11 +939,6 @@
     "registerHere": "Buradan kayıt olun"
   },
   "errors": {
-    "appCrashed": {
-      "title": "Bir sorun oluştu",
-      "body": "Uygulama beklenmeyen bir hatayla karşılaştı. Yeniden yüklemeyi deneyin — sorun devam ederse platform durum sayfasını kontrol edin.",
-      "reload": "Yeniden yükle"
-    },
     "INTERNAL_ERROR": "Bizim tarafımızda bir sorun oluştu. Lütfen tekrar deneyin.",
     "UNAUTHORIZED": "Bunu yapmak için giriş yapmanız gerekiyor.",
     "FORBIDDEN": "Bunu yapmaya yetkiniz yok.",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "Görünen ad 3–30 karakter arasında olmalıdır.",
     "TOS_NOT_ACCEPTED": "Hizmet Şartlarını kabul etmelisiniz.",
     "TOS_VERSION_MISMATCH": "Hizmet Şartları güncellendi. Uygulamayı yeniden yükleyin ve en son sürümü kabul edin.",
-    "profileRefreshFailed": "Profil yenilenemedi. Lütfen sayfayı yeniden yükleyin.",
     "PRIVACY_NOT_ACCEPTED": "Gizlilik Politikasını kabul etmelisiniz.",
     "AGE_NOT_CONFIRMED": "Yaş doğrulaması gereklidir.",
     "CAPTCHA_REQUIRED": "Lütfen captcha'yı tamamlayın.",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "Bir sorun oluştu",
+      "body": "Uygulama beklenmeyen bir hatayla karşılaştı. Yeniden yüklemeyi deneyin — sorun devam ederse platform durum sayfasını kontrol edin.",
+      "reload": "Yeniden yükle"
+    },
+    "profileRefreshFailed": "Profil yenilenemedi. Lütfen sayfayı yeniden yükleyin."
   },
   "legal": {
     "tosUpdatedBanner": "Hizmet Şartları güncellendi. Hesabınızı kullanmaya devam etmek için en son sürümü kabul edin.",

@@ -68,7 +68,7 @@ describe('ErrorBoundary', () => {
       </I18nextProvider>
     );
 
-    // Title + body from errors.appCrashed
+    // Title + body from clientErrors.appCrashed
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     expect(
       screen.getByText(/unexpected error.*reloading.*platform status page/i)

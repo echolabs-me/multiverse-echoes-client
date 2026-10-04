@@ -939,11 +939,6 @@
     "registerHere": "Hier registrieren"
   },
   "errors": {
-    "appCrashed": {
-      "title": "Etwas ist schiefgelaufen",
-      "body": "Die App ist auf einen unerwarteten Fehler gestoßen. Versuche es mit einem Neuladen — bleibt das Problem bestehen, prüfe die Plattform-Statusseite.",
-      "reload": "Neu laden"
-    },
     "INTERNAL_ERROR": "Hier ist bei uns etwas schiefgelaufen. Bitte versuchen Sie es erneut.",
     "UNAUTHORIZED": "Sie müssen sich anmelden, um dies zu tun.",
     "FORBIDDEN": "Sie haben keine Berechtigung, dies zu tun.",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "Der Anzeigename muss 3–30 Zeichen lang sein.",
     "TOS_NOT_ACCEPTED": "Sie müssen die Nutzungsbedingungen akzeptieren.",
     "TOS_VERSION_MISMATCH": "Die Nutzungsbedingungen wurden aktualisiert. Lade die App neu und akzeptiere die neueste Version.",
-    "profileRefreshFailed": "Profil konnte nicht aktualisiert werden. Bitte die Seite neu laden.",
     "PRIVACY_NOT_ACCEPTED": "Sie müssen die Datenschutzrichtlinie akzeptieren.",
     "AGE_NOT_CONFIRMED": "Eine Altersbestätigung ist erforderlich.",
     "CAPTCHA_REQUIRED": "Bitte lösen Sie das Captcha.",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "Etwas ist schiefgelaufen",
+      "body": "Die App ist auf einen unerwarteten Fehler gestoßen. Versuche es mit einem Neuladen — bleibt das Problem bestehen, prüfe die Plattform-Statusseite.",
+      "reload": "Neu laden"
+    },
+    "profileRefreshFailed": "Profil konnte nicht aktualisiert werden. Bitte die Seite neu laden."
   },
   "legal": {
     "tosUpdatedBanner": "Die Nutzungsbedingungen wurden aktualisiert. Akzeptiere die neueste Version, um dein Konto weiterhin zu nutzen.",

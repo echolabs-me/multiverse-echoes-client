@@ -59,7 +59,9 @@ export function ReacceptanceBanner() {
     try {
       await fetchProfile();
     } catch (err) {
-      setError(translateCaughtError(err, t('errors.profileRefreshFailed')));
+      setError(
+        translateCaughtError(err, t('clientErrors.profileRefreshFailed')),
+      );
       setSubmitting(false);
       return;
     }

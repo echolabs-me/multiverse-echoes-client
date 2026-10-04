@@ -1274,7 +1274,7 @@ function DangerZoneSection() {
         await useAuthStore.getState().fetchProfile();
       } catch (err) {
         addToast(
-          translateCaughtError(err, t('errors.profileRefreshFailed')),
+          translateCaughtError(err, t('clientErrors.profileRefreshFailed')),
           'danger',
           { platformLink: isPlatformError(err) },
         );

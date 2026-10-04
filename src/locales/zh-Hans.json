@@ -939,11 +939,6 @@
     "registerHere": "点此注册"
   },
   "errors": {
-    "appCrashed": {
-      "title": "出现问题",
-      "body": "应用遇到了意外错误。请尝试重新加载 — 如果问题仍然存在，请查看平台状态页面。",
-      "reload": "重新加载"
-    },
     "INTERNAL_ERROR": "我们这边出了点问题,请再试一次。",
     "UNAUTHORIZED": "你需要先登录才能这样做。",
     "FORBIDDEN": "你没有权限这样做。",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "显示名称需为 3–30 个字符。",
     "TOS_NOT_ACCEPTED": "你必须同意服务条款。",
     "TOS_VERSION_MISMATCH": "服务条款已更新。请重新加载并接受最新版本。",
-    "profileRefreshFailed": "无法刷新个人资料。请重新加载页面。",
     "PRIVACY_NOT_ACCEPTED": "你必须同意隐私政策。",
     "AGE_NOT_CONFIRMED": "需要确认年龄。",
     "CAPTCHA_REQUIRED": "请完成人机验证。",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "出现问题",
+      "body": "应用遇到了意外错误。请尝试重新加载 — 如果问题仍然存在，请查看平台状态页面。",
+      "reload": "重新加载"
+    },
+    "profileRefreshFailed": "无法刷新个人资料。请重新加载页面。"
   },
   "legal": {
     "tosUpdatedBanner": "服务条款已更新。请接受最新版本以继续使用您的账户。",

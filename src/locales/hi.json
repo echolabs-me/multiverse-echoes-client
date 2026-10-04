@@ -939,11 +939,6 @@
     "registerHere": "यहाँ पंजीकरण करें"
   },
   "errors": {
-    "appCrashed": {
-      "title": "कुछ गलत हो गया",
-      "body": "एप एक अप्रत्याशित त्रुटि में पड़ गया है। पुनः लोड करने का प्रयास करें — यदि समस्या बनी रहती है, तो प्लेटफ़ॉर्म की स्थिति पृष्ठ देखें।",
-      "reload": "पुनः लोड"
-    },
     "INTERNAL_ERROR": "हमारी तरफ़ कुछ गड़बड़ हुई है। कृपया फिर कोशिश करें।",
     "UNAUTHORIZED": "ऐसा करने के लिए तुम्हें साइन इन करना होगा।",
     "FORBIDDEN": "तुम्हारे पास ऐसा करने की अनुमति नहीं है।",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "प्रदर्शन नाम 3–30 अक्षरों का होना चाहिए।",
     "TOS_NOT_ACCEPTED": "तुम्हें सेवा की शर्तें स्वीकार करनी होंगी।",
     "TOS_VERSION_MISMATCH": "सेवा की शर्तें अपडेट कर दी गई हैं। ऐप पुनः लोड करें और नवीनतम संस्करण स्वीकार करें।",
-    "profileRefreshFailed": "प्रोफ़ाइल रीफ़्रेश नहीं हो सकी। कृपया पृष्ठ पुनः लोड करें।",
     "PRIVACY_NOT_ACCEPTED": "तुम्हें गोपनीयता नीति स्वीकार करनी होगी।",
     "AGE_NOT_CONFIRMED": "उम्र की पुष्टि आवश्यक है।",
     "CAPTCHA_REQUIRED": "कृपया कैप्चा पूरा करो।",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "कुछ गलत हो गया",
+      "body": "एप एक अप्रत्याशित त्रुटि में पड़ गया है। पुनः लोड करने का प्रयास करें — यदि समस्या बनी रहती है, तो प्लेटफ़ॉर्म की स्थिति पृष्ठ देखें।",
+      "reload": "पुनः लोड"
+    },
+    "profileRefreshFailed": "प्रोफ़ाइल रीफ़्रेश नहीं हो सकी। कृपया पृष्ठ पुनः लोड करें।"
   },
   "legal": {
     "tosUpdatedBanner": "सेवा की शर्तें अपडेट की गई हैं। अपना खाता उपयोग जारी रखने के लिए नवीनतम संस्करण स्वीकार करें।",

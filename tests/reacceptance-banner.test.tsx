@@ -52,7 +52,7 @@ void testI18n.use(initReactI18next).init({
       translation: {
         'errors.TOS_VERSION_MISMATCH':
           'The Terms of Service have been updated. Reload and accept the latest version.',
-        'errors.profileRefreshFailed':
+        'clientErrors.profileRefreshFailed':
           'Could not refresh profile. Please reload the page.',
         'legal.tosUpdatedBanner':
           'The Terms of Service have been updated. Accept the latest version to keep using your account.',

@@ -80,7 +80,7 @@ beforeEach(() => {
 });
 
 describe('a failed profile refresh after the terms are accepted (R283.1)', () => {
-  it("shows errors.profileRefreshFailed's text, and the button can be pressed again", async () => {
+  it("shows clientErrors.profileRefreshFailed's text, and the button can be pressed again", async () => {
     useAuthStore.setState({
       user: { ...baseUser, requires_tos_reacceptance: true },
       currentTosVersion: '2026-05-03',
@@ -106,7 +106,7 @@ describe('a failed profile refresh after the terms are accepted (R283.1)', () =>
       fireEvent.click(button);
     });
     expect(screen.getByTestId('reacceptance-banner-message').textContent).toBe(
-      text('errors.profileRefreshFailed'),
+      text('clientErrors.profileRefreshFailed'),
     );
     expect(button.disabled).toBe(false);
 
@@ -153,7 +153,7 @@ describe('a failed profile refresh after a deletion is cancelled (R283.1)', () =
       .toasts.map((t) => [t.message, t.severity]);
     expect(toasts).toEqual([
       [text('settings.deletionCancelled'), 'success'],
-      [text('errors.profileRefreshFailed'), 'danger'],
+      [text('clientErrors.profileRefreshFailed'), 'danger'],
     ]);
   });
 });

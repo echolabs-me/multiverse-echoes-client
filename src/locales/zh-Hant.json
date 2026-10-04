@@ -939,11 +939,6 @@
     "registerHere": "點此註冊"
   },
   "errors": {
-    "appCrashed": {
-      "title": "出現問題",
-      "body": "應用遇到了意外錯誤。請嘗試重新加載 — 如果問題仍然存在，請查看平台狀態頁面。",
-      "reload": "重新加載"
-    },
     "INTERNAL_ERROR": "我們這邊出了點問題,請再試一次。",
     "UNAUTHORIZED": "你需要先登錄才能這樣做。",
     "FORBIDDEN": "你沒有權限這樣做。",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "顯示名稱需為 3–30 個字符。",
     "TOS_NOT_ACCEPTED": "你必須同意服務條款。",
     "TOS_VERSION_MISMATCH": "服務條款已更新。請重新載入並接受最新版本。",
-    "profileRefreshFailed": "無法重新整理個人資料。請重新載入頁面。",
     "PRIVACY_NOT_ACCEPTED": "你必須同意隱私政策。",
     "AGE_NOT_CONFIRMED": "需要確認年齡。",
     "CAPTCHA_REQUIRED": "請完成人機驗證。",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "出現問題",
+      "body": "應用遇到了意外錯誤。請嘗試重新加載 — 如果問題仍然存在，請查看平台狀態頁面。",
+      "reload": "重新加載"
+    },
+    "profileRefreshFailed": "無法重新整理個人資料。請重新載入頁面。"
   },
   "legal": {
     "tosUpdatedBanner": "服務條款已更新。請接受最新版本以繼續使用您的帳戶。",

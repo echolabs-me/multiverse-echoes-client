@@ -939,11 +939,6 @@
     "registerHere": "Mag-register dito"
   },
   "errors": {
-    "appCrashed": {
-      "title": "May naganap na mali",
-      "body": "Nagkaroon ng hindi inaasahang error ang app. Subukang i-reload — kung nagpapatuloy ang problema, tingnan ang status page ng platform.",
-      "reload": "I-reload"
-    },
     "INTERNAL_ERROR": "May nagkamali sa aming panig. Pakisubukan muli.",
     "UNAUTHORIZED": "Kailangang mag-sign in upang magawa iyan.",
     "FORBIDDEN": "Wala kang pahintulot na gawin iyan.",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "Ang display name ay dapat na 3–30 characters.",
     "TOS_NOT_ACCEPTED": "Kailangang tanggapin ang mga Tuntunin ng Serbisyo.",
     "TOS_VERSION_MISMATCH": "Na-update na ang Mga Tuntunin ng Serbisyo. I-reload ang app at tanggapin ang pinakabagong bersyon.",
-    "profileRefreshFailed": "Hindi ma-refresh ang profile. Mangyaring i-reload ang pahina.",
     "PRIVACY_NOT_ACCEPTED": "Kailangang tanggapin ang Patakaran sa Privacy.",
     "AGE_NOT_CONFIRMED": "Kailangan ng kumpirmasyon ng edad.",
     "CAPTCHA_REQUIRED": "Pakisagutan ang captcha.",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "May naganap na mali",
+      "body": "Nagkaroon ng hindi inaasahang error ang app. Subukang i-reload — kung nagpapatuloy ang problema, tingnan ang status page ng platform.",
+      "reload": "I-reload"
+    },
+    "profileRefreshFailed": "Hindi ma-refresh ang profile. Mangyaring i-reload ang pahina."
   },
   "legal": {
     "tosUpdatedBanner": "Na-update na ang Mga Tuntunin ng Serbisyo. Tanggapin ang pinakabagong bersyon upang ipagpatuloy ang paggamit ng iyong account.",

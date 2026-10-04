@@ -939,11 +939,6 @@
     "registerHere": "こちらから登録"
   },
   "errors": {
-    "appCrashed": {
-      "title": "何かが間違ったようです",
-      "body": "アプリで予期しないエラーが発生しました。再読み込みをお試しください — 解決しない場合は、プラットフォームのステータスページをご確認ください。",
-      "reload": "再読み込み"
-    },
     "INTERNAL_ERROR": "問題が発生しました。もう一度お試しください。",
     "UNAUTHORIZED": "そのためにはサインインする必要があります。",
     "FORBIDDEN": "それを行う権限がありません。",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "表示名は3〜30文字で入力してください。",
     "TOS_NOT_ACCEPTED": "利用規約に同意する必要があります。",
     "TOS_VERSION_MISMATCH": "利用規約が更新されました。アプリをリロードし、最新版を承諾してください。",
-    "profileRefreshFailed": "プロフィールを更新できませんでした。ページを再読み込みしてください。",
     "PRIVACY_NOT_ACCEPTED": "プライバシーポリシーに同意する必要があります。",
     "AGE_NOT_CONFIRMED": "年齢確認が必要です。",
     "CAPTCHA_REQUIRED": "キャプチャを完了してください。",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "何かが間違ったようです",
+      "body": "アプリで予期しないエラーが発生しました。再読み込みをお試しください — 解決しない場合は、プラットフォームのステータスページをご確認ください。",
+      "reload": "再読み込み"
+    },
+    "profileRefreshFailed": "プロフィールを更新できませんでした。ページを再読み込みしてください。"
   },
   "legal": {
     "tosUpdatedBanner": "利用規約が更新されました。アカウントを引き続き利用するには、最新版を承諾してください。",

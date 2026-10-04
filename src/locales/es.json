@@ -939,11 +939,6 @@
     "registerHere": "Regístrate aquí"
   },
   "errors": {
-    "appCrashed": {
-      "title": "Algo salió mal",
-      "body": "La aplicación encontró un error inesperado. Intenta recargar — si el problema persiste, consulta la página de estado de la plataforma.",
-      "reload": "Recargar"
-    },
     "INTERNAL_ERROR": "Algo salió mal por nuestra parte. Vuelve a intentarlo.",
     "UNAUTHORIZED": "Necesitas iniciar sesión para hacer eso.",
     "FORBIDDEN": "No tienes permiso para hacer eso.",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "El nombre visible debe tener 3–30 caracteres.",
     "TOS_NOT_ACCEPTED": "Debes aceptar los Términos de servicio.",
     "TOS_VERSION_MISMATCH": "Los Términos de servicio se han actualizado. Recarga la aplicación y acepta la versión más reciente.",
-    "profileRefreshFailed": "No se pudo actualizar el perfil. Recarga la página.",
     "PRIVACY_NOT_ACCEPTED": "Debes aceptar la Política de privacidad.",
     "AGE_NOT_CONFIRMED": "Se requiere confirmación de edad.",
     "CAPTCHA_REQUIRED": "Por favor, completa el captcha.",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "Algo salió mal",
+      "body": "La aplicación encontró un error inesperado. Intenta recargar — si el problema persiste, consulta la página de estado de la plataforma.",
+      "reload": "Recargar"
+    },
+    "profileRefreshFailed": "No se pudo actualizar el perfil. Recarga la página."
   },
   "legal": {
     "tosUpdatedBanner": "Los Términos de servicio se han actualizado. Acepta la versión más reciente para seguir usando tu cuenta.",

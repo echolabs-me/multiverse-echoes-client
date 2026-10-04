@@ -939,11 +939,6 @@
     "registerHere": "سجّل هنا"
   },
   "errors": {
-    "appCrashed": {
-      "title": "حدث خطأ",
-      "body": "واجه التطبيق خطأ غير متوقع. حاول إعادة التحميل — إذا استمرت المشكلة، تحقق من صفحة حالة المنصة.",
-      "reload": "إعادة تحميل"
-    },
     "INTERNAL_ERROR": "حدث خطأ من جهتنا. يرجى المحاولة مرة أخرى.",
     "UNAUTHORIZED": "يجب عليك تسجيل الدخول للقيام بذلك.",
     "FORBIDDEN": "ليس لديك إذن للقيام بذلك.",
@@ -958,7 +953,6 @@
     "DISPLAY_NAME_INVALID": "يجب أن يكون اسم العرض من 3 إلى 30 حرفًا.",
     "TOS_NOT_ACCEPTED": "يجب الموافقة على شروط الخدمة.",
     "TOS_VERSION_MISMATCH": "تم تحديث شروط الخدمة. أعد التحميل ووافق على الإصدار الأحدث.",
-    "profileRefreshFailed": "تعذر تحديث الملف الشخصي. يرجى إعادة تحميل الصفحة.",
     "PRIVACY_NOT_ACCEPTED": "يجب الموافقة على سياسة الخصوصية.",
     "AGE_NOT_CONFIRMED": "تأكيد العمر مطلوب.",
     "CAPTCHA_REQUIRED": "يرجى إكمال التحقق البشري.",
@@ -1130,6 +1124,14 @@
     "VALIDATION_ERROR": "Some of what you entered isn't valid. Check it and try again.",
     "VALIDATION_INVALID_BODY": "Something went wrong on our end. Please try again.",
     "WRONG_STATE": "This page is out of date. Reload it and try again."
+  },
+  "clientErrors": {
+    "appCrashed": {
+      "title": "حدث خطأ",
+      "body": "واجه التطبيق خطأ غير متوقع. حاول إعادة التحميل — إذا استمرت المشكلة، تحقق من صفحة حالة المنصة.",
+      "reload": "إعادة تحميل"
+    },
+    "profileRefreshFailed": "تعذر تحديث الملف الشخصي. يرجى إعادة تحميل الصفحة."
   },
   "legal": {
     "tosUpdatedBanner": "تم تحديث شروط الخدمة. يرجى قبول الإصدار الأحدث لمواصلة استخدام حسابك.",
