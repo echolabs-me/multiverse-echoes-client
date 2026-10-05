@@ -3050,8 +3050,6 @@ export type Shard = {
 	tick_rate_modifier: number,
 	max_active_echoes: number,
 	max_hibernated_echoes: number,
-	current_active_count: number,
-	current_hibernated_count: number,
 	allows_travel: boolean,
 	allows_global_events: boolean,
 	description: string,
