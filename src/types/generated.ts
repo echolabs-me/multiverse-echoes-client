@@ -1775,13 +1775,16 @@ export type EnforcementActionType = "MessageDeleted" | "UserMuted" | "UserChanne
 /**
  *  Explicit list of enforcement actions taken on incident creation —
  *  makes the audit trail self-describing in the HTTP response (not
- *  only in log lines).
+ *  only in log lines). A step that could not be done is reported as not
+ *  done: `echoes_quarantined` is null when the uploader's Echoes could not
+ *  be read, and `api_keys_revoked` is null when their keys could not be
+ *  deleted, so neither reads as "the user had none" (R352.2).
  */
 export type EnforcementSummary = {
 	user_suspended: boolean,
 	sessions_revoked: boolean,
-	echoes_quarantined: number,
-	api_keys_revoked: number,
+	echoes_quarantined: number | null,
+	api_keys_revoked: number | null,
 };
 
 export type EquipRequest = {
