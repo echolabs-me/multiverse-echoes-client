@@ -451,7 +451,7 @@ export function EchoDetailPage() {
     });
   }, []);
 
-  // Life events still come from the feed store (no dedicated Redb repo yet).
+  // Life events come from the feed store.
   const lifeEvents = personalFeed.filter((f) => f.item_type === 'life_event');
 
   // Apply client-side text search filter, then group by simulated day.

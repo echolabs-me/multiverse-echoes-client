@@ -1446,7 +1446,7 @@ export type Echo = {
 	 *  Quarantined (CSAM match, false-positive report resolution, etc.), cleared
 	 *  back to `None` when the echo is restored to Active. Used as the order-by
 	 *  source for the God Mode Report Queue (most-recently-quarantined first).
-	 *  `#[serde(default)]` so pre-field Redb rows deserialise with `None`;
+	 *  `#[serde(default)]` so rows stored before the field existed deserialise with `None`;
 	 *  a one-shot backfill at server boot copies `updated_at` into this field
 	 *  for any row with `status == Quarantined && quarantined_at == None`.
 	 *  Reference: ME-TSP-001 §6.3, ME-OPS-001 §4.7.
@@ -2269,7 +2269,7 @@ export type LocationType = "Residential" | "Commercial" | "Social" | "Workplace"
 
 export type MarketplaceCategory = "DashboardTheme" | "PortraitStyle" | "ExportTemplate" | "ShardAesthetic" | "ScenarioPack" | "SeasonalCosmetic" | "SoundPack" | 
 /**
- *  Sentinel for migration safety only. Pre-Lane-E-Commit-2.5 Redb
+ *  Sentinel for migration safety only. Pre-Lane-E-Commit-2.5
  *  rows lack a `category` field; serde defaults to this variant on
  *  load. The Lane E Commit 2.5 backfill migration walks the table
  *  once and rewrites every row to a real category derived from
@@ -3365,15 +3365,15 @@ export type ShareFeedItemResponse = {
 export type ShareItemKind = "feed_item";
 
 /**
- *  The snapshot of a feed item at share-time. Persisted in Redb under
+ *  The snapshot of a feed item at share-time. Persisted under
  *  primary key `token: Uuid` (one snapshot per token; lookup by token).
  *  Snapshots are immutable — once written, never modified. Updates to the
  *  live `FeedItem` / `DiaryEntry` / `LifeEvent` after share-time do NOT
  *  propagate to the snapshot.
  * 
- *  Storage choice: snapshot lives in Redb on the API server (B200-on side)
+ *  Storage choice: snapshot lives in Postgres on the API server (B200-on side)
  *  AND, in Lane H Commit 3, mirrors to Cloudflare KV for B200-off serving
- *  by the og-router Worker. Commit 1 writes only Redb.
+ *  by the og-router Worker.
  */
 export type ShareSnapshot = {
 	token: string,
@@ -3383,10 +3383,7 @@ export type ShareSnapshot = {
 	 *  (headline / body / echo_name / author_display_name), consumed by
 	 *  `delete_all_by_creator`. REQUIRED with NO `#[serde(default)]`: a nil
 	 *  creator is an impossible state that would dodge the creator-keyed
-	 *  purge and re-open the erasure gap on the Postgres arm, so the model
-	 *  stays honest. Any pre-field Redb snapshot blob (disposable §0 test
-	 *  data, refreshed on reset) deliberately hard-fails deserialisation
-	 *  rather than resolve to a sentinel.
+	 *  purge and re-open the erasure gap, so the model stays honest.
 	 */
 	created_by_user_id: string,
 	// Captured content at share-time. Distinct from the live FeedItem.
@@ -3449,7 +3446,7 @@ export type ShareSnapshotContent = {
 };
 
 /**
- *  A single share token. Persisted in Redb under primary key `token: Uuid`.
+ *  A single share token. Persisted under primary key `token: Uuid`.
  *  Tokens are URL-safe (rendered in share URLs as the canonical
  *  `https://echolabsme.com/share/{token}` per Lane H Commit 3 dispatch).
  * 
@@ -3861,7 +3858,7 @@ export type UpdateShardRequest = {
 export type User = {
 	user_id: string,
 	/**
-	 *  Email address. At rest in Redb this field holds AES-256-GCM
+	 *  Email address. At rest in Postgres this field holds AES-256-GCM
 	 *  ciphertext whenever `email_encrypted == true`; API responses always
 	 *  emit plaintext because the repository decrypts on read. The `email`
 	 *  JSON key itself is unchanged across the wire for client-side
@@ -4237,7 +4234,7 @@ export type WaitlistCountResponse = {
 export type WaitlistEntry = {
 	entry_id: string,
 	/**
-	 *  Email address. At rest in Redb this field holds AES-256-GCM
+	 *  Email address. At rest in Postgres this field holds AES-256-GCM
 	 *  ciphertext whenever `email_encrypted == true`; API responses
 	 *  always emit plaintext because the repository decrypts on read.
 	 *  Reference: ME-UAD-001 §9.1, ME-PDP-001 §6.1.
@@ -4399,7 +4396,7 @@ origin_shard_id: string } } | { ShardTravelDenied: { echo_id: string; reason: st
  *  Stripe payment failures are NOT emitted here — Stripe owns its own
  *  dunning state machine via `subscription.status`.
  * 
- *  Emitted from `crates/api/src/routes/payments.rs` after the Redb
+ *  Emitted from `crates/api/src/routes/payments.rs` after the
  *  status write commits, before the handler returns. `attempt_number`
  *  is the cumulative count of `Failed` payment rows for this
  *  `(user_id, provider)` pair, including the row that just landed.
