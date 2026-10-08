@@ -1444,7 +1444,8 @@ export type Echo = {
 	 *  UTC timestamp of the most recent transition into `EchoStatus::Quarantined`.
 	 *  Sibling of `hibernated_at`/`deleted_at`: set when status flips to
 	 *  Quarantined (CSAM match, false-positive report resolution, etc.), cleared
-	 *  back to `None` when the echo is restored to Active. Used as the order-by
+	 *  back to `None` when the echo is restored, whether it lands Active or,
+	 *  into a full shard, Hibernated (R401.1). Used as the order-by
 	 *  source for the God Mode Report Queue (most-recently-quarantined first).
 	 *  `#[serde(default)]` so rows stored before the field existed deserialise with `None`;
 	 *  a one-shot backfill at server boot copies `updated_at` into this field
