@@ -230,6 +230,7 @@
     "wakeConfirm": "Gisingin ang Echo na ito? Ipagpapatuloy nito ang awtonomong aktibidad.",
     "hibernated": "Naghibernasyon si Echo",
     "woken": "Nagising ang alingawngaw",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "Mga Setting ng Echo",
     "soloMode": "Solo mode (walang interaksyon sa ibang user)",
     "talkToEcho": "Kausapin si Echo",

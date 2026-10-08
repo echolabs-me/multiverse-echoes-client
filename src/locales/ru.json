@@ -230,6 +230,7 @@
     "wakeConfirm": "Разбудить это Эхо? Оно возобновит автономную деятельность.",
     "hibernated": "Эхо впало в спячку",
     "woken": "Эхо пробуждено",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "Настройки эха",
     "soloMode": "Одиночный режим (без взаимодействия между пользователями)",
     "talkToEcho": "Поговорите с Echo",

@@ -125,6 +125,8 @@ void testI18n.use(initReactI18next).init({
         'echoDetail.persona': 'Persona',
         'echoDetail.hibernate': 'Hibernate',
         'echoDetail.wake': 'Wake',
+        'echoDetail.wakeShardFull':
+          "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
         'echoDetail.useInfluence': 'Use Influence',
         'echoDetail.rename': 'Rename',
         'echoDetail.editPersona': 'Edit Persona',
@@ -586,6 +588,71 @@ describe('EchoDetailPage — the hibernate, wake and influence dialogs (R258)', 
     await click(within(dialog).getByRole('button', { name: 'Confirm' }));
     expect(dialog).toHaveAttribute('aria-busy', 'true');
     expect(screen.getByRole('dialog', { name: 'Hibernate' })).toBe(dialog);
+  });
+
+  describe("a refused wake or hibernate's toast, and the wake's sentence (R401.4)", () => {
+    const wakeShardFull =
+      "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.";
+
+    /** Opens the dialog for `name`, has its request fail with `error`, and
+     *  returns every toast the page showed, whole. */
+    async function refusedWith(name: 'Wake' | 'Hibernate', error: unknown) {
+      stableAddToast.mockClear();
+      const request = name === 'Wake' ? stableWakeEcho : stableHibernateEcho;
+      request.mockRejectedValue(error);
+      mockActiveEcho = echo(name === 'Wake' ? 'Hibernated' : 'Active');
+      await act(async () => {
+        renderPage();
+      });
+      await click(screen.getByRole('button', { name: 'More' }));
+      await click(screen.getByRole('button', { name }));
+      const dialog = screen.getByRole('dialog', { name });
+      await click(within(dialog).getByRole('button', { name: 'Confirm' }));
+      return stableAddToast.mock.calls;
+    }
+
+    it("is R401.4's sentence in en.json", () => {
+      expect(appI18n.t('echoDetail.wakeShardFull')).toBe(wakeShardFull);
+    });
+
+    it("because its Shard is full says so in a wake's own words", async () => {
+      const shown = await refusedWith(
+        'Wake',
+        new ApiRequestError(409, 'SHARD_AT_CAPACITY', 'shard is full'),
+      );
+      expect(shown).toEqual([
+        [wakeShardFull, 'danger', { platformLink: false }],
+      ]);
+    });
+
+    it("for any other reason keeps the error's own text", async () => {
+      const shown = await refusedWith(
+        'Wake',
+        new ApiRequestError(400, 'NOT_HIBERNATED', 'not hibernated'),
+      );
+      expect(shown).toEqual([
+        [appI18n.t('errors.NOT_HIBERNATED'), 'danger', { platformLink: false }],
+      ]);
+    });
+
+    it('with no server code keeps the general failure and the status link', async () => {
+      const shown = await refusedWith('Wake', new Error('server down'));
+      expect(shown).toEqual([['Error', 'danger', { platformLink: true }]]);
+    });
+
+    it("leaves a hibernate's SHARD_AT_CAPACITY with the code's shared text", async () => {
+      const shown = await refusedWith(
+        'Hibernate',
+        new ApiRequestError(409, 'SHARD_AT_CAPACITY', 'shard is full'),
+      );
+      expect(shown).toEqual([
+        [
+          appI18n.t('errors.SHARD_AT_CAPACITY'),
+          'danger',
+          { platformLink: false },
+        ],
+      ]);
+    });
   });
 
   describe('the influence dialog', () => {

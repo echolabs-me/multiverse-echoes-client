@@ -230,6 +230,7 @@
     "wakeConfirm": "이 에코를 깨우시겠습니까? 자율 활동이 재개됩니다.",
     "hibernated": "에코가 동면했다.",
     "woken": "에코가 깨어났다",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "에코 설정",
     "soloMode": "솔로 모드 (사용자 간 상호작용 없음)",
     "talkToEcho": "에코와 대화하세요",

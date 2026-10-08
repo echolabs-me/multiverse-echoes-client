@@ -230,6 +230,7 @@
     "wakeConfirm": "اس ایکو (Echo) کو جگائیں؟ یہ خودکار سرگرمی دوبارہ شروع کر دے گا۔",
     "hibernated": "ایکو خوابیدہ ہو گیا",
     "woken": "گونج بیدار ہوگئی",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "ایکو سیٹنگز",
     "soloMode": "سولو موڈ (صارفین کے درمیان کوئی تعامل نہیں)",
     "talkToEcho": "ایکو سے بات کریں",

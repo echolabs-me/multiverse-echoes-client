@@ -230,6 +230,7 @@
     "wakeConfirm": "Đánh thức Echo này? Nó sẽ tiếp tục hoạt động tự trị.",
     "hibernated": "Echo đã ngủ đông",
     "woken": "Tiếng vang thức tỉnh",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "Cài đặt Echo",
     "soloMode": "Chế độ đơn (không tương tác giữa các người dùng)",
     "talkToEcho": "Nói chuyện với Echo",

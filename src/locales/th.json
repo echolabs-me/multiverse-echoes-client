@@ -230,6 +230,7 @@
     "wakeConfirm": "ปลุก Echo ตัวนี้หรือไม่? มันจะกลับมาทำงานโดยอัตโนมัติอีกครั้ง",
     "hibernated": "เอคโค่จำศีล",
     "woken": "เอคโค่ตื่นแล้ว",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "การตั้งค่าเอคโค่",
     "soloMode": "โหมดโซโล่ (ไม่มีการโต้ตอบระหว่างผู้ใช้)",
     "talkToEcho": "พูดกับ Echo",

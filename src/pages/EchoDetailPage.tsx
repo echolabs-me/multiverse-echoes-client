@@ -533,7 +533,15 @@ export function EchoDetailPage() {
       setHibernateModal(false);
       await fetchEcho(id);
     } catch (err) {
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+      // A wake refused because the Shard is full gets text written for a
+      // wake, not the code's shared "choose another" text (R401.4).
+      const text =
+        action === 'wake' &&
+        err instanceof ApiRequestError &&
+        err.code === 'SHARD_AT_CAPACITY'
+          ? t('echoDetail.wakeShardFull')
+          : translateCaughtError(err, t('common.error'));
+      addToast(text, 'danger', {
         platformLink: isPlatformError(err),
       });
     } finally {

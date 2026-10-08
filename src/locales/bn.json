@@ -230,6 +230,7 @@
     "wakeConfirm": "এই ইকো-টিকে জাগিয়ে তুলব? এটি স্বয়ংক্রিয় কার্যক্রম পুনরায় শুরু করবে।",
     "hibernated": "ইকো শীতনিদ্রায় চলে গেছে।",
     "woken": "প্রতিধ্বনি জাগ্রত",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "ইকো সেটিংস",
     "soloMode": "সোলো মোড (ব্যবহারকারীদের মধ্যে কোনো মিথস্ক্রিয়া নেই)",
     "talkToEcho": "একোর সাথে কথা বলুন",

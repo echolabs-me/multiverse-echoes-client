@@ -230,6 +230,7 @@
     "wakeConfirm": "Bu Echo'yu uyandırayım mı? Otonom faaliyete geri dönecektir.",
     "hibernated": "Echo kış uykusuna yattı",
     "woken": "Yankı uyandı",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "Yankı Ayarları",
     "soloMode": "Solo mod (kullanıcılar arası etkileşim yok)",
     "talkToEcho": "Echo ile konuş",

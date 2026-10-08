@@ -230,6 +230,7 @@
     "wakeConfirm": "Bangunkan Echo ini? Ia akan melanjutkan aktivitas otonom.",
     "hibernated": "Echo berhibernasi",
     "woken": "Gema terbangun",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "Pengaturan Gema",
     "soloMode": "Mode solo (tanpa interaksi antar pengguna)",
     "talkToEcho": "Bicara dengan Echo",

@@ -230,6 +230,7 @@
     "wakeConfirm": "このエコーを起動しますか？自律活動が再開されます。",
     "hibernated": "エコーは冬眠した。",
     "woken": "エコーが目覚めた",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "エコー設定",
     "soloMode": "ソロモード（ユーザー間の相互作用なし）",
     "talkToEcho": "Echoに話しかける",

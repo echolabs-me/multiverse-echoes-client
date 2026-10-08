@@ -230,6 +230,7 @@
     "wakeConfirm": "Despertar este Echo? Ele retomará a atividade autônoma.",
     "hibernated": "Echo hibernou",
     "woken": "Echo despertado",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "Configurações de Eco",
     "soloMode": "Modo solo (sem interações entre usuários)",
     "talkToEcho": "Fale com a Echo",

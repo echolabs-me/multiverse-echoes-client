@@ -230,6 +230,7 @@
     "wakeConfirm": "喚醒這個回聲?他將恢復自主活動。",
     "hibernated": "回聲已休眠",
     "woken": "回聲已喚醒",
+    "wakeShardFull": "This Echo's Shard is full, so it can't wake right now. It can wake when a place frees up.",
     "settings": "回聲設置",
     "soloMode": "獨立模式(不與其他用户的回聲互動)",
     "talkToEcho": "與回聲對話",
