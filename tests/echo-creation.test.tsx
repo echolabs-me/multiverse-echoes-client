@@ -58,8 +58,11 @@ void testI18n.use(initReactI18next).init({
         'echo.consentAcknowledge': 'I acknowledge',
         'echo.consentPrivacy': 'I accept privacy terms',
         'echo.destinationTitle': 'Choose destination',
-        'echo.personalShard': 'Personal Shard',
-        'echo.personalShardDesc': 'Your private world',
+        'echo.shardListFailed': "Couldn't load the Shards. Please try again.",
+        'shardBrowser.emptyPublicDesc': 'No Shards to show right now.',
+        'shardBrowser.typePublic': 'Public',
+        'shardBrowser.typePrivate': 'Private',
+        'common.retry': 'Retry',
         'echo.limitTitle': 'Echo limit reached',
         // The limit view states no number, whatever the plan (R284.3).
         'errors.ECHO_LIMIT_REACHED':
@@ -112,6 +115,7 @@ beforeEach(() => {
       name: 'Harbour',
       description: 'A harbour town.',
       shard_type: 'Public',
+      status: 'Active',
     },
   ] as unknown as Awaited<ReturnType<typeof shards.list>>);
   vi.mocked(account.getPrivacy).mockReset();
@@ -301,8 +305,10 @@ describe('EchoCreationPage', () => {
         'Echo limit reached (1/1)',
       ),
     );
+    vi.mocked(account.getPrivacy).mockResolvedValue(
+      privacy('2026-10-02T00:00:00Z'),
+    );
     await reachDestination();
-    await click(screen.getByText('Personal Shard'));
     await click(screen.getByRole('button', { name: 'Create Echo' }));
 
     expect(screen.getByText('Echo limit reached')).toBeInTheDocument();
@@ -316,8 +322,10 @@ describe('EchoCreationPage', () => {
         'Echo limit reached (3/3)',
       ),
     );
+    vi.mocked(account.getPrivacy).mockResolvedValue(
+      privacy('2026-10-02T00:00:00Z'),
+    );
     await reachDestination();
-    await click(screen.getByText('Personal Shard'));
     await click(screen.getByRole('button', { name: 'Create Echo' }));
 
     expect(
@@ -333,8 +341,10 @@ describe('EchoCreationPage', () => {
     mocks.createEcho.mockRejectedValueOnce(
       new ApiRequestError(429, 'RATE_LIMITED', 'Rate limit exceeded'),
     );
+    vi.mocked(account.getPrivacy).mockResolvedValue(
+      privacy('2026-10-02T00:00:00Z'),
+    );
     await reachDestination();
-    await click(screen.getByText('Personal Shard'));
     await click(screen.getByRole('button', { name: 'Create Echo' }));
 
     expect(screen.queryByText('Echo limit reached')).not.toBeInTheDocument();
@@ -343,16 +353,149 @@ describe('EchoCreationPage', () => {
     ).toBeInTheDocument();
   });
 
-  it('creates in the Personal shard without the notice', async () => {
+  it('offers Active Public shards and the user’s own Active Private shards, and no Personal card (R409.4)', async () => {
+    vi.mocked(shards.list).mockResolvedValue([
+      {
+        shard_id: 'pub1',
+        name: 'Harbour',
+        description: '',
+        shard_type: 'Public',
+        status: 'Active',
+      },
+      {
+        shard_id: 'priv1',
+        name: 'My Garden',
+        description: '',
+        shard_type: 'Private',
+        status: 'Active',
+      },
+      {
+        shard_id: 'pers1',
+        name: 'Old Home',
+        description: '',
+        shard_type: 'Personal',
+        status: 'Active',
+      },
+      {
+        shard_id: 'arch1',
+        name: 'Old Port',
+        description: '',
+        shard_type: 'Public',
+        status: 'Archived',
+      },
+    ] as unknown as Awaited<ReturnType<typeof shards.list>>);
     await reachDestination();
-    await click(screen.getByText('Personal Shard'));
+
+    expect(shards.list).toHaveBeenCalledWith();
+    expect(screen.getByText('Harbour')).toBeInTheDocument();
+    expect(screen.getByText('My Garden')).toBeInTheDocument();
+    expect(screen.queryByText('Old Home')).toBeNull();
+    expect(screen.queryByText('Old Port')).toBeNull();
+    expect(screen.queryByText('Personal Shard')).toBeNull();
+  });
+
+  it('names each option’s type in text, with its icon hidden from screen readers (R461.1)', async () => {
+    vi.mocked(shards.list).mockResolvedValue([
+      {
+        shard_id: 'pub1',
+        name: 'Harbour',
+        description: '',
+        shard_type: 'Public',
+        status: 'Active',
+      },
+      {
+        shard_id: 'priv1',
+        name: 'My Garden',
+        description: '',
+        shard_type: 'Private',
+        status: 'Active',
+      },
+    ] as unknown as Awaited<ReturnType<typeof shards.list>>);
+    await reachDestination();
+
+    // Each option is the card around the shard's name; its text is what a
+    // screen reader reads for it.
+    const option = (name: string) =>
+      screen.getByRole('heading', { name }).parentElement
+        ?.parentElement as HTMLElement;
+    const harbour = option('Harbour');
+    const garden = option('My Garden');
+    expect(within(harbour).getByText('Public')).toBeInTheDocument();
+    expect(within(harbour).queryByText('Private')).toBeNull();
+    expect(within(garden).getByText('Private')).toBeInTheDocument();
+    expect(within(garden).queryByText('Public')).toBeNull();
+    for (const card of [harbour, garden]) {
+      const icons = card.querySelectorAll('svg');
+      expect(icons.length).toBe(1);
+      icons.forEach((icon) => {
+        expect(icon.getAttribute('aria-hidden')).toBe('true');
+      });
+    }
+  });
+
+  it('creates in the chosen Private shard after the notice, sending its id (R409.4)', async () => {
+    vi.mocked(shards.list).mockResolvedValue([
+      {
+        shard_id: 'pub1',
+        name: 'Harbour',
+        description: '',
+        shard_type: 'Public',
+        status: 'Active',
+      },
+      {
+        shard_id: 'priv1',
+        name: 'My Garden',
+        description: '',
+        shard_type: 'Private',
+        status: 'Active',
+      },
+    ] as unknown as Awaited<ReturnType<typeof shards.list>>);
+    await reachDestination();
+    await click(screen.getByText('My Garden'));
     await click(screen.getByRole('button', { name: 'Create Echo' }));
 
-    expect(notice()).toBeNull();
+    expect(notice()).not.toBeNull();
+    expect(mocks.createEcho).not.toHaveBeenCalled();
+    await click(
+      within(notice() as HTMLElement).getByRole('button', {
+        name: 'I understand',
+      }),
+    );
     expect(mocks.createEcho).toHaveBeenCalledTimes(1);
     expect(mocks.createEcho.mock.calls[0]?.[0]).toMatchObject({
-      shard_id: undefined,
+      shard_id: 'priv1',
     });
+  });
+
+  it('a failed shard list shows the error and a retry, and creates nothing (R409.4)', async () => {
+    vi.mocked(shards.list).mockClear();
+    vi.mocked(shards.list).mockRejectedValueOnce(new Error('network'));
+    await reachDestination();
+
+    expect(
+      screen.getByText("Couldn't load the Shards. Please try again."),
+    ).toBeInTheDocument();
+    const create = screen.getByRole('button', { name: 'Create Echo' });
+    expect(create).toBeDisabled();
+    await click(create);
+    expect(mocks.createEcho).not.toHaveBeenCalled();
+
+    await click(screen.getByRole('button', { name: 'Retry' }));
+    expect(shards.list).toHaveBeenCalledTimes(2);
+    expect(screen.getByText('Harbour')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Create Echo' })).toBeEnabled();
+  });
+
+  it('an empty shard list shows the empty text and creates nothing (R409.4)', async () => {
+    vi.mocked(shards.list).mockResolvedValue(
+      [] as unknown as Awaited<ReturnType<typeof shards.list>>,
+    );
+    await reachDestination();
+
+    expect(
+      screen.getByText('No Shards to show right now.'),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Create Echo' })).toBeDisabled();
   });
 
   it('an acknowledged user’s click creates at once, with no read left pending that could create again after Back (R253)', async () => {

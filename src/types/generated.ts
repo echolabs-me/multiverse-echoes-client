@@ -1083,7 +1083,12 @@ export type CreateEchoRequest = {
 	age_at_creation?: number | null,
 	persona_mode?: string | null,
 	consent_declaration: boolean,
-	// Optional: create Echo in a specific Public Shard instead of Personal Shard.
+	/**
+	 *  Optional: the shard the Echo lives in, an Active Public shard or an
+	 *  Active Private shard the user owns. With none, the Echo goes to the
+	 *  Active Public shard with the most free places (R409.2). No Personal
+	 *  shard is made.
+	 */
 	shard_id?: string | null,
 	/**
 	 *  Optional free-text physical description. When present and non-empty,

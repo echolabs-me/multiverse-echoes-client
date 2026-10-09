@@ -67,7 +67,7 @@ export function ShardBrowserPage() {
         ) : filteredShards.length === 0 ? (
           <EmptyState
             title={t('shardBrowser.empty')}
-            description={t('shardBrowser.emptyDesc')}
+            description={t('shardBrowser.emptyPublicDesc')}
           />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

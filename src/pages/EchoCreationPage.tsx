@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { translateCaughtError } from '../lib/translateError.ts';
-import { X, Globe, Home } from 'lucide-react';
+import { X, Globe, Lock } from 'lucide-react';
 import { Button, Input, Card, Spinner } from '../components/index.ts';
 import { EchoBirthAnimation } from '../components/EchoBirthAnimation.tsx';
 import { useEchoStore } from '../stores/useEchoStore.ts';
@@ -35,25 +35,40 @@ export function EchoCreationPage() {
   const [consentAcknowledge, setConsentAcknowledge] = useState(false);
   const [consentPrivacy, setConsentPrivacy] = useState(false);
 
-  // Shard selection
-  const [publicShards, setPublicShards] = useState<Shard[]>([]);
+  // Shard selection. An Echo lives in an Active Public shard or an Active
+  // Private shard its owner holds; no Personal shard is offered or made
+  // (R409.4). The list answers the user's own Private shards only.
+  const [shardOptions, setShardOptions] = useState<Shard[]>([]);
   const [selectedShardId, setSelectedShardId] = useState<string | null>(null);
   const [shardsLoading, setShardsLoading] = useState(true);
-  const shardsLoadedRef = useRef(false);
+  const [shardsFailed, setShardsFailed] = useState(false);
+  // Incremented to load the list again on retry.
+  const [shardsAttempt, setShardsAttempt] = useState(0);
 
-  // Load public shards once on mount (not gated by step — avoids re-renders).
   useEffect(() => {
-    if (shardsLoadedRef.current) return;
-    shardsLoadedRef.current = true;
-    void shardsApi
-      .list({ type: 'Public' })
-      .then((s) => {
-        setPublicShards(s);
-        if (s.length > 0) setSelectedShardId(s[0]!.shard_id);
+    let cancelled = false;
+    shardsApi
+      .list()
+      .then((all) => {
+        if (cancelled) return;
+        const options = all.filter(
+          (s) =>
+            (s.shard_type === 'Public' || s.shard_type === 'Private') &&
+            s.status === 'Active',
+        );
+        setShardOptions(options);
+        setSelectedShardId(options[0]?.shard_id ?? null);
       })
-      .catch(() => {})
-      .finally(() => setShardsLoading(false));
-  }, []);
+      .catch(() => {
+        if (!cancelled) setShardsFailed(true);
+      })
+      .finally(() => {
+        if (!cancelled) setShardsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [shardsAttempt]);
 
   // Birth
   const [isBirthComplete, setIsBirthComplete] = useState(false);
@@ -65,14 +80,16 @@ export function EchoCreationPage() {
 
   async function handleCreate() {
     setCreateError(null);
+    if (selectedShardId === null) return;
+    const shardId = selectedShardId;
 
     try {
       const trimmedPhysical = physicalDescription.trim();
-      // Only Public shards are offered here, and each is shared, so the
+      // Every shard offered here, Public or Private, is shared, so the
       // shared-shard notice comes first (R216.4). The notice is shown on the
       // destination step.
       const outcome = await sharedShardNotice.run(
-        selectedShardId !== null,
+        true,
         () => {
           setStep('birth');
           return createEcho({
@@ -82,7 +99,7 @@ export function EchoCreationPage() {
             persona_mode: 'detailed',
             consent_declaration: true,
             persona_declaration: personaDeclaration,
-            shard_id: selectedShardId ?? undefined,
+            shard_id: shardId,
             physical_description:
               trimmedPhysical.length > 0 ? trimmedPhysical : undefined,
           });
@@ -97,12 +114,10 @@ export function EchoCreationPage() {
       const echo = outcome.value;
 
       createdEchoId.current = echo.echo_id;
-      const shardName =
-        publicShards.find((s) => s.shard_id === selectedShardId)?.name ??
-        'personal';
+      const shardName = shardOptions.find((s) => s.shard_id === shardId)?.name;
       trackEvent('echo.created', {
         persona_mode: 'detailed',
-        target_shard: shardName,
+        target_shard: shardName ?? shardId,
       });
     } catch (err) {
       // The Echo limit has its own view with an upgrade path; any other
@@ -355,9 +370,27 @@ export function EchoCreationPage() {
             <div className="mbe-4 flex justify-center">
               <Spinner />
             </div>
+          ) : shardsFailed ? (
+            <div className="mbe-4 flex flex-col items-center gap-3 rounded-lg bg-danger/10 px-4 py-3">
+              <p className="text-sm text-danger">{t('echo.shardListFailed')}</p>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setShardsLoading(true);
+                  setShardsFailed(false);
+                  setShardsAttempt((n) => n + 1);
+                }}
+              >
+                {t('common.retry')}
+              </Button>
+            </div>
+          ) : shardOptions.length === 0 ? (
+            <p className="mbe-4 text-center text-sm text-text-secondary">
+              {t('shardBrowser.emptyPublicDesc')}
+            </p>
           ) : (
             <div className="mbe-4 flex flex-col gap-3">
-              {publicShards.map((shard) => (
+              {shardOptions.map((shard) => (
                 <Card
                   key={shard.shard_id}
                   className={`cursor-pointer transition-all duration-200 ${
@@ -368,34 +401,33 @@ export function EchoCreationPage() {
                   onClick={() => setSelectedShardId(shard.shard_id)}
                 >
                   <div className="flex items-center gap-2">
-                    <Globe size={16} className="text-accent" />
+                    {shard.shard_type === 'Private' ? (
+                      <Lock
+                        size={16}
+                        className="text-accent"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <Globe
+                        size={16}
+                        className="text-accent"
+                        aria-hidden="true"
+                      />
+                    )}
                     <h3 className="font-semibold text-text-primary">
                       {shard.name}
                     </h3>
+                    <span className="text-xs text-text-muted">
+                      {shard.shard_type === 'Private'
+                        ? t('shardBrowser.typePrivate')
+                        : t('shardBrowser.typePublic')}
+                    </span>
                   </div>
                   <p className="mbs-1 text-sm text-text-secondary">
                     {shard.description}
                   </p>
                 </Card>
               ))}
-              <Card
-                className={`cursor-pointer transition-all duration-200 ${
-                  selectedShardId === null
-                    ? 'me-selected-shadow scale-[1.02] border-accent bg-accent/10! ring-2 ring-accent/25'
-                    : 'scale-100 border-border opacity-60 hover:border-text-muted hover:opacity-85'
-                }`}
-                onClick={() => setSelectedShardId(null)}
-              >
-                <div className="flex items-center gap-2">
-                  <Home size={16} className="text-text-muted" />
-                  <h3 className="font-semibold text-text-primary">
-                    {t('echo.personalShard')}
-                  </h3>
-                </div>
-                <p className="mbs-1 text-sm text-text-secondary">
-                  {t('echo.personalShardDesc')}
-                </p>
-              </Card>
             </div>
           )}
 
@@ -440,7 +472,7 @@ export function EchoCreationPage() {
             </Button>
             <Button
               onClick={() => void handleCreate()}
-              disabled={sharedShardNotice.running}
+              disabled={sharedShardNotice.running || selectedShardId === null}
               className="flex-1"
             >
               {t('echo.createButton')}
