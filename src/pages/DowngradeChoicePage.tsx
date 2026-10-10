@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -10,6 +10,7 @@ import { Button, Card, Spinner, EmptyState } from '../components/index.ts';
 import { subscription, shards as shardsApi } from '../lib/api/endpoints.ts';
 import { ApiRequestError } from '../lib/api/client.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
+import { useCurrentKey, useLatestLoad } from '../hooks/useCurrentKey.ts';
 import type {
   DowngradeSessionView,
   PendingDecisionEntry,
@@ -17,6 +18,10 @@ import type {
 } from '../types/api.ts';
 
 type ShardNameMap = Record<string, string>;
+
+// Every load on this page reads the one key, the user's pending downgrade
+// session.
+const SESSION_KEY = 'downgrade-session';
 
 type LoadState =
   | { kind: 'loading' }
@@ -79,24 +84,94 @@ export function DowngradeChoicePage() {
   const [loadState, setLoadState] = useState<LoadState>({ kind: 'loading' });
   const [mutating, setMutating] = useState<boolean>(false);
 
-  const applySession = useCallback(async (session: DowngradeSessionView) => {
-    const ids = session.pending_decisions.map((d) => d.shard_id);
-    if (session.picked_included_shard_id) {
-      ids.push(session.picked_included_shard_id);
-    }
-    const shardNames = await fetchShardNames(ids);
-    setLoadState({ kind: 'ready', session, shards: shardNames });
-  }, []);
+  // `isCurrent` says whether the load that read `session` is still the
+  // page's latest. The mount effect runs again when the language changes,
+  // and a shard-name read from the earlier run that settles after the later
+  // one's writes nothing, so an earlier session's shards never replace a
+  // later one's (R347.2).
+  //
+  // This flag is set in the effect's cleanup, which runs after the commit,
+  // and unlike the shared `useCurrentKey` (R360.1) it leaves a gap in which
+  // an earlier run's read can still write. That is kept on purpose (R360.3):
+  // every load here reads one key, the user's pending downgrade session, so
+  // a write in that gap is an earlier read of the same session, which the
+  // later run's write then replaces. The page shows no other key's content.
+  //
+  // The flag covers the mount effect's runs: a run's flag is set before the
+  // next run starts, so of those runs only the last one started writes. A
+  // mutation's load is started by the user while an effect run may still be
+  // in flight (the language changed after the page was ready), so every
+  // load, an effect run's or a mutation's (a cancel starts none), also
+  // takes `startLoad`'s check: only the last one started writes (R381.1,
+  // R381.3).
+  //
+  // A mutation's response is the newest write (R390.3b). Each mutation
+  // whose response the page writes (a pick, a shard decision, a commit;
+  // not a cancel, which only moves or shows a toast) calls `startLoad`
+  // when it starts and again when its response arrives while the page is
+  // still mounted, and writes with the second check, so a reload started
+  // while it was pending neither drops its response nor writes after it.
+  //
+  // A read a mutation supersedes never ends the loading it began, so a
+  // mutation that superseded a read still running, when it started or when
+  // its response arrived, starts a full read when it ends while the page is
+  // still mounted, whether it succeeded or failed, after it writes its
+  // response or its failure (R463.2). `reading` says whether a read is
+  // running: it is set when a read starts and cleared when a current read
+  // settles, so a superseded read leaves it set until the read after it
+  // settles. `readNo` starts that read: the load effect runs again when it
+  // changes.
+  const startLoad = useLatestLoad(SESSION_KEY);
+  // An action keeps the visit it began in, the page's mount: answered after
+  // the page has gone, it shows nothing, reads nothing and moves nothing,
+  // not even to the page it would have gone to (R483.1).
+  const visitOf = useCurrentKey(SESSION_KEY);
+  const reading = useRef(false);
+  const [readNo, setReadNo] = useState(0);
+  /** Begins a mutation: supersedes every load started before it. Its
+   *  `answer` supersedes every load started while it was pending and
+   *  returns the `isCurrent` its response writes with; its `end` starts
+   *  the full read when either supersede found a read still running. */
+  const beginMutation = useCallback(() => {
+    let supersededRead = reading.current;
+    startLoad(SESSION_KEY);
+    return {
+      answer: () => {
+        supersededRead ||= reading.current;
+        return startLoad(SESSION_KEY);
+      },
+      end: () => {
+        if (supersededRead) setReadNo((n) => n + 1);
+      },
+    };
+  }, [startLoad]);
+  const applySession = useCallback(
+    async (session: DowngradeSessionView, isCurrent: () => boolean) => {
+      const ids = session.pending_decisions.map((d) => d.shard_id);
+      if (session.picked_included_shard_id) {
+        ids.push(session.picked_included_shard_id);
+      }
+      const shardNames = await fetchShardNames(ids);
+      if (!isCurrent()) return;
+      setLoadState({ kind: 'ready', session, shards: shardNames });
+    },
+    [],
+  );
 
   useEffect(() => {
     let cancelled = false;
+    const isLatest = startLoad(SESSION_KEY);
+    const isCurrent = () => !cancelled && isLatest();
+    reading.current = true;
     (async () => {
       try {
         const session = await subscription.downgradePending();
-        if (cancelled) return;
-        await applySession(session);
+        if (!isCurrent()) return;
+        await applySession(session, isCurrent);
+        if (isCurrent()) reading.current = false;
       } catch (err) {
-        if (cancelled) return;
+        if (!isCurrent()) return;
+        reading.current = false;
         if (err instanceof ApiRequestError && err.status === 404) {
           setLoadState({ kind: 'no-session' });
           return;
@@ -110,91 +185,116 @@ export function DowngradeChoicePage() {
     return () => {
       cancelled = true;
     };
-  }, [applySession, t]);
+  }, [applySession, startLoad, t, readNo]);
 
   const handlePickIncluded = useCallback(
     async (sessionId: string, shardId: string) => {
+      const inVisit = visitOf(SESSION_KEY);
       setMutating(true);
+      const mutation = beginMutation();
       try {
         const updated = await subscription.pickIncludedShard(
           sessionId,
           shardId,
         );
-        await applySession(updated);
+        if (!inVisit()) return;
+        await applySession(updated, mutation.answer());
       } catch (err) {
+        if (!inVisit()) return;
         addToast(
           translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
           'danger',
           { platformLink: isPlatformError(err) },
         );
       } finally {
-        setMutating(false);
+        if (inVisit()) {
+          setMutating(false);
+          mutation.end();
+        }
       }
     },
-    [applySession, addToast, t],
+    [applySession, beginMutation, addToast, t, visitOf],
   );
 
   const handleShardDecision = useCallback(
     async (sessionId: string, shardId: string, decision: string) => {
+      const inVisit = visitOf(SESSION_KEY);
       setMutating(true);
+      const mutation = beginMutation();
       try {
         const updated = await subscription.shardDecision(
           sessionId,
           shardId,
           decision,
         );
-        await applySession(updated);
+        if (!inVisit()) return;
+        await applySession(updated, mutation.answer());
       } catch (err) {
+        if (!inVisit()) return;
         addToast(
           translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
           'danger',
           { platformLink: isPlatformError(err) },
         );
       } finally {
-        setMutating(false);
+        if (inVisit()) {
+          setMutating(false);
+          mutation.end();
+        }
       }
     },
-    [applySession, addToast, t],
+    [applySession, beginMutation, addToast, t, visitOf],
   );
 
   const handleCommit = useCallback(
     async (sessionId: string) => {
+      const inVisit = visitOf(SESSION_KEY);
       setMutating(true);
+      const mutation = beginMutation();
       try {
         const updated = await subscription.commit(sessionId);
+        if (!inVisit()) return;
         addToast(t('tiers.downgrade.successMessage'), 'success');
-        await applySession(updated);
+        await applySession(updated, mutation.answer());
+        if (!inVisit()) return;
         navigate('/dashboard');
       } catch (err) {
+        if (!inVisit()) return;
         addToast(
           translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
           'danger',
           { platformLink: isPlatformError(err) },
         );
       } finally {
-        setMutating(false);
+        if (inVisit()) {
+          setMutating(false);
+          mutation.end();
+        }
       }
     },
-    [applySession, addToast, navigate, t],
+    [applySession, beginMutation, addToast, navigate, t, visitOf],
   );
 
   const handleCancel = useCallback(
     async (sessionId: string) => {
+      const inVisit = visitOf(SESSION_KEY);
       setMutating(true);
       try {
         await subscription.cancel(sessionId);
+        if (!inVisit()) return;
         navigate(-1);
       } catch (err) {
+        if (!inVisit()) return;
         addToast(
           translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
           'danger',
           { platformLink: isPlatformError(err) },
         );
       } finally {
-        setMutating(false);
+        if (inVisit()) setMutating(false);
       }
     },
-    [addToast, navigate, t],
+    [addToast, navigate, t, visitOf],
   );
 
   if (!hasConsent) {

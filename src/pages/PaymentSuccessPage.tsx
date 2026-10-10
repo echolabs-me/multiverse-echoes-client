@@ -3,54 +3,82 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle, Loader2, ArrowLeft } from 'lucide-react';
 import { payments } from '../lib/api/endpoints.ts';
+import { useLatestLoad } from '../hooks/useCurrentKey.ts';
+
+/** What the poll last read, and the payment it was read for. */
+interface PollState {
+  key: string | null;
+  status: string;
+  polling: boolean;
+}
 
 export function PaymentSuccessPage() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [status, setStatus] = useState<string>('Pending');
-  const [polling, setPolling] = useState(true);
 
   const paymentId = searchParams.get('id');
 
-  useEffect(() => {
-    if (!paymentId) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot guard: stop the pending spinner when the page is opened without a payment id; a lazy initial state would change when polling first becomes false
-      setPolling(false);
-      return;
-    }
+  // The poll's state is shown only while the query names the payment it was
+  // read for (R371.1): the first render for another payment shows it
+  // pending, never the earlier payment's status. A page opened without a
+  // payment id polls nothing.
+  const [held, setHeld] = useState<PollState>({
+    key: paymentId,
+    status: 'Pending',
+    polling: true,
+  });
+  const current: PollState =
+    held.key === paymentId
+      ? held
+      : { key: paymentId, status: 'Pending', polling: true };
+  const status = current.status;
+  const polling = !!paymentId && current.polling;
 
-    let cancelled = false;
+  // Of the polls the page starts, only the last one started for the query's
+  // payment writes, and only while the page is mounted; the check is made
+  // between each read and its write (R361.1, R381.1).
+  const startPoll = useLatestLoad(paymentId);
+
+  useEffect(() => {
+    if (!paymentId) return;
+    const key = paymentId;
+    const isCurrent = startPoll(key);
+    if (!isCurrent()) return;
     let attempts = 0;
     const maxAttempts = 30;
+    const write = (next: string, keepPolling: boolean) =>
+      setHeld({ key, status: next, polling: keepPolling });
 
     const poll = async () => {
-      while (!cancelled && attempts < maxAttempts) {
+      let last = 'Pending';
+      while (attempts < maxAttempts) {
         try {
-          const result = await payments.getStatus(paymentId);
-          setStatus(result.status);
+          const result = await payments.getStatus(key);
+          if (!isCurrent()) return;
+          last = result.status;
           if (
             result.status === 'Finished' ||
             result.status === 'Failed' ||
             result.status === 'Expired'
           ) {
-            setPolling(false);
+            write(result.status, false);
             return;
           }
+          write(result.status, true);
         } catch {
           // Continue polling on error
+          if (!isCurrent()) return;
         }
         attempts++;
         await new Promise((r) => setTimeout(r, 3000));
+        if (!isCurrent()) return;
       }
-      setPolling(false);
+      write(last, false);
     };
 
-    poll();
-    return () => {
-      cancelled = true;
-    };
-  }, [paymentId]);
+    void poll();
+  }, [paymentId, startPoll]);
 
   const isConfirmed = status === 'Finished';
   const isPending =

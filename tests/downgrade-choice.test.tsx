@@ -429,4 +429,465 @@ describe('DowngradeChoicePage', () => {
     expect(screen.getByText(SHARD_A)).toBeInTheDocument();
     expect(screen.getByText(SHARD_B)).toBeInTheDocument();
   });
+  it('a load the language change replaced writes nothing when its shard names settle after the new load’s (R347.2)', async () => {
+    let releaseFirst: (value: unknown) => void = () => undefined;
+    mockDowngradePending
+      .mockResolvedValueOnce(
+        sessionView({
+          pending_decisions: [{ shard_id: SHARD_A, decision: 'Undecided' }],
+        }),
+      )
+      .mockResolvedValueOnce(
+        sessionView({
+          pending_decisions: [{ shard_id: SHARD_C, decision: 'Undecided' }],
+        }),
+      );
+    mockShardsGet.mockImplementation((id: string) =>
+      id === SHARD_A
+        ? new Promise((resolve) => {
+            releaseFirst = () => resolve(shardWithName(id, 'Earlier'));
+          })
+        : Promise.resolve(shardWithName(id, 'Later')),
+    );
+
+    await renderPage();
+    try {
+      // A new `t` runs the mount effect again.
+      await act(async () => {
+        await testI18n.changeLanguage('fr');
+      });
+      await act(async () => {
+        await Promise.resolve();
+      });
+      expect(screen.getByText('Later')).toBeInTheDocument();
+
+      await act(async () => {
+        releaseFirst(undefined);
+        await Promise.resolve();
+      });
+      expect(screen.getByText('Later')).toBeInTheDocument();
+      expect(screen.queryByText('Earlier')).toBeNull();
+    } finally {
+      await act(async () => {
+        await testI18n.changeLanguage('en');
+      });
+    }
+  });
+  it('a load the language change started, settling after a mutation the user started later, writes nothing (R381.3)', async () => {
+    const SHARD_D = '44444444-4444-4444-4444-444444444444';
+    let releaseStale: (value: unknown) => void = () => undefined;
+    mockDowngradePending
+      .mockResolvedValueOnce(
+        sessionView({
+          pending_decisions: [{ shard_id: SHARD_A, decision: 'Undecided' }],
+        }),
+      )
+      .mockResolvedValueOnce(
+        sessionView({
+          pending_decisions: [{ shard_id: SHARD_C, decision: 'Undecided' }],
+        }),
+      )
+      // The mutation superseded a read still running, so it reads the
+      // session again when it ends (R463.2): the server's session now.
+      .mockResolvedValueOnce(
+        sessionView({
+          pending_decisions: [{ shard_id: SHARD_D, decision: 'Archive' }],
+        }),
+      );
+    mockShardsGet.mockImplementation((id: string) => {
+      if (id === SHARD_C) {
+        return new Promise((resolve) => {
+          releaseStale = () => resolve(shardWithName(id, 'Stale'));
+        });
+      }
+      return Promise.resolve(
+        shardWithName(id, id === SHARD_D ? 'Mutated' : 'First'),
+      );
+    });
+    mockShardDecision.mockResolvedValue(
+      sessionView({
+        pending_decisions: [{ shard_id: SHARD_D, decision: 'Archive' }],
+      }),
+    );
+
+    await renderPage();
+    try {
+      expect(screen.getByText('First')).toBeInTheDocument();
+      // A new `t` runs the mount effect again; its shard-name read is held.
+      await act(async () => {
+        await testI18n.changeLanguage('fr');
+      });
+      await act(async () => {
+        await Promise.resolve();
+      });
+      // The user acts on the page still shown: a later load. French has
+      // no strings in this test, so the button shows its key.
+      await act(async () => {
+        fireEvent.click(screen.getByText('tiers.downgrade.archive'));
+      });
+      await act(async () => {
+        await Promise.resolve();
+      });
+      expect(screen.getByText('Mutated')).toBeInTheDocument();
+
+      await act(async () => {
+        releaseStale(undefined);
+        await Promise.resolve();
+      });
+      expect(screen.getByText('Mutated')).toBeInTheDocument();
+      expect(screen.queryByText('Stale')).toBeNull();
+    } finally {
+      await act(async () => {
+        await testI18n.changeLanguage('en');
+      });
+    }
+  });
+  it.each(['succeeds', 'fails'] as const)(
+    'a reload started while a mutation is pending, when the mutation %s: a success writes the answer, supersedes the reload and reads again; a failure writes nothing, so the reload writes and nothing reads again (R390.3b, R463.2)',
+    async (outcome) => {
+      const SHARD_D = '44444444-4444-4444-4444-444444444444';
+      const SHARD_E = '55555555-5555-5555-5555-555555555555';
+      let answer: () => void = () => undefined;
+      let releaseReload: (value: unknown) => void = () => undefined;
+      let releaseReadAfter: (value: unknown) => void = () => undefined;
+      mockDowngradePending
+        .mockResolvedValueOnce(
+          sessionView({
+            pending_decisions: [{ shard_id: SHARD_A, decision: 'Undecided' }],
+          }),
+        )
+        // The reload a new `t` starts while the mutation is pending.
+        .mockImplementationOnce(
+          () =>
+            new Promise((resolve) => {
+              releaseReload = () =>
+                resolve(
+                  sessionView({
+                    pending_decisions: [
+                      { shard_id: SHARD_C, decision: 'Undecided' },
+                    ],
+                  }),
+                );
+            }),
+        )
+        // The full read the mutation starts when it ends, held.
+        .mockImplementationOnce(
+          () =>
+            new Promise((resolve) => {
+              releaseReadAfter = () =>
+                resolve(
+                  sessionView({
+                    pending_decisions: [
+                      { shard_id: SHARD_E, decision: 'Archive' },
+                    ],
+                  }),
+                );
+            }),
+        );
+      mockShardsGet.mockImplementation((id: string) =>
+        Promise.resolve(
+          shardWithName(
+            id,
+            id === SHARD_D
+              ? 'Mutated'
+              : id === SHARD_E
+                ? 'Read after'
+                : id === SHARD_C
+                  ? 'Reloaded'
+                  : 'First',
+          ),
+        ),
+      );
+      mockShardDecision.mockImplementation(
+        () =>
+          new Promise((resolve, reject) => {
+            answer = () =>
+              outcome === 'succeeds'
+                ? resolve(
+                    sessionView({
+                      pending_decisions: [
+                        { shard_id: SHARD_D, decision: 'Archive' },
+                      ],
+                    }),
+                  )
+                : reject(new Error('boom'));
+          }),
+      );
+
+      await renderPage();
+      try {
+        expect(screen.getByText('First')).toBeInTheDocument();
+        // The user acts; the request is held.
+        await act(async () => {
+          fireEvent.click(screen.getByText('Archive (30-day retention)'));
+        });
+        // While it is pending, a new `t` starts a reload.
+        await act(async () => {
+          await testI18n.changeLanguage('fr');
+        });
+        expect(mockDowngradePending).toHaveBeenCalledTimes(2);
+        // The mutation's answer arrives first: a success is shown.
+        for (let i = 0; i < 3; i += 1) {
+          await act(async () => {
+            if (i === 0) answer();
+            await Promise.resolve();
+          });
+        }
+        if (outcome === 'succeeds') {
+          expect(screen.getByText('Mutated')).toBeInTheDocument();
+        } else {
+          expect(screen.getByText('First')).toBeInTheDocument();
+        }
+        if (outcome === 'fails') {
+          // A failure writes nothing, so it supersedes nothing: the reload
+          // is still the latest load, and it writes.
+          expect(mockDowngradePending).toHaveBeenCalledTimes(2);
+          await act(async () => {
+            releaseReload(undefined);
+            await Promise.resolve();
+          });
+          expect(screen.getByText('Reloaded')).toBeInTheDocument();
+          expect(mockDowngradePending).toHaveBeenCalledTimes(2);
+          return;
+        }
+        // The answer superseded the reload, so the mutation's end started
+        // a full read.
+        expect(mockDowngradePending).toHaveBeenCalledTimes(3);
+        // The reload, started before the answer, settles after it and
+        // writes nothing.
+        await act(async () => {
+          releaseReload(undefined);
+          await Promise.resolve();
+        });
+        expect(screen.getByText('Mutated')).toBeInTheDocument();
+        expect(screen.queryByText('Reloaded')).toBeNull();
+        // The full read writes.
+        await act(async () => {
+          releaseReadAfter(undefined);
+          await Promise.resolve();
+        });
+        expect(screen.getByText('Read after')).toBeInTheDocument();
+        expect(screen.queryByText('Reloaded')).toBeNull();
+      } finally {
+        await act(async () => {
+          await testI18n.changeLanguage('en');
+        });
+      }
+    },
+  );
+
+  it.each(['succeeds', 'fails'] as const)(
+    'a mutation that superseded a read still running, when it %s, reads the session again and shows that read (R463.2)',
+    async (outcome) => {
+      const SHARD_D = '44444444-4444-4444-4444-444444444444';
+      const SHARD_E = '55555555-5555-5555-5555-555555555555';
+      let releaseRunning: (value: unknown) => void = () => undefined;
+      mockDowngradePending
+        .mockResolvedValueOnce(
+          sessionView({
+            pending_decisions: [{ shard_id: SHARD_A, decision: 'Undecided' }],
+          }),
+        )
+        // The read the language change starts, held until after the
+        // mutation's answer.
+        .mockImplementationOnce(
+          () =>
+            new Promise((resolve) => {
+              releaseRunning = () =>
+                resolve(
+                  sessionView({
+                    pending_decisions: [
+                      { shard_id: SHARD_C, decision: 'Undecided' },
+                    ],
+                  }),
+                );
+            }),
+        )
+        // The full read the mutation starts when it ends.
+        .mockResolvedValueOnce(
+          sessionView({
+            pending_decisions: [{ shard_id: SHARD_E, decision: 'Archive' }],
+          }),
+        );
+      mockShardsGet.mockImplementation((id: string) =>
+        Promise.resolve(
+          shardWithName(
+            id,
+            id === SHARD_D
+              ? 'Mutated'
+              : id === SHARD_E
+                ? 'Read after'
+                : id === SHARD_C
+                  ? 'Superseded'
+                  : 'First',
+          ),
+        ),
+      );
+      if (outcome === 'succeeds') {
+        mockShardDecision.mockResolvedValue(
+          sessionView({
+            pending_decisions: [{ shard_id: SHARD_D, decision: 'Archive' }],
+          }),
+        );
+      } else {
+        mockShardDecision.mockRejectedValue(new Error('boom'));
+      }
+
+      await renderPage();
+      try {
+        expect(screen.getByText('First')).toBeInTheDocument();
+        // A new `t` starts a read, which is still running when the user
+        // acts on the page still shown.
+        await act(async () => {
+          await testI18n.changeLanguage('fr');
+        });
+        await act(async () => {
+          fireEvent.click(screen.getByText('tiers.downgrade.archive'));
+        });
+        for (let i = 0; i < 3; i += 1) {
+          await act(async () => {
+            await Promise.resolve();
+          });
+        }
+        expect(mockDowngradePending).toHaveBeenCalledTimes(3);
+        expect(screen.getByText('Read after')).toBeInTheDocument();
+        expect(screen.queryByText('Mutated')).toBeNull();
+        // The superseded read settles last and writes nothing.
+        await act(async () => {
+          releaseRunning(undefined);
+          await Promise.resolve();
+        });
+        expect(screen.getByText('Read after')).toBeInTheDocument();
+        expect(screen.queryByText('Superseded')).toBeNull();
+      } finally {
+        await act(async () => {
+          await testI18n.changeLanguage('en');
+        });
+      }
+    },
+  );
+
+  it('a mutation that superseded no running read reads nothing again when it ends (R463.2)', async () => {
+    const SHARD_D = '44444444-4444-4444-4444-444444444444';
+    mockDowngradePending.mockResolvedValueOnce(
+      sessionView({
+        pending_decisions: [{ shard_id: SHARD_A, decision: 'Undecided' }],
+      }),
+    );
+    mockShardsGet.mockImplementation((id: string) =>
+      Promise.resolve(shardWithName(id, id === SHARD_D ? 'Mutated' : 'First')),
+    );
+    mockShardDecision.mockResolvedValue(
+      sessionView({
+        pending_decisions: [{ shard_id: SHARD_D, decision: 'Archive' }],
+      }),
+    );
+    await renderPage();
+    await act(async () => {
+      fireEvent.click(screen.getByText('Archive (30-day retention)'));
+    });
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(screen.getByText('Mutated')).toBeInTheDocument();
+    expect(mockDowngradePending).toHaveBeenCalledTimes(1);
+  });
+});
+
+/** Mounts the page, waits for its read, and returns its `unmount`. */
+async function mountPage() {
+  let view!: ReturnType<typeof render>;
+  await act(async () => {
+    view = render(
+      <I18nextProvider i18n={testI18n}>
+        <MemoryRouter
+          initialEntries={['/subscription/downgrade-choice?consented=1']}
+        >
+          <DowngradeChoicePage />
+        </MemoryRouter>
+      </I18nextProvider>,
+    );
+  });
+  await act(async () => {
+    await Promise.resolve();
+  });
+  await act(async () => {
+    await Promise.resolve();
+  });
+  return view;
+}
+
+describe('DowngradeChoicePage — an action keeps the visit it began in (R483.1)', () => {
+  type Action = 'pick' | 'decide' | 'commit' | 'cancel';
+  const cases = (['pick', 'decide', 'commit', 'cancel'] as const).flatMap(
+    (action) =>
+      (['succeeds', 'fails'] as const).map(
+        (outcome) => [action, outcome] as const,
+      ),
+  );
+
+  const start: Record<Action, () => void> = {
+    pick: () => fireEvent.click(screen.getAllByText('Keep as Included')[0]),
+    decide: () =>
+      fireEvent.click(screen.getAllByText('Archive (30-day retention)')[0]),
+    commit: () => fireEvent.click(screen.getByText('Commit decisions')),
+    cancel: () => fireEvent.click(screen.getByText('Cancel — decide later')),
+  };
+
+  it.each(cases)(
+    'a %s begun on the page that %s after the page has gone and come back writes nothing, reads nothing and moves nothing',
+    async (action, outcome) => {
+      const session =
+        action === 'pick'
+          ? sessionView({ state: 'PickingIncluded' })
+          : action === 'commit'
+            ? sessionView({
+                pending_decisions: [
+                  { shard_id: SHARD_A, decision: 'BuyAddon' },
+                  { shard_id: SHARD_B, decision: 'Archive' },
+                ],
+              })
+            : sessionView();
+      mockDowngradePending.mockResolvedValue(session);
+      mockShardsGet.mockImplementation((id: string) =>
+        Promise.resolve(shardWithName(id, `Shard-${id.slice(0, 4)}`)),
+      );
+      let settle!: (ok: boolean) => void;
+      const answer = new Promise((resolve, reject) => {
+        settle = (ok) =>
+          ok ? resolve(sessionView()) : reject(new Error('boom'));
+      });
+      const mocksOf: Record<Action, ReturnType<typeof vi.fn>> = {
+        pick: mockPickIncludedShard,
+        decide: mockShardDecision,
+        commit: mockCommit,
+        cancel: mockCancel,
+      };
+      mocksOf[action].mockReturnValue(answer);
+
+      const first = await mountPage();
+      await act(async () => {
+        start[action]();
+      });
+      expect(mocksOf[action]).toHaveBeenCalledTimes(1);
+      first.unmount();
+      await mountPage();
+      const reads = mockDowngradePending.mock.calls.length;
+      const names = mockShardsGet.mock.calls.length;
+      mockAddToast.mockClear();
+      mockNavigate.mockClear();
+
+      await act(async () => {
+        settle(outcome === 'succeeds');
+      });
+      await act(async () => {
+        await Promise.resolve();
+      });
+
+      expect(mockNavigate).not.toHaveBeenCalled();
+      expect(mockAddToast).not.toHaveBeenCalled();
+      expect(mockDowngradePending.mock.calls.length).toBe(reads);
+      expect(mockShardsGet.mock.calls.length).toBe(names);
+    },
+  );
 });

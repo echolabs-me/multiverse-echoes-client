@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +12,11 @@ import {
 } from '../lib/translateError.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useInFlight } from '../hooks/useInFlight.ts';
+import {
+  useCurrentKey,
+  useLatestLoad,
+  whenCurrent,
+} from '../hooks/useCurrentKey.ts';
 import { markers } from '../lib/inFlightMarkers.ts';
 import type {
   EchoInCommonRef,
@@ -58,14 +63,30 @@ interface OwnedRelationshipState extends RelationshipState {
   owner: string | null;
 }
 
+/** What one load read, and the user it was read for (R361.1, R371.1). */
+interface ProfileLoad {
+  key: string;
+  profile: PublicProfileResponse | null;
+  echoes: PublicEchoRef[];
+  echoesInCommon: EchoInCommonRef[];
+  error: { kind: 'not-found' } | { kind: 'load-failed'; text: string } | null;
+}
+
 export function UserProfilePage() {
   const { user_id: userId } = useParams<{ user_id: string }>();
   const { t } = useTranslation();
   const addToast = useToastStore((s) => s.addToast);
 
-  const [profile, setProfile] = useState<PublicProfileResponse | null>(null);
-  const [echoes, setEchoes] = useState<PublicEchoRef[]>([]);
-  const [echoesInCommon, setEchoesInCommon] = useState<EchoInCommonRef[]>([]);
+  // What the last load read, shown only while the route names the user it
+  // was read for (R371.1): the first render for another user shows the
+  // loading state, never the earlier user's profile.
+  const [load, setLoad] = useState<ProfileLoad | null>(null);
+  const shown = load !== null && load.key === userId ? load : null;
+  const isLoading = shown === null;
+  const profile = shown?.profile ?? null;
+  const echoes = shown?.echoes ?? [];
+  const echoesInCommon = shown?.echoesInCommon ?? [];
+  const error = shown?.error ?? null;
   const [rel, setRel] = useState<OwnedRelationshipState>({
     owner: null,
     ...DEFAULT_REL,
@@ -74,54 +95,84 @@ export function UserProfilePage() {
   // does not free a follow in flight, and a follow in flight on one user
   // does not hold Follow on another (R265.2, R285.2).
   const inFlight = useInFlight();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<
-    { kind: 'not-found' } | { kind: 'load-failed'; text: string } | null
-  >(null);
+
+  // Of the loads the page starts, only the last one started for the
+  // route's user writes, and only while the page is mounted (R381.1). The
+  // relationship state has its own: an action's answer is its newest write
+  // (R390.3b), so a load started before the answer never writes over it.
+  // A read of the relationship state an action supersedes never writes it,
+  // so an action that superseded a read still running, when it started or
+  // when its answer arrived, starts a full read when it ends in its visit,
+  // whether it succeeded or failed, after it writes its answer or its undo
+  // (R463.2).
+  // `relReading` says whether a read of it is running: set when a read
+  // starts, cleared when a current read settles.
+  const startLoad = useLatestLoad(userId);
+  const startRel = useLatestLoad(userId);
+  // An action keeps the visit it began in: its answer, its undo and the
+  // read after it are written only while that visit lasts (R483.1).
+  const visitOf = useCurrentKey(userId);
+  const relReading = useRef(false);
 
   const loadData = useCallback(async () => {
     if (!userId) return;
-    setIsLoading(true);
-    setError(null);
+    const key = userId;
+    const isCurrent = startLoad(key);
+    if (!isCurrent()) return;
+    const relCurrent = startRel(key);
+    relReading.current = true;
     try {
       const [profileResp, echoesResp, eicResp, following, blocked, muted] =
-        await Promise.all([
-          users.getProfile(userId),
-          users.listEchoes(userId).catch(() => [] as PublicEchoRef[]),
-          users.echoesInCommon(userId).catch(() => [] as EchoInCommonRef[]),
-          // Outbound-relationship lookups: if they fail (auth/network),
-          // default to "no relationship" rather than failing the whole
-          // page render. The page is still useful without action-state
-          // hydration (buttons just default to Follow/Block/Mute).
-          social.following().catch(() => [] as RelationshipResponse[]),
-          social.blocked().catch(() => [] as RelationshipResponse[]),
-          social.muted().catch(() => [] as RelationshipResponse[]),
-        ]);
-      setProfile(profileResp);
-      setEchoes(echoesResp);
-      setEchoesInCommon(eicResp);
-      setRel({
-        owner: userId,
-        following: contains(following, userId),
-        blocked: contains(blocked, userId),
-        muted: contains(muted, userId),
+        await whenCurrent(
+          isCurrent,
+          Promise.all([
+            users.getProfile(key),
+            users.listEchoes(key).catch(() => [] as PublicEchoRef[]),
+            users.echoesInCommon(key).catch(() => [] as EchoInCommonRef[]),
+            // Outbound-relationship lookups: if they fail (auth/network),
+            // default to "no relationship" rather than failing the whole
+            // page render. The page is still useful without action-state
+            // hydration (buttons just default to Follow/Block/Mute).
+            social.following().catch(() => [] as RelationshipResponse[]),
+            social.blocked().catch(() => [] as RelationshipResponse[]),
+            social.muted().catch(() => [] as RelationshipResponse[]),
+          ]),
+        );
+      if (relCurrent()) {
+        relReading.current = false;
+        setRel({
+          owner: key,
+          following: contains(following, key),
+          blocked: contains(blocked, key),
+          muted: contains(muted, key),
+        });
+      }
+      setLoad({
+        key,
+        profile: profileResp,
+        echoes: echoesResp,
+        echoesInCommon: eicResp,
+        error: null,
       });
     } catch (err) {
+      if (relCurrent()) relReading.current = false;
       // A missing user has its own view; any other error shows the
       // translator's text (R264.2).
-      setProfile(null);
-      setError(
-        err instanceof ApiRequestError && err.status === 404
-          ? { kind: 'not-found' }
-          : {
-              kind: 'load-failed',
-              text: translateCaughtError(err, t('userProfile.errorLoading')),
-            },
-      );
-    } finally {
-      setIsLoading(false);
+      setLoad({
+        key,
+        profile: null,
+        echoes: [],
+        echoesInCommon: [],
+        error:
+          err instanceof ApiRequestError && err.status === 404
+            ? { kind: 'not-found' }
+            : {
+                kind: 'load-failed',
+                text: translateCaughtError(err, t('userProfile.errorLoading')),
+              },
+      });
     }
-  }, [userId, t]);
+  }, [userId, t, startLoad, startRel]);
 
   useEffect(() => {
     void (async () => {
@@ -148,6 +199,7 @@ export function UserProfilePage() {
     ) => {
       if (!userId) return;
       const target = userId;
+      const inVisit = visitOf(target);
       // Each write changes one field, so the optimistic change and its
       // undo set that field alone, on the state as it is then, and only
       // while the page still shows the target (R285.3).
@@ -156,11 +208,25 @@ export function UserProfilePage() {
           cur.owner === target ? { ...cur, [kind]: value } : cur,
         );
       await inFlight.run(markers[kind](target), async () => {
+        // The action supersedes every load of the relationship state
+        // started before it, now and when its answer arrives (R390.3b).
+        // Its answer writes the value it set, even over a reload that
+        // landed while it was pending (R422.4). A read either supersede
+        // found running is replaced by a full read when it ends (R463.2).
+        let supersededRead = relReading.current;
+        startRel(target);
         setField(next);
         try {
           await run();
           trackEvent('profile.action', { user_id: target, kind, next });
+          // Answered in a later visit, it writes nothing there (R483.1).
+          if (!inVisit()) return;
+          supersededRead ||= relReading.current;
+          if (startRel(target)()) setField(next);
         } catch (err) {
+          if (!inVisit()) return;
+          supersededRead ||= relReading.current;
+          startRel(target);
           setField(!next);
           addToast(
             translateCaughtError(err, t('userProfile.actionFailed')),
@@ -168,9 +234,10 @@ export function UserProfilePage() {
             { platformLink: isPlatformError(err) },
           );
         }
+        if (supersededRead) void loadData();
       });
     },
-    [userId, addToast, t, inFlight],
+    [userId, addToast, t, inFlight, startRel, loadData, visitOf],
   );
 
   if (!userId) {

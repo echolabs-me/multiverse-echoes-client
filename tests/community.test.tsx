@@ -10,9 +10,15 @@ import { account, channels } from '../src/lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../src/hooks/useEchoWebSocket.ts';
 import type { Channel, ChannelMessage, WsEchoEvent } from '../src/types/api.ts';
 
-vi.mock('../src/stores/useToastStore.ts', () => ({
-  useToastStore: () => ({ addToast: vi.fn() }),
-}));
+// The mock applies the selector to one unchanging state, as the store
+// does, so `addToast` is the same function on every render.
+vi.mock('../src/stores/useToastStore.ts', () => {
+  const state = { addToast: vi.fn() };
+  return {
+    useToastStore: (selector?: (s: typeof state) => unknown) =>
+      selector ? selector(state) : state,
+  };
+});
 
 // The mock applies the selector and answers `getState` and `subscribe`, as
 // the store does; it never changes, so it notifies nobody (R296.1).
@@ -40,7 +46,7 @@ vi.mock('../src/hooks/useEchoWebSocket.ts', () => ({
 vi.mock('../src/lib/api/endpoints.ts', () => ({
   channels: {
     list: vi.fn().mockResolvedValue([]),
-    messages: vi.fn().mockResolvedValue([]),
+    messages: vi.fn().mockResolvedValue({ data: [] }),
     sendMessage: vi.fn(),
   },
   // CommunityPage.tsx:23 imports `account as accountApi` and line 79 calls
@@ -217,9 +223,9 @@ function channelStreamHandler(): (event: WsEchoEvent) => void {
 describe('removed authors (R211, R212.2)', () => {
   afterEach(() => {
     vi.mocked(channels.list).mockResolvedValue([]);
-    vi.mocked(channels.messages).mockResolvedValue(
-      [] as unknown as Awaited<ReturnType<typeof channels.messages>>,
-    );
+    vi.mocked(channels.messages).mockResolvedValue({
+      data: [],
+    } as unknown as Awaited<ReturnType<typeof channels.messages>>);
   });
 
   it('CommunityPage shows a removed author as a former community member', async () => {
@@ -242,9 +248,9 @@ describe('removed authors (R211, R212.2)', () => {
 describe('Discord relays (R218)', () => {
   afterEach(() => {
     vi.mocked(channels.list).mockResolvedValue([]);
-    vi.mocked(channels.messages).mockResolvedValue(
-      [] as unknown as Awaited<ReturnType<typeof channels.messages>>,
-    );
+    vi.mocked(channels.messages).mockResolvedValue({
+      data: [],
+    } as unknown as Awaited<ReturnType<typeof channels.messages>>);
   });
 
   it.each([
@@ -306,9 +312,9 @@ describe('Discord relays (R218)', () => {
 describe('anonymised messages (R217.2)', () => {
   afterEach(() => {
     vi.mocked(channels.list).mockResolvedValue([]);
-    vi.mocked(channels.messages).mockResolvedValue(
-      [] as unknown as Awaited<ReturnType<typeof channels.messages>>,
-    );
+    vi.mocked(channels.messages).mockResolvedValue({
+      data: [],
+    } as unknown as Awaited<ReturnType<typeof channels.messages>>);
   });
 
   it.each([

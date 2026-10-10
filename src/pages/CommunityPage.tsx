@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   translateCaughtError,
@@ -27,12 +27,22 @@ import {
   account as accountApi,
 } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
+import {
+  useCurrentKey,
+  useLatestLoad,
+  whenCurrent,
+} from '../hooks/useCurrentKey.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { formatTime } from '../lib/formatDate.ts';
 import { sameMessageAuthor } from '../lib/messageGrouping.ts';
 import type { Channel, ChannelMessage, WsEchoEvent } from '../types/api.ts';
 
 const MAX_MESSAGE_LENGTH = 2000;
+
+/** Shows a sent message after a channel's messages, once: a read that
+ *  landed first may already hold it (R422.2). */
+const appendOnce = (msg: ChannelMessage) => (prev: ChannelMessage[]) =>
+  prev.some((m) => m.message_id === msg.message_id) ? prev : [...prev, msg];
 
 export function CommunityPage() {
   const { t } = useTranslation();
@@ -44,11 +54,66 @@ export function CommunityPage() {
   const [discordUsername, setDiscordUsername] = useState<string | null>(null);
   const [channelList, setChannelList] = useState<Channel[]>([]);
   const [activeChannel, setActiveChannel] = useState<Channel | null>(null);
-  const [messages, setMessages] = useState<ChannelMessage[]>([]);
   const [isLoadingChannels, setIsLoadingChannels] = useState(true);
-  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
-  const [messageText, setMessageText] = useState('');
-  const [isSending, setIsSending] = useState(false);
+  // The messages the last load or action wrote, and the channel they are
+  // in. They are shown only while that channel is the active one (R371.1):
+  // the first render for another channel shows it loading, never the
+  // earlier channel's messages. `loading` is true until a read of the
+  // channel has landed: a reload of a channel already read keeps its
+  // messages shown.
+  const channelKey = activeChannel?.channel_id ?? null;
+  const [held, setHeld] = useState<{
+    key: string | null;
+    messages: ChannelMessage[];
+    loading: boolean;
+  }>({ key: null, messages: [], loading: false });
+  const shownMessages = held.key === channelKey ? held : null;
+  const messages = useMemo(
+    () => shownMessages?.messages ?? [],
+    [shownMessages],
+  );
+  const isLoadingMessages =
+    channelKey !== null && (shownMessages === null || shownMessages.loading);
+  /** Shows an action's answer in channel `key`'s messages at once, until
+   *  the read that follows it lands (R422.2): nothing while another
+   *  channel's are held, or while no read of the channel has landed. */
+  const showAnswerIn = useCallback(
+    (key: string, change: (prev: ChannelMessage[]) => ChannelMessage[]) =>
+      setHeld((prev) =>
+        prev.key === key && !prev.loading
+          ? { ...prev, messages: change(prev.messages) }
+          : prev,
+      ),
+    [],
+  );
+  // Of the loads of the messages the page starts, only the last one started
+  // for the active channel writes, and only while the page is mounted
+  // (R361.1, R381.1). An action whose answer the page writes (a message
+  // sent, an image, an edit, a delete) supersedes every load of its channel
+  // started before it when it starts, and every load started while it was
+  // pending by the full read of the channel it starts when it ends, so its
+  // answer and then that read are the newest writes, and that read ends the
+  // loading a read it superseded began (R390.3b, R422.2, R463.2). It does
+  // both only while the visit to the channel it began in lasts: answered
+  // or failed in a later visit, it writes nothing and reads nothing
+  // (R483.1).
+  const startMessages = useLatestLoad(channelKey);
+  const isShownChannel = useCurrentKey(channelKey);
+  // The composer's draft and its request in flight belong to the channel
+  // they were typed and sent in (R422.3).
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const messageText = channelKey === null ? '' : (drafts[channelKey] ?? '');
+  const setDraftOf = (key: string, text: string) =>
+    setDrafts((prev) => ({ ...prev, [key]: text }));
+  const [sendingIn, setSendingIn] = useState<ReadonlySet<string>>(new Set());
+  const isSending = channelKey !== null && sendingIn.has(channelKey);
+  const setSendingOf = (key: string, sending: boolean) =>
+    setSendingIn((prev) => {
+      const next = new Set(prev);
+      if (sending) next.add(key);
+      else next.delete(key);
+      return next;
+    });
   const inFlight = useInFlight();
 
   // Edit/delete/report state
@@ -128,7 +193,9 @@ export function CommunityPage() {
         );
         setUnreadChannels(unread);
 
-        if (chs.length > 0 && !activeChannel) {
+        // This runs once, on mount, before any channel can be chosen, so
+        // the first channel is the one shown.
+        if (chs.length > 0) {
           setActiveChannel(chs[0]!);
           trackEvent('community.channel_joined', {
             channel_id: chs[0]!.channel_id,
@@ -139,29 +206,78 @@ export function CommunityPage() {
       }
     };
     void load();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Load messages when channel changes
+  // Load messages when channel changes. A call kept from an earlier
+  // channel (a live event, a poll, an action's reload) starts no load
+  // (R390.3a).
   const loadMessages = useCallback(async () => {
     if (!activeChannel) return;
-    setIsLoadingMessages(true);
+    const key = activeChannel.channel_id;
+    const isCurrent = startMessages(key);
+    if (!isCurrent()) return;
+    setHeld((prev) =>
+      prev.key === key ? prev : { key, messages: [], loading: true },
+    );
     try {
-      const page = await channelApi.messages(activeChannel.channel_id, {
-        limit: 50,
-      });
+      const page = await whenCurrent(
+        isCurrent,
+        channelApi.messages(key, {
+          limit: 50,
+        }),
+      );
       const msgs = page.data;
-      setMessages(msgs);
+      setHeld({ key, messages: msgs, loading: false });
       // Mark channel as read when messages are viewed.
       if (msgs.length > 0) {
-        markChannelRead(
-          activeChannel.channel_id,
-          msgs[msgs.length - 1]!.message_id,
-        );
+        markChannelRead(key, msgs[msgs.length - 1]!.message_id);
       }
-    } finally {
-      setIsLoadingMessages(false);
+    } catch (err) {
+      // A failed read keeps the channel's messages and says so.
+      setHeld((prev) =>
+        prev.key === key
+          ? { ...prev, loading: false }
+          : { key, messages: [], loading: false },
+      );
+      addToast(translateCaughtError(err, t('common.error')), 'danger', {
+        platformLink: isPlatformError(err),
+      });
     }
-  }, [activeChannel, markChannelRead]);
+  }, [activeChannel, markChannelRead, startMessages, addToast, t]);
+
+  /** Runs an action whose answer changes channel `key`'s messages. The
+   *  action supersedes every load of the channel started before it when it
+   *  starts (R390.3b). The answer is shown at once, when a read of the
+   *  channel has landed, and the full read of the channel it starts then
+   *  supersedes every load started while it was pending, so the answer and
+   *  then that read are the newest writes, and the read's answer replaces
+   *  the list (R422.2). An action that fails in its visit reads the channel
+   *  again. A read the action superseded never ends the loading it began;
+   *  the read the action starts when it ends does (R463.2). An action keeps the
+   *  visit it began in: answered or failed in a later visit to the
+   *  channel, it shows nothing and reads nothing there (R483.1). */
+  const writeAnswer = useCallback(
+    async <T,>(
+      key: string,
+      request: () => Promise<T>,
+      write: (answer: T) => (prev: ChannelMessage[]) => ChannelMessage[],
+    ): Promise<T> => {
+      const shown = isShownChannel(key);
+      startMessages(key);
+      try {
+        const answer = await request();
+        if (shown()) {
+          showAnswerIn(key, write(answer));
+          void loadMessages();
+        }
+        return answer;
+      } catch (err) {
+        if (shown()) void loadMessages();
+        throw err;
+      }
+    },
+    [isShownChannel, startMessages, showAnswerIn, loadMessages],
+  );
 
   useEffect(() => {
     void (async () => {
@@ -226,23 +342,36 @@ export function CommunityPage() {
 
   const handleSend = async () => {
     if (!activeChannel || !messageText.trim() || isSending) return;
-    setIsSending(true);
+    const channelId = activeChannel.channel_id;
+    const content = messageText.trim();
+    const shown = isShownChannel(channelId);
+    setSendingOf(channelId, true);
     try {
-      const msg = await channelApi.sendMessage(activeChannel.channel_id, {
-        content: messageText.trim(),
-      });
+      await writeAnswer(
+        channelId,
+        () => channelApi.sendMessage(channelId, { content }),
+        appendOnce,
+      );
       trackEvent('community.message_sent', {
-        channel_id: activeChannel.channel_id,
-        message_length: messageText.trim().length,
+        channel_id: channelId,
+        message_length: content.length,
       });
-      setMessages((prev) => [...prev, msg]);
-      setMessageText('');
+      // Answered in a later visit, the send writes nothing there (R483.1).
+      if (!shown()) return;
+      // The draft is cleared only if it still holds what was sent: text
+      // typed while the send was pending stays.
+      setDrafts((prev) =>
+        (prev[channelId] ?? '').trim() === content
+          ? { ...prev, [channelId]: '' }
+          : prev,
+      );
     } catch (err) {
+      if (!shown()) return;
       addToast(translateCaughtError(err, t('common.error')), 'danger', {
         platformLink: isPlatformError(err),
       });
     } finally {
-      setIsSending(false);
+      setSendingOf(channelId, false);
     }
   };
 
@@ -250,17 +379,20 @@ export function CommunityPage() {
     if (!activeChannel || !editText.trim()) return;
     const channelId = activeChannel.channel_id;
     const content = editText.trim();
+    const shown = isShownChannel(channelId);
     await inFlight.run(markers.editMessage(messageId), async () => {
       try {
-        const updated = await channelApi.editMessage(channelId, messageId, {
-          content,
-        });
-        setMessages((prev) =>
-          prev.map((m) => (m.message_id === messageId ? updated : m)),
+        await writeAnswer(
+          channelId,
+          () => channelApi.editMessage(channelId, messageId, { content }),
+          (updated) => (prev) =>
+            prev.map((m) => (m.message_id === messageId ? updated : m)),
         );
-        setEditingMessageId(null);
+        if (!shown()) return;
+        setEditingMessageId((id) => (id === messageId ? null : id));
         addToast(t('community.messageEdited'), 'success');
       } catch (err) {
+        if (!shown()) return;
         addToast(translateCaughtError(err, t('common.error')), 'danger', {
           platformLink: isPlatformError(err),
         });
@@ -271,12 +403,18 @@ export function CommunityPage() {
   const handleDelete = async (messageId: string) => {
     if (!activeChannel) return;
     const channelId = activeChannel.channel_id;
+    const shown = isShownChannel(channelId);
     await inFlight.run(markers.deleteMessage(messageId), async () => {
       try {
-        await channelApi.deleteMessage(channelId, messageId);
-        setMessages((prev) => prev.filter((m) => m.message_id !== messageId));
+        await writeAnswer(
+          channelId,
+          () => channelApi.deleteMessage(channelId, messageId),
+          () => (prev) => prev.filter((m) => m.message_id !== messageId),
+        );
+        if (!shown()) return;
         addToast(t('community.messageDeleted'), 'success');
       } catch (err) {
+        if (!shown()) return;
         addToast(translateCaughtError(err, t('common.error')), 'danger', {
           platformLink: isPlatformError(err),
         });
@@ -298,17 +436,22 @@ export function CommunityPage() {
       return;
     }
     const channelId = activeChannel.channel_id;
+    const shown = isShownChannel(channelId);
     await inFlight.run(markers.upload('page', channelId), async () => {
-      setIsSending(true);
+      setSendingOf(channelId, true);
       try {
-        const msg = await channelApi.uploadImage(channelId, file);
-        setMessages((prev) => [...prev, msg]);
+        await writeAnswer(
+          channelId,
+          () => channelApi.uploadImage(channelId, file),
+          appendOnce,
+        );
       } catch (err) {
+        if (!shown()) return;
         addToast(translateCaughtError(err, t('common.error')), 'danger', {
           platformLink: isPlatformError(err),
         });
       } finally {
-        setIsSending(false);
+        setSendingOf(channelId, false);
       }
     });
   };
@@ -317,6 +460,7 @@ export function CommunityPage() {
     if (!activeChannel || !msg.poll_data) return;
     const channelId = activeChannel.channel_id;
     const pollData = msg.poll_data;
+    const shown = isShownChannel(channelId);
     await inFlight.run(markers.vote(msg.message_id), async () => {
       try {
         const poll: import('../types/api.ts').PollData = JSON.parse(pollData);
@@ -325,8 +469,10 @@ export function CommunityPage() {
           discord_channel_id: poll.discord_channel_id,
           answer_id: answerId,
         });
+        if (!shown()) return;
         addToast(t('community.voteRecorded'), 'success');
       } catch (err) {
+        if (!shown()) return;
         addToast(translateCaughtError(err, t('common.error')), 'danger', {
           platformLink: isPlatformError(err),
         });
@@ -338,23 +484,44 @@ export function CommunityPage() {
     if (!activeChannel || !pollQuestion.trim()) return;
     const validOptions = pollOptions.filter((o) => o.trim());
     if (validOptions.length < 2) return;
-    setIsSending(true);
+    const channelId = activeChannel.channel_id;
+    const shown = isShownChannel(channelId);
+    setSendingOf(channelId, true);
     try {
-      await channelApi.createPoll(activeChannel.channel_id, {
+      await channelApi.createPoll(channelId, {
         question: pollQuestion.trim(),
         options: validOptions.map((o) => o.trim()),
       });
-      setShowPollForm(false);
-      setPollQuestion('');
-      setPollOptions(['', '']);
+      // The form belongs to the channel it was filled in (R422.3), and the
+      // poll's answer writes nothing in a later visit to it (R483.1).
+      if (!shown()) return;
+      closePollForm();
       void loadMessages();
     } catch (err) {
+      if (!shown()) return;
       addToast(translateCaughtError(err, t('common.error')), 'danger', {
         platformLink: isPlatformError(err),
       });
     } finally {
-      setIsSending(false);
+      setSendingOf(channelId, false);
     }
+  };
+
+  const closePollForm = () => {
+    setShowPollForm(false);
+    setPollQuestion('');
+    setPollOptions(['', '']);
+  };
+
+  /** Shows channel `ch`. What the page shows for a channel belongs to it:
+   *  the poll form, the inline editor and a message's menu close (R422.3). */
+  const openChannel = (ch: Channel) => {
+    if (ch.channel_id === channelKey) return;
+    setActiveChannel(ch);
+    closePollForm();
+    setEditingMessageId(null);
+    setEditText('');
+    setMenuOpenId(null);
   };
 
   // Edit/delete eligibility is computed server-side and returned on each message.
@@ -400,7 +567,7 @@ export function CommunityPage() {
               {channelList.map((ch) => (
                 <button
                   key={ch.channel_id}
-                  onClick={() => setActiveChannel(ch)}
+                  onClick={() => openChannel(ch)}
                   className={`rounded-lg border px-3 py-2.5 text-start transition-colors ${
                     activeChannel?.channel_id === ch.channel_id
                       ? 'border-accent/50 bg-accent/10 ring-2 ring-accent/25'
@@ -736,14 +903,7 @@ export function CommunityPage() {
                         </button>
                       )}
                       <div className="ms-auto flex gap-2">
-                        <Button
-                          variant="secondary"
-                          onClick={() => {
-                            setShowPollForm(false);
-                            setPollQuestion('');
-                            setPollOptions(['', '']);
-                          }}
-                        >
+                        <Button variant="secondary" onClick={closePollForm}>
                           {t('common.cancel')}
                         </Button>
                         <Button
@@ -816,7 +976,9 @@ export function CommunityPage() {
                     <input
                       type="text"
                       value={messageText}
-                      onChange={(e) => setMessageText(e.target.value)}
+                      onChange={(e) =>
+                        setDraftOf(activeChannel.channel_id, e.target.value)
+                      }
                       maxLength={MAX_MESSAGE_LENGTH}
                       placeholder={t('community.messagePlaceholder')}
                       className="flex-1 rounded-lg border-2 border-accent/30 bg-surface px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/25 focus:outline-none"

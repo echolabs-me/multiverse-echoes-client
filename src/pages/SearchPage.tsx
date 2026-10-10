@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { search } from '../lib/api/endpoints.ts';
 import { trackEvent } from '../lib/analytics.ts';
+import { useLatestLoad, whenCurrent } from '../hooks/useCurrentKey.ts';
 import { formatDate } from '../lib/formatDate.ts';
 import type { SearchItemType, SearchResult } from '../types/api.ts';
 
@@ -88,18 +89,13 @@ export function SearchPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialQuery = searchParams.get('q') ?? '';
-  const initialScope = searchParams.get('scope') as ContentType | null;
+  // The query submitted, which the URL holds. `String` makes it a value the
+  // lint rule `react-hooks/preserve-manual-memoization` can see is a string:
+  // without it, the rule reports that the page's memoized search (its
+  // `useCallback` and the effect that runs it) cannot be preserved.
+  const submittedQuery = String(searchParams.get('q') ?? '');
+  const urlType = searchParams.get('scope') as ContentType | null;
 
-  const [query, setQuery] = useState(initialQuery);
-  const [activeType, setActiveType] = useState<ContentType>(
-    initialScope ?? 'all',
-  );
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
   const [recentSearches, setRecentSearches] =
     useState<string[]>(getRecentSearches);
 
@@ -108,6 +104,62 @@ export function SearchPage() {
   // Scope from URL params (echo_id or shard_id)
   const scopeEchoId = searchParams.get('echo_id') ?? undefined;
   const scopeShardId = searchParams.get('shard_id') ?? undefined;
+  // Both are UUIDs or absent, so the key names the scope unambiguously.
+  const scopeKey = `echo:${scopeEchoId ?? ''} shard:${scopeShardId ?? ''}`;
+
+  // The query typed, the type tab and the dates belong to the scope they
+  // were chosen in: a scope change resets them to the new scope's URL in the
+  // render that names it, so a return to a scope does not restore them
+  // (R422.3). The query typed also follows the URL's query: when that
+  // changes (a submit, back or forward), the input shows the query now
+  // submitted.
+  const fresh = {
+    query: submittedQuery,
+    type: urlType ?? 'all',
+    dateFrom: '',
+    dateTo: '',
+  };
+  const [filters, setFilters] = useState<{
+    query: string;
+    type: ContentType;
+    dateFrom: string;
+    dateTo: string;
+  }>(fresh);
+  const [shownScope, setShownScope] = useState(scopeKey);
+  const [shownSubmitted, setShownSubmitted] = useState(submittedQuery);
+  if (shownScope !== scopeKey) {
+    setShownScope(scopeKey);
+    setShownSubmitted(submittedQuery);
+    setFilters(fresh);
+  } else if (shownSubmitted !== submittedQuery) {
+    setShownSubmitted(submittedQuery);
+    setFilters((prev) => ({ ...prev, query: submittedQuery }));
+  }
+  const { query, type: activeType, dateFrom, dateTo } = filters;
+  const setFilter = (change: Partial<typeof filters>) =>
+    setFilters((prev) => ({ ...prev, ...change }));
+
+  // A search's key is everything it is read for: the scope, the submitted
+  // query, the type and the dates (R361.1, R422.3).
+  const searchKey = `${scopeKey} q:${submittedQuery} type:${activeType} from:${dateFrom} to:${dateTo}`;
+
+  // The last search's state, and the key it was started for. It is shown
+  // only while the page names that key (R371.1). Of the searches the page
+  // starts, only the last one started writes, so an earlier search that
+  // settles later never replaces a newer one's results, for the same query
+  // or another (R361, R381.5).
+  const [held, setHeld] = useState<{
+    key: string;
+    results: SearchResult[];
+    isLoading: boolean;
+    hasSearched: boolean;
+  }>({ key: searchKey, results: [], isLoading: false, hasSearched: false });
+  const shown =
+    held.key === searchKey
+      ? held
+      : { key: searchKey, results: [], isLoading: false, hasSearched: false };
+  const { results, isLoading, hasSearched } = shown;
+  const startSearch = useLatestLoad(searchKey);
 
   // Ctrl/Cmd+K shortcut to focus
   useEffect(() => {
@@ -121,66 +173,102 @@ export function SearchPage() {
     return () => document.removeEventListener('keydown', handler);
   }, []);
 
-  const performSearch = useCallback(
-    async (q: string) => {
-      if (!q.trim()) return;
-      setIsLoading(true);
-      setHasSearched(true);
-      saveRecentSearch(q.trim());
-      setRecentSearches(getRecentSearches());
+  const performSearch = useCallback(async () => {
+    const q = submittedQuery;
+    if (!q.trim()) return;
+    const key = searchKey;
+    const isCurrent = startSearch(key);
+    if (!isCurrent()) return;
+    setHeld((prev) => ({
+      key,
+      results: prev.key === key ? prev.results : [],
+      isLoading: true,
+      hasSearched: true,
+    }));
+    saveRecentSearch(q.trim());
+    setRecentSearches(getRecentSearches());
 
-      const params = {
-        q: q.trim(),
-        echo_id: scopeEchoId,
-        shard_id: scopeShardId,
-        date_from: dateFrom || undefined,
-        date_to: dateTo || undefined,
-      };
+    const params = {
+      q: q.trim(),
+      echo_id: scopeEchoId,
+      shard_id: scopeShardId,
+      date_from: dateFrom || undefined,
+      date_to: dateTo || undefined,
+    };
 
-      try {
-        const allResults: SearchResult[] = [];
-        const types =
-          activeType === 'all'
-            ? (['echoes', 'diary', 'events', 'shards', 'messages'] as const)
-            : activeType === 'Echo'
-              ? (['echoes'] as const)
-              : activeType === 'DiaryEntry'
-                ? (['diary'] as const)
-                : activeType === 'LifeEvent'
-                  ? (['events'] as const)
-                  : activeType === 'Shard'
-                    ? (['shards'] as const)
-                    : (['messages'] as const);
+    try {
+      const allResults: SearchResult[] = [];
+      const types =
+        activeType === 'all'
+          ? (['echoes', 'diary', 'events', 'shards', 'messages'] as const)
+          : activeType === 'Echo'
+            ? (['echoes'] as const)
+            : activeType === 'DiaryEntry'
+              ? (['diary'] as const)
+              : activeType === 'LifeEvent'
+                ? (['events'] as const)
+                : activeType === 'Shard'
+                  ? (['shards'] as const)
+                  : (['messages'] as const);
 
-        const promises = types.map((type) => search[type](params));
-        const responses = await Promise.allSettled(promises);
-        for (const r of responses) {
-          if (r.status === 'fulfilled') {
-            allResults.push(...r.value.data);
-          }
+      const promises = types.map((type) => search[type](params));
+      const responses = await whenCurrent(
+        isCurrent,
+        Promise.allSettled(promises),
+      );
+      for (const r of responses) {
+        if (r.status === 'fulfilled') {
+          allResults.push(...r.value.data);
         }
-
-        // Sort by created_at descending
-        allResults.sort((a, b) => b.created_at.localeCompare(a.created_at));
-        setResults(allResults);
-      } catch {
-        setResults([]);
-      } finally {
-        setIsLoading(false);
       }
-    },
-    [activeType, dateFrom, dateTo, scopeEchoId, scopeShardId],
-  );
 
-  // Auto-search on mount if query in URL
-  useEffect(() => {
-    if (initialQuery) {
-      void (async () => {
-        await performSearch(initialQuery);
-      })();
+      // Sort by created_at descending
+      allResults.sort((a, b) => b.created_at.localeCompare(a.created_at));
+      setHeld({
+        key,
+        results: allResults,
+        isLoading: false,
+        hasSearched: true,
+      });
+    } catch {
+      setHeld({ key, results: [], isLoading: false, hasSearched: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    submittedQuery,
+    activeType,
+    dateFrom,
+    dateTo,
+    scopeEchoId,
+    scopeShardId,
+    searchKey,
+    startSearch,
+  ]);
+
+  // The URL's query is searched when the page opens, and again whenever
+  // the search's key changes: a new scope, query, type or dates (R422.3).
+  useEffect(() => {
+    void (async () => {
+      await performSearch();
+    })();
+  }, [performSearch]);
+
+  // The query goes in the URL with the scope it is searched in and the type
+  // the URL names, so the search started for that scope stays current
+  // (R361) and no part of the URL is lost.
+  const setQueryParam = (q: string) => {
+    const next: Record<string, string> = { q };
+    if (scopeEchoId) next.echo_id = scopeEchoId;
+    if (scopeShardId) next.shard_id = scopeShardId;
+    if (urlType) next.scope = urlType;
+    setSearchParams(next);
+  };
+
+  /** Searches `q`: a new query goes in the URL, whose change starts its
+   *  search; the query already submitted is searched again. */
+  const submit = (q: string) => {
+    if (q === submittedQuery) void performSearch();
+    else setQueryParam(q);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -189,14 +277,12 @@ export function SearchPage() {
       query_length: query.trim().length,
       scope: activeType,
     });
-    setSearchParams({ q: query.trim() });
-    void performSearch(query.trim());
+    submit(query.trim());
   };
 
   const handleRecentClick = (q: string) => {
-    setQuery(q);
-    setSearchParams({ q });
-    void performSearch(q);
+    setFilter({ query: q });
+    submit(q);
   };
 
   const handleResultClick = (result: SearchResult) => {
@@ -277,7 +363,7 @@ export function SearchPage() {
             ref={inputRef}
             type="search"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => setFilter({ query: e.target.value })}
             placeholder={t('search.placeholder')}
             className="w-full rounded-lg border border-border bg-surface py-3 ps-10 pe-20 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none"
             aria-label={t('search.placeholder')}
@@ -300,7 +386,7 @@ export function SearchPage() {
                 key={type}
                 role="tab"
                 aria-selected={activeType === type}
-                onClick={() => setActiveType(type)}
+                onClick={() => setFilter({ type })}
                 className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                   activeType === type
                     ? 'bg-accent text-canvas'
@@ -322,7 +408,7 @@ export function SearchPage() {
             <input
               type="date"
               value={dateFrom}
-              onChange={(e) => setDateFrom(e.target.value)}
+              onChange={(e) => setFilter({ dateFrom: e.target.value })}
               className="rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary"
               aria-label={t('search.dateFrom')}
             />
@@ -330,7 +416,7 @@ export function SearchPage() {
             <input
               type="date"
               value={dateTo}
-              onChange={(e) => setDateTo(e.target.value)}
+              onChange={(e) => setFilter({ dateTo: e.target.value })}
               className="rounded-sm border border-border bg-surface px-2 py-1 text-xs text-text-primary"
               aria-label={t('search.dateTo')}
             />
@@ -423,7 +509,10 @@ export function SearchPage() {
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0 flex-1">
                               <p className="line-clamp-2 text-sm text-text-primary">
-                                {highlightSnippet(result.snippet, query)}
+                                {highlightSnippet(
+                                  result.snippet,
+                                  submittedQuery,
+                                )}
                               </p>
                             </div>
                             <time className="shrink-0 text-xs text-text-muted">

@@ -18,6 +18,11 @@ import { marketplace } from '../lib/api/endpoints.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useInFlight } from '../hooks/useInFlight.ts';
+import {
+  useCurrentKey,
+  useLatestLoad,
+  whenCurrent,
+} from '../hooks/useCurrentKey.ts';
 import { markers } from '../lib/inFlightMarkers.ts';
 import type {
   InventoryRowResponse,
@@ -306,52 +311,106 @@ export function MarketplacePage() {
   const addToast = useToastStore((s) => s.addToast);
 
   const [activeTabId, setActiveTabId] = useState<string>(CATEGORY_TABS[0]);
-  const [items, setItems] = useState<MarketplaceItemResponse[]>([]);
+  // The catalog the last load read, and the category it was read for. It
+  // is shown only while that category's tab is the active one (R371.1).
+  const [catalog, setCatalog] = useState<{
+    key: string;
+    items: MarketplaceItemResponse[];
+    loading: boolean;
+    error: string | null;
+  } | null>(null);
+  const shownCatalog =
+    catalog !== null && catalog.key === activeTabId ? catalog : null;
+  const items = useMemo(() => shownCatalog?.items ?? [], [shownCatalog]);
+  // The user's inventory, which belongs to no tab, with its own loading
+  // state and error: a category's load never settles or fails the
+  // inventory's, nor the inventory's a category's.
   const [inventory, setInventory] = useState<InventoryRowResponse[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadError, setLoadError] = useState<string | null>(null);
+  const [inventoryLoad, setInventoryLoad] = useState<{
+    loading: boolean;
+    error: string | null;
+  }>({ loading: true, error: null });
+  // Of the loads the page starts, only the last one started writes, and
+  // only while the page is mounted (R361.1, R381.1): a category's only while
+  // its tab is the active one, the inventory's whatever the tab. A purchase
+  // or an equip supersedes the inventory's loads started before it when it
+  // starts, so none undoes its write, and each starts a full read of the
+  // inventory when it ends while the page is still mounted, answered or
+  // failed, which supersedes every load started while it was pending and
+  // ends the loading a superseded read began (R390.3b, R463.2); and a preview
+  // is written only if it is the last one asked for, no dialog close has come
+  // since it was asked for, and the page is mounted and still on the visit to
+  // the tab it was asked on (R422.3, R434.1, R434.3): the preview's key is
+  // the tab, so a tab change, back to the same tab included, ends it.
+  const startCategory = useLatestLoad(activeTabId);
+  const startInventory = useLatestLoad('inventory');
+  const startPreview = useLatestLoad(activeTabId);
+  // A purchase or an equip keeps the visit it began in, the page's mount:
+  // answered after the page has gone, it shows nothing and reads nothing
+  // (R483.1).
+  const visitOf = useCurrentKey('inventory');
   const inFlight = useInFlight();
   const [previewState, setPreviewState] = useState<{
     open: boolean;
     data: MarketplacePreviewResponse | null;
     name: string;
   }>({ open: false, data: null, name: '' });
+  // Items whose purchase has been answered, shown as owned at once until
+  // the inventory read the answer starts lands (R422.2).
+  const [boughtItemIds, setBoughtItemIds] = useState<ReadonlySet<string>>(
+    new Set(),
+  );
 
   const ownedItemIds = useMemo(
-    () => new Set(inventory.map((r) => r.item_id)),
-    [inventory],
+    () => new Set([...inventory.map((r) => r.item_id), ...boughtItemIds]),
+    [inventory, boughtItemIds],
   );
 
   const loadCategory = useCallback(
     async (category: MarketplaceCategory) => {
-      setIsLoading(true);
-      setLoadError(null);
+      const isCurrent = startCategory(category);
+      if (!isCurrent()) return;
+      setCatalog({ key: category, items: [], loading: true, error: null });
       try {
-        const page = await marketplace.list({ category });
-        setItems(page.data);
+        const page = await whenCurrent(
+          isCurrent,
+          marketplace.list({ category }),
+        );
+        setCatalog({
+          key: category,
+          items: page.data,
+          loading: false,
+          error: null,
+        });
       } catch (err) {
-        setItems([]);
-        setLoadError(translateCaughtError(err, t('marketplace.loadError')));
-      } finally {
-        setIsLoading(false);
+        setCatalog({
+          key: category,
+          items: [],
+          loading: false,
+          error: translateCaughtError(err, t('marketplace.loadError')),
+        });
       }
     },
-    [t],
+    [t, startCategory],
   );
 
   const loadInventory = useCallback(async () => {
-    setIsLoading(true);
-    setLoadError(null);
+    const isCurrent = startInventory('inventory');
+    if (!isCurrent()) return;
+    setInventoryLoad({ loading: true, error: null });
     try {
-      const page = await marketplace.inventory();
+      const page = await whenCurrent(isCurrent, marketplace.inventory());
       setInventory(page.data);
+      setBoughtItemIds(new Set());
+      setInventoryLoad({ loading: false, error: null });
     } catch (err) {
       setInventory([]);
-      setLoadError(translateCaughtError(err, t('marketplace.loadError')));
-    } finally {
-      setIsLoading(false);
+      setInventoryLoad({
+        loading: false,
+        error: translateCaughtError(err, t('marketplace.loadError')),
+      });
     }
-  }, [t]);
+  }, [t, startInventory]);
 
   useEffect(() => {
     void (async () => {
@@ -390,8 +449,9 @@ export function MarketplacePage() {
     async (itemId: string) => {
       const item = items.find((i) => i.item_id === itemId);
       if (!item) return;
+      const isCurrent = startPreview(activeTabId);
       try {
-        const data = await marketplace.preview(itemId);
+        const data = await whenCurrent(isCurrent, marketplace.preview(itemId));
         setPreviewState({ open: true, data, name: item.name });
         trackEvent('marketplace.item_viewed', {
           item_id: itemId,
@@ -406,47 +466,75 @@ export function MarketplacePage() {
         );
       }
     },
-    [items, addToast, t],
+    [items, addToast, t, startPreview, activeTabId],
+  );
+
+  // A tab change ends the preview asked for on the tab it leaves, so one
+  // still pending opens nothing, on any tab or after a return to that one:
+  // the preview's key is the tab, and a return is a new visit (R422.3,
+  // R434.1, R434.3).
+  const handleTabChange = useCallback(
+    (id: string) => {
+      if (id === activeTabId) return;
+      setActiveTabId(id);
+    },
+    [activeTabId],
   );
 
   const handleBuy = useCallback(
     async (itemId: string) => {
       const item = items.find((i) => i.item_id === itemId);
       if (!item) return;
+      const inVisit = visitOf('inventory');
       await inFlight.run(markers.buy(itemId), async () => {
+        // The purchase supersedes the inventory's loads started before it
+        // (R390.3b). A read it supersedes never ends its loading, so the
+        // read the purchase starts when it ends, answered or failed, does
+        // (R463.2).
+        startInventory('inventory');
         try {
           const row = await marketplace.purchase(itemId);
-          setInventory((prev) => [
-            row,
-            ...prev.filter((r) => r.item_id !== row.item_id),
-          ]);
           trackEvent('marketplace.item_purchased', {
             item_id: itemId,
             category: item.category,
             price: item.price_coins,
             provider: 'tier_grant',
           });
+          if (!inVisit()) return;
+          // The bought item shows as owned at once, and the inventory is
+          // read again: that read's answer replaces the list, and it
+          // supersedes every inventory load started before it (R390.3b,
+          // R422.2).
+          setBoughtItemIds((prev) => new Set(prev).add(row.item_id));
+          void loadInventory();
         } catch (err) {
+          if (!inVisit()) return;
           addToast(
             translateCaughtError(err, t('marketplace.loadError')),
             'danger',
             { platformLink: isPlatformError(err) },
           );
+          // The inventory is read again, as after a purchase.
+          void loadInventory();
         }
       });
     },
-    [items, addToast, t, inFlight],
+    [items, addToast, t, inFlight, loadInventory, startInventory, visitOf],
   );
 
   const handleEquipToggle = useCallback(
-    async (itemId: string, nextEquipped: boolean) =>
-      inFlight.run(markers.equip(itemId), async () => {
+    async (itemId: string, nextEquipped: boolean) => {
+      const inVisit = visitOf('inventory');
+      return inFlight.run(markers.equip(itemId), async () => {
         // Optimistic update. The auto-unequip-others-of-same-type
         // logic lives server-side; the client cannot replicate it
         // accurately for non-Badge categories without re-fetching
         // the catalog metadata for every owned item. Instead of
         // attempting that, we re-fetch the inventory after the
         // server confirms — the truth flows back exactly once.
+        // The equip supersedes the inventory's loads started before it
+        // (R390.3b); the reload after its answer is the newest write.
+        startInventory('inventory');
         setInventory((prev) =>
           prev.map((r) =>
             r.item_id === itemId ? { ...r, equipped: nextEquipped } : r,
@@ -454,8 +542,13 @@ export function MarketplacePage() {
         );
         try {
           await marketplace.equip(itemId, nextEquipped);
-          await loadInventory();
+          if (!inVisit()) return;
+          // The equip's marker is released when its answer lands, not when
+          // the reload does: a later load can supersede the reload, which
+          // then never settles (R422.1).
+          void loadInventory();
         } catch (err) {
+          if (!inVisit()) return;
           addToast(
             translateCaughtError(err, t('marketplace.equipError')),
             'danger',
@@ -465,10 +558,11 @@ export function MarketplacePage() {
           // list again rather than restoring one taken before it: that
           // would undo another item's equip that succeeded meanwhile. A
           // failed reload shows as any failed load does (R285.3).
-          await loadInventory();
+          void loadInventory();
         }
-      }),
-    [addToast, t, loadInventory, inFlight],
+      });
+    },
+    [addToast, t, loadInventory, inFlight, startInventory, visitOf],
   );
 
   // Map enum value to kebab-case suffix for `marketplace-tab-{slug}`
@@ -512,18 +606,18 @@ export function MarketplacePage() {
   }, [t]);
 
   const renderCategoryPanel = () => {
-    if (isLoading) {
+    if (shownCatalog === null || shownCatalog.loading) {
       return (
         <div data-testid="marketplace-loading">
           <Spinner />
         </div>
       );
     }
-    if (loadError) {
+    if (shownCatalog.error) {
       return (
         <div data-testid="marketplace-load-error">
           <EmptyState
-            title={loadError}
+            title={shownCatalog.error}
             action={
               <button
                 type="button"
@@ -561,18 +655,18 @@ export function MarketplacePage() {
   };
 
   const renderInventoryPanel = () => {
-    if (isLoading) {
+    if (inventoryLoad.loading) {
       return (
         <div data-testid="marketplace-loading">
           <Spinner />
         </div>
       );
     }
-    if (loadError) {
+    if (inventoryLoad.error) {
       return (
         <div data-testid="marketplace-load-error">
           <EmptyState
-            title={loadError}
+            title={inventoryLoad.error}
             action={
               <button
                 type="button"
@@ -626,12 +720,16 @@ export function MarketplacePage() {
                 : undefined,
           }))}
           activeTab={activeTabId}
-          onTabChange={setActiveTabId}
+          onTabChange={handleTabChange}
         />
       </div>
       <Modal
         open={previewState.open}
-        onClose={() => setPreviewState({ open: false, data: null, name: '' })}
+        onClose={() => {
+          // A preview still pending when the dialog closes opens nothing.
+          startPreview(activeTabId);
+          setPreviewState({ open: false, data: null, name: '' });
+        }}
         title={previewState.name}
         closeTestId="marketplace-preview-modal-close"
       >

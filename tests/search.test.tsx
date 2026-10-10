@@ -125,7 +125,7 @@ describe('SearchPage', () => {
     renderSearch();
     const input = screen.getByRole('searchbox');
     fireEvent.change(input, { target: { value: 'test query' } });
-    fireEvent.submit(input);
+    fireEvent.submit(input.closest('form') as HTMLFormElement);
 
     // Wait for async results
     const noResults = await screen.findByText('No results found');
@@ -160,7 +160,7 @@ describe('SearchPage', () => {
     );
     const input = screen.getByRole('searchbox');
     fireEvent.change(input, { target: { value: 'harbour' } });
-    fireEvent.submit(input);
+    fireEvent.submit(input.closest('form') as HTMLFormElement);
 
     const result = await screen.findByRole('button', {
       name: /under a copper sky/,
