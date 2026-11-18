@@ -258,7 +258,12 @@ def load_do_not_translate(path: Path = DO_NOT_TRANSLATE_YAML) -> dict[str, list[
     # so a repeated section would drop the words of every copy before it
     # (R266.3).
     seen: set[str] = set()
-    for key_node, _ in yaml.compose(raw, Loader=yaml.SafeLoader).value:
+    # safe_load gave a dict above, so the composed document is a mapping;
+    # PyYAML's stubs type compose's answer as Node | None, so it is narrowed.
+    root = yaml.compose(raw, Loader=yaml.SafeLoader)
+    if not isinstance(root, yaml.MappingNode):
+        raise ValueError("i18n-do-not-translate.yaml must compose to a mapping")
+    for key_node, _ in root.value:
         if key_node.value in seen:
             raise ValueError(
                 f"i18n-do-not-translate.yaml repeats top-level section '{key_node.value}'"

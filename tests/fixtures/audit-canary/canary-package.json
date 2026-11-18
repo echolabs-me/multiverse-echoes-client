@@ -1,0 +1,12 @@
+{
+  "name": "audit-canary",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A measured canary for client/scripts/audit-gate.js (R524.3): lodash ships, minimist is dev only.",
+  "dependencies": {
+    "lodash": "4.17.15"
+  },
+  "devDependencies": {
+    "minimist": "0.0.8"
+  }
+}

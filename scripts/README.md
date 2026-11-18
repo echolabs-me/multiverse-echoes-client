@@ -1,9 +1,18 @@
 # client/scripts
 
-Client-side tooling — i18n, prerender, sitemap, dynamic-key checks. The
-quick-start block below covers the **only** workflow that requires the
-B200 to be running: `translate-i18n.py` (and `translate-legal.py`).
-Every other script in this directory runs locally with no external
+Client-side tooling — i18n, prerender, sitemap, dynamic-key checks, and
+the npm audit gate. The quick-start block below covers the **only**
+workflow that requires the B200 to be running: `translate-i18n.py` (and
+`translate-legal.py`). `audit-gate.js` asks the npm registry for its
+advisories and for each listed package's versions (`npm audit`,
+`npm view`), as CI's Client checks run it (R517.2, R524).
+`translate-i18n-anthropic.py` calls Anthropic's API and needs
+`ANTHROPIC_API_KEY`. `prerender.js` (the build's `postbuild`) launches
+Playwright's Chromium, a browser build `npm ci` does not install
+(`npx playwright install chromium`). `probe-middleware.mjs` sends no
+request, but imports `functions/_middleware.ts`, so it needs a Node that
+runs TypeScript files with no flag (22.18 or later on the 22 line, 23.6 or
+later). Every other script in this directory runs locally with no external
 dependency.
 
 ## Quick Start — running the translation scripts
