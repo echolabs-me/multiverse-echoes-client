@@ -5,7 +5,8 @@ the npm audit gate. The quick-start block below covers the **only**
 workflow that requires the B200 to be running: `translate-i18n.py` (and
 `translate-legal.py`). `audit-gate.js` asks the npm registry for its
 advisories and for each listed package's versions (`npm audit`,
-`npm view`), as CI's Client checks run it (R517.2, R524).
+`npm view`), as CI's Client checks run it (R517.2, R524); it runs there and
+in a Linux cloud session, and on Windows it exits non-zero at once (R533.4).
 `translate-i18n-anthropic.py` calls Anthropic's API and needs
 `ANTHROPIC_API_KEY`. `prerender.js` (the build's `postbuild`) launches
 Playwright's Chromium, a browser build `npm ci` does not install

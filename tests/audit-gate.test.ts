@@ -1,12 +1,14 @@
 /**
- * The client's audit gate (R517.2). Every input is written here: no test
- * runs npm or sends a request off the machine (SR51).
+ * The client's audit gate (R517.2). Every input is written here, but for the
+ * Windows control, which runs the gate over the client folder's own files: no
+ * test runs npm or sends a request off the machine (SR51).
  */
 import { describe, expect, it } from 'vitest';
 
 import { spawnSync } from 'node:child_process';
 
 import {
+  chmodSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
@@ -33,6 +35,7 @@ import {
   REGISTRY,
   runGate,
   SHIPPED_AUDIT_ARGS,
+  WINDOWS_REFUSAL,
   withConfigs,
 } from '../scripts/audit-gate.js';
 
@@ -1207,3 +1210,68 @@ process.exit(1);
     );
   },
 );
+
+describe('audit gate: on Windows it stops first (R533.4)', () => {
+  /** The child's limit; each test's own limit sits above it. */
+  const GATE_LIMIT_MS = 60_000;
+
+  /**
+   * Runs the gate as its own program in a child Node whose `process.platform`
+   * is stubbed before the gate loads, with a stub `npm` first on PATH that
+   * records that it was started. No real npm runs and nothing leaves the
+   * machine (SR51).
+   */
+  function runAs(platform: string) {
+    const dir = mkdtempSync(join(tmpdir(), 'audit-gate-win-'));
+    try {
+      const marker = join(dir, 'npm-started');
+      const npm = join(dir, 'npm');
+      writeFileSync(npm, `#!/bin/sh\ntouch '${marker}'\nexit 1\n`);
+      chmodSync(npm, 0o755);
+      const stub = `data:text/javascript,Object.defineProperty(process,'platform',{value:${JSON.stringify(platform)}})`;
+      const result = spawnSync(
+        process.execPath,
+        ['--import', stub, fileURLToPath(GATE_URL)],
+        {
+          encoding: 'utf8',
+          env: {
+            ...process.env,
+            PATH: `${dir}${delimiter}${process.env.PATH ?? ''}`,
+          },
+          timeout: GATE_LIMIT_MS,
+        },
+      );
+      expect(
+        result.signal,
+        `the gate did not end within ${GATE_LIMIT_MS} ms`,
+      ).toBeNull();
+      return { result, npmStarted: existsSync(marker) };
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  }
+
+  it(
+    'exits non-zero with one line, before starting npm',
+    () => {
+      const { result, npmStarted } = runAs('win32');
+      expect(result.status, result.stderr).toBe(1);
+      expect(result.stderr.trim()).toBe(WINDOWS_REFUSAL);
+      expect(result.stdout).toBe('');
+      expect(npmStarted).toBe(false);
+    },
+    2 * GATE_LIMIT_MS,
+  );
+
+  // The stub npm is a shell script, which Windows cannot start, as the
+  // stubbed-npm tests above skip there.
+  it.skipIf(process.platform === 'win32')(
+    'starts npm on Linux, so the stub would see a gate that ran (SR16)',
+    () => {
+      const { result, npmStarted } = runAs('linux');
+      expect(result.stderr).not.toContain(WINDOWS_REFUSAL);
+      expect(npmStarted).toBe(true);
+    },
+    2 * GATE_LIMIT_MS,
+  );
+});

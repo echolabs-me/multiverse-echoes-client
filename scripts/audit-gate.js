@@ -655,7 +655,19 @@ function runNpm(args, { cwd, env }) {
   };
 }
 
+/**
+ * The gate starts npm by name, which Windows cannot do (npm is `npm.cmd`
+ * there), so on Windows it stops before anything else, with one line saying
+ * where it runs (R533.4).
+ */
+export const WINDOWS_REFUSAL =
+  'audit-gate.js does not run on Windows: it runs in CI (Client checks) and in a Linux cloud session (R533.4)';
+
 function main() {
+  if (process.platform === 'win32') {
+    console.error(WINDOWS_REFUSAL);
+    process.exit(1);
+  }
   const clientDir = join(dirname(fileURLToPath(import.meta.url)), '..');
   const { failures, log } = runGate({
     clientDir,
