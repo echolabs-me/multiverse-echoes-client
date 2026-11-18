@@ -19,8 +19,7 @@ import { Input } from '../components/index.ts';
 
 const CONTACT_API = 'https://api.echolabs.me/contact';
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
-  | string
-  | undefined;
+  string | undefined;
 
 const SUBJECT_KEYS = [
   { value: 'General Inquiry', key: 'contact.subjectGeneral' },

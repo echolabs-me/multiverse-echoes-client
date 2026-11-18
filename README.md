@@ -4,7 +4,7 @@ The open-source client for **Multiverse Echoes**, an Autonomous Life Simulation 
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) 20+
+- [Node.js](https://nodejs.org/) 22.13 or later on the 22 line, 24, or 26 and later: the versions every locked package's `engines` allows together (eslint and jsdom need `^22.13.0` on the 22 line; vitest 5 rules out 23 and 25)
 - npm (included with Node.js)
 - A Multiverse Echoes account (free tier is sufficient)
 
@@ -15,8 +15,8 @@ The open-source client for **Multiverse Echoes**, an Autonomous Life Simulation 
 git clone https://github.com/echolabs-me/multiverse-echoes-client.git
 cd multiverse-echoes-client
 
-# Install dependencies
-npm install
+# Install dependencies (from the committed lockfile)
+npm ci
 
 # Start the development server
 npm run dev
@@ -40,17 +40,18 @@ VITE_API_BASE_URL=https://api.echolabsme.com
 | `npm run build` | Production build |
 | `npm run preview` | Preview production build |
 | `npm run typecheck` | TypeScript type checking |
-| `npm run lint` | ESLint + Prettier check |
+| `npm run lint` | ESLint |
 | `npm run test` | Run Vitest unit tests |
 | `npm run format` | Auto-format with Prettier |
+| `npm run format:check` | Check formatting with Prettier (CI runs this) |
 
 ## Tech Stack
 
-- **React 19** with TypeScript 5.9 (strict mode)
-- **Vite 6** — fast bundler and dev server
+- **React 19** with TypeScript 6.0 (strict mode)
+- **Vite 8** — fast bundler and dev server
 - **Tailwind CSS v4** — utility-first styling with design tokens
 - **Zustand** — lightweight state management
-- **react-i18next** — internationalisation (English at launch)
+- **react-i18next** — internationalisation (21 locales, `src/locales/`)
 - **Lucide React** — icon library
 
 ## Project Structure

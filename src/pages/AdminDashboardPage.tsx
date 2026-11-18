@@ -291,11 +291,7 @@ function ReportsView() {
       try {
         await admin.resolveReport(reportId, {
           action: resolveAction as
-            | 'Quarantine'
-            | 'Warn'
-            | 'Suspend'
-            | 'Dismiss'
-            | 'Restore',
+            'Quarantine' | 'Warn' | 'Suspend' | 'Dismiss' | 'Restore',
           notes: resolveNotes,
         });
         setReports((prev) => prev.filter((r) => r.report_id !== reportId));

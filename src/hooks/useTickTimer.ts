@@ -7,10 +7,7 @@ import { useBillingHealth } from '../stores/useBillingHealth.ts';
 import type { WsEchoEvent } from '../types/api.ts';
 
 export type TickTimerState =
-  | 'counting_down'
-  | 'generating'
-  | 'arrived'
-  | 'waiting';
+  'counting_down' | 'generating' | 'arrived' | 'waiting';
 
 const LS_KEY = 'me_last_tick_at';
 

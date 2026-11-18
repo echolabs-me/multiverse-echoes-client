@@ -10,8 +10,7 @@ import { useAuthStore } from '../stores/useAuthStore.ts';
 import { trackEvent } from '../lib/analytics.ts';
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
-  | string
-  | undefined;
+  string | undefined;
 
 export function RegisterPage() {
   const { t } = useTranslation();

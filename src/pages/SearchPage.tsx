@@ -19,12 +19,7 @@ import { formatDate } from '../lib/formatDate.ts';
 import type { SearchItemType, SearchResult } from '../types/api.ts';
 
 type ContentType =
-  | 'all'
-  | 'Echo'
-  | 'DiaryEntry'
-  | 'LifeEvent'
-  | 'Shard'
-  | 'Message';
+  'all' | 'Echo' | 'DiaryEntry' | 'LifeEvent' | 'Shard' | 'Message';
 
 /** The filter tab each kind of result the server answers belongs under. */
 const RESULT_TAB: Record<SearchItemType, Exclude<ContentType, 'all'>> = {

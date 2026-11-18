@@ -31,10 +31,7 @@ import type {
 // is treated as Public-equivalent because the server already unblocks
 // every gated field when `user_id == auth.user_id`.
 type ViewState =
-  | 'Public'
-  | 'FriendsOnlyVisible'
-  | 'FriendsOnlyHidden'
-  | 'Private';
+  'Public' | 'FriendsOnlyVisible' | 'FriendsOnlyHidden' | 'Private';
 
 function viewStateFor(profile: PublicProfileResponse): ViewState {
   if (profile.profile_visibility === 'Public') return 'Public';

@@ -11,9 +11,7 @@ export const SHARED_SHARD_NOTICE_REQUIRED = 'SHARED_SHARD_NOTICE_REQUIRED';
 /** What `run` did: ran the action; ran nothing because the user cancelled
  *  the notice; or ran nothing because another `run` was still in flight. */
 export type SharedShardNoticeOutcome<T> =
-  | { status: 'ran'; value: T }
-  | { status: 'cancelled' }
-  | { status: 'ignored' };
+  { status: 'ran'; value: T } | { status: 'cancelled' } | { status: 'ignored' };
 
 /** What the hook knows of the user's acknowledgment (R253.1). */
 type Acknowledgment = 'acknowledged' | 'unacknowledged' | 'unknown';

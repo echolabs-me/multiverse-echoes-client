@@ -22,12 +22,7 @@ import { VoiceAudioBridge } from '../lib/voiceAudio.ts';
 import type { VoicePipelineState } from '../lib/voiceAudio.ts';
 
 type SessionState =
-  | 'idle'
-  | 'connecting'
-  | 'listening'
-  | 'thinking'
-  | 'speaking'
-  | 'error';
+  'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking' | 'error';
 
 interface VoiceSessionModalProps {
   echoId: string;

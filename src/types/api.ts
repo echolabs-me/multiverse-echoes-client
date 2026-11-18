@@ -560,11 +560,7 @@ export interface ModeratorUserItem {
 // --- Feedback ---
 
 export type FeedbackType =
-  | 'Bug'
-  | 'FeatureRequest'
-  | 'Frustration'
-  | 'Praise'
-  | 'General';
+  'Bug' | 'FeatureRequest' | 'Frustration' | 'Praise' | 'General';
 export type FeedbackStatus = 'New' | 'Acknowledged' | 'Resolved' | 'Wontfix';
 export type FeedbackPriority = 'P0' | 'P1' | 'P2' | 'P3' | 'P4';
 

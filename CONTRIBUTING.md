@@ -12,7 +12,7 @@ Thank you for your interest in contributing! This guide covers the development w
    ```
 3. **Install dependencies:**
    ```bash
-   npm install
+   npm ci
    ```
 4. **Create a feature branch:**
    ```bash
@@ -27,6 +27,7 @@ Thank you for your interest in contributing! This guide covers the development w
    npm run typecheck    # TypeScript — zero errors required
    npm run lint         # ESLint + jsx-a11y — zero errors, zero warnings
    npm run test         # Vitest — all tests must pass
+   npm run format:check # Prettier — no file needs formatting
    ```
 3. Commit with a descriptive message following [Conventional Commits](https://www.conventionalcommits.org/):
    ```
@@ -77,6 +78,7 @@ Before submitting your PR, verify:
 - [ ] `npm run typecheck` — zero errors
 - [ ] `npm run lint` — zero errors, zero warnings
 - [ ] `npm run test` — all tests pass
+- [ ] `npm run format:check` — no file needs formatting
 - [ ] Accessibility: interactive elements have ARIA attributes and keyboard support
 - [ ] i18n: no hardcoded user-facing strings
 - [ ] Theme: no hardcoded colour values

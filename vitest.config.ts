@@ -5,6 +5,11 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
   plugins: [react()],
   resolve: {
+    // Prefer a package's ES module build (`module`) over its CommonJS `main`,
+    // as the production build does. The 3D renderer has no `exports` map, so
+    // without this its CommonJS build loads and `require("three")`s, which
+    // three 0.186 deprecates (THREE_CJS_DEPRECATED).
+    mainFields: ['module', 'jsnext:main', 'jsnext', 'main'],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
