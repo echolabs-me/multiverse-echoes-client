@@ -967,6 +967,7 @@
     "NUDGE_LIMIT": "Anda telah menggunakan semua sentuhan anda untuk hari ini. Ia akan ditetapkan semula pada tengah malam UTC.",
     "INVALID_SUGGESTION": "Cadangan anda terlalu panjang atau kosong.",
     "ACCOUNT_FENCED": "That account is being deleted, so this can't be done.",
+    "ACCOUNT_SUSPENDED": "This account is suspended. Contact support if you think this is a mistake.",
     "ADMIN_CANNOT_ESCALATE": "Admins can't escalate a report. Take the action directly instead.",
     "ADMIN_REQUIRED": "Only an admin can do that.",
     "ALREADY_EXISTS": "That already exists.",

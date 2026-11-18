@@ -967,6 +967,7 @@
     "NUDGE_LIMIT": "آپ نے آج کے لیے اپنے تمام اشارے استعمال کر لیے ہیں۔ یہ UTC کے مطابق آدھی رات کو دوبارہ ری سیٹ ہو جائیں گے۔",
     "INVALID_SUGGESTION": "آپ کی تجویز بہت لمبی ہے یا خالی ہے۔",
     "ACCOUNT_FENCED": "That account is being deleted, so this can't be done.",
+    "ACCOUNT_SUSPENDED": "This account is suspended. Contact support if you think this is a mistake.",
     "ADMIN_CANNOT_ESCALATE": "Admins can't escalate a report. Take the action directly instead.",
     "ADMIN_REQUIRED": "Only an admin can do that.",
     "ALREADY_EXISTS": "That already exists.",

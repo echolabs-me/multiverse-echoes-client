@@ -967,6 +967,7 @@
     "NUDGE_LIMIT": "오늘 사용할 수 있는 넛지를 모두 소진했습니다. UTC 기준 자정에 초기화됩니다.",
     "INVALID_SUGGESTION": "제안 내용이 너무 길거나 비어 있습니다.",
     "ACCOUNT_FENCED": "That account is being deleted, so this can't be done.",
+    "ACCOUNT_SUSPENDED": "This account is suspended. Contact support if you think this is a mistake.",
     "ADMIN_CANNOT_ESCALATE": "Admins can't escalate a report. Take the action directly instead.",
     "ADMIN_REQUIRED": "Only an admin can do that.",
     "ALREADY_EXISTS": "That already exists.",
