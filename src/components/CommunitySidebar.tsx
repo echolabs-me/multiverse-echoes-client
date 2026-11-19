@@ -19,6 +19,7 @@ import { DiscordIcon } from './icons/DiscordIcon.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useInFlight } from '../hooks/useInFlight.ts';
 import { markers } from '../lib/inFlightMarkers.ts';
+import { newestChannelMessages } from '../lib/channelMessages.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import {
   channels as channelApi,
@@ -95,10 +96,7 @@ export function CommunitySidebar() {
   const loadMessages = useCallback(async () => {
     if (!activeChannel) return;
     try {
-      const page = await channelApi.messages(activeChannel.channel_id, {
-        limit: 30,
-      });
-      const msgs = page.data;
+      const msgs = await newestChannelMessages(activeChannel.channel_id, 30);
       setMessages(msgs);
       // Mark as read.
       if (msgs.length > 0) {

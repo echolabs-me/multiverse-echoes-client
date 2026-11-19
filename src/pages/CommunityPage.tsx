@@ -35,6 +35,7 @@ import {
 import { trackEvent } from '../lib/analytics.ts';
 import { formatTime } from '../lib/formatDate.ts';
 import { sameMessageAuthor } from '../lib/messageGrouping.ts';
+import { newestChannelMessages } from '../lib/channelMessages.ts';
 import type { Channel, ChannelMessage, WsEchoEvent } from '../types/api.ts';
 
 const MAX_MESSAGE_LENGTH = 2000;
@@ -170,10 +171,7 @@ export function CommunityPage() {
         await Promise.all(
           chs.map(async (ch) => {
             try {
-              const page = await channelApi.messages(ch.channel_id, {
-                limit: 1,
-              });
-              const msgs = page.data;
+              const msgs = await newestChannelMessages(ch.channel_id, 1);
               if (msgs.length > 0) {
                 const lastSeen = getLastSeen(ch.channel_id);
                 if (lastSeen === null) {
@@ -220,13 +218,10 @@ export function CommunityPage() {
       prev.key === key ? prev : { key, messages: [], loading: true },
     );
     try {
-      const page = await whenCurrent(
+      const msgs = await whenCurrent(
         isCurrent,
-        channelApi.messages(key, {
-          limit: 50,
-        }),
+        newestChannelMessages(key, 50, isCurrent),
       );
-      const msgs = page.data;
       setHeld({ key, messages: msgs, loading: false });
       // Mark channel as read when messages are viewed.
       if (msgs.length > 0) {

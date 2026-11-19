@@ -320,3 +320,36 @@ describe('CommunityPage loads (R361.4)', () => {
     expect(screen.getAllByText('hello there')).toHaveLength(1);
   });
 });
+
+describe('CommunityPage follows a short page’s cursor (R580.3)', () => {
+  /** Answers a channel's first read with no messages and a cursor, the way
+   *  the server answers a page whose messages it left out, and the read
+   *  from that cursor with `after`. */
+  function hiddenFirst(after: Record<string, ChannelMessage>) {
+    vi.mocked(channels.messages).mockImplementation(
+      (id: string, opts?: { limit?: number; cursor?: string }) => {
+        const next = after[id];
+        if (!next) return Promise.resolve(page());
+        return Promise.resolve(
+          opts?.cursor === 'past-hidden'
+            ? page(next)
+            : ({ data: [], next_cursor: 'past-hidden' } as unknown as Page),
+        );
+      },
+    );
+  }
+
+  it('the unread check reads past hidden messages to the newest visible one', async () => {
+    localStorage.setItem('community_lastSeen_c2', 'seen-before');
+    hiddenFirst({ c2: message('m-new', 'c2', 'newer') });
+    await mount();
+    const random = screen.getByRole('button', { name: /random/ });
+    expect(random.textContent).toContain(t('community.new'));
+  });
+
+  it('a channel whose newest messages are hidden shows the older visible ones', async () => {
+    hiddenFirst({ c1: message('m1', 'c1', 'older visible') });
+    await mount();
+    expect(screen.getByText('older visible')).toBeInTheDocument();
+  });
+});

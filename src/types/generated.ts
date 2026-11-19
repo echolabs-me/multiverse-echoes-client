@@ -1510,8 +1510,8 @@ export type EchoInCommonRef = {
 	target_echo_name: string,
 	/**
 	 *  rfc3339 timestamp from `EchoRelationship.updated_at` — the most
-	 *  recent in-engine update to this relationship. Drives
-	 *  recency-ordering on the client.
+	 *  recent in-engine update to this relationship. The server orders the
+	 *  rows by `last_interaction_tick`, not by this field.
 	 */
 	last_interaction_at: string,
 	/**
@@ -2260,8 +2260,10 @@ export type ListChannelsQuery = {
 
 export type ListMessagesQuery = {
 	/**
-	 *  Opaque pagination cursor (base64-encoded UUID of the last item on the
-	 *  previous page). Previous field name `before` is still accepted as an
+	 *  Opaque pagination cursor: a previous page's `next_cursor`, which
+	 *  encodes the last message that page showed when more than `limit`
+	 *  survived its filters, else the last message it read, shown or left
+	 *  out. Previous field name `before` is still accepted as an
 	 *  alias for back-compat with existing clients that send a raw UUID.
 	 *  Reference: ME-API-001 §4.1.
 	 */

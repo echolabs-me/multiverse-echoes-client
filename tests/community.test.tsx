@@ -364,3 +364,32 @@ describe('CommunityPage', () => {
     expect(screen.getByText('No channels yet')).toBeInTheDocument();
   });
 });
+
+describe('a short page’s cursor (R580.3)', () => {
+  afterEach(() => {
+    vi.mocked(channels.list).mockResolvedValue([]);
+    vi.mocked(channels.messages).mockResolvedValue({
+      data: [],
+    } as unknown as Awaited<ReturnType<typeof channels.messages>>);
+  });
+
+  it('CommunitySidebar shows older visible messages when the newest are hidden', async () => {
+    vi.mocked(channels.list).mockResolvedValue([channel]);
+    vi.mocked(channels.messages).mockImplementation((_id, opts) =>
+      Promise.resolve(
+        (opts?.cursor === 'past-hidden'
+          ? {
+              data: [message('v1', 'u1', 'Alice', false, 'older visible')],
+              next_cursor: null,
+            }
+          : { data: [], next_cursor: 'past-hidden' }) as unknown as Awaited<
+          ReturnType<typeof channels.messages>
+        >,
+      ),
+    );
+    await act(async () => {
+      mountSidebar();
+    });
+    expect(screen.getByText('older visible')).toBeInTheDocument();
+  });
+});
