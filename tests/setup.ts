@@ -13,7 +13,7 @@ beforeEach(() => {
 //
 // Vitest 3's vite-node module runner silently swallowed unhandled fetch
 // rejections; the Module Runner of vitest 4 and 5 surfaces them (without
-// this default, vitest 5.0.2's run prints ECONNREFUSED 14 times), so tests that fire
+// this default, vitest 5.1.1's run prints ECONNREFUSED on 12 lines), so tests that fire
 // background fetches without awaiting/catching (e.g. effects mounted in a
 // `render()` that then unmount before the promise settles) emit
 // `ECONNREFUSED localhost:3000` to stderr — happy-dom's default

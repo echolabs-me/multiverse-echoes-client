@@ -52,6 +52,22 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
   },
 }));
 
+// happy-dom lays nothing out, so recharts' ResponsiveContainer measures 0x0
+// and draws no chart. A fixed size lets the real recharts draw each chart,
+// so the test below proves the charts render, not only their wrappers.
+vi.mock('recharts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('recharts')>();
+  const { cloneElement } = await import('react');
+  return {
+    ...actual,
+    ResponsiveContainer: ({
+      children,
+    }: {
+      children: React.ReactElement<{ width?: number; height?: number }>;
+    }) => cloneElement(children, { width: 400, height: 220 }),
+  };
+});
+
 const testI18n = i18n.createInstance();
 void testI18n.use(initReactI18next).init({
   resources: {
@@ -279,6 +295,26 @@ describe('BillingView', () => {
       expect(
         document.querySelector('[data-testid="chart-churn"]'),
       ).not.toBeNull();
+    });
+  });
+
+  it('draws each chart with recharts: an svg surface and one line', async () => {
+    renderPage();
+    await selectBillingTab();
+
+    await waitFor(() => {
+      for (const id of ['chart-mrr', 'chart-subscribers', 'chart-churn']) {
+        const chart = document.querySelector(`[data-testid="${id}"]`);
+        expect(chart, id).not.toBeNull();
+        expect(
+          chart?.querySelectorAll('svg.recharts-surface').length,
+          `${id}: recharts surfaces`,
+        ).toBeGreaterThanOrEqual(1);
+        expect(
+          chart?.querySelectorAll('.recharts-line-curve').length,
+          `${id}: drawn lines`,
+        ).toBe(1);
+      }
     });
   });
 

@@ -90,6 +90,8 @@ test('search returns results with highlighted snippet', async ({ page }) => {
 
 // --- Test 4: Language selection ---
 test('language selection persists locale', async ({ page }) => {
+  // Mocks the API and aborts every other HTTP request to another origin (SR51).
+  await setupMockApi(page);
   // Clear localStorage to simulate first launch
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());

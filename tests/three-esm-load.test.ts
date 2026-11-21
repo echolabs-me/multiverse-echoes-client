@@ -1,6 +1,6 @@
 // The 3D renderer loads three as an ES module under Vitest, as it does in the
-// production build: its CommonJS build `require("three")`s, which three 0.186
-// deprecates with a THREE_CJS_DEPRECATED warning (vitest.config.ts,
+// production build: its CommonJS build `require("three")`s, which three
+// deprecates from 0.186 on (0.187 too) with a THREE_CJS_DEPRECATED warning (vitest.config.ts,
 // `resolve.mainFields`).
 import { afterEach, expect, it } from 'vitest';
 

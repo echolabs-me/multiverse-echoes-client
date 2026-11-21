@@ -3,7 +3,7 @@
  * Sets up mock API routes so tests don't need a live engine.
  */
 
-import type { Page } from '@playwright/test';
+import { test, type Page, type Route } from '@playwright/test';
 
 const MOCK_USER = {
   user_id: '00000000-0000-0000-0000-000000000001',
@@ -108,6 +108,33 @@ export type SetupMockApiOpts = {
 
 /** Set up mock API routes for authenticated flows. */
 export async function setupMockApi(page: Page, opts: SetupMockApiOpts = {}) {
+  // No HTTP request leaves the machine (SR51): a request no route below
+  // answers is aborted when its origin is not the dev server's (the
+  // config's baseURL), index.html's Google Fonts stylesheet among them.
+  // Registered first, so it is checked last (routes are matched
+  // last-registered first): every mock below, and every spec's own route
+  // added after this call, answers its requests on any origin first, so the
+  // mocks still answer when VITE_API_BASE_URL points the client's API base
+  // at another origin (src/lib/api/client.ts resolveBaseUrl). No route below
+  // continues a request to another origin to the network: the mocks
+  // fulfil, a route.fallback() reaches this one, and the bypass at the end
+  // continues only the dev server's own requests. A `<link rel="preconnect">`
+  // opens a connection, not a request, and no route sees it.
+  const devServerOrigin = new URL(String(test.info().project.use.baseURL)).origin;
+  await page.route(
+    (url) => url.origin !== devServerOrigin,
+    (route) => route.abort(),
+  );
+  // page.route never sees a WebSocket, so every WebSocket to another host
+  // (the client's own sockets when VITE_API_BASE_URL names another origin)
+  // is closed without connecting; the dev server's own, Vite's among them,
+  // is left alone.
+  const devServerHost = new URL(devServerOrigin).host;
+  await page.routeWebSocket(
+    (url) => url.host !== devServerHost,
+    (ws) => ws.close(),
+  );
+
   // Auth
   await page.route('**/auth/register', (route) =>
     route.fulfill({ status: 200, json: { ...MOCK_USER, ...MOCK_TOKENS } }),
@@ -729,11 +756,16 @@ export async function setupMockApi(page: Page, opts: SetupMockApiOpts = {}) {
   // C billing-mock additions immediately above are registered BEFORE
   // these bypass routes so the bypass remains the last-registered
   // (and therefore first-checked per LIFO) route handler set.
-  await page.route('**/src/**', (route) => route.continue());
-  await page.route('**/@vite/**', (route) => route.continue());
-  await page.route('**/@id/**', (route) => route.continue());
-  await page.route('**/@fs/**', (route) => route.continue());
-  await page.route('**/node_modules/**', (route) => route.continue());
+  // The bypass continues only the dev server's own module requests; another
+  // origin's request falls back to the routes before it, and so to the abort
+  // registered first (SR51).
+  const continueDevServer = (route: Route) =>
+    new URL(route.request().url()).origin === devServerOrigin ? route.continue() : route.fallback();
+  await page.route('**/src/**', continueDevServer);
+  await page.route('**/@vite/**', continueDevServer);
+  await page.route('**/@id/**', continueDevServer);
+  await page.route('**/@fs/**', continueDevServer);
+  await page.route('**/node_modules/**', continueDevServer);
 }
 
 /** Simulate an authenticated session by setting localStorage tokens. */

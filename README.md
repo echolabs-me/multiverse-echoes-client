@@ -5,7 +5,7 @@ The open-source client for **Multiverse Echoes**, an Autonomous Life Simulation 
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) 22.13 or later on the 22 line, 24, or 26 and later: the versions every locked package's `engines` allows together (eslint and jsdom need `^22.13.0` on the 22 line; vitest 5 rules out 23 and 25)
-- npm (included with Node.js)
+- npm 11.18.0, the version the lockfile and CI use (`packageManager` in `package.json`). On Node 22 or 24, run `corepack enable npm` once and Corepack runs that version in this folder; Node 25 and later ship no Corepack, so on Node 26 or later run `npm install -g npm@11.18.0`
 - A Multiverse Echoes account (free tier is sufficient)
 
 ## Quickstart

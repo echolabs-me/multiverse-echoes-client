@@ -40,7 +40,7 @@ test('admin billing tab renders KPI cards from latest snapshot', async ({ page }
   await authenticateAdmin(page);
   await page.goto('/admin');
   // Switch to billing tab.
-  await page.getByRole('button', { name: /billing/i }).first().click();
+  await page.getByRole('tab', { name: /billing/i }).click();
   await expect(page.getByTestId('admin-billing-view-root')).toBeVisible();
   await expect(page.getByTestId('admin-billing-kpi-mrr')).toBeVisible();
   await expect(page.getByTestId('admin-billing-kpi-total-subscribers')).toBeVisible();
@@ -49,7 +49,7 @@ test('admin billing tab renders KPI cards from latest snapshot', async ({ page }
   await expect(page.getByTestId('admin-billing-kpi-dunning-active')).toBeVisible();
 });
 
-test('admin billing tab renders 3 chart wrappers', async ({ page }) => {
+test('admin billing tab draws 3 charts, each an svg surface with one line', async ({ page }) => {
   await setupMockApi(page);
   await page.route('**/admin/billing/revenue-snapshots*', (route) =>
     route.fulfill({
@@ -60,10 +60,15 @@ test('admin billing tab renders 3 chart wrappers', async ({ page }) => {
   await page.goto('/');
   await authenticateAdmin(page);
   await page.goto('/admin');
-  await page.getByRole('button', { name: /billing/i }).first().click();
-  await expect(page.getByTestId('chart-mrr')).toBeVisible();
-  await expect(page.getByTestId('chart-subscribers')).toBeVisible();
-  await expect(page.getByTestId('chart-churn')).toBeVisible();
+  await page.getByRole('tab', { name: /billing/i }).click();
+  for (const id of ['chart-mrr', 'chart-subscribers', 'chart-churn']) {
+    const chart = page.getByTestId(id);
+    await expect(chart).toBeVisible();
+    // recharts draws into an svg.recharts-surface once ResponsiveContainer
+    // has measured a size, and each chart has one <Line> (one curve path).
+    await expect(chart.locator('svg.recharts-surface').first()).toBeVisible();
+    await expect(chart.locator('path.recharts-line-curve')).toHaveCount(1);
+  }
 });
 
 test('admin billing tab CSV export button is enabled when snapshots present', async ({ page }) => {
@@ -77,7 +82,7 @@ test('admin billing tab CSV export button is enabled when snapshots present', as
   await page.goto('/');
   await authenticateAdmin(page);
   await page.goto('/admin');
-  await page.getByRole('button', { name: /billing/i }).first().click();
+  await page.getByRole('tab', { name: /billing/i }).click();
   const exportBtn = page.getByTestId('admin-billing-export-csv-button');
   await expect(exportBtn).toBeVisible();
   await expect(exportBtn).toBeEnabled();
@@ -90,7 +95,7 @@ test('admin billing tab CSV export button is disabled when snapshots empty', asy
   await page.goto('/');
   await authenticateAdmin(page);
   await page.goto('/admin');
-  await page.getByRole('button', { name: /billing/i }).first().click();
+  await page.getByRole('tab', { name: /billing/i }).click();
   const exportBtn = page.getByTestId('admin-billing-export-csv-button');
   await expect(exportBtn).toBeVisible();
   await expect(exportBtn).toBeDisabled();
@@ -101,7 +106,7 @@ test('admin billing tab trigger-snapshot button is rendered and enabled', async 
   await page.goto('/');
   await authenticateAdmin(page);
   await page.goto('/admin');
-  await page.getByRole('button', { name: /billing/i }).first().click();
+  await page.getByRole('tab', { name: /billing/i }).click();
   const triggerBtn = page.getByTestId('admin-billing-trigger-snapshot-button');
   await expect(triggerBtn).toBeVisible();
   await expect(triggerBtn).toBeEnabled();
@@ -113,7 +118,7 @@ test('admin billing tab dunning queue empty state renders', async ({ page }) => 
   await page.goto('/');
   await authenticateAdmin(page);
   await page.goto('/admin');
-  await page.getByRole('button', { name: /billing/i }).first().click();
+  await page.getByRole('tab', { name: /billing/i }).click();
   // The KPI row + chart wrappers always render; the dunning queue table
   // is below them. Confirm the view's overall root is intact.
   await expect(page.getByTestId('admin-billing-view-root')).toBeVisible();
