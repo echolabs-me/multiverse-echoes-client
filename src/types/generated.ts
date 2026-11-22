@@ -308,9 +308,16 @@ export type AdminRevokeShareTokenRequest = {
 // Response for `POST /admin/share/tokens/{token}/revoke`.
 export type AdminRevokeShareTokenResponse = {
 	token: string,
+	// When the token was revoked: now, or by an earlier revoke (R591.3).
 	revoked_at: string,
-	revoked_by_user_id: string,
-	revocation_reason: string,
+	/**
+	 *  Who revoked it (an admin, a quarantine's actor, or the item's owner
+	 *  for the share route's withdrawal). `null` once that user's account
+	 *  has been deleted.
+	 */
+	revoked_by_user_id: string | null,
+	// Why it was revoked, as the revoke that landed stored it.
+	revocation_reason: string | null,
 };
 
 /**
@@ -1785,12 +1792,16 @@ export type EnforcementActionType = "MessageDeleted" | "UserMuted" | "UserChanne
  *  done: `echoes_quarantined` is null when the uploader's Echoes could not
  *  be read, and `api_keys_revoked` is null when their keys could not be
  *  deleted, so neither reads as "the user had none" (R352.2).
+ *  `share_link_failures` counts the share-link reads, revocations and KV
+ *  deletes the quarantine could not do (R579.2); applying the enforcement
+ *  again tries them again.
  */
 export type EnforcementSummary = {
 	user_suspended: boolean,
 	sessions_revoked: boolean,
 	echoes_quarantined: number | null,
 	api_keys_revoked: number | null,
+	share_link_failures: number,
 };
 
 export type EquipRequest = {
@@ -3496,19 +3507,21 @@ export type ShareToken = {
 	 */
 	revoked_at: string | null,
 	/**
-	 *  Admin user who issued the revocation, when the revocation was made
-	 *  from the admin surface. `None` for tokens revoked by the original
-	 *  creator from the user-facing surface (or for never-revoked tokens).
+	 *  The user whose revoke landed: the admin for the admin surface, the
+	 *  quarantine's actor for an Echo's quarantine, or the item's owner
+	 *  when the share route withdraws the link it was making. Written once,
+	 *  by the first revoke (R591.3). `None` for never-revoked tokens, and
+	 *  once that user's account has been deleted.
 	 *  `#[serde(default)]` so any token row written before this field
 	 *  existed (Lane H Commits 1–6) deserialises with `None`.
 	 */
 	revoked_by_user_id?: string | null,
 	/**
-	 *  Free-text rationale captured at revocation time. Required by
+	 *  Free-text rationale captured by the revoke that landed. Required by
 	 *  ME-CSS-001 §6.3 revocation policy when the actor is an admin
-	 *  (the admin endpoint enforces non-empty); user-initiated revoke
-	 *  (Commit 7 ships admin-only — user-facing revoke lives elsewhere)
-	 *  leaves this as `None`. `#[serde(default)]` for legacy rows.
+	 *  (the admin endpoint enforces non-empty); a quarantine stores its
+	 *  reason and the share route's withdrawal a fixed one. `None` for
+	 *  never-revoked tokens. `#[serde(default)]` for legacy rows.
 	 */
 	revocation_reason?: string | null,
 };
@@ -4344,7 +4357,11 @@ origin_shard_id: string } } | { ShardTravelDenied: { echo_id: string; reason: st
  *  Reference: ME-TSP-001 §8.4 line 293.
  */
 { ContentBlocked: { echo_id: string; tick_id: number; tier: ContentTierEnum; reason: string } } | 
-// Emitted when T3 content triggers Echo quarantine. Phase 7 safety enforcement.
+/**
+ *  An Echo was quarantined. Published once by `quarantine_echo`
+ *  (`crates/api/src/echo_quarantine.rs`), only when its own status change
+ *  landed; CSAM enforcement is its only caller today (R579.2).
+ */
 { EchoQuarantined: { echo_id: string; reason: string } } | 
 // Phase 7 — emergent behavior detection.
 { EmergentGroupFlagged: { echo_ids: string[] } } | 
@@ -4428,21 +4445,26 @@ origin_shard_id: string } } | { ShardTravelDenied: { echo_id: string; reason: st
  */
 { RevenueSnapshotGenerated: { snapshot_date: string } } | 
 /**
- *  A share token was revoked — by an admin via the
- *  `/admin/share/tokens/{token}/revoke` endpoint, OR purged by the
- *  daily expiry sweeper. Consumers: the admin dashboard
+ *  A share token was revoked: by an admin via the
+ *  `/admin/share/tokens/{token}/revoke` endpoint, by an Echo's
+ *  quarantine (`echo_quarantine::quarantine_echo`), by the share route
+ *  withdrawing the link it was making (`POST /feeds/{item_id}/share`),
+ *  or purged by the daily expiry sweeper. Published once per token, by
+ *  the revoke that landed (R591.3). Consumers: the admin dashboard
  *  `share-tokens` tab (re-fetches the active page on receipt).
  *  Reference: ME-CSS-001 §6.3 (revocation policy, Lane H Commit 7).
  */
 { ShareTokenRevoked: { token: string; 
 /**
- *  `Some(user_id)` for admin-initiated revoke; `None` for
- *  sweeper-initiated expiry purge.
+ *  The actor: the admin, the quarantine's actor, or the item's
+ *  owner for the share route's withdrawal; `None` for the
+ *  sweeper's expiry purge.
  */
 revoked_by_user_id: string | null; 
 /**
- *  Free-text reason. `"expired"` for sweeper-initiated;
- *  admin-supplied otherwise.
+ *  Free-text reason: admin-supplied for the admin route, the
+ *  quarantine's reason for a quarantine, a fixed reason for the
+ *  share route's withdrawal, and `"expired"` for the sweeper.
  */
 reason: string; revoked_at: string } };
 
@@ -4486,16 +4508,18 @@ content_locale: string } | { type: "MoodChanged"; echo_id: string; mood: string;
  */
 { type: "ChannelMessagesAnonymised"; channel_ids: string[] } | { type: "NotificationCreated"; notification_id: string } | { type: "EchoAvatarReady"; echo_id: string; avatar_url: string } | 
 /**
- *  A share token was revoked — admin-initiated via the
- *  `/admin/share/tokens/{token}/revoke` endpoint, or sweeper-
- *  initiated by the daily expiry sweeper. Forwarded to the
- *  admin dashboard stream only; per-Echo and per-Shard streams
- *  drop these silently. Lane H Commit 7 / ME-CSS-001 §6.3.
+ *  A share token was revoked: by an admin via the
+ *  `/admin/share/tokens/{token}/revoke` endpoint, by an Echo's
+ *  quarantine, by the share route withdrawing the link it was making,
+ *  or by the daily expiry sweeper. Forwarded to the admin dashboard
+ *  stream only; per-Echo and per-Shard streams drop these silently.
+ *  Lane H Commit 7 / ME-CSS-001 §6.3, R591.3.
  */
 { type: "ShareTokenRevoked"; token: string; 
 /**
- *  Lowercase string form of the actor's user id, or `None`
- *  for sweeper-initiated expiry.
+ *  Lowercase string form of the actor's user id (the admin, the
+ *  quarantine's actor, or the item's owner for the share route's
+ *  withdrawal), or `None` for the sweeper's expiry purge.
  */
 revoked_by_user_id: string | null; reason: string } | { type: "Connected"; echo_id: string; message: string } | { type: "Error"; message: string } | 
 /**

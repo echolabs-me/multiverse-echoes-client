@@ -1899,7 +1899,9 @@ function ShareTokensView() {
 
   // Listen for the WS dashboard `ShareTokenRevoked` event so the list
   // re-syncs without a manual refresh. The hook in useTickTimer
-  // dispatches this event on every revoke (admin or sweeper).
+  // dispatches this event once for each revoked token, whoever revoked it
+  // (an admin, an Echo's quarantine, the share route withdrawing its own
+  // link, or the expiry sweeper).
   useEffect(() => {
     const handler = () => {
       void load();
