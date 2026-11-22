@@ -19,13 +19,14 @@ import { DiscordIcon } from './icons/DiscordIcon.tsx';
 import { useToastStore } from '../stores/useToastStore.ts';
 import { useInFlight } from '../hooks/useInFlight.ts';
 import { markers } from '../lib/inFlightMarkers.ts';
-import { newestChannelMessages } from '../lib/channelMessages.ts';
+import { insertOnce } from '../lib/channelMessages.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
 import {
   channels as channelApi,
   account as accountApi,
 } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
+import { useChannelMessages } from '../hooks/useChannelMessages.ts';
 import type {
   Channel,
   ChannelMessage,
@@ -45,7 +46,6 @@ export function CommunitySidebar() {
   const [discordUsername, setDiscordUsername] = useState<string | null>(null);
   const [channelList, setChannelList] = useState<Channel[]>([]);
   const [activeChannel, setActiveChannel] = useState<Channel | null>(null);
-  const [messages, setMessages] = useState<ChannelMessage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [messageText, setMessageText] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -93,22 +93,31 @@ export function CommunitySidebar() {
     void load();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const loadMessages = useCallback(async () => {
-    if (!activeChannel) return;
-    try {
-      const msgs = await newestChannelMessages(activeChannel.channel_id, 30);
-      setMessages(msgs);
-      // Mark as read.
-      if (msgs.length > 0) {
-        localStorage.setItem(
-          `community_lastSeen_${activeChannel.channel_id}`,
-          msgs[msgs.length - 1]!.message_id,
-        );
-      }
-    } catch {
-      /* ignore */
-    }
-  }, [activeChannel]);
+  // The shown channel's messages and the actions that read and write them,
+  // shared with CommunityPage (R633): held with their channel and shown only
+  // while it is shown (R371.1); the latest load writes (R381.1, R390.3a); an
+  // action's answer and then its read are the newest writes, only in the
+  // visit it began in (R422.2, R483.1). Unlike CommunityPage, an action does
+  // not also supersede the channel's loads when it starts (useCurrentKey.ts,
+  // R390.3b, R633.2): the read after the answer already supersedes every
+  // read started before it and ends the loading. A load marks the channel
+  // read in localStorage.
+  const channelKey = activeChannel?.channel_id ?? null;
+  const markSeen = useCallback((key: string, newestMessageId: string) => {
+    localStorage.setItem(`community_lastSeen_${key}`, newestMessageId);
+  }, []);
+  const {
+    messages,
+    isLoadingMessages,
+    isShownChannel,
+    loadMessages,
+    writeAnswer,
+  } = useChannelMessages({
+    channelKey,
+    pageSize: 30,
+    onLoaded: markSeen,
+    startOnWrite: false,
+  });
 
   useEffect(() => {
     void (async () => {
@@ -185,14 +194,25 @@ export function CommunitySidebar() {
 
   const handleSend = async () => {
     if (!activeChannel || !messageText.trim() || isSending) return;
+    const channelId = activeChannel.channel_id;
+    const content = messageText.trim();
+    const shown = isShownChannel(channelId);
     setIsSending(true);
     try {
-      const msg = await channelApi.sendMessage(activeChannel.channel_id, {
-        content: messageText.trim(),
-      });
-      setMessages((prev) => [...prev, msg]);
-      setMessageText('');
+      await writeAnswer(
+        channelId,
+        () => channelApi.sendMessage(channelId, { content }),
+        insertOnce,
+      );
+      // The one composer serves every channel, so it is not part of a
+      // visit: a sent text is cleared whichever channel is shown when it is
+      // answered, so it is not sent twice, and only if the composer still
+      // holds it, so text typed since stays.
+      setMessageText((prev) => (prev.trim() === content ? '' : prev));
     } catch (err) {
+      // A failed send keeps its text; failed in a later visit, it shows
+      // nothing (R483.1).
+      if (!shown()) return;
       addToast(translateCaughtError(err, t('common.error')), 'danger', {
         platformLink: isPlatformError(err),
       });
@@ -215,12 +235,17 @@ export function CommunitySidebar() {
       return;
     }
     const channelId = activeChannel.channel_id;
+    const shown = isShownChannel(channelId);
     await inFlight.run(markers.upload('sidebar', channelId), async () => {
       setIsSending(true);
       try {
-        const msg = await channelApi.uploadImage(channelId, file);
-        setMessages((prev) => [...prev, msg]);
+        await writeAnswer(
+          channelId,
+          () => channelApi.uploadImage(channelId, file),
+          insertOnce,
+        );
       } catch (err) {
+        if (!shown()) return;
         addToast(translateCaughtError(err, t('common.error')), 'danger', {
           platformLink: isPlatformError(err),
         });
@@ -234,6 +259,8 @@ export function CommunitySidebar() {
     if (!activeChannel || !msg.poll_data) return;
     const channelId = activeChannel.channel_id;
     const pollData = msg.poll_data;
+    // Answered or failed in a later visit, the vote shows nothing (R483.1).
+    const shown = isShownChannel(channelId);
     await inFlight.run(markers.vote(msg.message_id), async () => {
       try {
         const poll: PollData = JSON.parse(pollData);
@@ -242,8 +269,10 @@ export function CommunitySidebar() {
           discord_channel_id: poll.discord_channel_id,
           answer_id: answerId,
         });
+        if (!shown()) return;
         addToast(t('community.voteRecorded'), 'success');
       } catch (err) {
+        if (!shown()) return;
         addToast(translateCaughtError(err, t('common.error')), 'danger', {
           platformLink: isPlatformError(err),
         });
@@ -255,24 +284,36 @@ export function CommunitySidebar() {
     if (!activeChannel) return;
     const validOptions = pollOptions.filter((o) => o.trim());
     if (!pollQuestion.trim() || validOptions.length < 2) return;
+    const channelId = activeChannel.channel_id;
+    const shown = isShownChannel(channelId);
     setIsSending(true);
     try {
-      await channelApi.createPoll(activeChannel.channel_id, {
+      await channelApi.createPoll(channelId, {
         question: pollQuestion.trim(),
         options: validOptions.map((o) => o.trim()),
       });
-      setShowPollForm(false);
-      setPollQuestion('');
-      setPollOptions(['', '']);
-      await loadMessages();
+      // The form belongs to the channel it was filled in (R422.3), and the
+      // poll's answer shows nothing in a later visit to it (R483.1).
+      if (!shown()) return;
+      closePollForm();
+      // Not awaited: a later read supersedes this one, which then never
+      // settles (whenCurrent), and the poll's own live event starts one.
+      void loadMessages();
       addToast(t('community.pollCreated'), 'success');
     } catch (err) {
+      if (!shown()) return;
       addToast(translateCaughtError(err, t('common.error')), 'danger', {
         platformLink: isPlatformError(err),
       });
     } finally {
       setIsSending(false);
     }
+  };
+
+  const closePollForm = () => {
+    setShowPollForm(false);
+    setPollQuestion('');
+    setPollOptions(['', '']);
   };
 
   // ── Not linked CTA ──
@@ -350,7 +391,12 @@ export function CommunitySidebar() {
                 <button
                   key={ch.channel_id}
                   onClick={() => {
-                    setActiveChannel(ch);
+                    // The poll form belongs to the channel it was opened in
+                    // and closes on a switch (R422.3, R633.3).
+                    if (ch.channel_id !== channelKey) {
+                      setActiveChannel(ch);
+                      closePollForm();
+                    }
                     setShowChannelPicker(false);
                   }}
                   className={`flex w-full items-center justify-between px-3 py-1.5 text-start text-sm transition-colors ${
@@ -374,7 +420,11 @@ export function CommunitySidebar() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-3 py-2">
-        {messages.length === 0 ? (
+        {isLoadingMessages ? (
+          <div className="flex items-center justify-center py-8">
+            <Spinner size="sm" />
+          </div>
+        ) : messages.length === 0 ? (
           <p className="py-8 text-center text-xs text-text-secondary">
             {t('community.noMessagesYet')}
           </p>

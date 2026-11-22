@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   translateCaughtError,
@@ -27,23 +27,14 @@ import {
   account as accountApi,
 } from '../lib/api/endpoints.ts';
 import { useEchoWebSocket } from '../hooks/useEchoWebSocket.ts';
-import {
-  useCurrentKey,
-  useLatestLoad,
-  whenCurrent,
-} from '../hooks/useCurrentKey.ts';
+import { useChannelMessages } from '../hooks/useChannelMessages.ts';
 import { trackEvent } from '../lib/analytics.ts';
 import { formatTime } from '../lib/formatDate.ts';
 import { sameMessageAuthor } from '../lib/messageGrouping.ts';
-import { newestChannelMessages } from '../lib/channelMessages.ts';
+import { insertOnce, newestChannelMessages } from '../lib/channelMessages.ts';
 import type { Channel, ChannelMessage, WsEchoEvent } from '../types/api.ts';
 
 const MAX_MESSAGE_LENGTH = 2000;
-
-/** Shows a sent message after a channel's messages, once: a read that
- *  landed first may already hold it (R422.2). */
-const appendOnce = (msg: ChannelMessage) => (prev: ChannelMessage[]) =>
-  prev.some((m) => m.message_id === msg.message_id) ? prev : [...prev, msg];
 
 export function CommunityPage() {
   const { t } = useTranslation();
@@ -56,50 +47,7 @@ export function CommunityPage() {
   const [channelList, setChannelList] = useState<Channel[]>([]);
   const [activeChannel, setActiveChannel] = useState<Channel | null>(null);
   const [isLoadingChannels, setIsLoadingChannels] = useState(true);
-  // The messages the last load or action wrote, and the channel they are
-  // in. They are shown only while that channel is the active one (R371.1):
-  // the first render for another channel shows it loading, never the
-  // earlier channel's messages. `loading` is true until a read of the
-  // channel has landed: a reload of a channel already read keeps its
-  // messages shown.
   const channelKey = activeChannel?.channel_id ?? null;
-  const [held, setHeld] = useState<{
-    key: string | null;
-    messages: ChannelMessage[];
-    loading: boolean;
-  }>({ key: null, messages: [], loading: false });
-  const shownMessages = held.key === channelKey ? held : null;
-  const messages = useMemo(
-    () => shownMessages?.messages ?? [],
-    [shownMessages],
-  );
-  const isLoadingMessages =
-    channelKey !== null && (shownMessages === null || shownMessages.loading);
-  /** Shows an action's answer in channel `key`'s messages at once, until
-   *  the read that follows it lands (R422.2): nothing while another
-   *  channel's are held, or while no read of the channel has landed. */
-  const showAnswerIn = useCallback(
-    (key: string, change: (prev: ChannelMessage[]) => ChannelMessage[]) =>
-      setHeld((prev) =>
-        prev.key === key && !prev.loading
-          ? { ...prev, messages: change(prev.messages) }
-          : prev,
-      ),
-    [],
-  );
-  // Of the loads of the messages the page starts, only the last one started
-  // for the active channel writes, and only while the page is mounted
-  // (R361.1, R381.1). An action whose answer the page writes (a message
-  // sent, an image, an edit, a delete) supersedes every load of its channel
-  // started before it when it starts, and every load started while it was
-  // pending by the full read of the channel it starts when it ends, so its
-  // answer and then that read are the newest writes, and that read ends the
-  // loading a read it superseded began (R390.3b, R422.2, R463.2). It does
-  // both only while the visit to the channel it began in lasts: answered
-  // or failed in a later visit, it writes nothing and reads nothing
-  // (R483.1).
-  const startMessages = useLatestLoad(channelKey);
-  const isShownChannel = useCurrentKey(channelKey);
   // The composer's draft and its request in flight belong to the channel
   // they were typed and sent in (R422.3).
   const [drafts, setDrafts] = useState<Record<string, string>>({});
@@ -149,6 +97,25 @@ export function CommunityPage() {
     },
     [],
   );
+
+  // The active channel's messages and the actions that read and write them
+  // (R633): held with their channel and shown only while it is active
+  // (R371.1); the latest load writes (R361.1, R381.1); an action's answer and
+  // then its read are the newest writes, only in the visit it began in
+  // (R390.3b, R422.2, R463.2, R483.1). The page keeps a loading state, so an
+  // action also supersedes the channel's loads when it starts.
+  const {
+    messages,
+    isLoadingMessages,
+    isShownChannel,
+    loadMessages,
+    writeAnswer,
+  } = useChannelMessages({
+    channelKey,
+    pageSize: 50,
+    onLoaded: markChannelRead,
+    startOnWrite: true,
+  });
 
   // Load channels + Discord link status
   useEffect(() => {
@@ -205,74 +172,6 @@ export function CommunityPage() {
     };
     void load();
   }, []);
-
-  // Load messages when channel changes. A call kept from an earlier
-  // channel (a live event, a poll, an action's reload) starts no load
-  // (R390.3a).
-  const loadMessages = useCallback(async () => {
-    if (!activeChannel) return;
-    const key = activeChannel.channel_id;
-    const isCurrent = startMessages(key);
-    if (!isCurrent()) return;
-    setHeld((prev) =>
-      prev.key === key ? prev : { key, messages: [], loading: true },
-    );
-    try {
-      const msgs = await whenCurrent(
-        isCurrent,
-        newestChannelMessages(key, 50, isCurrent),
-      );
-      setHeld({ key, messages: msgs, loading: false });
-      // Mark channel as read when messages are viewed.
-      if (msgs.length > 0) {
-        markChannelRead(key, msgs[msgs.length - 1]!.message_id);
-      }
-    } catch (err) {
-      // A failed read keeps the channel's messages and says so.
-      setHeld((prev) =>
-        prev.key === key
-          ? { ...prev, loading: false }
-          : { key, messages: [], loading: false },
-      );
-      addToast(translateCaughtError(err, t('common.error')), 'danger', {
-        platformLink: isPlatformError(err),
-      });
-    }
-  }, [activeChannel, markChannelRead, startMessages, addToast, t]);
-
-  /** Runs an action whose answer changes channel `key`'s messages. The
-   *  action supersedes every load of the channel started before it when it
-   *  starts (R390.3b). The answer is shown at once, when a read of the
-   *  channel has landed, and the full read of the channel it starts then
-   *  supersedes every load started while it was pending, so the answer and
-   *  then that read are the newest writes, and the read's answer replaces
-   *  the list (R422.2). An action that fails in its visit reads the channel
-   *  again. A read the action superseded never ends the loading it began;
-   *  the read the action starts when it ends does (R463.2). An action keeps the
-   *  visit it began in: answered or failed in a later visit to the
-   *  channel, it shows nothing and reads nothing there (R483.1). */
-  const writeAnswer = useCallback(
-    async <T,>(
-      key: string,
-      request: () => Promise<T>,
-      write: (answer: T) => (prev: ChannelMessage[]) => ChannelMessage[],
-    ): Promise<T> => {
-      const shown = isShownChannel(key);
-      startMessages(key);
-      try {
-        const answer = await request();
-        if (shown()) {
-          showAnswerIn(key, write(answer));
-          void loadMessages();
-        }
-        return answer;
-      } catch (err) {
-        if (shown()) void loadMessages();
-        throw err;
-      }
-    },
-    [isShownChannel, startMessages, showAnswerIn, loadMessages],
-  );
 
   useEffect(() => {
     void (async () => {
@@ -345,7 +244,7 @@ export function CommunityPage() {
       await writeAnswer(
         channelId,
         () => channelApi.sendMessage(channelId, { content }),
-        appendOnce,
+        insertOnce,
       );
       trackEvent('community.message_sent', {
         channel_id: channelId,
@@ -438,7 +337,7 @@ export function CommunityPage() {
         await writeAnswer(
           channelId,
           () => channelApi.uploadImage(channelId, file),
-          appendOnce,
+          insertOnce,
         );
       } catch (err) {
         if (!shown()) return;

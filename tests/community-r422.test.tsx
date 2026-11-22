@@ -260,8 +260,8 @@ describe('CommunityPage: a full read after every answer (R422.2)', () => {
     await act(async () => {
       after.resolve(
         page(
-          message('m1', 'c1', 'content one'),
           message('m3', 'c1', 'hello there'),
+          message('m1', 'c1', 'content one'),
         ),
       );
     });
@@ -351,8 +351,8 @@ describe('CommunityPage: a full read after every answer (R422.2)', () => {
     await act(async () => {
       after.resolve(
         page(
-          message('m1', 'c1', 'content one'),
           message('m3', 'c1', 'an image'),
+          message('m1', 'c1', 'content one'),
         ),
       );
     });
@@ -388,14 +388,14 @@ describe('CommunityPage: a full read after every answer (R422.2)', () => {
     expect(reads.count()).toBe(3);
     await act(async () => {
       reload.resolve(
-        page(mine('m1', 'c1', 'content one'), message('m2', 'c1', 'news')),
+        page(message('m2', 'c1', 'news'), mine('m1', 'c1', 'content one')),
       );
     });
     // The reload was started before the answer: it writes nothing.
     expect(screen.getByText('content edited')).toBeInTheDocument();
     await act(async () => {
       after.resolve(
-        page(mine('m1', 'c1', 'content edited'), message('m2', 'c1', 'news')),
+        page(message('m2', 'c1', 'news'), mine('m1', 'c1', 'content edited')),
       );
     });
     expect(screen.getByText('content edited')).toBeInTheDocument();
@@ -406,8 +406,15 @@ describe('CommunityPage: a full read after every answer (R422.2)', () => {
     const reload = held<Page>();
     const after = held<Page>();
     const reads = readsInOrder(
+      // Newest first, as the server answers (R594).
       Promise.resolve(
-        page(mine('m1', 'c1', 'content one'), message('m0', 'c1', 'kept')),
+        page(
+          {
+            ...message('m0', 'c1', 'kept'),
+            created_at: '2026-09-30T01:00:00Z',
+          },
+          mine('m1', 'c1', 'content one'),
+        ),
       ),
       reload.promise,
       after.promise,
@@ -425,7 +432,7 @@ describe('CommunityPage: a full read after every answer (R422.2)', () => {
     expect(reads.count()).toBe(3);
     await act(async () => {
       after.resolve(
-        page(message('m0', 'c1', 'kept'), message('m2', 'c1', 'news')),
+        page(message('m2', 'c1', 'news'), message('m0', 'c1', 'kept')),
       );
     });
     expect(screen.queryByText('content one')).toBeNull();
@@ -450,8 +457,8 @@ describe('CommunityPage: a full read after every answer (R422.2)', () => {
     await act(async () => {
       reload.resolve(
         page(
-          message('m1', 'c1', 'content one'),
           message('m3', 'c1', 'hello there'),
+          message('m1', 'c1', 'content one'),
         ),
       );
     });
@@ -463,8 +470,8 @@ describe('CommunityPage: a full read after every answer (R422.2)', () => {
     await act(async () => {
       after.resolve(
         page(
-          message('m1', 'c1', 'content one'),
           message('m3', 'c1', 'hello there'),
+          message('m1', 'c1', 'content one'),
         ),
       );
     });
@@ -821,11 +828,15 @@ describe('CommunityPage: an action keeps the visit it began in (R483.1)', () => 
     async (action, outcome) => {
       messagesBy((id) =>
         Promise.resolve(
-          page(mine(`m-${id}`, id, `content ${id}`), {
-            ...message(`p-${id}`, id, ''),
-            poll_data: POLL_DATA,
-            created_at: '2026-09-30T01:00:00Z',
-          }),
+          // Newest first, as the server answers (R594).
+          page(
+            {
+              ...message(`p-${id}`, id, ''),
+              poll_data: POLL_DATA,
+              created_at: '2026-09-30T01:00:00Z',
+            },
+            mine(`m-${id}`, id, `content ${id}`),
+          ),
         ),
       );
       const answer = held<unknown>();

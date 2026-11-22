@@ -176,10 +176,12 @@ const twoRelays = [
   message('r2', NIL, 'guest', false, 'second', 'guest'),
 ];
 
+/** Serves `msgs`, given in the order the views draw them (oldest first), as
+ *  the server answers them: newest first (R594). */
 function withMessages(msgs: ChannelMessage[]) {
   vi.mocked(channels.list).mockResolvedValue([channel]);
   vi.mocked(channels.messages).mockResolvedValue({
-    data: msgs,
+    data: [...msgs].reverse(),
   } as unknown as Awaited<ReturnType<typeof channels.messages>>);
 }
 

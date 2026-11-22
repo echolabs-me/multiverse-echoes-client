@@ -7,10 +7,7 @@ import { CommunityPage } from '../src/pages/CommunityPage.tsx';
 import { CommunitySidebar } from '../src/components/CommunitySidebar.tsx';
 import { account, channels } from '../src/lib/api/endpoints.ts';
 import type { Channel, ChannelMessage } from '../src/types/api.ts';
-import {
-  heldKey,
-  useInFlightStore,
-} from '../src/stores/useInFlightStore.ts';
+import { heldKey, useInFlightStore } from '../src/stores/useInFlightStore.ts';
 import { markers } from '../src/lib/inFlightMarkers.ts';
 
 /**
@@ -113,9 +110,10 @@ beforeEach(() => {
   for (const fn of Object.values(channels)) vi.mocked(fn).mockReset();
   vi.mocked(channels.list).mockResolvedValue([channel]);
   vi.mocked(channels.messages).mockResolvedValue({
+    // Newest first, as the server answers (R594).
     data: [
-      message('m1', { can_edit: true, can_delete: true }),
       message('m2', { poll_data: POLL, created_at: '2026-09-30T01:00:00Z' }),
+      message('m1', { can_edit: true, can_delete: true }),
     ],
   } as unknown as Awaited<ReturnType<typeof channels.messages>>);
   vi.mocked(account.discordStatus).mockResolvedValue({

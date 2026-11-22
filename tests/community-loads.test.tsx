@@ -312,8 +312,8 @@ describe('CommunityPage loads (R361.4)', () => {
     await act(async () => {
       after.resolve(
         page(
-          message('m1', 'c1', 'content one'),
           message('m3', 'c1', 'hello there'),
+          message('m1', 'c1', 'content one'),
         ),
       );
     });
