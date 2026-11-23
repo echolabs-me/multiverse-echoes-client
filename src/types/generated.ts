@@ -38,10 +38,12 @@ export type AccessEntryResponse = {
 
 export type AccountStatus = "Active" | "Suspended" | "PendingDeletion" | "Deleted" | 
 /**
- *  Claimed for purge. Only the claim transitions set it, and it is
- *  terminal: `UserRepository::update` refuses a row in this state, so no
- *  cancel, login or other writer can restore the account, and the purge's
- *  own delete of the row is the only way out.
+ *  Claimed for purge. Only the claim transitions and `create` set it,
+ *  and it is terminal: `UserRepository::update`,
+ *  `UserRepository::set_account_status` and
+ *  `UserRepository::lift_suspension` refuse a row in this state, so no
+ *  cancel, login or other writer of the status can restore the account,
+ *  and the purge's own delete of the row is the only way out.
  */
 "Purging";
 
@@ -902,8 +904,12 @@ export type ClosureReason =
 /**
  *  Cloudflare's post-review confirmed the match was a false
  *  positive. The admin PATCH that closes the incident in this
- *  state automatically reactivates the user and un-quarantines
- *  the echoes.
+ *  state automatically lifts the user's suspension, if it still holds,
+ *  restoring what it interrupted (pending deletion when the account holds
+ *  a deletion date, Active when not), and un-quarantines the echoes,
+ *  each Hibernated unless, as it is restored, the account is Active
+ *  with its processing not restricted and its shard has a free place
+ *  (R574.3, R613.3).
  */
 "false_positive";
 
@@ -1457,8 +1463,10 @@ export type Echo = {
 	 *  UTC timestamp of the most recent transition into `EchoStatus::Quarantined`.
 	 *  Sibling of `hibernated_at`/`deleted_at`: set when status flips to
 	 *  Quarantined (CSAM match, false-positive report resolution, etc.), cleared
-	 *  back to `None` when the echo is restored, whether it lands Active or,
-	 *  into a full shard, Hibernated (R401.1). Used as the order-by
+	 *  back to `None` when the echo is restored, whether it lands Active or
+	 *  Hibernated: Hibernated into a full shard (R401.1), or for an owner
+	 *  whose account is not Active, whose processing is restricted, or who
+	 *  no longer exists (R613). Used as the order-by
 	 *  source for the God Mode Report Queue (most-recently-quarantined first).
 	 *  `#[serde(default)]` so rows stored before the field existed deserialise with `None`;
 	 *  a one-shot backfill at server boot copies `updated_at` into this field
@@ -1717,8 +1725,9 @@ export type EnforcementActionListResponse = {
 export type EnforcementActionTarget = 
 /**
  *  Account-level action affecting a specific user. Written by
- *  `csam_incidents::reverse_enforcement` when reactivating a
- *  suspended user.
+ *  `csam_incidents::reverse_enforcement` for a false-positive close,
+ *  whether or not the user was reactivated; its reason says which. A
+ *  failed insert of the row is logged and not retried.
  */
 { kind: "user"; user_id: string } | 
 /**
