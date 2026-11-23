@@ -502,8 +502,9 @@ export type ApiKeyListItem = {
  *  exists for future Custom promos where a partial downgrade makes
  *  sense. Creator is intentionally absent — add when a grant flow
  *  needs it.
- *  `PartialOrd`/`Ord` derived so "pick most conservative auto-downgrade
- *  across overlapping expired promos" reduces to `.min()`.
+ *  An ended promotion counts at its fallback as one grant among the
+ *  user's, and the tier is the highest that counts
+ *  (`tier_grants::effective_tier`); `PartialOrd`/`Ord` order the two.
  */
 export type AutoDowngradeTier = "Free" | "Core";
 
@@ -635,9 +636,9 @@ export type BillingHealthResponse = {
 	// Stripe access derived from `User` local state.
 	stripe_status: BillingHealthStripeStatus,
 	/**
-	 *  Earliest `current_period_end` across crypto providers AND
-	 *  `User.subscription_expires_at`, whichever is sooner. `None`
-	 *  when the caller has no active paid subscription.
+	 *  Earliest `current_period_end` across crypto providers AND the paid
+	 *  grant's `paid_tier_expires_at` while it is in the future, whichever
+	 *  is sooner (R628.5). `None` when the caller has neither.
 	 */
 	upcoming_renewal: string | null,
 	// `true` if any of `crypto_states` is in `GracePeriod`.
@@ -1915,12 +1916,6 @@ export type FamilyMember = {
 	status: FamilyMemberStatus,
 	invited_at: string,
 	accepted_at: string | null,
-	/**
-	 *  The member's own `User.subscription_tier` at the moment they
-	 *  transitioned from `Invited` to `Active`. Used to revert them on
-	 *  removal/leave/group-delete. `None` until acceptance.
-	 */
-	tier_before_family: SubscriptionTier | null,
 };
 
 export type FamilyMemberResponse = {
@@ -1936,7 +1931,8 @@ export type FamilyMemberResponse = {
 /**
  *  Membership status within a FamilyGroup. Reference: ME-MIS-001 §8.2.
  *  - `Invited`: token issued, not yet redeemed.
- *  - `Active`: accepted; member receives tier propagation.
+ *  - `Active`: accepted; the row is the member's family grant (R608), so
+ *    the member's tier counts it at `family_member_tier`.
  *  - `Removed`: soft-deleted historical row (kept so an old token can no
  *    longer be re-redeemed against the same group).
  */
@@ -2812,9 +2808,10 @@ export type ProfileVisibility = "Public" | "FriendsOnly" | "Private";
 export type PromoType = "ClosedBetaReward" | "OpenBetaReward" | "Custom";
 
 /**
- *  A promotional subscription override. When an instance is active
- *  (`starts_at <= now < expires_at`) it takes precedence over the
- *  user's paid subscription tier for its duration.
+ *  A promotional subscription: one of a user's tier grants (R608). While
+ *  active (`starts_at <= now < expires_at`) it counts at `granted_tier`,
+ *  after `expires_at` at `auto_downgrade_to`; the user's tier is the
+ *  highest grant that counts (`tier_grants::effective_tier`).
  * 
  *  Primary key: `promo_id`. A user can have many records over time;
  *  query by `user_id` returns a list.
@@ -2830,9 +2827,9 @@ export type PromotionalSubscription = {
 	 */
 	starts_at: string,
 	/**
-	 *  UTC timestamp when the grant expires. The expiry enforcer
-	 *  (`me_billing::subscription`) downgrades `User.subscription_tier`
-	 *  to `auto_downgrade_to` at or after this time.
+	 *  UTC timestamp when the grant expires. From then the promotion
+	 *  counts at `auto_downgrade_to`, and the expiry enforcer
+	 *  (`me_billing::subscription`) recomputes the user's tier.
 	 */
 	expires_at: string,
 	auto_downgrade_to: AutoDowngradeTier,
@@ -3960,8 +3957,9 @@ export type User = {
 	 */
 	processing_restricted?: boolean,
 	/**
-	 *  When the current paid subscription expires. None = Free tier (no expiry).
-	 *  Crypto payments set this to `now + duration_days`. Extension adds to existing.
+	 *  When the tier stored beside it ends: with `subscription_tier`, the
+	 *  recompute's cache of the user's highest grant (R608). `None` when that
+	 *  grant has no end (Free, a Stripe grant, an admin grant, the family's).
 	 */
 	subscription_expires_at?: string | null,
 	// Stripe customer ID (cus_...). Populated on first Stripe checkout.
