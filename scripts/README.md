@@ -118,6 +118,7 @@ the project's standard tooling list); on Linux / macOS it is built-in.
 | `check-dynamic-keys.js` | i18n parity for runtime-computed keys (`t(`settings.${x}`)`). |
 | `check-hardcoded-strings.js` | Catches user-visible strings missing from i18n. |
 | `check-i18n-keys.js` | i18n key parity gate — every non-en bundle must match en.json's flattened key set. Runs in pre-commit AND CI. |
+| `check-locale-lengths.js` | Warns where a non-en string is over 1.5× its en.json length (ME-ACC-001 §7.6). Runs in the public mirror's CI, from `client/`; it only warns. |
 | `generate-choose-language-inline.js` | Builds `client/src/generated/choose-language-titles.ts` from the locale JSONs. Re-runs on every commit that touches a locale. |
 | `generate-sitemap.js` | Builds `dist/sitemap.xml` at build time. |
 | `prerender.js` | Static-prerenders public routes for OG tag rendering. |
