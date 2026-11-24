@@ -926,6 +926,14 @@ export type ConsentRecord = {
 	version: string,
 	granted_at: string,
 	withdrawn_at: string | null,
+	/**
+	 *  When the record's account ended: stamped by the account purge
+	 *  (`ConsentRecordRepository::close_all_for_user`), `None` while the
+	 *  account lives. The retention sweep keeps a record until five years
+	 *  after this time (ME-PDP-001 §5.1, "Duration of account + 5 years"),
+	 *  whenever the record itself was withdrawn (R675).
+	 */
+	account_closed_at: string | null,
 	ip_hash: string,
 	context: string,
 };
