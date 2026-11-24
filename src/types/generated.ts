@@ -1279,10 +1279,10 @@ export type DiscordLinkStatus = {
  *  A staged downgrade awaiting per-shard decisions.
  * 
  *  Schema notes:
- *  - `stripe_event_id` is the idempotency key. A replay of the same
- *    Stripe webhook event (network retry, test double-fire) looks up
- *    by this key and returns the existing session — never creates a
- *    duplicate.
+ *  - `stripe_event_id` names the Stripe event whose run staged the
+ *    session, and is unique. A user has at most one non-terminal
+ *    session: the run that stages one cancels any open one first, on
+ *    the same transaction under the user's row lock.
  *  - `picked_included_shard_id` is `Some` only for God Mode → Creator
  *    sessions after the user's `pick-included-shard` call. Other
  *    downgrades never set it.
@@ -1327,20 +1327,26 @@ export type DowngradeSessionState =
 // Terminal: all decisions applied.
 "Committed" | 
 /**
- *  Terminal: 24h window elapsed without commit; Undecided and
- *  UpgradeBack shards defaulted to Archive.
+ *  Terminal: the window ([`DOWNGRADE_WINDOW_HOURS`]) elapsed without
+ *  commit; the session's Undecided and UpgradeBack shards defaulted to
+ *  Archive, and an entry whose shard is gone or `PendingDeletion` was
+ *  passed over (R674.2).
  */
 "Expired" | 
 /**
- *  Terminal: user explicitly abandoned the session (no shard
- *  changes applied; tier change remains in effect per the soft-
- *  staging resolution for Flag A).
+ *  Terminal: the user abandoned the session, or a later Stripe run
+ *  replaced it (R587.6) or cancelled it on a tier change that stages
+ *  none (no shard changes applied; tier change remains in effect per
+ *  the soft-staging resolution for Flag A).
  */
 "Cancelled";
 
 /**
  *  Public-facing view of a [DowngradeSession] for the choice-flow
- *  client. Excludes the Stripe event id (internal idempotency only).
+ *  client. Excludes the Stripe event id (internal: it names the event whose
+ *  run staged the session). It lists only the session's shards (R674.2): a
+ *  pending entry whose shard no longer exists or is `PendingDeletion` is left
+ *  out, and `picked_included_shard_id` is null when that shard is.
  */
 export type DowngradeSessionView = {
 	session_id: string,
@@ -2743,17 +2749,22 @@ export type PaymentType = "Subscription" | "MarketplacePurchase" | "Tip";
  *  Per-shard decision in a DowngradeSession.
  * 
  *  `Undecided` is the initial state for every shard that loses its
- *  Included slot — the user must transition each to a terminal
- *  decision before the session can commit. On timeout, all remaining
- *  `Undecided` + `UpgradeBack` shards fall to `Archive` (conservative
+ *  Included slot — the user must transition each of the session's shards
+ *  to a terminal decision before the session can commit. An entry whose
+ *  shard no longer exists or is `PendingDeletion` is not one of the
+ *  session's shards (R674.2): it neither blocks the commit nor is written
+ *  by it or by the timeout sweep. On timeout, the remaining `Undecided` +
+ *  `UpgradeBack` entries of the session's shards fall to `Archive` (conservative
  *  default that preserves content for the 90-day archive retention
  *  window per `me_api::data_lifecycle::GRACE_PERIOD_DAYS`).
  * 
  *  `UpgradeBack` per Flag B resolution (Session 100 dispatch): the
- *  shard stays `Included` in the DB during the 24-hour grace window
- *  so the user can complete a Stripe re-upgrade to restore their
- *  entitlement. If they don't re-upgrade in time, the timeout
- *  enforcer downgrades it to `Archive`.
+ *  shard stays `Included` in the DB so the user can complete a Stripe
+ *  re-upgrade to restore their entitlement. The timeout enforcer
+ *  downgrades it to `Archive` only while the session is still open at
+ *  its deadline; a committed session is terminal and never swept, so a
+ *  committed `UpgradeBack` shard stays `Included` (recorded in
+ *  `docs/claude/debt.md` for a ruling, SR48).
  */
 export type PendingDecision = "Undecided" | "BuyAddon" | "UpgradeBack" | "Archive";
 
@@ -3971,9 +3982,17 @@ export type User = {
 	 *  grant has no end (Free, a Stripe grant, an admin grant, the family's).
 	 */
 	subscription_expires_at?: string | null,
-	// Stripe customer ID (cus_...). Populated on first Stripe checkout.
+	/**
+	 *  Stripe customer ID (cus_...): the user's one customer, stored once,
+	 *  by the first Checkout or by a Stripe run for a user with none
+	 *  (R646.4, R646.5).
+	 */
 	stripe_customer_id?: string | null,
-	// Stripe subscription ID (sub_...). Populated on checkout.session.completed.
+	/**
+	 *  Stripe subscription ID (sub_...): the subscription behind Stripe's
+	 *  grant, written by the Stripe run with `tier_grants.stripe_tier` and
+	 *  cleared with it (R646.2).
+	 */
 	stripe_subscription_id?: string | null,
 	/**
 	 *  Public profile visibility — controls what other authenticated users see
