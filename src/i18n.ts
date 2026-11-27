@@ -5,17 +5,10 @@ import en from './locales/en.json';
 import { safeGetItem, safeSetItem } from './lib/safeStorage.ts';
 
 /**
- * Supported locale codes. Keep this in sync with `config/default.toml`
- * `[translation] supported_locales`, the locale mapping in
- * `services/translation/server.py`, and the `languages` array in
- * `LanguageSelectionPage.tsx`.
- *
- * Adding a new language requires:
- *   1. A new JSON file in `./locales/` (picked up automatically by
- *      the `import.meta.glob` backend below)
- *   2. An entry in this array
- *   3. A row in `config.translation.supported_locales` (Rust)
- *   4. A row in `LOCALE_TO_LANGUAGE` (Python sidecar)
+ * Supported locale codes, one per JSON file in `./locales/` (picked up by the
+ * `import.meta.glob` backend below; `client/tests/i18n-brand-words.test.ts`
+ * holds the two equal). Adding a language touches every list of locales in
+ * the tree: `CLAUDE.md`'s Translation Service section says how to find them.
  *
  * Reference: docs/claude/i18n-multilingual-tasks.md CC TASK 4 Part B.
  */
