@@ -1634,7 +1634,8 @@
       "archiveWarning": "El Shard deja de avanzar de inmediato y se elimina tras 90 días, salvo que lo restaures volviendo a subir de plan o comprando el complemento.",
       "commit": "Confirmar decisiones",
       "cancel": "Cancelar — decidir más tarde",
-      "successMessage": "Tus decisiones de baja se han aplicado."
+      "successMessage": "Tus decisiones de baja se han aplicado.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Este Echo está en hibernación y se eliminará el {{date}}, salvo que subas de plan de nuevo o liberes un espacio para reactivarlo.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Los Shards que elijas archivar se eliminan de forma permanente 90 días después de confirmar, salvo que los restaures comprando el complemento o volviendo a subir de plan.",
         "checkboxLabel": "Entiendo estos cambios y que los Echoes en hibernación y los Shards archivados se eliminarán de forma permanente tras 90 días salvo que actúe.",
         "proceed": "Continuar a las decisiones",
-        "cancel": "Cancelar la bajada",
         "retry": "Reintentar"
       },
       "pendingList": {

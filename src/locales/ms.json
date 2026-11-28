@@ -1634,7 +1634,8 @@
       "archiveWarning": "Shard berhenti berjalan dengan serta-merta dan dipadamkan selepas 90 hari, kecuali anda memulihkannya dengan menaik taraf semula atau membeli add-on.",
       "commit": "Sahkan keputusan",
       "cancel": "Batal — putuskan kemudian",
-      "successMessage": "Keputusan penurunan pelan anda telah digunakan."
+      "successMessage": "Keputusan penurunan pelan anda telah digunakan.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Echo ini sedang hibernasi dan akan dipadamkan pada {{date}}, kecuali anda menaik taraf semula atau membebaskan slot untuk mengejutkannya.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Shard yang anda pilih untuk diarkibkan akan dipadam secara kekal 90 hari selepas pengesahan, kecuali anda memulihkannya dengan membeli add-on atau menaik taraf semula.",
         "checkboxLabel": "Saya memahami perubahan ini dan bahawa Echo yang dihibernasi dan Shard yang diarkibkan akan dipadam secara kekal selepas 90 hari kecuali saya mengambil tindakan.",
         "proceed": "Teruskan ke keputusan",
-        "cancel": "Batalkan penurunan pelan",
         "retry": "Cuba lagi"
       },
       "pendingList": {

@@ -1634,7 +1634,8 @@
       "archiveWarning": "Shard hemen durur ve 90 gün sonra silinir; planınızı yeniden yükseltip veya eklentiyi satın alarak geri yüklemediğiniz sürece.",
       "commit": "Kararları onayla",
       "cancel": "İptal — sonra karar ver",
-      "successMessage": "Düşüş kararlarınız uygulandı."
+      "successMessage": "Düşüş kararlarınız uygulandı.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Bu Echo uyku modunda ve planınızı geri yükseltmediğiniz ya da onu uyandırmak için bir yuva açmadığınız sürece {{date}} tarihinde silinecek.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Arşivlemeyi seçtiğiniz Shard’lar onaydan 90 gün sonra kalıcı olarak silinir; eklentiyi satın alıp veya planı geri yükseltip onları geri yüklemediğiniz sürece.",
         "checkboxLabel": "Bu değişiklikleri ve harekete geçmezsem uykudaki Echo'ların ve arşivlenen Shard'ların 90 gün sonra kalıcı olarak silineceğini anlıyorum.",
         "proceed": "Kararlara geç",
-        "cancel": "Plan düşürmeyi iptal et",
         "retry": "Tekrar dene"
       },
       "pendingList": {

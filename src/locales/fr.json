@@ -1634,7 +1634,8 @@
       "archiveWarning": "Le Shard cesse de progresser immédiatement et sera supprimé dans 90 jours, sauf si vous le restaurez en remontant de niveau ou en achetant l’option.",
       "commit": "Valider les décisions",
       "cancel": "Annuler — décider plus tard",
-      "successMessage": "Vos décisions de rétrogradation ont été appliquées."
+      "successMessage": "Vos décisions de rétrogradation ont été appliquées.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Cet Echo est en hibernation et sera supprimé le {{date}}, sauf si vous remontez de niveau ou libérez un emplacement pour le réveiller.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Les Shards que tu choisis d’archiver sont définitivement supprimés 90 jours après la validation, sauf si tu les restaures en achetant l’option ou en remontant de niveau.",
         "checkboxLabel": "Je comprends ces changements et que les Echoes en hibernation et les Shards archivés seront définitivement supprimés après 90 jours sauf si j’agis.",
         "proceed": "Passer aux décisions",
-        "cancel": "Annuler la rétrogradation",
         "retry": "Réessayer"
       },
       "pendingList": {

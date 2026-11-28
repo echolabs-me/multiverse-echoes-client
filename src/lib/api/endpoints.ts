@@ -867,11 +867,11 @@ export const payments = {
 // The Stripe webhook stages a DowngradeSession when a subscription
 // downgrade reduces the user's included-shard count. The user has 24
 // hours to decide per-shard: BuyAddon, UpgradeBack, or Archive. These
-// 5 endpoints drive the DowngradeChoicePage state machine.
+// 4 endpoints drive the DowngradeChoicePage state machine.
 //
 // Endpoint paths mirror the Rust router in
-// crates/api/src/routes/subscription.rs (mounted at /subscription in
-// crates/api/src/lib.rs:415).
+// crates/api/src/routes/subscription.rs (nested at /subscription in
+// crates/api/src/lib.rs's router).
 export const subscription = {
   /**
    * Server-sourced per-tier quota snapshot (ME-MIS-001 §5.2
@@ -910,12 +910,6 @@ export const subscription = {
 
   commit: (sessionId: string) =>
     request<DowngradeSessionView>('/subscription/downgrade/commit', {
-      method: 'POST',
-      body: JSON.stringify({ session_id: sessionId }),
-    }),
-
-  cancel: (sessionId: string) =>
-    request<DowngradeSessionView>('/subscription/downgrade/cancel', {
       method: 'POST',
       body: JSON.stringify({ session_id: sessionId }),
     }),

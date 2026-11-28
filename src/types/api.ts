@@ -13,7 +13,6 @@
 import type {
   AccountStatus as _AccountStatus,
   AccountType as _AccountType,
-  CancelRequest as _CancelRequest,
   ChannelStatus as _ChannelStatus,
   ChannelType as _ChannelType,
   CommitRequest as _CommitRequest,
@@ -69,7 +68,6 @@ import type {
 // Re-export for consumers
 export type AccountStatus = _AccountStatus;
 export type AccountType = _AccountType;
-export type CancelRequest = _CancelRequest;
 export type ChannelType = _ChannelType;
 export type CommitRequest = _CommitRequest;
 export type ConflictStyle = _ConflictStyle;

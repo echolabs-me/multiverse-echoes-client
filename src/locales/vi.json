@@ -1634,7 +1634,8 @@
       "archiveWarning": "Shard ngừng hoạt động ngay lập tức và sẽ bị xóa sau 90 ngày, trừ khi bạn khôi phục bằng cách nâng cấp lại hoặc mua tiện ích bổ sung.",
       "commit": "Xác nhận quyết định",
       "cancel": "Hủy — quyết định sau",
-      "successMessage": "Các quyết định hạ cấp của bạn đã được áp dụng."
+      "successMessage": "Các quyết định hạ cấp của bạn đã được áp dụng.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Echo này đang ngủ đông và sẽ bị xóa vào {{date}}, trừ khi bạn nâng cấp lại hoặc giải phóng một slot để đánh thức nó.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Các Shard bạn chọn lưu trữ sẽ bị xóa vĩnh viễn 90 ngày sau khi xác nhận, trừ khi bạn khôi phục chúng bằng cách mua tiện ích bổ sung hoặc nâng cấp lại.",
         "checkboxLabel": "Tôi hiểu những thay đổi này và rằng các Echo ngủ đông và Shard lưu trữ sẽ bị xóa vĩnh viễn sau 90 ngày trừ khi tôi hành động.",
         "proceed": "Tiếp tục đến các quyết định",
-        "cancel": "Hủy hạ cấp",
         "retry": "Thử lại"
       },
       "pendingList": {

@@ -1699,7 +1699,8 @@
       "archiveWarning": "The shard stops ticking immediately and is deleted after 90 days unless you restore it by re-upgrading or buying the add-on.",
       "commit": "Commit decisions",
       "cancel": "Cancel — decide later",
-      "successMessage": "Your downgrade decisions have been applied."
+      "successMessage": "Your downgrade decisions have been applied.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "This Echo is hibernated and will be deleted on {{date}} unless you upgrade back or free up a slot to wake it.",
@@ -1722,7 +1723,6 @@
         "shardsDeletion": "Shards you choose to archive are permanently deleted 90 days after commit unless you restore them by buying the add-on or upgrading back.",
         "checkboxLabel": "I understand these changes and that hibernated Echoes and archived Shards will be permanently deleted after 90 days unless I act.",
         "proceed": "Proceed to decisions",
-        "cancel": "Cancel downgrade",
         "retry": "Retry"
       },
       "pendingList": {

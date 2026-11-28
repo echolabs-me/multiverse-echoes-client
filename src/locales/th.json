@@ -1634,7 +1634,8 @@
       "archiveWarning": "Shard จะหยุดทำงานทันทีและจะถูกลบหลังจาก 90 วัน เว้นแต่คุณจะกู้คืนโดยการอัปเกรดกลับหรือซื้อส่วนเสริม",
       "commit": "ยืนยันการตัดสินใจ",
       "cancel": "ยกเลิก — ตัดสินใจภายหลัง",
-      "successMessage": "การตัดสินใจดาวน์เกรดของคุณถูกนำไปใช้แล้ว"
+      "successMessage": "การตัดสินใจดาวน์เกรดของคุณถูกนำไปใช้แล้ว",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Echo นี้อยู่ในโหมดไฮเบอร์เนตและจะถูกลบในวันที่ {{date}} เว้นแต่คุณจะอัปเกรดกลับหรือเพิ่มช่องว่างเพื่อปลุกมัน",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Shards ที่คุณเลือกจัดเก็บจะถูกลบอย่างถาวร 90 วันหลังจากการยืนยัน เว้นแต่คุณจะกู้คืนโดยการซื้อส่วนเสริมหรืออัปเกรดกลับ",
         "checkboxLabel": "ฉันเข้าใจการเปลี่ยนแปลงเหล่านี้และ Echoes ที่ไฮเบอร์เนตและ Shards ที่จัดเก็บจะถูกลบอย่างถาวรหลังจาก 90 วัน เว้นแต่ฉันจะดำเนินการ",
         "proceed": "ดำเนินการต่อไปยังการตัดสินใจ",
-        "cancel": "ยกเลิกการลดระดับ",
         "retry": "ลองใหม่"
       },
       "pendingList": {

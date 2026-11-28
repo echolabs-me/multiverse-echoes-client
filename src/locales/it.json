@@ -1634,7 +1634,8 @@
       "archiveWarning": "Il Shard smette immediatamente di avanzare e viene eliminato dopo 90 giorni, a meno che tu non lo ripristini tornando al piano superiore o acquistando l’add-on.",
       "commit": "Conferma decisioni",
       "cancel": "Annulla — decidi dopo",
-      "successMessage": "Le tue decisioni di declassamento sono state applicate."
+      "successMessage": "Le tue decisioni di declassamento sono state applicate.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Questo Echo è in ibernazione e verrà eliminato il {{date}}, a meno che tu non torni al piano superiore o liberi uno spazio per risvegliarlo.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Gli Shard che scegli di archiviare vengono eliminati in modo permanente 90 giorni dopo la conferma, a meno che tu non li ripristini acquistando l’add-on o tornando al piano superiore.",
         "checkboxLabel": "Comprendo queste modifiche e che gli Echo in ibernazione e gli Shard archiviati verranno eliminati in modo permanente dopo 90 giorni, a meno che non agisca.",
         "proceed": "Procedi alle decisioni",
-        "cancel": "Annulla il downgrade",
         "retry": "Riprova"
       },
       "pendingList": {

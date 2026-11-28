@@ -30,9 +30,8 @@ type LoadState =
   | { kind: 'ready'; session: DowngradeSessionView; shards: ShardNameMap };
 
 // Values come from the server as Rust-Debug-formatted strings (see
-// `From<&DowngradeSession> for DowngradeSessionView` in
-// crates/api/src/routes/subscription.rs lines 70-94). Keep as literal
-// strings because that matches the wire shape.
+// `DowngradeSessionView::of` in crates/api/src/routes/subscription.rs).
+// Keep as literal strings because that matches the wire shape.
 const STATE_PICKING_INCLUDED = 'PickingIncluded';
 const STATE_COMMITTED = 'Committed';
 const STATE_EXPIRED = 'Expired';
@@ -101,13 +100,13 @@ export function DowngradeChoicePage() {
   // next run starts, so of those runs only the last one started writes. A
   // mutation's load is started by the user while an effect run may still be
   // in flight (the language changed after the page was ready), so every
-  // load, an effect run's or a mutation's (a cancel starts none), also
+  // load, an effect run's or a mutation's, also
   // takes `startLoad`'s check: only the last one started writes (R381.1,
   // R381.3).
   //
   // A mutation's response is the newest write (R390.3b). Each mutation
-  // whose response the page writes (a pick, a shard decision, a commit;
-  // not a cancel, which only moves or shows a toast) calls `startLoad`
+  // whose response the page writes (a pick, a shard decision, a commit)
+  // calls `startLoad`
   // when it starts and again when its response arrives while the page is
   // still mounted, and writes with the second check, so a reload started
   // while it was pending neither drops its response nor writes after it.
@@ -254,7 +253,13 @@ export function DowngradeChoicePage() {
       try {
         const updated = await subscription.commit(sessionId);
         if (!inVisit()) return;
-        addToast(t('tiers.downgrade.successMessage'), 'success');
+        // A commit that leaves UpgradeBack entries holds the session open
+        // until its window ends (R689.1): say so rather than "applied".
+        if (updated.state === STATE_COMMITTED) {
+          addToast(t('tiers.downgrade.successMessage'), 'success');
+        } else {
+          addToast(t('tiers.downgrade.upgradeBackHeld'), 'info');
+        }
         await applySession(updated, mutation.answer());
         if (!inVisit()) return;
         navigate('/dashboard');
@@ -275,27 +280,12 @@ export function DowngradeChoicePage() {
     [applySession, beginMutation, addToast, navigate, t, visitOf],
   );
 
-  const handleCancel = useCallback(
-    async (sessionId: string) => {
-      const inVisit = visitOf(SESSION_KEY);
-      setMutating(true);
-      try {
-        await subscription.cancel(sessionId);
-        if (!inVisit()) return;
-        navigate(-1);
-      } catch (err) {
-        if (!inVisit()) return;
-        addToast(
-          translateCaughtError(err, t('tiers.downgrade.errorGeneric')),
-          'danger',
-          { platformLink: isPlatformError(err) },
-        );
-      } finally {
-        if (inVisit()) setMutating(false);
-      }
-    },
-    [addToast, navigate, t, visitOf],
-  );
+  // Cancel only closes the page: the session stays open, its window runs
+  // on, and undecided shards are archived when it ends (R689.2), unless
+  // the user's tier rises again first (R712).
+  const handleCancel = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
 
   if (!hasConsent) {
     return <Navigate to="/subscription/downgrade-confirm" replace />;
@@ -367,7 +357,7 @@ interface ChoiceSurfaceProps {
     decision: string,
   ) => void;
   onCommit: (sessionId: string) => void;
-  onCancel: (sessionId: string) => void;
+  onCancel: () => void;
 }
 
 function ChoiceSurface({
@@ -429,11 +419,7 @@ function ChoiceSurface({
         </div>
 
         <div className="mbs-8">
-          <Button
-            variant="ghost"
-            disabled={mutating}
-            onClick={() => onCancel(session.session_id)}
-          >
+          <Button variant="ghost" disabled={mutating} onClick={onCancel}>
             {t('tiers.downgrade.cancel')}
           </Button>
         </div>
@@ -485,11 +471,7 @@ function ChoiceSurface({
       </div>
 
       <div className="mbs-8 flex items-center justify-between gap-4">
-        <Button
-          variant="ghost"
-          disabled={mutating}
-          onClick={() => onCancel(session.session_id)}
-        >
+        <Button variant="ghost" disabled={mutating} onClick={onCancel}>
           {t('tiers.downgrade.cancel')}
         </Button>
         <Button

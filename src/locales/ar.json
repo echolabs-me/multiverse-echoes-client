@@ -1634,7 +1634,8 @@
       "archiveWarning": "يتوقف الـ Shard فورًا عن العمل ويُحذف بعد 90 يومًا، ما لم تستعده عبر الترقية مجددًا أو شراء الإضافة.",
       "commit": "تأكيد القرارات",
       "cancel": "إلغاء — القرار لاحقًا",
-      "successMessage": "تم تطبيق قرارات خفض المستوى."
+      "successMessage": "تم تطبيق قرارات خفض المستوى.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "هذا الـ Echo في وضع السبات وسيُحذف في {{date}} ما لم ترقِّ خطتك مجددًا أو تحرر فتحة لإيقاظه.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "تُحذف الـ Shards التي تختار أرشفتها نهائيًا بعد 90 يومًا من التأكيد، ما لم تستعدها بشراء الإضافة أو الترقية مجددًا.",
         "checkboxLabel": "أفهم هذه التغييرات، وأن الـ Echoes في وضع السبات والـ Shards المؤرشفة ستُحذف نهائيًا بعد 90 يومًا ما لم أتخذ إجراءً.",
         "proceed": "المتابعة إلى القرارات",
-        "cancel": "إلغاء تخفيض الخطة",
         "retry": "إعادة المحاولة"
       },
       "pendingList": {

@@ -141,9 +141,13 @@ export function DowngradeConfirmPage() {
   };
 
   const handleCancel = () => {
-    // Back to whatever page the user came from (typically
-    // `/settings` or `/plans`); mirrors DowngradeChoicePage's cancel
-    // UX for consistency.
+    // Only closes the page (R701.2): back to whatever page the user
+    // came from (typically `/settings` or `/plans`), with no request.
+    // The tier change has already happened, the user cannot cancel the
+    // session, and its 24-hour window keeps running; the shards still
+    // undecided when it ends are archived, unless the user's tier rises
+    // again first (R712). Same text and behaviour as
+    // DowngradeChoicePage's Cancel.
     navigate(-1);
   };
 
@@ -265,7 +269,7 @@ export function DowngradeConfirmPage() {
 
             <div className="mbs-6 flex items-center justify-between gap-4">
               <Button variant="ghost" onClick={handleCancel}>
-                {t('tiers.deletion.consent.cancel')}
+                {t('tiers.downgrade.cancel')}
               </Button>
               <Button
                 variant="primary"

@@ -1634,7 +1634,8 @@
       "archiveWarning": "Der Shard hört sofort auf zu ticken und wird nach 90 Tagen gelöscht, sofern du ihn nicht durch ein erneutes Upgrade oder den Kauf des Add-ons wiederherstellst.",
       "commit": "Entscheidungen bestätigen",
       "cancel": "Abbrechen — später entscheiden",
-      "successMessage": "Deine Herabstufungsentscheidungen wurden übernommen."
+      "successMessage": "Deine Herabstufungsentscheidungen wurden übernommen.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Dieser Echo ist im Ruhezustand und wird am {{date}} gelöscht, sofern du nicht erneut upgradest oder einen Platz freigibst, um ihn zu wecken.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Shards, die du zum Archivieren auswählst, werden 90 Tage nach der Bestätigung endgültig gelöscht, es sei denn, du stellst sie durch den Kauf des Add-ons oder ein erneutes Upgrade wieder her.",
         "checkboxLabel": "Ich verstehe diese Änderungen und dass Echoes im Ruhezustand und archivierte Shards nach 90 Tagen endgültig gelöscht werden, wenn ich nicht handle.",
         "proceed": "Weiter zu den Entscheidungen",
-        "cancel": "Downgrade abbrechen",
         "retry": "Erneut versuchen"
       },
       "pendingList": {

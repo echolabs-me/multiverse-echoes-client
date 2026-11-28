@@ -1634,7 +1634,8 @@
       "archiveWarning": "Shard فوراً ٹک کرنا بند کر دیتا ہے اور 90 دن کے بعد حذف ہو جاتا ہے، جب تک کہ آپ دوبارہ اپ گریڈ کر کے یا ایڈ-آن خرید کر اسے بحال نہ کریں۔",
       "commit": "فیصلے جمع کروائیں",
       "cancel": "منسوخ — بعد میں فیصلہ کروں گا",
-      "successMessage": "آپ کے ڈاؤن گریڈ فیصلے لاگو کر دیے گئے ہیں۔"
+      "successMessage": "آپ کے ڈاؤن گریڈ فیصلے لاگو کر دیے گئے ہیں۔",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "یہ Echo ہائبرنیٹ ہے اور {{date}} کو حذف کر دیا جائے گا، جب تک کہ آپ دوبارہ اپ گریڈ نہ کریں یا اسے جگانے کے لیے ایک سلاٹ خالی نہ کریں۔",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "جن Shards کو آپ آرکائیو کرنے کا انتخاب کرتے ہیں وہ تصدیق کے 90 دن بعد مستقل طور پر حذف ہو جاتے ہیں، جب تک کہ آپ ایڈ-آن خرید کر یا دوبارہ اپ گریڈ کر کے انہیں بحال نہ کریں۔",
         "checkboxLabel": "میں ان تبدیلیوں کو سمجھتا/سمجھتی ہوں اور یہ کہ ہائبرنیٹ کیے گئے Echoes اور آرکائیو کیے گئے Shards 90 دنوں کے بعد مستقل طور پر حذف ہو جائیں گے جب تک کہ میں اقدام نہ کروں۔",
         "proceed": "فیصلوں پر آگے بڑھیں",
-        "cancel": "ڈاؤن گریڈ منسوخ کریں",
         "retry": "دوبارہ کوشش"
       },
       "pendingList": {

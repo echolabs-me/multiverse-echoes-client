@@ -810,10 +810,6 @@ export type CSAMIncidentStatus =
  */
 { state: "closed"; reason: ClosureReason };
 
-export type CancelRequest = {
-	session_id: string,
-};
-
 export type ChangePasswordRequest = {
 	current_password: string,
 	new_password: string,
@@ -1295,10 +1291,13 @@ export type DiscordLinkStatus = {
  *    sessions after the user's `pick-included-shard` call. Other
  *    downgrades never set it.
  *  - `pending_decisions` is keyed by `shard_id`. Every shard that
- *    lost an Included slot on this downgrade has an entry. For God
- *    Mode → Creator, the shard the user picks to keep Included is
- *    REMOVED from `pending_decisions` (only the 2 that still need a
- *    decision remain).
+ *    lost an Included slot on this downgrade has an entry until a commit
+ *    applies its decision. For God Mode → Creator, the shard the user
+ *    picks to keep Included is REMOVED from `pending_decisions` (only the
+ *    2 that still need a decision remain). A commit removes the entries it
+ *    applies (R689.1): of the session's shards, only `UpgradeBack` entries
+ *    are left, and they hold the session open. An entry whose shard is not
+ *    one of the session's is left in the row (R674.2).
  */
 export type DowngradeSession = {
 	session_id: string,
@@ -1332,20 +1331,35 @@ export type DowngradeSessionState =
 "PickingIncluded" | 
 // Normal state: user makes per-shard decisions.
 "AwaitingShardDecisions" | 
-// Terminal: all decisions applied.
+/**
+ *  Terminal: every decision of the session's shards applied, none of
+ *  them `UpgradeBack` (a commit that leaves `UpgradeBack` entries of its
+ *  shards keeps the session `AwaitingShardDecisions`, R689.1); an entry
+ *  whose shard was gone or `PendingDeletion` at the commit stays in the
+ *  row as it was (R674.2).
+ */
 "Committed" | 
 /**
- *  Terminal: the window ([`DOWNGRADE_WINDOW_HOURS`]) elapsed without
- *  commit; the session's Undecided and UpgradeBack shards defaulted to
- *  Archive, and an entry whose shard is gone or `PendingDeletion` was
- *  passed over (R674.2).
+ *  Terminal: the window ([`DOWNGRADE_WINDOW_HOURS`]) elapsed without a
+ *  commit, or with a commit that held `UpgradeBack` entries (R689.1);
+ *  the session's Undecided and UpgradeBack shards defaulted to Archive,
+ *  but for the oldest a partial rise of the tier keeps Included with
+ *  their entries as they were (R712.4(b)), and an entry whose shard is
+ *  gone or `PendingDeletion` was passed over (R674.2).
  */
 "Expired" | 
 /**
- *  Terminal: the user abandoned the session, or a later Stripe run
- *  replaced it (R587.6) or cancelled it on a tier change that stages
- *  none (no shard changes applied; tier change remains in effect per
- *  the soft-staging resolution for Flag A).
+ *  Terminal: a later Stripe run replaced the session (R587.6) or
+ *  cancelled it on a tier change that stages none, an upgrade among
+ *  them; or a reader under the user's lock (the timeout sweep, or the
+ *  pick, decision or commit route) found it superseded, the tier the
+ *  user's grants give including the Private shards its `old_tier` did,
+ *  whichever route raised it (R712). The cancel itself writes no shard; a held session's commit has
+ *  already applied its `BuyAddon` and `Archive` decisions (R689.1), and
+ *  a run that stages none then reconciles the Included shards to the new
+ *  tier's count, which may restore or promote them. The tier change
+ *  remains in effect per the soft-staging resolution for Flag A. The
+ *  user cannot cancel a session (R689.2).
  */
 "Cancelled";
 
@@ -2764,15 +2778,21 @@ export type PaymentType = "Subscription" | "MarketplacePurchase" | "Tip";
  *  by it or by the timeout sweep. On timeout, the remaining `Undecided` +
  *  `UpgradeBack` entries of the session's shards fall to `Archive` (conservative
  *  default that preserves content for the 90-day archive retention
- *  window per `me_api::data_lifecycle::GRACE_PERIOD_DAYS`).
+ *  window per `me_api::data_lifecycle::GRACE_PERIOD_DAYS`), except, after a
+ *  partial rise of the tier, the oldest of them that the granted tier's
+ *  Included count still holds, which stay `Included` with their entries as
+ *  they were (R712.4(b)).
  * 
  *  `UpgradeBack` per Flag B resolution (Session 100 dispatch): the
  *  shard stays `Included` in the DB so the user can complete a Stripe
- *  re-upgrade to restore their entitlement. The timeout enforcer
- *  downgrades it to `Archive` only while the session is still open at
- *  its deadline; a committed session is terminal and never swept, so a
- *  committed `UpgradeBack` shard stays `Included` (recorded in
- *  `docs/claude/debt.md` for a ruling, SR48).
+ *  re-upgrade to restore their entitlement. A commit applies the other
+ *  decisions and holds the `UpgradeBack` entries: the session stays open
+ *  with only those, its `expires_at` unchanged (R689.1). The timeout
+ *  enforcer falls each to `Archive` at the window's end, unless the tier
+ *  the user's grants give, by whichever route it was raised, supersedes the
+ *  session first (it is cancelled and the shard stays `Included`), or a
+ *  partial rise keeps the shard among the granted tier's Included shards
+ *  (R712).
  */
 export type PendingDecision = "Undecided" | "BuyAddon" | "UpgradeBack" | "Archive";
 

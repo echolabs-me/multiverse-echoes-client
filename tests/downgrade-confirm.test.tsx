@@ -49,17 +49,25 @@ const mocks = vi.hoisted(() => {
     echoListMode: 'success' as 'success' | 'reject',
     shardsGet: async (id: string) => ({ shard_id: id, name: `Shard ${id}`, shard_type: 'Private', status: 'Active', description: '', current_active_count: 0, current_hibernated_count: 0, max_active_echoes: 5, banner_image: null, created_at: '2026-01-01T00:00:00Z', content_locale: 'en', provisioning_type: 'Included', archived_at: null, archive_expires_at: null }),
     addToast: () => undefined,
+    // Counts every call to the downgrade endpoints, so a test can
+    // assert that a button sends no request.
+    pendingReads: 0,
+    pickIncludedShard: vi.fn(),
+    shardDecision: vi.fn(),
+    commit: vi.fn(),
   };
 });
 
 vi.mock('../src/lib/api/endpoints.ts', () => ({
   subscription: {
-    downgradePending: async () => mocks.session,
+    downgradePending: async () => {
+      mocks.pendingReads += 1;
+      return mocks.session;
+    },
     tierLimits: async () => mocks.tierLimits,
-    pickIncludedShard: vi.fn(),
-    shardDecision: vi.fn(),
-    commit: vi.fn(),
-    cancel: vi.fn(),
+    pickIncludedShard: (...args: unknown[]) => mocks.pickIncludedShard(...args),
+    shardDecision: (...args: unknown[]) => mocks.shardDecision(...args),
+    commit: (...args: unknown[]) => mocks.commit(...args),
   },
   echoes: {
     list: async () => {
@@ -112,7 +120,8 @@ void testI18n.use(initReactI18next).init({
         'tiers.deletion.consent.checkboxLabel':
           'I understand these changes and that hibernated Echoes and archived Shards will be permanently deleted after 90 days unless I act.',
         'tiers.deletion.consent.proceed': 'Proceed to decisions',
-        'tiers.deletion.consent.cancel': 'Cancel downgrade',
+        // The consent page's Cancel shows the choice page's key (R701.2).
+        'tiers.downgrade.cancel': 'Cancel — decide later',
         // Supporting DowngradeChoicePage keys the redirect test reaches.
         'tiers.downgrade.title': 'Private Shard decisions',
         'tiers.downgrade.loadingPending': 'Loading…',
@@ -129,6 +138,30 @@ function renderConfirm() {
     <I18nextProvider i18n={testI18n}>
       <MemoryRouter initialEntries={['/subscription/downgrade-confirm']}>
         <Routes>
+          <Route
+            path="/subscription/downgrade-confirm"
+            element={<DowngradeConfirmPage />}
+          />
+        </Routes>
+      </MemoryRouter>
+    </I18nextProvider>,
+  );
+}
+
+// The consent page reached from another page, so going back has
+// somewhere to land.
+function renderConfirmFromPrevious() {
+  return render(
+    <I18nextProvider i18n={testI18n}>
+      <MemoryRouter
+        initialEntries={['/settings', '/subscription/downgrade-confirm']}
+        initialIndex={1}
+      >
+        <Routes>
+          <Route
+            path="/settings"
+            element={<div data-testid="landed-on-previous" />}
+          />
           <Route
             path="/subscription/downgrade-confirm"
             element={<DowngradeConfirmPage />}
@@ -162,6 +195,31 @@ describe('DowngradeConfirmPage — ME-MIS-001 §5.2 Surface C', () => {
   beforeEach(() => {
     mocks.echoList = [];
     mocks.echoListMode = 'success';
+    mocks.pendingReads = 0;
+    mocks.pickIncludedShard.mockClear();
+    mocks.shardDecision.mockClear();
+    mocks.commit.mockClear();
+  });
+
+  it('Cancel shows the choice page’s text, sends no request and goes back (R701.2)', async () => {
+    const result = await act(async () => renderConfirmFromPrevious());
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    const cancel = await result.findByRole('button', {
+      name: 'Cancel — decide later',
+    });
+    const reads = mocks.pendingReads;
+
+    await act(async () => {
+      fireEvent.click(cancel);
+    });
+
+    expect(result.getByTestId('landed-on-previous')).toBeInTheDocument();
+    expect(mocks.pendingReads).toBe(reads);
+    expect(mocks.pickIncludedShard).not.toHaveBeenCalled();
+    expect(mocks.shardDecision).not.toHaveBeenCalled();
+    expect(mocks.commit).not.toHaveBeenCalled();
   });
 
   it('renders the excess-Echo count when the user has more active Echoes than the new tier cap', async () => {

@@ -1634,7 +1634,8 @@
       "archiveWarning": "O Shard para de avançar imediatamente e é excluído após 90 dias, a menos que você o restaure voltando ao plano superior ou comprando o complemento.",
       "commit": "Confirmar decisões",
       "cancel": "Cancelar — decidir depois",
-      "successMessage": "Suas decisões de downgrade foram aplicadas."
+      "successMessage": "Suas decisões de downgrade foram aplicadas.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Este Echo está em hibernação e será excluído em {{date}}, a menos que você volte ao plano anterior ou libere um espaço para reativá-lo.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Os Shards que você escolher arquivar são excluídos permanentemente 90 dias após a confirmação, a menos que você os restaure comprando o complemento ou voltando ao plano superior.",
         "checkboxLabel": "Eu entendo essas mudanças e que Echoes em hibernação e Shards arquivados serão excluídos permanentemente após 90 dias, a menos que eu aja.",
         "proceed": "Prosseguir para as decisões",
-        "cancel": "Cancelar redução",
         "retry": "Tentar novamente"
       },
       "pendingList": {

@@ -1634,7 +1634,8 @@
       "archiveWarning": "Shard langsung berhenti berjalan dan dihapus setelah 90 hari, kecuali Anda memulihkannya dengan melakukan upgrade kembali atau membeli add-on.",
       "commit": "Konfirmasi keputusan",
       "cancel": "Batal — putuskan nanti",
-      "successMessage": "Keputusan penurunan paket Anda telah diterapkan."
+      "successMessage": "Keputusan penurunan paket Anda telah diterapkan.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Echo ini sedang hibernasi dan akan dihapus pada {{date}}, kecuali Anda upgrade kembali atau membebaskan slot untuk membangunkannya.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Shard yang Anda pilih untuk diarsipkan akan dihapus secara permanen 90 hari setelah konfirmasi, kecuali Anda memulihkannya dengan membeli add-on atau melakukan upgrade kembali.",
         "checkboxLabel": "Saya memahami perubahan ini dan bahwa Echo yang hibernasi dan Shard yang diarsipkan akan dihapus secara permanen setelah 90 hari kecuali saya mengambil tindakan.",
         "proceed": "Lanjut ke keputusan",
-        "cancel": "Batalkan penurunan paket",
         "retry": "Coba lagi"
       },
       "pendingList": {

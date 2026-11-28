@@ -1634,7 +1634,8 @@
       "archiveWarning": "Shard는 즉시 진행을 멈추며 90일 후에 삭제됩니다. 플랜을 다시 업그레이드하거나 애드온을 구매하여 복원하지 않는 한.",
       "commit": "결정 확정",
       "cancel": "취소 — 나중에 결정",
-      "successMessage": "다운그레이드 결정이 적용되었습니다."
+      "successMessage": "다운그레이드 결정이 적용되었습니다.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "이 Echo는 휴면 상태이며 플랜을 다시 업그레이드하거나 슬롯을 비워 깨우지 않으면 {{date}}에 삭제됩니다.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "보관하기로 선택한 Shard는 확정 후 90일이 지나면 영구 삭제됩니다. 애드온을 구매하거나 플랜을 다시 업그레이드하여 복원하지 않는 한.",
         "checkboxLabel": "이러한 변경 사항과 제가 조치를 취하지 않으면 휴면 Echo와 보관된 Shard가 90일 후에 영구 삭제된다는 점을 이해합니다.",
         "proceed": "결정으로 진행",
-        "cancel": "다운그레이드 취소",
         "retry": "다시 시도"
       },
       "pendingList": {

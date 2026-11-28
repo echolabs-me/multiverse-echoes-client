@@ -1634,7 +1634,8 @@
       "archiveWarning": "該 Shard 立即停止運行，並將在 90 天后刪除，除非您重新升級或購買附加組件恢復它。",
       "commit": "提交決定",
       "cancel": "取消 — 稍後決定",
-      "successMessage": "您的降級決定已生效。"
+      "successMessage": "您的降級決定已生效。",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "此 Echo 已休眠，將於 {{date}} 刪除，除非您升級回原方案或騰出一個槽位將其喚醒。",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "您選擇歸檔的 Shard 將在確認後 90 天永久刪除，除非您通過購買附加組件或升級回原方案恢復它們。",
         "checkboxLabel": "我理解這些更改，並且休眠的回聲和歸檔的 Shard 將在 90 天后永久刪除，除非我採取行動。",
         "proceed": "繼續進行決定",
-        "cancel": "取消降級",
         "retry": "重試"
       },
       "pendingList": {

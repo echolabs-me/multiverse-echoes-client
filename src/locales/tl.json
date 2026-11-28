@@ -1634,7 +1634,8 @@
       "archiveWarning": "Agad na hihinto ang pag-tick ng Shard at made-delete ito pagkatapos ng 90 araw, maliban kung ibabalik mo ito sa pamamagitan ng muling pag-upgrade o pagbili ng add-on.",
       "commit": "Kumpirmahin ang mga desisyon",
       "cancel": "Kanselahin — magpasya mamaya",
-      "successMessage": "Naisagawa na ang iyong mga desisyon sa pag-downgrade."
+      "successMessage": "Naisagawa na ang iyong mga desisyon sa pag-downgrade.",
+      "upgradeBackHeld": "Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied."
     },
     "deletion": {
       "echoHibernatedBanner": "Naka-hibernate ang Echo na ito at ide-delete sa {{date}} maliban kung mag-upgrade ka pabalik o magpalaya ng slot para gisingin ito.",
@@ -1657,7 +1658,6 @@
         "shardsDeletion": "Ang mga Shard na pinili mong i-archive ay permanenteng made-delete 90 araw pagkatapos ng kumpirmasyon, maliban kung ibalik mo ang mga ito sa pamamagitan ng pagbili ng add-on o mag-upgrade pabalik.",
         "checkboxLabel": "Nauunawaan ko ang mga pagbabagong ito at na ang mga nakahibernate na Echoes at na-archive na mga Shards ay permanenteng made-delete pagkatapos ng 90 araw maliban kung may gagawin ako.",
         "proceed": "Magpatuloy sa mga desisyon",
-        "cancel": "Kanselahin ang downgrade",
         "retry": "Subukan ulit"
       },
       "pendingList": {

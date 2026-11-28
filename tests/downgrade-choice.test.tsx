@@ -46,7 +46,6 @@ const mockDowngradePending = vi.fn();
 const mockPickIncludedShard = vi.fn();
 const mockShardDecision = vi.fn();
 const mockCommit = vi.fn();
-const mockCancel = vi.fn();
 const mockShardsGet = vi.fn();
 
 vi.mock('../src/lib/api/endpoints.ts', () => ({
@@ -55,7 +54,6 @@ vi.mock('../src/lib/api/endpoints.ts', () => ({
     pickIncludedShard: (...args: unknown[]) => mockPickIncludedShard(...args),
     shardDecision: (...args: unknown[]) => mockShardDecision(...args),
     commit: (...args: unknown[]) => mockCommit(...args),
-    cancel: (...args: unknown[]) => mockCancel(...args),
   },
   shards: {
     get: (...args: unknown[]) => mockShardsGet(...args),
@@ -113,13 +111,15 @@ void testI18n.use(initReactI18next).init({
         'tiers.downgrade.keepIncluded': 'Keep as Included',
         'tiers.downgrade.buyAddon': 'Buy add-on ($4.99/mo)',
         'tiers.downgrade.upgradeBack': 'Upgrade back',
-        'tiers.downgrade.archive': 'Archive (30-day retention)',
+        'tiers.downgrade.archive': 'Archive (90-day retention)',
         'tiers.downgrade.archiveWarning':
-          'The shard stops ticking immediately and is deleted after 30 days unless you restore it by re-upgrading or buying the add-on.',
+          'The shard stops ticking immediately and is deleted after 90 days unless you restore it by re-upgrading or buying the add-on.',
         'tiers.downgrade.commit': 'Commit decisions',
         'tiers.downgrade.cancel': 'Cancel — decide later',
         'tiers.downgrade.successMessage':
           'Your downgrade decisions have been applied.',
+        'tiers.downgrade.upgradeBackHeld':
+          'Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied.',
       },
     },
   },
@@ -191,7 +191,6 @@ beforeEach(() => {
   mockPickIncludedShard.mockReset();
   mockShardDecision.mockReset();
   mockCommit.mockReset();
-  mockCancel.mockReset();
   mockShardsGet.mockReset();
   mockAddToast.mockReset();
   mockNavigate.mockReset();
@@ -294,7 +293,7 @@ describe('DowngradeChoicePage', () => {
     // 2 shards × 3 decision buttons = 6 occurrences per label.
     expect(screen.getAllByText('Buy add-on ($4.99/mo)')).toHaveLength(2);
     expect(screen.getAllByText('Upgrade back')).toHaveLength(2);
-    expect(screen.getAllByText('Archive (30-day retention)')).toHaveLength(2);
+    expect(screen.getAllByText('Archive (90-day retention)')).toHaveLength(2);
   });
 
   it('disables Commit decisions while any shard decision is Undecided', async () => {
@@ -346,7 +345,7 @@ describe('DowngradeChoicePage', () => {
 
     await renderPage();
 
-    const archiveButtons = screen.getAllByText('Archive (30-day retention)');
+    const archiveButtons = screen.getAllByText('Archive (90-day retention)');
     await act(async () => {
       fireEvent.click(archiveButtons[0]);
     });
@@ -395,26 +394,91 @@ describe('DowngradeChoicePage', () => {
     );
   });
 
-  it('POSTs cancel and navigates back on Cancel button click', async () => {
-    mockDowngradePending.mockResolvedValue(sessionView());
+  it('shows upgradeBackHeld when the commit holds the session for its UpgradeBack shards (R689.3)', async () => {
+    mockDowngradePending.mockResolvedValue(
+      sessionView({
+        pending_decisions: [
+          { shard_id: SHARD_A, decision: 'UpgradeBack' },
+          { shard_id: SHARD_B, decision: 'Archive' },
+        ],
+      }),
+    );
     mockShardsGet.mockImplementation((id: string) =>
       Promise.resolve(shardWithName(id, `Shard-${id.slice(0, 4)}`)),
     );
-    mockCancel.mockResolvedValue(
+    mockCommit.mockResolvedValue(
       sessionView({
-        state: 'Cancelled',
+        state: 'AwaitingShardDecisions',
+        pending_decisions: [{ shard_id: SHARD_A, decision: 'UpgradeBack' }],
       }),
     );
 
     await renderPage();
 
-    const cancel = screen.getByText('Cancel — decide later');
     await act(async () => {
-      fireEvent.click(cancel);
+      fireEvent.click(screen.getByText('Commit decisions'));
     });
 
-    expect(mockCancel).toHaveBeenCalledWith(SESSION_ID);
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
+    expect(mockCommit).toHaveBeenCalledWith(SESSION_ID);
+    expect(mockAddToast.mock.calls).toEqual([
+      [
+        'Shards marked Upgrade back stay Included until this window closes, and are archived then unless you upgrade back. Any other decisions have been applied.',
+        'info',
+      ],
+    ]);
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+  });
+
+  it('Cancel sends no request and goes back (R689.2)', async () => {
+    mockDowngradePending.mockResolvedValue(sessionView());
+    mockShardsGet.mockImplementation((id: string) =>
+      Promise.resolve(shardWithName(id, `Shard-${id.slice(0, 4)}`)),
+    );
+
+    await renderPage();
+    const reads = mockDowngradePending.mock.calls.length;
+
+    await act(async () => {
+      fireEvent.click(screen.getByText('Cancel — decide later'));
+    });
+
+    expect(mockNavigate.mock.calls).toEqual([[-1]]);
+    expect(mockAddToast).not.toHaveBeenCalled();
+    expect(mockPickIncludedShard).not.toHaveBeenCalled();
+    expect(mockShardDecision).not.toHaveBeenCalled();
+    expect(mockCommit).not.toHaveBeenCalled();
+    expect(mockDowngradePending.mock.calls.length).toBe(reads);
+  });
+
+  it('the PickingIncluded screen’s Cancel sends no request and goes back (R689.2)', async () => {
+    mockDowngradePending.mockResolvedValue(
+      sessionView({
+        state: 'PickingIncluded',
+        pending_decisions: [
+          { shard_id: SHARD_A, decision: 'Undecided' },
+          { shard_id: SHARD_B, decision: 'Undecided' },
+          { shard_id: SHARD_C, decision: 'Undecided' },
+        ],
+      }),
+    );
+    mockShardsGet.mockImplementation((id: string) =>
+      Promise.resolve(shardWithName(id, `Shard-${id.slice(0, 4)}`)),
+    );
+
+    await renderPage();
+    expect(screen.getAllByText('Keep as Included')).toHaveLength(3);
+    const reads = mockDowngradePending.mock.calls.length;
+
+    await act(async () => {
+      fireEvent.click(screen.getByText('Cancel — decide later'));
+    });
+
+    expect(mockNavigate.mock.calls).toEqual([[-1]]);
+    expect(mockAddToast).not.toHaveBeenCalled();
+    expect(mockPickIncludedShard).not.toHaveBeenCalled();
+    expect(mockShardDecision).not.toHaveBeenCalled();
+    expect(mockCommit).not.toHaveBeenCalled();
+    expect(mockDowngradePending.mock.calls.length).toBe(reads);
   });
 
   it('uses shard_id as fallback label when shards.get fails', async () => {
@@ -619,7 +683,7 @@ describe('DowngradeChoicePage', () => {
         expect(screen.getByText('First')).toBeInTheDocument();
         // The user acts; the request is held.
         await act(async () => {
-          fireEvent.click(screen.getByText('Archive (30-day retention)'));
+          fireEvent.click(screen.getByText('Archive (90-day retention)'));
         });
         // While it is pending, a new `t` starts a reload.
         await act(async () => {
@@ -784,7 +848,7 @@ describe('DowngradeChoicePage', () => {
     );
     await renderPage();
     await act(async () => {
-      fireEvent.click(screen.getByText('Archive (30-day retention)'));
+      fireEvent.click(screen.getByText('Archive (90-day retention)'));
     });
     await act(async () => {
       await Promise.resolve();
@@ -818,20 +882,18 @@ async function mountPage() {
 }
 
 describe('DowngradeChoicePage — an action keeps the visit it began in (R483.1)', () => {
-  type Action = 'pick' | 'decide' | 'commit' | 'cancel';
-  const cases = (['pick', 'decide', 'commit', 'cancel'] as const).flatMap(
-    (action) =>
-      (['succeeds', 'fails'] as const).map(
-        (outcome) => [action, outcome] as const,
-      ),
+  type Action = 'pick' | 'decide' | 'commit';
+  const cases = (['pick', 'decide', 'commit'] as const).flatMap((action) =>
+    (['succeeds', 'fails'] as const).map(
+      (outcome) => [action, outcome] as const,
+    ),
   );
 
   const start: Record<Action, () => void> = {
     pick: () => fireEvent.click(screen.getAllByText('Keep as Included')[0]),
     decide: () =>
-      fireEvent.click(screen.getAllByText('Archive (30-day retention)')[0]),
+      fireEvent.click(screen.getAllByText('Archive (90-day retention)')[0]),
     commit: () => fireEvent.click(screen.getByText('Commit decisions')),
-    cancel: () => fireEvent.click(screen.getByText('Cancel — decide later')),
   };
 
   it.each(cases)(
@@ -861,7 +923,6 @@ describe('DowngradeChoicePage — an action keeps the visit it began in (R483.1)
         pick: mockPickIncludedShard,
         decide: mockShardDecision,
         commit: mockCommit,
-        cancel: mockCancel,
       };
       mocksOf[action].mockReturnValue(answer);
 
